@@ -644,10 +644,24 @@ sRGBAFloat cRenderWorker::VolumetricShader(
 			if (params->common.fakeLightsColor2Enabled) fakeLightMaxLoop = 2;
 			if (params->common.fakeLightsColor3Enabled) fakeLightMaxLoop = 3;
 
+			// V2: Create a mutable copy of common params for position calculation
+			sCommonParams commonWithPosition = params->common;
+			
+			// V2: Calculate orbit trap position based on positioning mode
+			if (params->common.fakeLightsPositionMode == params::fakeLightsPositionCamera)
+			{
+				commonWithPosition.fakeLightsOrbitTrap = params->camera + params->common.fakeLightsOrbitTrap;
+			}
+			else if (params->common.fakeLightsPositionMode == params::fakeLightsPositionTarget)
+			{
+				commonWithPosition.fakeLightsOrbitTrap = params->target + params->common.fakeLightsOrbitTrap;
+			}
+
 			for (int fakeLightLoop = 0; fakeLightLoop < fakeLightMaxLoop; fakeLightLoop++)
 			{
-				sFractalIn fractIn(point, params->minN, -1, 1, fakeLightLoop, &params->common, -1, false);
+				sFractalIn fractIn(point, params->minN, -1, 1, fakeLightLoop, &commonWithPosition, -1, false);
 				sFractalOut fractOut;
+	fractOut.normal = CVector3(0, 0, 0);
 				Compute<fractal::calcModeOrbitTrap>(*fractal, nullptr, fractIn, &fractOut);
 				float r = fractOut.orbitTrapR;
 				r = sqrtf(1.0f / (r + 1.0e-20f));

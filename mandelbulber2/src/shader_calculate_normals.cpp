@@ -96,6 +96,7 @@ CVector3 cRenderWorker::CalculateNormals(const sShaderInputData &input) const
 
 					sFractalIn fractIn(point3, params->minN, -1, 1, 0, &params->common, -1, false);
 					sFractalOut fractOut;
+	fractOut.normal = CVector3(0, 0, 0);
 					fractOut.colorIndex = 0;
 
 					Compute<fractal::calcModeNormal>(*fractal, nullptr, fractIn, &fractOut);

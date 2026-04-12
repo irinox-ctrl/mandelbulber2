@@ -77,6 +77,7 @@ struct sFractalIn
 struct sFractalOut
 {
 	CVector3 z;
+	CVector3 normal;  // Fractal normal vector (used by sphere orbit trap)
 	double distance;
 	double colorIndex;
 	double fakeAO;

@@ -44,13 +44,32 @@ sRGBAFloat cRenderWorker::FakeLights(
 	if (params->common.fakeLightsColor2Enabled) fakeLightMaxLoop = 2;
 	if (params->common.fakeLightsColor3Enabled) fakeLightMaxLoop = 3;
 
+	// V2: Create a mutable copy of common params for position calculation
+	sCommonParams commonWithPosition = params->common;
+	
+	// V2: Calculate orbit trap position based on positioning mode
+	// Mode 0=World (use as-is), 3=FractalCenter (handled in compute_fractal)
+	// Modes 1=Camera, 2=Target are handled here
+	if (params->common.fakeLightsPositionMode == params::fakeLightsPositionCamera)
+	{
+		// Camera relative: orbit trap follows camera position
+		commonWithPosition.fakeLightsOrbitTrap = params->camera + params->common.fakeLightsOrbitTrap;
+	}
+	else if (params->common.fakeLightsPositionMode == params::fakeLightsPositionTarget)
+	{
+		// Target relative: orbit trap follows target point
+		commonWithPosition.fakeLightsOrbitTrap = params->target + params->common.fakeLightsOrbitTrap;
+	}
+	// Note: SurfaceFollow (4) would require additional implementation
+
 	for (int fakeLightLoop = 0; fakeLightLoop < fakeLightMaxLoop; fakeLightLoop++)
 	{
 
 		double delta = input.distThresh * params->smoothness;
 
-		sFractalIn fractIn(input.point, params->minN, -1, 1, fakeLightLoop, &params->common, -1, false);
+		sFractalIn fractIn(input.point, params->minN, -1, 1, fakeLightLoop, &commonWithPosition, -1, false);
 		sFractalOut fractOut;
+	fractOut.normal = CVector3(0, 0, 0);
 		Compute<fractal::calcModeOrbitTrap>(*fractal, nullptr, fractIn, &fractOut);
 		double rr = fractOut.orbitTrapR;
 		double r = 1.0 / (rr + 1e-30);

@@ -54,6 +54,7 @@ void cRenderWorker::PerlinNoiseForShaders(
 		{
 			sFractalIn fractIn(point, 0, -1, 1, 0, &params->common, -1, false, shaderInputData->material);
 			sFractalOut fractOut;
+	fractOut.normal = CVector3(0, 0, 0);
 			Compute<fractal::calcModeCubeOrbitTrap>(*fractal, nullptr, fractIn, &fractOut);
 			pointModified = fractOut.z;
 		}

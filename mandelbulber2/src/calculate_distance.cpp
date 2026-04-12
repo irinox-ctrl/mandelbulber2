@@ -414,6 +414,7 @@ double CalculateDistanceSimple(const sParamRender &params, const cNineFractals &
 	sFractalIn fractIn(in.point, params.minN, -1, maxiterMultiplier, 0, &params.common,
 		forcedFormulaIndex, in.normalCalculationMode);
 	sFractalOut fractOut;
+	fractOut.normal = CVector3(0, 0, 0);
 	fractOut.colorIndex = 0;
 
 	if (fractals.GetDEType(forcedFormulaIndex) == fractal::analyticDEType)

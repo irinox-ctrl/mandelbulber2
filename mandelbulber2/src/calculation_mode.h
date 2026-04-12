@@ -46,7 +46,8 @@ enum enumCalculationMode
 	calcModeDeltaDE1 = 3,
 	calcModeDeltaDE2 = 4,
 	calcModeOrbitTrap = 5,
-	calcModeCubeOrbitTrap = 6
+	calcModeCubeOrbitTrap = 6,
+	calcModeSphereOrbitTrap = 7  // Sphere orbit trap for texture fractalization
 };
 };
 
