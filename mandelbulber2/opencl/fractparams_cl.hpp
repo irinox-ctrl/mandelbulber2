@@ -45,6 +45,8 @@
 #ifndef MANDELBULBER2_OPENCL_FRACTPARAMS_CL_HPP_
 #define MANDELBULBER2_OPENCL_FRACTPARAMS_CL_HPP_
 
+#include "single_trap_light_cl.hpp"
+
 #ifndef OPENCL_KERNEL_CODE
 #include "common_params_cl.hpp"
 #include "fractal_cl.h"
@@ -285,6 +287,9 @@ typedef struct
 	matrix33 mRotAmbientOcclusionLightMapRotation;
 
 	sCommonParamsCl common;
+
+	// Single Trap Light v1 (separate system)
+	sClSingleTrapLight singleTrapLight0;
 } sParamRenderCl;
 
 #ifndef OPENCL_KERNEL_CODE
@@ -520,6 +525,10 @@ inline sParamRenderCl clCopySParamRenderCl(const sParamRender &source)
 	target.mRotAmbientOcclusionLightMapRotation =
 		toClMatrix33(source.mRotAmbientOcclusionLightMapRotation);
 	target.common = clCopySCommonParamsCl(source.common);
+
+	// Single Trap Light v1 (separate system)
+	target.singleTrapLight0 = clCopySSingleTrapLight(source.singleTrapLight0);
+
 	return target;
 }
 #endif /* OPENCL_KERNEL_CODE */

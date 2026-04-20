@@ -1,7 +1,7 @@
 /**
  * Mandelbulber v2, a 3D fractal generator       ,=#MKNmMMKmmßMNWy,
  *                                             ,B" ]L,,p%%%,,,§;, "K
- * Copyright (C) 2017-18 Mandelbulber Team     §R-==%w["'~5]m%=L.=~5N
+ * Copyright (C) 2017-26 Mandelbulber Team     §R-==%w["'~5]m%=L.=~5N
  *                                        ,=mm=§M ]=4 yJKA"/-Nsaj  "Bw,==,,
  * This file is part of Mandelbulber.    §R.r= jw",M  Km .mM  FW ",§=ß., ,TN
  *                                     ,4R =%["w[N=7]J '"5=],""]]M,w,-; T=]M
@@ -27,29 +27,52 @@
  *
  * ###########################################################################
  *
- * Authors: Sebastian Jennen (jenzebas@gmail.com)
+ * Authors: Krzysztof Marczak (buddhi1980@gmail.com)
  *
- * include header wrapper for usage in formula opencl kernels, which provides
- * all headers used in the formula kernels
+ * Single Trap Light v1 - OpenCL struct (separate from fake_lights System 1)
  */
 
-#ifndef MANDELBULBER2_OPENCL_CL_KERNEL_INCLUDE_HEADERS_H_
-#define MANDELBULBER2_OPENCL_CL_KERNEL_INCLUDE_HEADERS_H_
+#ifndef MANDELBULBER2_OPENCL_SINGLE_TRAP_LIGHT_CL_HPP_
+#define MANDELBULBER2_OPENCL_SINGLE_TRAP_LIGHT_CL_HPP_
 
-#include "defines_cl.h"
-
-// custom includes
-#include "opencl_typedefs.h"
+#ifndef OPENCL_KERNEL_CODE
 #include "opencl_algebra.h"
-#include "common_params_cl.hpp"
-#include "single_trap_light_cl.hpp"
-#include "image_adjustments_cl.h"
-#include "fractal_cl.h"
-#include "fractparams_cl.hpp"
-#include "fractal_sequence_cl.h"
-#include "fractal_coloring_cl.hpp"
-#include "texture_enums_cl.h"
-#include "material_cl.h"
-#include "input_data_structures.h"
+#include "src/single_trap_light.hpp"
+#endif /* OPENCL_KERNEL_CODE */
 
-#endif /* MANDELBULBER2_OPENCL_CL_KERNEL_INCLUDE_HEADERS_H_ */
+typedef struct
+{
+	cl_float3 center;      // offset 0,  size 16
+	cl_float3 rotation;    // offset 16, size 16
+	cl_float3 color;       // offset 32, size 16 (sRGB → float3, /65535.0)
+	cl_float size;         // offset 48, size 4
+	cl_float radius;       // offset 52, size 4
+	cl_float intensity;    // offset 56, size 4
+	cl_int enabled;        // offset 60, size 4
+	cl_int dummy0;         // offset 64, size 4  (padding to 80)
+	cl_int dummy1;         // offset 68, size 4
+	cl_int dummy2;         // offset 72, size 4
+	cl_int dummy3;         // offset 76, size 4
+} sClSingleTrapLight;      // total: 80 bytes (5×16)
+
+#ifndef OPENCL_KERNEL_CODE
+inline sClSingleTrapLight clCopySSingleTrapLight(const sSingleTrapLight &source)
+{
+	sClSingleTrapLight target;
+	target.enabled = source.enabled ? 1 : 0;
+	target.center = toClFloat3(source.center);
+	target.rotation = toClFloat3(source.rotation);
+	target.color = {{cl_float(source.color.R / 65535.0), cl_float(source.color.G / 65535.0),
+		cl_float(source.color.B / 65535.0), cl_float(0.0)}};
+	target.size = cl_float(source.size);
+	target.radius = cl_float(source.radius);
+	target.intensity = cl_float(source.intensity);
+	target.dummy0 = 0;
+	target.dummy1 = 0;
+	target.dummy2 = 0;
+	target.dummy3 = 0;
+	return target;
+}
+#endif /* OPENCL_KERNEL_CODE */
+
+#endif /* MANDELBULBER2_OPENCL_SINGLE_TRAP_LIGHT_CL_HPP_ */
