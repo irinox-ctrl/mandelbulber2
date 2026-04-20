@@ -436,9 +436,29 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 #ifdef FAKE_LIGHTS
 			else if (mode == calcModeOrbitTrap)
 			{
-				float distance = (consts->params.common.fakeLightsRelativeCenter)
-													 ? OrbitTrapShapeDistance(z - aux.const_c, consts)
-													 : OrbitTrapShapeDistance(z, consts);
+				// V2: Positioning mode (FractalCenter handled here, Camera/Target applied to orbitTrapPos)
+				float3 orbitTrapPos = consts->params.common.fakeLightsOrbitTrap;
+				int posMode = consts->params.common.fakeLightsPositionMode;
+				sFakeLightsModeParamsCl modeParams = consts->params.common.fakeLightsModes[posMode];
+				float3 modeRotated = Matrix33MulFloat3(modeParams.mRot, consts->params.common.fakeLightsOrbitTrap * modeParams.scale);
+				orbitTrapPos = modeParams.offset + modeRotated;
+
+				if (posMode == fakeLightsPositionCamera)
+				{
+					orbitTrapPos = consts->params.camera + orbitTrapPos;
+				}
+				else if (posMode == fakeLightsPositionTarget)
+				{
+					orbitTrapPos = consts->params.target + orbitTrapPos;
+				}
+
+				float4 zAdj = z;
+				if (posMode == fakeLightsPositionFractalCenter)
+				{
+					zAdj = z - aux.const_c;
+				}
+
+				float distance = OrbitTrapShapeDistance(zAdj, orbitTrapPos, consts);
 
 				if (i >= fakeLightsMinIter && i <= fakeLightsMaxIter)
 					orbitTrapTotal += (1.0f / (distance * distance));

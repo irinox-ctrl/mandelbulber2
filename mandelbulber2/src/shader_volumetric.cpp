@@ -646,15 +646,26 @@ sRGBAFloat cRenderWorker::VolumetricShader(
 
 			// V2: Create a mutable copy of common params for position calculation
 			sCommonParams commonWithPosition = params->common;
-			
+
 			// V2: Calculate orbit trap position based on positioning mode
-			if (params->common.fakeLightsPositionMode == params::fakeLightsPositionCamera)
+			int posMode = params->common.fakeLightsPositionMode;
+			const sFakeLightsModeParams &mode = params->common.fakeLightsModes[posMode];
+			CRotationMatrix modeRot;
+			modeRot.SetRotation2(mode.rotation * M_PI / 180.0);
+			CVector3 transformedTrap =
+				mode.offset + modeRot.RotateVector(params->common.fakeLightsOrbitTrap * mode.scale);
+
+			if (posMode == params::fakeLightsPositionCamera)
 			{
-				commonWithPosition.fakeLightsOrbitTrap = params->camera + params->common.fakeLightsOrbitTrap;
+				commonWithPosition.fakeLightsOrbitTrap = params->camera + transformedTrap;
 			}
-			else if (params->common.fakeLightsPositionMode == params::fakeLightsPositionTarget)
+			else if (posMode == params::fakeLightsPositionTarget)
 			{
-				commonWithPosition.fakeLightsOrbitTrap = params->target + params->common.fakeLightsOrbitTrap;
+				commonWithPosition.fakeLightsOrbitTrap = params->target + transformedTrap;
+			}
+			else
+			{
+				commonWithPosition.fakeLightsOrbitTrap = transformedTrap;
 			}
 
 			for (int fakeLightLoop = 0; fakeLightLoop < fakeLightMaxLoop; fakeLightLoop++)

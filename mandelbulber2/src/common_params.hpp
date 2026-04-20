@@ -46,8 +46,43 @@ enum enumFakeLightsShape
 	fakeLightsShapeCircle = 2,
 	fakeLightsShapeSquare = 3,
 	fakeLightsShapeSphere = 4,
-	fakeLightsShapeCube = 5
+	fakeLightsShapeCube = 5,
+	fakeLightsShapeTorus = 6,
+	fakeLightsShapeTriangle = 7,
+	fakeLightsShapeHexagon = 8,
+	fakeLightsShapeStar = 9,
+	fakeLightsShapeCross = 10,
+	fakeLightsShapeCapsule = 11,
+	fakeLightsShapeCone = 12,
+	fakeLightsShapePyramid = 13,
+	fakeLightsShapeTetrahedron = 14,
+	fakeLightsShapeOctahedron = 15,
+	fakeLightsShapeDodecahedron = 16,
+	fakeLightsShapeIcosahedron = 17,
+	fakeLightsShapeMengerSponge = 18,
+	fakeLightsShapeSierpinskiTetrahedron = 19,
+	fakeLightsShapeKochSnowflake = 20,
+	fakeLightsShapeHexGrid = 21,
+	fakeLightsShapeSpiral = 22,
+	fakeLightsShapeGrid = 23,
+	fakeLightsShapeBuckyball = 24,
+	fakeLightsShapeApollonian = 25
 };
+
+enum enumFakeLightsPositionMode
+{
+	fakeLightsPositionWorld = 0,
+	fakeLightsPositionCamera = 1,
+	fakeLightsPositionTarget = 2,
+	fakeLightsPositionFractalCenter = 3
+};
+};
+
+struct sFakeLightsModeParams
+{
+	CVector3 offset;
+	double scale;
+	CVector3 rotation;
 };
 
 struct sFractalFoldings
@@ -60,6 +95,7 @@ struct sFractalFoldings
 	bool sphericalEnable;
 };
 
+#pragma pack(push, 16)
 struct sCommonParams
 {
 	bool iterThreshMode;
@@ -71,6 +107,15 @@ struct sCommonParams
 	int fakeLightsMinIter;
 
 	params::enumFakeLightsShape fakeLightsOrbitTrapShape;
+
+	// V2: Positioning mode (MOVED: grouped with int fields for alignment)
+	params::enumFakeLightsPositionMode fakeLightsPositionMode = params::fakeLightsPositionWorld;
+
+	// Polar / Radial repeat modifier
+	int fakeLightsRadialRepeatCount;
+
+	// Smooth shape blending
+	int fakeLightsBlendShape;
 
 	double fakeLightsOrbitTrapSize;
 	double fakeLightsThickness;
@@ -85,6 +130,35 @@ struct sCommonParams
 	CRotationMatrix mRotFakeLightsRotation;
 
 	sFractalFoldings foldings;
+
+	// V2: Per-mode fine-tuning parameters
+	sFakeLightsModeParams fakeLightsModes[4];
+
+	// V2: Universal shape modifiers (applied to all orbit trap shapes)
+	double fakeLightsShapeTwist;
+	double fakeLightsShapeBend;
+	double fakeLightsShapeTaper;
+	int fakeLightsShapeFoldSymmetry;
+	double fakeLightsShapeRepeatX;
+	double fakeLightsShapeRepeatY;
+	double fakeLightsShapeRepeatZ;
+	double fakeLightsShapeWobbleAmplitude;
+	double fakeLightsShapeWobbleFrequency;
+	double fakeLightsShapeChamfer;
+
+	// Onion / Hollow-shell modifier
+	double fakeLightsOnionThickness;
+
+	// Per-shape proportion parameters
+	double fakeLightsShapeParam1;
+	double fakeLightsShapeParam2;
+
+	// Polar / Radial repeat modifier
+	double fakeLightsRadialRepeatRadius;
+
+	// Smooth shape blending
+	double fakeLightsBlendAmount;
 };
+#pragma pack(pop)
 
 #endif /* MANDELBULBER2_SRC_COMMON_PARAMS_HPP_ */

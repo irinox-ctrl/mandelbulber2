@@ -205,7 +205,7 @@
            <item>
             <widget class="MyGroupBox" name="groupCheck_raytraced_reflections">
              <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Activate calculation of ray-traced reflections and transparency. Reflectance can be set by &lt;span style=&quot; font-style:italic;&quot;&gt;Material/Reflection. &lt;/span&gt;Transparency settings are in the same tab as reflection.&lt;br/&gt;Also enable with Monte Carlo global illumination.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Activate calculation of ray-traced reflections and transparency. Reflectance can be set by &lt;span style=" font-style:italic;"&gt;Material/Reflection. &lt;/span&gt;Transparency settings are in the same tab as reflection.&lt;br/&gt;Also enable with Monte Carlo global illumination.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="title">
               <string>Ray-&amp;traced reflections and transparency</string>
@@ -311,7 +311,7 @@
                 <item row="0" column="1">
                  <widget class="MyLineEdit" name="logedit_DOF_focus">
                   <property name="toolTip">
-                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;It's the distance where objects appear in focus.&lt;/p&gt;&lt;p&gt;Distance can be set bu using button &lt;span style=&quot; font-style:italic;&quot;&gt;Set focus distance by mouse&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;table border=&quot;0&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;&quot; cellspacing=&quot;2&quot; cellpadding=&quot;0&quot;&gt;&lt;tr&gt;&lt;td&gt;&lt;p&gt;low focus distance&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;high focus distance&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;p&gt;&lt;img src=&quot;:/tooltips/tooltips_images/image - DOF - focus close.jpg&quot;/&gt;&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;&lt;img src=&quot;:/tooltips/tooltips_images/image - DOF - focus far.jpg&quot;/&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;It's the distance where objects appear in focus.&lt;/p&gt;&lt;p&gt;Distance can be set bu using button &lt;span style=" font-style:italic;"&gt;Set focus distance by mouse&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;table border="0" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;" cellspacing="2" cellpadding="0"&gt;&lt;tr&gt;&lt;td&gt;&lt;p&gt;low focus distance&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;high focus distance&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;p&gt;&lt;img src=":/tooltips/tooltips_images/image - DOF - focus close.jpg"/&gt;&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;&lt;img src=":/tooltips/tooltips_images/image - DOF - focus far.jpg"/&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</string>
                   </property>
                  </widget>
                 </item>
@@ -324,13 +324,13 @@
                    </sizepolicy>
                   </property>
                   <property name="toolTip">
-                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Intensity of DOF effect (average radius of blur)&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;table border=&quot;0&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;&quot; cellspacing=&quot;2&quot; cellpadding=&quot;0&quot;&gt;&lt;tr&gt;&lt;td&gt;&lt;p&gt;radius = 10&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;radius = 50&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;p&gt;&lt;img src=&quot;:/tooltips/tooltips_images/image - DOF - radius 10.jpg&quot;/&gt;&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;&lt;img src=&quot;:/tooltips/tooltips_images/image - DOF - radius 50.jpg&quot;/&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Intensity of DOF effect (average radius of blur)&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;table border="0" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;" cellspacing="2" cellpadding="0"&gt;&lt;tr&gt;&lt;td&gt;&lt;p&gt;radius = 10&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;radius = 50&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;p&gt;&lt;img src=":/tooltips/tooltips_images/image - DOF - radius 10.jpg"/&gt;&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;&lt;img src=":/tooltips/tooltips_images/image - DOF - radius 50.jpg"/&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</string>
                   </property>
                   <property name="prefix">
-                   <string/>
+                   <string></string>
                   </property>
                   <property name="suffix">
-                   <string/>
+                   <string></string>
                   </property>
                   <property name="decimals">
                    <number>2</number>
@@ -394,10 +394,10 @@
                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opacity of blur effect used during second phase of rendering the DOF effect. 4.0 is correct for most of cases. But for more realistic blur the number of passes can be increased (e.g to 4) and blur opacity should be accordingly decreased (e.g. to 1.0)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                   </property>
                   <property name="prefix">
-                   <string/>
+                   <string></string>
                   </property>
                   <property name="suffix">
-                   <string/>
+                   <string></string>
                   </property>
                   <property name="decimals">
                    <number>2</number>
@@ -435,10 +435,10 @@
                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Maximum radius of generated blur. Lower value can speed up rendering but effect will be less realistic.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                   </property>
                   <property name="prefix">
-                   <string/>
+                   <string></string>
                   </property>
                   <property name="suffix">
-                   <string/>
+                   <string></string>
                   </property>
                   <property name="decimals">
                    <number>2</number>
@@ -484,7 +484,7 @@
                  </sizepolicy>
                 </property>
                 <property name="toolTip">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Setting of focus distance by mouse pointer. &lt;/p&gt;&lt;p&gt;Click on this button and then point the object on image which you want to appear in focus.&lt;/p&gt;&lt;p&gt;After using it don't forget to change &lt;span style=&quot; font-style:italic;&quot;&gt;Navigation&lt;/span&gt; / &lt;span style=&quot; font-style:italic;&quot;&gt;Mouse click function&lt;/span&gt; to continue work with the camera.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Setting of focus distance by mouse pointer. &lt;/p&gt;&lt;p&gt;Click on this button and then point the object on image which you want to appear in focus.&lt;/p&gt;&lt;p&gt;After using it don't forget to change &lt;span style=" font-style:italic;"&gt;Navigation&lt;/span&gt; / &lt;span style=" font-style:italic;"&gt;Mouse click function&lt;/span&gt; to continue work with the camera.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                 <property name="text">
                  <string>Set focus distance by mouse</string>
@@ -640,7 +640,7 @@ per pixel:</string>
                  </sizepolicy>
                 </property>
                 <property name="toolTip">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enables additonal optimization of MC rendering. The noise level is calculated separatelly for each pixel. If noise level is enough low, then the pixel is no longer calculated.&lt;/p&gt;&lt;p&gt;If the image is very noisy and there is low value of &lt;span style=&quot; font-style:italic;&quot;&gt;Min number of samples&lt;/span&gt;, then enabling this option can cause dark random pixels left on the image.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enables additonal optimization of MC rendering. The noise level is calculated separatelly for each pixel. If noise level is enough low, then the pixel is no longer calculated.&lt;/p&gt;&lt;p&gt;If the image is very noisy and there is low value of &lt;span style=" font-style:italic;"&gt;Min number of samples&lt;/span&gt;, then enabling this option can cause dark random pixels left on the image.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                 <property name="text">
                  <string>Enable pixel level optimization</string>
@@ -840,7 +840,7 @@ per pixel:</string>
                  </sizepolicy>
                 </property>
                 <property name="toolTip">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enables calculation of realistic soft shadows using Monte Carlo algorithm.&lt;/p&gt;&lt;p&gt;Soft shadow cone for main light source is defined by &lt;span style=&quot; font-style:italic;&quot;&gt;Soft shadow code angle&lt;/span&gt; (&lt;span style=&quot; font-style:italic;&quot;&gt;Lights&lt;/span&gt; tab)&lt;/p&gt;&lt;p&gt;Soft shadow cone for auxiliary lights is defined by C&lt;span style=&quot; font-style:italic;&quot;&gt;ustom lights options&lt;/span&gt; / &lt;span style=&quot; font-style:italic;&quot;&gt;Size.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enables calculation of realistic soft shadows using Monte Carlo algorithm.&lt;/p&gt;&lt;p&gt;Soft shadow cone for main light source is defined by &lt;span style=" font-style:italic;"&gt;Soft shadow code angle&lt;/span&gt; (&lt;span style=" font-style:italic;"&gt;Lights&lt;/span&gt; tab)&lt;/p&gt;&lt;p&gt;Soft shadow cone for auxiliary lights is defined by C&lt;span style=" font-style:italic;"&gt;ustom lights options&lt;/span&gt; / &lt;span style=" font-style:italic;"&gt;Size.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                 <property name="text">
                  <string>Calculate MC soft shadows</string>
@@ -850,7 +850,7 @@ per pixel:</string>
               <item>
                <widget class="MyGroupBox" name="groupCheck_DOF_MC_CA_enable">
                 <property name="toolTip">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enables rendering of chromatic aberration. This effect simulates the way an actual lens refracts light slightly differently based on wavelength.&lt;/p&gt;&lt;p&gt;It will give a &quot;rainbow&quot; type effect that gets stronger closer to the edges of the image. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enables rendering of chromatic aberration. This effect simulates the way an actual lens refracts light slightly differently based on wavelength.&lt;/p&gt;&lt;p&gt;It will give a "rainbow" type effect that gets stronger closer to the edges of the image. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                 <property name="title">
                  <string>Calculate chromatic aberration</string>
@@ -924,7 +924,7 @@ per pixel:</string>
            <item>
             <widget class="MyGroupBox" name="groupCheck_ambient_occlusion_enabled">
              <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Settings for scattered light effect&lt;/p&gt;&lt;p&gt;Types of ambient occlusion effect:&lt;/p&gt;&lt;table border=&quot;0&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;&quot; cellspacing=&quot;2&quot; cellpadding=&quot;0&quot;&gt;&lt;tr&gt;&lt;td&gt;&lt;p&gt;Screen Space Ambient Occlusion (SSAO)&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;Multiple rays&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;Fast&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;p&gt;&lt;img src=&quot;:/tooltips/tooltips_images/image - shader - ambient occlusion 1.0.jpg&quot;/&gt;&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;&lt;img src=&quot;:/tooltips/tooltips_images/image - shader - ambient occlusion high quality.jpg&quot;/&gt;&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;&lt;img src=&quot;:/tooltips/tooltips_images/image - shader - ambient occlusion fast mode.jpg&quot;/&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;SSAO&lt;/span&gt; - relatively fast post-effect based on z-Buffer&lt;br/&gt;note: using SSAO prevents one-pass anaglyph rendering&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Multiple rays&lt;/span&gt; - based on calculation of rays in different directions. It uses texture to create colored light map. This effect slows down rendering.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Fast&lt;/span&gt; - simple and fast method to calculate scattered light effect. This the least accurate effect.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Settings for scattered light effect&lt;/p&gt;&lt;p&gt;Types of ambient occlusion effect:&lt;/p&gt;&lt;table border="0" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;" cellspacing="2" cellpadding="0"&gt;&lt;tr&gt;&lt;td&gt;&lt;p&gt;Screen Space Ambient Occlusion (SSAO)&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;Multiple rays&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;Fast&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;p&gt;&lt;img src=":/tooltips/tooltips_images/image - shader - ambient occlusion 1.0.jpg"/&gt;&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;&lt;img src=":/tooltips/tooltips_images/image - shader - ambient occlusion high quality.jpg"/&gt;&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;&lt;img src=":/tooltips/tooltips_images/image - shader - ambient occlusion fast mode.jpg"/&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;SSAO&lt;/span&gt; - relatively fast post-effect based on z-Buffer&lt;br/&gt;note: using SSAO prevents one-pass anaglyph rendering&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Multiple rays&lt;/span&gt; - based on calculation of rays in different directions. It uses texture to create colored light map. This effect slows down rendering.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Fast&lt;/span&gt; - simple and fast method to calculate scattered light effect. This the least accurate effect.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="title">
               <string>Ambient occl&amp;usion</string>
@@ -995,10 +995,10 @@ per pixel:</string>
                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This parameter controls brightness of fast ambient occlusion effect.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                   </property>
                   <property name="prefix">
-                   <string/>
+                   <string></string>
                   </property>
                   <property name="suffix">
-                   <string/>
+                   <string></string>
                   </property>
                   <property name="decimals">
                    <number>2</number>
@@ -1037,13 +1037,13 @@ per pixel:</string>
                    </sizepolicy>
                   </property>
                   <property name="toolTip">
-                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Intensity of scattered light&lt;/p&gt;&lt;p&gt;example of effect:&lt;/p&gt;&lt;p&gt;&lt;img src=&quot;:/tooltips/tooltips_images/image - shader - ambient occlusion 1.0.jpg&quot;/&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Intensity of scattered light&lt;/p&gt;&lt;p&gt;example of effect:&lt;/p&gt;&lt;p&gt;&lt;img src=":/tooltips/tooltips_images/image - shader - ambient occlusion 1.0.jpg"/&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                   </property>
                   <property name="prefix">
-                   <string/>
+                   <string></string>
                   </property>
                   <property name="suffix">
-                   <string/>
+                   <string></string>
                   </property>
                   <property name="decimals">
                    <number>2</number>
@@ -1239,10 +1239,10 @@ per pixel:</string>
                       <bool>true</bool>
                      </property>
                      <property name="prefix">
-                      <string/>
+                      <string></string>
                      </property>
                      <property name="suffix">
-                      <string/>
+                      <string></string>
                      </property>
                      <property name="decimals">
                       <number>2</number>
@@ -1270,10 +1270,10 @@ per pixel:</string>
                       <bool>true</bool>
                      </property>
                      <property name="prefix">
-                      <string/>
+                      <string></string>
                      </property>
                      <property name="suffix">
-                      <string/>
+                      <string></string>
                      </property>
                      <property name="decimals">
                       <number>2</number>
@@ -1301,10 +1301,10 @@ per pixel:</string>
                       <bool>true</bool>
                      </property>
                      <property name="prefix">
-                      <string/>
+                      <string></string>
                      </property>
                      <property name="suffix">
-                      <string/>
+                      <string></string>
                      </property>
                      <property name="decimals">
                       <number>2</number>
@@ -1331,7 +1331,7 @@ per pixel:</string>
            <item>
             <widget class="MyGroupBox" name="groupCheck_env_mapping_enable">
              <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Environment mapping is an image-based lighting technique for approximating the appearance of a reflective surface by means of a precomputed texture image. The texture is used to store the image of the distant environment surrounding the rendered object.&lt;/p&gt;&lt;p&gt;To adjust effect intensity use &lt;span style=&quot; font-style:italic;&quot;&gt;reflection&lt;/span&gt; slider&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Environment mapping is an image-based lighting technique for approximating the appearance of a reflective surface by means of a precomputed texture image. The texture is used to store the image of the distant environment surrounding the rendered object.&lt;/p&gt;&lt;p&gt;To adjust effect intensity use &lt;span style=" font-style:italic;"&gt;reflection&lt;/span&gt; slider&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="title">
               <string>Environment mappin&amp;g</string>
@@ -1535,7 +1535,7 @@ for volumetric effects:</string>
            <item>
             <widget class="MyGroupBox" name="groupCheck_basic_fog_enabled">
              <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enables fog effect. Density of fog is constant over entire space.&lt;/p&gt;&lt;p&gt;Example:&lt;/p&gt;&lt;p&gt;&lt;img src=&quot;:/tooltips/tooltips_images/image - shader - fog.jpeg&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enables fog effect. Density of fog is constant over entire space.&lt;/p&gt;&lt;p&gt;Example:&lt;/p&gt;&lt;p&gt;&lt;img src=":/tooltips/tooltips_images/image - shader - fog.jpeg"/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="title">
               <string>Basic fog</string>
@@ -1567,7 +1567,7 @@ for volumetric effects:</string>
                 <item row="0" column="1">
                  <widget class="MyLineEdit" name="logedit_basic_fog_visibility">
                   <property name="toolTip">
-                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Visibility distance of fog. Visibility can be set by using '&lt;span style=&quot; font-style:italic;&quot;&gt;Set visibility distance by mouse'&lt;/span&gt; button&lt;/p&gt;&lt;p&gt;Lower values produce denser fog,&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Visibility distance of fog. Visibility can be set by using '&lt;span style=" font-style:italic;"&gt;Set visibility distance by mouse'&lt;/span&gt; button&lt;/p&gt;&lt;p&gt;Lower values produce denser fog,&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -1638,7 +1638,7 @@ for volumetric effects:</string>
                  </sizepolicy>
                 </property>
                 <property name="toolTip">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets visibility distance using mouse pointer. Point the object which should be the farthest visible.&lt;/p&gt;&lt;p&gt;After using it don't forget to change &lt;span style=&quot; font-style:italic;&quot;&gt;Navigation&lt;/span&gt; / &lt;span style=&quot; font-style:italic;&quot;&gt;Mouse click function&lt;/span&gt; to continue work with the camera.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets visibility distance using mouse pointer. Point the object which should be the farthest visible.&lt;/p&gt;&lt;p&gt;After using it don't forget to change &lt;span style=" font-style:italic;"&gt;Navigation&lt;/span&gt; / &lt;span style=" font-style:italic;"&gt;Mouse click function&lt;/span&gt; to continue work with the camera.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                 <property name="text">
                  <string>Set visibility distance by mouse</string>
@@ -1651,7 +1651,7 @@ for volumetric effects:</string>
            <item>
             <widget class="MyGroupBox" name="groupCheck_glow_enabled">
              <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Glow effect based on ray-marching step count&lt;/p&gt;&lt;p&gt;Example:&lt;/p&gt;&lt;p&gt;&lt;img src=&quot;:/tooltips/tooltips_images/image - shader - glow.jpeg&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Glow effect based on ray-marching step count&lt;/p&gt;&lt;p&gt;Example:&lt;/p&gt;&lt;p&gt;&lt;img src=":/tooltips/tooltips_images/image - shader - glow.jpeg"/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="title">
               <string>&amp;Glow</string>
@@ -1736,7 +1736,7 @@ for volumetric effects:</string>
            <item>
             <widget class="MyGroupBox" name="groupCheck_volumetric_fog_enabled">
              <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fog where density depends on the distance from the fractal surface.&lt;/p&gt;&lt;table border=&quot;0&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;&quot; cellspacing=&quot;2&quot; cellpadding=&quot;0&quot;&gt;&lt;tr&gt;&lt;td&gt;&lt;p&gt;Example of high values of distance&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;Examples of low values of distance &lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;p&gt;&lt;img src=&quot;:/tooltips/tooltips_images/image - shader - distance glow.jpg&quot;/&gt;&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;&lt;img src=&quot;:/tooltips/tooltips_images/image - shader - distance glow 2.jpeg&quot;/&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fog where density depends on the distance from the fractal surface.&lt;/p&gt;&lt;table border="0" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;" cellspacing="2" cellpadding="0"&gt;&lt;tr&gt;&lt;td&gt;&lt;p&gt;Example of high values of distance&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;Examples of low values of distance &lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;p&gt;&lt;img src=":/tooltips/tooltips_images/image - shader - distance glow.jpg"/&gt;&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;&lt;img src=":/tooltips/tooltips_images/image - shader - distance glow 2.jpeg"/&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="title">
               <string>Fog based on dis&amp;tance</string>
@@ -1969,7 +1969,7 @@ for volumetric effects:</string>
            <item>
             <widget class="MyGroupBox" name="groupCheck_iteration_fog_enable">
              <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fog effect, where the density of the fog is dependent on the iteration count of the fractal formula. Fog is denser in areas of higher iteration count.&lt;/p&gt;&lt;p&gt;Fog receives shadows, and casts shadows on fractal surface and on itself.&lt;/p&gt;&lt;p&gt;Example of fog with additional light sources:&lt;br/&gt;&lt;img src=&quot;:/tooltips/tooltips_images/image - shader - iterfog - lights.jpeg&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fog effect, where the density of the fog is dependent on the iteration count of the fractal formula. Fog is denser in areas of higher iteration count.&lt;/p&gt;&lt;p&gt;Fog receives shadows, and casts shadows on fractal surface and on itself.&lt;/p&gt;&lt;p&gt;Example of fog with additional light sources:&lt;br/&gt;&lt;img src=":/tooltips/tooltips_images/image - shader - iterfog - lights.jpeg"/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="title">
               <string>Fog based on iteration co&amp;unt</string>
@@ -2014,13 +2014,13 @@ for volumetric effects:</string>
                    </sizepolicy>
                   </property>
                   <property name="toolTip">
-                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;There is no fog in volume where iteration count is lower than this value. When this parameter is high then fog is only just by fractal surface.&lt;/p&gt;&lt;table border=&quot;0&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;&quot; cellspacing=&quot;2&quot; cellpadding=&quot;0&quot;&gt;&lt;tr&gt;&lt;td&gt;&lt;p&gt;trim = 4&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;trim = 6&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;trim = 8&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;p&gt;&lt;img src=&quot;:/tooltips/tooltips_images/image - shader - iterfog - 4 - 16000.jpg&quot;/&gt;&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;&lt;img src=&quot;:/tooltips/tooltips_images/image - shader - iterfog - 6 - 30000.jpg&quot;/&gt;&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;&lt;img src=&quot;:/tooltips/tooltips_images/image - shader - iterfog - 8 - 40000.jpg&quot;/&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;There is no fog in volume where iteration count is lower than this value. When this parameter is high then fog is only just by fractal surface.&lt;/p&gt;&lt;table border="0" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;" cellspacing="2" cellpadding="0"&gt;&lt;tr&gt;&lt;td&gt;&lt;p&gt;trim = 4&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;trim = 6&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;trim = 8&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;p&gt;&lt;img src=":/tooltips/tooltips_images/image - shader - iterfog - 4 - 16000.jpg"/&gt;&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;&lt;img src=":/tooltips/tooltips_images/image - shader - iterfog - 6 - 30000.jpg"/&gt;&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;&lt;img src=":/tooltips/tooltips_images/image - shader - iterfog - 8 - 40000.jpg"/&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</string>
                   </property>
                   <property name="prefix">
-                   <string/>
+                   <string></string>
                   </property>
                   <property name="suffix">
-                   <string/>
+                   <string></string>
                   </property>
                   <property name="decimals">
                    <number>2</number>
@@ -2045,10 +2045,10 @@ for volumetric effects:</string>
                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Color #1 is used for iteration count lower than this value&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                   </property>
                   <property name="prefix">
-                   <string/>
+                   <string></string>
                   </property>
                   <property name="suffix">
-                   <string/>
+                   <string></string>
                   </property>
                   <property name="decimals">
                    <number>2</number>
@@ -2084,13 +2084,13 @@ for volumetric effects:</string>
                    </sizepolicy>
                   </property>
                   <property name="toolTip">
-                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;There is no fog in volume where iteration count is lower than this value. When this parameter is high then fog is only just by fractal surface.&lt;/p&gt;&lt;table border=&quot;0&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;&quot; cellspacing=&quot;2&quot; cellpadding=&quot;0&quot;&gt;&lt;tr&gt;&lt;td&gt;&lt;p&gt;trim = 4&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;trim = 6&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;trim = 8&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;p&gt;&lt;img src=&quot;:/tooltips/tooltips_images/image - shader - iterfog - 4 - 16000.jpg&quot;/&gt;&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;&lt;img src=&quot;:/tooltips/tooltips_images/image - shader - iterfog - 6 - 30000.jpg&quot;/&gt;&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;&lt;img src=&quot;:/tooltips/tooltips_images/image - shader - iterfog - 8 - 40000.jpg&quot;/&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;There is no fog in volume where iteration count is lower than this value. When this parameter is high then fog is only just by fractal surface.&lt;/p&gt;&lt;table border="0" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;" cellspacing="2" cellpadding="0"&gt;&lt;tr&gt;&lt;td&gt;&lt;p&gt;trim = 4&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;trim = 6&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;trim = 8&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;p&gt;&lt;img src=":/tooltips/tooltips_images/image - shader - iterfog - 4 - 16000.jpg"/&gt;&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;&lt;img src=":/tooltips/tooltips_images/image - shader - iterfog - 6 - 30000.jpg"/&gt;&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;&lt;img src=":/tooltips/tooltips_images/image - shader - iterfog - 8 - 40000.jpg"/&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</string>
                   </property>
                   <property name="prefix">
-                   <string/>
+                   <string></string>
                   </property>
                   <property name="suffix">
-                   <string/>
+                   <string></string>
                   </property>
                   <property name="decimals">
                    <number>2</number>
@@ -2129,10 +2129,10 @@ for volumetric effects:</string>
                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This parameter can be used to increase brightness of fog illuminated by auxiliary light sources.&lt;/p&gt;&lt;p&gt;In Mandelbulber version &amp;lt;= 2.12 this value was hardcoded and default value was 100. &lt;/p&gt;&lt;p&gt;When brightness boost is 1.0 then there is correct proportion of illuminating fractal surface and fog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                   </property>
                   <property name="prefix">
-                   <string/>
+                   <string></string>
                   </property>
                   <property name="suffix">
-                   <string/>
+                   <string></string>
                   </property>
                   <property name="decimals">
                    <number>2</number>
@@ -2193,10 +2193,10 @@ for volumetric effects:</string>
                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Color #2 is used for iteration count lower than this value. &lt;/p&gt;&lt;p&gt;Color #3 is used for iteration count greater than this value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                   </property>
                   <property name="prefix">
-                   <string/>
+                   <string></string>
                   </property>
                   <property name="suffix">
-                   <string/>
+                   <string></string>
                   </property>
                   <property name="decimals">
                    <number>2</number>
@@ -2247,7 +2247,7 @@ Set 100 to keep compatibility with version &lt;=2.12</string>
                 <item row="0" column="1">
                  <widget class="MyLineEdit" name="logedit_iteration_fog_opacity">
                   <property name="toolTip">
-                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opacity of fog. Higher value gives denser fog.&lt;br/&gt;&lt;/p&gt;&lt;table border=&quot;0&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;&quot; cellspacing=&quot;2&quot; cellpadding=&quot;0&quot;&gt;&lt;tr&gt;&lt;td&gt;&lt;p&gt;opacity = 1000&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;opacity = 4000&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;opacity = 16000&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;p&gt;&lt;img src=&quot;:/tooltips/tooltips_images/image - shader - iterfog - 4 - 1000.jpg&quot;/&gt;&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;&lt;img src=&quot;:/tooltips/tooltips_images/image - shader - iterfog - 4 - 4000.jpg&quot;/&gt;&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;&lt;img src=&quot;:/tooltips/tooltips_images/image - shader - iterfog - 4 - 16000.jpg&quot;/&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opacity of fog. Higher value gives denser fog.&lt;br/&gt;&lt;/p&gt;&lt;table border="0" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;" cellspacing="2" cellpadding="0"&gt;&lt;tr&gt;&lt;td&gt;&lt;p&gt;opacity = 1000&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;opacity = 4000&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;opacity = 16000&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;p&gt;&lt;img src=":/tooltips/tooltips_images/image - shader - iterfog - 4 - 1000.jpg"/&gt;&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;&lt;img src=":/tooltips/tooltips_images/image - shader - iterfog - 4 - 4000.jpg"/&gt;&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;&lt;img src=":/tooltips/tooltips_images/image - shader - iterfog - 4 - 16000.jpg"/&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</string>
                   </property>
                  </widget>
                 </item>
@@ -2362,10 +2362,10 @@ Set 100 to keep compatibility with version &lt;=2.12</string>
                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Base density/coverage of the volumetric cloud field (0–1). Higher values produce thicker, more continuous clouds; lower values yield sparse, broken clouds. &lt;/p&gt;&lt;p&gt;Tune together with Cloud Opacity (overall strength), Period (scale), and Noise Iterations (detail). Typical range: 0.15–0.60; 0 = clear, 1 = near-solid overcast.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                   </property>
                   <property name="prefix">
-                   <string/>
+                   <string></string>
                   </property>
                   <property name="suffix">
-                   <string/>
+                   <string></string>
                   </property>
                   <property name="decimals">
                    <number>3</number>
@@ -2427,10 +2427,10 @@ Set 100 to keep compatibility with version &lt;=2.12</string>
                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ambient light contribution for clouds (0–1). &lt;/p&gt;&lt;p&gt;Blends uniform ambient illumination into cloud lighting: &lt;/p&gt;&lt;p&gt;0 = only direct lights with full shadow contrast; &lt;/p&gt;&lt;p&gt;1 = fully ambient, very soft/flat shadows. &lt;/p&gt;&lt;p&gt;Increase to brighten interiors and soften shadows; decrease for crisper shading. &lt;/p&gt;&lt;p&gt;Does not affect opacity. &lt;/p&gt;&lt;p&gt;Typical range: 0.05–0.30.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                   </property>
                   <property name="prefix">
-                   <string/>
+                   <string></string>
                   </property>
                   <property name="suffix">
-                   <string/>
+                   <string></string>
                   </property>
                   <property name="decimals">
                    <number>3</number>
@@ -2572,10 +2572,10 @@ Set 100 to keep compatibility with version &lt;=2.12</string>
                     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Edge steepness for Sharp edges clouds. Higher values sharpen the density threshold (crisper, thinner cloud contours); lower values keep transitions soft. &lt;/p&gt;&lt;p&gt;Very high values may introduce aliasing/noise—consider increasing Clouds Noise Iterations or Clouds Detail Accuracy.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                    </property>
                    <property name="prefix">
-                    <string/>
+                    <string></string>
                    </property>
                    <property name="suffix">
-                    <string/>
+                    <string></string>
                    </property>
                    <property name="decimals">
                     <number>1</number>
@@ -2600,7 +2600,7 @@ Set 100 to keep compatibility with version &lt;=2.12</string>
                  <number>2</number>
                 </property>
                 <item row="1" column="3">
-                 <widget class="MyLineEdit" name="vect3_clouds_speed_y"/>
+                 <widget class="MyLineEdit" name="vect3_clouds_speed_y"></widget>
                 </item>
                 <item row="1" column="2">
                  <widget class="QLabel" name="label_140">
@@ -2640,7 +2640,7 @@ Set 100 to keep compatibility with version &lt;=2.12</string>
                  </widget>
                 </item>
                 <item row="2" column="3">
-                 <widget class="MyLineEdit" name="vect3_clouds_speed_z"/>
+                 <widget class="MyLineEdit" name="vect3_clouds_speed_z"></widget>
                 </item>
                 <item row="1" column="1">
                  <widget class="QLabel" name="label_133">
@@ -2731,10 +2731,10 @@ Set 100 to keep compatibility with version &lt;=2.12</string>
                       <bool>true</bool>
                      </property>
                      <property name="prefix">
-                      <string/>
+                      <string></string>
                      </property>
                      <property name="suffix">
-                      <string/>
+                      <string></string>
                      </property>
                      <property name="decimals">
                       <number>2</number>
@@ -2827,10 +2827,10 @@ Set 100 to keep compatibility with version &lt;=2.12</string>
                       <bool>true</bool>
                      </property>
                      <property name="prefix">
-                      <string/>
+                      <string></string>
                      </property>
                      <property name="suffix">
-                      <string/>
+                      <string></string>
                      </property>
                      <property name="decimals">
                       <number>2</number>
@@ -2868,10 +2868,10 @@ Set 100 to keep compatibility with version &lt;=2.12</string>
                       <bool>true</bool>
                      </property>
                      <property name="prefix">
-                      <string/>
+                      <string></string>
                      </property>
                      <property name="suffix">
-                      <string/>
+                      <string></string>
                      </property>
                      <property name="decimals">
                       <number>2</number>
@@ -3302,10 +3302,10 @@ Set 100 to keep compatibility with version &lt;=2.12</string>
                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Brightness of background&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                   </property>
                   <property name="prefix">
-                   <string/>
+                   <string></string>
                   </property>
                   <property name="suffix">
-                   <string/>
+                   <string></string>
                   </property>
                   <property name="decimals">
                    <number>2</number>
@@ -3343,10 +3343,10 @@ Set 100 to keep compatibility with version &lt;=2.12</string>
                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Gamma correction for the background (colors or texture), applied after Background brightness. &lt;/p&gt;&lt;p&gt;1.0 = no change; &amp;gt;1 brightens midtones; &amp;lt;1 darkens. &lt;/p&gt;&lt;p&gt;Affects only the background, not scene lighting or objects. &lt;/p&gt;&lt;p&gt;Typical range: ~0.8–2.5.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                   </property>
                   <property name="prefix">
-                   <string/>
+                   <string></string>
                   </property>
                   <property name="suffix">
-                   <string/>
+                   <string></string>
                   </property>
                   <property name="decimals">
                    <number>2</number>
@@ -3367,7 +3367,7 @@ Set 100 to keep compatibility with version &lt;=2.12</string>
            <item>
             <widget class="MyGroupBox" name="groupCheck_textured_background">
              <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enables covering of background sphere with selected image.&lt;/p&gt;&lt;p&gt;Example:&lt;/p&gt;&lt;p&gt;&lt;img src=&quot;:/tooltips/tooltips_images/image - shader - backhround texture.jpg&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enables covering of background sphere with selected image.&lt;/p&gt;&lt;p&gt;Example:&lt;/p&gt;&lt;p&gt;&lt;img src=":/tooltips/tooltips_images/image - shader - backhround texture.jpg"/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="title">
               <string>Text&amp;ured background</string>
@@ -3431,7 +3431,7 @@ Set 100 to keep compatibility with version &lt;=2.12</string>
                    </sizepolicy>
                   </property>
                   <property name="toolTip">
-                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;It determines, how texture will be mapped on background sphere&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Equirectangular: &lt;br/&gt;&lt;/span&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Texture has to be created used equirectangular projection. It's the most popular format for textures dedicated for sphere mapping.&lt;br/&gt;Example:&lt;br/&gt;&lt;/span&gt;&lt;img src=&quot;:/tooltips/tooltips_images/equirectangular_bkg.jpg&quot;/&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Double hemisphere:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Texture has to be created as a pair of images of hemispheres. Mapping has to be the same as &lt;span style=&quot; font-style:italic;&quot;&gt;Full dome projection&lt;/span&gt; (or &lt;span style=&quot; font-style:italic;&quot;&gt;Fish eye&lt;/span&gt;)&lt;br/&gt;Example texture with indicated axes and directions:&lt;br/&gt;&lt;img src=&quot;:/tooltips/tooltips_images/full_dome_bkg_axes.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;It determines, how texture will be mapped on background sphere&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Equirectangular: &lt;br/&gt;&lt;/span&gt;&lt;span style=" font-weight:400;"&gt;Texture has to be created used equirectangular projection. It's the most popular format for textures dedicated for sphere mapping.&lt;br/&gt;Example:&lt;br/&gt;&lt;/span&gt;&lt;img src=":/tooltips/tooltips_images/equirectangular_bkg.jpg"/&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Double hemisphere:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Texture has to be created as a pair of images of hemispheres. Mapping has to be the same as &lt;span style=" font-style:italic;"&gt;Full dome projection&lt;/span&gt; (or &lt;span style=" font-style:italic;"&gt;Fish eye&lt;/span&gt;)&lt;br/&gt;Example texture with indicated axes and directions:&lt;br/&gt;&lt;img src=":/tooltips/tooltips_images/full_dome_bkg_axes.png"/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                   </property>
                   <item>
                    <property name="text">
@@ -3482,10 +3482,10 @@ Set 100 to keep compatibility with version &lt;=2.12</string>
                    </sizepolicy>
                   </property>
                   <property name="prefix">
-                   <string/>
+                   <string></string>
                   </property>
                   <property name="suffix">
-                   <string/>
+                   <string></string>
                   </property>
                   <property name="decimals">
                    <number>4</number>
@@ -3543,10 +3543,10 @@ Set 100 to keep compatibility with version &lt;=2.12</string>
                    </sizepolicy>
                   </property>
                   <property name="prefix">
-                   <string/>
+                   <string></string>
                   </property>
                   <property name="suffix">
-                   <string/>
+                   <string></string>
                   </property>
                   <property name="decimals">
                    <number>4</number>
@@ -3597,10 +3597,10 @@ Set 100 to keep compatibility with version &lt;=2.12</string>
                    <bool>true</bool>
                   </property>
                   <property name="prefix">
-                   <string/>
+                   <string></string>
                   </property>
                   <property name="suffix">
-                   <string/>
+                   <string></string>
                   </property>
                   <property name="decimals">
                    <number>2</number>
@@ -3651,10 +3651,10 @@ Set 100 to keep compatibility with version &lt;=2.12</string>
                    </sizepolicy>
                   </property>
                   <property name="prefix">
-                   <string/>
+                   <string></string>
                   </property>
                   <property name="suffix">
-                   <string/>
+                   <string></string>
                   </property>
                   <property name="decimals">
                    <number>3</number>
@@ -3679,10 +3679,10 @@ Set 100 to keep compatibility with version &lt;=2.12</string>
                    <bool>true</bool>
                   </property>
                   <property name="prefix">
-                   <string/>
+                   <string></string>
                   </property>
                   <property name="suffix">
-                   <string/>
+                   <string></string>
                   </property>
                   <property name="decimals">
                    <number>2</number>
@@ -3707,10 +3707,10 @@ Set 100 to keep compatibility with version &lt;=2.12</string>
                    </sizepolicy>
                   </property>
                   <property name="prefix">
-                   <string/>
+                   <string></string>
                   </property>
                   <property name="suffix">
-                   <string/>
+                   <string></string>
                   </property>
                   <property name="decimals">
                    <number>3</number>
@@ -3735,10 +3735,10 @@ Set 100 to keep compatibility with version &lt;=2.12</string>
                    <bool>true</bool>
                   </property>
                   <property name="prefix">
-                   <string/>
+                   <string></string>
                   </property>
                   <property name="suffix">
-                   <string/>
+                   <string></string>
                   </property>
                   <property name="decimals">
                    <number>2</number>
@@ -4094,12 +4094,12 @@ Set 100 to keep compatibility with version &lt;=2.12</string>
             </widget>
            </item>
            <item>
-            <widget class="cLightSourcesManager" name="widget_light_sources_manager" native="true"/>
+            <widget class="cLightSourcesManager" name="widget_light_sources_manager" native="true"></widget>
            </item>
            <item>
             <widget class="MyGroupBox" name="groupCheck_random_lights_group">
              <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/tooltips/tooltips_images/random lights placement.png&quot;/&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Random seed: &lt;/span&gt;random seed for lights distribution &lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Maximum distance from the fractal: &lt;/span&gt;random lights are placed within this distance from the fractal surface &lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Centre of distribution X, Y, Z: &lt;/span&gt;the centre point for random light distribution. To set this point by mouse pointer, select &amp;quot;Set position of centre for random lights&amp;quot; in Mouse click function combo box in Mandelbulber Render Window &lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Distribution radius of lights: &lt;/span&gt;maximum distance from Centre of distribution where lights can be placed. The random lights appear in the region that matches the condition of being both within this radius and also within the maximum distance from fractal surface.&lt;/p&gt;&lt;p&gt;If this radius is too small to generate random lights, then the program will automatically increase this radius. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=":/tooltips/tooltips_images/random lights placement.png"/&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Random seed: &lt;/span&gt;random seed for lights distribution &lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Maximum distance from the fractal: &lt;/span&gt;random lights are placed within this distance from the fractal surface &lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Centre of distribution X, Y, Z: &lt;/span&gt;the centre point for random light distribution. To set this point by mouse pointer, select &amp;quot;Set position of centre for random lights&amp;quot; in Mouse click function combo box in Mandelbulber Render Window &lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Distribution radius of lights: &lt;/span&gt;maximum distance from Centre of distribution where lights can be placed. The random lights appear in the region that matches the condition of being both within this radius and also within the maximum distance from fractal surface.&lt;/p&gt;&lt;p&gt;If this radius is too small to generate random lights, then the program will automatically increase this radius. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="title">
               <string>Random li&amp;ghts options</string>
@@ -4222,7 +4222,7 @@ from fractal:</string>
                 <item row="14" column="2">
                  <widget class="MyComboBox" name="comboBox_random_lights_coloring_type">
                   <property name="toolTip">
-                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose how auto‑generated random lights are colored.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Random colors&lt;/span&gt; — each light gets a random color.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Single color&lt;/span&gt; — all lights use the First color.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Two colors&lt;/span&gt; — each light randomly uses the First or Second color.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Two colors based on distance&lt;/span&gt; — color blends between First and Second color based on the light’s distance to the fractal surface (closer → First, farther → Second).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose how auto‑generated random lights are colored.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-style:italic;"&gt;Random colors&lt;/span&gt; — each light gets a random color.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-style:italic;"&gt;Single color&lt;/span&gt; — all lights use the First color.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-style:italic;"&gt;Two colors&lt;/span&gt; — each light randomly uses the First or Second color.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-style:italic;"&gt;Two colors based on distance&lt;/span&gt; — color blends between First and Second color based on the light’s distance to the fractal surface (closer → First, farther → Second).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                   </property>
                   <item>
                    <property name="text">
@@ -4464,7 +4464,7 @@ of lights:</string>
            <item>
             <widget class="MyGroupBox" name="groupCheck_fake_lights_enabled">
              <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Simulates a large amount of lights and is relatively fast to render.&lt;/p&gt;&lt;p&gt;An orbit trap is a point, a 2D, or 3D shape defined in 3D space. The brightness of the point is dependent on how close the point's orbit gets to the orbit trap shape during the chosen iterations.&lt;/p&gt;&lt;p&gt;This effect is difficult to setup and often you need to try many different orbit trap settings.&lt;/p&gt;&lt;p&gt;These light sources illuminate the fractal surface, but do not cast shadows.&lt;/p&gt;&lt;p&gt;Example:&lt;/p&gt;&lt;p&gt;&lt;img src=&quot;:/tooltips/tooltips_images/image - shader - orbit trap lights.jpg&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Simulates a large amount of lights and is relatively fast to render.&lt;/p&gt;&lt;p&gt;An orbit trap is a point, a 2D, or 3D shape defined in 3D space. The brightness of the point is dependent on how close the point's orbit gets to the orbit trap shape during the chosen iterations.&lt;/p&gt;&lt;p&gt;This effect is difficult to setup and often you need to try many different orbit trap settings.&lt;/p&gt;&lt;p&gt;These light sources illuminate the fractal surface, but do not cast shadows.&lt;/p&gt;&lt;p&gt;Example:&lt;/p&gt;&lt;p&gt;&lt;img src=":/tooltips/tooltips_images/image - shader - orbit trap lights.jpg"/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="title">
               <string>Orbit &amp;trap lights</string>
@@ -4519,7 +4519,7 @@ of lights:</string>
                 <item row="11" column="2">
                  <widget class="MyLineEdit" name="logedit_fake_lights_orbit_trap_size">
                   <property name="toolTip">
-                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Size of the Orbit trap shape used by Fake lights.&lt;/p&gt;&lt;p&gt;Meaning depends on Shape: - Circle: ring radius - Square: half edge length - Sphere: shell radius - Cube: half edge length - Point/Line: this value is not used&lt;/p&gt;&lt;p&gt;Applied in the trap’s local space around the Orbit trap center. Use “Thickness” to control the shell’s falloff width.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Size of the Orbit trap shape used by Fake lights.&lt;/p&gt;&lt;p&gt;Meaning depends on Shape: - Point: sphere radius around the point - Line: cylinder radius around the line - Circle: ring radius - Square: half edge length - Sphere: shell radius - Cube: half edge length&lt;/p&gt;&lt;p&gt;Applied in the trap’s local space around the Orbit trap center. Use “Thickness” to control the shell’s falloff width.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                   </property>
                  </widget>
                 </item>
@@ -4593,7 +4593,7 @@ of lights:</string>
                 <item row="6" column="2">
                  <widget class="MyComboBox" name="comboBox_fake_lights_orbit_trap_shape">
                   <property name="toolTip">
-                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt; &lt;p&gt;Select the orbit‑trap shape used by Fake lights (lighting is driven by the distance to this shape).&lt;/p&gt; &lt;p&gt;&lt;i&gt;Point&lt;/i&gt; — a single point source near the trap center (default).&lt;/p&gt; &lt;p&gt;&lt;i&gt;Line&lt;/i&gt; — an infinite line through the center; use Orbit rotation to set its direction.&lt;/p&gt; &lt;p&gt;&lt;i&gt;Circle&lt;/i&gt; — a circular ring around a central axis; Size = ring radius; Rotation sets the axis.&lt;/p&gt; &lt;p&gt;&lt;i&gt;Square&lt;/i&gt; — a square ring; Size = half edge; Rotation sets orientation.&lt;/p&gt; &lt;p&gt;&lt;i&gt;Sphere&lt;/i&gt; — a spherical shell; Size = radius.&lt;/p&gt; &lt;p&gt;&lt;i&gt;Cube&lt;/i&gt; — a cubic shell; Size = half edge length.&lt;/p&gt; &lt;p&gt;Tip: Use Thickness to control falloff width, Visibility/Visibility size for reach, and set center/Relative center and Orbit rotation as needed. Effective when “Fake lights” is enabled.&lt;/p&gt; &lt;/body&gt;&lt;/html&gt;</string>
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt; &lt;p&gt;Select the orbit‑trap shape used by Fake lights (lighting is driven by the distance to this shape).&lt;/p&gt; &lt;p&gt;&lt;i&gt;Point&lt;/i&gt; — a sphere around the trap center; Size = sphere radius (default).&lt;/p&gt; &lt;p&gt;&lt;i&gt;Line&lt;/i&gt; — a cylinder around an infinite line through the center; Size = cylinder radius; use Orbit rotation to set its direction.&lt;/p&gt; &lt;p&gt;&lt;i&gt;Circle&lt;/i&gt; — a circular ring around a central axis; Size = ring radius; Rotation sets the axis.&lt;/p&gt; &lt;p&gt;&lt;i&gt;Square&lt;/i&gt; — a square ring; Size = half edge; Rotation sets orientation.&lt;/p&gt; &lt;p&gt;&lt;i&gt;Sphere&lt;/i&gt; — a spherical shell; Size = radius.&lt;/p&gt; &lt;p&gt;&lt;i&gt;Cube&lt;/i&gt; — a cubic shell; Size = half edge length.&lt;/p&gt; &lt;p&gt;Tip: Use Thickness to control falloff width, Visibility/Visibility size for reach, and set center/Relative center and Orbit rotation as needed. Effective when “Fake lights” is enabled.&lt;/p&gt; &lt;/body&gt;&lt;/html&gt;</string>
                   </property>
                   <item>
                    <property name="text">
@@ -4623,6 +4623,106 @@ of lights:</string>
                   <item>
                    <property name="text">
                     <string>Cube</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Torus</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Triangle</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Hexagon</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Star</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Cross</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Capsule</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Cone</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Pyramid</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Tetrahedron</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Octahedron</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Dodecahedron</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Icosahedron</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Menger Sponge</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Sierpinski Tetrahedron</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Koch Snowflake</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Hex Grid</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Spiral</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Grid</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Buckyball</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Apollonian</string>
                    </property>
                   </item>
                  </widget>
@@ -4663,7 +4763,7 @@ of lights:</string>
                 <item row="3" column="2">
                  <widget class="MyLineEdit" name="logedit_fake_lights_visibility">
                   <property name="toolTip">
-                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Brightness of visible lights. It is volumetric effect.&lt;/p&gt;&lt;p&gt;Quality of this effect can by controled by &lt;span style=&quot; font-style:italic;&quot;&gt;Effects / Volumetric / Custom DE step multiplier for volumetric effects&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Brightness of visible lights. It is volumetric effect.&lt;/p&gt;&lt;p&gt;Quality of this effect can by controled by &lt;span style=" font-style:italic;"&gt;Effects / Volumetric / Custom DE step multiplier for volumetric effects&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                   </property>
                  </widget>
                 </item>
@@ -4721,10 +4821,10 @@ of lights:</string>
                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Rotate the Orbit trap shape around the selected axis (degrees).&lt;/p&gt;&lt;p&gt;Effects by shape: - Line: sets the line direction. - Circle: sets the ring’s axis. - Square: sets the plane/orientation. - Cube: sets the cube orientation. - Sphere: usually no visible effect. - Point: no effect.&lt;/p&gt;&lt;p&gt;Notes: - Angles are in degrees; internal order is Z → Y → X. - Rotation is applied around the Orbit trap center (see “Relative center”).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                   </property>
                   <property name="prefix">
-                   <string/>
+                   <string></string>
                   </property>
                   <property name="suffix">
-                   <string/>
+                   <string></string>
                   </property>
                   <property name="decimals">
                    <number>2</number>
@@ -4752,10 +4852,10 @@ of lights:</string>
                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Rotate the Orbit trap shape around the selected axis (degrees).&lt;/p&gt;&lt;p&gt;Effects by shape: - Line: sets the line direction. - Circle: sets the ring’s axis. - Square: sets the plane/orientation. - Cube: sets the cube orientation. - Sphere: usually no visible effect. - Point: no effect.&lt;/p&gt;&lt;p&gt;Notes: - Angles are in degrees; internal order is Z → Y → X. - Rotation is applied around the Orbit trap center (see “Relative center”).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                   </property>
                   <property name="prefix">
-                   <string/>
+                   <string></string>
                   </property>
                   <property name="suffix">
-                   <string/>
+                   <string></string>
                   </property>
                   <property name="decimals">
                    <number>2</number>
@@ -4843,10 +4943,10 @@ of lights:</string>
                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Rotate the Orbit trap shape around the selected axis (degrees).&lt;/p&gt;&lt;p&gt;Effects by shape: - Line: sets the line direction. - Circle: sets the ring’s axis. - Square: sets the plane/orientation. - Cube: sets the cube orientation. - Sphere: usually no visible effect. - Point: no effect.&lt;/p&gt;&lt;p&gt;Notes: - Angles are in degrees; internal order is Z → Y → X. - Rotation is applied around the Orbit trap center (see “Relative center”).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                   </property>
                   <property name="prefix">
-                   <string/>
+                   <string></string>
                   </property>
                   <property name="suffix">
-                   <string/>
+                   <string></string>
                   </property>
                   <property name="decimals">
                    <number>2</number>
@@ -4985,10 +5085,10 @@ of lights:</string>
                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Size of visible lights (scale is logarithmic)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                   </property>
                   <property name="prefix">
-                   <string/>
+                   <string></string>
                   </property>
                   <property name="suffix">
-                   <string/>
+                   <string></string>
                   </property>
                   <property name="decimals">
                    <number>2</number>
@@ -5025,7 +5125,1115 @@ of lights:</string>
                   </property>
                  </widget>
                 </item>
+                <item row="17" column="0">
+                 <widget class="QLabel" name="label_position_mode_">
+                  <property name="text">
+                   <string>Position mode:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="17" column="1" colspan="2">
+                 <widget class="MyComboBox" name="comboBox_fake_lights_position_mode">
+                  <item>
+                   <property name="text">
+                    <string>World</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Camera Relative</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Target Point</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Fractal Center</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
                </layout>
+              </item>
+              <item>
+               <widget class="QStackedWidget" name="stackedWidget_fake_lights_mode">
+                <widget class="QWidget" name="page_fake_lights_world">
+                 <layout class="QVBoxLayout" name="verticalLayout_world">
+                  <property name="spacing">
+                   <number>2</number>
+                  </property>
+                  <property name="leftMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="topMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="rightMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="bottomMargin">
+                   <number>0</number>
+                  </property>
+                  <item>
+                   <widget class="QGroupBox" name="groupBox_fake_lights_world">
+                    <property name="title">
+                     <string>World mode settings</string>
+                    </property>
+                    <layout class="QGridLayout" name="gridLayout_world">
+                     <property name="spacing">
+                      <number>2</number>
+                     </property>
+                     <item row="0" column="0" rowspan="3">
+                      <widget class="QLabel" name="label_world_offset">
+                       <property name="text">
+                        <string>Offset:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="1">
+                      <widget class="QLabel" name="label_world_offset_x">
+                       <property name="text">
+                        <string>x:</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="2">
+                      <widget class="MyLineEdit" name="vect3_fake_lights_world_offset_x"/>
+                     </item>
+                     <item row="1" column="1">
+                      <widget class="QLabel" name="label_world_offset_y">
+                       <property name="text">
+                        <string>y:</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="1" column="2">
+                      <widget class="MyLineEdit" name="vect3_fake_lights_world_offset_y"/>
+                     </item>
+                     <item row="2" column="1">
+                      <widget class="QLabel" name="label_world_offset_z">
+                       <property name="text">
+                        <string>z:</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="2" column="2">
+                      <widget class="MyLineEdit" name="vect3_fake_lights_world_offset_z"/>
+                     </item>
+                     <item row="3" column="0">
+                      <widget class="QLabel" name="label_world_scale">
+                       <property name="text">
+                        <string>Scale:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="3" column="1" colspan="2">
+                      <widget class="MyLineEdit" name="logedit_fake_lights_world_scale"/>
+                     </item>
+                     <item row="4" column="0" rowspan="3">
+                      <widget class="QLabel" name="label_world_rotation">
+                       <property name="text">
+                        <string>Rotation:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="4" column="1">
+                      <widget class="QLabel" name="label_world_rotation_x">
+                       <property name="text">
+                        <string>x:</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="4" column="2">
+                      <widget class="MyDoubleSpinBox" name="spinboxd3_fake_lights_world_rotation_x">
+                       <property name="decimals">
+                        <number>2</number>
+                       </property>
+                       <property name="minimum">
+                        <double>-36000.000000000000000</double>
+                       </property>
+                       <property name="maximum">
+                        <double>36000.000000000000000</double>
+                       </property>
+                       <property name="singleStep">
+                        <double>0.100000000000000</double>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="5" column="1">
+                      <widget class="QLabel" name="label_world_rotation_y">
+                       <property name="text">
+                        <string>y:</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="5" column="2">
+                      <widget class="MyDoubleSpinBox" name="spinboxd3_fake_lights_world_rotation_y">
+                       <property name="decimals">
+                        <number>2</number>
+                       </property>
+                       <property name="minimum">
+                        <double>-36000.000000000000000</double>
+                       </property>
+                       <property name="maximum">
+                        <double>36000.000000000000000</double>
+                       </property>
+                       <property name="singleStep">
+                        <double>0.100000000000000</double>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="6" column="1">
+                      <widget class="QLabel" name="label_world_rotation_z">
+                       <property name="text">
+                        <string>z:</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="6" column="2">
+                      <widget class="MyDoubleSpinBox" name="spinboxd3_fake_lights_world_rotation_z">
+                       <property name="decimals">
+                        <number>2</number>
+                       </property>
+                       <property name="minimum">
+                        <double>-36000.000000000000000</double>
+                       </property>
+                       <property name="maximum">
+                        <double>36000.000000000000000</double>
+                       </property>
+                       <property name="singleStep">
+                        <double>0.100000000000000</double>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+                <widget class="QWidget" name="page_fake_lights_camera">
+                 <layout class="QVBoxLayout" name="verticalLayout_camera">
+                  <property name="spacing">
+                   <number>2</number>
+                  </property>
+                  <property name="leftMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="topMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="rightMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="bottomMargin">
+                   <number>0</number>
+                  </property>
+                  <item>
+                   <widget class="QGroupBox" name="groupBox_fake_lights_camera">
+                    <property name="title">
+                     <string>Camera mode settings</string>
+                    </property>
+                    <layout class="QGridLayout" name="gridLayout_camera">
+                     <property name="spacing">
+                      <number>2</number>
+                     </property>
+                     <item row="0" column="0" rowspan="3">
+                      <widget class="QLabel" name="label_camera_offset">
+                       <property name="text">
+                        <string>Offset:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="1">
+                      <widget class="QLabel" name="label_camera_offset_x">
+                       <property name="text">
+                        <string>x:</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="2">
+                      <widget class="MyLineEdit" name="vect3_fake_lights_camera_offset_x"/>
+                     </item>
+                     <item row="1" column="1">
+                      <widget class="QLabel" name="label_camera_offset_y">
+                       <property name="text">
+                        <string>y:</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="1" column="2">
+                      <widget class="MyLineEdit" name="vect3_fake_lights_camera_offset_y"/>
+                     </item>
+                     <item row="2" column="1">
+                      <widget class="QLabel" name="label_camera_offset_z">
+                       <property name="text">
+                        <string>z:</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="2" column="2">
+                      <widget class="MyLineEdit" name="vect3_fake_lights_camera_offset_z"/>
+                     </item>
+                     <item row="3" column="0">
+                      <widget class="QLabel" name="label_camera_scale">
+                       <property name="text">
+                        <string>Scale:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="3" column="1" colspan="2">
+                      <widget class="MyLineEdit" name="logedit_fake_lights_camera_scale"/>
+                     </item>
+                     <item row="4" column="0" rowspan="3">
+                      <widget class="QLabel" name="label_camera_rotation">
+                       <property name="text">
+                        <string>Rotation:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="4" column="1">
+                      <widget class="QLabel" name="label_camera_rotation_x">
+                       <property name="text">
+                        <string>x:</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="4" column="2">
+                      <widget class="MyDoubleSpinBox" name="spinboxd3_fake_lights_camera_rotation_x">
+                       <property name="decimals">
+                        <number>2</number>
+                       </property>
+                       <property name="minimum">
+                        <double>-36000.000000000000000</double>
+                       </property>
+                       <property name="maximum">
+                        <double>36000.000000000000000</double>
+                       </property>
+                       <property name="singleStep">
+                        <double>0.100000000000000</double>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="5" column="1">
+                      <widget class="QLabel" name="label_camera_rotation_y">
+                       <property name="text">
+                        <string>y:</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="5" column="2">
+                      <widget class="MyDoubleSpinBox" name="spinboxd3_fake_lights_camera_rotation_y">
+                       <property name="decimals">
+                        <number>2</number>
+                       </property>
+                       <property name="minimum">
+                        <double>-36000.000000000000000</double>
+                       </property>
+                       <property name="maximum">
+                        <double>36000.000000000000000</double>
+                       </property>
+                       <property name="singleStep">
+                        <double>0.100000000000000</double>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="6" column="1">
+                      <widget class="QLabel" name="label_camera_rotation_z">
+                       <property name="text">
+                        <string>z:</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="6" column="2">
+                      <widget class="MyDoubleSpinBox" name="spinboxd3_fake_lights_camera_rotation_z">
+                       <property name="decimals">
+                        <number>2</number>
+                       </property>
+                       <property name="minimum">
+                        <double>-36000.000000000000000</double>
+                       </property>
+                       <property name="maximum">
+                        <double>36000.000000000000000</double>
+                       </property>
+                       <property name="singleStep">
+                        <double>0.100000000000000</double>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+                <widget class="QWidget" name="page_fake_lights_target">
+                 <layout class="QVBoxLayout" name="verticalLayout_target">
+                  <property name="spacing">
+                   <number>2</number>
+                  </property>
+                  <property name="leftMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="topMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="rightMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="bottomMargin">
+                   <number>0</number>
+                  </property>
+                  <item>
+                   <widget class="QGroupBox" name="groupBox_fake_lights_target">
+                    <property name="title">
+                     <string>Target mode settings</string>
+                    </property>
+                    <layout class="QGridLayout" name="gridLayout_target">
+                     <property name="spacing">
+                      <number>2</number>
+                     </property>
+                     <item row="0" column="0" rowspan="3">
+                      <widget class="QLabel" name="label_target_offset">
+                       <property name="text">
+                        <string>Offset:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="1">
+                      <widget class="QLabel" name="label_target_offset_x">
+                       <property name="text">
+                        <string>x:</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="2">
+                      <widget class="MyLineEdit" name="vect3_fake_lights_target_offset_x"/>
+                     </item>
+                     <item row="1" column="1">
+                      <widget class="QLabel" name="label_target_offset_y">
+                       <property name="text">
+                        <string>y:</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="1" column="2">
+                      <widget class="MyLineEdit" name="vect3_fake_lights_target_offset_y"/>
+                     </item>
+                     <item row="2" column="1">
+                      <widget class="QLabel" name="label_target_offset_z">
+                       <property name="text">
+                        <string>z:</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="2" column="2">
+                      <widget class="MyLineEdit" name="vect3_fake_lights_target_offset_z"/>
+                     </item>
+                     <item row="3" column="0">
+                      <widget class="QLabel" name="label_target_scale">
+                       <property name="text">
+                        <string>Scale:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="3" column="1" colspan="2">
+                      <widget class="MyLineEdit" name="logedit_fake_lights_target_scale"/>
+                     </item>
+                     <item row="4" column="0" rowspan="3">
+                      <widget class="QLabel" name="label_target_rotation">
+                       <property name="text">
+                        <string>Rotation:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="4" column="1">
+                      <widget class="QLabel" name="label_target_rotation_x">
+                       <property name="text">
+                        <string>x:</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="4" column="2">
+                      <widget class="MyDoubleSpinBox" name="spinboxd3_fake_lights_target_rotation_x">
+                       <property name="decimals">
+                        <number>2</number>
+                       </property>
+                       <property name="minimum">
+                        <double>-36000.000000000000000</double>
+                       </property>
+                       <property name="maximum">
+                        <double>36000.000000000000000</double>
+                       </property>
+                       <property name="singleStep">
+                        <double>0.100000000000000</double>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="5" column="1">
+                      <widget class="QLabel" name="label_target_rotation_y">
+                       <property name="text">
+                        <string>y:</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="5" column="2">
+                      <widget class="MyDoubleSpinBox" name="spinboxd3_fake_lights_target_rotation_y">
+                       <property name="decimals">
+                        <number>2</number>
+                       </property>
+                       <property name="minimum">
+                        <double>-36000.000000000000000</double>
+                       </property>
+                       <property name="maximum">
+                        <double>36000.000000000000000</double>
+                       </property>
+                       <property name="singleStep">
+                        <double>0.100000000000000</double>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="6" column="1">
+                      <widget class="QLabel" name="label_target_rotation_z">
+                       <property name="text">
+                        <string>z:</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="6" column="2">
+                      <widget class="MyDoubleSpinBox" name="spinboxd3_fake_lights_target_rotation_z">
+                       <property name="decimals">
+                        <number>2</number>
+                       </property>
+                       <property name="minimum">
+                        <double>-36000.000000000000000</double>
+                       </property>
+                       <property name="maximum">
+                        <double>36000.000000000000000</double>
+                       </property>
+                       <property name="singleStep">
+                        <double>0.100000000000000</double>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+                <widget class="QWidget" name="page_fake_lights_fractal_center">
+                 <layout class="QVBoxLayout" name="verticalLayout_fractal_center">
+                  <property name="spacing">
+                   <number>2</number>
+                  </property>
+                  <property name="leftMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="topMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="rightMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="bottomMargin">
+                   <number>0</number>
+                  </property>
+                  <item>
+                   <widget class="QGroupBox" name="groupBox_fake_lights_fractal_center">
+                    <property name="title">
+                     <string>Fractal center mode settings</string>
+                    </property>
+                    <layout class="QGridLayout" name="gridLayout_fractal_center">
+                     <property name="spacing">
+                      <number>2</number>
+                     </property>
+                     <item row="0" column="0" rowspan="3">
+                      <widget class="QLabel" name="label_fractal_center_offset">
+                       <property name="text">
+                        <string>Offset:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="1">
+                      <widget class="QLabel" name="label_fractal_center_offset_x">
+                       <property name="text">
+                        <string>x:</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="2">
+                      <widget class="MyLineEdit" name="vect3_fake_lights_fractal_center_offset_x"/>
+                     </item>
+                     <item row="1" column="1">
+                      <widget class="QLabel" name="label_fractal_center_offset_y">
+                       <property name="text">
+                        <string>y:</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="1" column="2">
+                      <widget class="MyLineEdit" name="vect3_fake_lights_fractal_center_offset_y"/>
+                     </item>
+                     <item row="2" column="1">
+                      <widget class="QLabel" name="label_fractal_center_offset_z">
+                       <property name="text">
+                        <string>z:</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="2" column="2">
+                      <widget class="MyLineEdit" name="vect3_fake_lights_fractal_center_offset_z"/>
+                     </item>
+                     <item row="3" column="0">
+                      <widget class="QLabel" name="label_fractal_center_scale">
+                       <property name="text">
+                        <string>Scale:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="3" column="1" colspan="2">
+                      <widget class="MyLineEdit" name="logedit_fake_lights_fractal_center_scale"/>
+                     </item>
+                     <item row="4" column="0" rowspan="3">
+                      <widget class="QLabel" name="label_fractal_center_rotation">
+                       <property name="text">
+                        <string>Rotation:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="4" column="1">
+                      <widget class="QLabel" name="label_fractal_center_rotation_x">
+                       <property name="text">
+                        <string>x:</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="4" column="2">
+                      <widget class="MyDoubleSpinBox" name="spinboxd3_fake_lights_fractal_center_rotation_x">
+                       <property name="decimals">
+                        <number>2</number>
+                       </property>
+                       <property name="minimum">
+                        <double>-36000.000000000000000</double>
+                       </property>
+                       <property name="maximum">
+                        <double>36000.000000000000000</double>
+                       </property>
+                       <property name="singleStep">
+                        <double>0.100000000000000</double>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="5" column="1">
+                      <widget class="QLabel" name="label_fractal_center_rotation_y">
+                       <property name="text">
+                        <string>y:</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="5" column="2">
+                      <widget class="MyDoubleSpinBox" name="spinboxd3_fake_lights_fractal_center_rotation_y">
+                       <property name="decimals">
+                        <number>2</number>
+                       </property>
+                       <property name="minimum">
+                        <double>-36000.000000000000000</double>
+                       </property>
+                       <property name="maximum">
+                        <double>36000.000000000000000</double>
+                       </property>
+                       <property name="singleStep">
+                        <double>0.100000000000000</double>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="6" column="1">
+                      <widget class="QLabel" name="label_fractal_center_rotation_z">
+                       <property name="text">
+                        <string>z:</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="6" column="2">
+                      <widget class="MyDoubleSpinBox" name="spinboxd3_fake_lights_fractal_center_rotation_z">
+                       <property name="decimals">
+                        <number>2</number>
+                       </property>
+                       <property name="minimum">
+                        <double>-36000.000000000000000</double>
+                       </property>
+                       <property name="maximum">
+                        <double>36000.000000000000000</double>
+                       </property>
+                       <property name="singleStep">
+                        <double>0.100000000000000</double>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </widget>
+              </item>
+              <item row="18" column="0" colspan="3">
+               <widget class="QGroupBox" name="groupBox_fake_lights_shape_modifiers">
+                <property name="title">
+                 <string>Shape Modifiers</string>
+                </property>
+                <layout class="QGridLayout" name="gridLayout_shape_modifiers">
+                 <property name="spacing">
+                  <number>2</number>
+                 </property>
+                 <item row="0" column="0">
+                  <widget class="QLabel" name="label_shape_twist">
+                   <property name="text">
+                    <string>Twist:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="1">
+                  <widget class="MyDoubleSpinBox" name="spinbox_fake_lights_shape_twist">
+                   <property name="decimals">
+                    <number>3</number>
+                   </property>
+                   <property name="minimum">
+                    <double>-1000.000000000000000</double>
+                   </property>
+                   <property name="maximum">
+                    <double>1000.000000000000000</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.010000000000000</double>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="0">
+                  <widget class="QLabel" name="label_shape_bend">
+                   <property name="text">
+                    <string>Bend:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="1">
+                  <widget class="MyDoubleSpinBox" name="spinbox_fake_lights_shape_bend">
+                   <property name="decimals">
+                    <number>3</number>
+                   </property>
+                   <property name="minimum">
+                    <double>-1000.000000000000000</double>
+                   </property>
+                   <property name="maximum">
+                    <double>1000.000000000000000</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.010000000000000</double>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="0">
+                  <widget class="QLabel" name="label_shape_taper">
+                   <property name="text">
+                    <string>Taper:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="1">
+                  <widget class="MyDoubleSpinBox" name="spinbox_fake_lights_shape_taper">
+                   <property name="decimals">
+                    <number>3</number>
+                   </property>
+                   <property name="minimum">
+                    <double>-1000.000000000000000</double>
+                   </property>
+                   <property name="maximum">
+                    <double>1000.000000000000000</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.010000000000000</double>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="3" column="0">
+                  <widget class="QLabel" name="label_shape_fold_symmetry">
+                   <property name="text">
+                    <string>Fold symmetry:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="3" column="1">
+                  <widget class="MySpinBox" name="spinboxInt_fake_lights_shape_fold_symmetry">
+                   <property name="minimum">
+                    <number>0</number>
+                   </property>
+                   <property name="maximum">
+                    <number>16</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="4" column="0">
+                  <widget class="QLabel" name="label_shape_repeat_x">
+                   <property name="text">
+                    <string>Repeat X:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="4" column="1">
+                  <widget class="MyDoubleSpinBox" name="spinbox_fake_lights_shape_repeat_x">
+                   <property name="decimals">
+                    <number>3</number>
+                   </property>
+                   <property name="minimum">
+                    <double>0.000000000000000</double>
+                   </property>
+                   <property name="maximum">
+                    <double>1000.000000000000000</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.010000000000000</double>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="5" column="0">
+                  <widget class="QLabel" name="label_shape_repeat_y">
+                   <property name="text">
+                    <string>Repeat Y:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="5" column="1">
+                  <widget class="MyDoubleSpinBox" name="spinbox_fake_lights_shape_repeat_y">
+                   <property name="decimals">
+                    <number>3</number>
+                   </property>
+                   <property name="minimum">
+                    <double>0.000000000000000</double>
+                   </property>
+                   <property name="maximum">
+                    <double>1000.000000000000000</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.010000000000000</double>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="6" column="0">
+                  <widget class="QLabel" name="label_shape_repeat_z">
+                   <property name="text">
+                    <string>Repeat Z:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="6" column="1">
+                  <widget class="MyDoubleSpinBox" name="spinbox_fake_lights_shape_repeat_z">
+                   <property name="decimals">
+                    <number>3</number>
+                   </property>
+                   <property name="minimum">
+                    <double>0.000000000000000</double>
+                   </property>
+                   <property name="maximum">
+                    <double>1000.000000000000000</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.010000000000000</double>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="7" column="0">
+                  <widget class="QLabel" name="label_shape_wobble_amp">
+                   <property name="text">
+                    <string>Wobble Amp:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="7" column="1">
+                  <widget class="MyDoubleSpinBox" name="spinbox_fake_lights_shape_wobble_amplitude">
+                   <property name="decimals">
+                    <number>3</number>
+                   </property>
+                   <property name="minimum">
+                    <double>0.000000000000000</double>
+                   </property>
+                   <property name="maximum">
+                    <double>1000.000000000000000</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.010000000000000</double>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="8" column="0">
+                  <widget class="QLabel" name="label_shape_wobble_freq">
+                   <property name="text">
+                    <string>Wobble Freq:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="8" column="1">
+                  <widget class="MyDoubleSpinBox" name="spinbox_fake_lights_shape_wobble_frequency">
+                   <property name="decimals">
+                    <number>3</number>
+                   </property>
+                   <property name="minimum">
+                    <double>0.000000000000000</double>
+                   </property>
+                   <property name="maximum">
+                    <double>1000.000000000000000</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.010000000000000</double>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="9" column="0">
+                  <widget class="QLabel" name="label_shape_chamfer">
+                   <property name="text">
+                    <string>Chamfer:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="9" column="1">
+                  <widget class="MyDoubleSpinBox" name="spinbox_fake_lights_shape_chamfer">
+                   <property name="decimals">
+                    <number>3</number>
+                   </property>
+                   <property name="minimum">
+                    <double>0.000000000000000</double>
+                   </property>
+                   <property name="maximum">
+                    <double>1000.000000000000000</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.010000000000000</double>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="10" column="0">
+                  <widget class="QLabel" name="label_onion_thickness">
+                   <property name="text">
+                    <string>Onion Thick:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="10" column="1">
+                  <widget class="MyDoubleSpinBox" name="spinbox_fake_lights_onion_thickness">
+                   <property name="decimals">
+                    <number>3</number>
+                   </property>
+                   <property name="minimum">
+                    <double>0.000000000000000</double>
+                   </property>
+                   <property name="maximum">
+                    <double>1000.000000000000000</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.010000000000000</double>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="11" column="0">
+                  <widget class="QLabel" name="label_shape_param1">
+                   <property name="text">
+                    <string>Shape Detail:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="11" column="1">
+                  <widget class="MyDoubleSpinBox" name="spinbox_fake_lights_shape_param1">
+                   <property name="decimals">
+                    <number>3</number>
+                   </property>
+                   <property name="minimum">
+                    <double>0.000000000000000</double>
+                   </property>
+                   <property name="maximum">
+                    <double>1000.000000000000000</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.010000000000000</double>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="12" column="0">
+                  <widget class="QLabel" name="label_shape_param2">
+                   <property name="text">
+                    <string>Shape Ratio:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="12" column="1">
+                  <widget class="MyDoubleSpinBox" name="spinbox_fake_lights_shape_param2">
+                   <property name="decimals">
+                    <number>3</number>
+                   </property>
+                   <property name="minimum">
+                    <double>0.000000000000000</double>
+                   </property>
+                   <property name="maximum">
+                    <double>1000.000000000000000</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.010000000000000</double>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="13" column="0">
+                  <widget class="QLabel" name="label_radial_repeat_count">
+                   <property name="text">
+                    <string>Radial Count:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="13" column="1">
+                  <widget class="MySpinBox" name="spinbox_fake_lights_radial_repeat_count">
+                   <property name="minimum">
+                    <number>0</number>
+                   </property>
+                   <property name="maximum">
+                    <number>100</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="14" column="0">
+                  <widget class="QLabel" name="label_radial_repeat_radius">
+                   <property name="text">
+                    <string>Radial Radius:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="14" column="1">
+                  <widget class="MyDoubleSpinBox" name="spinbox_fake_lights_radial_repeat_radius">
+                   <property name="decimals">
+                    <number>3</number>
+                   </property>
+                   <property name="minimum">
+                    <double>0.000000000000000</double>
+                   </property>
+                   <property name="maximum">
+                    <double>1000.000000000000000</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.010000000000000</double>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="15" column="0">
+                  <widget class="QLabel" name="label_blend_shape">
+                   <property name="text">
+                    <string>Blend Shape:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="15" column="1">
+                  <widget class="MySpinBox" name="spinbox_fake_lights_blend_shape">
+                   <property name="minimum">
+                    <number>0</number>
+                   </property>
+                   <property name="maximum">
+                    <number>25</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="16" column="0">
+                  <widget class="QLabel" name="label_blend_amount">
+                   <property name="text">
+                    <string>Blend Amount:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="16" column="1">
+                  <widget class="MyDoubleSpinBox" name="spinbox_fake_lights_blend_amount">
+                   <property name="decimals">
+                    <number>3</number>
+                   </property>
+                   <property name="minimum">
+                    <double>0.000000000000000</double>
+                   </property>
+                   <property name="maximum">
+                    <double>1.000000000000000</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.010000000000000</double>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
               </item>
              </layout>
             </widget>
@@ -5195,10 +6403,10 @@ of lights:</string>
                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the radius (spread) of the HDR Blur bloom.&lt;/p&gt;&lt;p&gt;The blur size is relative to image dimensions. Approximate pixel radius = radius × (image width + image height) × 0.001.&lt;/p&gt;&lt;p&gt;Larger values give a wider, softer glow; smaller values keep highlights tight. Bigger radius increases processing time. Works with Intensity to control strength.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                   </property>
                   <property name="prefix">
-                   <string/>
+                   <string></string>
                   </property>
                   <property name="suffix">
-                   <string/>
+                   <string></string>
                   </property>
                   <property name="decimals">
                    <number>3</number>
@@ -5243,10 +6451,10 @@ of lights:</string>
                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Copilot said: &lt;/p&gt;&lt;p&gt;Controls the strength/threshold of the HDR Blur &lt;/p&gt;&lt;p&gt;Controls the strength/threshold of the HDR Blur contribution.&lt;/p&gt;&lt;p&gt;Lower values produce a stronger, brighter bloom; higher values dampen the effect. Works together with Radius (spread) but does not change blur size.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                   </property>
                   <property name="prefix">
-                   <string/>
+                   <string></string>
                   </property>
                   <property name="suffix">
-                   <string/>
+                   <string></string>
                   </property>
                   <property name="decimals">
                    <number>4</number>
@@ -5321,10 +6529,10 @@ of lights:</string>
                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Controls the strength of RGB channel separation (color fringing) in Chromatic Aberration.&lt;/p&gt;&lt;p&gt;Higher values increase the offset between color channels and widen the visible fringes, especially toward the image edges. Lower values keep the effect subtle. Works together with Radius (spread) and does not change direction (use Reverse to flip).&lt;/p&gt;&lt;p&gt;Notes: - Stronger intensity can increase processing time. - Post-processing only; does not affect lighting or geometry.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                   </property>
                   <property name="prefix">
-                   <string/>
+                   <string></string>
                   </property>
                   <property name="suffix">
-                   <string/>
+                   <string></string>
                   </property>
                   <property name="decimals">
                    <number>3</number>
@@ -5355,10 +6563,10 @@ of lights:</string>
                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the base radius (spread) of Chromatic Aberration.&lt;/p&gt;&lt;p&gt;The effective spread is relative to image size and grows with distance from the image center, producing wider color fringing toward the edges. Increase for more pronounced, wider separation; decrease to keep fringes tight.&lt;/p&gt;&lt;p&gt;Notes: - Works with Aberration intensity (strength); does not change direction (see Reverse). - Larger values increase processing time.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                   </property>
                   <property name="prefix">
-                   <string/>
+                   <string></string>
                   </property>
                   <property name="suffix">
-                   <string/>
+                   <string></string>
                   </property>
                   <property name="decimals">
                    <number>3</number>
@@ -5552,6 +6760,6 @@ of lights:</string>
   <tabstop>vect3_fake_lights_orbit_trap_z</tabstop>
   <tabstop>scrollArea_8</tabstop>
  </tabstops>
- <resources/>
- <connections/>
+ <resources></resources>
+ <connections></connections>
 </ui>

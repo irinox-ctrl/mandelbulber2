@@ -68,6 +68,9 @@ cDockEffects::~cDockEffects()
 
 void cDockEffects::ConnectSignals() const
 {
+	connect(ui->comboBox_fake_lights_position_mode, SIGNAL(currentIndexChanged(int)),
+		ui->stackedWidget_fake_lights_mode, SLOT(setCurrentIndex(int)));
+
 	connect(ui->button_calculateFog, SIGNAL(clicked()), this, SLOT(slotPressedButtonAutoFog()));
 
 	connect(ui->comboBox_ambient_occlusion_mode, SIGNAL(currentIndexChanged(int)), this,

@@ -8,7 +8,7 @@
  * Mandelbulber is free software:     §R.ß~-Q/M=,=5"v"]=Qf,'§"M= =,M.§ Rz]M"Kw
  * you can redistribute it and/or     §w "xDY.J ' -"m=====WeC=\ ""%""y=%"]"" §
  * modify it under the terms of the    "§M=M =D=4"N #"%==A%p M§ M6  R' #"=~.4M
- * GNU General Public License as        §W =, ][T"]C  §  § '§ e===~ U  !§[Z ]N
+ * GNU General Public License as        §W =, ][T"]C  §  § '§ e===~ U  ![Z ]N
  * published by the                    4M",,Jm=,"=e~  §  §  j]]""N  BmM"py=ßM
  * Free Software Foundation,          ]§ T,M=& 'YmMMpM9MMM%=w=,,=MT]M m§;'§,
  * either version 3 of the License,    TWw [.j"5=~N[=§%=%W,T ]R,"=="Y[LFT ]N
@@ -64,8 +64,45 @@ typedef enum
 	fakeLightsShapeCircle = 2,
 	fakeLightsShapeSquare = 3,
 	fakeLightsShapeSphere = 4,
-	fakeLightsShapeCube = 5
+	fakeLightsShapeCube = 5,
+	fakeLightsShapeTorus = 6,
+	fakeLightsShapeTriangle = 7,
+	fakeLightsShapeHexagon = 8,
+	fakeLightsShapeStar = 9,
+	fakeLightsShapeCross = 10,
+	fakeLightsShapeCapsule = 11,
+	fakeLightsShapeCone = 12,
+	fakeLightsShapePyramid = 13,
+	fakeLightsShapeTetrahedron = 14,
+	fakeLightsShapeOctahedron = 15,
+	fakeLightsShapeDodecahedron = 16,
+	fakeLightsShapeIcosahedron = 17,
+	fakeLightsShapeMengerSponge = 18,
+	fakeLightsShapeSierpinskiTetrahedron = 19,
+	fakeLightsShapeKochSnowflake = 20,
+	fakeLightsShapeHexGrid = 21,
+	fakeLightsShapeSpiral = 22,
+	fakeLightsShapeGrid = 23,
+	fakeLightsShapeBuckyball = 24,
+	fakeLightsShapeApollonian = 25
 } enumFakeLightsShapeCl;
+
+typedef enum
+{
+	fakeLightsPositionWorld = 0,
+	fakeLightsPositionCamera = 1,
+	fakeLightsPositionTarget = 2,
+	fakeLightsPositionFractalCenter = 3
+} enumFakeLightsPositionModeCl;
+
+typedef struct
+{
+	cl_float3 offset;     // 16 bytes
+	cl_float scale;       // 4 bytes
+	cl_float pad0[3];     // 12 bytes (align mRot to 16)
+	matrix33 mRot;        // 48 bytes (precomputed rotation matrix)
+	cl_float pad1[4];     // 16 bytes (pad struct to 96 bytes, multiple of 16)
+} sFakeLightsModeParamsCl;
 
 typedef struct
 {
@@ -89,6 +126,15 @@ typedef struct
 
 	cl_int fakeLightsOrbitTrapShape;
 
+	// V2: Positioning mode (grouped with cl_int fields for alignment)
+	cl_int fakeLightsPositionMode;
+
+	// Polar / Radial repeat modifier
+	cl_int fakeLightsRadialRepeatCount;
+
+	// Smooth shape blending
+	cl_int fakeLightsBlendShape;
+
 	cl_float fakeLightsOrbitTrapSize;
 	cl_float fakeLightsThickness;
 	cl_float linearDEOffset;
@@ -102,6 +148,34 @@ typedef struct
 	matrix33 mRotFakeLightsRotation;
 
 	sFractalFoldingsCl foldings;
+
+	// V2: Per-mode fine-tuning parameters
+	sFakeLightsModeParamsCl fakeLightsModes[4];
+
+	// V2: Universal shape modifiers (applied to all orbit trap shapes)
+	cl_float fakeLightsShapeTwist;
+	cl_float fakeLightsShapeBend;
+	cl_float fakeLightsShapeTaper;
+	cl_int fakeLightsShapeFoldSymmetry;
+	cl_float fakeLightsShapeRepeatX;
+	cl_float fakeLightsShapeRepeatY;
+	cl_float fakeLightsShapeRepeatZ;
+	cl_float fakeLightsShapeWobbleAmplitude;
+	cl_float fakeLightsShapeWobbleFrequency;
+	cl_float fakeLightsShapeChamfer;
+
+	// Onion / Hollow-shell modifier
+	cl_float fakeLightsOnionThickness;
+
+	// Per-shape proportion parameters
+	cl_float fakeLightsShapeParam1;
+	cl_float fakeLightsShapeParam2;
+
+	// Polar / Radial repeat modifier
+	cl_float fakeLightsRadialRepeatRadius;
+
+	// Smooth shape blending
+	cl_float fakeLightsBlendAmount;
 } sCommonParamsCl;
 
 #ifndef OPENCL_KERNEL_CODE
@@ -138,6 +212,35 @@ inline sCommonParamsCl clCopySCommonParamsCl(const sCommonParams &source)
 	target.mRotFractalRotation = toClMatrix33(source.mRotFractalRotation);
 	target.mRotFakeLightsRotation = toClMatrix33(source.mRotFakeLightsRotation);
 	target.foldings = clCopySFractalFoldingsCl(source.foldings);
+	target.fakeLightsPositionMode = source.fakeLightsPositionMode;
+
+	for (int i = 0; i < 4; i++)
+	{
+		target.fakeLightsModes[i].offset = toClFloat3(source.fakeLightsModes[i].offset);
+		target.fakeLightsModes[i].scale = source.fakeLightsModes[i].scale;
+		CRotationMatrix rot;
+		rot.SetRotation2(source.fakeLightsModes[i].rotation * M_PI / 180.0f);
+		target.fakeLightsModes[i].mRot = toClMatrix33(rot);
+	}
+
+	target.fakeLightsShapeTwist = source.fakeLightsShapeTwist;
+	target.fakeLightsShapeBend = source.fakeLightsShapeBend;
+	target.fakeLightsShapeTaper = source.fakeLightsShapeTaper;
+	target.fakeLightsShapeFoldSymmetry = source.fakeLightsShapeFoldSymmetry;
+	target.fakeLightsShapeRepeatX = source.fakeLightsShapeRepeatX;
+	target.fakeLightsShapeRepeatY = source.fakeLightsShapeRepeatY;
+	target.fakeLightsShapeRepeatZ = source.fakeLightsShapeRepeatZ;
+	target.fakeLightsShapeWobbleAmplitude = source.fakeLightsShapeWobbleAmplitude;
+	target.fakeLightsShapeWobbleFrequency = source.fakeLightsShapeWobbleFrequency;
+	target.fakeLightsShapeChamfer = source.fakeLightsShapeChamfer;
+	target.fakeLightsOnionThickness = source.fakeLightsOnionThickness;
+	target.fakeLightsShapeParam1 = source.fakeLightsShapeParam1;
+	target.fakeLightsShapeParam2 = source.fakeLightsShapeParam2;
+	target.fakeLightsRadialRepeatCount = source.fakeLightsRadialRepeatCount;
+	target.fakeLightsRadialRepeatRadius = source.fakeLightsRadialRepeatRadius;
+	target.fakeLightsBlendShape = source.fakeLightsBlendShape;
+	target.fakeLightsBlendAmount = source.fakeLightsBlendAmount;
+
 	return target;
 }
 #endif /* OPENCL_KERNEL_CODE */

@@ -66,11 +66,11 @@ sParamRender::sParamRender(const std::shared_ptr<cParameterContainer> container,
 	background_color3 = toRGBFloat(container->Get<sRGB>("background_color", 3));
 	background_brightness = container->Get<double>("background_brightness");
 	background_gamma = container->Get<double>("background_gamma");
+	background_saturation = container->Get<double>("background_saturation");
 	backgroundHScale = container->Get<double>("background_h_scale");
 	backgroundVScale = container->Get<double>("background_v_scale");
 	backgroundTextureOffsetX = container->Get<double>("background_texture_offset_x");
 	backgroundTextureOffsetY = container->Get<double>("background_texture_offset_y");
-	backgroundVScale = container->Get<double>("background_v_scale");
 	backgroundRotation = container->Get<CVector3>("background_rotation");
 	booleanOperatorsEnabled = container->Get<bool>("boolean_operators");
 	camera = container->Get<CVector3>("camera");
@@ -125,6 +125,8 @@ sParamRender::sParamRender(const std::shared_ptr<cParameterContainer> container,
 	DOFMonteCarloCADispersionGain = container->Get<float>("DOF_MC_CA_dispersion_gain");
 	DOFMonteCarloCACameraDispersion = container->Get<float>("DOF_MC_CA_camera_dispersion");
 	envMappingEnable = container->Get<bool>("env_mapping_enable");
+	backgroundAsEnvmap = container->Get<bool>("background_as_envmap");
+	backgroundAsLightmap = container->Get<bool>("background_as_lightmap");
 	fakeLightsColor = toRGBFloat(container->Get<sRGB>("fake_lights_color"));
 	fakeLightsColor2 = toRGBFloat(container->Get<sRGB>("fake_lights_color_2"));
 	fakeLightsColor3 = toRGBFloat(container->Get<sRGB>("fake_lights_color_3"));
@@ -151,8 +153,16 @@ sParamRender::sParamRender(const std::shared_ptr<cParameterContainer> container,
 	imageAdjustments.brightness = container->Get<float>("brightness");
 	imageAdjustments.contrast = container->Get<float>("contrast");
 	imageAdjustments.hdrEnabled = container->Get<bool>("hdr");
+	imageAdjustments.toneMappingMode = container->Get<int>("tone_mapping_mode");
+	imageAdjustments.toneExposure = container->Get<float>("tone_exposure");
 	imageAdjustments.imageGamma = container->Get<float>("gamma");
 	imageAdjustments.saturation = container->Get<float>("saturation");
+	imageAdjustments.colorTemperature = container->Get<float>("color_temperature");
+	imageAdjustments.blackPoint = container->Get<float>("image_black_point");
+	imageAdjustments.whitePoint = container->Get<float>("image_white_point");
+	imageAdjustments.vignetteIntensity = container->Get<float>("vignette_intensity");
+	imageAdjustments.vignetteRadius = container->Get<float>("vignette_radius");
+	imageAdjustments.sharpenIntensity = container->Get<float>("sharpen_intensity");
 	imageHeight = container->Get<int>("image_height");
 	imageWidth = container->Get<int>("image_width");
 	interiorMode = container->Get<bool>("interior_mode");
@@ -303,11 +313,22 @@ sParamRender::sParamRender(const std::shared_ptr<cParameterContainer> container,
 	common.fakeLightsColor3Enabled = container->Get<bool>("fake_lights_color_3_enabled");
 	common.fakeLightsMaxIter = container->Get<int>("fake_lights_max_iter");
 	common.fakeLightsMinIter = container->Get<int>("fake_lights_min_iter");
+	common.fakeLightsCenterIteration = container->Get<int>("fake_lights_center_iteration");
 	common.fakeLightsOrbitTrap = container->Get<CVector3>("fake_lights_orbit_trap");
+	common.fakeLightsMultiCenterEnabled = container->Get<bool>("fake_lights_multi_center_enabled");
+	for (int mc = 0; mc < 4; mc++)
+	{
+		common.fakeLightsMultiCenter[mc] =
+			container->Get<CVector3>(QString("fake_lights_multi_center_%1").arg(mc + 1));
+		common.fakeLightsMultiCenterWeight[mc] =
+			container->Get<double>(QString("fake_lights_multi_center_weight_%1").arg(mc + 1));
+	}
 	common.fakeLightsOrbitTrapShape =
 		params::enumFakeLightsShape(container->Get<int>("fake_lights_orbit_trap_shape"));
 	common.fakeLightsOrbitTrapSize = container->Get<double>("fake_lights_orbit_trap_size");
 	common.fakeLightsThickness = container->Get<double>("fake_lights_thickness");
+	common.fakeLightsDecayFunction =
+		params::enumFakeLightsDecay(container->Get<int>("fake_lights_decay_function"));
 	common.fakeLightsRelativeCenter = container->Get<bool>("fake_lights_relative_center");
 	common.fakeLightsRotation = container->Get<CVector3>("fake_lights_orbit_rotation");
 	common.foldings.boxEnable = container->Get<bool>("box_folding");
@@ -324,6 +345,88 @@ sParamRender::sParamRender(const std::shared_ptr<cParameterContainer> container,
 	common.linearDEOffset = container->Get<double>("linear_DE_offset");
 
 	common.mRotFakeLightsRotation.SetRotation2(common.fakeLightsRotation * M_PI / 180.0);
+
+	// V2: Position mode and per-mode parameters
+	common.fakeLightsPositionMode =
+		params::enumFakeLightsPositionMode(container->Get<int>("fake_lights_position_mode"));
+
+	// Mode 0: World
+	common.fakeLightsModes[0].offset = container->Get<CVector3>("fake_lights_world_offset");
+	common.fakeLightsModes[0].scale = container->Get<double>("fake_lights_world_scale");
+	common.fakeLightsModes[0].rotation = container->Get<CVector3>("fake_lights_world_rotation");
+
+	// Mode 1: Camera
+	common.fakeLightsModes[1].offset = container->Get<CVector3>("fake_lights_camera_offset");
+	common.fakeLightsModes[1].scale = container->Get<double>("fake_lights_camera_scale");
+	common.fakeLightsModes[1].rotation = container->Get<CVector3>("fake_lights_camera_rotation");
+
+	// Mode 2: Target
+	common.fakeLightsModes[2].offset = container->Get<CVector3>("fake_lights_target_offset");
+	common.fakeLightsModes[2].scale = container->Get<double>("fake_lights_target_scale");
+	common.fakeLightsModes[2].rotation = container->Get<CVector3>("fake_lights_target_rotation");
+
+	// Mode 3: FractalCenter
+	common.fakeLightsModes[3].offset = container->Get<CVector3>("fake_lights_fractal_center_offset");
+	common.fakeLightsModes[3].scale = container->Get<double>("fake_lights_fractal_center_scale");
+	common.fakeLightsModes[3].rotation = container->Get<CVector3>("fake_lights_fractal_center_rotation");
+
+	// Mode 4: Path Circle
+	common.fakeLightsModes[4].offset = container->Get<CVector3>("fake_lights_path_circle_offset");
+	common.fakeLightsModes[4].scale = container->Get<double>("fake_lights_path_circle_scale");
+	common.fakeLightsModes[4].rotation = container->Get<CVector3>("fake_lights_path_circle_rotation");
+	common.fakeLightsModes[4].pathRadius = container->Get<double>("fake_lights_path_circle_path_radius");
+
+	// Mode 5: Path Spiral
+	common.fakeLightsModes[5].offset = container->Get<CVector3>("fake_lights_path_spiral_offset");
+	common.fakeLightsModes[5].scale = container->Get<double>("fake_lights_path_spiral_scale");
+	common.fakeLightsModes[5].rotation = container->Get<CVector3>("fake_lights_path_spiral_rotation");
+	common.fakeLightsModes[5].pathRadius = container->Get<double>("fake_lights_path_spiral_path_radius");
+
+	// Mode 6: Orbit Around Target
+	common.fakeLightsModes[6].offset = container->Get<CVector3>("fake_lights_orbit_target_offset");
+	common.fakeLightsModes[6].scale = container->Get<double>("fake_lights_orbit_target_scale");
+	common.fakeLightsModes[6].rotation = container->Get<CVector3>("fake_lights_orbit_target_rotation");
+	common.fakeLightsModes[6].pathRadius = container->Get<double>("fake_lights_orbit_target_path_radius");
+
+	// V2: Shape modifiers
+	common.fakeLightsShapeTwist = container->Get<double>("fake_lights_shape_twist");
+	common.fakeLightsShapeBend = container->Get<double>("fake_lights_shape_bend");
+	common.fakeLightsShapeTaper = container->Get<double>("fake_lights_shape_taper");
+	common.fakeLightsShapeFoldSymmetry = container->Get<int>("fake_lights_shape_fold_symmetry");
+	common.fakeLightsShapeRepeatX = container->Get<double>("fake_lights_shape_repeat_x");
+	common.fakeLightsShapeRepeatY = container->Get<double>("fake_lights_shape_repeat_y");
+	common.fakeLightsShapeRepeatZ = container->Get<double>("fake_lights_shape_repeat_z");
+	common.fakeLightsShapeWobbleAmplitude = container->Get<double>("fake_lights_shape_wobble_amplitude");
+	common.fakeLightsShapeWobbleFrequency = container->Get<double>("fake_lights_shape_wobble_frequency");
+	common.fakeLightsShapeChamfer = container->Get<double>("fake_lights_shape_chamfer");
+	common.fakeLightsShapeScaleX = container->Get<double>("fake_lights_shape_scale_x");
+	common.fakeLightsShapeScaleY = container->Get<double>("fake_lights_shape_scale_y");
+	common.fakeLightsShapeScaleZ = container->Get<double>("fake_lights_shape_scale_z");
+	common.fakeLightsShapeMirrorX = container->Get<bool>("fake_lights_shape_mirror_x");
+	common.fakeLightsShapeMirrorY = container->Get<bool>("fake_lights_shape_mirror_y");
+	common.fakeLightsShapeMirrorZ = container->Get<bool>("fake_lights_shape_mirror_z");
+	common.fakeLightsShapeInflate = container->Get<double>("fake_lights_shape_inflate");
+	common.fakeLightsShapeLineLength = container->Get<double>("fake_lights_shape_line_length");
+	common.fakeLightsShapeTubeRadius = container->Get<double>("fake_lights_shape_tube_radius");
+	common.fakeLightsShapeLineThickness = container->Get<double>("fake_lights_shape_line_thickness");
+	common.fakeLightsShapeFalloff = container->Get<double>("fake_lights_shape_falloff");
+	common.fakeLightsShapeMaskRadius = container->Get<double>("fake_lights_shape_mask_radius");
+	common.fakeLightsShapeMaskSoftness = container->Get<double>("fake_lights_shape_mask_softness");
+	common.fakeLightsShapeSpiral = container->Get<double>("fake_lights_shape_spiral");
+	common.fakeLightsShapeWaveX = container->Get<double>("fake_lights_shape_wave_x");
+	common.fakeLightsShapeWaveY = container->Get<double>("fake_lights_shape_wave_y");
+	common.fakeLightsShapeWaveZ = container->Get<double>("fake_lights_shape_wave_z");
+	common.fakeLightsShapeWaveFrequency = container->Get<double>("fake_lights_shape_wave_frequency");
+	common.fakeLightsTransitionSpeed = container->Get<double>("fake_lights_transition_speed");
+
+	// Single Trap Light v1 (separate system)
+	singleTrapLight0.enabled = container->Get<bool>("single_trap_light_0_enabled");
+	singleTrapLight0.center = container->Get<CVector3>("single_trap_light_0_center");
+	singleTrapLight0.rotation = container->Get<CVector3>("single_trap_light_0_rotation");
+	singleTrapLight0.size = container->Get<double>("single_trap_light_0_size");
+	singleTrapLight0.radius = container->Get<double>("single_trap_light_0_radius");
+	singleTrapLight0.color = container->Get<sRGB>("single_trap_light_0_color");
+	singleTrapLight0.intensity = container->Get<double>("single_trap_light_0_intensity");
 
 	// formula = Get<int>("tile_number");
 }

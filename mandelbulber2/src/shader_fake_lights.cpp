@@ -46,21 +46,30 @@ sRGBAFloat cRenderWorker::FakeLights(
 
 	// V2: Create a mutable copy of common params for position calculation
 	sCommonParams commonWithPosition = params->common;
-	
+
 	// V2: Calculate orbit trap position based on positioning mode
-	// Mode 0=World (use as-is), 3=FractalCenter (handled in compute_fractal)
-	// Modes 1=Camera, 2=Target are handled here
-	if (params->common.fakeLightsPositionMode == params::fakeLightsPositionCamera)
+	int posMode = params->common.fakeLightsPositionMode;
+	const sFakeLightsModeParams &mode = params->common.fakeLightsModes[posMode];
+	CRotationMatrix modeRot;
+	modeRot.SetRotation2(mode.rotation * M_PI / 180.0);
+	CVector3 transformedTrap =
+		mode.offset + modeRot.RotateVector(params->common.fakeLightsOrbitTrap * mode.scale);
+
+	// Mode 0=World, 1=Camera, 2=Target, 3=FractalCenter
+	if (posMode == params::fakeLightsPositionCamera)
 	{
-		// Camera relative: orbit trap follows camera position
-		commonWithPosition.fakeLightsOrbitTrap = params->camera + params->common.fakeLightsOrbitTrap;
+		commonWithPosition.fakeLightsOrbitTrap = params->camera + transformedTrap;
 	}
-	else if (params->common.fakeLightsPositionMode == params::fakeLightsPositionTarget)
+	else if (posMode == params::fakeLightsPositionTarget)
 	{
-		// Target relative: orbit trap follows target point
-		commonWithPosition.fakeLightsOrbitTrap = params->target + params->common.fakeLightsOrbitTrap;
+		commonWithPosition.fakeLightsOrbitTrap = params->target + transformedTrap;
 	}
-	// Note: SurfaceFollow (4) would require additional implementation
+	else
+	{
+		// World and FractalCenter: transformedTrap is the orbit trap position
+		// FractalCenter z-adjustment is handled in compute_fractal.cpp
+		commonWithPosition.fakeLightsOrbitTrap = transformedTrap;
+	}
 
 	for (int fakeLightLoop = 0; fakeLightLoop < fakeLightMaxLoop; fakeLightLoop++)
 	{

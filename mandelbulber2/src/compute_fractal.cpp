@@ -391,10 +391,13 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 
 			else if (Mode == calcModeOrbitTrap)
 			{
-				double distance = (in.common->fakeLightsRelativeCenter)
-														? OrbitTrapShapeDistance(z - aux.const_c, in.common)
-														: OrbitTrapShapeDistance(z, in.common);
-
+				// V2: Positioning mode (FractalCenter handled here, Camera/Target in shader)
+				CVector4 zAdj = z;
+				if (in.common->fakeLightsPositionMode == params::fakeLightsPositionFractalCenter)
+				{
+					zAdj = z - aux.const_c;
+				}
+				double distance = OrbitTrapShapeDistance(zAdj, in.common);
 				if (i >= fakeLightsMinIter && i <= fakeLightsMaxIter)
 					orbitTrapTotal += (1.0 / (distance * distance));
 				if (distance > fractals.GetBailout(sequence))

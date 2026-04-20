@@ -45,6 +45,7 @@
 #include "objects_tree.h"
 #include "primitives.h"
 #include "projection_3d.hpp"
+#include "single_trap_light.hpp"
 
 // forward declarations
 class cObjectData;
@@ -124,6 +125,8 @@ struct sParamRender
 	bool DOFMonteCarloGlobalIllumination;
 	bool DOFMonteCarloChromaticAberration;
 	bool envMappingEnable;
+	bool backgroundAsEnvmap;
+	bool backgroundAsLightmap;
 	bool fakeLightsEnabled;
 	bool fogEnabled;
 	bool fogCastShadows;
@@ -188,6 +191,7 @@ struct sParamRender
 	double ambientOcclusionFastTune;
 	double background_brightness;
 	double background_gamma;
+	double background_saturation;
 	double backgroundHScale;
 	double backgroundVScale;
 	double backgroundTextureOffsetX;
@@ -292,6 +296,9 @@ struct sParamRender
 	cPrimitives primitives;
 
 	sCommonParams common;
+
+	// Single Trap Light v1 (separate system)
+	sSingleTrapLight singleTrapLight0;
 };
 
 #endif /* MANDELBULBER2_SRC_FRACTPARAMS_HPP_ */

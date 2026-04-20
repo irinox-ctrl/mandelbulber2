@@ -654,6 +654,7 @@ void cOpenClEngineRenderFractal::SetParametersForShaders(
 	if (paramRender->fakeLightsEnabled == true)
 	{
 		definesCollector += " -DFAKE_LIGHTS";
+		definesCollector += " -DFAKE_LIGHTS_V2_MODIFIERS";
 		anyVolumetricShaderUsed = true;
 		switch (paramRender->common.fakeLightsOrbitTrapShape)
 		{
@@ -663,7 +664,35 @@ void cOpenClEngineRenderFractal::SetParametersForShaders(
 			case params::fakeLightsShapeSquare: definesCollector += " -DFAKE_LIGHTS_SQUARE"; break;
 			case params::fakeLightsShapeSphere: definesCollector += " -DFAKE_LIGHTS_SPHERE"; break;
 			case params::fakeLightsShapeCube: definesCollector += " -DFAKE_LIGHTS_CUBE"; break;
+			case params::fakeLightsShapeTorus: definesCollector += " -DFAKE_LIGHTS_TORUS"; break;
+			case params::fakeLightsShapeTriangle: definesCollector += " -DFAKE_LIGHTS_TRIANGLE"; break;
+			case params::fakeLightsShapeHexagon: definesCollector += " -DFAKE_LIGHTS_HEXAGON"; break;
+			case params::fakeLightsShapeStar: definesCollector += " -DFAKE_LIGHTS_STAR"; break;
+			case params::fakeLightsShapeCross: definesCollector += " -DFAKE_LIGHTS_CROSS"; break;
+			case params::fakeLightsShapeCapsule: definesCollector += " -DFAKE_LIGHTS_CAPSULE"; break;
+			case params::fakeLightsShapeCone: definesCollector += " -DFAKE_LIGHTS_CONE"; break;
+			case params::fakeLightsShapePyramid: definesCollector += " -DFAKE_LIGHTS_PYRAMID"; break;
+			case params::fakeLightsShapeTetrahedron: definesCollector += " -DFAKE_LIGHTS_TETRAHEDRON"; break;
+			case params::fakeLightsShapeOctahedron: definesCollector += " -DFAKE_LIGHTS_OCTAHEDRON"; break;
+			case params::fakeLightsShapeDodecahedron: definesCollector += " -DFAKE_LIGHTS_DODECAHEDRON"; break;
+			case params::fakeLightsShapeIcosahedron: definesCollector += " -DFAKE_LIGHTS_ICOSAHEDRON"; break;
+			case params::fakeLightsShapeMengerSponge: definesCollector += " -DFAKE_LIGHTS_MENGER_SPONGE"; break;
+			case params::fakeLightsShapeSierpinskiTetrahedron: definesCollector += " -DFAKE_LIGHTS_SIERPINSKI_TETRAHEDRON"; break;
+			case params::fakeLightsShapeKochSnowflake: definesCollector += " -DFAKE_LIGHTS_KOCH_SNOWFLAKE"; break;
+			case params::fakeLightsShapeHexGrid: definesCollector += " -DFAKE_LIGHTS_HEX_GRID"; break;
+			case params::fakeLightsShapeSpiral: definesCollector += " -DFAKE_LIGHTS_SPIRAL"; break;
+			case params::fakeLightsShapeGrid: definesCollector += " -DFAKE_LIGHTS_GRID"; break;
+			case params::fakeLightsShapeBuckyball: definesCollector += " -DFAKE_LIGHTS_BUCKYBALL"; break;
+			case params::fakeLightsShapeApollonian: definesCollector += " -DFAKE_LIGHTS_APOLLONIAN"; break;
 			default: definesCollector += " -DFAKE_LIGHTS_POINT"; break;
+		}
+		// V2: Position mode compile-time define (bypasses struct layout mismatch on GPU)
+		switch (paramRender->common.fakeLightsPositionMode)
+		{
+			case params::fakeLightsPositionCamera: definesCollector += " -DFAKE_LIGHTS_POSITION_CAMERA"; break;
+			case params::fakeLightsPositionTarget: definesCollector += " -DFAKE_LIGHTS_POSITION_TARGET"; break;
+			case params::fakeLightsPositionFractalCenter: definesCollector += " -DFAKE_LIGHTS_POSITION_FRACTAL_CENTER"; break;
+			default: break; // World mode = no define
 		}
 	}
 
