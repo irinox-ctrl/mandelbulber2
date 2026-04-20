@@ -142,7 +142,7 @@ sRGBAFloat cRenderWorker::ObjectShader(const sShaderInputData &_input, sRGBAFloa
 	// fake orbit trap lights
 	sRGBAFloat fakeLights(0.0, 0.0, 0.0, 0.0);
 	sRGBAFloat fakeLightsSpecular(0.0, 0.0, 0.0, 0.0);
-	if (params->fakeLightsEnabled)
+	if (params->fakeLightsEnabled && !params->singleTrapLight0.enabled)
 	{
 		fakeLights = FakeLights(input, colour, &fakeLightsSpecular);
 	}
