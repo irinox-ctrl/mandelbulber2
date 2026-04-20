@@ -35,6 +35,7 @@
 #include "fractparams.hpp"
 #include "material.h"
 #include "render_worker.hpp"
+#include "single_trap_light_shader.hpp"
 
 sRGBAFloat cRenderWorker::ObjectShader(const sShaderInputData &_input, sRGBAFloat *surfaceColour,
 	sRGBAFloat *specularOut, sRGBFloat *iridescenceOut, sRGBAFloat *outShadow,
@@ -146,6 +147,9 @@ sRGBAFloat cRenderWorker::ObjectShader(const sShaderInputData &_input, sRGBAFloa
 		fakeLights = FakeLights(input, colour, &fakeLightsSpecular);
 	}
 
+	// Single Trap Light v1 (apart systeem - additief, geen materiaal-modulatie)
+	sRGBFloat singleTrap = SingleTrapLightEvaluate(input.point, params->singleTrapLight0);
+
 	// luminosity
 	sRGBAFloat luminosity;
 	if (mat->useColorsFromPalette && mat->luminosityGradientEnable)
@@ -216,6 +220,11 @@ sRGBAFloat cRenderWorker::ObjectShader(const sShaderInputData &_input, sRGBAFloa
 	output.R += luminosity.R;
 	output.G += luminosity.G;
 	output.B += luminosity.B;
+
+	// Additive contribution from Single Trap Light (no material modulation)
+	output.R += singleTrap.R;
+	output.G += singleTrap.G;
+	output.B += singleTrap.B;
 
 	output.A = alpha;
 
