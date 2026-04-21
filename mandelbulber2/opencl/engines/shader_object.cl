@@ -123,9 +123,15 @@ float3 ObjectShader(__constant sClInConstants *consts, sRenderData *renderData,
 	float3 fakeLights = 0.0f;
 	float3 fakeLightsSpecular = 0.0f;
 #ifdef FAKE_LIGHTS
-	fakeLights =
-		FakeLightsShader(consts, input, calcParam, surfaceColor, gradients, &fakeLightsSpecular);
+	if (consts->params.singleTrapLight0.enabled == 0)
+	{
+		fakeLights =
+			FakeLightsShader(consts, input, calcParam, surfaceColor, gradients, &fakeLightsSpecular);
+	}
 #endif
+
+	// Single Trap Light v1 (apart systeem - additief, geen materiaal-modulatie)
+	float3 singleTrap = SingleTrapLightShaderGPU(consts, input->point);
 
 	float3 iridescence = 1.0f;
 #ifdef USE_IRIDESCENCE
@@ -185,7 +191,7 @@ float3 ObjectShader(__constant sClInConstants *consts, sRenderData *renderData,
 	*outLuminosityEmissive = luminosity * input->material->luminosityEmissive;
 
 	color = surfaceColor * (fillLight + auxLights + fakeLights + AO) + envMapping + totalSpecular
-					+ luminosity;
+					+ luminosity + singleTrap;
 	*outSpecular = totalSpecular;
 
 	*outSurfaceColor = surfaceColor;
