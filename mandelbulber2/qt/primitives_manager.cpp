@@ -34,6 +34,7 @@
 
 #include "primitives_manager.h"
 
+#include <QComboBox>
 #include <QInputDialog>
 #include "src/error_message.hpp"
 #include "src/my_ui_loader.h"
@@ -179,6 +180,28 @@ void cPrimitivesManager::AddPrimitive(bool init, const sPrimitiveItem &primitive
 			int firstDash = widgetName.indexOf('_');
 			QString newName = widgetName.insert(firstDash + 1, primitiveFullName + "_");
 			widget->setObjectName(newName);
+		}
+
+		// Connect pivot preset combo box (use activated to avoid triggering during init)
+		QComboBox *pivotPresetCombo =
+			newEditor->findChild<QComboBox *>(QString("comboBox_%1_pivot_preset").arg(primitiveFullName));
+		if (pivotPresetCombo)
+		{
+			connect(pivotPresetCombo, QOverload<int>::of(&QComboBox::activated),
+				this, &cPrimitivesManager::slotPivotPresetChanged);
+			pivotPresetCombo->setToolTip(
+				QObject::tr("Pivot only affects rotation. Set rotation to see the effect."));
+		}
+
+		// Connect cloner enabled checkbox to enable/disable cloner controls
+		MyCheckBox *clonerEnabledCheckBox =
+			newEditor->findChild<MyCheckBox *>(QString("checkBox_%1_cloner_enabled").arg(primitiveFullName));
+		if (clonerEnabledCheckBox)
+		{
+			connect(clonerEnabledCheckBox, &MyCheckBox::stateChanged,
+				this, &cPrimitivesManager::slotClonerEnabledChanged);
+			// Set initial state
+			slotClonerEnabledChanged(clonerEnabledCheckBox->isChecked() ? Qt::Checked : Qt::Unchecked);
 		}
 	}
 
@@ -456,6 +479,113 @@ void cPrimitivesManager::slotButtonAlignRotation()
 	}
 }
 
+void cPrimitivesManager::slotPivotPresetChanged(int index)
+{
+	if (index == 0) return; // Custom: do nothing
+
+	QComboBox *combo = qobject_cast<QComboBox *>(sender());
+	if (!combo) return;
+
+	QString comboName = combo->objectName();
+	QString prefix = "comboBox_";
+	QString suffix = "_pivot_preset";
+	if (!comboName.startsWith(prefix) || !comboName.endsWith(suffix)) return;
+
+	QString primitiveFullName =
+		comboName.mid(prefix.length(), comboName.length() - prefix.length() - suffix.length());
+
+	fractal::enumObjectType objectType = fractal::objNone;
+	for (const sPrimitiveItem &item : primitiveItemOnTab)
+	{
+		if (item.fullName == primitiveFullName)
+		{
+			objectType = item.type;
+			break;
+		}
+	}
+	if (objectType == fractal::objNone) return;
+
+	// Read primitive-specific size / bounds
+	CVector3 size(0.0, 0.0, 0.0);
+	switch (objectType)
+	{
+		case fractal::objBox:
+		case fractal::objEllipsoid:
+		{
+			size = params->Get<CVector3>(primitiveFullName + "_size");
+			break;
+		}
+		case fractal::objSphere:
+		case fractal::objCircle:
+		{
+			double r = params->Get<double>(primitiveFullName + "_radius");
+			size = CVector3(r, r, r);
+			break;
+		}
+		case fractal::objCylinder:
+		case fractal::objCone:
+		{
+			double r = params->Get<double>(primitiveFullName + "_radius");
+			double h = params->Get<double>(primitiveFullName + "_height");
+			size = CVector3(r, h, r);
+			break;
+		}
+		case fractal::objRectangle:
+		{
+			double w = params->Get<double>(primitiveFullName + "_width");
+			double h = params->Get<double>(primitiveFullName + "_height");
+			size = CVector3(w, h, 0.0);
+			break;
+		}
+		case fractal::objTorus:
+		{
+			double r = params->Get<double>(primitiveFullName + "_radius");
+			double tr = params->Get<double>(primitiveFullName + "_tube_radius");
+			size = CVector3(r, tr * 2.0, r);
+			break;
+		}
+		case fractal::objPrism:
+		{
+			double h = params->Get<double>(primitiveFullName + "_height");
+			double th = params->Get<double>(primitiveFullName + "_trangle_height");
+			size = CVector3(th, h, th);
+			break;
+		}
+		case fractal::objWater:
+		{
+			double l = params->Get<double>(primitiveFullName + "_length");
+			size = CVector3(l, l, 0.0);
+			break;
+		}
+		case fractal::objPlane:
+		default:
+			return;
+	}
+
+	// Apply primitive scale
+	CVector3 primScale = params->Get<CVector3>(primitiveFullName + "_prim_scale");
+	size.x *= primScale.x;
+	size.y *= primScale.y;
+	size.z *= primScale.z;
+
+	CVector3 pivot(0.0, 0.0, 0.0);
+	switch (index)
+	{
+		case 1: pivot = CVector3(0.0, 0.0, 0.0); break;                    // Center
+		case 2: pivot = CVector3(0.0, -size.y * 0.5, 0.0); break;          // Bottom
+		case 3: pivot = CVector3(0.0, size.y * 0.5, 0.0); break;           // Top
+		case 4: pivot = CVector3(0.0, 0.0, -size.z * 0.5); break;          // Front
+		case 5: pivot = CVector3(0.0, 0.0, size.z * 0.5); break;           // Back
+		case 6: pivot = CVector3(-size.x * 0.5, 0.0, 0.0); break;          // Left
+		case 7: pivot = CVector3(size.x * 0.5, 0.0, 0.0); break;           // Right
+	}
+
+	params->Set(primitiveFullName + "_pivot", pivot);
+
+	// Update pivot vector widgets in the UI
+	SynchronizeInterfaceWindow(ui->tabWidget_primitives, params, qInterface::write);
+}
+
 void cPrimitivesManager::slotButtonEnableAll()
 {
 	QList<sPrimitiveItem> listOfFoundPrimitives = cPrimitives::GetListOfPrimitives(params);
@@ -524,6 +654,45 @@ void cPrimitivesManager::slotContextMenu(const QPoint &screenPoint, int tabIndex
 				ui->tabWidget_primitives->setTabText(tabIndex, newName);
 				emit signalUpdatePrimitivesCombos();
 			}
+		}
+	}
+}
+
+void cPrimitivesManager::slotClonerEnabledChanged(int state)
+{
+	MyCheckBox *checkBox = qobject_cast<MyCheckBox *>(sender());
+	if (!checkBox) return;
+
+	QString checkBoxName = checkBox->objectName();
+	QString prefix = "checkBox_";
+	QString suffix = "_cloner_enabled";
+	if (!checkBoxName.startsWith(prefix) || !checkBoxName.endsWith(suffix)) return;
+
+	QString primitiveFullName =
+		checkBoxName.mid(prefix.length(), checkBoxName.length() - prefix.length() - suffix.length());
+
+	// Find the parent tab widget for this primitive
+	QWidget *primitiveTab = nullptr;
+	for (int i = 0; i < ui->tabWidget_primitives->count(); i++)
+	{
+		QWidget *tab = ui->tabWidget_primitives->widget(i);
+		QCheckBox *enabledCheck = tab->findChild<QCheckBox *>(checkBoxName);
+		if (enabledCheck)
+		{
+			primitiveTab = tab;
+			break;
+		}
+	}
+	if (!primitiveTab) return;
+
+	bool enabled = (state == Qt::Checked);
+	QList<QWidget *> widgets = primitiveTab->findChildren<QWidget *>();
+	for (QWidget *widget : widgets)
+	{
+		QString name = widget->objectName();
+		if (name.contains("_cloner_") && name != checkBoxName)
+		{
+			widget->setEnabled(enabled);
 		}
 	}
 }

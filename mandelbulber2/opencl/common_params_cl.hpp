@@ -1,14 +1,14 @@
 /**
  * Mandelbulber v2, a 3D fractal generator       ,=#MKNmMMKmmßMNWy,
  *                                             ,B" ]L,,p%%%,,,§;, "K
- * Copyright (C) 2017-24 Mandelbulber Team     §R-==%w["'~5]m%=L.=~5N
+ * Copyright (C) 2017-26 Mandelbulber Team     §R-==%w["'~5]m%=L.=~5N
  *                                        ,=mm=§M ]=4 yJKA"/-Nsaj  "Bw,==,,
  * This file is part of Mandelbulber.    §R.r= jw",M  Km .mM  FW ",§=ß., ,TN
  *                                     ,4R =%["w[N=7]J '"5=],""]]M,w,-; T=]M
  * Mandelbulber is free software:     §R.ß~-Q/M=,=5"v"]=Qf,'§"M= =,M.§ Rz]M"Kw
  * you can redistribute it and/or     §w "xDY.J ' -"m=====WeC=\ ""%""y=%"]"" §
  * modify it under the terms of the    "§M=M =D=4"N #"%==A%p M§ M6  R' #"=~.4M
- * GNU General Public License as        §W =, ][T"]C  §  § '§ e===~ U  ![Z ]N
+ * GNU General Public License as        §W =, ][T"]C  §  § '§ e===~ U  !§[Z ]N
  * published by the                    4M",,Jm=,"=e~  §  §  j]]""N  BmM"py=ßM
  * Free Software Foundation,          ]§ T,M=& 'YmMMpM9MMM%=w=,,=MT]M m§;'§,
  * either version 3 of the License,    TWw [.j"5=~N[=§%=%W,T ]R,"=="Y[LFT ]N
@@ -57,6 +57,9 @@
 #include "src/image_adjustments.h"
 #endif /* OPENCL_KERNEL_CODE */
 
+// NOTE: This enum is manually maintained to match src/common_params.hpp
+// Shape values 0-105 correspond to the CPU enum
+// This compact subset covers the core shapes used by OpenCL kernels
 typedef enum
 {
 	fakeLightsShapePoint = 0,
@@ -65,43 +68,137 @@ typedef enum
 	fakeLightsShapeSquare = 3,
 	fakeLightsShapeSphere = 4,
 	fakeLightsShapeCube = 5,
-	fakeLightsShapeTorus = 6,
-	fakeLightsShapeTriangle = 7,
-	fakeLightsShapeHexagon = 8,
-	fakeLightsShapeStar = 9,
-	fakeLightsShapeCross = 10,
-	fakeLightsShapeCapsule = 11,
-	fakeLightsShapeCone = 12,
-	fakeLightsShapePyramid = 13,
-	fakeLightsShapeTetrahedron = 14,
-	fakeLightsShapeOctahedron = 15,
-	fakeLightsShapeDodecahedron = 16,
-	fakeLightsShapeIcosahedron = 17,
-	fakeLightsShapeMengerSponge = 18,
-	fakeLightsShapeSierpinskiTetrahedron = 19,
-	fakeLightsShapeKochSnowflake = 20,
-	fakeLightsShapeHexGrid = 21,
-	fakeLightsShapeSpiral = 22,
-	fakeLightsShapeGrid = 23,
-	fakeLightsShapeBuckyball = 24,
-	fakeLightsShapeApollonian = 25
+	fakeLightsShapeTriangle = 6,
+	fakeLightsShapeHexagon = 7,
+	fakeLightsShapeTorus = 8,
+	fakeLightsShapeCylinder = 9,
+	fakeLightsShapeCone = 10,
+	fakeLightsShapePyramid = 11,
+	fakeLightsShapeOctahedron = 12,
+	fakeLightsShapeEllipse = 13,
+	fakeLightsShapeRectangle = 14,
+	fakeLightsShapeCross = 15,
+	fakeLightsShapeStar = 16,
+	fakeLightsShapeDiamond = 17,
+	fakeLightsShapeRing = 18,
+	fakeLightsShapeCapsule = 19,
+	fakeLightsShapePrism = 20,
+	fakeLightsShapeTorusKnot = 21,
+	fakeLightsShapeBoxFrame = 22,
+	fakeLightsShapeConeInfinite = 23,
+	fakeLightsShapeCylinderCap = 24,
+	fakeLightsShapeSuperellipsoid = 25,
+	fakeLightsShapePlane = 26,
+	fakeLightsShapeDisc = 27,
+	fakeLightsShapeGear = 28,
+	fakeLightsShapeSpiral = 29,
+	fakeLightsShapeHeart = 30,
+	fakeLightsShapeCrescent = 31,
+	fakeLightsShapeArrow = 32,
+	fakeLightsShapeRoundedBox = 33,
+	fakeLightsShapeStadium = 34,
+	fakeLightsShapePolygon5 = 35,
+	fakeLightsShapePolygon8 = 36,
+	fakeLightsShapeTrefoilKnot = 37,
+	fakeLightsShapeFigureEight = 38,
+	fakeLightsShapeMobiusStrip = 39,
+	fakeLightsShapeTorusSector = 40,
+	fakeLightsShapeHelix = 41,
+	fakeLightsShapeConeRounded = 42,
+	fakeLightsShapeCylinderHollow = 43,
+	fakeLightsShapeSphereHollow = 44,
+	fakeLightsShapeTorusTwist = 45,
+	fakeLightsShapeGrid = 46,
+	fakeLightsShapeLattice = 47,
+	fakeLightsShapeSponge = 48,
+	fakeLightsShapeTree = 49,
+	fakeLightsShapeKnot34 = 50,
+	fakeLightsShapeSpiral3D = 51,
+	fakeLightsShapeNoise = 52,
+	fakeLightsShapeVoronoi = 53,
+	fakeLightsShapeMandelbrot2D = 54,
+	fakeLightsShapeJulia2D = 55,
+	fakeLightsShapeSierpinski = 56,
+	fakeLightsShapeKoch = 57,
+	fakeLightsShapeDragon = 58,
+	fakeLightsShapeHilbert = 59,
+	fakeLightsShapeGyroid = 60,
+	fakeLightsShapeSchwarzP = 61,
+	fakeLightsShapeSchwarzD = 62,
+	fakeLightsShapeNeovius = 63,
+	fakeLightsShapeLabyrinth = 64,
+	fakeLightsShapeFiber = 65,
+	fakeLightsShapeAstroid = 66,
+	fakeLightsShapeDeltoid = 67,
+	fakeLightsShapeLemniscate = 68,
+	fakeLightsShapeLimacon = 69,
+	fakeLightsShapeSphericalHarmonics = 70,
+	fakeLightsShapeSuperformula = 71,
+	fakeLightsShapeFern = 72,
+	fakeLightsShapeShell = 73,
+	fakeLightsShapeCoral = 74,
+	fakeLightsShapeCrystal = 75,
+	fakeLightsShapeHoneycomb = 76,
+	fakeLightsShapeChain = 77,
+	fakeLightsShapeWoven = 78,
+	fakeLightsShapeNet = 79,
+	fakeLightsShapeCoil = 80,
+	fakeLightsShapeVortex = 81,
+	fakeLightsShapeRipple = 82,
+	fakeLightsShapeShockwave = 83,
+	fakeLightsShapeOrbital = 84,
+	fakeLightsShapeNebula = 85,
+	fakeLightsShapeJulia3D = 86,
+	fakeLightsShapeMandelbrot3D = 87,
+	fakeLightsShapeBurningShip = 88,
+	fakeLightsShapeTricorn = 89,
+	fakeLightsShapeMultibrot = 90,
+	fakeLightsShapePhoenix = 91,
+	fakeLightsShapeNewton = 92,
+	fakeLightsShapeNova = 93,
+	fakeLightsShapeSpider = 94,
+	fakeLightsShapeDendrite = 95,
+	fakeLightsShapeLorenz = 96,
+	fakeLightsShapeRossler = 97,
+	fakeLightsShapePolyfold = 98,
+	fakeLightsShapeApollonian = 99,
+	fakeLightsShapeKleinian = 100,
+	fakeLightsShapeFibonacci = 101,
+	fakeLightsShapeCeltic = 102,
+	fakeLightsShapeCrown = 103,
+	fakeLightsShapeCactus = 104,
+	fakeLightsShapeSiegelDisk = 105
 } enumFakeLightsShapeCl;
+
+typedef enum
+{
+	fakeLightsDecay1R2 = 0,
+	fakeLightsDecay1R = 1,
+	fakeLightsDecay1R3 = 2,
+	fakeLightsDecayLinear = 3,
+	fakeLightsDecayExp = 4
+} enumFakeLightsDecayCl;
 
 typedef enum
 {
 	fakeLightsPositionWorld = 0,
 	fakeLightsPositionCamera = 1,
 	fakeLightsPositionTarget = 2,
-	fakeLightsPositionFractalCenter = 3
+	fakeLightsPositionFractalCenter = 3,
+	fakeLightsPositionPathCircle = 4,
+	fakeLightsPositionPathSpiral = 5,
+	fakeLightsPositionOrbitTarget = 6
 } enumFakeLightsPositionModeCl;
 
 typedef struct
 {
 	cl_float3 offset;     // 16 bytes
 	cl_float scale;       // 4 bytes
-	cl_float pad0[3];     // 12 bytes (align mRot to 16)
+	cl_float pathRadius;  // 4 bytes
+	cl_float pad0[2];     // 8 bytes (align mRot to 16)
 	matrix33 mRot;        // 48 bytes (precomputed rotation matrix)
-	cl_float pad1[4];     // 16 bytes (pad struct to 96 bytes, multiple of 16)
+	cl_float3 rotation;   // 16 bytes
+	cl_float pad1[4];     // 16 bytes (pad struct to 112, multiple of 16)
 } sFakeLightsModeParamsCl;
 
 typedef struct
@@ -123,21 +220,13 @@ typedef struct
 
 	cl_int fakeLightsMaxIter;
 	cl_int fakeLightsMinIter;
-
+	cl_int fakeLightsCenterIteration;
 	cl_int fakeLightsOrbitTrapShape;
-
-	// V2: Positioning mode (grouped with cl_int fields for alignment)
-	cl_int fakeLightsPositionMode;
-
-	// Polar / Radial repeat modifier
-	cl_int fakeLightsRadialRepeatCount;
-
-	// Smooth shape blending
-	cl_int fakeLightsBlendShape;
 
 	cl_float fakeLightsOrbitTrapSize;
 	cl_float fakeLightsThickness;
 	cl_float linearDEOffset;
+	cl_int fakeLightsDecayFunction;
 
 	cl_float3 fakeLightsOrbitTrap;
 	cl_float3 fakeLightsRotation;
@@ -148,34 +237,62 @@ typedef struct
 	matrix33 mRotFakeLightsRotation;
 
 	sFractalFoldingsCl foldings;
+	cl_float pad_foldings[2]; // 8 bytes padding to align next 16-byte field
 
-	// V2: Per-mode fine-tuning parameters
-	sFakeLightsModeParamsCl fakeLightsModes[4];
+	cl_int fakeLightsMultiCenterEnabled;
+	cl_float pad_mc[3];
+	cl_float3 fakeLightsMultiCenter[4];
+	cl_float fakeLightsMultiCenterWeight[4];
+
+	cl_int fakeLightsPositionMode;
+	cl_float pad_pm[3];
+
+	// V2: Per-mode fine-tuning parameters (7 modes: 0-6)
+	sFakeLightsModeParamsCl fakeLightsModes[7];
 
 	// V2: Universal shape modifiers (applied to all orbit trap shapes)
 	cl_float fakeLightsShapeTwist;
 	cl_float fakeLightsShapeBend;
 	cl_float fakeLightsShapeTaper;
 	cl_int fakeLightsShapeFoldSymmetry;
+
+	// V2: Additional modifiers
 	cl_float fakeLightsShapeRepeatX;
 	cl_float fakeLightsShapeRepeatY;
 	cl_float fakeLightsShapeRepeatZ;
 	cl_float fakeLightsShapeWobbleAmplitude;
 	cl_float fakeLightsShapeWobbleFrequency;
 	cl_float fakeLightsShapeChamfer;
+	cl_float pad1[2]; // padding to 16 bytes
 
-	// Onion / Hollow-shell modifier
-	cl_float fakeLightsOnionThickness;
+	// V2: Shape transforms
+	cl_float fakeLightsShapeScaleX;
+	cl_float fakeLightsShapeScaleY;
+	cl_float fakeLightsShapeScaleZ;
+	cl_int fakeLightsShapeMirrorX;
+	cl_int fakeLightsShapeMirrorY;
+	cl_int fakeLightsShapeMirrorZ;
+	cl_float fakeLightsShapeInflate;
 
-	// Per-shape proportion parameters
-	cl_float fakeLightsShapeParam1;
-	cl_float fakeLightsShapeParam2;
+	cl_float fakeLightsShapeLineLength;
+	cl_float fakeLightsShapeTubeRadius;
+	cl_float fakeLightsShapeLineThickness;
+	cl_float fakeLightsShapeFalloff;
 
-	// Polar / Radial repeat modifier
-	cl_float fakeLightsRadialRepeatRadius;
+	cl_float fakeLightsShapeMaskRadius;
+	cl_float fakeLightsShapeMaskSoftness;
+	cl_float fakeLightsShapeSpiral;
+	cl_float fakeLightsShapeWaveX;
 
-	// Smooth shape blending
-	cl_float fakeLightsBlendAmount;
+	cl_float fakeLightsShapeWaveY;
+	cl_float fakeLightsShapeWaveZ;
+	cl_float fakeLightsShapeWaveFrequency;
+	cl_float fakeLightsTransitionSpeed;
+
+	cl_int fakeLightsTransitionSourceMode;
+	cl_float fakeLightsTransitionBlend;
+	cl_int fakeLightsOrbitTrapPreTransformed;
+	cl_float pad_trans[1];
 } sCommonParamsCl;
 
 #ifndef OPENCL_KERNEL_CODE
@@ -193,17 +310,19 @@ inline sFractalFoldingsCl clCopySFractalFoldingsCl(const sFractalFoldings &sourc
 
 inline sCommonParamsCl clCopySCommonParamsCl(const sCommonParams &source)
 {
-	sCommonParamsCl target;
+	sCommonParamsCl target = {}; // zero-initialize padding fields
 	target.iterThreshMode = source.iterThreshMode;
 	target.fakeLightsRelativeCenter = source.fakeLightsRelativeCenter;
 	target.fakeLightsColor2Enabled = source.fakeLightsColor2Enabled;
 	target.fakeLightsColor3Enabled = source.fakeLightsColor3Enabled;
 	target.fakeLightsMaxIter = source.fakeLightsMaxIter;
 	target.fakeLightsMinIter = source.fakeLightsMinIter;
+	target.fakeLightsCenterIteration = source.fakeLightsCenterIteration;
 	target.fakeLightsOrbitTrapShape = source.fakeLightsOrbitTrapShape;
 	target.fakeLightsOrbitTrapSize = source.fakeLightsOrbitTrapSize;
 	target.fakeLightsThickness = source.fakeLightsThickness;
 	target.linearDEOffset = source.linearDEOffset;
+	target.fakeLightsDecayFunction = source.fakeLightsDecayFunction;
 	target.fakeLightsOrbitTrap = toClFloat3(source.fakeLightsOrbitTrap);
 	target.fakeLightsRotation = toClFloat3(source.fakeLightsRotation);
 	target.fractalPosition = toClFloat3(source.fractalPosition);
@@ -212,34 +331,62 @@ inline sCommonParamsCl clCopySCommonParamsCl(const sCommonParams &source)
 	target.mRotFractalRotation = toClMatrix33(source.mRotFractalRotation);
 	target.mRotFakeLightsRotation = toClMatrix33(source.mRotFakeLightsRotation);
 	target.foldings = clCopySFractalFoldingsCl(source.foldings);
+
+	target.fakeLightsMultiCenterEnabled = source.fakeLightsMultiCenterEnabled;
+	for (int i = 0; i < 4; i++)
+	{
+		target.fakeLightsMultiCenter[i] = toClFloat3(source.fakeLightsMultiCenter[i]);
+		target.fakeLightsMultiCenterWeight[i] = source.fakeLightsMultiCenterWeight[i];
+	}
+
 	target.fakeLightsPositionMode = source.fakeLightsPositionMode;
 
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 7; i++)
 	{
 		target.fakeLightsModes[i].offset = toClFloat3(source.fakeLightsModes[i].offset);
 		target.fakeLightsModes[i].scale = source.fakeLightsModes[i].scale;
+		target.fakeLightsModes[i].pathRadius = source.fakeLightsModes[i].pathRadius;
 		CRotationMatrix rot;
 		rot.SetRotation2(source.fakeLightsModes[i].rotation * M_PI / 180.0f);
 		target.fakeLightsModes[i].mRot = toClMatrix33(rot);
+		target.fakeLightsModes[i].rotation = toClFloat3(source.fakeLightsModes[i].rotation);
 	}
 
 	target.fakeLightsShapeTwist = source.fakeLightsShapeTwist;
 	target.fakeLightsShapeBend = source.fakeLightsShapeBend;
 	target.fakeLightsShapeTaper = source.fakeLightsShapeTaper;
 	target.fakeLightsShapeFoldSymmetry = source.fakeLightsShapeFoldSymmetry;
+
 	target.fakeLightsShapeRepeatX = source.fakeLightsShapeRepeatX;
 	target.fakeLightsShapeRepeatY = source.fakeLightsShapeRepeatY;
 	target.fakeLightsShapeRepeatZ = source.fakeLightsShapeRepeatZ;
 	target.fakeLightsShapeWobbleAmplitude = source.fakeLightsShapeWobbleAmplitude;
 	target.fakeLightsShapeWobbleFrequency = source.fakeLightsShapeWobbleFrequency;
 	target.fakeLightsShapeChamfer = source.fakeLightsShapeChamfer;
-	target.fakeLightsOnionThickness = source.fakeLightsOnionThickness;
-	target.fakeLightsShapeParam1 = source.fakeLightsShapeParam1;
-	target.fakeLightsShapeParam2 = source.fakeLightsShapeParam2;
-	target.fakeLightsRadialRepeatCount = source.fakeLightsRadialRepeatCount;
-	target.fakeLightsRadialRepeatRadius = source.fakeLightsRadialRepeatRadius;
-	target.fakeLightsBlendShape = source.fakeLightsBlendShape;
-	target.fakeLightsBlendAmount = source.fakeLightsBlendAmount;
+
+	target.fakeLightsShapeScaleX = source.fakeLightsShapeScaleX;
+	target.fakeLightsShapeScaleY = source.fakeLightsShapeScaleY;
+	target.fakeLightsShapeScaleZ = source.fakeLightsShapeScaleZ;
+	target.fakeLightsShapeMirrorX = source.fakeLightsShapeMirrorX;
+	target.fakeLightsShapeMirrorY = source.fakeLightsShapeMirrorY;
+	target.fakeLightsShapeMirrorZ = source.fakeLightsShapeMirrorZ;
+	target.fakeLightsShapeInflate = source.fakeLightsShapeInflate;
+	target.fakeLightsShapeLineLength = source.fakeLightsShapeLineLength;
+	target.fakeLightsShapeTubeRadius = source.fakeLightsShapeTubeRadius;
+	target.fakeLightsShapeLineThickness = source.fakeLightsShapeLineThickness;
+	target.fakeLightsShapeFalloff = source.fakeLightsShapeFalloff;
+	target.fakeLightsShapeMaskRadius = source.fakeLightsShapeMaskRadius;
+	target.fakeLightsShapeMaskSoftness = source.fakeLightsShapeMaskSoftness;
+
+	target.fakeLightsShapeSpiral = source.fakeLightsShapeSpiral;
+	target.fakeLightsShapeWaveX = source.fakeLightsShapeWaveX;
+	target.fakeLightsShapeWaveY = source.fakeLightsShapeWaveY;
+	target.fakeLightsShapeWaveZ = source.fakeLightsShapeWaveZ;
+	target.fakeLightsShapeWaveFrequency = source.fakeLightsShapeWaveFrequency;
+	target.fakeLightsTransitionSpeed = source.fakeLightsTransitionSpeed;
+	target.fakeLightsTransitionSourceMode = source.fakeLightsTransitionSourceMode;
+	target.fakeLightsTransitionBlend = source.fakeLightsTransitionBlend;
+	target.fakeLightsOrbitTrapPreTransformed = source.fakeLightsOrbitTrapPreTransformed ? 1 : 0;
 
 	return target;
 }

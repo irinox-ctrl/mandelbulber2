@@ -73,6 +73,8 @@ typedef struct
 	float distance;
 	float colorIndex;
 	float orbitTrapR;
+	int orbitTrapMinIter;
+	int orbitTrapCenterIndex;
 	int objectId;
 	bool maxiter;
 } formulaOut;
@@ -141,10 +143,15 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 	formulaOut out;
 	out.maxiter = true;
 	out.orbitTrapR = 0.0f;
+	out.orbitTrapCenterIndex = 0;
 	out.colorIndex = 0.0f;
 
 	float colorMin = 1000.0;
 	float orbitTrapTotal = 0.0f;
+	int orbitTrapMinIter = 0;
+	float orbitTrapMinDist = 1e30f;
+	float4 autoTrapCenter = (float4)(0.0f, 0.0f, 0.0f, 0.0f);
+	bool autoTrapCenterSet = false;
 
 	int fractalIndex = 0;
 	if (forcedFormulaIndex >= 0) fractalIndex = forcedFormulaIndex;
@@ -434,37 +441,100 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 				}
 			}
 #ifdef FAKE_LIGHTS
-			else if (mode == calcModeOrbitTrap)
+			// Auto-center: capture z at specified iteration
+			if (mode == calcModeOrbitTrap && !autoTrapCenterSet
+				&& consts->params.common.fakeLightsCenterIteration > 0
+				&& i == consts->params.common.fakeLightsCenterIteration)
 			{
-				// V2: Positioning mode (FractalCenter handled here, Camera/Target applied to orbitTrapPos)
-				float3 orbitTrapPos = consts->params.common.fakeLightsOrbitTrap;
-				int posMode = consts->params.common.fakeLightsPositionMode;
-				sFakeLightsModeParamsCl modeParams = consts->params.common.fakeLightsModes[posMode];
-				float3 modeRotated = Matrix33MulFloat3(modeParams.mRot, consts->params.common.fakeLightsOrbitTrap * modeParams.scale);
-				orbitTrapPos = modeParams.offset + modeRotated;
+				autoTrapCenter = z;
+				autoTrapCenterSet = true;
+			}
 
-				if (posMode == fakeLightsPositionCamera)
+			if (mode == calcModeOrbitTrap)
+			{
+				float4 trapPoint;
+				if (autoTrapCenterSet)
 				{
-					orbitTrapPos = consts->params.camera + orbitTrapPos;
+					trapPoint = z - autoTrapCenter;
 				}
-				else if (posMode == fakeLightsPositionTarget)
+				else if (consts->params.common.fakeLightsRelativeCenter)
 				{
-					orbitTrapPos = consts->params.target + orbitTrapPos;
+					trapPoint = z - aux.const_c;
 				}
+				else
+				{
+					trapPoint = z;
+				}
+						float distance;
+						int minCenterIndex = 0;
+				if (consts->params.common.fakeLightsMultiCenterEnabled)
+				{
+					// Multi-center: evaluate distance to all 4 trap positions, take weighted minimum
+					distance = 1e30f;
+					for (int mc = 0; mc < 4; mc++)
+					{
+						if (consts->params.common.fakeLightsMultiCenterWeight[mc] <= 0.0f) continue;
 
-				float4 zAdj = z;
-				if (posMode == fakeLightsPositionFractalCenter)
-				{
-					zAdj = z - aux.const_c;
-				}
+						// OrbitTrapShapeDistance calculates: delta = z - par->fakeLightsOrbitTrap
+						// We want: delta = trapPoint - multiCenter[mc]
+						// So: pass (trapPoint - multiCenter[mc] + par->fakeLightsOrbitTrap) as input
+						float4 shiftedPoint = trapPoint
+							- (float4)(consts->params.common.fakeLightsMultiCenter[mc].x,
+							           consts->params.common.fakeLightsMultiCenter[mc].y,
+							           consts->params.common.fakeLightsMultiCenter[mc].z, 0.0f)
+							+ (float4)(consts->params.common.fakeLightsOrbitTrap.x,
+							           consts->params.common.fakeLightsOrbitTrap.y,
+							           consts->params.common.fakeLightsOrbitTrap.z, 0.0f);
 
-				float distance = OrbitTrapShapeDistance(zAdj, orbitTrapPos, consts);
+						float d = OrbitTrapShapeDistance(shiftedPoint, consts, calcParam);
+						d /= consts->params.common.fakeLightsMultiCenterWeight[mc];
+							if (d < distance)
+							{
+								distance = d;
+								minCenterIndex = mc;
+							}
+					}
+				}
+				else
+				{
+					distance = OrbitTrapShapeDistance(trapPoint, consts, calcParam);
+				}
 
 				if (i >= fakeLightsMinIter && i <= fakeLightsMaxIter)
-					orbitTrapTotal += (1.0f / (distance * distance));
+				{
+					float contribution;
+					switch (consts->params.common.fakeLightsDecayFunction)
+					{
+						case 1: // fakeLightsDecay1R
+							contribution = 1.0f / (distance + 1e-30f);
+							break;
+						case 2: // fakeLightsDecay1R3
+							contribution = 1.0f / (distance * distance * distance + 1e-30f);
+							break;
+						case 3: // fakeLightsDecayLinear
+							contribution = max(1.0f - distance * 0.1f, 0.0f);
+							break;
+						case 4: // fakeLightsDecayExp
+							contribution = exp(-distance);
+							break;
+						default: // fakeLightsDecay1R2 (case 0)
+							contribution = 1.0f / (distance * distance + 1e-30f);
+							break;
+					}
+					orbitTrapTotal += contribution;
+
+					// Track which iteration had the closest approach
+					if (distance < orbitTrapMinDist)
+					{
+						orbitTrapMinDist = distance;
+						orbitTrapMinIter = i;
+						out.orbitTrapCenterIndex = minCenterIndex;
+					}
+				}
 				if (distance > consts->sequence.bailout[sequence])
 				{
 					out.orbitTrapR = orbitTrapTotal;
+					out.orbitTrapMinIter = orbitTrapMinIter;
 					break;
 				}
 			}
@@ -474,22 +544,79 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 			{
 				if (i >= material->textureFractalizeStartIteration)
 				{
-					float size = material->textureFractalizeCubeSize;
-					float3 zz = z.xyz - pointTransformed;
-					if (zz.x > -size && zz.x < size && zz.y > -size && zz.y < size && zz.z > -size
-							&& zz.z < size)
+					float size = material->textureFractalizeCubeSize * material->textureFractalizeSizeMultiplier;
+					float3 trapCenter = pointTransformed + material->textureFractalizeOrbitTrapPosition;
+					float3 zz = z.xyz - trapCenter;
+					bool trapHit = false;
+
+					switch (material->textureFractalizeShape)
+					{
+						case 0: // fractalizeShapeCube
+						{
+							if (zz.x > -size && zz.x < size && zz.y > -size && zz.y < size && zz.z > -size
+									&& zz.z < size)
+							{
+								trapHit = true;
+							}
+							break;
+						}
+						case 1: // fractalizeShapeSphere
+						{
+							if (length(zz) < size)
+							{
+								trapHit = true;
+							}
+							break;
+						}
+						case 2: // fractalizeShapeCross
+						{
+							float minDist = min(min(fabs(zz.x), fabs(zz.y)), fabs(zz.z));
+							if (minDist < size)
+							{
+								trapHit = true;
+							}
+							break;
+						}
+						case 3: // fractalizeShapeLine
+						{
+							// Line along Z axis by default (user can rotate with texture rotation)
+							float distFromLine = sqrt(zz.x * zz.x + zz.y * zz.y);
+							if (distFromLine < size)
+							{
+								trapHit = true;
+							}
+							break;
+						}
+						case 4: // fractalizeShapePlane
+						{
+							// Plane at Z=0 by default (user can rotate with texture rotation)
+							if (fabs(zz.z) < size)
+							{
+								trapHit = true;
+							}
+							break;
+						}
+					}
+
+					if (trapHit)
 					{
 						out.colorIndex = (fabs(z.x - size) + fabs(z.y - size) + fabs(z.z - size)) * 100.0f;
 						out.iters = i + 1;
 						out.z = z;
-						return out;
+
+						// If iteration blending is disabled, return immediately
+						if (!material->textureFractalizeIterationBlend)
+						{
+							return out;
+						}
+						// Otherwise continue iterating to blend between iteration levels
 					}
 				}
 				if (aux.r > material->textureFractalizeCubeSize * 100.0f)
 				{
 					out.colorIndex = 0.0f;
 					out.iters = i + 1;
-					out.z = z / length(z);
+					out.z = z;
 					return out;
 				}
 			}
@@ -601,7 +728,15 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 	if (dist < 0.0f) dist = 0.0f;
 	out.distance = dist;
 	out.iters = i + 1;
+	{
+		float r = length(z.xyz);
+		float bailout = consts->sequence.bailout[0];
+		if (!out.maxiter && r > bailout && bailout > 1.0f)
+			out.iters = out.iters + 1.0f
+				- native_log(native_log(r) / native_log(bailout)) / native_log(2.0f);
+	}
 	out.z = z;
+	out.orbitTrapMinIter = orbitTrapMinIter;
 
 	return out;
 }

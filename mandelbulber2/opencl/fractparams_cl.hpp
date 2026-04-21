@@ -45,8 +45,6 @@
 #ifndef MANDELBULBER2_OPENCL_FRACTPARAMS_CL_HPP_
 #define MANDELBULBER2_OPENCL_FRACTPARAMS_CL_HPP_
 
-#include "single_trap_light_cl.hpp"
-
 #ifndef OPENCL_KERNEL_CODE
 #include "common_params_cl.hpp"
 #include "fractal_cl.h"
@@ -59,6 +57,9 @@
 #include "src/fractparams.hpp"
 #include "src/image_adjustments.h"
 #endif /* OPENCL_KERNEL_CODE */
+
+#include "single_trap_light_cl.hpp"
+#include "glow_sphere_cl.hpp"
 
 typedef enum
 {
@@ -173,6 +174,7 @@ typedef struct
 	cl_float3 fakeLightsColor;
 	cl_float3 fakeLightsColor2;
 	cl_float3 fakeLightsColor3;
+	cl_float3 fakeLightsMultiCenterColor[4];
 	cl_float3 fillLightColor;
 	cl_float3 fogColor;
 	cl_float3 glowColor1;
@@ -290,6 +292,9 @@ typedef struct
 
 	// Single Trap Light v1 (separate system)
 	sClSingleTrapLight singleTrapLight0;
+
+	// Glow Sphere - simple placeable light
+	sGlowSphereCl glowSphere1;
 } sParamRenderCl;
 
 #ifndef OPENCL_KERNEL_CODE
@@ -397,6 +402,10 @@ inline sParamRenderCl clCopySParamRenderCl(const sParamRender &source)
 	target.fakeLightsColor = toClFloat3(source.fakeLightsColor);
 	target.fakeLightsColor2 = toClFloat3(source.fakeLightsColor2);
 	target.fakeLightsColor3 = toClFloat3(source.fakeLightsColor3);
+	for (int mc = 0; mc < 4; mc++)
+	{
+		target.fakeLightsMultiCenterColor[mc] = toClFloat3(source.fakeLightsMultiCenterColor[mc]);
+	}
 	target.fillLightColor = toClFloat3(source.fillLightColor);
 	target.fogColor = toClFloat3(source.fogColor);
 	target.glowColor1 = toClFloat3(source.glowColor1);
@@ -528,6 +537,9 @@ inline sParamRenderCl clCopySParamRenderCl(const sParamRender &source)
 
 	// Single Trap Light v1 (separate system)
 	target.singleTrapLight0 = clCopySSingleTrapLight(source.singleTrapLight0);
+
+	// Glow Sphere
+	target.glowSphere1 = clCopySGlowSphere(source.glowSphere1);
 
 	return target;
 }

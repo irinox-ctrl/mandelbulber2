@@ -191,6 +191,7 @@ typedef struct
 	sObjectDataCl object; // structure
 	uPrimitiveCl data;		// union !!!
 	enumClPrimitiveBooleanOperator booleanOperator;
+	sEffectorCl effectors[4];
 } sPrimitiveCl;
 
 #endif /* MANDELBULBER2_OPENCL_PRIMITIVES_CL_H_ */

@@ -4593,7 +4593,7 @@ of lights:</string>
                 <item row="6" column="2">
                  <widget class="MyComboBox" name="comboBox_fake_lights_orbit_trap_shape">
                   <property name="toolTip">
-                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt; &lt;p&gt;Select the orbit‑trap shape used by Fake lights (lighting is driven by the distance to this shape).&lt;/p&gt; &lt;p&gt;&lt;i&gt;Point&lt;/i&gt; — a sphere around the trap center; Size = sphere radius (default).&lt;/p&gt; &lt;p&gt;&lt;i&gt;Line&lt;/i&gt; — a cylinder around an infinite line through the center; Size = cylinder radius; use Orbit rotation to set its direction.&lt;/p&gt; &lt;p&gt;&lt;i&gt;Circle&lt;/i&gt; — a circular ring around a central axis; Size = ring radius; Rotation sets the axis.&lt;/p&gt; &lt;p&gt;&lt;i&gt;Square&lt;/i&gt; — a square ring; Size = half edge; Rotation sets orientation.&lt;/p&gt; &lt;p&gt;&lt;i&gt;Sphere&lt;/i&gt; — a spherical shell; Size = radius.&lt;/p&gt; &lt;p&gt;&lt;i&gt;Cube&lt;/i&gt; — a cubic shell; Size = half edge length.&lt;/p&gt; &lt;p&gt;Tip: Use Thickness to control falloff width, Visibility/Visibility size for reach, and set center/Relative center and Orbit rotation as needed. Effective when “Fake lights” is enabled.&lt;/p&gt; &lt;/body&gt;&lt;/html&gt;</string>
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt; &lt;p&gt;Select the orbit‑trap shape used by Fake lights (lighting is driven by the distance to this shape).&lt;/p&gt; &lt;p&gt;&lt;i&gt;Point&lt;/i&gt; — a single point source near the trap center (default).&lt;/p&gt; &lt;p&gt;&lt;i&gt;Line&lt;/i&gt; — an infinite line through the center; use Orbit rotation to set its direction.&lt;/p&gt; &lt;p&gt;&lt;i&gt;Circle&lt;/i&gt; — a circular ring around a central axis; Size = ring radius; Rotation sets the axis.&lt;/p&gt; &lt;p&gt;&lt;i&gt;Square&lt;/i&gt; — a square ring; Size = half edge; Rotation sets orientation.&lt;/p&gt; &lt;p&gt;&lt;i&gt;Sphere&lt;/i&gt; — a spherical shell; Size = radius.&lt;/p&gt; &lt;p&gt;&lt;i&gt;Cube&lt;/i&gt; — a cubic shell; Size = half edge length.&lt;/p&gt; &lt;p&gt;Tip: Use Thickness to control falloff width, Visibility/Visibility size for reach, and set center/Relative center and Orbit rotation as needed. Effective when “Fake lights” is enabled.&lt;/p&gt; &lt;/body&gt;&lt;/html&gt;</string>
                   </property>
                   <item>
                    <property name="text">
@@ -4627,11 +4627,6 @@ of lights:</string>
                   </item>
                   <item>
                    <property name="text">
-                    <string>Torus</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
                     <string>Triangle</string>
                    </property>
                   </item>
@@ -4642,17 +4637,12 @@ of lights:</string>
                   </item>
                   <item>
                    <property name="text">
-                    <string>Star</string>
+                    <string>Torus</string>
                    </property>
                   </item>
                   <item>
                    <property name="text">
-                    <string>Cross</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>Capsule</string>
+                    <string>Cylinder</string>
                    </property>
                   </item>
                   <item>
@@ -4667,42 +4657,87 @@ of lights:</string>
                   </item>
                   <item>
                    <property name="text">
-                    <string>Tetrahedron</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
                     <string>Octahedron</string>
                    </property>
                   </item>
                   <item>
                    <property name="text">
-                    <string>Dodecahedron</string>
+                    <string>Ellipse</string>
                    </property>
                   </item>
                   <item>
                    <property name="text">
-                    <string>Icosahedron</string>
+                    <string>Rectangle</string>
                    </property>
                   </item>
                   <item>
                    <property name="text">
-                    <string>Menger Sponge</string>
+                    <string>Cross</string>
                    </property>
                   </item>
                   <item>
                    <property name="text">
-                    <string>Sierpinski Tetrahedron</string>
+                    <string>Star</string>
                    </property>
                   </item>
                   <item>
                    <property name="text">
-                    <string>Koch Snowflake</string>
+                    <string>Diamond</string>
                    </property>
                   </item>
                   <item>
                    <property name="text">
-                    <string>Hex Grid</string>
+                    <string>Ring</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Capsule</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Prism</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Torus Knot</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Box Frame</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Cone Infinite</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Cylinder Cap</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Superellipsoid</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Plane</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Disc</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Gear</string>
                    </property>
                   </item>
                   <item>
@@ -4712,17 +4747,382 @@ of lights:</string>
                   </item>
                   <item>
                    <property name="text">
+                    <string>Heart</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Crescent</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Arrow</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Rounded Box</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Stadium</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Polygon 5</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Polygon 8</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Trefoil Knot</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Figure Eight</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Mobius Strip</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Torus Sector</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Helix</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Cone Rounded</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Cylinder Hollow</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Sphere Hollow</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Torus Twist</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
                     <string>Grid</string>
                    </property>
                   </item>
                   <item>
                    <property name="text">
-                    <string>Buckyball</string>
+                    <string>Lattice</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Sponge</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Tree</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Knot 34</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Spiral 3D</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Noise</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Voronoi</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Mandelbrot 2D</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Julia 2D</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Sierpinski</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Koch</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Dragon</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Hilbert</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Gyroid</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Schwarz P</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Schwarz D</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Neovius</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Labyrinth</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Fiber</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Astroid</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Deltoid</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Lemniscate</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Limacon</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Spherical Harmonics</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Superformula</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Fern</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Shell</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Coral</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Crystal</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Honeycomb</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Chain</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Woven</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Net</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Coil</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Vortex</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Ripple</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Shockwave</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Orbital</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Nebula</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Julia 3D</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Mandelbrot 3D</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Burning Ship</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Tricorn</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Multibrot</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Phoenix</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Newton</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Nova</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Spider</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Dendrite</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Lorenz</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Rossler</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Polyfold</string>
                    </property>
                   </item>
                   <item>
                    <property name="text">
                     <string>Apollonian</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Kleinian</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Fibonacci</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Celtic</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Crown</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Cactus</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Siegel Disk</string>
                    </property>
                   </item>
                  </widget>
@@ -5154,6 +5554,47 @@ of lights:</string>
                     <string>Fractal Center</string>
                    </property>
                   </item>
+                  <item>
+                   <property name="text">
+                    <string>Path Circle</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Path Spiral</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Orbit Around Target</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+                <item row="18" column="0">
+                 <widget class="QLabel" name="label_transition_speed_">
+                  <property name="text">
+                   <string>Transition speed:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="18" column="1" colspan="2">
+                 <widget class="MyDoubleSpinBox" name="spinbox_fake_lights_transition_speed">
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Speed of smooth transition between positioning modes. 0 = instant switch, higher values = gradual blend.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                  <property name="decimals">
+                   <number>2</number>
+                  </property>
+                  <property name="minimum">
+                   <double>0.000000000000000</double>
+                  </property>
+                  <property name="maximum">
+                   <double>10.000000000000000</double>
+                  </property>
+                  <property name="singleStep">
+                   <double>0.100000000000000</double>
+                  </property>
                  </widget>
                 </item>
                </layout>
@@ -5204,7 +5645,7 @@ of lights:</string>
                       </widget>
                      </item>
                      <item row="0" column="2">
-                      <widget class="MyLineEdit" name="vect3_fake_lights_world_offset_x"/>
+                      <widget class="MyLineEdit" name="vect3_fake_lights_world_offset_x"></widget>
                      </item>
                      <item row="1" column="1">
                       <widget class="QLabel" name="label_world_offset_y">
@@ -5217,7 +5658,7 @@ of lights:</string>
                       </widget>
                      </item>
                      <item row="1" column="2">
-                      <widget class="MyLineEdit" name="vect3_fake_lights_world_offset_y"/>
+                      <widget class="MyLineEdit" name="vect3_fake_lights_world_offset_y"></widget>
                      </item>
                      <item row="2" column="1">
                       <widget class="QLabel" name="label_world_offset_z">
@@ -5230,7 +5671,7 @@ of lights:</string>
                       </widget>
                      </item>
                      <item row="2" column="2">
-                      <widget class="MyLineEdit" name="vect3_fake_lights_world_offset_z"/>
+                      <widget class="MyLineEdit" name="vect3_fake_lights_world_offset_z"></widget>
                      </item>
                      <item row="3" column="0">
                       <widget class="QLabel" name="label_world_scale">
@@ -5240,7 +5681,7 @@ of lights:</string>
                       </widget>
                      </item>
                      <item row="3" column="1" colspan="2">
-                      <widget class="MyLineEdit" name="logedit_fake_lights_world_scale"/>
+                      <widget class="MyLineEdit" name="logedit_fake_lights_world_scale"></widget>
                      </item>
                      <item row="4" column="0" rowspan="3">
                       <widget class="QLabel" name="label_world_rotation">
@@ -5330,6 +5771,13 @@ of lights:</string>
                     </layout>
                    </widget>
                   </item>
+                  <item>
+                   <widget class="QPushButton" name="pushButton_reset_world">
+                    <property name="text">
+                     <string>Reset to Defaults</string>
+                    </property>
+                   </widget>
+                  </item>
                  </layout>
                 </widget>
                 <widget class="QWidget" name="page_fake_lights_camera">
@@ -5376,7 +5824,7 @@ of lights:</string>
                       </widget>
                      </item>
                      <item row="0" column="2">
-                      <widget class="MyLineEdit" name="vect3_fake_lights_camera_offset_x"/>
+                      <widget class="MyLineEdit" name="vect3_fake_lights_camera_offset_x"></widget>
                      </item>
                      <item row="1" column="1">
                       <widget class="QLabel" name="label_camera_offset_y">
@@ -5389,7 +5837,7 @@ of lights:</string>
                       </widget>
                      </item>
                      <item row="1" column="2">
-                      <widget class="MyLineEdit" name="vect3_fake_lights_camera_offset_y"/>
+                      <widget class="MyLineEdit" name="vect3_fake_lights_camera_offset_y"></widget>
                      </item>
                      <item row="2" column="1">
                       <widget class="QLabel" name="label_camera_offset_z">
@@ -5402,7 +5850,7 @@ of lights:</string>
                       </widget>
                      </item>
                      <item row="2" column="2">
-                      <widget class="MyLineEdit" name="vect3_fake_lights_camera_offset_z"/>
+                      <widget class="MyLineEdit" name="vect3_fake_lights_camera_offset_z"></widget>
                      </item>
                      <item row="3" column="0">
                       <widget class="QLabel" name="label_camera_scale">
@@ -5412,7 +5860,7 @@ of lights:</string>
                       </widget>
                      </item>
                      <item row="3" column="1" colspan="2">
-                      <widget class="MyLineEdit" name="logedit_fake_lights_camera_scale"/>
+                      <widget class="MyLineEdit" name="logedit_fake_lights_camera_scale"></widget>
                      </item>
                      <item row="4" column="0" rowspan="3">
                       <widget class="QLabel" name="label_camera_rotation">
@@ -5502,6 +5950,13 @@ of lights:</string>
                     </layout>
                    </widget>
                   </item>
+                  <item>
+                   <widget class="QPushButton" name="pushButton_reset_camera">
+                    <property name="text">
+                     <string>Reset to Defaults</string>
+                    </property>
+                   </widget>
+                  </item>
                  </layout>
                 </widget>
                 <widget class="QWidget" name="page_fake_lights_target">
@@ -5548,7 +6003,7 @@ of lights:</string>
                       </widget>
                      </item>
                      <item row="0" column="2">
-                      <widget class="MyLineEdit" name="vect3_fake_lights_target_offset_x"/>
+                      <widget class="MyLineEdit" name="vect3_fake_lights_target_offset_x"></widget>
                      </item>
                      <item row="1" column="1">
                       <widget class="QLabel" name="label_target_offset_y">
@@ -5561,7 +6016,7 @@ of lights:</string>
                       </widget>
                      </item>
                      <item row="1" column="2">
-                      <widget class="MyLineEdit" name="vect3_fake_lights_target_offset_y"/>
+                      <widget class="MyLineEdit" name="vect3_fake_lights_target_offset_y"></widget>
                      </item>
                      <item row="2" column="1">
                       <widget class="QLabel" name="label_target_offset_z">
@@ -5574,7 +6029,7 @@ of lights:</string>
                       </widget>
                      </item>
                      <item row="2" column="2">
-                      <widget class="MyLineEdit" name="vect3_fake_lights_target_offset_z"/>
+                      <widget class="MyLineEdit" name="vect3_fake_lights_target_offset_z"></widget>
                      </item>
                      <item row="3" column="0">
                       <widget class="QLabel" name="label_target_scale">
@@ -5584,7 +6039,7 @@ of lights:</string>
                       </widget>
                      </item>
                      <item row="3" column="1" colspan="2">
-                      <widget class="MyLineEdit" name="logedit_fake_lights_target_scale"/>
+                      <widget class="MyLineEdit" name="logedit_fake_lights_target_scale"></widget>
                      </item>
                      <item row="4" column="0" rowspan="3">
                       <widget class="QLabel" name="label_target_rotation">
@@ -5674,6 +6129,13 @@ of lights:</string>
                     </layout>
                    </widget>
                   </item>
+                  <item>
+                   <widget class="QPushButton" name="pushButton_reset_target">
+                    <property name="text">
+                     <string>Reset to Defaults</string>
+                    </property>
+                   </widget>
+                  </item>
                  </layout>
                 </widget>
                 <widget class="QWidget" name="page_fake_lights_fractal_center">
@@ -5720,7 +6182,7 @@ of lights:</string>
                       </widget>
                      </item>
                      <item row="0" column="2">
-                      <widget class="MyLineEdit" name="vect3_fake_lights_fractal_center_offset_x"/>
+                      <widget class="MyLineEdit" name="vect3_fake_lights_fractal_center_offset_x"></widget>
                      </item>
                      <item row="1" column="1">
                       <widget class="QLabel" name="label_fractal_center_offset_y">
@@ -5733,7 +6195,7 @@ of lights:</string>
                       </widget>
                      </item>
                      <item row="1" column="2">
-                      <widget class="MyLineEdit" name="vect3_fake_lights_fractal_center_offset_y"/>
+                      <widget class="MyLineEdit" name="vect3_fake_lights_fractal_center_offset_y"></widget>
                      </item>
                      <item row="2" column="1">
                       <widget class="QLabel" name="label_fractal_center_offset_z">
@@ -5746,7 +6208,7 @@ of lights:</string>
                       </widget>
                      </item>
                      <item row="2" column="2">
-                      <widget class="MyLineEdit" name="vect3_fake_lights_fractal_center_offset_z"/>
+                      <widget class="MyLineEdit" name="vect3_fake_lights_fractal_center_offset_z"></widget>
                      </item>
                      <item row="3" column="0">
                       <widget class="QLabel" name="label_fractal_center_scale">
@@ -5756,7 +6218,7 @@ of lights:</string>
                       </widget>
                      </item>
                      <item row="3" column="1" colspan="2">
-                      <widget class="MyLineEdit" name="logedit_fake_lights_fractal_center_scale"/>
+                      <widget class="MyLineEdit" name="logedit_fake_lights_fractal_center_scale"></widget>
                      </item>
                      <item row="4" column="0" rowspan="3">
                       <widget class="QLabel" name="label_fractal_center_rotation">
@@ -5846,8 +6308,1054 @@ of lights:</string>
                     </layout>
                    </widget>
                   </item>
+                  <item>
+                   <widget class="QPushButton" name="pushButton_reset_fractal_center">
+                    <property name="text">
+                     <string>Reset to Defaults</string>
+                    </property>
+                   </widget>
+                  </item>
                  </layout>
                 </widget>
+                <widget class="QWidget" name="page_fake_lights_path_circle">
+                 <layout class="QVBoxLayout" name="verticalLayout_path_circle">
+                  <property name="spacing">
+                   <number>2</number>
+                  </property>
+                  <property name="leftMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="topMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="rightMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="bottomMargin">
+                   <number>0</number>
+                  </property>
+                  <item>
+                   <widget class="QGroupBox" name="groupBox_fake_lights_path_circle">
+                    <property name="title">
+                     <string>Path circle mode settings</string>
+                    </property>
+                    <layout class="QGridLayout" name="gridLayout_path_circle">
+                     <property name="spacing">
+                      <number>2</number>
+                     </property>
+                     <item row="0" column="0" rowspan="3">
+                      <widget class="QLabel" name="label_path_circle_offset">
+                       <property name="text">
+                        <string>Offset:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="1">
+                      <widget class="QLabel" name="label_path_circle_offset_x">
+                       <property name="text">
+                        <string>x:</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="2">
+                      <widget class="MyLineEdit" name="vect3_fake_lights_path_circle_offset_x"></widget>
+                     </item>
+                     <item row="1" column="1">
+                      <widget class="QLabel" name="label_path_circle_offset_y">
+                       <property name="text">
+                        <string>y:</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="1" column="2">
+                      <widget class="MyLineEdit" name="vect3_fake_lights_path_circle_offset_y"></widget>
+                     </item>
+                     <item row="2" column="1">
+                      <widget class="QLabel" name="label_path_circle_offset_z">
+                       <property name="text">
+                        <string>z:</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="2" column="2">
+                      <widget class="MyLineEdit" name="vect3_fake_lights_path_circle_offset_z"></widget>
+                     </item>
+                     <item row="3" column="0">
+                      <widget class="QLabel" name="label_path_circle_scale">
+                       <property name="text">
+                        <string>Scale:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="3" column="1" colspan="2">
+                      <widget class="MyLineEdit" name="logedit_fake_lights_path_circle_scale"></widget>
+                     </item>
+                     <item row="4" column="0" rowspan="3">
+                      <widget class="QLabel" name="label_path_circle_rotation">
+                       <property name="text">
+                        <string>Rotation:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="4" column="1">
+                      <widget class="QLabel" name="label_path_circle_rotation_x">
+                       <property name="text">
+                        <string>x:</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="4" column="2">
+                      <widget class="MyDoubleSpinBox" name="spinboxd3_fake_lights_path_circle_rotation_x">
+                       <property name="decimals">
+                        <number>2</number>
+                       </property>
+                       <property name="minimum">
+                        <double>-36000.000000000000000</double>
+                       </property>
+                       <property name="maximum">
+                        <double>36000.000000000000000</double>
+                       </property>
+                       <property name="singleStep">
+                        <double>0.100000000000000</double>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="5" column="1">
+                      <widget class="QLabel" name="label_path_circle_rotation_y">
+                       <property name="text">
+                        <string>y:</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="5" column="2">
+                      <widget class="MyDoubleSpinBox" name="spinboxd3_fake_lights_path_circle_rotation_y">
+                       <property name="decimals">
+                        <number>2</number>
+                       </property>
+                       <property name="minimum">
+                        <double>-36000.000000000000000</double>
+                       </property>
+                       <property name="maximum">
+                        <double>36000.000000000000000</double>
+                       </property>
+                       <property name="singleStep">
+                        <double>0.100000000000000</double>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="6" column="1">
+                      <widget class="QLabel" name="label_path_circle_rotation_z">
+                       <property name="text">
+                        <string>z:</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="6" column="2">
+                      <widget class="MyDoubleSpinBox" name="spinboxd3_fake_lights_path_circle_rotation_z">
+                       <property name="decimals">
+                        <number>2</number>
+                       </property>
+                       <property name="minimum">
+                        <double>-36000.000000000000000</double>
+                       </property>
+                       <property name="maximum">
+                        <double>36000.000000000000000</double>
+                       </property>
+                       <property name="singleStep">
+                        <double>0.100000000000000</double>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="7" column="0">
+                      <widget class="QLabel" name="label_path_circle_radius">
+                       <property name="text">
+                        <string>Path radius:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="7" column="1" colspan="2">
+                      <widget class="MyDoubleSpinBox" name="spinbox_fake_lights_path_circle_path_radius">
+                       <property name="decimals">
+                        <number>3</number>
+                       </property>
+                       <property name="minimum">
+                        <double>0.000000000000000</double>
+                       </property>
+                       <property name="maximum">
+                        <double>10000.000000000000000</double>
+                       </property>
+                       <property name="singleStep">
+                        <double>0.100000000000000</double>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="pushButton_reset_path_circle">
+                    <property name="text">
+                     <string>Reset to Defaults</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+                <widget class="QWidget" name="page_fake_lights_path_spiral">
+                 <layout class="QVBoxLayout" name="verticalLayout_path_spiral">
+                  <property name="spacing">
+                   <number>2</number>
+                  </property>
+                  <property name="leftMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="topMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="rightMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="bottomMargin">
+                   <number>0</number>
+                  </property>
+                  <item>
+                   <widget class="QGroupBox" name="groupBox_fake_lights_path_spiral">
+                    <property name="title">
+                     <string>Path spiral mode settings</string>
+                    </property>
+                    <layout class="QGridLayout" name="gridLayout_path_spiral">
+                     <property name="spacing">
+                      <number>2</number>
+                     </property>
+                     <item row="0" column="0" rowspan="3">
+                      <widget class="QLabel" name="label_path_spiral_offset">
+                       <property name="text">
+                        <string>Offset:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="1">
+                      <widget class="QLabel" name="label_path_spiral_offset_x">
+                       <property name="text">
+                        <string>x:</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="2">
+                      <widget class="MyLineEdit" name="vect3_fake_lights_path_spiral_offset_x"></widget>
+                     </item>
+                     <item row="1" column="1">
+                      <widget class="QLabel" name="label_path_spiral_offset_y">
+                       <property name="text">
+                        <string>y:</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="1" column="2">
+                      <widget class="MyLineEdit" name="vect3_fake_lights_path_spiral_offset_y"></widget>
+                     </item>
+                     <item row="2" column="1">
+                      <widget class="QLabel" name="label_path_spiral_offset_z">
+                       <property name="text">
+                        <string>z:</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="2" column="2">
+                      <widget class="MyLineEdit" name="vect3_fake_lights_path_spiral_offset_z"></widget>
+                     </item>
+                     <item row="3" column="0">
+                      <widget class="QLabel" name="label_path_spiral_scale">
+                       <property name="text">
+                        <string>Scale:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="3" column="1" colspan="2">
+                      <widget class="MyLineEdit" name="logedit_fake_lights_path_spiral_scale"></widget>
+                     </item>
+                     <item row="4" column="0" rowspan="3">
+                      <widget class="QLabel" name="label_path_spiral_rotation">
+                       <property name="text">
+                        <string>Rotation:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="4" column="1">
+                      <widget class="QLabel" name="label_path_spiral_rotation_x">
+                       <property name="text">
+                        <string>x:</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="4" column="2">
+                      <widget class="MyDoubleSpinBox" name="spinboxd3_fake_lights_path_spiral_rotation_x">
+                       <property name="decimals">
+                        <number>2</number>
+                       </property>
+                       <property name="minimum">
+                        <double>-36000.000000000000000</double>
+                       </property>
+                       <property name="maximum">
+                        <double>36000.000000000000000</double>
+                       </property>
+                       <property name="singleStep">
+                        <double>0.100000000000000</double>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="5" column="1">
+                      <widget class="QLabel" name="label_path_spiral_rotation_y">
+                       <property name="text">
+                        <string>y:</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="5" column="2">
+                      <widget class="MyDoubleSpinBox" name="spinboxd3_fake_lights_path_spiral_rotation_y">
+                       <property name="decimals">
+                        <number>2</number>
+                       </property>
+                       <property name="minimum">
+                        <double>-36000.000000000000000</double>
+                       </property>
+                       <property name="maximum">
+                        <double>36000.000000000000000</double>
+                       </property>
+                       <property name="singleStep">
+                        <double>0.100000000000000</double>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="6" column="1">
+                      <widget class="QLabel" name="label_path_spiral_rotation_z">
+                       <property name="text">
+                        <string>z:</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="6" column="2">
+                      <widget class="MyDoubleSpinBox" name="spinboxd3_fake_lights_path_spiral_rotation_z">
+                       <property name="decimals">
+                        <number>2</number>
+                       </property>
+                       <property name="minimum">
+                        <double>-36000.000000000000000</double>
+                       </property>
+                       <property name="maximum">
+                        <double>36000.000000000000000</double>
+                       </property>
+                       <property name="singleStep">
+                        <double>0.100000000000000</double>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="7" column="0">
+                      <widget class="QLabel" name="label_path_spiral_radius">
+                       <property name="text">
+                        <string>Path radius:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="7" column="1" colspan="2">
+                      <widget class="MyDoubleSpinBox" name="spinbox_fake_lights_path_spiral_path_radius">
+                       <property name="decimals">
+                        <number>3</number>
+                       </property>
+                       <property name="minimum">
+                        <double>0.000000000000000</double>
+                       </property>
+                       <property name="maximum">
+                        <double>10000.000000000000000</double>
+                       </property>
+                       <property name="singleStep">
+                        <double>0.100000000000000</double>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="pushButton_reset_path_spiral">
+                    <property name="text">
+                     <string>Reset to Defaults</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+                <widget class="QWidget" name="page_fake_lights_orbit_target">
+                 <layout class="QVBoxLayout" name="verticalLayout_orbit_target">
+                  <property name="spacing">
+                   <number>2</number>
+                  </property>
+                  <property name="leftMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="topMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="rightMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="bottomMargin">
+                   <number>0</number>
+                  </property>
+                  <item>
+                   <widget class="QGroupBox" name="groupBox_fake_lights_orbit_target">
+                    <property name="title">
+                     <string>Orbit around target mode settings</string>
+                    </property>
+                    <layout class="QGridLayout" name="gridLayout_orbit_target">
+                     <property name="spacing">
+                      <number>2</number>
+                     </property>
+                     <item row="0" column="0" rowspan="3">
+                      <widget class="QLabel" name="label_orbit_target_offset">
+                       <property name="text">
+                        <string>Offset:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="1">
+                      <widget class="QLabel" name="label_orbit_target_offset_x">
+                       <property name="text">
+                        <string>x:</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="2">
+                      <widget class="MyLineEdit" name="vect3_fake_lights_orbit_target_offset_x"></widget>
+                     </item>
+                     <item row="1" column="1">
+                      <widget class="QLabel" name="label_orbit_target_offset_y">
+                       <property name="text">
+                        <string>y:</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="1" column="2">
+                      <widget class="MyLineEdit" name="vect3_fake_lights_orbit_target_offset_y"></widget>
+                     </item>
+                     <item row="2" column="1">
+                      <widget class="QLabel" name="label_orbit_target_offset_z">
+                       <property name="text">
+                        <string>z:</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="2" column="2">
+                      <widget class="MyLineEdit" name="vect3_fake_lights_orbit_target_offset_z"></widget>
+                     </item>
+                     <item row="3" column="0">
+                      <widget class="QLabel" name="label_orbit_target_scale">
+                       <property name="text">
+                        <string>Scale:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="3" column="1" colspan="2">
+                      <widget class="MyLineEdit" name="logedit_fake_lights_orbit_target_scale"></widget>
+                     </item>
+                     <item row="4" column="0" rowspan="3">
+                      <widget class="QLabel" name="label_orbit_target_rotation">
+                       <property name="text">
+                        <string>Rotation:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="4" column="1">
+                      <widget class="QLabel" name="label_orbit_target_rotation_x">
+                       <property name="text">
+                        <string>x:</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="4" column="2">
+                      <widget class="MyDoubleSpinBox" name="spinboxd3_fake_lights_orbit_target_rotation_x">
+                       <property name="decimals">
+                        <number>2</number>
+                       </property>
+                       <property name="minimum">
+                        <double>-36000.000000000000000</double>
+                       </property>
+                       <property name="maximum">
+                        <double>36000.000000000000000</double>
+                       </property>
+                       <property name="singleStep">
+                        <double>0.100000000000000</double>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="5" column="1">
+                      <widget class="QLabel" name="label_orbit_target_rotation_y">
+                       <property name="text">
+                        <string>y:</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="5" column="2">
+                      <widget class="MyDoubleSpinBox" name="spinboxd3_fake_lights_orbit_target_rotation_y">
+                       <property name="decimals">
+                        <number>2</number>
+                       </property>
+                       <property name="minimum">
+                        <double>-36000.000000000000000</double>
+                       </property>
+                       <property name="maximum">
+                        <double>36000.000000000000000</double>
+                       </property>
+                       <property name="singleStep">
+                        <double>0.100000000000000</double>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="6" column="1">
+                      <widget class="QLabel" name="label_orbit_target_rotation_z">
+                       <property name="text">
+                        <string>z:</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="6" column="2">
+                      <widget class="MyDoubleSpinBox" name="spinboxd3_fake_lights_orbit_target_rotation_z">
+                       <property name="decimals">
+                        <number>2</number>
+                       </property>
+                       <property name="minimum">
+                        <double>-36000.000000000000000</double>
+                       </property>
+                       <property name="maximum">
+                        <double>36000.000000000000000</double>
+                       </property>
+                       <property name="singleStep">
+                        <double>0.100000000000000</double>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="7" column="0">
+                      <widget class="QLabel" name="label_orbit_target_radius">
+                       <property name="text">
+                        <string>Path radius:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="7" column="1" colspan="2">
+                      <widget class="MyDoubleSpinBox" name="spinbox_fake_lights_orbit_target_path_radius">
+                       <property name="decimals">
+                        <number>3</number>
+                       </property>
+                       <property name="minimum">
+                        <double>0.000000000000000</double>
+                       </property>
+                       <property name="maximum">
+                        <double>10000.000000000000000</double>
+                       </property>
+                       <property name="singleStep">
+                        <double>0.100000000000000</double>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="pushButton_reset_orbit_target">
+                    <property name="text">
+                     <string>Reset to Defaults</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </widget>
+              </item>
+              <item>
+               <widget class="QGroupBox" name="groupBox_fake_lights_multi_center">
+                <property name="title">
+                 <string>Multi-Center Orbit Trap</string>
+                </property>
+                <layout class="QGridLayout" name="gridLayout_multi_center">
+                 <property name="spacing">
+                  <number>2</number>
+                 </property>
+                 <item row="0" column="0" colspan="7">
+                  <widget class="MyCheckBox" name="checkBox_fake_lights_multi_center_enabled">
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable multiple orbit trap centers. When enabled, the orbit trap is evaluated at 4 additional positions and the weighted minimum distance is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                   <property name="text">
+                    <string>Enable multi-center orbit trap</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="0" rowspan="3">
+                  <widget class="QLabel" name="label_multi_center_1">
+                   <property name="text">
+                    <string>Center 1:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="1">
+                  <widget class="QLabel" name="label_multi_center_1_x">
+                   <property name="text">
+                    <string>x:</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="2">
+                  <widget class="MyLineEdit" name="vect3_fake_lights_multi_center_1_x">
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Position of multi-center orbit trap point 1&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="1">
+                  <widget class="QLabel" name="label_multi_center_1_y">
+                   <property name="text">
+                    <string>y:</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="2">
+                  <widget class="MyLineEdit" name="vect3_fake_lights_multi_center_1_y">
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Position of multi-center orbit trap point 1&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="3" column="1">
+                  <widget class="QLabel" name="label_multi_center_1_z">
+                   <property name="text">
+                    <string>z:</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="3" column="2">
+                  <widget class="MyLineEdit" name="vect3_fake_lights_multi_center_1_z">
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Position of multi-center orbit trap point 1&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="3">
+                  <widget class="QLabel" name="label_multi_center_weight_1">
+                   <property name="text">
+                    <string>Weight:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="4">
+                  <widget class="MyDoubleSpinBox" name="spinbox_fake_lights_multi_center_weight_1">
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Weight for multi-center point 1. Higher values make this center more influential.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                   <property name="decimals">
+                    <number>3</number>
+                   </property>
+                   <property name="minimum">
+                    <double>0.000000000000000</double>
+                   </property>
+                   <property name="maximum">
+                    <double>100.000000000000000</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.100000000000000</double>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="5">
+                  <widget class="QLabel" name="label_multi_center_color_1">
+                   <property name="text">
+                    <string>Color:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="6">
+                  <widget class="MyColorButton" name="colorButton_fake_lights_multi_center_color_1" native="true">
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Color for multi-center orbit trap point 1&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                   <property name="text" stdset="0">
+                    <string>PushButton</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="4" column="0" rowspan="3">
+                  <widget class="QLabel" name="label_multi_center_2">
+                   <property name="text">
+                    <string>Center 2:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="4" column="1">
+                  <widget class="QLabel" name="label_multi_center_2_x">
+                   <property name="text">
+                    <string>x:</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="4" column="2">
+                  <widget class="MyLineEdit" name="vect3_fake_lights_multi_center_2_x">
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Position of multi-center orbit trap point 2&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="5" column="1">
+                  <widget class="QLabel" name="label_multi_center_2_y">
+                   <property name="text">
+                    <string>y:</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="5" column="2">
+                  <widget class="MyLineEdit" name="vect3_fake_lights_multi_center_2_y">
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Position of multi-center orbit trap point 2&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="6" column="1">
+                  <widget class="QLabel" name="label_multi_center_2_z">
+                   <property name="text">
+                    <string>z:</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="6" column="2">
+                  <widget class="MyLineEdit" name="vect3_fake_lights_multi_center_2_z">
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Position of multi-center orbit trap point 2&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="4" column="3">
+                  <widget class="QLabel" name="label_multi_center_weight_2">
+                   <property name="text">
+                    <string>Weight:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="4" column="4">
+                  <widget class="MyDoubleSpinBox" name="spinbox_fake_lights_multi_center_weight_2">
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Weight for multi-center point 2. Higher values make this center more influential.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                   <property name="decimals">
+                    <number>3</number>
+                   </property>
+                   <property name="minimum">
+                    <double>0.000000000000000</double>
+                   </property>
+                   <property name="maximum">
+                    <double>100.000000000000000</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.100000000000000</double>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="4" column="5">
+                  <widget class="QLabel" name="label_multi_center_color_2">
+                   <property name="text">
+                    <string>Color:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="4" column="6">
+                  <widget class="MyColorButton" name="colorButton_fake_lights_multi_center_color_2" native="true">
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Color for multi-center orbit trap point 2&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                   <property name="text" stdset="0">
+                    <string>PushButton</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="7" column="0" rowspan="3">
+                  <widget class="QLabel" name="label_multi_center_3">
+                   <property name="text">
+                    <string>Center 3:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="7" column="1">
+                  <widget class="QLabel" name="label_multi_center_3_x">
+                   <property name="text">
+                    <string>x:</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="7" column="2">
+                  <widget class="MyLineEdit" name="vect3_fake_lights_multi_center_3_x">
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Position of multi-center orbit trap point 3&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="8" column="1">
+                  <widget class="QLabel" name="label_multi_center_3_y">
+                   <property name="text">
+                    <string>y:</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="8" column="2">
+                  <widget class="MyLineEdit" name="vect3_fake_lights_multi_center_3_y">
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Position of multi-center orbit trap point 3&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="9" column="1">
+                  <widget class="QLabel" name="label_multi_center_3_z">
+                   <property name="text">
+                    <string>z:</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="9" column="2">
+                  <widget class="MyLineEdit" name="vect3_fake_lights_multi_center_3_z">
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Position of multi-center orbit trap point 3&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="7" column="3">
+                  <widget class="QLabel" name="label_multi_center_weight_3">
+                   <property name="text">
+                    <string>Weight:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="7" column="4">
+                  <widget class="MyDoubleSpinBox" name="spinbox_fake_lights_multi_center_weight_3">
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Weight for multi-center point 3. Higher values make this center more influential.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                   <property name="decimals">
+                    <number>3</number>
+                   </property>
+                   <property name="minimum">
+                    <double>0.000000000000000</double>
+                   </property>
+                   <property name="maximum">
+                    <double>100.000000000000000</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.100000000000000</double>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="7" column="5">
+                  <widget class="QLabel" name="label_multi_center_color_3">
+                   <property name="text">
+                    <string>Color:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="7" column="6">
+                  <widget class="MyColorButton" name="colorButton_fake_lights_multi_center_color_3" native="true">
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Color for multi-center orbit trap point 3&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                   <property name="text" stdset="0">
+                    <string>PushButton</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="10" column="0" rowspan="3">
+                  <widget class="QLabel" name="label_multi_center_4">
+                   <property name="text">
+                    <string>Center 4:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="10" column="1">
+                  <widget class="QLabel" name="label_multi_center_4_x">
+                   <property name="text">
+                    <string>x:</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="10" column="2">
+                  <widget class="MyLineEdit" name="vect3_fake_lights_multi_center_4_x">
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Position of multi-center orbit trap point 4&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="11" column="1">
+                  <widget class="QLabel" name="label_multi_center_4_y">
+                   <property name="text">
+                    <string>y:</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="11" column="2">
+                  <widget class="MyLineEdit" name="vect3_fake_lights_multi_center_4_y">
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Position of multi-center orbit trap point 4&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="12" column="1">
+                  <widget class="QLabel" name="label_multi_center_4_z">
+                   <property name="text">
+                    <string>z:</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="12" column="2">
+                  <widget class="MyLineEdit" name="vect3_fake_lights_multi_center_4_z">
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Position of multi-center orbit trap point 4&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="10" column="3">
+                  <widget class="QLabel" name="label_multi_center_weight_4">
+                   <property name="text">
+                    <string>Weight:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="10" column="4">
+                  <widget class="MyDoubleSpinBox" name="spinbox_fake_lights_multi_center_weight_4">
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Weight for multi-center point 4. Higher values make this center more influential.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                   <property name="decimals">
+                    <number>3</number>
+                   </property>
+                   <property name="minimum">
+                    <double>0.000000000000000</double>
+                   </property>
+                   <property name="maximum">
+                    <double>100.000000000000000</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.100000000000000</double>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="10" column="5">
+                  <widget class="QLabel" name="label_multi_center_color_4">
+                   <property name="text">
+                    <string>Color:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="10" column="6">
+                  <widget class="MyColorButton" name="colorButton_fake_lights_multi_center_color_4" native="true">
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Color for multi-center orbit trap point 4&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                   <property name="text" stdset="0">
+                    <string>PushButton</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="13" column="0" colspan="7">
+                  <widget class="QPushButton" name="pushButton_reset_multi_center">
+                   <property name="text">
+                    <string>Reset to Defaults</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
                </widget>
               </item>
               <item row="18" column="0" colspan="3">
@@ -6017,7 +7525,7 @@ of lights:</string>
                  <item row="7" column="0">
                   <widget class="QLabel" name="label_shape_wobble_amp">
                    <property name="text">
-                    <string>Wobble Amp:</string>
+                    <string>Wobble amp:</string>
                    </property>
                   </widget>
                  </item>
@@ -6027,7 +7535,7 @@ of lights:</string>
                     <number>3</number>
                    </property>
                    <property name="minimum">
-                    <double>0.000000000000000</double>
+                    <double>-1000.000000000000000</double>
                    </property>
                    <property name="maximum">
                     <double>1000.000000000000000</double>
@@ -6040,7 +7548,7 @@ of lights:</string>
                  <item row="8" column="0">
                   <widget class="QLabel" name="label_shape_wobble_freq">
                    <property name="text">
-                    <string>Wobble Freq:</string>
+                    <string>Wobble freq:</string>
                    </property>
                   </widget>
                  </item>
@@ -6084,100 +7592,157 @@ of lights:</string>
                   </widget>
                  </item>
                  <item row="10" column="0">
-                  <widget class="QLabel" name="label_onion_thickness">
+                  <widget class="QLabel" name="label_shape_scale_x">
                    <property name="text">
-                    <string>Onion Thick:</string>
+                    <string>Scale X:</string>
                    </property>
                   </widget>
                  </item>
                  <item row="10" column="1">
-                  <widget class="MyDoubleSpinBox" name="spinbox_fake_lights_onion_thickness">
+                  <widget class="MyDoubleSpinBox" name="spinbox_fake_lights_shape_scale_x">
                    <property name="decimals">
                     <number>3</number>
                    </property>
                    <property name="minimum">
-                    <double>0.000000000000000</double>
+                    <double>-1000.000000000000000</double>
                    </property>
                    <property name="maximum">
                     <double>1000.000000000000000</double>
                    </property>
                    <property name="singleStep">
                     <double>0.010000000000000</double>
+                   </property>
+                   <property name="value">
+                    <double>1.000000000000000</double>
                    </property>
                   </widget>
                  </item>
                  <item row="11" column="0">
-                  <widget class="QLabel" name="label_shape_param1">
+                  <widget class="QLabel" name="label_shape_scale_y">
                    <property name="text">
-                    <string>Shape Detail:</string>
+                    <string>Scale Y:</string>
                    </property>
                   </widget>
                  </item>
                  <item row="11" column="1">
-                  <widget class="MyDoubleSpinBox" name="spinbox_fake_lights_shape_param1">
+                  <widget class="MyDoubleSpinBox" name="spinbox_fake_lights_shape_scale_y">
                    <property name="decimals">
                     <number>3</number>
                    </property>
                    <property name="minimum">
-                    <double>0.000000000000000</double>
+                    <double>-1000.000000000000000</double>
                    </property>
                    <property name="maximum">
                     <double>1000.000000000000000</double>
                    </property>
                    <property name="singleStep">
                     <double>0.010000000000000</double>
+                   </property>
+                   <property name="value">
+                    <double>1.000000000000000</double>
                    </property>
                   </widget>
                  </item>
                  <item row="12" column="0">
-                  <widget class="QLabel" name="label_shape_param2">
+                  <widget class="QLabel" name="label_shape_scale_z">
                    <property name="text">
-                    <string>Shape Ratio:</string>
+                    <string>Scale Z:</string>
                    </property>
                   </widget>
                  </item>
                  <item row="12" column="1">
-                  <widget class="MyDoubleSpinBox" name="spinbox_fake_lights_shape_param2">
+                  <widget class="MyDoubleSpinBox" name="spinbox_fake_lights_shape_scale_z">
                    <property name="decimals">
                     <number>3</number>
                    </property>
                    <property name="minimum">
-                    <double>0.000000000000000</double>
+                    <double>-1000.000000000000000</double>
                    </property>
                    <property name="maximum">
                     <double>1000.000000000000000</double>
                    </property>
                    <property name="singleStep">
                     <double>0.010000000000000</double>
+                   </property>
+                   <property name="value">
+                    <double>1.000000000000000</double>
                    </property>
                   </widget>
                  </item>
                  <item row="13" column="0">
-                  <widget class="QLabel" name="label_radial_repeat_count">
+                  <widget class="QLabel" name="label_shape_mirror_x">
                    <property name="text">
-                    <string>Radial Count:</string>
+                    <string>Mirror X:</string>
                    </property>
                   </widget>
                  </item>
                  <item row="13" column="1">
-                  <widget class="MySpinBox" name="spinbox_fake_lights_radial_repeat_count">
-                   <property name="minimum">
-                    <number>0</number>
-                   </property>
-                   <property name="maximum">
-                    <number>100</number>
+                  <widget class="MyCheckBox" name="checkBox_fake_lights_shape_mirror_x">
+                   <property name="text">
+                    <string></string>
                    </property>
                   </widget>
                  </item>
                  <item row="14" column="0">
-                  <widget class="QLabel" name="label_radial_repeat_radius">
+                  <widget class="QLabel" name="label_shape_mirror_y">
                    <property name="text">
-                    <string>Radial Radius:</string>
+                    <string>Mirror Y:</string>
                    </property>
                   </widget>
                  </item>
                  <item row="14" column="1">
-                  <widget class="MyDoubleSpinBox" name="spinbox_fake_lights_radial_repeat_radius">
+                  <widget class="MyCheckBox" name="checkBox_fake_lights_shape_mirror_y">
+                   <property name="text">
+                    <string></string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="15" column="0">
+                  <widget class="QLabel" name="label_shape_mirror_z">
+                   <property name="text">
+                    <string>Mirror Z:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="15" column="1">
+                  <widget class="MyCheckBox" name="checkBox_fake_lights_shape_mirror_z">
+                   <property name="text">
+                    <string></string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="16" column="0">
+                  <widget class="QLabel" name="label_shape_inflate">
+                   <property name="text">
+                    <string>Inflate:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="16" column="1">
+                  <widget class="MyDoubleSpinBox" name="spinbox_fake_lights_shape_inflate">
+                   <property name="decimals">
+                    <number>3</number>
+                   </property>
+                   <property name="minimum">
+                    <double>-1000.000000000000000</double>
+                   </property>
+                   <property name="maximum">
+                    <double>1000.000000000000000</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.010000000000000</double>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="17" column="0">
+                  <widget class="QLabel" name="label_shape_line_length">
+                   <property name="text">
+                    <string>Line length:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="17" column="1">
+                  <widget class="MyDoubleSpinBox" name="spinbox_fake_lights_shape_line_length">
                    <property name="decimals">
                     <number>3</number>
                    </property>
@@ -6192,32 +7757,15 @@ of lights:</string>
                    </property>
                   </widget>
                  </item>
-                 <item row="15" column="0">
-                  <widget class="QLabel" name="label_blend_shape">
+                 <item row="18" column="0">
+                  <widget class="QLabel" name="label_shape_tube_radius">
                    <property name="text">
-                    <string>Blend Shape:</string>
+                    <string>Tube radius:</string>
                    </property>
                   </widget>
                  </item>
-                 <item row="15" column="1">
-                  <widget class="MySpinBox" name="spinbox_fake_lights_blend_shape">
-                   <property name="minimum">
-                    <number>0</number>
-                   </property>
-                   <property name="maximum">
-                    <number>25</number>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="16" column="0">
-                  <widget class="QLabel" name="label_blend_amount">
-                   <property name="text">
-                    <string>Blend Amount:</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="16" column="1">
-                  <widget class="MyDoubleSpinBox" name="spinbox_fake_lights_blend_amount">
+                 <item row="18" column="1">
+                  <widget class="MyDoubleSpinBox" name="spinbox_fake_lights_shape_tube_radius">
                    <property name="decimals">
                     <number>3</number>
                    </property>
@@ -6225,7 +7773,214 @@ of lights:</string>
                     <double>0.000000000000000</double>
                    </property>
                    <property name="maximum">
-                    <double>1.000000000000000</double>
+                    <double>1000.000000000000000</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.010000000000000</double>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="19" column="0">
+                  <widget class="QLabel" name="label_shape_line_thickness">
+                   <property name="text">
+                    <string>Line thickness:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="19" column="1">
+                  <widget class="MyDoubleSpinBox" name="spinbox_fake_lights_shape_line_thickness">
+                   <property name="decimals">
+                    <number>3</number>
+                   </property>
+                   <property name="minimum">
+                    <double>0.000000000000000</double>
+                   </property>
+                   <property name="maximum">
+                    <double>1000.000000000000000</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.010000000000000</double>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="20" column="0">
+                  <widget class="QLabel" name="label_shape_falloff">
+                   <property name="text">
+                    <string>Falloff:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="20" column="1">
+                  <widget class="MyDoubleSpinBox" name="spinbox_fake_lights_shape_falloff">
+                   <property name="decimals">
+                    <number>3</number>
+                   </property>
+                   <property name="minimum">
+                    <double>0.000000000000000</double>
+                   </property>
+                   <property name="maximum">
+                    <double>1000.000000000000000</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.010000000000000</double>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="21" column="0">
+                  <widget class="QLabel" name="label_shape_mask_radius">
+                   <property name="text">
+                    <string>Mask radius:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="21" column="1">
+                  <widget class="MyDoubleSpinBox" name="spinbox_fake_lights_shape_mask_radius">
+                   <property name="decimals">
+                    <number>3</number>
+                   </property>
+                   <property name="minimum">
+                    <double>0.000000000000000</double>
+                   </property>
+                   <property name="maximum">
+                    <double>1000.000000000000000</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.010000000000000</double>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="22" column="0">
+                  <widget class="QLabel" name="label_shape_mask_softness">
+                   <property name="text">
+                    <string>Mask softness:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="22" column="1">
+                  <widget class="MyDoubleSpinBox" name="spinbox_fake_lights_shape_mask_softness">
+                   <property name="decimals">
+                    <number>3</number>
+                   </property>
+                   <property name="minimum">
+                    <double>0.000000000000000</double>
+                   </property>
+                   <property name="maximum">
+                    <double>1000.000000000000000</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.010000000000000</double>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="24" column="0">
+                  <widget class="QLabel" name="label_shape_spiral">
+                   <property name="text">
+                    <string>Spiral:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="24" column="1">
+                  <widget class="MyDoubleSpinBox" name="spinbox_fake_lights_shape_spiral">
+                   <property name="decimals">
+                    <number>3</number>
+                   </property>
+                   <property name="minimum">
+                    <double>-1000.000000000000000</double>
+                   </property>
+                   <property name="maximum">
+                    <double>1000.000000000000000</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.010000000000000</double>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="25" column="0">
+                  <widget class="QLabel" name="label_shape_wave_x">
+                   <property name="text">
+                    <string>Wave X:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="25" column="1">
+                  <widget class="MyDoubleSpinBox" name="spinbox_fake_lights_shape_wave_x">
+                   <property name="decimals">
+                    <number>3</number>
+                   </property>
+                   <property name="minimum">
+                    <double>-1000.000000000000000</double>
+                   </property>
+                   <property name="maximum">
+                    <double>1000.000000000000000</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.010000000000000</double>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="26" column="0">
+                  <widget class="QLabel" name="label_shape_wave_y">
+                   <property name="text">
+                    <string>Wave Y:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="26" column="1">
+                  <widget class="MyDoubleSpinBox" name="spinbox_fake_lights_shape_wave_y">
+                   <property name="decimals">
+                    <number>3</number>
+                   </property>
+                   <property name="minimum">
+                    <double>-1000.000000000000000</double>
+                   </property>
+                   <property name="maximum">
+                    <double>1000.000000000000000</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.010000000000000</double>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="27" column="0">
+                  <widget class="QLabel" name="label_shape_wave_z">
+                   <property name="text">
+                    <string>Wave Z:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="27" column="1">
+                  <widget class="MyDoubleSpinBox" name="spinbox_fake_lights_shape_wave_z">
+                   <property name="decimals">
+                    <number>3</number>
+                   </property>
+                   <property name="minimum">
+                    <double>-1000.000000000000000</double>
+                   </property>
+                   <property name="maximum">
+                    <double>1000.000000000000000</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.010000000000000</double>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="28" column="0">
+                  <widget class="QLabel" name="label_shape_wave_frequency">
+                   <property name="text">
+                    <string>Wave freq:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="28" column="1">
+                  <widget class="MyDoubleSpinBox" name="spinbox_fake_lights_shape_wave_frequency">
+                   <property name="decimals">
+                    <number>3</number>
+                   </property>
+                   <property name="minimum">
+                    <double>0.000000000000000</double>
+                   </property>
+                   <property name="maximum">
+                    <double>1000.000000000000000</double>
                    </property>
                    <property name="singleStep">
                     <double>0.010000000000000</double>
@@ -6234,6 +7989,256 @@ of lights:</string>
                  </item>
                 </layout>
                </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="MyGroupBox" name="groupCheck_single_trap_light_0_enabled">
+             <property name="title">
+              <string>Single Trap Light (v1)</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_single_trap">
+              <property name="spacing">
+               <number>2</number>
+              </property>
+              <property name="leftMargin">
+               <number>2</number>
+              </property>
+              <property name="topMargin">
+               <number>2</number>
+              </property>
+              <property name="rightMargin">
+               <number>2</number>
+              </property>
+              <property name="bottomMargin">
+               <number>2</number>
+              </property>
+              <item>
+               <layout class="QGridLayout" name="gridLayout_single_trap_light" columnstretch="0,0,0">
+                <property name="spacing">
+                 <number>2</number>
+                </property>
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label_enable">
+                  <property name="text">
+                   <string>Enable</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1" colspan="2">
+                 <widget class="MyCheckBox" name="checkBox_single_trap_light_0_enabled">
+                  <property name="text">
+                   <string></string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="7" column="0">
+                 <widget class="QLabel" name="label_size_">
+                  <property name="text">
+                   <string>Size:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="7" column="1" colspan="2">
+                 <widget class="MyDoubleSpinBox" name="spinboxd_single_trap_light_0_size"></widget>
+                </item>
+                <item row="8" column="0">
+                 <widget class="QLabel" name="label_radius_">
+                  <property name="text">
+                   <string>Radius:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="8" column="1" colspan="2">
+                 <widget class="MyDoubleSpinBox" name="spinboxd_single_trap_light_0_radius"></widget>
+                </item>
+                <item row="9" column="0">
+                 <widget class="QLabel" name="label_color_">
+                  <property name="text">
+                   <string>Color:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="9" column="1" colspan="2">
+                 <widget class="MyColorButton" name="colorButton_single_trap_light_0_color">
+                  <property name="text">
+                   <string></string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="10" column="0">
+                 <widget class="QLabel" name="label_intensity_">
+                  <property name="text">
+                   <string>Intensity:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="10" column="1" colspan="2">
+                 <widget class="MyDoubleSpinBox" name="spinboxd_single_trap_light_0_intensity"></widget>
+                </item>
+                <item row="11" column="0">
+                 <widget class="QLabel" name="label_center_x">
+                  <property name="text">
+                   <string>Center X</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="11" column="1" colspan="2">
+                 <widget class="MyLineEdit" name="vect3_single_trap_light_0_center_x"></widget>
+                </item>
+                <item row="12" column="0">
+                 <widget class="QLabel" name="label_center_y">
+                  <property name="text">
+                   <string>Center Y</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="12" column="1" colspan="2">
+                 <widget class="MyLineEdit" name="vect3_single_trap_light_0_center_y"></widget>
+                </item>
+                <item row="13" column="0">
+                 <widget class="QLabel" name="label_center_z">
+                  <property name="text">
+                   <string>Center Z</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="13" column="1" colspan="2">
+                 <widget class="MyLineEdit" name="vect3_single_trap_light_0_center_z"></widget>
+                </item>
+                <item row="14" column="0">
+                 <widget class="QLabel" name="label_rotation_x">
+                  <property name="text">
+                   <string>Rotation X</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="14" column="1" colspan="2">
+                 <widget class="MyDoubleSpinBox" name="spinboxd3_single_trap_light_0_rotation_x"></widget>
+                </item>
+                <item row="15" column="0">
+                 <widget class="QLabel" name="label_rotation_y">
+                  <property name="text">
+                   <string>Rotation Y</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="15" column="1" colspan="2">
+                 <widget class="MyDoubleSpinBox" name="spinboxd3_single_trap_light_0_rotation_y"></widget>
+                </item>
+                <item row="16" column="0">
+                 <widget class="QLabel" name="label_rotation_z">
+                  <property name="text">
+                   <string>Rotation Z</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="16" column="1" colspan="2">
+                 <widget class="MyDoubleSpinBox" name="spinboxd3_single_trap_light_0_rotation_z"></widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="MyGroupBox" name="groupCheck_glow_sphere_1_enabled">
+             <property name="title">
+              <string>Glow Sphere</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_glow_sphere">
+              <property name="spacing">
+               <number>2</number>
+              </property>
+              <property name="leftMargin">
+               <number>2</number>
+              </property>
+              <property name="topMargin">
+               <number>2</number>
+              </property>
+              <property name="rightMargin">
+               <number>2</number>
+              </property>
+              <property name="bottomMargin">
+               <number>2</number>
+              </property>
+              <item>
+               <layout class="QGridLayout" name="gridLayout_glow_sphere" columnstretch="0,0,0">
+                <property name="spacing">
+                 <number>2</number>
+                </property>
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label_glow_position_x">
+                  <property name="text">
+                   <string>Position X</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1" colspan="2">
+                 <widget class="MyLineEdit" name="vect3_glow_sphere_1_position_x"></widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="label_glow_position_y">
+                  <property name="text">
+                   <string>Position Y</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1" colspan="2">
+                 <widget class="MyLineEdit" name="vect3_glow_sphere_1_position_y"></widget>
+                </item>
+                <item row="2" column="0">
+                 <widget class="QLabel" name="label_glow_position_z">
+                  <property name="text">
+                   <string>Position Z</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="1" colspan="2">
+                 <widget class="MyLineEdit" name="vect3_glow_sphere_1_position_z"></widget>
+                </item>
+                <item row="3" column="0">
+                 <widget class="QLabel" name="label_glow_radius">
+                  <property name="text">
+                   <string>Radius:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="1" colspan="2">
+                 <widget class="MyDoubleSpinBox" name="spinboxd_glow_sphere_1_radius"></widget>
+                </item>
+                <item row="4" column="0">
+                 <widget class="QLabel" name="label_glow_color">
+                  <property name="text">
+                   <string>Color:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="4" column="1" colspan="2">
+                 <widget class="MyColorButton" name="colorButton_glow_sphere_1_color">
+                  <property name="text">
+                   <string></string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="5" column="0">
+                 <widget class="QLabel" name="label_glow_intensity">
+                  <property name="text">
+                   <string>Intensity:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="5" column="1" colspan="2">
+                 <widget class="MyDoubleSpinBox" name="spinboxd_glow_sphere_1_intensity"></widget>
+                </item>
+               </layout>
               </item>
              </layout>
             </widget>
@@ -6758,6 +8763,27 @@ of lights:</string>
   <tabstop>vect3_fake_lights_orbit_trap_x</tabstop>
   <tabstop>vect3_fake_lights_orbit_trap_y</tabstop>
   <tabstop>vect3_fake_lights_orbit_trap_z</tabstop>
+  <tabstop>checkBox_fake_lights_multi_center_enabled</tabstop>
+  <tabstop>vect3_fake_lights_multi_center_1_x</tabstop>
+  <tabstop>vect3_fake_lights_multi_center_1_y</tabstop>
+  <tabstop>vect3_fake_lights_multi_center_1_z</tabstop>
+  <tabstop>spinbox_fake_lights_multi_center_weight_1</tabstop>
+  <tabstop>vect3_fake_lights_multi_center_2_x</tabstop>
+  <tabstop>vect3_fake_lights_multi_center_2_y</tabstop>
+  <tabstop>vect3_fake_lights_multi_center_2_z</tabstop>
+  <tabstop>spinbox_fake_lights_multi_center_weight_2</tabstop>
+  <tabstop>vect3_fake_lights_multi_center_3_x</tabstop>
+  <tabstop>vect3_fake_lights_multi_center_3_y</tabstop>
+  <tabstop>vect3_fake_lights_multi_center_3_z</tabstop>
+  <tabstop>spinbox_fake_lights_multi_center_weight_3</tabstop>
+  <tabstop>vect3_fake_lights_multi_center_4_x</tabstop>
+  <tabstop>vect3_fake_lights_multi_center_4_y</tabstop>
+  <tabstop>vect3_fake_lights_multi_center_4_z</tabstop>
+  <tabstop>spinbox_fake_lights_multi_center_weight_4</tabstop>
+  <tabstop>colorButton_fake_lights_multi_center_color_1</tabstop>
+  <tabstop>colorButton_fake_lights_multi_center_color_2</tabstop>
+  <tabstop>colorButton_fake_lights_multi_center_color_3</tabstop>
+  <tabstop>colorButton_fake_lights_multi_center_color_4</tabstop>
   <tabstop>scrollArea_8</tabstop>
  </tabstops>
  <resources></resources>

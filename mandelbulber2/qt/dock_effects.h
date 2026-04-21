@@ -96,6 +96,14 @@ private slots:
 	void slotNewParametersFromNavi();
 	void slotRandomLightColoringTypeChanged(int index);
 	void slotEnvMappingToggled(bool state);
+	void slotPressedButtonResetWorld();
+	void slotPressedButtonResetCamera();
+	void slotPressedButtonResetTarget();
+	void slotPressedButtonResetFractalCenter();
+	void slotPressedButtonResetPathCircle();
+	void slotPressedButtonResetPathSpiral();
+	void slotPressedButtonResetOrbitTarget();
+	void slotPressedButtonResetMultiCenter();
 
 private:
 	void ConnectSignals() const;

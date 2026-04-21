@@ -40,6 +40,21 @@
 #include "opencl_algebra.h"
 #endif
 
+// Effector data for OpenCL (MoGraph style)
+typedef struct
+{
+	cl_int type;
+	cl_int mode;
+	cl_float strength;
+	cl_int seed;
+	cl_float3 posAmp;
+	cl_float3 rotAmp;
+	cl_float3 scaleAmp;
+	cl_int formulaPreset;
+	cl_float timeOffset;
+	cl_float timeScale;
+} sEffectorCl;
+
 // object data
 typedef struct
 {
@@ -55,6 +70,42 @@ typedef struct
 	cl_int usedForVolumetric;
 	enumObjectTypeCl objectType;
 	matrix33 rotationMatrix;
+	// Pivot
+	cl_float3 pivot;
+	cl_int useWorldSpacePivot;
+	// Cloner
+	cl_int clonerEnabled;
+	cl_int clonerMode;
+	cl_int clonerCount;
+	cl_float3 clonerOffset;
+	cl_float clonerRadius;
+	cl_float clonerStartAngle;
+	cl_float clonerEndAngle;
+	cl_int clonerPlane;
+	cl_float3 clonerGridCount;
+	cl_float3 clonerGridSize;
+	// Repeat
+	cl_int repeatMode;
+	cl_float repeatRotationStep;
+	cl_int repeatFibonacciCount;
+	cl_float repeatFibonacciSpread;
+	cl_float3 repeatSpiralStep;
+	cl_float3 repeatSpiralAngle;
+	cl_float3 repeatSpiralRadius;
+	cl_float3 repeatWaveAmplitude;
+	cl_float3 repeatWaveFrequency;
+	cl_float3 repeatWavePhase;
+	cl_int repeatWaveAxis;
+	// Deformers
+	cl_int deformBendEnable;
+	cl_float deformBendAngle;
+	cl_int deformBendAxis;
+	cl_int deformTwistEnable;
+	cl_float deformTwistAngle;
+	cl_int deformTwistAxis;
+	cl_int deformTaperEnable;
+	cl_float deformTaperRate;
+	cl_int deformTaperAxis;
 } sObjectDataCl;
 
 #endif /* MANDELBULBER2_OPENCL_OBJECT_DATA_CL_H_ */

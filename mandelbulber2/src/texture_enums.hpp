@@ -55,6 +55,15 @@ enum enumTextureSelection
 	texTransparency = 5,
 	texTransparencyAlpha = 6
 };
+
+enum enumFractalizeShape
+{
+	fractalizeShapeCube = 0,
+	fractalizeShapeSphere = 1,
+	fractalizeShapeCross = 2,
+	fractalizeShapeLine = 3,
+	fractalizeShapePlane = 4
+};
 } // namespace texture
 
 #endif /* MANDELBULBER2_SRC_TEXTURE_ENUMS_HPP_ */

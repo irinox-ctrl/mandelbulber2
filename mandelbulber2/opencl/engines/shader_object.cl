@@ -133,6 +133,9 @@ float3 ObjectShader(__constant sClInConstants *consts, sRenderData *renderData,
 	// Single Trap Light v1 (apart systeem - additief, geen materiaal-modulatie)
 	float3 singleTrap = SingleTrapLightShaderGPU(consts, input->point);
 
+	// Glow Sphere - visible light source
+	float3 glowSphere = GlowSphereShaderGPU(consts, input->point);
+
 	float3 iridescence = 1.0f;
 #ifdef USE_IRIDESCENCE
 	if (input->material->iridescenceEnabled)
@@ -191,7 +194,7 @@ float3 ObjectShader(__constant sClInConstants *consts, sRenderData *renderData,
 	*outLuminosityEmissive = luminosity * input->material->luminosityEmissive;
 
 	color = surfaceColor * (fillLight + auxLights + fakeLights + AO) + envMapping + totalSpecular
-					+ luminosity + singleTrap;
+					+ luminosity + singleTrap + glowSphere;
 	*outSpecular = totalSpecular;
 
 	*outSurfaceColor = surfaceColor;

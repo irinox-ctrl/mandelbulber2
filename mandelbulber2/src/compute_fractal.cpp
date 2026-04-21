@@ -74,6 +74,15 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 
 	double orbitTrapTotal = 0.0;
 	out->orbitTrapR = 0.0;
+	out->orbitTrapMinIter = 0;
+	out->orbitTrapCenterIndex = 0;
+	double orbitTrapMinDist = 1e30;
+	out->orbitSampleCount = 0;
+	for (int s = 0; s < sFractalOut::maxOrbitSamples; s++)
+	{
+		out->orbitSamples[s] = CVector3(0.0, 0.0, 0.0);
+		out->orbitSampleIters[s] = 0;
+	}
 
 	enumFractalFormula formula = fractal::none;
 
@@ -109,6 +118,8 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 	CVector4 lastGoodZ;
 	CVector4 lastZ;
 	CVector4 lastLastZ;
+	CVector4 autoTrapCenter(0, 0, 0, 0);  // for auto-center mode
+	bool autoTrapCenterSet = false;
 
 	int fakeLightsMinIter = in.common->fakeLightsMinIter;
 	int fakeLightsMaxIter = in.common->fakeLightsMaxIter;
@@ -389,17 +400,105 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 				}
 			}
 
+			// Auto-center: capture z at specified iteration
+			if (Mode == calcModeOrbitTrap && !autoTrapCenterSet
+				&& in.common->fakeLightsCenterIteration > 0
+				&& i == in.common->fakeLightsCenterIteration)
+			{
+				autoTrapCenter = z;
+				autoTrapCenterSet = true;
+			}
+
+
+			// Store orbit samples at evenly spaced intervals
+			if (Mode == calcModeCubeOrbitTrap && maxN > 0)
+			{
+				int sampleInterval = max(1, maxN / sFractalOut::maxOrbitSamples);
+				if (i % sampleInterval == 0 && out->orbitSampleCount < sFractalOut::maxOrbitSamples)
+				{
+					out->orbitSamples[out->orbitSampleCount] = z.GetXYZ();
+					out->orbitSampleIters[out->orbitSampleCount] = i;
+					out->orbitSampleCount++;
+				}
+			}
 			else if (Mode == calcModeOrbitTrap)
 			{
-				// V2: Positioning mode (FractalCenter handled here, Camera/Target in shader)
-				CVector4 zAdj = z;
-				if (in.common->fakeLightsPositionMode == params::fakeLightsPositionFractalCenter)
+				CVector4 trapPoint;
+				if (autoTrapCenterSet)
 				{
-					zAdj = z - aux.const_c;
+					trapPoint = z - autoTrapCenter; // relatief aan iteratie N
 				}
-				double distance = OrbitTrapShapeDistance(zAdj, in.common);
+				else if (in.common->fakeLightsRelativeCenter)
+				{
+					trapPoint = z - aux.const_c;
+				}
+				else
+				{
+					trapPoint = z;
+				}
+				double distance;
+				int minCenterIndex = 0;
+				if (in.common->fakeLightsMultiCenterEnabled)
+				{
+					// Multi-center: evaluate distance to all 4 trap positions, take weighted minimum
+					distance = 1e30;
+					for (int mc = 0; mc < 4; mc++)
+					{
+						if (in.common->fakeLightsMultiCenterWeight[mc] <= 0.0) continue;
+
+						// Tijdelijk de trap positie overschrijven
+						// OrbitTrapShapeDistance berekent: delta = z - par->fakeLightsOrbitTrap
+						// We willen: delta = trapPoint - multiCenter[mc]
+						// Dus: geef (trapPoint - multiCenter[mc] + par->fakeLightsOrbitTrap) als input
+						CVector4 shiftedPoint = trapPoint
+							- CVector4(in.common->fakeLightsMultiCenter[mc], 0.0)
+							+ CVector4(in.common->fakeLightsOrbitTrap, 0.0);
+
+						double d = OrbitTrapShapeDistance(shiftedPoint, in.common);
+						d /= in.common->fakeLightsMultiCenterWeight[mc];
+						if (d < distance)
+						{
+							distance = d;
+							minCenterIndex = mc;
+						}
+					}
+				}
+				else
+				{
+					distance = OrbitTrapShapeDistance(trapPoint, in.common);
+				}
+
 				if (i >= fakeLightsMinIter && i <= fakeLightsMaxIter)
-					orbitTrapTotal += (1.0 / (distance * distance));
+				{
+					double contribution;
+					switch (in.common->fakeLightsDecayFunction)
+					{
+						case params::fakeLightsDecay1R:
+							contribution = 1.0 / (distance + 1e-30);
+							break;
+						case params::fakeLightsDecay1R3:
+							contribution = 1.0 / (distance * distance * distance + 1e-30);
+							break;
+						case params::fakeLightsDecayLinear:
+							contribution = max(1.0 - distance * 0.1, 0.0);
+							break;
+						case params::fakeLightsDecayExp:
+							contribution = exp(-distance);
+							break;
+						default: // fakeLightsDecay1R2
+							contribution = 1.0 / (distance * distance + 1e-30);
+							break;
+					}
+					orbitTrapTotal += contribution;
+
+					// Track which iteration had the closest approach
+					if (distance < orbitTrapMinDist)
+					{
+						orbitTrapMinDist = distance;
+						out->orbitTrapMinIter = i;
+						out->orbitTrapCenterIndex = minCenterIndex;
+					}
+				}
 				if (distance > fractals.GetBailout(sequence))
 				{
 					out->orbitTrapR = orbitTrapTotal;
@@ -410,22 +509,98 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 			{
 				if (i >= in.material->textureFractalizeStartIteration)
 				{
-					double size = in.material->textureFractalizeCubeSize;
-					CVector3 zz = z.GetXYZ() - pointTransformed;
-					if (zz.x > -size && zz.x < size && zz.y > -size && zz.y < size && zz.z > -size
-							&& zz.z < size)
+					double size = in.material->textureFractalizeCubeSize * in.material->textureFractalizeSizeMultiplier;
+					// Use orbit trap position parameter to offset the trap center
+					CVector3 trapCenter = pointTransformed + in.material->textureFractalizeOrbitTrapPosition;
+					CVector3 zz = z.GetXYZ() - trapCenter;
+					bool trapHit = false;
+
+
+					switch (in.material->textureFractalizeShape)
 					{
-						out->colorIndex = (fabs(z.x - size) + fabs(z.y - size) + fabs(z.z - size)) * 100.0;
+						case texture::fractalizeShapeCube:
+						{
+							if (zz.x > -size && zz.x < size && zz.y > -size && zz.y < size && zz.z > -size
+									&& zz.z < size)
+							{
+								trapHit = true;
+							}
+							break;
+						}
+						case texture::fractalizeShapeSphere:
+						{
+							if (zz.Length() < size)
+							{
+								trapHit = true;
+							}
+							break;
+						}
+						case texture::fractalizeShapeCross:
+						{
+							double minDist = dMin(fabs(zz.x), fabs(zz.y), fabs(zz.z));
+							if (minDist < size)
+							{
+								trapHit = true;
+							}
+							break;
+						}
+						case texture::fractalizeShapeLine:
+						{
+							// Line along Z axis by default (user can rotate with texture rotation)
+							double distFromLine = sqrt(zz.x * zz.x + zz.y * zz.y);
+							if (distFromLine < size)
+							{
+								trapHit = true;
+							}
+							break;
+						}
+						case texture::fractalizeShapePlane:
+						{
+							// Plane at Z=0 by default (user can rotate with texture rotation)
+							if (fabs(zz.z) < size)
+							{
+								trapHit = true;
+							}
+							break;
+						}
+					}
+
+					if (trapHit)
+					{
+						// Continuous SDF: calculate actual distance and weight
+						double dx = fabs(zz.x) - size;
+						double dy = fabs(zz.y) - size;
+						double dz = fabs(zz.z) - size;
+						double dist = max(dx, max(dy, dz));
+						double softness = size * 0.1;
+						if (softness < 1e-10) softness = 1e-10;
+						double weight = 1.0 / (1.0 + exp(dist / softness));
+
+						// Continuous color index based on SDF distance (not binary)
+						out->colorIndex = (fabs(dist) / size) * 100.0;
 						out->iters = i + 1;
-						out->z = z.GetXYZ();
-						return;
+
+						// Blend z toward trap center based on weight for smoother texture coords
+						double blend = (weight - 0.5) * 2.0;  // 0..1
+						if (blend < 0.0) blend = 0.0;
+						if (blend > 1.0) blend = 1.0;
+						CVector3 zNormalized = z.GetXYZ();
+						double zLen = z.Length();
+						if (zLen > 0.0) zNormalized = zNormalized / zLen;
+						out->z = z.GetXYZ() * blend + zNormalized * (1.0 - blend);
+						// If iteration blending disabled, return immediately (old behavior)
+						if (!in.material->textureFractalizeIterationBlend)
+						{
+							return;
+						}
+						// else: continue iterating, will use last trap hit
 					}
 				}
 				if (aux.r > in.material->textureFractalizeCubeSize * 100.0)
 				{
 					out->colorIndex = 0.0;
 					out->iters = i + 1;
-					out->z = z.GetXYZ() / z.Length();
+					out->z = z.GetXYZ(); // Keep actual z position instead of normalizing to unit sphere
 					return;
 				}
 			}

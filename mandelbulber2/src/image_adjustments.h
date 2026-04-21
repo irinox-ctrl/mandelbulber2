@@ -44,6 +44,16 @@ struct sImageAdjustments
 	float imageGamma{1.0};
 	float saturation{1.0};
 	bool hdrEnabled{false};
+
+	// Extended tone mapping and post-processing
+	int toneMappingMode{0};
+	float toneExposure{1.0f};
+	float colorTemperature{6500.0f};
+	float blackPoint{0.0f};
+	float whitePoint{1.0f};
+	float vignetteIntensity{0.0f};
+	float vignetteRadius{1.0f};
+	float sharpenIntensity{0.0f};
 };
 
 #endif /* MANDELBULBER2_SRC_IMAGE_ADJUSTMENTS_H_ */

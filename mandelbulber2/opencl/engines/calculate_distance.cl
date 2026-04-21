@@ -94,6 +94,7 @@ formulaOut CalculateDistance(__constant sClInConstants *consts, float3 point,
 	out.distance = 0.0f;
 	out.colorIndex = 0.0f;
 	out.orbitTrapR = 0.0f;
+	out.orbitTrapCenterIndex = 0;
 	out.maxiter = false;
 	out.objectId = 0;
 
@@ -348,6 +349,7 @@ formulaOut CalculateDistance(__constant sClInConstants *consts, float3 point,
 	out.distance = 0.0f;
 	out.colorIndex = 0.0f;
 	out.orbitTrapR = 0.0f;
+	out.orbitTrapCenterIndex = 0;
 	out.maxiter = false;
 	out.objectId = 0;
 
@@ -514,6 +516,14 @@ formulaOut CalculateDistance(__constant sClInConstants *consts, float3 point,
 		calcParam->normalCalculationMode, &closestObjectId, -1);
 	out.objectId = closestObjectId;
 #endif
+
+	// Glow Sphere - add as solid object to ray-marching
+	float glowSphereDist = GlowSphereDistanceGPU(consts, point);
+	if (glowSphereDist < dist)
+	{
+		dist = glowSphereDist;
+		out.objectId = -2;  // special ID for glow sphere
+	}
 
 #ifdef LIMITS_ENABLED
 	if (limitBoxDist < calcParam->detailSize)

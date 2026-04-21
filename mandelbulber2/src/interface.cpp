@@ -46,6 +46,7 @@
 #include "common_math.h"
 #include "dof.hpp"
 #include "error_message.hpp"
+#include "files.h"
 #include "fractparams.hpp"
 #include "global_data.hpp"
 #include "headless.h"
@@ -2197,6 +2198,7 @@ bool cInterface::CheckForMissingTextures()
 	for (const QString &parameterName : listOfTextureParameters)
 	{
 		QString textureFile = gPar->Get<QString>(parameterName);
+		textureFile = FilePathHelperTextures(textureFile);
 		QFileInfo fi(textureFile);
 		if (!textureFile.contains("%") && !textureFile.contains("https://")
 				&& !textureFile.contains("http://") && (!fi.exists(textureFile) || fi.isDir()))

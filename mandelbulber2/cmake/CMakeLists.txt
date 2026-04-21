@@ -47,6 +47,25 @@ find_package(PNG REQUIRED)
 find_package(GSL REQUIRED)
 find_package(LZO REQUIRED)
 
+# MPFR library for GPU perturbation theory (deep zoom)
+# Provides arbitrary precision arithmetic for reference orbit calculation
+find_package(PkgConfig)
+if(PKG_CONFIG_FOUND)
+	pkg_check_modules(MPFR mpfr)
+	pkg_check_modules(GMP gmp)
+endif()
+if(NOT MPFR_FOUND)
+	# Fallback: try to find manually
+	find_path(MPFR_INCLUDE_DIR mpfr.h)
+	find_library(MPFR_LIBRARY mpfr)
+	find_library(GMP_LIBRARY gmp)
+	if(MPFR_INCLUDE_DIR AND MPFR_LIBRARY AND GMP_LIBRARY)
+		set(MPFR_FOUND TRUE)
+		set(MPFR_LIBRARIES ${MPFR_LIBRARY} ${GMP_LIBRARY})
+		set(MPFR_INCLUDE_DIRS ${MPFR_INCLUDE_DIR})
+	endif()
+endif()
+
 # Find other optional libraries.
 find_package(TIFF)
 find_package(JPEG)
@@ -95,6 +114,17 @@ qt5_use_modules(mandelbulber2 Core Widgets Network Gui UiTools Test Multimedia)
 # Link other required libraries.
 include_directories(${PNG_INCLUDE_DIR} ${GSL_INCLUDE_DIRS} ${LZO_INCLUDE_DIR})
 target_link_libraries(mandelbulber2 ${PNG_LIBRARY} ${GSL_LIBRARIES} ${LZO_LIBRARIES})
+
+# Link MPFR if found (optional for GPU perturbation/deep zoom)
+IF(MPFR_FOUND)
+	message(STATUS "MPFR library found - GPU perturbation/deep zoom enabled")
+	include_directories(${MPFR_INCLUDE_DIRS})
+	target_link_libraries(mandelbulber2 ${MPFR_LIBRARIES})
+	add_definitions(-DUSE_PERTURBATION)
+ELSE()
+	message(WARNING "MPFR library not found - GPU perturbation/deep zoom disabled")
+	message(WARNING "Install with: sudo apt-get install libmpfr-dev libgmp-dev")
+ENDIF()
 
 # Link other optional libraries and set corresponding flag definitions .
 IF(TIFF_FOUND)

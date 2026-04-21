@@ -42,7 +42,6 @@
 #include "opencl_typedefs.h"
 #include "opencl_algebra.h"
 #include "common_params_cl.hpp"
-#include "single_trap_light_cl.hpp"
 #include "image_adjustments_cl.h"
 #include "fractal_cl.h"
 #include "fractparams_cl.hpp"

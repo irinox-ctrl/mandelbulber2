@@ -85,6 +85,8 @@ private slots:
 	void slorChangedWireframeVisibikity(int);
 	void slotChangedCurrentTab(int);
 	void slotContextMenu(const QPoint &screenPoint, int tabIndex);
+	void slotPivotPresetChanged(int index);
+	void slotClonerEnabledChanged(int state);
 
 signals:
 	void signalChangePrimitivePlacementDistance(double);

@@ -100,6 +100,12 @@ void cDockFractal::SynchronizeInterfaceFractals(std::shared_ptr<cParameterContai
 	SynchronizeInterfaceWindow(ui->tabWidget_fractal_hybrid, par, mode);
 	WriteLog("cInterface::SynchronizeInterface: tab_primitives", 3);
 	SynchronizeInterfaceWindow(ui->tab_primitives, par, mode);
+	// Directly synchronize widgetPrimitivesManager to ensure primitive widgets are found
+	cPrimitivesManager *pm = ui->tab_primitives->findChild<cPrimitivesManager *>("widgetPrimitivesManager");
+	if (pm) {
+		SynchronizeInterfaceWindow(pm, par, mode);
+	}
+
 	WriteLog("cInterface::SynchronizeInterface: tab_description", 3);
 	SynchronizeInterfaceWindow(ui->tab_description, par, mode);
 

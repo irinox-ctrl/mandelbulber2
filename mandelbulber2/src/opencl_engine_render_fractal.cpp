@@ -261,6 +261,7 @@ void cOpenClEngineRenderFractal::CreateListOfIncludes(const QStringList &clHeade
 			AddInclude(programEngine, openclEnginePath + "shader_fresnel.cl");
 			AddInclude(programEngine, openclEnginePath + "shader_env_mapping.cl");
 			AddInclude(programEngine, openclEnginePath + "shader_single_trap_light.cl");
+			AddInclude(programEngine, openclEnginePath + "shader_glow_sphere.cl");
 			AddInclude(programEngine, openclEnginePath + "shader_object.cl");
 			if (params->Get<bool>("MC_fog_illumination"))
 			{

@@ -46,6 +46,7 @@
 #include "primitives.h"
 #include "projection_3d.hpp"
 #include "single_trap_light.hpp"
+#include "glow_sphere.hpp"
 
 // forward declarations
 class cObjectData;
@@ -174,6 +175,7 @@ struct sParamRender
 	sRGBFloat fakeLightsColor;
 	sRGBFloat fakeLightsColor2;
 	sRGBFloat fakeLightsColor3;
+	sRGBFloat fakeLightsMultiCenterColor[4];
 	sRGBFloat fillLightColor;
 	sRGBFloat fogColor;
 	sRGBFloat glowColor1;
@@ -299,6 +301,9 @@ struct sParamRender
 
 	// Single Trap Light v1 (separate system)
 	sSingleTrapLight singleTrapLight0;
+
+	// Glow Sphere - simple placeable light
+	sGlowSphere glowSphere1;
 };
 
 #endif /* MANDELBULBER2_SRC_FRACTPARAMS_HPP_ */

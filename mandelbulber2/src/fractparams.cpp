@@ -130,6 +130,11 @@ sParamRender::sParamRender(const std::shared_ptr<cParameterContainer> container,
 	fakeLightsColor = toRGBFloat(container->Get<sRGB>("fake_lights_color"));
 	fakeLightsColor2 = toRGBFloat(container->Get<sRGB>("fake_lights_color_2"));
 	fakeLightsColor3 = toRGBFloat(container->Get<sRGB>("fake_lights_color_3"));
+	for (int mc = 0; mc < 4; mc++)
+	{
+		fakeLightsMultiCenterColor[mc] =
+			toRGBFloat(container->Get<sRGB>(QString("fake_lights_multi_center_color_%1").arg(mc + 1)));
+	}
 	fakeLightsEnabled = container->Get<bool>("fake_lights_enabled");
 	fakeLightsIntensity = container->Get<double>("fake_lights_intensity");
 	fakeLightsVisibility = container->Get<double>("fake_lights_visibility");
@@ -418,6 +423,90 @@ sParamRender::sParamRender(const std::shared_ptr<cParameterContainer> container,
 	common.fakeLightsShapeWaveZ = container->Get<double>("fake_lights_shape_wave_z");
 	common.fakeLightsShapeWaveFrequency = container->Get<double>("fake_lights_shape_wave_frequency");
 	common.fakeLightsTransitionSpeed = container->Get<double>("fake_lights_transition_speed");
+	common.fakeLightsTransitionSourceMode =
+		params::enumFakeLightsPositionMode(container->Get<int>("fake_lights_transition_source_mode"));
+	common.fakeLightsTransitionBlend = container->Get<double>("fake_lights_transition_blend");
+
+	// V2: Transition interpolation - update blend factor and compute blended orbit trap
+	if (common.fakeLightsTransitionSpeed > 0.0)
+	{
+		auto calculateModePosition = [&](int modeIdx) -> CVector3 {
+			const sFakeLightsModeParams &m = common.fakeLightsModes[modeIdx];
+			CRotationMatrix mRot;
+			mRot.SetRotation2(m.rotation * M_PI / 180.0);
+			CVector3 trap = m.offset + mRot.RotateVector(common.fakeLightsOrbitTrap * m.scale);
+			switch (modeIdx)
+			{
+				case params::fakeLightsPositionCamera:
+					return camera + trap;
+				case params::fakeLightsPositionTarget:
+					return target + trap;
+				case params::fakeLightsPositionPathCircle:
+				{
+					double angle = m.rotation.y * M_PI / 180.0;
+					CVector3 pathOffset(cos(angle) * m.pathRadius, 0.0, sin(angle) * m.pathRadius);
+					return trap + pathOffset;
+				}
+				case params::fakeLightsPositionPathSpiral:
+				{
+					double angle = m.rotation.y * M_PI / 180.0;
+					double yOffset = angle * m.pathRadius * 0.1;
+					CVector3 pathOffset(cos(angle) * m.pathRadius, yOffset, sin(angle) * m.pathRadius);
+					return trap + pathOffset;
+				}
+				case params::fakeLightsPositionOrbitTarget:
+				{
+					double angle = m.rotation.y * M_PI / 180.0;
+					CVector3 pathOffset(cos(angle) * m.pathRadius, 0.0, sin(angle) * m.pathRadius);
+					return target + trap + pathOffset;
+				}
+				default: // World and FractalCenter
+					return trap;
+			}
+		};
+
+		int currentMode = common.fakeLightsPositionMode;
+		int sourceMode = common.fakeLightsTransitionSourceMode;
+
+		if (sourceMode < 0 || sourceMode > 6) sourceMode = currentMode;
+
+		if (sourceMode != currentMode)
+		{
+			// Transition in progress or just started
+			if (common.fakeLightsTransitionBlend >= 1.0)
+				common.fakeLightsTransitionBlend = 0.0;
+
+			common.fakeLightsTransitionBlend += common.fakeLightsTransitionSpeed * 0.05;
+			if (common.fakeLightsTransitionBlend >= 1.0)
+			{
+				common.fakeLightsTransitionBlend = 1.0;
+				common.fakeLightsTransitionSourceMode = params::enumFakeLightsPositionMode(currentMode);
+			}
+		}
+		else
+		{
+			common.fakeLightsTransitionBlend = 1.0;
+		}
+
+		CVector3 sourcePos = calculateModePosition(sourceMode);
+		CVector3 targetPos = calculateModePosition(currentMode);
+		double blend = common.fakeLightsTransitionBlend;
+		common.fakeLightsOrbitTrap = sourcePos * (1.0 - blend) + targetPos * blend;
+		common.fakeLightsOrbitTrapPreTransformed = true;
+
+		// Write back to container so next frame continues the transition
+		container->Set("fake_lights_transition_source_mode", int(common.fakeLightsTransitionSourceMode));
+		container->Set("fake_lights_transition_blend", common.fakeLightsTransitionBlend);
+	}
+	else
+	{
+		// Instant transition
+		common.fakeLightsTransitionBlend = 1.0;
+		common.fakeLightsTransitionSourceMode = common.fakeLightsPositionMode;
+		common.fakeLightsOrbitTrapPreTransformed = false;
+		container->Set("fake_lights_transition_source_mode", int(common.fakeLightsPositionMode));
+		container->Set("fake_lights_transition_blend", 1.0);
+	}
 
 	// Single Trap Light v1 (separate system)
 	singleTrapLight0.enabled = container->Get<bool>("single_trap_light_0_enabled");
@@ -427,6 +516,14 @@ sParamRender::sParamRender(const std::shared_ptr<cParameterContainer> container,
 	singleTrapLight0.radius = container->Get<double>("single_trap_light_0_radius");
 	singleTrapLight0.color = container->Get<sRGB>("single_trap_light_0_color");
 	singleTrapLight0.intensity = container->Get<double>("single_trap_light_0_intensity");
+
+	// Glow Sphere
+	glowSphere1.enabled = container->Get<bool>("glow_sphere_1_enabled");
+	glowSphere1.position = container->Get<CVector3>("glow_sphere_1_position");
+	glowSphere1.rotation = container->Get<CVector3>("glow_sphere_1_rotation");
+	glowSphere1.radius = container->Get<double>("glow_sphere_1_radius");
+	glowSphere1.color = container->Get<sRGB>("glow_sphere_1_color");
+	glowSphere1.intensity = container->Get<double>("glow_sphere_1_intensity");
 
 	// formula = Get<int>("tile_number");
 }

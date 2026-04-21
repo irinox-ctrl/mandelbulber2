@@ -19,6 +19,10 @@ cObjectsTreeWidget::cObjectsTreeWidget(QWidget *parent)
 
 	connect(
 		ui->pushButton_refresh, &QPushButton::clicked, this, &cObjectsTreeWidget::pressedRefreshButton);
+
+	// Hide non-functional add/delete buttons (primitives are managed via PrimitivesManager)
+	ui->pushButton_add->setVisible(false);
+	ui->pushButton_delete->setVisible(false);
 }
 
 cObjectsTreeWidget::~cObjectsTreeWidget()

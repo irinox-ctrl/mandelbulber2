@@ -88,8 +88,12 @@ cMaterial::cMaterial()
 	iridescenceIntensity = 0.0;
 	iridescenceSubsurfaceThickness = 0.0;
 	textureFractalizeStartIteration = 0;
+	textureFractalizeShape = 0;
 	textureFractalize = false;
 	textureFractalizeCubeSize = 0.0;
+	textureFractalizeSizeMultiplier = 1.0;
+	textureFractalizeOrbitTrapPosition = CVector3(0.0, 0.0, 0.0);
+	textureFractalizeIterationBlend = false;
 	roughSurface = false;
 	insideColoringEnable = false;
 	subsurfaceScattering = false;
@@ -424,6 +428,10 @@ void cMaterial::setParameters(int _id, const std::shared_ptr<cParameterContainer
 
 	textureFractalize = materialParam->Get<bool>(Name("texture_fractalize", id));
 	textureFractalizeCubeSize = materialParam->Get<double>(Name("texture_fractalize_cube_size", id));
+	textureFractalizeShape = materialParam->Get<int>(Name("texture_fractalize_shape", id));
+	textureFractalizeSizeMultiplier = materialParam->Get<double>(Name("texture_fractalize_size_multiplier", id));
+	textureFractalizeOrbitTrapPosition = materialParam->Get<CVector3>(Name("texture_fractalize_orbit_trap_position", id));
+	textureFractalizeIterationBlend = materialParam->Get<bool>(Name("texture_fractalize_iteration_blend", id));
 	textureFractalizeStartIteration =
 		materialParam->Get<int>(Name("texture_fractalize_start_iteration", id));
 

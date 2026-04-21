@@ -12,6 +12,9 @@ enum class enumNodeType
 {
 	fractal = 1,
 	primitive = 2,
+	light = 3,
+	effect = 4,
+	material = 5,
 	hybrid = 10,
 	booleanAdd = 11,
 	booleanMul = 12,

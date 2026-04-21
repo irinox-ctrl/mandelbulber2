@@ -612,6 +612,60 @@ float4 VolumetricShader(__constant sClInConstants *consts, sRenderData *renderDa
 #ifdef FAKE_LIGHTS
 		// fake lights (orbit trap)
 		{
+			// V2: Adjust orbit trap position for all modes using per-mode params
+			float3 orbitTrapAdjusted;
+			if (consts->params.common.fakeLightsOrbitTrapPreTransformed)
+			{
+				orbitTrapAdjusted = consts->params.common.fakeLightsOrbitTrap;
+			}
+			else
+			{
+				float3 baseOrbitTrap = consts->params.common.fakeLightsOrbitTrap;
+				int posMode = consts->params.common.fakeLightsPositionMode;
+				sFakeLightsModeParamsCl modeParams = consts->params.common.fakeLightsModes[posMode];
+				float3 transformedTrap = Matrix33MulFloat3(modeParams.mRot, baseOrbitTrap * modeParams.scale)
+					+ modeParams.offset;
+
+				if (posMode == 1) // Camera Relative
+				{
+					orbitTrapAdjusted = consts->params.camera + transformedTrap;
+				}
+				else if (posMode == 2) // Target Point
+				{
+					orbitTrapAdjusted = consts->params.target + transformedTrap;
+				}
+				else if (posMode == 4) // Path Circle
+				{
+					orbitTrapAdjusted = transformedTrap;
+					float angle = modeParams.rotation.y * M_PI_F / 180.0f;
+					float3 pathOffset = (float3){cos(angle) * modeParams.pathRadius, 0.0f, sin(angle) * modeParams.pathRadius};
+					orbitTrapAdjusted += pathOffset;
+				}
+				else if (posMode == 5) // Path Spiral
+				{
+					orbitTrapAdjusted = transformedTrap;
+					float angle = modeParams.rotation.y * M_PI_F / 180.0f;
+					float yOffset = angle * modeParams.pathRadius * 0.1f;
+					float3 pathOffset = (float3){cos(angle) * modeParams.pathRadius, yOffset, sin(angle) * modeParams.pathRadius};
+					orbitTrapAdjusted += pathOffset;
+				}
+				else if (posMode == 6) // Orbit Around Target
+				{
+					orbitTrapAdjusted = transformedTrap;
+					float angle = modeParams.rotation.y * M_PI_F / 180.0f;
+					float3 pathOffset = (float3){cos(angle) * modeParams.pathRadius, 0.0f, sin(angle) * modeParams.pathRadius};
+					orbitTrapAdjusted = consts->params.target + orbitTrapAdjusted + pathOffset;
+				}
+				else // World (0) and Fractal Center (3)
+				{
+					orbitTrapAdjusted = transformedTrap;
+				}
+			}
+
+			// Store original values to restore later
+			float3 originalOrbitTrap = calcParam->orbitTrap;
+			int originalOrbitTrapIndex = calcParam->orbitTrapIndex;
+
 			int fakeLightMaxLoop = 1;
 			if (consts->params.common.fakeLightsColor2Enabled) fakeLightMaxLoop = 2;
 			if (consts->params.common.fakeLightsColor3Enabled) fakeLightMaxLoop = 3;
@@ -619,6 +673,7 @@ float4 VolumetricShader(__constant sClInConstants *consts, sRenderData *renderDa
 			for (int fakeLightLoop = 0; fakeLightLoop < fakeLightMaxLoop; fakeLightLoop++)
 			{
 				calcParam->orbitTrapIndex = fakeLightLoop;
+				calcParam->orbitTrap = orbitTrapAdjusted; // V2: Use adjusted orbit trap
 				formulaOut outF;
 				outF = Fractal(consts, input2.point, calcParam, calcModeOrbitTrap, NULL, -1);
 				float r = outF.orbitTrapR;
@@ -627,6 +682,23 @@ float4 VolumetricShader(__constant sClInConstants *consts, sRenderData *renderDa
 													/ (pow(r, 10.0f / consts->params.fakeLightsVisibilitySize)
 															 * pow(10.0f, 10.0f / consts->params.fakeLightsVisibilitySize)
 														 + 0.1f);
+
+				// V2: Distance-based intensity mask
+				float maskRadius = consts->params.common.fakeLightsShapeMaskRadius;
+				float maskSoftness = consts->params.common.fakeLightsShapeMaskSoftness;
+				if (maskRadius > 1e-10f)
+				{
+					float edge = maskRadius + maskSoftness;
+					float factor = 1.0f;
+					if (r < maskRadius)
+						factor = 0.0f;
+					else if (r < edge && maskSoftness > 1e-10f)
+						factor = (r - maskRadius) / maskSoftness;
+					if (factor < 0.0f) factor = 0.0f;
+					if (factor > 1.0f) factor = 1.0f;
+					fakeLight *= factor;
+				}
+
 				float3 light = fakeLight * step * consts->params.fakeLightsVisibility;
 #ifdef CLOUDS
 				light *= 1.0f + consts->params.cloudsLightsBoost * cloudDensity;
@@ -644,6 +716,10 @@ float4 VolumetricShader(__constant sClInConstants *consts, sRenderData *renderDa
 				output += light * color;
 				out4.s3 += fakeLight * step * consts->params.fakeLightsVisibility;
 			}
+
+			// V2: Restore original orbit trap
+			calcParam->orbitTrap = originalOrbitTrap;
+			calcParam->orbitTrapIndex = originalOrbitTrapIndex;
 		}
 #endif // FAKE_LIGHTS
 

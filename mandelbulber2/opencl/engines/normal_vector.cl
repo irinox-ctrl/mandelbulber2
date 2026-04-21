@@ -84,6 +84,7 @@ float3 NormalVector(__constant sClInConstants *consts, sRenderData *renderData, 
 	out.distance = 0.0f;
 	out.colorIndex = 0.0f;
 	out.orbitTrapR = 0.0f;
+	out.orbitTrapCenterIndex = 0;
 	out.maxiter = false;
 	out.objectId = 0;
 

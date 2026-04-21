@@ -77,13 +77,20 @@ struct sFractalIn
 struct sFractalOut
 {
 	CVector3 z;
-	CVector3 normal;  // Fractal normal vector (used by sphere orbit trap)
+	CVector3 normal; // Fractal normal vector (used by sphere orbit trap)
 	double distance;
 	double colorIndex;
 	double fakeAO;
 	double orbitTrapR;
 	int iters;
 	bool maxiter;
+	int orbitTrapMinIter;  // iteration at which orbit trap distance was smallest
+	int orbitTrapCenterIndex;  // multi-center index (0-3) that had minimum distance
+	// Orbit sample buffer for multi-depth texture blending
+	static const int maxOrbitSamples = 4;
+	CVector3 orbitSamples[4];   // z-snapshots at 4 iteration depths
+	int orbitSampleIters[4];    // at which iteration each sample was taken
+	int orbitSampleCount;       // valid samples (0-4)
 };
 
 template <fractal::enumCalculationMode Mode>

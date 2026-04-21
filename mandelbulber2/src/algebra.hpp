@@ -111,6 +111,119 @@ public:
 		if (vector.Length() == 0.0) return *this;
 		return (((*this - vector * 0.5) % vector) + vector) % vector - vector * 0.5;
 	}
+	inline CVector3 repeatModMirror(const CVector3 &vector) const
+	{
+		if (vector.Length() == 0.0) return *this;
+		CVector3 half = vector * 0.5;
+		CVector3 modded = (((*this - half) % vector) + vector) % vector - half;
+		return CVector3(
+			(modded.x < 0.0 ? -modded.x : modded.x),
+			(modded.y < 0.0 ? -modded.y : modded.y),
+			(modded.z < 0.0 ? -modded.z : modded.z));
+	}
+	inline CVector3 repeatModRotation(const CVector3 &vector, double stepDegrees) const
+	{
+		if (vector.Length() == 0.0) return *this;
+		CVector3 modded = repeatMod(vector);
+		// Rotate modded point around Z axis by step
+		double angle = stepDegrees * M_PI / 180.0;
+		double cosA = cos(angle);
+		double sinA = sin(angle);
+		CVector3 rotated;
+		rotated.x = modded.x * cosA - modded.y * sinA;
+		rotated.y = modded.x * sinA + modded.y * cosA;
+		rotated.z = modded.z;
+		return rotated;
+	}
+	inline CVector3 repeatModFibonacci(int count, double spread) const
+	{
+		(void)count;
+		(void)spread;
+		if (Length() == 0.0) return *this;
+		// Golden angle ~137.5 degrees
+		const double goldenAngle = M_PI * (3.0 - sqrt(5.0));
+		// Project to polar-like coordinates based on distance from origin
+		double r = Length();
+		double theta = atan2(y, x);
+		// Quantize radius into fibonacci rings
+		double ringSpacing = spread * 0.5;
+		int ring = int(r / ringSpacing);
+		if (ring < 1) ring = 1;
+		double targetR = ring * ringSpacing;
+		// Distribute angle based on golden ratio
+		double targetTheta = fmod(ring * goldenAngle + theta, 2.0 * M_PI);
+		// Snap point to nearest fibonacci lattice point
+		CVector3 snapped(targetR * cos(targetTheta), targetR * sin(targetTheta), z);
+		return snapped;
+	}
+	inline CVector3 repeatModBrick(const CVector3 &vector) const
+	{
+		if (vector.Length() == 0.0) return *this;
+		CVector3 modded = repeatMod(vector);
+		// Alternate offset every other cell in Y, and every 4th in Z
+		int cellY = int(floor(y / vector.y));
+		int cellZ = int(floor(z / vector.z));
+		if (cellY % 2 != 0) modded.x += vector.x * 0.5;
+		if (cellZ % 4 != 0) modded.x += vector.x * 0.25;
+		return modded;
+	}
+	inline CVector3 repeatModHoneycomb(const CVector3 &vector) const
+	{
+		if (vector.Length() == 0.0) return *this;
+		// Hexagonal tiling in XY plane
+		double hexW = vector.x;
+		double hexH = vector.y * sqrt(3.0) / 2.0;
+		int row = int(floor(y / hexH));
+		double offsetX = (row % 2) * hexW * 0.5;
+		double localX = x - offsetX;
+		int col = int(floor(localX / hexW));
+		CVector3 modded(localX - col * hexW, y - row * hexH, z);
+		// Fold back offset
+		modded.x += offsetX;
+		return modded;
+	}
+	inline CVector3 repeatModSpiral(
+		const CVector3 &vector, const CVector3 &step, const CVector3 &angle, const CVector3 &radius) const
+	{
+		(void)angle;
+		(void)radius;
+		if (vector.Length() == 0.0) return *this;
+		CVector3 modded = repeatMod(vector);
+		// Archimedean spiral offset based on cell index
+		int cellX = int(floor(x / vector.x));
+		int cellY = int(floor(y / vector.y));
+		int cellZ = int(floor(z / vector.z));
+		int cellIdx = cellX + cellY * 10 + cellZ * 100;
+		double t = cellIdx * 0.1;
+		modded.x += step.x * t * cos(t);
+		modded.y += step.y * t * sin(t);
+		modded.z += step.z * t;
+		return modded;
+	}
+	inline CVector3 repeatModWave(
+		const CVector3 &vector, const CVector3 &amplitude, const CVector3 &frequency,
+		const CVector3 &phase, int axis) const
+	{
+		if (vector.Length() == 0.0) return *this;
+		CVector3 modded = repeatMod(vector);
+		// Apply sinusoidal displacement
+		if (axis == 0) // wave along X, displacement in YZ
+		{
+			modded.y += amplitude.y * sin(modded.x * frequency.y + phase.y);
+			modded.z += amplitude.z * sin(modded.x * frequency.z + phase.z);
+		}
+		else if (axis == 1) // wave along Y, displacement in XZ
+		{
+			modded.x += amplitude.x * sin(modded.y * frequency.x + phase.x);
+			modded.z += amplitude.z * sin(modded.y * frequency.z + phase.z);
+		}
+		else // wave along Z, displacement in XY
+		{
+			modded.x += amplitude.x * sin(modded.z * frequency.x + phase.x);
+			modded.y += amplitude.y * sin(modded.z * frequency.y + phase.y);
+		}
+		return modded;
+	}
 	inline CVector3 operator*(const double &scalar) const
 	{
 		return CVector3(x * scalar, y * scalar, z * scalar);

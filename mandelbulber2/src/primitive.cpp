@@ -35,6 +35,8 @@
 #include "primitive.hpp"
 
 #include <cmath>
+#include <QDateTime>
+#include <QDebug>
 
 #include "common_math.h"
 
@@ -51,9 +53,528 @@ sPrimitiveBasic::sPrimitiveBasic(
 	enable = par->Get<bool>(fullName + "_enabled");
 	booleanOperator = enumPrimitiveBooleanOperator(par->Get<int>(fullName + "_boolean_operator"));
 	repeat = par->Get<CVector3>(fullName + "_repeat");
+	scale = par->Get<double>(fullName + "_scale");
 	smoothDeCombineEnable = par->Get<bool>(fullName + "_smooth_de_combine_enable");
 	smoothDeCombineDistance = par->Get<double>(fullName + "_smooth_de_combine_distance");
+	primitiveScale = par->Get<CVector3>(fullName + "_prim_scale");
+	coordinateSpace = par->Get<int>(fullName + "_coordinate_space");
+	pivot = par->Get<CVector3>(fullName + "_pivot");
+	useWorldSpacePivot = par->Get<bool>("use_world_space_pivot");
+
+	// Load 3-point alignment parameters
+	alignP1 = par->Get<CVector3>(fullName + "_align_p1");
+	alignP2 = par->Get<CVector3>(fullName + "_align_p2");
+	alignP3 = par->Get<CVector3>(fullName + "_align_p3");
+
+	// Load cloner settings
+	cloner.enabled = par->Get<bool>(fullName + "_cloner_enabled");
+	cloner.mode = static_cast<ClonerSettings::Mode>(par->Get<int>(fullName + "_cloner_mode"));
+	cloner.count = par->Get<int>(fullName + "_cloner_count");
+	cloner.offset = par->Get<CVector3>(fullName + "_cloner_offset");
+	cloner.radius = par->Get<double>(fullName + "_cloner_radius");
+	cloner.startAngle = par->Get<double>(fullName + "_cloner_start_angle");
+	cloner.endAngle = par->Get<double>(fullName + "_cloner_end_angle");
+	cloner.plane = par->Get<int>(fullName + "_cloner_plane");
+	cloner.gridCount = par->Get<CVector3>(fullName + "_cloner_grid_count");
+	cloner.gridSize = par->Get<CVector3>(fullName + "_cloner_grid_size");
+
+	smoothRadius = par->Get<double>(fullName + "_smooth_radius");
+	mirrorX = par->Get<bool>(fullName + "_mirror_x");
+	mirrorY = par->Get<bool>(fullName + "_mirror_y");
+	mirrorZ = par->Get<bool>(fullName + "_mirror_z");
+	// shellEnable / shellThickness: dead code — empty + wallThickness provides the same functionality
+	// shellEnable = par->Get<bool>(fullName + "_shell_enable");
+	// shellThickness = par->Get<double>(fullName + "_shell_thickness");
+
+	// Load group settings
+	groupId = par->Get<int>(fullName + "_group_id");
+	groupName = par->Get<QString>(fullName + "_group_name");
+	groupEnabled = par->Get<bool>(fullName + "_group_enabled");
+	groupVisible = par->Get<bool>(fullName + "_group_visible");
+	groupLocked = par->Get<bool>(fullName + "_group_locked");
+	groupBooleanOperator = enumPrimitiveBooleanOperator(par->Get<int>(fullName + "_group_boolean_operator"));
+	groupSmoothRadius = par->Get<double>(fullName + "_group_smooth_radius");
+	groupPriority = par->Get<int>(fullName + "_group_priority");
+
+	// Load group transformations
+	groupPosition = par->Get<CVector3>(fullName + "_group_position");
+	groupRotation = par->Get<CVector3>(fullName + "_group_rotation");
+	groupScale = par->Get<CVector3>(fullName + "_group_scale");
+
+	// Load per-primitive material override
+	materialOverrideEnable = par->Get<bool>(fullName + "_material_override_enable");
+	materialColor = par->Get<sRGB>(fullName + "_material_color");
+	materialReflectance = par->Get<double>(fullName + "_material_reflectance");
+	materialTransparency = par->Get<double>(fullName + "_material_transparency");
+	materialSpecular = par->Get<double>(fullName + "_material_specular");
+	materialRoughness = par->Get<double>(fullName + "_material_roughness");
+	materialMetallic = par->Get<double>(fullName + "_material_metallic");
+	materialLuminosity = par->Get<double>(fullName + "_material_luminosity");
+
+	// Load deformation modifiers
+	deformBendEnable = par->Get<bool>(fullName + "_deform_bend_enable");
+	deformBendAngle = par->Get<double>(fullName + "_deform_bend_angle");
+	deformBendAxis = par->Get<int>(fullName + "_deform_bend_axis");
+	deformBendStrength = par->Get<double>(fullName + "_deform_bend_strength");
+	deformBendMode = par->Get<int>(fullName + "_deform_bend_mode");
+	deformBendKeepY = par->Get<bool>(fullName + "_deform_bend_keep_y");
+
+	deformTwistEnable = par->Get<bool>(fullName + "_deform_twist_enable");
+	deformTwistAngle = par->Get<double>(fullName + "_deform_twist_angle");
+	deformTwistAxis = par->Get<int>(fullName + "_deform_twist_axis");
+	deformTwistStrength = par->Get<double>(fullName + "_deform_twist_strength");
+	deformTwistMode = par->Get<int>(fullName + "_deform_twist_mode");
+
+	deformTaperEnable = par->Get<bool>(fullName + "_deform_taper_enable");
+	deformTaperRate = par->Get<double>(fullName + "_deform_taper_rate");
+	deformTaperAxis = par->Get<int>(fullName + "_deform_taper_axis");
+	deformTaperStrength = par->Get<double>(fullName + "_deform_taper_strength");
+	deformTaperCurvature = par->Get<double>(fullName + "_deform_taper_curvature");
+	deformTaperMode = par->Get<int>(fullName + "_deform_taper_mode");
+
+	// Load instance system
+	isInstance = par->Get<bool>(fullName + "_is_instance");
+	instanceMasterId = par->Get<int>(fullName + "_instance_master_id");
+	instanceInheritTransform = par->Get<bool>(fullName + "_instance_inherit_transform");
+
+	// Load boolean edge modification
+	booleanEdgeChamfer = par->Get<double>(fullName + "_boolean_edge_chamfer");
+	booleanEdgeChamferQuality = par->Get<int>(fullName + "_boolean_edge_chamfer_quality");
+
+	// Load extended repeat settings
+	repeatOffset = par->Get<CVector3>(fullName + "_repeat_offset");
+	repeatFinite = par->Get<int>(fullName + "_repeat_finite");
+	repeatFiniteRange = par->Get<CVector3>(fullName + "_repeat_finite_range");
+	repeatRadialCount = par->Get<double>(fullName + "_repeat_radial_count");
+	repeatRadialPlane = par->Get<int>(fullName + "_repeat_radial_plane");
+	repeatMode = par->Get<int>(fullName + "_repeat_mode");
+	repeatRotationStep = par->Get<double>(fullName + "_repeat_rotation_step");
+	repeatFibonacciCount = par->Get<int>(fullName + "_repeat_fibonacci_count");
+	repeatFibonacciSpread = par->Get<double>(fullName + "_repeat_fibonacci_spread");
+	// Spiral repeat
+	repeatSpiralStep = par->Get<CVector3>(fullName + "_repeat_spiral_step");
+	repeatSpiralAngle = par->Get<CVector3>(fullName + "_repeat_spiral_angle");
+	repeatSpiralRadius = par->Get<CVector3>(fullName + "_repeat_spiral_radius");
+	// Wave repeat
+	repeatWaveAmplitude = par->Get<CVector3>(fullName + "_repeat_wave_amplitude");
+	repeatWaveFrequency = par->Get<CVector3>(fullName + "_repeat_wave_frequency");
+	repeatWavePhase = par->Get<CVector3>(fullName + "_repeat_wave_phase");
+	repeatWaveAxis = par->Get<int>(fullName + "_repeat_wave_axis");
+
+	// Load effectors
+	for (int i = 0; i < maxEffectors; i++)
+	{
+		QString effName = fullName + QString("_effector_%1").arg(i + 1);
+		int effType = par->Get<int>(effName + "_type");
+		bool effEnabled = par->Get<bool>(effName + "_enabled");
+		if (effEnabled)
+		{
+			switch (effType)
+			{
+				case 1: // Random Effector
+				{
+					auto *re = new RandomEffector();
+					re->enabled = true;
+					re->mode = static_cast<Effector::Mode>(par->Get<int>(effName + "_mode"));
+					re->strength = par->Get<double>(effName + "_strength");
+					re->seed = par->Get<int>(effName + "_random_seed");
+					re->positionAmp = par->Get<CVector3>(effName + "_random_position_amp");
+					re->rotationAmp = par->Get<CVector3>(effName + "_random_rotation_amp");
+					re->scaleAmp = par->Get<CVector3>(effName + "_random_scale_amp");
+					effectors[i].reset(re);
+					break;
+				}
+				case 2: // Step Effector
+				{
+					auto *se = new StepEffector();
+					se->enabled = true;
+					se->mode = static_cast<Effector::Mode>(par->Get<int>(effName + "_mode"));
+					se->strength = par->Get<double>(effName + "_strength");
+					se->positionStep = par->Get<CVector3>(effName + "_random_position_amp");
+					se->rotationStep = par->Get<CVector3>(effName + "_random_rotation_amp");
+					se->scaleStep = par->Get<CVector3>(effName + "_random_scale_amp");
+					effectors[i].reset(se);
+					break;
+				}
+				case 3: // Formula Effector
+				{
+					auto *fe = new FormulaEffector();
+					fe->enabled = true;
+					fe->mode = static_cast<Effector::Mode>(par->Get<int>(effName + "_mode"));
+					fe->strength = par->Get<double>(effName + "_strength");
+					fe->formulaPreset = par->Get<int>(effName + "_random_seed") % 4;
+					effectors[i].reset(fe);
+					break;
+				}
+				case 4: // Time Effector
+				{
+					auto *te = new TimeEffector();
+					te->enabled = true;
+					te->mode = static_cast<Effector::Mode>(par->Get<int>(effName + "_mode"));
+					te->strength = par->Get<double>(effName + "_strength");
+					te->timeOffset = par->Get<int>(effName + "_random_seed");
+					te->timeScale = par->Get<double>(effName + "_strength");
+					effectors[i].reset(te);
+					break;
+				}
+				default:
+					effectors[i].reset();
+					break;
+			}
+		}
+		else
+		{
+			effectors[i].reset();
+		}
+	}
+
+	// DEBUG: Print shell settings
+	// shellEnable is dead code — empty + wallThickness provides hollow shell functionality
 }
+
+CVector3 sPrimitiveBasic::TransformPoint(const CVector3 &_point) const
+{
+	CVector3 point;
+	if (useWorldSpacePivot)
+	{
+		// WORLD SPACE PIVOT: pivot is absolute world coordinate
+		point = _point - pivot;
+		point = rotationMatrix.RotateVector(point);
+		point = point + pivot;
+		point = point - position;
+	}
+	else
+	{
+		// LOCAL SPACE PIVOT: pivot is relative to position
+		point = _point - position;
+		point = rotationMatrix.RotateVector(point - pivot);
+		point = point + pivot;
+	}
+	return point;
+}
+
+CVector3 sPrimitiveBasic::ApplyDeformations(const CVector3 &point) const
+{
+	CVector3 result = point;
+
+	// Bend deformation
+	if (deformBendEnable && fabs(deformBendAngle) > 1e-5)
+	{
+		double k = deformBendAngle;
+		if (deformBendAxis == 0) // bend along X
+		{
+			double cx = cos(k * result.x), sx = sin(k * result.x);
+			result = CVector3(sx / k, result.y, result.z + (1.0 - cx) / k);
+		}
+		else if (deformBendAxis == 1) // bend along Y
+		{
+			double cy = cos(k * result.y), sy = sin(k * result.y);
+			result = CVector3(result.x, sy / k, result.z + (1.0 - cy) / k);
+		}
+		else // bend along Z
+		{
+			double cz = cos(k * result.z), sz = sin(k * result.z);
+			result = CVector3(result.x + (1.0 - cz) / k, result.y, sz / k);
+		}
+	}
+
+	// Twist deformation
+	if (deformTwistEnable && fabs(deformTwistAngle) > 1e-5)
+	{
+		double k, c, s;
+		if (deformTwistAxis == 0) {
+			k = deformTwistAngle * result.x; c = cos(k); s = sin(k);
+			result = CVector3(result.x, c * result.y - s * result.z, s * result.y + c * result.z);
+		}
+		else if (deformTwistAxis == 1) {
+			k = deformTwistAngle * result.y; c = cos(k); s = sin(k);
+			result = CVector3(c * result.x - s * result.z, result.y, s * result.x + c * result.z);
+		}
+		else {
+			k = deformTwistAngle * result.z; c = cos(k); s = sin(k);
+			result = CVector3(c * result.x - s * result.y, s * result.x + c * result.y, result.z);
+		}
+	}
+
+	// Taper deformation
+	if (deformTaperEnable && fabs(deformTaperRate) > 1e-5)
+	{
+		double k;
+		if (deformTaperAxis == 0) {
+			k = max(1.0 + deformTaperRate * result.x, 0.01);
+			result = CVector3(result.x, result.y * k, result.z * k);
+		}
+		else if (deformTaperAxis == 1) {
+			k = max(1.0 + deformTaperRate * result.y, 0.01);
+			result = CVector3(result.x * k, result.y, result.z * k);
+		}
+		else {
+			k = max(1.0 + deformTaperRate * result.z, 0.01);
+			result = CVector3(result.x * k, result.y * k, result.z);
+		}
+	}
+
+	return result;
+}
+
+CVector3 sPrimitiveBasic::CalculateCloneOffset(int index) const
+{
+	switch (cloner.mode)
+	{
+		case ClonerSettings::LINEAR:
+		{
+			return cloner.offset * (double)index;
+		}
+		case ClonerSettings::RADIAL:
+		{
+			if (cloner.count <= 1) return CVector3(0.0, 0.0, 0.0);
+			double t = (double)index / (double)(cloner.count - 1);
+			double angle = cloner.startAngle + (cloner.endAngle - cloner.startAngle) * t;
+
+			switch (cloner.plane)
+			{
+				case 0: // XY plane
+					return CVector3(cos(angle) * cloner.radius, sin(angle) * cloner.radius, 0.0);
+				case 1: // XZ plane
+					return CVector3(cos(angle) * cloner.radius, 0.0, sin(angle) * cloner.radius);
+				case 2: // YZ plane
+					return CVector3(0.0, cos(angle) * cloner.radius, sin(angle) * cloner.radius);
+				default: return CVector3(0.0, 0.0, 0.0);
+			}
+		}
+		case ClonerSettings::GRID:
+		{
+			int countX = (int)cloner.gridCount.x;
+			int countY = (int)cloner.gridCount.y;
+			int countZ = (int)cloner.gridCount.z;
+
+			if (countX < 1) countX = 1;
+			if (countY < 1) countY = 1;
+			if (countZ < 1) countZ = 1;
+
+			int x = index % countX;
+			int y = (index / countX) % countY;
+			int z = index / (countX * countY);
+
+			double stepX = cloner.gridSize.x / (countX > 1 ? countX - 1 : 1);
+			double stepY = cloner.gridSize.y / (countY > 1 ? countY - 1 : 1);
+			double stepZ = cloner.gridSize.z / (countZ > 1 ? countZ - 1 : 1);
+
+			return CVector3(x * stepX, y * stepY, z * stepZ);
+		}
+		default: return CVector3(0.0, 0.0, 0.0);
+	}
+}
+
+CVector3 sPrimitiveBasic::ApplyCloneTransform(int index, CVector3 &rotation, CVector3 &scale) const
+{
+	CVector3 position = CalculateCloneOffset(index);
+	CVector3 rot = CVector3(0.0, 0.0, 0.0);
+	CVector3 scl = CVector3(1.0, 1.0, 1.0);
+
+	for (int i = 0; i < maxEffectors; i++)
+	{
+		if (effectors[i] && effectors[i]->enabled)
+		{
+			effectors[i]->Apply(index, position, rot, scl);
+		}
+	}
+
+	rotation = rotation + rot;
+	scale = CVector3(scale.x * scl.x, scale.y * scl.y, scale.z * scl.z);
+	return position;
+}
+
+void sPrimitiveBasic::RandomEffector::Apply(int index, CVector3 &position, CVector3 &rotation,
+	CVector3 &scale) const
+{
+	if (!enabled || strength < 1e-10) return;
+
+	// Simple pseudo-random based on seed + index
+	auto randFloat = [](int s, int idx, int comp) -> double {
+		unsigned int x = (s * 73856093u) ^ (idx * 19349663u) ^ (comp * 83492791u);
+		x = (x << 13) ^ x;
+		x = x * (x * x * 15731u + 789221u) + 1376312589u;
+		return ((x & 0x7fffffff) / double(0x7fffffff)) * 2.0 - 1.0; // [-1, 1]
+	};
+
+	CVector3 posOff(
+		randFloat(seed, index, 0) * positionAmp.x,
+		randFloat(seed, index, 1) * positionAmp.y,
+		randFloat(seed, index, 2) * positionAmp.z);
+
+	CVector3 rotOff(
+		randFloat(seed, index, 3) * rotationAmp.x,
+		randFloat(seed, index, 4) * rotationAmp.y,
+		randFloat(seed, index, 5) * rotationAmp.z);
+
+	CVector3 sclOff(
+		1.0 + randFloat(seed, index, 6) * scaleAmp.x,
+		1.0 + randFloat(seed, index, 7) * scaleAmp.y,
+		1.0 + randFloat(seed, index, 8) * scaleAmp.z);
+
+	switch (mode)
+	{
+		case POSITION:
+			position = position + posOff * strength;
+			break;
+		case ROTATION:
+			rotation = rotation + rotOff * strength;
+			break;
+		case SCALE:
+			scale = CVector3(
+				scale.x * (1.0 + (sclOff.x - 1.0) * strength),
+				scale.y * (1.0 + (sclOff.y - 1.0) * strength),
+				scale.z * (1.0 + (sclOff.z - 1.0) * strength));
+			break;
+		case ALL:
+		default:
+			position = position + posOff * strength;
+			rotation = rotation + rotOff * strength;
+			scale = CVector3(
+				scale.x * (1.0 + (sclOff.x - 1.0) * strength),
+				scale.y * (1.0 + (sclOff.y - 1.0) * strength),
+				scale.z * (1.0 + (sclOff.z - 1.0) * strength));
+			break;
+	}
+}
+
+void sPrimitiveBasic::StepEffector::Apply(int index, CVector3 &position, CVector3 &rotation,
+	CVector3 &scale) const
+{
+	if (!enabled || strength < 1e-10) return;
+
+	double t = index * strength;
+
+	CVector3 posOff(positionStep.x * t, positionStep.y * t, positionStep.z * t);
+	CVector3 rotOff(rotationStep.x * t, rotationStep.y * t, rotationStep.z * t);
+	CVector3 sclOff(1.0 + scaleStep.x * t, 1.0 + scaleStep.y * t, 1.0 + scaleStep.z * t);
+
+	switch (mode)
+	{
+		case POSITION:
+			position = position + posOff;
+			break;
+		case ROTATION:
+			rotation = rotation + rotOff;
+			break;
+		case SCALE:
+			scale = CVector3(
+				scale.x * (1.0 + (sclOff.x - 1.0)),
+				scale.y * (1.0 + (sclOff.y - 1.0)),
+				scale.z * (1.0 + (sclOff.z - 1.0)));
+			break;
+		case ALL:
+		default:
+			position = position + posOff;
+			rotation = rotation + rotOff;
+			scale = CVector3(
+				scale.x * (1.0 + (sclOff.x - 1.0)),
+				scale.y * (1.0 + (sclOff.y - 1.0)),
+				scale.z * (1.0 + (sclOff.z - 1.0)));
+			break;
+	}
+}
+
+void sPrimitiveBasic::FormulaEffector::Apply(int index, CVector3 &position, CVector3 &rotation,
+	CVector3 &scale) const
+{
+	if (!enabled || strength < 1e-10) return;
+
+	double fi = static_cast<double>(index);
+	double sx = 0.0, sy = 0.0, sz = 0.0;
+	double rx = 0.0, ry = 0.0, rz = 0.0;
+	double scx = 1.0, scy = 1.0, scz = 1.0;
+
+	switch (formulaPreset)
+	{
+		case 0: // sin wave along X
+			sx = sin(fi * 0.5) * strength;
+			break;
+		case 1: // cos wave along Y
+			sy = cos(fi * 0.5) * strength;
+			break;
+		case 2: // 3D wave
+			sx = sin(fi * 0.3) * strength;
+			sy = cos(fi * 0.4) * strength;
+			sz = sin(fi * 0.5 + 1.0) * strength;
+			break;
+		case 3: // spiral
+			sx = cos(fi * 0.5) * strength;
+			sy = sin(fi * 0.5) * strength;
+			break;
+	}
+
+	CVector3 posOff(sx, sy, sz);
+	CVector3 rotOff(rx, ry, rz);
+	CVector3 sclOff(scx, scy, scz);
+
+	switch (mode)
+	{
+		case POSITION:
+			position = position + posOff;
+			break;
+		case ROTATION:
+			rotation = rotation + rotOff;
+			break;
+		case SCALE:
+			scale = CVector3(
+				scale.x * (1.0 + (sclOff.x - 1.0)),
+				scale.y * (1.0 + (sclOff.y - 1.0)),
+				scale.z * (1.0 + (sclOff.z - 1.0)));
+			break;
+		case ALL:
+		default:
+			position = position + posOff;
+			rotation = rotation + rotOff;
+			scale = CVector3(
+				scale.x * (1.0 + (sclOff.x - 1.0)),
+				scale.y * (1.0 + (sclOff.y - 1.0)),
+				scale.z * (1.0 + (sclOff.z - 1.0)));
+			break;
+	}
+}
+
+void sPrimitiveBasic::TimeEffector::Apply(int index, CVector3 &position, CVector3 &rotation,
+	CVector3 &scale) const
+{
+	if (!enabled || strength < 1e-10) return;
+
+	// Use system time as animation driver
+	// TODO: replace with actual render time when available
+	double t = static_cast<double>(QDateTime::currentMSecsSinceEpoch()) * 0.001;
+	double phase = t * timeScale + timeOffset + index * 0.1;
+
+	CVector3 posOff(sin(phase) * strength, cos(phase * 1.3) * strength, sin(phase * 0.7) * strength);
+	CVector3 rotOff(0.0, 0.0, 0.0);
+	CVector3 sclOff(1.0, 1.0, 1.0);
+
+	switch (mode)
+	{
+		case POSITION:
+			position = position + posOff;
+			break;
+		case ROTATION:
+			rotation = rotation + rotOff;
+			break;
+		case SCALE:
+			scale = CVector3(
+				scale.x * (1.0 + (sclOff.x - 1.0)),
+				scale.y * (1.0 + (sclOff.y - 1.0)),
+				scale.z * (1.0 + (sclOff.z - 1.0)));
+			break;
+		case ALL:
+		default:
+			position = position + posOff;
+			rotation = rotation + rotOff;
+			scale = CVector3(
+				scale.x * (1.0 + (sclOff.x - 1.0)),
+				scale.y * (1.0 + (sclOff.y - 1.0)),
+				scale.z * (1.0 + (sclOff.z - 1.0)));
+			break;
+	}
+}
+
 std::vector<sPrimitiveBasic::sPrimitiveWireLine> sPrimitiveBasic::wireFrameShape = {};
 
 void sPrimitiveBasic::InitPrimitiveWireframeShapes()
@@ -472,20 +993,47 @@ void sPrimitiveEllipsoid::InitPrimitiveWireframeShape()
 
 double sPrimitivePlane::PrimitiveDistance(CVector3 _point) const
 {
-	CVector3 point = _point - position;
-	point = rotationMatrix.RotateVector(point);
+	CVector3 point = TransformPoint(_point);
+	point.x /= primitiveScale.x;
+	point.y /= primitiveScale.y;
+	point.z /= primitiveScale.z;
+	double minScale = primitiveScale.x;
+	if (primitiveScale.y < minScale) minScale = primitiveScale.y;
+	if (primitiveScale.z < minScale) minScale = primitiveScale.z;
+	// Apply deformations AFTER rotation
+	point = ApplyDeformations(point);
 	double dist = point.z;
 	dist = empty ? fabs(dist) : dist;
 	dist = max(dist - wallThickness, 0.0);
-	return dist;
+	return dist * minScale;
 }
 
 double sPrimitiveBox::PrimitiveDistance(CVector3 _point) const
 {
-	CVector3 point = _point - position;
-	point = rotationMatrix.RotateVector(point);
-	point = point.repeatMod(repeat);
+	CVector3 point = TransformPoint(_point);
+	CVector3 pointRepeated;
+	switch (repeatMode)
+	{
+		case 0: pointRepeated = point.repeatMod(repeat); break;
+		case 1: pointRepeated = point.repeatModMirror(repeat); break;
+		case 2: pointRepeated = point.repeatModRotation(repeat, repeatRotationStep); break;
+		case 3: pointRepeated = point.repeatModFibonacci(repeatFibonacciCount, repeatFibonacciSpread); break;
+		case 4: pointRepeated = point.repeatModBrick(repeat); break;
+		case 7: pointRepeated = point.repeatModHoneycomb(repeat); break;
+		case 12: pointRepeated = point.repeatModSpiral(repeat, repeatSpiralStep, repeatSpiralAngle, repeatSpiralRadius); break;
+		case 13: pointRepeated = point.repeatModWave(repeat, repeatWaveAmplitude, repeatWaveFrequency, repeatWavePhase, repeatWaveAxis); break;
+		default: pointRepeated = point.repeatMod(repeat); break;
+	}
+	point = pointRepeated;
+	point.x /= primitiveScale.x;
+	point.y /= primitiveScale.y;
+	point.z /= primitiveScale.z;
+	double minScale = primitiveScale.x;
+	if (primitiveScale.y < minScale) minScale = primitiveScale.y;
+	if (primitiveScale.z < minScale) minScale = primitiveScale.z;
 
+	// Apply deformations AFTER rotation
+	point = ApplyDeformations(point);
 	double boxDist = -1e10;
 
 	if (empty)
@@ -513,14 +1061,34 @@ double sPrimitiveBox::PrimitiveDistance(CVector3 _point) const
 		boxDist = max(boxDist, limitBoxDist);
 	}
 
-	return boxDist;
+	return boxDist * minScale;
 }
 
 double sPrimitiveSphere::PrimitiveDistance(CVector3 _point) const
 {
-	CVector3 point = _point - position;
-	point = rotationMatrix.RotateVector(point);
-	point = point.repeatMod(repeat);
+	CVector3 point = TransformPoint(_point);
+	CVector3 pointRepeated;
+	switch (repeatMode)
+	{
+		case 0: pointRepeated = point.repeatMod(repeat); break;
+		case 1: pointRepeated = point.repeatModMirror(repeat); break;
+		case 2: pointRepeated = point.repeatModRotation(repeat, repeatRotationStep); break;
+		case 3: pointRepeated = point.repeatModFibonacci(repeatFibonacciCount, repeatFibonacciSpread); break;
+		case 4: pointRepeated = point.repeatModBrick(repeat); break;
+		case 7: pointRepeated = point.repeatModHoneycomb(repeat); break;
+		case 12: pointRepeated = point.repeatModSpiral(repeat, repeatSpiralStep, repeatSpiralAngle, repeatSpiralRadius); break;
+		case 13: pointRepeated = point.repeatModWave(repeat, repeatWaveAmplitude, repeatWaveFrequency, repeatWavePhase, repeatWaveAxis); break;
+		default: pointRepeated = point.repeatMod(repeat); break;
+	}
+	point = pointRepeated;
+	point.x /= primitiveScale.x;
+	point.y /= primitiveScale.y;
+	point.z /= primitiveScale.z;
+	double minScale = primitiveScale.x;
+	if (primitiveScale.y < minScale) minScale = primitiveScale.y;
+	if (primitiveScale.z < minScale) minScale = primitiveScale.z;
+	// Apply deformations AFTER rotation
+	point = ApplyDeformations(point);
 	double dist = point.Length() - radius;
 	dist = empty ? fabs(dist) : dist;
 	dist = max(dist - wallThickness, 0.0);
@@ -530,25 +1098,52 @@ double sPrimitiveSphere::PrimitiveDistance(CVector3 _point) const
 		double limitBoxDist = max(max(distanceAxial.x, distanceAxial.y), distanceAxial.z);
 		dist = max(dist, limitBoxDist);
 	}
-	return dist;
+	return dist * minScale;
 }
 
 double sPrimitiveRectangle::PrimitiveDistance(CVector3 _point) const
 {
-	CVector3 point = _point - position;
-	point = rotationMatrix.RotateVector(point);
+	CVector3 point = TransformPoint(_point);
+	point.x /= primitiveScale.x;
+	point.y /= primitiveScale.y;
+	point.z /= primitiveScale.z;
+	double minScale = primitiveScale.x;
+	if (primitiveScale.y < minScale) minScale = primitiveScale.y;
+	if (primitiveScale.z < minScale) minScale = primitiveScale.z;
+	// Apply deformations AFTER rotation
+	point = ApplyDeformations(point);
 	CVector3 boxTemp;
 	boxTemp.x = max(fabs(point.x) - width * 0.5, 0.0);
 	boxTemp.y = max(fabs(point.y) - height * 0.5, 0.0);
 	boxTemp.z = fabs(point.z);
-	return boxTemp.Length();
+	return boxTemp.Length() * minScale;
 }
 
 double sPrimitiveCylinder::PrimitiveDistance(CVector3 _point) const
 {
-	CVector3 point = _point - position;
-	point = rotationMatrix.RotateVector(point);
-	point = point.repeatMod(repeat);
+	CVector3 point = TransformPoint(_point);
+	CVector3 pointRepeated;
+	switch (repeatMode)
+	{
+		case 0: pointRepeated = point.repeatMod(repeat); break;
+		case 1: pointRepeated = point.repeatModMirror(repeat); break;
+		case 2: pointRepeated = point.repeatModRotation(repeat, repeatRotationStep); break;
+		case 3: pointRepeated = point.repeatModFibonacci(repeatFibonacciCount, repeatFibonacciSpread); break;
+		case 4: pointRepeated = point.repeatModBrick(repeat); break;
+		case 7: pointRepeated = point.repeatModHoneycomb(repeat); break;
+		case 12: pointRepeated = point.repeatModSpiral(repeat, repeatSpiralStep, repeatSpiralAngle, repeatSpiralRadius); break;
+		case 13: pointRepeated = point.repeatModWave(repeat, repeatWaveAmplitude, repeatWaveFrequency, repeatWavePhase, repeatWaveAxis); break;
+		default: pointRepeated = point.repeatMod(repeat); break;
+	}
+	point = pointRepeated;
+	point.x /= primitiveScale.x;
+	point.y /= primitiveScale.y;
+	point.z /= primitiveScale.z;
+	double minScale = primitiveScale.x;
+	if (primitiveScale.y < minScale) minScale = primitiveScale.y;
+	if (primitiveScale.z < minScale) minScale = primitiveScale.z;
+	// Apply deformations AFTER rotation
+	point = ApplyDeformations(point);
 
 	CVector2<double> cylTemp(point.x, point.y);
 	double dist = cylTemp.Length() - radius;
@@ -562,24 +1157,51 @@ double sPrimitiveCylinder::PrimitiveDistance(CVector3 _point) const
 		double limitBoxDist = max(max(distanceAxial.x, distanceAxial.y), distanceAxial.z);
 		dist = max(dist, limitBoxDist);
 	}
-	return dist;
+	return dist * minScale;
 }
 
 double sPrimitiveCircle::PrimitiveDistance(CVector3 _point) const
 {
-	CVector3 point = _point - position;
-	point = rotationMatrix.RotateVector(point);
+	CVector3 point = TransformPoint(_point);
+	point.x /= primitiveScale.x;
+	point.y /= primitiveScale.y;
+	point.z /= primitiveScale.z;
+	double minScale = primitiveScale.x;
+	if (primitiveScale.y < minScale) minScale = primitiveScale.y;
+	if (primitiveScale.z < minScale) minScale = primitiveScale.z;
+	// Apply deformations AFTER rotation
+	point = ApplyDeformations(point);
 	CVector2<double> circleTemp(point.x, point.y);
 	double distTemp = circleTemp.Length() - radius;
 	distTemp = max(fabs(point.z), distTemp);
-	return distTemp;
+	return distTemp * minScale;
 }
 
 double sPrimitiveCone::PrimitiveDistance(CVector3 _point) const
 {
-	CVector3 point = _point - position;
-	point = rotationMatrix.RotateVector(point);
-	point = point.repeatMod(repeat);
+	CVector3 point = TransformPoint(_point);
+	CVector3 pointRepeated;
+	switch (repeatMode)
+	{
+		case 0: pointRepeated = point.repeatMod(repeat); break;
+		case 1: pointRepeated = point.repeatModMirror(repeat); break;
+		case 2: pointRepeated = point.repeatModRotation(repeat, repeatRotationStep); break;
+		case 3: pointRepeated = point.repeatModFibonacci(repeatFibonacciCount, repeatFibonacciSpread); break;
+		case 4: pointRepeated = point.repeatModBrick(repeat); break;
+		case 7: pointRepeated = point.repeatModHoneycomb(repeat); break;
+		case 12: pointRepeated = point.repeatModSpiral(repeat, repeatSpiralStep, repeatSpiralAngle, repeatSpiralRadius); break;
+		case 13: pointRepeated = point.repeatModWave(repeat, repeatWaveAmplitude, repeatWaveFrequency, repeatWavePhase, repeatWaveAxis); break;
+		default: pointRepeated = point.repeatMod(repeat); break;
+	}
+	point = pointRepeated;
+	point.x /= primitiveScale.x;
+	point.y /= primitiveScale.y;
+	point.z /= primitiveScale.z;
+	double minScale = primitiveScale.x;
+	if (primitiveScale.y < minScale) minScale = primitiveScale.y;
+	if (primitiveScale.z < minScale) minScale = primitiveScale.z;
+	// Apply deformations AFTER rotation
+	point = ApplyDeformations(point);
 
 	point.z -= height;
 	double q = sqrt(point.x * point.x + point.y * point.y);
@@ -595,7 +1217,7 @@ double sPrimitiveCone::PrimitiveDistance(CVector3 _point) const
 		double limitBoxDist = max(max(distanceAxial.x, distanceAxial.y), distanceAxial.z);
 		dist = max(dist, limitBoxDist);
 	}
-	return dist;
+	return dist * minScale;
 }
 
 double sPrimitiveWater::PrimitiveDistance(CVector3 _point) const
@@ -608,8 +1230,11 @@ double sPrimitiveWater::PrimitiveDistanceWater(CVector3 _point, double distanceF
 {
 	// TODO to use rendering technique from here: //https://www.shadertoy.com/view/Ms2SD1
 
-	CVector3 point = _point - position;
+	// NEW TRANSFORMATION ORDER: pivot as world space coordinate
+	CVector3 point = _point - pivot;
 	point = rotationMatrix.RotateVector(point);
+	point = point + pivot;
+	point = point - position;
 
 	if (waveFromObjectsEnable)
 	{
@@ -677,9 +1302,29 @@ double sPrimitiveWater::PrimitiveDistanceWater(CVector3 _point, double distanceF
 
 double sPrimitiveTorus::PrimitiveDistance(CVector3 _point) const
 {
-	CVector3 point = _point - position;
-	point = rotationMatrix.RotateVector(point);
-	point = point.repeatMod(repeat);
+	CVector3 point = TransformPoint(_point);
+	CVector3 pointRepeated;
+	switch (repeatMode)
+	{
+		case 0: pointRepeated = point.repeatMod(repeat); break;
+		case 1: pointRepeated = point.repeatModMirror(repeat); break;
+		case 2: pointRepeated = point.repeatModRotation(repeat, repeatRotationStep); break;
+		case 3: pointRepeated = point.repeatModFibonacci(repeatFibonacciCount, repeatFibonacciSpread); break;
+		case 4: pointRepeated = point.repeatModBrick(repeat); break;
+		case 7: pointRepeated = point.repeatModHoneycomb(repeat); break;
+		case 12: pointRepeated = point.repeatModSpiral(repeat, repeatSpiralStep, repeatSpiralAngle, repeatSpiralRadius); break;
+		case 13: pointRepeated = point.repeatModWave(repeat, repeatWaveAmplitude, repeatWaveFrequency, repeatWavePhase, repeatWaveAxis); break;
+		default: pointRepeated = point.repeatMod(repeat); break;
+	}
+	point = pointRepeated;
+	point.x /= primitiveScale.x;
+	point.y /= primitiveScale.y;
+	point.z /= primitiveScale.z;
+	double minScale = primitiveScale.x;
+	if (primitiveScale.y < minScale) minScale = primitiveScale.y;
+	if (primitiveScale.z < minScale) minScale = primitiveScale.z;
+	// Apply deformations AFTER rotation
+	point = ApplyDeformations(point);
 
 	double d1 = CVector2<double>(point.x, point.y).LengthPow(pow(2, radiusLPow)) - radius;
 	double dist = CVector2<double>(d1, point.z).LengthPow(pow(2, tubeRadiusLPow)) - tubeRadius;
@@ -693,14 +1338,34 @@ double sPrimitiveTorus::PrimitiveDistance(CVector3 _point) const
 		double limitBoxDist = max(max(distanceAxial.x, distanceAxial.y), distanceAxial.z);
 		dist = max(dist, limitBoxDist);
 	}
-	return dist;
+	return dist * minScale;
 }
 
 double sPrimitivePrism::PrimitiveDistance(CVector3 _point) const
 {
-	CVector3 point = _point - position;
-	point = rotationMatrix.RotateVector(point);
-	point = point.repeatMod(repeat);
+	CVector3 point = TransformPoint(_point);
+	CVector3 pointRepeated;
+	switch (repeatMode)
+	{
+		case 0: pointRepeated = point.repeatMod(repeat); break;
+		case 1: pointRepeated = point.repeatModMirror(repeat); break;
+		case 2: pointRepeated = point.repeatModRotation(repeat, repeatRotationStep); break;
+		case 3: pointRepeated = point.repeatModFibonacci(repeatFibonacciCount, repeatFibonacciSpread); break;
+		case 4: pointRepeated = point.repeatModBrick(repeat); break;
+		case 7: pointRepeated = point.repeatModHoneycomb(repeat); break;
+		case 12: pointRepeated = point.repeatModSpiral(repeat, repeatSpiralStep, repeatSpiralAngle, repeatSpiralRadius); break;
+		case 13: pointRepeated = point.repeatModWave(repeat, repeatWaveAmplitude, repeatWaveFrequency, repeatWavePhase, repeatWaveAxis); break;
+		default: pointRepeated = point.repeatMod(repeat); break;
+	}
+	point = pointRepeated;
+	point.x /= primitiveScale.x;
+	point.y /= primitiveScale.y;
+	point.z /= primitiveScale.z;
+	double minScale = primitiveScale.x;
+	if (primitiveScale.y < minScale) minScale = primitiveScale.y;
+	if (primitiveScale.z < minScale) minScale = primitiveScale.z;
+	// Apply deformations AFTER rotation
+	point = ApplyDeformations(point);
 
 	CVector3 q = fabs(point);
 
@@ -710,14 +1375,34 @@ double sPrimitivePrism::PrimitiveDistance(CVector3 _point) const
 	dist = empty ? fabs(dist) : dist;
 	dist = max(dist - wallThickness, 0.0);
 
-	return dist;
+	return dist * minScale;
 }
 
 double sPrimitiveEllipsoid::PrimitiveDistance(CVector3 _point) const
 {
-	CVector3 point = _point - position;
-	point = rotationMatrix.RotateVector(point);
-	point = point.repeatMod(repeat);
+	CVector3 point = TransformPoint(_point);
+	CVector3 pointRepeated;
+	switch (repeatMode)
+	{
+		case 0: pointRepeated = point.repeatMod(repeat); break;
+		case 1: pointRepeated = point.repeatModMirror(repeat); break;
+		case 2: pointRepeated = point.repeatModRotation(repeat, repeatRotationStep); break;
+		case 3: pointRepeated = point.repeatModFibonacci(repeatFibonacciCount, repeatFibonacciSpread); break;
+		case 4: pointRepeated = point.repeatModBrick(repeat); break;
+		case 7: pointRepeated = point.repeatModHoneycomb(repeat); break;
+		case 12: pointRepeated = point.repeatModSpiral(repeat, repeatSpiralStep, repeatSpiralAngle, repeatSpiralRadius); break;
+		case 13: pointRepeated = point.repeatModWave(repeat, repeatWaveAmplitude, repeatWaveFrequency, repeatWavePhase, repeatWaveAxis); break;
+		default: pointRepeated = point.repeatMod(repeat); break;
+	}
+	point = pointRepeated;
+	point.x /= primitiveScale.x;
+	point.y /= primitiveScale.y;
+	point.z /= primitiveScale.z;
+	double minScale = primitiveScale.x;
+	if (primitiveScale.y < minScale) minScale = primitiveScale.y;
+	if (primitiveScale.z < minScale) minScale = primitiveScale.z;
+	// Apply deformations AFTER rotation
+	point = ApplyDeformations(point);
 
 	float k0 = (point / size).Length();
 	float k1 = (point / (size * size)).Length();
@@ -732,5 +1417,5 @@ double sPrimitiveEllipsoid::PrimitiveDistance(CVector3 _point) const
 		double limitBoxDist = max(max(distanceAxial.x, distanceAxial.y), distanceAxial.z);
 		dist = max(dist, limitBoxDist);
 	}
-	return dist;
+	return dist * minScale;
 }

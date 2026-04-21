@@ -449,6 +449,10 @@ void InitParams(std::shared_ptr<cParameterContainer> par)
 	par->addParam("fake_lights_multi_center_weight_2", 1.0, 0.0, 100.0, morphLinear, paramStandard);
 	par->addParam("fake_lights_multi_center_weight_3", 1.0, 0.0, 100.0, morphLinear, paramStandard);
 	par->addParam("fake_lights_multi_center_weight_4", 1.0, 0.0, 100.0, morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_color_1", sRGB(65535, 0, 0), morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_color_2", sRGB(0, 65535, 0), morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_color_3", sRGB(0, 0, 65535), morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_color_4", sRGB(65535, 65535, 0), morphLinear, paramStandard);
 	par->addParam("fake_lights_min_iter", 1, 0, 250, morphLinear, paramStandard);
 	par->addParam("fake_lights_max_iter", 2, 0, 250, morphLinear, paramStandard);
 	par->addParam("fake_lights_center_iteration", 0, 0, 250, morphLinear, paramStandard);
@@ -507,6 +511,8 @@ void InitParams(std::shared_ptr<cParameterContainer> par)
 
 	// V2: Transition speed for smooth mode transitions (0 = instant)
 	par->addParam("fake_lights_transition_speed", 0.0, 0.0, 10.0, morphLinear, paramStandard);
+	par->addParam("fake_lights_transition_source_mode", 0, morphNone, paramStandard);
+	par->addParam("fake_lights_transition_blend", 1.0, 0.0, 1.0, morphLinear, paramStandard);
 
 	// V2: Universal shape modifiers
 	par->addParam("fake_lights_shape_twist", 0.0, -1e15, 1e15, morphLinear, paramStandard);
@@ -546,6 +552,14 @@ void InitParams(std::shared_ptr<cParameterContainer> par)
 	par->addParam("single_trap_light_0_radius", 0.05, 0.0, 100.0, morphLinear, paramStandard);
 	par->addParam("single_trap_light_0_color", sRGB(65535, 65535, 65535), morphLinear, paramStandard);
 	par->addParam("single_trap_light_0_intensity", 1.0, 0.0, 1000.0, morphLinear, paramStandard);
+
+	// Glow Sphere - simple placeable light source
+	par->addParam("glow_sphere_1_enabled", false, morphLinear, paramStandard);
+	par->addParam("glow_sphere_1_position", CVector3(2.0, 0.0, 0.0), morphLinear, paramStandard);
+	par->addParam("glow_sphere_1_rotation", CVector3(0.0, 0.0, 0.0), morphAkimaAngle, paramStandard);
+	par->addParam("glow_sphere_1_radius", 0.5, 0.01, 100.0, morphLinear, paramStandard);
+	par->addParam("glow_sphere_1_color", sRGB(65535, 65535, 65535), morphLinear, paramStandard);
+	par->addParam("glow_sphere_1_intensity", 2.0, 0.0, 1000.0, morphLinear, paramStandard);
 
 	par->addParam("rayleigh_scattering_blue", 0.0, 0.0, 1e15, morphAkimaAngle, paramStandard);
 	par->addParam("rayleigh_scattering_red", 0.0, 0.0, 1e15, morphAkimaAngle, paramStandard);
@@ -1491,6 +1505,15 @@ void InitPrimitiveParams(const sPrimitiveItem &primitive, std::shared_ptr<cParam
 	par->addParam(QString(primitiveName) + "_repeat_rotation_step", 30.0, morphLinear, paramStandard);
 	par->addParam(QString(primitiveName) + "_repeat_fibonacci_count", 21, morphLinear, paramStandard);
 	par->addParam(QString(primitiveName) + "_repeat_fibonacci_spread", 1.0, morphLinear, paramStandard);
+	// Spiral repeat params
+	par->addParam(QString(primitiveName) + "_repeat_spiral_step", CVector3(1.0, 1.0, 1.0), morphLinear, paramStandard);
+	par->addParam(QString(primitiveName) + "_repeat_spiral_angle", CVector3(0.0, 0.0, 0.0), morphLinear, paramStandard);
+	par->addParam(QString(primitiveName) + "_repeat_spiral_radius", CVector3(1.0, 1.0, 1.0), morphLinear, paramStandard);
+	// Wave repeat params
+	par->addParam(QString(primitiveName) + "_repeat_wave_amplitude", CVector3(0.5, 0.5, 0.5), morphLinear, paramStandard);
+	par->addParam(QString(primitiveName) + "_repeat_wave_frequency", CVector3(1.0, 1.0, 1.0), morphLinear, paramStandard);
+	par->addParam(QString(primitiveName) + "_repeat_wave_phase", CVector3(0.0, 0.0, 0.0), morphLinear, paramStandard);
+	par->addParam(QString(primitiveName) + "_repeat_wave_axis", 0, morphNone, paramStandard);
 	par->addParam(QString(primitiveName) + "_scale", 1.0, 1e-10, 1e10, morphAkima, paramStandard);
 	par->addParam(QString(primitiveName) + "_boolean_operator", 1, morphLinear, paramStandard);
 
@@ -1514,6 +1537,7 @@ void InitPrimitiveParams(const sPrimitiveItem &primitive, std::shared_ptr<cParam
 		QString(primitiveName) + "_prim_scale", CVector3(1.0, 1.0, 1.0), morphAkima, paramStandard);
 	par->addParam(QString(primitiveName) + "_coordinate_space", 0, morphNone, paramStandard);
 	par->addParam(QString(primitiveName) + "_pivot", CVector3(0.0, 0.0, 0.0), morphAkima, paramStandard);
+	par->addParam(QString(primitiveName) + "_pivot_preset", 0, morphNone, paramStandard);
 
 	// 3-point alignment parameters
 	par->addParam(QString(primitiveName) + "_align_p1", CVector3(0.0, 0.0, 0.0), morphNone, paramStandard);
@@ -1531,6 +1555,20 @@ void InitPrimitiveParams(const sPrimitiveItem &primitive, std::shared_ptr<cParam
 	par->addParam(QString(primitiveName) + "_cloner_plane", 0, morphNone, paramStandard);
 	par->addParam(QString(primitiveName) + "_cloner_grid_count", CVector3(3.0, 3.0, 3.0), morphLinear, paramStandard);
 	par->addParam(QString(primitiveName) + "_cloner_grid_size", CVector3(10.0, 10.0, 10.0), morphLinear, paramStandard);
+
+	// Effector parameters (MoGraph style)
+	for (int i = 1; i <= 4; i++)
+	{
+		QString eff = QString(primitiveName) + QString("_effector_%1").arg(i);
+		par->addParam(eff + "_type", 0, morphNone, paramStandard);      // 0=none, 1=random
+		par->addParam(eff + "_enabled", false, morphNone, paramStandard);
+		par->addParam(eff + "_mode", 3, morphNone, paramStandard);      // 0=position, 1=rotation, 2=scale, 3=all
+		par->addParam(eff + "_strength", 1.0, 0.0, 10.0, morphLinear, paramStandard);
+		par->addParam(eff + "_random_seed", 0, 0, 1000000, morphNone, paramStandard);
+		par->addParam(eff + "_random_position_amp", CVector3(1.0, 1.0, 1.0), morphLinear, paramStandard);
+		par->addParam(eff + "_random_rotation_amp", CVector3(30.0, 30.0, 30.0), morphLinear, paramStandard);
+		par->addParam(eff + "_random_scale_amp", CVector3(0.2, 0.2, 0.2), morphLinear, paramStandard);
+	}
 
 	par->addParam(QString(primitiveName) + "_smooth_radius", 0.1, 0.0, 10.0, morphLinear, paramStandard);
 	par->addParam(QString(primitiveName) + "_mirror_x", false, morphNone, paramStandard);

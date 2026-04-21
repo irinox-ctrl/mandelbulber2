@@ -311,6 +311,52 @@ double cPrimitives::TotalDistance(CVector3 point, double fractalDistance, double
 					distTemp = primitive->PrimitiveDistance(point2);
 				}
 
+				// Cloner: evaluate all clone instances and take minimum distance (union)
+				if (primitive->cloner.enabled && primitive->cloner.count > 1)
+				{
+					for (int ci = 1; ci < primitive->cloner.count; ci++)
+					{
+						CVector3 cloneRotation, cloneScale;
+						CVector3 cloneOffset = primitive->ApplyCloneTransform(ci, cloneRotation, cloneScale);
+						CVector3 pointClone = point2 - cloneOffset;
+
+						// Apply per-clone rotation
+						if (cloneRotation.Length() > 1e-10)
+						{
+							CRotationMatrix cloneRotMatrix;
+							cloneRotMatrix.SetRotation2(cloneRotation * M_PI / 180.0);
+							pointClone = cloneRotMatrix.RotateVector(pointClone);
+						}
+
+						// Apply per-clone scale and compute scale correction
+						double minCloneScale = 1.0;
+						if (cloneScale.x > 1e-10 && cloneScale.y > 1e-10 && cloneScale.z > 1e-10)
+						{
+							pointClone.x /= cloneScale.x;
+							pointClone.y /= cloneScale.y;
+							pointClone.z /= cloneScale.z;
+							minCloneScale = cloneScale.x;
+							if (cloneScale.y < minCloneScale) minCloneScale = cloneScale.y;
+							if (cloneScale.z < minCloneScale) minCloneScale = cloneScale.z;
+						}
+
+						double d;
+						if (water)
+						{
+							d = water->PrimitiveDistanceWater(pointClone, distance);
+						}
+						else
+						{
+							d = primitive->PrimitiveDistance(pointClone);
+						}
+						d *= minCloneScale;
+						if (d < distTemp)
+						{
+							distTemp = d;
+						}
+					}
+				}
+
 				if (objectIdForVolumetrics == primitive->objectId)
 				{
 					return distTemp;

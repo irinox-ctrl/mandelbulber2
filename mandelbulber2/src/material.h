@@ -69,6 +69,7 @@ public:
 
 	int id;
 	int textureFractalizeStartIteration;
+	int textureFractalizeShape;
 	int perlinNoiseIterations;
 
 	float shading;
@@ -100,6 +101,8 @@ public:
 	double iridescenceIntensity;
 	double iridescenceSubsurfaceThickness;
 	double textureFractalizeCubeSize;
+	double textureFractalizeSizeMultiplier;
+	CVector3 textureFractalizeOrbitTrapPosition;
 	float perlinNoiseValueOffset;
 	float perlinNoiseColorIntensity;
 	float perlinNoiseLuminosityIntensity;
@@ -178,6 +181,7 @@ public:
 	bool useRoughnessTexture;
 	bool iridescenceEnabled;
 	bool textureFractalize;
+	bool textureFractalizeIterationBlend;
 
 	bool insideColoringEnable;
 	bool subsurfaceScattering;

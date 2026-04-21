@@ -641,6 +641,93 @@ QString cOpenClDynamicData::BuildPrimitivesData(const cPrimitives *primitivesCon
 			static_cast<enumClPrimitiveBooleanOperator>(primitive->booleanOperator);
 		primitiveCl.object.usedForVolumetric = primitive->usedForVolumetric;
 		primitiveCl.object.wallThickness = primitive->wallThickness;
+		// Pivot
+		primitiveCl.object.pivot = toClFloat3(primitive->pivot);
+		primitiveCl.object.useWorldSpacePivot = primitive->useWorldSpacePivot ? 1 : 0;
+		// Cloner
+		primitiveCl.object.clonerEnabled = primitive->cloner.enabled ? 1 : 0;
+		primitiveCl.object.clonerMode = primitive->cloner.mode;
+		primitiveCl.object.clonerCount = primitive->cloner.count;
+		primitiveCl.object.clonerOffset = toClFloat3(primitive->cloner.offset);
+		primitiveCl.object.clonerRadius = primitive->cloner.radius;
+		primitiveCl.object.clonerStartAngle = primitive->cloner.startAngle;
+		primitiveCl.object.clonerEndAngle = primitive->cloner.endAngle;
+		primitiveCl.object.clonerPlane = primitive->cloner.plane;
+		primitiveCl.object.clonerGridCount = toClFloat3(primitive->cloner.gridCount);
+		primitiveCl.object.clonerGridSize = toClFloat3(primitive->cloner.gridSize);
+		// Repeat
+		primitiveCl.object.repeatMode = primitive->repeatMode;
+		primitiveCl.object.repeatRotationStep = primitive->repeatRotationStep;
+		primitiveCl.object.repeatFibonacciCount = primitive->repeatFibonacciCount;
+		primitiveCl.object.repeatFibonacciSpread = primitive->repeatFibonacciSpread;
+		primitiveCl.object.repeatSpiralStep = toClFloat3(primitive->repeatSpiralStep);
+		primitiveCl.object.repeatSpiralAngle = toClFloat3(primitive->repeatSpiralAngle);
+		primitiveCl.object.repeatSpiralRadius = toClFloat3(primitive->repeatSpiralRadius);
+		primitiveCl.object.repeatWaveAmplitude = toClFloat3(primitive->repeatWaveAmplitude);
+		primitiveCl.object.repeatWaveFrequency = toClFloat3(primitive->repeatWaveFrequency);
+		primitiveCl.object.repeatWavePhase = toClFloat3(primitive->repeatWavePhase);
+		primitiveCl.object.repeatWaveAxis = primitive->repeatWaveAxis;
+		// Deformers
+		primitiveCl.object.deformBendEnable = primitive->deformBendEnable ? 1 : 0;
+		primitiveCl.object.deformBendAngle = primitive->deformBendAngle;
+		primitiveCl.object.deformBendAxis = primitive->deformBendAxis;
+		primitiveCl.object.deformTwistEnable = primitive->deformTwistEnable ? 1 : 0;
+		primitiveCl.object.deformTwistAngle = primitive->deformTwistAngle;
+		primitiveCl.object.deformTwistAxis = primitive->deformTwistAxis;
+		primitiveCl.object.deformTaperEnable = primitive->deformTaperEnable ? 1 : 0;
+		primitiveCl.object.deformTaperRate = primitive->deformTaperRate;
+		primitiveCl.object.deformTaperAxis = primitive->deformTaperAxis;
+
+		// Effectors
+		for (int ei = 0; ei < 4; ei++)
+		{
+			auto &eff = primitive->effectors[ei];
+			if (eff && eff->enabled)
+			{
+				primitiveCl.effectors[ei].type = 0;
+				primitiveCl.effectors[ei].mode = eff->mode;
+				primitiveCl.effectors[ei].strength = eff->strength;
+				if (auto *re = dynamic_cast<sPrimitiveBasic::RandomEffector *>(eff.get()))
+				{
+					primitiveCl.effectors[ei].type = 1;
+					primitiveCl.effectors[ei].seed = re->seed;
+					primitiveCl.effectors[ei].posAmp = toClFloat3(re->positionAmp);
+					primitiveCl.effectors[ei].rotAmp = toClFloat3(re->rotationAmp);
+					primitiveCl.effectors[ei].scaleAmp = toClFloat3(re->scaleAmp);
+				}
+				else if (auto *se = dynamic_cast<sPrimitiveBasic::StepEffector *>(eff.get()))
+				{
+					primitiveCl.effectors[ei].type = 2;
+					primitiveCl.effectors[ei].seed = 0;
+					primitiveCl.effectors[ei].posAmp = toClFloat3(se->positionStep);
+					primitiveCl.effectors[ei].rotAmp = toClFloat3(se->rotationStep);
+					primitiveCl.effectors[ei].scaleAmp = toClFloat3(se->scaleStep);
+				}
+				else if (auto *fe = dynamic_cast<sPrimitiveBasic::FormulaEffector *>(eff.get()))
+				{
+					primitiveCl.effectors[ei].type = 3;
+					primitiveCl.effectors[ei].seed = 0;
+					primitiveCl.effectors[ei].formulaPreset = fe->formulaPreset;
+					primitiveCl.effectors[ei].posAmp = (cl_float3){{0.0f, 0.0f, 0.0f, 0.0f}};
+					primitiveCl.effectors[ei].rotAmp = (cl_float3){{0.0f, 0.0f, 0.0f, 0.0f}};
+					primitiveCl.effectors[ei].scaleAmp = (cl_float3){{0.0f, 0.0f, 0.0f, 0.0f}};
+				}
+				else if (auto *te = dynamic_cast<sPrimitiveBasic::TimeEffector *>(eff.get()))
+				{
+					primitiveCl.effectors[ei].type = 4;
+					primitiveCl.effectors[ei].timeOffset = te->timeOffset;
+					primitiveCl.effectors[ei].timeScale = te->timeScale;
+					primitiveCl.effectors[ei].posAmp = (cl_float3){{0.0f, 0.0f, 0.0f, 0.0f}};
+					primitiveCl.effectors[ei].rotAmp = (cl_float3){{0.0f, 0.0f, 0.0f, 0.0f}};
+					primitiveCl.effectors[ei].scaleAmp = (cl_float3){{0.0f, 0.0f, 0.0f, 0.0f}};
+				}
+			}
+			else
+			{
+				primitiveCl.effectors[ei].type = 0;
+				primitiveCl.effectors[ei].strength = 0.0f;
+			}
+		}
 
 		try
 		{

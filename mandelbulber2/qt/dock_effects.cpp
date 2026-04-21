@@ -71,6 +71,15 @@ void cDockEffects::ConnectSignals() const
 	connect(ui->comboBox_fake_lights_position_mode, SIGNAL(currentIndexChanged(int)),
 		ui->stackedWidget_fake_lights_mode, SLOT(setCurrentIndex(int)));
 
+	connect(ui->pushButton_reset_world, SIGNAL(clicked()), this, SLOT(slotPressedButtonResetWorld()));
+	connect(ui->pushButton_reset_camera, SIGNAL(clicked()), this, SLOT(slotPressedButtonResetCamera()));
+	connect(ui->pushButton_reset_target, SIGNAL(clicked()), this, SLOT(slotPressedButtonResetTarget()));
+	connect(ui->pushButton_reset_fractal_center, SIGNAL(clicked()), this, SLOT(slotPressedButtonResetFractalCenter()));
+	connect(ui->pushButton_reset_path_circle, SIGNAL(clicked()), this, SLOT(slotPressedButtonResetPathCircle()));
+	connect(ui->pushButton_reset_path_spiral, SIGNAL(clicked()), this, SLOT(slotPressedButtonResetPathSpiral()));
+	connect(ui->pushButton_reset_orbit_target, SIGNAL(clicked()), this, SLOT(slotPressedButtonResetOrbitTarget()));
+	connect(ui->pushButton_reset_multi_center, SIGNAL(clicked()), this, SLOT(slotPressedButtonResetMultiCenter()));
+
 	connect(ui->button_calculateFog, SIGNAL(clicked()), this, SLOT(slotPressedButtonAutoFog()));
 
 	connect(ui->comboBox_ambient_occlusion_mode, SIGNAL(currentIndexChanged(int)), this,
@@ -379,4 +388,81 @@ void cDockEffects::slotEnvMappingToggled(bool state)
 	{
 		ui->groupCheck_raytraced_reflections->setChecked(false);
 	}
+}
+
+void cDockEffects::slotPressedButtonResetWorld()
+{
+	gPar->Set("fake_lights_world_offset", CVector3(0.0, 0.0, 0.0));
+	gPar->Set("fake_lights_world_scale", 1.0);
+	gPar->Set("fake_lights_world_rotation", CVector3(0.0, 0.0, 0.0));
+	gMainInterface->SynchronizeInterface(gPar, gParFractal, qInterface::write);
+}
+
+void cDockEffects::slotPressedButtonResetCamera()
+{
+	gPar->Set("fake_lights_camera_offset", CVector3(2.0, 0.0, 0.0));
+	gPar->Set("fake_lights_camera_scale", 1.0);
+	gPar->Set("fake_lights_camera_rotation", CVector3(0.0, 0.0, 0.0));
+	gMainInterface->SynchronizeInterface(gPar, gParFractal, qInterface::write);
+}
+
+void cDockEffects::slotPressedButtonResetTarget()
+{
+	gPar->Set("fake_lights_target_offset", CVector3(0.0, 0.0, 0.0));
+	gPar->Set("fake_lights_target_scale", 1.0);
+	gPar->Set("fake_lights_target_rotation", CVector3(0.0, 0.0, 0.0));
+	gMainInterface->SynchronizeInterface(gPar, gParFractal, qInterface::write);
+}
+
+void cDockEffects::slotPressedButtonResetFractalCenter()
+{
+	gPar->Set("fake_lights_fractal_center_offset", CVector3(0.0, 0.0, 1.0));
+	gPar->Set("fake_lights_fractal_center_scale", 1.0);
+	gPar->Set("fake_lights_fractal_center_rotation", CVector3(0.0, 0.0, 0.0));
+	gMainInterface->SynchronizeInterface(gPar, gParFractal, qInterface::write);
+}
+
+void cDockEffects::slotPressedButtonResetPathCircle()
+{
+	gPar->Set("fake_lights_path_circle_offset", CVector3(0.0, 0.0, 0.0));
+	gPar->Set("fake_lights_path_circle_scale", 1.0);
+	gPar->Set("fake_lights_path_circle_rotation", CVector3(0.0, 45.0, 0.0));
+	gPar->Set("fake_lights_path_circle_path_radius", 2.0);
+	gMainInterface->SynchronizeInterface(gPar, gParFractal, qInterface::write);
+}
+
+void cDockEffects::slotPressedButtonResetPathSpiral()
+{
+	gPar->Set("fake_lights_path_spiral_offset", CVector3(0.0, 0.0, 0.0));
+	gPar->Set("fake_lights_path_spiral_scale", 1.0);
+	gPar->Set("fake_lights_path_spiral_rotation", CVector3(0.0, 90.0, 0.0));
+	gPar->Set("fake_lights_path_spiral_path_radius", 2.0);
+	gMainInterface->SynchronizeInterface(gPar, gParFractal, qInterface::write);
+}
+
+void cDockEffects::slotPressedButtonResetOrbitTarget()
+{
+	gPar->Set("fake_lights_orbit_target_offset", CVector3(0.0, 0.0, 0.0));
+	gPar->Set("fake_lights_orbit_target_scale", 1.0);
+	gPar->Set("fake_lights_orbit_target_rotation", CVector3(0.0, 0.0, 0.0));
+	gPar->Set("fake_lights_orbit_target_path_radius", 2.0);
+	gMainInterface->SynchronizeInterface(gPar, gParFractal, qInterface::write);
+}
+
+void cDockEffects::slotPressedButtonResetMultiCenter()
+{
+	gPar->Set("fake_lights_multi_center_enabled", false);
+	gPar->Set("fake_lights_multi_center_1", CVector3(1.0, 0.0, 0.0));
+	gPar->Set("fake_lights_multi_center_2", CVector3(0.0, 1.0, 0.0));
+	gPar->Set("fake_lights_multi_center_3", CVector3(0.0, 0.0, 1.0));
+	gPar->Set("fake_lights_multi_center_4", CVector3(-1.0, 0.0, 0.0));
+	gPar->Set("fake_lights_multi_center_weight_1", 1.0);
+	gPar->Set("fake_lights_multi_center_weight_2", 1.0);
+	gPar->Set("fake_lights_multi_center_weight_3", 1.0);
+	gPar->Set("fake_lights_multi_center_weight_4", 1.0);
+	gPar->Set("fake_lights_multi_center_color_1", sRGB(65535, 0, 0));
+	gPar->Set("fake_lights_multi_center_color_2", sRGB(0, 65535, 0));
+	gPar->Set("fake_lights_multi_center_color_3", sRGB(0, 0, 65535));
+	gPar->Set("fake_lights_multi_center_color_4", sRGB(65535, 65535, 0));
+	gMainInterface->SynchronizeInterface(gPar, gParFractal, qInterface::write);
 }

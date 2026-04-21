@@ -648,24 +648,50 @@ sRGBAFloat cRenderWorker::VolumetricShader(
 			sCommonParams commonWithPosition = params->common;
 
 			// V2: Calculate orbit trap position based on positioning mode
-			int posMode = params->common.fakeLightsPositionMode;
-			const sFakeLightsModeParams &mode = params->common.fakeLightsModes[posMode];
-			CRotationMatrix modeRot;
-			modeRot.SetRotation2(mode.rotation * M_PI / 180.0);
-			CVector3 transformedTrap =
-				mode.offset + modeRot.RotateVector(params->common.fakeLightsOrbitTrap * mode.scale);
-
-			if (posMode == params::fakeLightsPositionCamera)
+			if (params->common.fakeLightsOrbitTrapPreTransformed)
 			{
-				commonWithPosition.fakeLightsOrbitTrap = params->camera + transformedTrap;
-			}
-			else if (posMode == params::fakeLightsPositionTarget)
-			{
-				commonWithPosition.fakeLightsOrbitTrap = params->target + transformedTrap;
+				commonWithPosition.fakeLightsOrbitTrap = params->common.fakeLightsOrbitTrap;
 			}
 			else
 			{
-				commonWithPosition.fakeLightsOrbitTrap = transformedTrap;
+				int posMode = params->common.fakeLightsPositionMode;
+				const sFakeLightsModeParams &mode = params->common.fakeLightsModes[posMode];
+				CRotationMatrix modeRot;
+				modeRot.SetRotation2(mode.rotation * M_PI / 180.0);
+				CVector3 transformedTrap =
+					mode.offset + modeRot.RotateVector(params->common.fakeLightsOrbitTrap * mode.scale);
+
+				if (posMode == params::fakeLightsPositionCamera)
+				{
+					commonWithPosition.fakeLightsOrbitTrap = params->camera + transformedTrap;
+				}
+				else if (posMode == params::fakeLightsPositionTarget)
+				{
+					commonWithPosition.fakeLightsOrbitTrap = params->target + transformedTrap;
+				}
+				else if (posMode == params::fakeLightsPositionPathCircle)
+				{
+					double angle = mode.rotation.y * M_PI / 180.0;
+					CVector3 pathOffset(cos(angle) * mode.pathRadius, 0.0, sin(angle) * mode.pathRadius);
+					commonWithPosition.fakeLightsOrbitTrap = transformedTrap + pathOffset;
+				}
+				else if (posMode == params::fakeLightsPositionPathSpiral)
+				{
+					double angle = mode.rotation.y * M_PI / 180.0;
+					double yOffset = angle * mode.pathRadius * 0.1;
+					CVector3 pathOffset(cos(angle) * mode.pathRadius, yOffset, sin(angle) * mode.pathRadius);
+					commonWithPosition.fakeLightsOrbitTrap = transformedTrap + pathOffset;
+				}
+				else if (posMode == params::fakeLightsPositionOrbitTarget)
+				{
+					double angle = mode.rotation.y * M_PI / 180.0;
+					CVector3 pathOffset(cos(angle) * mode.pathRadius, 0.0, sin(angle) * mode.pathRadius);
+					commonWithPosition.fakeLightsOrbitTrap = params->target + transformedTrap + pathOffset;
+				}
+				else
+				{
+					commonWithPosition.fakeLightsOrbitTrap = transformedTrap;
+				}
 			}
 
 			for (int fakeLightLoop = 0; fakeLightLoop < fakeLightMaxLoop; fakeLightLoop++)
@@ -677,19 +703,43 @@ sRGBAFloat cRenderWorker::VolumetricShader(
 				float r = fractOut.orbitTrapR;
 				r = sqrtf(1.0f / (r + 1.0e-20f));
 				float fakeLight = 1.0f
-													/ (powf(r, 10.0f / params->fakeLightsVisibilitySize)
-															 * powf(10.0f, 10.0f / params->fakeLightsVisibilitySize)
-														 + 0.1f);
+															/ (powf(r, 10.0f / params->fakeLightsVisibilitySize)
+																		* powf(10.0f, 10.0f / params->fakeLightsVisibilitySize)
+																	+ 0.1f);
+
+				// V2: Distance-based intensity mask
+				float maskRadius = commonWithPosition.fakeLightsShapeMaskRadius;
+				float maskSoftness = commonWithPosition.fakeLightsShapeMaskSoftness;
+				if (maskRadius > 1e-10f)
+				{
+					float edge = maskRadius + maskSoftness;
+					float factor = 1.0f;
+					if (r < maskRadius)
+						factor = 0.0f;
+					else if (r < edge && maskSoftness > 1e-10f)
+						factor = (r - maskRadius) / maskSoftness;
+					if (factor < 0.0f) factor = 0.0f;
+					if (factor > 1.0f) factor = 1.0f;
+					fakeLight *= factor;
+				}
 
 				fakeLight *= 1.0f + params->cloudsLightsBoost * cloudDensity;
 
 				sRGBFloat color;
-				switch (fakeLightLoop)
+				if (fakeLightLoop == 0 && commonWithPosition.fakeLightsMultiCenterEnabled
+					&& fractOut.orbitTrapCenterIndex >= 0 && fractOut.orbitTrapCenterIndex < 4)
 				{
-					case 0: color = params->fakeLightsColor; break;
-					case 1: color = params->fakeLightsColor2; break;
-					case 2: color = params->fakeLightsColor3; break;
-					default: color = params->fakeLightsColor; break;
+					color = params->fakeLightsMultiCenterColor[fractOut.orbitTrapCenterIndex];
+				}
+				else
+				{
+					switch (fakeLightLoop)
+					{
+						case 0: color = params->fakeLightsColor; break;
+						case 1: color = params->fakeLightsColor2; break;
+						case 2: color = params->fakeLightsColor3; break;
+						default: color = params->fakeLightsColor; break;
+					}
 				}
 
 				output.R += fakeLight * float(step) * params->fakeLightsVisibility * color.R;

@@ -48,27 +48,54 @@ sRGBAFloat cRenderWorker::FakeLights(
 	sCommonParams commonWithPosition = params->common;
 
 	// V2: Calculate orbit trap position based on positioning mode
-	int posMode = params->common.fakeLightsPositionMode;
-	const sFakeLightsModeParams &mode = params->common.fakeLightsModes[posMode];
-	CRotationMatrix modeRot;
-	modeRot.SetRotation2(mode.rotation * M_PI / 180.0);
-	CVector3 transformedTrap =
-		mode.offset + modeRot.RotateVector(params->common.fakeLightsOrbitTrap * mode.scale);
-
-	// Mode 0=World, 1=Camera, 2=Target, 3=FractalCenter
-	if (posMode == params::fakeLightsPositionCamera)
+	if (params->common.fakeLightsOrbitTrapPreTransformed)
 	{
-		commonWithPosition.fakeLightsOrbitTrap = params->camera + transformedTrap;
-	}
-	else if (posMode == params::fakeLightsPositionTarget)
-	{
-		commonWithPosition.fakeLightsOrbitTrap = params->target + transformedTrap;
+		// Transition interpolation already computed the blended world position in fractparams.cpp
+		commonWithPosition.fakeLightsOrbitTrap = params->common.fakeLightsOrbitTrap;
 	}
 	else
 	{
-		// World and FractalCenter: transformedTrap is the orbit trap position
-		// FractalCenter z-adjustment is handled in compute_fractal.cpp
-		commonWithPosition.fakeLightsOrbitTrap = transformedTrap;
+		int posMode = params->common.fakeLightsPositionMode;
+		const sFakeLightsModeParams &mode = params->common.fakeLightsModes[posMode];
+		CRotationMatrix modeRot;
+		modeRot.SetRotation2(mode.rotation * M_PI / 180.0);
+		CVector3 transformedTrap =
+			mode.offset + modeRot.RotateVector(params->common.fakeLightsOrbitTrap * mode.scale);
+
+		// Mode 0=World, 1=Camera, 2=Target, 3=FractalCenter, 4=PathCircle, 5=PathSpiral
+		if (posMode == params::fakeLightsPositionCamera)
+		{
+			commonWithPosition.fakeLightsOrbitTrap = params->camera + transformedTrap;
+		}
+		else if (posMode == params::fakeLightsPositionTarget)
+		{
+			commonWithPosition.fakeLightsOrbitTrap = params->target + transformedTrap;
+		}
+		else if (posMode == params::fakeLightsPositionPathCircle)
+		{
+			double angle = mode.rotation.y * M_PI / 180.0;
+			CVector3 pathOffset(cos(angle) * mode.pathRadius, 0.0, sin(angle) * mode.pathRadius);
+			commonWithPosition.fakeLightsOrbitTrap = transformedTrap + pathOffset;
+		}
+		else if (posMode == params::fakeLightsPositionPathSpiral)
+		{
+			double angle = mode.rotation.y * M_PI / 180.0;
+			double yOffset = angle * mode.pathRadius * 0.1;
+			CVector3 pathOffset(cos(angle) * mode.pathRadius, yOffset, sin(angle) * mode.pathRadius);
+			commonWithPosition.fakeLightsOrbitTrap = transformedTrap + pathOffset;
+		}
+		else if (posMode == params::fakeLightsPositionOrbitTarget)
+		{
+			double angle = mode.rotation.y * M_PI / 180.0;
+			CVector3 pathOffset(cos(angle) * mode.pathRadius, 0.0, sin(angle) * mode.pathRadius);
+			commonWithPosition.fakeLightsOrbitTrap = params->target + transformedTrap + pathOffset;
+		}
+		else
+		{
+			// World and FractalCenter: transformedTrap is the orbit trap position
+			// FractalCenter z-adjustment is handled in compute_fractal.cpp
+			commonWithPosition.fakeLightsOrbitTrap = transformedTrap;
+		}
 	}
 
 	for (int fakeLightLoop = 0; fakeLightLoop < fakeLightMaxLoop; fakeLightLoop++)
@@ -83,7 +110,25 @@ sRGBAFloat cRenderWorker::FakeLights(
 		double rr = fractOut.orbitTrapR;
 		double r = 1.0 / (rr + 1e-30);
 
-		double fakeLight = params->fakeLightsIntensity / r;
+		double fakeLight = params->fakeLightsIntensity * pow(rr, commonWithPosition.fakeLightsShapeFalloff);
+
+		// V2: Distance-based intensity mask
+		// Masks out light within maskRadius of the orbit trap, with softness transition
+		double maskRadius = commonWithPosition.fakeLightsShapeMaskRadius;
+		double maskSoftness = commonWithPosition.fakeLightsShapeMaskSoftness;
+		if (maskRadius > 1e-10)
+		{
+			double dist = sqrt(r);  // approximate distance from orbit trap
+			double edge = maskRadius + maskSoftness;
+			double factor = 1.0;
+			if (dist < maskRadius)
+				factor = 0.0;
+			else if (dist < edge && maskSoftness > 1e-10)
+				factor = (dist - maskRadius) / maskSoftness;
+			if (factor < 0.0) factor = 0.0;
+			if (factor > 1.0) factor = 1.0;
+			fakeLight *= factor;
+		}
 
 		CVector3 deltaX(delta, 0.0, 0.0);
 		CVector3 deltaY(0.0, delta, 0.0);
@@ -119,12 +164,20 @@ sRGBAFloat cRenderWorker::FakeLights(
 		if (fakeLight2 < 0) fakeLight2 = 0;
 
 		sRGBFloat color;
-		switch (fakeLightLoop)
+		if (fakeLightLoop == 0 && commonWithPosition.fakeLightsMultiCenterEnabled
+			&& fractOut.orbitTrapCenterIndex >= 0 && fractOut.orbitTrapCenterIndex < 4)
 		{
-			case 0: color = params->fakeLightsColor; break;
-			case 1: color = params->fakeLightsColor2; break;
-			case 2: color = params->fakeLightsColor3; break;
-			default: color = params->fakeLightsColor; break;
+			color = params->fakeLightsMultiCenterColor[fractOut.orbitTrapCenterIndex];
+		}
+		else
+		{
+			switch (fakeLightLoop)
+			{
+				case 0: color = params->fakeLightsColor; break;
+				case 1: color = params->fakeLightsColor2; break;
+				case 2: color = params->fakeLightsColor3; break;
+				default: color = params->fakeLightsColor; break;
+			}
 		}
 
 		fakeLights.R += fakeLight2 * color.R;
