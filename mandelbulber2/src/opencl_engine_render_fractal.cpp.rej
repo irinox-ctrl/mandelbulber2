@@ -1,0 +1,14 @@
+--- src/opencl_engine_render_fractal.cpp
++++ src/opencl_engine_render_fractal.cpp
+@@ -365,6 +365,11 @@ void cOpenClEngineRenderFractal::LoadSourceWithMainEngine(
+ 		// load main engine source
+ 		QString engineFullFileName = openclEnginePath + engineFileName;
+ 		programEngine.append(LoadUtf8TextFromFile(engineFullFileName));
++
++		QFile f("/tmp/opencl_program_debug.cl");
++		if (f.open(QIODevice::WriteOnly)) f.write(programEngine);
++		bool fle = params->Get<bool>("fake_lights_enabled");
++		qDebug() << "DEBUG fake_lights_enabled in LoadSourcesAndCompile:" << fle;
+ 
+ 		// qDebug() << programEngine.toStdString().c_str();
+ 	}

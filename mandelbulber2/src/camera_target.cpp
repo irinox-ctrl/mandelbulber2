@@ -102,7 +102,14 @@ void cCameraTarget::SetCameraTargetTop(CVector3 _camera, CVector3 _target, CVect
 	pitch = forwardVector.GetBeta();
 
 	CVector3 topVectorTemp = _top;
-	topVectorTemp.Normalize();
+	if (topVectorTemp.Length() > 0.0)
+	{
+		topVectorTemp.Normalize();
+	}
+	else
+	{
+		topVectorTemp = CVector3(0.0, 1.0, 0.0); // FIX: fallback voor nul vector
+	}
 	topVectorTemp = topVectorTemp.RotateAroundVectorByAngle(CVector3(0.0, 0.0, 1.0), -yaw);
 	// qDebug() << "temp1" << topVectorTemp.x << topVectorTemp.y << topVectorTemp.z;
 	topVectorTemp = topVectorTemp.RotateAroundVectorByAngle(CVector3(1.0, 0.0, 0.0), -pitch);

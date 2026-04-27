@@ -32,6 +32,7 @@
  * cRenderWorker::VolumetricShader method - calculates volumetric shaders
  */
 
+#include <algorithm>
 #include <cmath>
 
 #include "algebra.hpp"
@@ -637,8 +638,8 @@ sRGBAFloat cRenderWorker::VolumetricShader(
 			}
 		}
 
-		// fake lights (orbit trap)
-		if (params->fakeLightsEnabled)
+		// fake lights (orbit trap) — only if Single Trap Lights is disabled
+		if (!params->singleTrapLights.enabled && params->fakeLightsEnabled)
 		{
 			int fakeLightMaxLoop = 1;
 			if (params->common.fakeLightsColor2Enabled) fakeLightMaxLoop = 2;
@@ -746,6 +747,228 @@ sRGBAFloat cRenderWorker::VolumetricShader(
 				output.G += fakeLight * float(step) * params->fakeLightsVisibility * color.G;
 				output.B += fakeLight * float(step) * params->fakeLightsVisibility * color.B;
 				output.A += fakeLight * float(step) * params->fakeLightsVisibility;
+			}
+		}
+
+		// Single Trap Lights (volumetric)
+		if (params->singleTrapLights.enabled)
+		{
+			const int soloLayer = params->singleTrapLights.soloLayerIndex;
+			const bool combineMax =
+				(params->singleTrapLights.combineMode == params::singleTrapLightsCombineMax);
+			float stlR = 0.0f;
+			float stlG = 0.0f;
+			float stlB = 0.0f;
+
+			for (int i = 0; i < params->singleTrapLights.activeLayerCount; i++)
+			{
+				const sSingleTrapLightLayer &layer = params->singleTrapLights.layers[i];
+				if (!layer.enabled) continue;
+				if (soloLayer > 0 && soloLayer != i + 1) continue;
+
+				CVector3 effectivePosition = layer.position;
+				if (!layer.preTransformed)
+				{
+					if (layer.positionMode == 1) effectivePosition += params->camera;
+					else if (layer.positionMode == 2) effectivePosition += params->common.fractalPosition;
+					else if (layer.positionMode == 3) effectivePosition += params->target;
+				}
+
+				// Apply animation
+				double time = params->frameNo;
+				double animatedSize = layer.size;
+				if (layer.animOrbitSpeed != 0.0 || layer.animPulsateSpeed != 0.0)
+				{
+					double orbitAngle = time * layer.animOrbitSpeed * 0.01 + i * 0.7;
+					effectivePosition.x += cos(orbitAngle) * layer.animOrbitRadius;
+					effectivePosition.y += sin(orbitAngle) * layer.animOrbitRadius;
+
+					double pulsate = 1.0 + sin(time * layer.animPulsateSpeed * 0.1 + i * 1.3) * layer.animPulsateAmount;
+					animatedSize *= pulsate;
+				}
+
+				if (layer.maxDistance > 1e-30)
+				{
+					const double rs = fabs(layer.relativeSize);
+					const double sz = std::max(fabs(animatedSize), fabs(layer.size2)) * rs
+						+ fabs(layer.edgeSoftness) * rs;
+					const double margin = sz + layer.maxDistance * rs + fabs(layer.animOrbitRadius);
+					const double dx = point.x - effectivePosition.x;
+					const double dy = point.y - effectivePosition.y;
+					const double dz = point.z - effectivePosition.z;
+					if (sqrt(dx * dx + dy * dy + dz * dz) > margin * 2.8) continue;
+				}
+
+				CVector3 adjustedPoint = point - effectivePosition + layer.position * layer.relativeSize;
+				CVector3 scaledPoint = adjustedPoint / layer.relativeSize;
+				sSingleTrapLightLayer animatedLayer = layer;
+				animatedLayer.size = animatedSize;
+				double rawDistance = SingleTrapLightDistance(scaledPoint, animatedLayer) * layer.relativeSize;
+				double distance = rawDistance;
+				if (distance < 0.0) distance = 0.0;
+
+				const double maxDistFade = layer.maxDistance;
+				double volFade = 1.0;
+				if (maxDistFade > 1e-30 && distance > 0.0)
+				{
+					double t = distance / maxDistFade;
+					if (t >= 1.0) continue;
+					t = t * t * (3.0 - 2.0 * t);
+					volFade = 1.0 - t;
+				}
+
+				const double blur = layer.blur;
+				double distForFalloff = distance;
+				if (blur > 1e-20)
+				{
+					const double blurScale = blur * (0.4 + 0.65 * fabs(layer.relativeSize));
+					distForFalloff = std::sqrt(distance * distance + blurScale * blurScale);
+				}
+				double effectiveSharpening =
+					layer.sharpening / (1.0 + blur * 1.75 + blur * blur * 0.4);
+				const double effectiveDist = distForFalloff;
+				double falloff;
+				switch (layer.falloffType)
+				{
+					case params::singleTrapLightFalloffInverseSquare:
+						falloff = 1.0 / (1.0 + effectiveDist * effectiveDist * effectiveSharpening);
+						break;
+					case params::singleTrapLightFalloffLinear:
+						falloff = std::max(
+							0.0, 1.0 - effectiveDist * std::sqrt(effectiveSharpening) * 1.35);
+						break;
+					case params::singleTrapLightFalloffExponential:
+						falloff = exp(-effectiveDist * std::sqrt(effectiveSharpening) * 1.15);
+						break;
+					case params::singleTrapLightFalloffSmoothstep:
+					{
+						double edge = 1.0 / std::sqrt(effectiveSharpening + 1e-30);
+						double tSmooth = effectiveDist / edge;
+						if (tSmooth >= 1.0) falloff = 0.0;
+						else if (tSmooth <= 0.0) falloff = 1.0;
+						else falloff = 1.0 - tSmooth * tSmooth * (3.0 - 2.0 * tSmooth);
+						break;
+					}
+					default:
+						falloff = exp(-effectiveDist * effectiveDist * effectiveSharpening);
+						break;
+				}
+				if (layer.softness > 0.0 && distForFalloff > 0.0)
+					falloff *= exp(-distForFalloff * layer.softness * 1.2);
+				double solidBoost = (rawDistance < 0.0) ? layer.solidIntensity : 1.0;
+				double innerGlow = 1.0;
+				if (rawDistance < 0.0)
+				{
+					double depth = std::min(1.0, -rawDistance / 2.0);
+					innerGlow = 1.0 + layer.softness * depth * 3.2;
+				}
+				float light =
+					float(layer.intensity * layer.visibility * falloff * solidBoost * innerGlow * volFade);
+				double gradT = 0.0;
+				if (layer.maxDistance > 1e-30)
+					gradT = std::min(1.0, distance / layer.maxDistance);
+				if (gradT > 1.0) gradT = 1.0;
+				float gradTf = float(gradT);
+				sRGBFloat layerColor;
+				layerColor.R = layer.color.R * (1.0f - gradTf) + layer.gradientColor.R * gradTf;
+				layerColor.G = layer.color.G * (1.0f - gradTf) + layer.gradientColor.G * gradTf;
+				layerColor.B = layer.color.B * (1.0f - gradTf) + layer.gradientColor.B * gradTf;
+				// Orbit mode: surface shader uses fractal orbitTrapR; volumetric uses distance as a cheap proxy.
+				if (layer.coloringMode == params::singleTrapLightColoringDistance
+						|| layer.coloringMode == params::singleTrapLightColoringOrbitTrap)
+				{
+					layerColor.R *= (1.0f - gradTf);
+					layerColor.G *= (1.0f - gradTf);
+					layerColor.B *= (1.0f - gradTf);
+				}
+
+				const float cr = light * layerColor.R;
+				const float cg = light * layerColor.G;
+				const float cb = light * layerColor.B;
+				if (combineMax)
+				{
+					stlR = std::max(stlR, cr);
+					stlG = std::max(stlG, cg);
+					stlB = std::max(stlB, cb);
+				}
+				else
+				{
+					stlR += cr;
+					stlG += cg;
+					stlB += cb;
+				}
+			}
+
+			output.R += stlR * float(step);
+			output.G += stlG * float(step);
+			output.B += stlB * float(step);
+		}
+
+		// Pattern line traps (volumetric) — same world-space lines as surface shader
+		if (params->patternLineTraps.enabled)
+		{
+			const int soloPl = params->patternLineTraps.soloLayerIndex;
+			for (int pi = 0; pi < PATTERN_LINE_TRAP_COUNT; pi++)
+			{
+				if (soloPl > 0 && soloPl != pi + 1) continue;
+				const sPatternLineTrapLayer &layer = params->patternLineTraps.layers[pi];
+				if (!layer.enabled) continue;
+
+				sPatternLineTrapLayer effLayer = layer;
+				const double camDist = (params->camera - layer.position).Length();
+				effLayer.radius = PatternLineTrapEffectiveRadius(layer, camDist);
+
+				CVector3 delta = point - layer.position;
+				delta = effLayer.mRotRotation.RotateVector(delta);
+
+				if (effLayer.maxDistance > 1e-30 || effLayer.segmentHalfLength > 1e-30)
+				{
+					double margin =
+						PatternLineTrapProfileExtent(effLayer) + fabs(effLayer.edgeSoftness);
+					if (effLayer.maxDistance > 1e-30) margin += effLayer.maxDistance;
+					if (effLayer.segmentHalfLength > 1e-30) margin += effLayer.segmentHalfLength;
+					if (delta.Length() > margin * 2.8) continue;
+				}
+
+				double axialFade = 1.0;
+				if (effLayer.segmentHalfLength > 1e-30)
+				{
+					const double ax = fabs(delta.x);
+					double t = ax / effLayer.segmentHalfLength;
+					if (t >= 1.0) continue;
+					t = t * t * (3.0 - 2.0 * t);
+					axialFade = 1.0 - t;
+				}
+
+				const double rawDist = PatternLineTrapProfileRawDist(effLayer, delta.y, delta.z);
+				const double wallDist = PatternLineTrapWallDist(effLayer, rawDist);
+
+				double volFade = 1.0;
+				if (effLayer.maxDistance > 1e-30)
+				{
+					double t = wallDist / effLayer.maxDistance;
+					if (t >= 1.0) continue;
+					t = t * t * (3.0 - 2.0 * t);
+					volFade = 1.0 - t;
+				}
+
+				const double falloff = PatternLineTrapGlowFalloff(effLayer, wallDist);
+				const double intens = effLayer.intensity * falloff * volFade * axialFade;
+				const double tGrad = PatternLineTrapGradientT(effLayer, wallDist);
+				const sRGBFloat grad = PatternLineTrapGradientRgb(effLayer, tGrad);
+
+				if (params->patternLineTraps.combineMode == 0)
+				{
+					output.R += float(intens * double(grad.R) * step);
+					output.G += float(intens * double(grad.G) * step);
+					output.B += float(intens * double(grad.B) * step);
+				}
+				else
+				{
+					output.R = std::max(output.R, float(intens * double(grad.R) * step));
+					output.G = std::max(output.G, float(intens * double(grad.G) * step));
+					output.B = std::max(output.B, float(intens * double(grad.B) * step));
+				}
 			}
 		}
 

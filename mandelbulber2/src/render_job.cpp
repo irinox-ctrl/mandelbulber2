@@ -128,7 +128,8 @@ cRenderJob::~cRenderJob()
 	WriteLog("Job finished and closed", 2);
 }
 
-bool cRenderJob::Init(enumMode _mode, const cRenderingConfiguration &config)
+bool cRenderJob::Init(
+	enumMode _mode, const cRenderingConfiguration &config, const bool setupMainImagePreview)
 {
 	WriteLog("cRenderJob::Init id = " + QString::number(id), 2);
 
@@ -180,7 +181,7 @@ bool cRenderJob::Init(enumMode _mode, const cRenderingConfiguration &config)
 		QObject::tr("Initialization"), QObject::tr("Setting up image buffers"), 0.0);
 	// gApplication->processEvents();
 
-	if (!InitImage(width, height, imageOptional))
+	if (!InitImage(width, height, imageOptional, setupMainImagePreview))
 	{
 		ready = false;
 		return false;
@@ -222,7 +223,8 @@ bool cRenderJob::Init(enumMode _mode, const cRenderingConfiguration &config)
 	return true;
 }
 
-bool cRenderJob::InitImage(int w, int h, const sImageOptional &optional)
+bool cRenderJob::InitImage(
+	int w, int h, const sImageOptional &optional, const bool setupMainImagePreview)
 {
 	WriteLog("cRenderJob::InitImage", 2);
 
@@ -234,7 +236,10 @@ bool cRenderJob::InitImage(int w, int h, const sImageOptional &optional)
 	else
 	{
 		WriteLog("complexImage allocated", 2);
-		if (hasQWidget)
+		// Geen preview her-alloc als de vorige nog geldig is: CreatePreview kan hele buffer
+		// met zwart vullen; UpdatePreview overschrijft tot live tegels (flits).
+		const bool needPreviewSetup = setupMainImagePreview || !image->IsPreview();
+		if (hasQWidget && needPreviewSetup)
 		{
 			double scale =
 				ImageScaleComboSelection2Double(paramsContainer->Get<int>("image_preview_scale"));

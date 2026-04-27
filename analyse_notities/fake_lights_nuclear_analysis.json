@@ -1,0 +1,2701 @@
+{
+  "metadata": {
+    "analysis_type": "Mandelbulber2 Fake Lights Nuclear Deconstruction",
+    "version": "1.0.0",
+    "analysis_date": "/home/joeri/mandelbulber2_v2_experiment",
+    "source_root": "/home/joeri/mandelbulber2_v2_experiment",
+    "total_files_analyzed": 377
+  },
+  "executive_summary": {
+    "orbit_trap_algorithms": 200,
+    "parameters_found": 47,
+    "shader_functions": 0,
+    "opencl_kernels": 0,
+    "critical_insight": "Fake lights are calculated during fractal iteration using orbit trap distances"
+  },
+  "orbit_trap_algorithms": {
+    "opencl_engine_render_fractal_203": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/opencl_engine_render_fractal.cpp",
+      "line": 204,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [
+        "surface_color"
+      ],
+      "algorithm_snippet": "AddInclude(programEngine, openclEnginePath + \"fractal_coloring.cl\");"
+    },
+    "opencl_engine_render_fractal_204": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/opencl_engine_render_fractal.cpp",
+      "line": 205,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [
+        "surface_color"
+      ],
+      "algorithm_snippet": "AddInclude(programEngine, openclEnginePath + \"fractal_coloring.cl\");"
+    },
+    "opencl_engine_render_fractal_658": {
+      "shape": "cross",
+      "file": "mandelbulber2/src/opencl_engine_render_fractal.cpp",
+      "line": 659,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "definesCollector += \" -DITER_FOG\";\n\t\tanyVolumetricShaderUsed = true;"
+    },
+    "compute_fractal_40": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/compute_fractal.cpp",
+      "line": 41,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [
+        "color_range"
+      ],
+      "algorithm_snippet": "z.w = fractals.GetInitialWAxis(in.forcedFormulaIndex);"
+    },
+    "compute_fractal_74": {
+      "shape": "unknown",
+      "file": "mandelbulber2/opencl/engines/compute_fractal.cl",
+      "line": 75,
+      "iteration_dependent": true,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "float4 z;\n\tfloat iters;\n\tfloat distance;\n\tfloat colorIndex;\n\tfloat orbitTrapR;\n\tint objectId;\n\tbool maxiter;"
+    },
+    "compute_fractal_75": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/compute_fractal.cpp",
+      "line": 76,
+      "iteration_dependent": true,
+      "parameters": {},
+      "color_components": [
+        "aux.color"
+      ],
+      "algorithm_snippet": "z.w = fractals.GetInitialWAxis(0);"
+    },
+    "compute_fractal_115": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/compute_fractal.cpp",
+      "line": 116,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "if (in.orbitTrapIndex == 0)\n\t\t{\n\t\t\tif (in.common->fakeLightsColor2Enabled) fakeLightsMaxIter = fakeLightsMinIter;\n\t\t}\n\t\telse if (in.orbitTrapIndex == 1)\n\t\t{\n\t\t\tfakeLightsMinIter = in.common->fakeLight..."
+    },
+    "compute_fractal_117": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/compute_fractal.cpp",
+      "line": 118,
+      "iteration_dependent": true,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "if (in.orbitTrapIndex == 0)\n\t\t{\n\t\t\tif (in.common->fakeLightsColor2Enabled) fakeLightsMaxIter = fakeLightsMinIter;\n\t\t}\n\t\telse if (in.orbitTrapIndex == 1)\n\t\t{\n\t\t\tfakeLightsMinIter = in.common->fakeLight..."
+    },
+    "compute_fractal_121": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/compute_fractal.cpp",
+      "line": 122,
+      "iteration_dependent": true,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "if (in.orbitTrapIndex == 0)\n\t\t{\n\t\t\tif (in.common->fakeLightsColor2Enabled) fakeLightsMaxIter = fakeLightsMinIter;\n\t\t}\n\t\telse if (in.orbitTrapIndex == 1)\n\t\t{\n\t\t\tfakeLightsMinIter = in.common->fakeLight..."
+    },
+    "compute_fractal_127": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/compute_fractal.cpp",
+      "line": 128,
+      "iteration_dependent": true,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "if (in.common->fakeLightsColor2Enabled) fakeLightsMaxIter = fakeLightsMinIter;"
+    },
+    "compute_fractal_391": {
+      "shape": "cube",
+      "file": "mandelbulber2/src/compute_fractal.cpp",
+      "line": 392,
+      "iteration_dependent": true,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "if (aux.r > 1e15 || (z - lastZ).Length() / aux.r < 1e-15) break;"
+    },
+    "compute_fractal_399": {
+      "shape": "cube",
+      "file": "mandelbulber2/src/compute_fractal.cpp",
+      "line": 400,
+      "iteration_dependent": true,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "CVector4 zAdj = z;\n\t\t\t\tif (in.common->fakeLightsPositionMode == params::fakeLightsPositionFractalCenter)\n\t\t\t\t{\n\t\t\t\t\tzAdj = z - aux.const_c;\n\t\t\t\t}\n\t\t\t\tdouble distance = OrbitTrapShapeDistance(zAdj, in...."
+    },
+    "compute_fractal_401": {
+      "shape": "cube",
+      "file": "mandelbulber2/src/compute_fractal.cpp",
+      "line": 402,
+      "iteration_dependent": true,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "CVector4 zAdj = z;\n\t\t\t\tif (in.common->fakeLightsPositionMode == params::fakeLightsPositionFractalCenter)\n\t\t\t\t{\n\t\t\t\t\tzAdj = z - aux.const_c;\n\t\t\t\t}\n\t\t\t\tdouble distance = OrbitTrapShapeDistance(zAdj, in...."
+    },
+    "compute_fractal_404": {
+      "shape": "cube",
+      "file": "mandelbulber2/src/compute_fractal.cpp",
+      "line": 405,
+      "iteration_dependent": true,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "zAdj = z - aux.const_c;"
+    },
+    "compute_fractal_408": {
+      "shape": "cube",
+      "file": "mandelbulber2/src/compute_fractal.cpp",
+      "line": 409,
+      "iteration_dependent": true,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "out->orbitTrapR = orbitTrapTotal;\n\t\t\t\t\tbreak;"
+    },
+    "compute_fractal_574": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/compute_fractal.cpp",
+      "line": 575,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "}\n\ntemplate void Compute<calcModeNormal>(const cNineFractals &fractals,\n\tconst cHybridFractalSequences::sSequence *sequence, const sFractalIn &in, sFractalOut *out);\ntemplate void Compute<calcModeDelt..."
+    },
+    "compute_fractal_576": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/compute_fractal.cpp",
+      "line": 577,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "template void Compute<calcModeNormal>(const cNineFractals &fractals,\n\tconst cHybridFractalSequences::sSequence *sequence, const sFractalIn &in, sFractalOut *out);\ntemplate void Compute<calcModeDeltaDE..."
+    },
+    "shader_perlin_noise_for_shaders_57": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/shader_perlin_noise_for_shaders.cpp",
+      "line": 58,
+      "iteration_dependent": true,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "CVector3 pointModified;\n\t\tif (shaderInputData->material->textureFractalize)\n\t\t{\n\t\t\tsFractalIn fractIn(point, 0, -1, 1, 0, &params->common, -1, false, shaderInputData->material);\n\t\t\tsFractalOut fractOu..."
+    },
+    "old_settings_862": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/old_settings.cpp",
+      "line": 863,
+      "iteration_dependent": true,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "else if (!strcmp(str1, \"fake_lights_min_iter\"))\n\t\t\tparams->fractal.fakeLightsMinIter = atoi(str2);\n\t\telse if (!strcmp(str1, \"fake_lights_max_iter\"))\n\t\t\tparams->fractal.fakeLightsMaxIter = atoi(str2);\n..."
+    },
+    "old_settings_863": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/old_settings.cpp",
+      "line": 864,
+      "iteration_dependent": true,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "params->fractal.fakeLightsMinIter = atoi(str2);\n\t\telse if (!strcmp(str1, \"fake_lights_max_iter\"))\n\t\t\tparams->fractal.fakeLightsMaxIter = atoi(str2);\n\t\telse if (!strcmp(str1, \"fake_lights_visibility\"))..."
+    },
+    "old_settings_864": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/old_settings.cpp",
+      "line": 865,
+      "iteration_dependent": true,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "else if (!strcmp(str1, \"fake_lights_max_iter\"))\n\t\t\tparams->fractal.fakeLightsMaxIter = atoi(str2);\n\t\telse if (!strcmp(str1, \"fake_lights_visibility\"))\n\t\t\tparams->doubles.fakeLightsVisibility = atof2(s..."
+    },
+    "old_settings_865": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/old_settings.cpp",
+      "line": 866,
+      "iteration_dependent": true,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "params->fractal.fakeLightsMaxIter = atoi(str2);\n\t\telse if (!strcmp(str1, \"fake_lights_visibility\"))\n\t\t\tparams->doubles.fakeLightsVisibility = atof2(str2);\n\t\telse if (!strcmp(str1, \"fake_lights_visibil..."
+    },
+    "old_settings_866": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/old_settings.cpp",
+      "line": 867,
+      "iteration_dependent": true,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "else if (!strcmp(str1, \"fake_lights_visibility\"))\n\t\t\tparams->doubles.fakeLightsVisibility = atof2(str2);\n\t\telse if (!strcmp(str1, \"fake_lights_visibility_size\"))\n\t\t\tparams->doubles.fakeLightsVisibilit..."
+    },
+    "old_settings_867": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/old_settings.cpp",
+      "line": 868,
+      "iteration_dependent": true,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "params->doubles.fakeLightsVisibility = atof2(str2);\n\t\telse if (!strcmp(str1, \"fake_lights_visibility_size\"))\n\t\t\tparams->doubles.fakeLightsVisibilitySize = atof2(str2);\n\t\telse if (!strcmp(str1, \"fake_l..."
+    },
+    "old_settings_1136": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/old_settings.cpp",
+      "line": 1137,
+      "iteration_dependent": true,
+      "parameters": {},
+      "color_components": [
+        "surface_color"
+      ],
+      "algorithm_snippet": "double pos = double(i) * step;\n\t\tnewGradient.AddColor(oldData->palette[i], pos);\n\t\tif (i == 0) newGradient.AddColor(oldData->palette[i], 1.0);"
+    },
+    "shader_volumetric_639": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/shader_volumetric.cpp",
+      "line": 640,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "commonWithPosition.fakeLightsOrbitTrap = params->camera + transformedTrap;"
+    },
+    "shader_volumetric_649": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/shader_volumetric.cpp",
+      "line": 650,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "commonWithPosition.fakeLightsOrbitTrap = params->camera + transformedTrap;"
+    },
+    "shader_volumetric_655": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/shader_volumetric.cpp",
+      "line": 656,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "commonWithPosition.fakeLightsOrbitTrap = params->camera + transformedTrap;"
+    },
+    "shader_volumetric_659": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/shader_volumetric.cpp",
+      "line": 660,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "commonWithPosition.fakeLightsOrbitTrap = params->camera + transformedTrap;"
+    },
+    "shader_volumetric_663": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/shader_volumetric.cpp",
+      "line": 664,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "commonWithPosition.fakeLightsOrbitTrap = params->camera + transformedTrap;"
+    },
+    "shader_volumetric_667": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/shader_volumetric.cpp",
+      "line": 668,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "commonWithPosition.fakeLightsOrbitTrap = params->camera + transformedTrap;"
+    },
+    "shader_volumetric_675": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/shader_volumetric.cpp",
+      "line": 676,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "commonWithPosition.fakeLightsOrbitTrap = transformedTrap;"
+    },
+    "shader_volumetric_676": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/shader_volumetric.cpp",
+      "line": 677,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "commonWithPosition.fakeLightsOrbitTrap = transformedTrap;"
+    },
+    "orbit_trap_shape_31": {
+      "shape": "unknown",
+      "file": "mandelbulber2/opencl/engines/orbit_trap_shape.cl",
+      "line": 32,
+      "iteration_dependent": true,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "return sqrt(d2d * d2d + z * z);"
+    },
+    "orbit_trap_shape_32": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/orbit_trap_shape.cpp",
+      "line": 33,
+      "iteration_dependent": true,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "return sqrt(d2d * d2d + z * z);"
+    },
+    "orbit_trap_shape_35": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/orbit_trap_shape.hpp",
+      "line": 36,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "* along with Mandelbulber. If not, see <http:\n *\n * ###########################################################################\n *\n * Authors: Krzysztof Marczak (buddhi1980@gmail.com)\n *\n * calculatio..."
+    },
+    "orbit_trap_shape_236": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/orbit_trap_shape.cpp",
+      "line": 237,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "delta = ApplyShapeModifiers(delta, par);\n\t\t\tdist = delta.Length() - par->fakeLightsOrbitTrapSize;\n\t\t\tbreak;"
+    },
+    "orbit_trap_shape_243": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/orbit_trap_shape.cpp",
+      "line": 244,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "delta = ApplyShapeModifiers(delta, par);\n\t\t\tdist = delta.Length() - par->fakeLightsOrbitTrapSize;\n\t\t\tbreak;"
+    },
+    "orbit_trap_shape_250": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/orbit_trap_shape.cpp",
+      "line": 251,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "delta = par->mRotFakeLightsRotation.RotateVector(delta);\n\t\t\tdelta = ApplyShapeModifiers(delta, par);\n\t\t\tdist = sqrt(delta.y * delta.y + delta.z * delta.z) - par->fakeLightsOrbitTrapSize;\n\t\t\tbreak;"
+    },
+    "orbit_trap_shape_258": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/orbit_trap_shape.cpp",
+      "line": 259,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "delta = par->mRotFakeLightsRotation.RotateVector(delta);\n\t\t\tdelta = ApplyShapeModifiers(delta, par);\n\t\t\tdouble dy = max(fabs(fabs(delta.y) - par->fakeLightsOrbitTrapSize),\n\t\t\t\tfabs(delta.z) - par->fak..."
+    },
+    "orbit_trap_shape_259": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/orbit_trap_shape.cpp",
+      "line": 260,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "delta = par->mRotFakeLightsRotation.RotateVector(delta);\n\t\t\tdelta = ApplyShapeModifiers(delta, par);\n\t\t\tdouble dy = max(fabs(fabs(delta.y) - par->fakeLightsOrbitTrapSize),\n\t\t\t\tfabs(delta.z) - par->fak..."
+    },
+    "orbit_trap_shape_260": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/orbit_trap_shape.cpp",
+      "line": 261,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "delta = par->mRotFakeLightsRotation.RotateVector(delta);\n\t\t\tdelta = ApplyShapeModifiers(delta, par);\n\t\t\tdouble dy = max(fabs(fabs(delta.y) - par->fakeLightsOrbitTrapSize),\n\t\t\t\tfabs(delta.z) - par->fak..."
+    },
+    "orbit_trap_shape_261": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/orbit_trap_shape.cpp",
+      "line": 262,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "delta = par->mRotFakeLightsRotation.RotateVector(delta);\n\t\t\tdelta = ApplyShapeModifiers(delta, par);\n\t\t\tdouble dy = max(fabs(fabs(delta.y) - par->fakeLightsOrbitTrapSize),\n\t\t\t\tfabs(delta.z) - par->fak..."
+    },
+    "orbit_trap_shape_270": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/orbit_trap_shape.cpp",
+      "line": 271,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "delta = par->mRotFakeLightsRotation.RotateVector(delta);\n\t\t\tdelta = ApplyShapeModifiers(delta, par);\n\t\t\tdouble lengthYZ = sqrt(delta.y * delta.y + delta.z * delta.z) - par->fakeLightsOrbitTrapSize;\n\t\t..."
+    },
+    "orbit_trap_shape_272": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/orbit_trap_shape.cpp",
+      "line": 273,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "delta = par->mRotFakeLightsRotation.RotateVector(delta);\n\t\t\tdelta = ApplyShapeModifiers(delta, par);\n\t\t\tdouble lengthYZ = sqrt(delta.y * delta.y + delta.z * delta.z) - par->fakeLightsOrbitTrapSize;\n\t\t..."
+    },
+    "orbit_trap_shape_274": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/orbit_trap_shape.cpp",
+      "line": 275,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "delta = par->mRotFakeLightsRotation.RotateVector(delta);\n\t\t\tdelta = ApplyShapeModifiers(delta, par);\n\t\t\tdouble lengthYZ = sqrt(delta.y * delta.y + delta.z * delta.z) - par->fakeLightsOrbitTrapSize;\n\t\t..."
+    },
+    "orbit_trap_shape_283": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/orbit_trap_shape.cpp",
+      "line": 284,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "delta = par->mRotFakeLightsRotation.RotateVector(delta);\n\t\t\tdelta = ApplyShapeModifiers(delta, par);\n\t\t\tdouble size = par->fakeLightsOrbitTrapSize;\n\t\t\tdouble dy_x = max(fabs(fabs(delta.y) - size), fab..."
+    },
+    "orbit_trap_shape_297": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/orbit_trap_shape.cpp",
+      "line": 298,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "delta = par->mRotFakeLightsRotation.RotateVector(delta);\n\t\t\tdelta = ApplyShapeModifiers(delta, par);\n\t\t\tdouble q = sqrt(delta.x * delta.x + delta.y * delta.y) - par->fakeLightsOrbitTrapSize;\n\t\t\tdist =..."
+    },
+    "orbit_trap_shape_305": {
+      "shape": "cross",
+      "file": "mandelbulber2/src/orbit_trap_shape.cpp",
+      "line": 306,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "delta = par->mRotFakeLightsRotation.RotateVector(delta);\n\t\t\tdelta = ApplyShapeModifiers(delta, par);\n\t\t\tdouble h = par->fakeLightsOrbitTrapSize * 1.5;\n\t\t\tdouble d2d = max(fabs(delta.x) * 0.86602540378..."
+    },
+    "orbit_trap_shape_315": {
+      "shape": "cross",
+      "file": "mandelbulber2/src/orbit_trap_shape.cpp",
+      "line": 316,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "delta = par->mRotFakeLightsRotation.RotateVector(delta);\n\t\t\tdelta = ApplyShapeModifiers(delta, par);\n\t\t\tdouble d2d = max(fabs(delta.x) * 0.86602540378 + fabs(delta.y) * 0.5, fabs(delta.y))\n\t\t\t\t\t\t - pa..."
+    },
+    "orbit_trap_shape_327": {
+      "shape": "cross",
+      "file": "mandelbulber2/src/orbit_trap_shape.cpp",
+      "line": 328,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "delta = par->mRotFakeLightsRotation.RotateVector(delta);\n\t\t\tdelta = ApplyShapeModifiers(delta, par);\n\t\t\tdouble a = atan2(delta.y, delta.x);\n\t\t\tdouble r = sqrt(delta.x * delta.x + delta.y * delta.y);\n\t..."
+    },
+    "orbit_trap_shape_335": {
+      "shape": "cross",
+      "file": "mandelbulber2/src/orbit_trap_shape.cpp",
+      "line": 336,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "delta = par->mRotFakeLightsRotation.RotateVector(delta);\n\t\t\tdelta = ApplyShapeModifiers(delta, par);\n\t\t\tdouble r = par->fakeLightsOrbitTrapSize;\n\t\t\tdouble d1 = sqrt(delta.y * delta.y + delta.z * delta..."
+    },
+    "orbit_trap_shape_346": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/orbit_trap_shape.cpp",
+      "line": 347,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "delta = par->mRotFakeLightsRotation.RotateVector(delta);\n\t\t\tdelta = ApplyShapeModifiers(delta, par);\n\t\t\tdouble h = par->fakeLightsOrbitTrapSize;\n\t\t\tdouble r = h * par->fakeLightsShapeParam2;\n\t\t\tif (r ..."
+    },
+    "orbit_trap_shape_359": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/orbit_trap_shape.cpp",
+      "line": 360,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "delta = par->mRotFakeLightsRotation.RotateVector(delta);\n\t\t\tdelta = ApplyShapeModifiers(delta, par);\n\t\t\tdouble c = par->fakeLightsOrbitTrapSize * par->fakeLightsShapeParam2;\n\t\t\tif (c <= 0.0) c = par->..."
+    },
+    "orbit_trap_shape_360": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/orbit_trap_shape.cpp",
+      "line": 361,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "delta = par->mRotFakeLightsRotation.RotateVector(delta);\n\t\t\tdelta = ApplyShapeModifiers(delta, par);\n\t\t\tdouble c = par->fakeLightsOrbitTrapSize * par->fakeLightsShapeParam2;\n\t\t\tif (c <= 0.0) c = par->..."
+    },
+    "orbit_trap_shape_368": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/orbit_trap_shape.cpp",
+      "line": 369,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "delta = par->mRotFakeLightsRotation.RotateVector(delta);\n\t\t\tdelta = ApplyShapeModifiers(delta, par);\n\t\t\tdouble h = par->fakeLightsOrbitTrapSize;\n\t\t\tdouble m = max(fabs(delta.x), fabs(delta.z));\n\t\t\tdis..."
+    },
+    "orbit_trap_shape_379": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/orbit_trap_shape.cpp",
+      "line": 380,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "delta = par->mRotFakeLightsRotation.RotateVector(delta);\n\t\t\tdelta = ApplyShapeModifiers(delta, par);\n\t\t\tdouble md = max(max(-delta.x - delta.y - delta.z, delta.x + delta.y - delta.z),\n\t\t\t\t\t\tmax(delta...."
+    },
+    "orbit_trap_shape_386": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/orbit_trap_shape.cpp",
+      "line": 387,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "delta = par->mRotFakeLightsRotation.RotateVector(delta);\n\t\t\tdelta = ApplyShapeModifiers(delta, par);\n\t\t\tdist = (fabs(delta.x) + fabs(delta.y) + fabs(delta.z) - par->fakeLightsOrbitTrapSize)\n\t\t\t\t\t * 0...."
+    },
+    "orbit_trap_shape_399": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/orbit_trap_shape.cpp",
+      "line": 400,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "delta = par->mRotFakeLightsRotation.RotateVector(delta);\n\t\t\tdelta = ApplyShapeModifiers(delta, par);\n\t\t\tdouble px = fabs(delta.x);\n\t\t\tdouble py = fabs(delta.y);\n\t\t\tdouble pz = fabs(delta.z);\n\t\t\tdouble..."
+    },
+    "orbit_trap_shape_411": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/orbit_trap_shape.cpp",
+      "line": 412,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "delta = par->mRotFakeLightsRotation.RotateVector(delta);\n\t\t\tdelta = ApplyShapeModifiers(delta, par);\n\t\t\tdouble px = fabs(delta.x);\n\t\t\tdouble py = fabs(delta.y);\n\t\t\tdouble pz = fabs(delta.z);\n\t\t\tdouble..."
+    },
+    "orbit_trap_shape_419": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/orbit_trap_shape.cpp",
+      "line": 420,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "delta = par->mRotFakeLightsRotation.RotateVector(delta);\n\t\t\tdelta = ApplyShapeModifiers(delta, par);\n\t\t\tdist = MengerSpongeDist(delta, par->fakeLightsOrbitTrapSize);\n\t\t\tbreak;"
+    },
+    "orbit_trap_shape_426": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/orbit_trap_shape.cpp",
+      "line": 427,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "delta = par->mRotFakeLightsRotation.RotateVector(delta);\n\t\t\tdelta = ApplyShapeModifiers(delta, par);\n\t\t\tdist = MengerSpongeDist(delta, par->fakeLightsOrbitTrapSize);\n\t\t\tbreak;"
+    },
+    "orbit_trap_shape_433": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/orbit_trap_shape.cpp",
+      "line": 434,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "delta = par->mRotFakeLightsRotation.RotateVector(delta);\n\t\t\tdelta = ApplyShapeModifiers(delta, par);\n\t\t\tdist = SierpinskiTetraDist(delta, par->fakeLightsOrbitTrapSize);\n\t\t\tbreak;"
+    },
+    "orbit_trap_shape_440": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/orbit_trap_shape.cpp",
+      "line": 441,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "delta = par->mRotFakeLightsRotation.RotateVector(delta);\n\t\t\tdelta = ApplyShapeModifiers(delta, par);\n\t\t\tdist = Extrude2D(KochSnowflakeDist(delta.x, delta.y, par->fakeLightsOrbitTrapSize), delta.z);\n\t\t..."
+    },
+    "orbit_trap_shape_457": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/orbit_trap_shape.cpp",
+      "line": 458,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "delta = par->mRotFakeLightsRotation.RotateVector(delta);\n\t\t\tdelta = ApplyShapeModifiers(delta, par);\n\t\t\tdouble a = atan2(delta.y, delta.x);\n\t\t\tdouble r = sqrt(delta.x * delta.x + delta.y * delta.y);\n\t..."
+    },
+    "orbit_trap_shape_465": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/orbit_trap_shape.cpp",
+      "line": 466,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "delta = par->mRotFakeLightsRotation.RotateVector(delta);\n\t\t\tdelta = ApplyShapeModifiers(delta, par);\n\t\t\tdouble s = par->fakeLightsOrbitTrapSize;\n\t\t\tdouble dx = SdfMod(delta.x + s * 0.5, s) - s * 0.5;\n..."
+    },
+    "orbit_trap_shape_482": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/orbit_trap_shape.cpp",
+      "line": 483,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "delta = par->mRotFakeLightsRotation.RotateVector(delta);\n\t\t\tdelta = ApplyShapeModifiers(delta, par);\n\t\t\tdouble px = fabs(delta.x);\n\t\t\tdouble py = fabs(delta.y);\n\t\t\tdouble pz = fabs(delta.z);\n\t\t\tdouble..."
+    },
+    "orbit_trap_shape_493": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/orbit_trap_shape.cpp",
+      "line": 494,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "delta = par->mRotFakeLightsRotation.RotateVector(delta);\n\t\t\tdelta = ApplyShapeModifiers(delta, par);\n\t\t\tdist = ApollonianDist(delta, par->fakeLightsOrbitTrapSize);\n\t\t\tbreak;"
+    },
+    "orbit_trap_shape_500": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/orbit_trap_shape.cpp",
+      "line": 501,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "delta = par->mRotFakeLightsRotation.RotateVector(delta);\n\t\t\tdelta = ApplyShapeModifiers(delta, par);\n\t\t\tdist = ApollonianDist(delta, par->fakeLightsOrbitTrapSize);\n\t\t\tbreak;"
+    },
+    "orbit_trap_shape_503": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/orbit_trap_shape.cpp",
+      "line": 504,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "CVector3 z = z4.GetXYZ();\n\tCVector3 delta = z - par->fakeLightsOrbitTrap;\n\n\tdouble distA = ShapeDistanceInternal(delta, par->fakeLightsOrbitTrapShape, par);\n\tdouble dist = distA;\n\n\tif (par->fakeLights..."
+    },
+    "orbit_trap_shape_505": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/orbit_trap_shape.cpp",
+      "line": 506,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "CVector3 z = z4.GetXYZ();\n\tCVector3 delta = z - par->fakeLightsOrbitTrap;\n\n\tdouble distA = ShapeDistanceInternal(delta, par->fakeLightsOrbitTrapShape, par);\n\tdouble dist = distA;\n\n\tif (par->fakeLights..."
+    },
+    "fractal_coloring_59": {
+      "shape": "line",
+      "file": "mandelbulber2/src/fractal_coloring.cpp",
+      "line": 60,
+      "iteration_dependent": false,
+      "parameters": {
+        "weight": 0.0
+      },
+      "color_components": [],
+      "algorithm_snippet": "extraColorOptionsEnabledFalse = false;\n\textraColorEnabledFalse = false;\n\tglobalPaletteFalse = false;\n\ticFabsFalse = false;\n\ticRadFalse = false;\n\ticXYZFalse = false;\n\tinitCondFalse = false;\n\titerAddSca..."
+    },
+    "fractal_coloring_92": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/fractal_coloring.cpp",
+      "line": 93,
+      "iteration_dependent": false,
+      "parameters": {
+        "weight": 0.0
+      },
+      "color_components": [
+        "color_range"
+      ],
+      "algorithm_snippet": "addMax = 0.0;\n\taddSpread = 0.0;\n\taddStartValue = 0.0;\n\tauxColorHybridWeight = 0.0;\n\tauxColorWeight = 0.0;\n\tcosAdd = 0.0;\n\tcosPeriod = 0.0;\n\tcosStartValue = 0.0;\n\thybridAuxColorScale1 = 0.0;\n\thybridOrb..."
+    },
+    "fractal_coloring_100": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/fractal_coloring.cpp",
+      "line": 101,
+      "iteration_dependent": false,
+      "parameters": {
+        "weight": 0.0
+      },
+      "color_components": [
+        "color_range"
+      ],
+      "algorithm_snippet": "cosStartValue = 0.0;\n\thybridAuxColorScale1 = 0.0;\n\thybridOrbitTrapScale1 = 0.0;\n\thybridRadDivDeScale1 = 0.0;\n\ticRadWeight = 0.0;\n\tinitialColorValue = 0.0;\n\titerAddScale = 0.0;\n\titerScale = 0.0;\n\tmaxCo..."
+    },
+    "fractal_coloring_146": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/fractal_coloring.cpp",
+      "line": 147,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [
+        "aux.color",
+        "color_range"
+      ],
+      "algorithm_snippet": "xyzC = fabs(xyzC) * fractalColoring.xyzC111;"
+    },
+    "fractal_coloring_147": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/fractal_coloring.cpp",
+      "line": 148,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [
+        "aux.color",
+        "color_range"
+      ],
+      "algorithm_snippet": "xyzC = fabs(xyzC) * fractalColoring.xyzC111;"
+    },
+    "fractal_coloring_150": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/fractal_coloring.cpp",
+      "line": 151,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [
+        "aux.color",
+        "color_range"
+      ],
+      "algorithm_snippet": "colorValue += colorMin * fractalColoring.orbitTrapWeight;"
+    },
+    "fractal_coloring_294": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/fractal_coloring.cpp",
+      "line": 295,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [
+        "aux.color",
+        "color_range"
+      ],
+      "algorithm_snippet": "colorMin = min(100.0, colorMin);\n\n\t\t\n\t\tdouble mboxColor = extendedAux.color;\n\t\t\n\n\t\t\n\t\tdouble r2 = min(r / fabs(extendedAux.DE), 20.0);\n\n\t\t\n\t\tif (!fractalColoring.extraColorOptionsEnabledFalse)\n\t\t{\n\t\t\t..."
+    },
+    "fractal_coloring_311": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/fractal_coloring.cpp",
+      "line": 312,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [
+        "color_range"
+      ],
+      "algorithm_snippet": "colorIndex = (colorMin * 1000.0 + mboxColor * 100.0 + r2 * 5000.0);"
+    },
+    "shader_texture_57": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/shader_texture.cpp",
+      "line": 58,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "sFractalIn fractIn(input.point, 0, -1, 1, 0, &params->common, -1, false, input.material);\n\t\tsFractalOut fractOut;\n\tfractOut.normal = CVector3(0, 0, 0);\n\t\tCompute<fractal::calcModeCubeOrbitTrap>(*fract..."
+    },
+    "shader_object_140": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/shader_object.cpp",
+      "line": 141,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "fakeLights = FakeLights(input, colour, &fakeLightsSpecular);"
+    },
+    "initparameters_419": {
+      "shape": "cross",
+      "file": "mandelbulber2/src/initparameters.cpp",
+      "line": 420,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "\"random\", \"single\", \"two\", \"distance\""
+    },
+    "initparameters_430": {
+      "shape": "cross",
+      "file": "mandelbulber2/src/initparameters.cpp",
+      "line": 431,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "\"World\", \"Camera Relative\", \"Target Point\", \"Fractal Center\""
+    },
+    "initparameters_436": {
+      "shape": "cross",
+      "file": "mandelbulber2/src/initparameters.cpp",
+      "line": 437,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "\"point\", \"line\", \"circle\", \"square\", \"sphere\", \"cube\",\n\t\t\t\"torus\", \"triangle\", \"hexagon\", \"star\", \"cross\", \"capsule\", \"cone\",\n\t\t\t\"pyramid\", \"tetrahedron\", \"octahedron\", \"dodecahedron\", \"icosahedron\",\n..."
+    },
+    "initparameters_444": {
+      "shape": "cross",
+      "file": "mandelbulber2/src/initparameters.cpp",
+      "line": 445,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "\"point\", \"line\", \"circle\", \"square\", \"sphere\", \"cube\",\n\t\t\t\"torus\", \"triangle\", \"hexagon\", \"star\", \"cross\", \"capsule\", \"cone\",\n\t\t\t\"pyramid\", \"tetrahedron\", \"octahedron\", \"dodecahedron\", \"icosahedron\",\n..."
+    },
+    "initparameters_1679": {
+      "shape": "line",
+      "file": "mandelbulber2/src/initparameters.cpp",
+      "line": 1680,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "par->addParam(cMaterial::Name(\"fractal_coloring_iter_scale_enabled_false\", materialId), false,\n\t\tmorphNone, paramStandard);\n\tpar->addParam(cMaterial::Name(\"fractal_coloring_iter_scale\", materialId), 0..."
+    },
+    "initparameters_1681": {
+      "shape": "line",
+      "file": "mandelbulber2/src/initparameters.cpp",
+      "line": 1682,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "par->addParam(cMaterial::Name(\"fractal_coloring_iter_scale\", materialId), 0.0, -1e20, 1e20,\n\t\tmorphAkima, paramStandard);\n\tpar->addParam(cMaterial::Name(\"fractal_coloring_line_direction\", materialId),..."
+    },
+    "initparameters_1683": {
+      "shape": "line",
+      "file": "mandelbulber2/src/initparameters.cpp",
+      "line": 1684,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "par->addParam(cMaterial::Name(\"fractal_coloring_line_direction\", materialId),\n\t\tCVector4(1.0, 0.0, 0.0, 0.0), morphAkima, paramStandard);\n\tpar->addParam(cMaterial::Name(\"fractal_coloring_max_color_val..."
+    },
+    "shader_fake_lights_31": {
+      "shape": "unknown",
+      "file": "mandelbulber2/opencl/engines/shader_fake_lights.cl",
+      "line": 32,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [
+        "surface_color"
+      ],
+      "algorithm_snippet": "* of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n *\n * See the GNU General Public License for more details.\n * You should have received a copy of the GNU General Public License\n * along with ..."
+    },
+    "shader_fake_lights_49": {
+      "shape": "unknown",
+      "file": "mandelbulber2/opencl/engines/shader_fake_lights.cl",
+      "line": 50,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "delta, 0.0f, 0.0f"
+    },
+    "shader_fake_lights_55": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/shader_fake_lights.cpp",
+      "line": 56,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "commonWithPosition.fakeLightsOrbitTrap = params->camera + transformedTrap;"
+    },
+    "shader_fake_lights_60": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/shader_fake_lights.cpp",
+      "line": 61,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "commonWithPosition.fakeLightsOrbitTrap = params->camera + transformedTrap;"
+    },
+    "shader_fake_lights_64": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/shader_fake_lights.cpp",
+      "line": 65,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "commonWithPosition.fakeLightsOrbitTrap = params->camera + transformedTrap;"
+    },
+    "shader_fake_lights_68": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/shader_fake_lights.cpp",
+      "line": 69,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "commonWithPosition.fakeLightsOrbitTrap = params->camera + transformedTrap;"
+    },
+    "shader_fake_lights_70": {
+      "shape": "unknown",
+      "file": "mandelbulber2/opencl/engines/shader_fake_lights.cl",
+      "line": 71,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [
+        "surface_color"
+      ],
+      "algorithm_snippet": "delta, 0.0f, 0.0f"
+    },
+    "shader_fake_lights_81": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/shader_fake_lights.cpp",
+      "line": 82,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "}\n\n\tfor (int fakeLightLoop = 0; fakeLightLoop < fakeLightMaxLoop; fakeLightLoop++)\n\t{\n\n\t\tdouble delta = input.distThresh * params->smoothness;\n\n\t\tsFractalIn fractIn(input.point, params->minN, -1, 1, f..."
+    },
+    "shader_fake_lights_82": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/shader_fake_lights.cpp",
+      "line": 83,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "for (int fakeLightLoop = 0; fakeLightLoop < fakeLightMaxLoop; fakeLightLoop++)\n\t{\n\n\t\tdouble delta = input.distThresh * params->smoothness;\n\n\t\tsFractalIn fractIn(input.point, params->minN, -1, 1, fakeL..."
+    },
+    "shader_fake_lights_92": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/shader_fake_lights.cpp",
+      "line": 93,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "fakeLightNormal.x = 0.0;"
+    },
+    "shader_fake_lights_93": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/shader_fake_lights.cpp",
+      "line": 94,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "fakeLightNormal.x = 0.0;"
+    },
+    "shader_fake_lights_96": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/shader_fake_lights.cpp",
+      "line": 97,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "fakeLightNormal.x = 0.0;"
+    },
+    "shader_fake_lights_97": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/shader_fake_lights.cpp",
+      "line": 98,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "fakeLightNormal.x = 0.0;"
+    },
+    "shader_fake_lights_100": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/shader_fake_lights.cpp",
+      "line": 101,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "fakeLightNormal.x = 0.0;"
+    },
+    "shader_fake_lights_101": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/shader_fake_lights.cpp",
+      "line": 102,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "fakeLightNormal.x = 0.0;"
+    },
+    "material_187": {
+      "shape": "line",
+      "file": "mandelbulber2/src/material.cpp",
+      "line": 188,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "\"fractal_coloring_init_cond_enabled_false\",\n\t\"fractal_coloring_initial_color_value\",\n\t\"fractal_coloring_iter_add_scale_enabled_true\",\n\t\"fractal_coloring_iter_add_scale\",\n\t\"fractal_coloring_iter_group_..."
+    },
+    "material_188": {
+      "shape": "line",
+      "file": "mandelbulber2/src/material.cpp",
+      "line": 189,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "\"fractal_coloring_initial_color_value\",\n\t\"fractal_coloring_iter_add_scale_enabled_true\",\n\t\"fractal_coloring_iter_add_scale\",\n\t\"fractal_coloring_iter_group_enabled_false\",\n\t\"fractal_coloring_iter_scale..."
+    },
+    "material_189": {
+      "shape": "line",
+      "file": "mandelbulber2/src/material.cpp",
+      "line": 190,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "\"fractal_coloring_iter_add_scale_enabled_true\",\n\t\"fractal_coloring_iter_add_scale\",\n\t\"fractal_coloring_iter_group_enabled_false\",\n\t\"fractal_coloring_iter_scale_enabled_false\",\n\t\"fractal_coloring_iter_..."
+    },
+    "material_444": {
+      "shape": "line",
+      "file": "mandelbulber2/src/material.cpp",
+      "line": 445,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [
+        "aux.color"
+      ],
+      "algorithm_snippet": "materialParam->Get<CVector4>(Name(\"fractal_coloring_line_direction\", id));\n\tfractalColoring.color4dEnabledFalse =\n\t\tmaterialParam->Get<bool>(Name(\"fractal_coloring_color_4D_enabled_false\", id));\n\n\tfra..."
+    },
+    "material_445": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/material.cpp",
+      "line": 446,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [
+        "aux.color"
+      ],
+      "algorithm_snippet": "fractalColoring.color4dEnabledFalse =\n\t\tmaterialParam->Get<bool>(Name(\"fractal_coloring_color_4D_enabled_false\", id));\n\n\tfractalColoring.extraColorOptionsEnabledFalse =\n\t\tmaterialParam->Get<bool>(Name..."
+    },
+    "material_471": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/material.cpp",
+      "line": 472,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [
+        "aux.color"
+      ],
+      "algorithm_snippet": "fractalColoring.icRadFalse =\n\t\tmaterialParam->Get<bool>(Name(\"fractal_coloring_ic_rad_enabled_false\", id));\n\tfractalColoring.icXYZFalse =\n\t\tmaterialParam->Get<bool>(Name(\"fractal_coloring_ic_xyz_enabl..."
+    },
+    "material_472": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/material.cpp",
+      "line": 473,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [
+        "aux.color"
+      ],
+      "algorithm_snippet": "materialParam->Get<bool>(Name(\"fractal_coloring_ic_rad_enabled_false\", id));\n\tfractalColoring.icXYZFalse =\n\t\tmaterialParam->Get<bool>(Name(\"fractal_coloring_ic_xyz_enabled_false\", id));\n\tfractalColori..."
+    },
+    "material_473": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/material.cpp",
+      "line": 474,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [
+        "aux.color"
+      ],
+      "algorithm_snippet": "fractalColoring.icXYZFalse =\n\t\tmaterialParam->Get<bool>(Name(\"fractal_coloring_ic_xyz_enabled_false\", id));\n\tfractalColoring.icFabsFalse =\n\t\tmaterialParam->Get<bool>(Name(\"fractal_coloring_ic_fabs_ena..."
+    },
+    "material_474": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/material.cpp",
+      "line": 475,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [
+        "aux.color"
+      ],
+      "algorithm_snippet": "materialParam->Get<bool>(Name(\"fractal_coloring_ic_xyz_enabled_false\", id));\n\tfractalColoring.icFabsFalse =\n\t\tmaterialParam->Get<bool>(Name(\"fractal_coloring_ic_fabs_enabled_false\", id));\n\tfractalColo..."
+    },
+    "material_475": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/material.cpp",
+      "line": 476,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [
+        "aux.color"
+      ],
+      "algorithm_snippet": "fractalColoring.icFabsFalse =\n\t\tmaterialParam->Get<bool>(Name(\"fractal_coloring_ic_fabs_enabled_false\", id));\n\tfractalColoring.icRadWeight =\n\t\tmaterialParam->Get<double>(Name(\"fractal_coloring_ic_rad_..."
+    },
+    "displacement_map_79": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/displacement_map.cpp",
+      "line": 80,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "const cMaterial *mat = &data->materials[data->objectData[objectId].materialId];\n\t\tif (mat->textureFractalize)\n\t\t{\n\t\t\tsFractalIn fractIn(point, 0, -1, 1, 0, &params.common, forcedFormulaIndex, false, m..."
+    },
+    "fractparams_305": {
+      "shape": "cube",
+      "file": "mandelbulber2/src/fractparams.cpp",
+      "line": 306,
+      "iteration_dependent": true,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "cObjectsTree::WriteInternalNodeID(0, 0, -1, objectTreeNodes);"
+    },
+    "fractparams_306": {
+      "shape": "cube",
+      "file": "mandelbulber2/src/fractparams.cpp",
+      "line": 307,
+      "iteration_dependent": true,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "cObjectsTree::WriteInternalNodeID(0, 0, -1, objectTreeNodes);"
+    },
+    "fractparams_307": {
+      "shape": "cube",
+      "file": "mandelbulber2/src/fractparams.cpp",
+      "line": 308,
+      "iteration_dependent": true,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "common.fakeLightsPositionMode = params::fakeLightsPositionFractalCenter;"
+    },
+    "fractparams_308": {
+      "shape": "cube",
+      "file": "mandelbulber2/src/fractparams.cpp",
+      "line": 309,
+      "iteration_dependent": true,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "common.fakeLightsPositionMode = params::fakeLightsPositionFractalCenter;"
+    },
+    "common_params_108": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/common_params.hpp",
+      "line": 109,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "struct sCommonParams\n{\n\tbool iterThreshMode;\n\tbool fakeLightsRelativeCenter;\n\tbool fakeLightsColor2Enabled;\n\tbool fakeLightsColor3Enabled;\n\n\tint fakeLightsMaxIter;\n\tint fakeLightsMinIter;\n\n\tparams::en..."
+    },
+    "common_params_119": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/common_params.hpp",
+      "line": 120,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "params::enumFakeLightsPositionMode fakeLightsPositionMode = params::fakeLightsPositionWorld;\n\n\t\n\tint fakeLightsRadialRepeatCount;\n\n\t\n\tint fakeLightsBlendShape;\n\n\tdouble fakeLightsOrbitTrapSize;\n\tdoubl..."
+    },
+    "common_params_123": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/common_params.hpp",
+      "line": 124,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "int fakeLightsRadialRepeatCount;\n\n\t\n\tint fakeLightsBlendShape;\n\n\tdouble fakeLightsOrbitTrapSize;\n\tdouble fakeLightsThickness;\n\tdouble linearDEOffset;\n\n\tCVector3 fakeLightsOrbitTrap;\n\tCVector3 fakeLigh..."
+    },
+    "common_params_136": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/common_params.hpp",
+      "line": 137,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "CVector3 fractalRotation;\n\tCVector3 repeat;\n\tCRotationMatrix mRotFractalRotation;\n\tCRotationMatrix mRotFakeLightsRotation;\n\n\tsFractalFoldings foldings;\n\n\t\n\tsFakeLightsModeParams fakeLightsModes[4];\n\n\t..."
+    },
+    "fractal_coloring_70": {
+      "shape": "line",
+      "file": "mandelbulber2/src/fractal_coloring.hpp",
+      "line": 71,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "bool extraColorOptionsEnabledFalse;\n\tbool extraColorEnabledFalse;\n\tbool globalPaletteFalse;\n\tbool icFabsFalse;\n\tbool icRadFalse;\n\tbool icXYZFalse;\n\tbool initCondFalse;\n\tbool iterAddScaleTrue;\n\tbool it..."
+    },
+    "fractal_coloring_104": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/fractal_coloring.hpp",
+      "line": 105,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [
+        "color_range"
+      ],
+      "algorithm_snippet": "double addMax;\n\tdouble addSpread;\n\tdouble addStartValue;\n\tdouble auxColorHybridWeight;\n\tdouble auxColorWeight;\n\tdouble cosAdd;\n\tdouble cosPeriod;\n\tdouble cosStartValue;\n\tdouble hybridAuxColorScale1;\n\t..."
+    },
+    "fractal_coloring_112": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/fractal_coloring.hpp",
+      "line": 113,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [
+        "color_range"
+      ],
+      "algorithm_snippet": "double cosStartValue;\n\tdouble hybridAuxColorScale1;\n\tdouble hybridOrbitTrapScale1;\n\tdouble hybridRadDivDeScale1;\n\tdouble icRadWeight;\n\tdouble initialColorValue;\n\tdouble iterAddScale;\n\tdouble iterScale..."
+    },
+    "old_settings_111": {
+      "shape": "cube",
+      "file": "mandelbulber2/src/old_settings.hpp",
+      "line": 112,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "normal = 0,\n\tcolouring = 1,\n\tfake_AO = 2,\n\tdeltaDE1 = 3,\n\tdeltaDE2 = 4,\n\torbitTrap = 5"
+    },
+    "old_settings_285": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/old_settings.hpp",
+      "line": 286,
+      "iteration_dependent": true,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "double FoldingIntPowFoldFactor;\n\tdouble foldingLimit; \n\tdouble foldingValue;\n\tdouble foldingSphericalMin;\n\tdouble foldingSphericalFixed;\n\tdouble detailSize;\n\tdouble power; \n\tdouble cadd;\n\tdouble hybri..."
+    },
+    "orbit_trap_shape_34": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/orbit_trap_shape.hpp",
+      "line": 35,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "* You should have received a copy of the GNU General Public License\n * along with Mandelbulber. If not, see <http:\n *\n * ###########################################################################\n *\n..."
+    },
+    "orbit_trap_shape_39": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/orbit_trap_shape.hpp",
+      "line": 40,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "* Authors: Krzysztof Marczak (buddhi1980@gmail.com)\n *\n * calculation of distance to shape used in orbit trap algorithm\n */\n\n#ifndef MANDELBULBER2_SRC_ORBIT_TRAP_SHAPE_HPP_\n#define MANDELBULBER2_SRC_O..."
+    },
+    "orbit_trap_shape_41": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/orbit_trap_shape.hpp",
+      "line": 42,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "* calculation of distance to shape used in orbit trap algorithm\n */\n\n#ifndef MANDELBULBER2_SRC_ORBIT_TRAP_SHAPE_HPP_\n#define MANDELBULBER2_SRC_ORBIT_TRAP_SHAPE_HPP_\n#include \"algebra.hpp\"\n#include \"co..."
+    },
+    "compute_fractal_54": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/compute_fractal.hpp",
+      "line": 55,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "CVector3 point;\n\tint minN;\n\tint forcedMaxiter;\n\tint maxiterMultiplier;\n\tint orbitTrapIndex;\n\tconst sCommonParams *common;\n\tint forcedFormulaIndex;\n\tbool normalCalculationMode;\n\tconst cMaterial *materi..."
+    },
+    "compute_fractal_61": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/compute_fractal.hpp",
+      "line": 62,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": ""
+    },
+    "compute_fractal_67": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/compute_fractal.hpp",
+      "line": 68,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": ""
+    },
+    "compute_fractal_79": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/compute_fractal.hpp",
+      "line": 80,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": ""
+    },
+    "compute_fractal_83": {
+      "shape": "unknown",
+      "file": "mandelbulber2/src/compute_fractal.hpp",
+      "line": 84,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "CVector3 z;\n\tCVector3 normal;  \n\tdouble distance;\n\tdouble colorIndex;\n\tdouble fakeAO;\n\tdouble orbitTrapR;\n\tint iters;\n\tbool maxiter;"
+    },
+    "normal_vector_85": {
+      "shape": "unknown",
+      "file": "mandelbulber2/opencl/engines/normal_vector.cl",
+      "line": 86,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "for (point2.z = -1.0f; point2.z <= 1.0f; point2.z += 0.2f)\n\t\t\t{\n\t\t\t\tpoint3 = point + point2 * delta;\n\n\t\t\t\tout = Fractal(consts, point3, calcParam, calcModeNormal, NULL, -1);\n\t\t\t\tfloat pseudoDistance =..."
+    },
+    "calculate_distance_95": {
+      "shape": "unknown",
+      "file": "mandelbulber2/opencl/engines/calculate_distance.cl",
+      "line": 96,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "out.maxiter = false;\n\t\tout.distance = limitBoxDist;\n\t\tout.iters = 0;\n\t\treturn out;"
+    },
+    "calculate_distance_349": {
+      "shape": "unknown",
+      "file": "mandelbulber2/opencl/engines/calculate_distance.cl",
+      "line": 350,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "out.maxiter = false;\n\t\tout.distance = limitBoxDist;\n\t\tout.iters = 0;\n\t\treturn out;"
+    },
+    "calculate_distance_438": {
+      "shape": "unknown",
+      "file": "mandelbulber2/opencl/engines/calculate_distance.cl",
+      "line": 439,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "outTemp.objectId = 1 + i;\n\t\t\t\t\t\tout.z = outTemp.z;\n\t\t\t\t\t\tout.iters = outTemp.iters;\n\t\t\t\t\t\tout.distance = outTemp.distance;\n\t\t\t\t\t\tout.colorIndex = outTemp.colorIndex;\n\t\t\t\t\t\tout.orbitTrapR = outTemp.orb..."
+    },
+    "calculate_distance_460": {
+      "shape": "unknown",
+      "file": "mandelbulber2/opencl/engines/calculate_distance.cl",
+      "line": 461,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "outTemp.objectId = 1 + i;\n\t\t\t\t\t\tout.z = outTemp.z;\n\t\t\t\t\t\tout.iters = outTemp.iters;\n\t\t\t\t\t\tout.distance = outTemp.distance;\n\t\t\t\t\t\tout.colorIndex = outTemp.colorIndex;\n\t\t\t\t\t\tout.orbitTrapR = outTemp.orb..."
+    },
+    "calculate_distance_478": {
+      "shape": "unknown",
+      "file": "mandelbulber2/opencl/engines/calculate_distance.cl",
+      "line": 479,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "outTemp.objectId = 1 + i;\n\t\t\t\t\t\t\tout.z = outTemp.z;\n\t\t\t\t\t\t\tout.iters = outTemp.iters;\n\t\t\t\t\t\t\tout.distance = outTemp.distance;\n\t\t\t\t\t\t\tout.colorIndex = outTemp.colorIndex;\n\t\t\t\t\t\t\tout.orbitTrapR = outTem..."
+    },
+    "compute_fractal_86": {
+      "shape": "unknown",
+      "file": "mandelbulber2/opencl/engines/compute_fractal.cl",
+      "line": 87,
+      "iteration_dependent": true,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "calcModeNormal = 0,\n\tcalcModeColouring = 1,\n\tcalcModeFake_AO = 2,\n\tcalcModeDeltaDE1 = 3,\n\tcalcModeDeltaDE2 = 4,\n\tcalcModeOrbitTrap = 5,\n\tcalcModeCubeOrbitTrap = 6"
+    },
+    "compute_fractal_87": {
+      "shape": "unknown",
+      "file": "mandelbulber2/opencl/engines/compute_fractal.cl",
+      "line": 88,
+      "iteration_dependent": true,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "calcModeNormal = 0,\n\tcalcModeColouring = 1,\n\tcalcModeFake_AO = 2,\n\tcalcModeDeltaDE1 = 3,\n\tcalcModeDeltaDE2 = 4,\n\tcalcModeOrbitTrap = 5,\n\tcalcModeCubeOrbitTrap = 6"
+    },
+    "compute_fractal_142": {
+      "shape": "unknown",
+      "file": "mandelbulber2/opencl/engines/compute_fractal.cl",
+      "line": 143,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [
+        "aux.color",
+        "color_range"
+      ],
+      "algorithm_snippet": "if (calcParam->normalCalculationMode && calcParam->iterThreshMode) maxN *= 5;\n\tif (mode == calcModeColouring) maxN *= 4;\n\n\tfloat initialWAxisColor = z.w;\n\n\tfloat4 c = z;\n\tint i;\n\n\tformulaOut out;\n\tout..."
+    },
+    "compute_fractal_146": {
+      "shape": "unknown",
+      "file": "mandelbulber2/opencl/engines/compute_fractal.cl",
+      "line": 147,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [
+        "aux.color",
+        "color_range"
+      ],
+      "algorithm_snippet": "float4 c = z;\n\tint i;\n\n\tformulaOut out;\n\tout.maxiter = true;\n\tout.orbitTrapR = 0.0f;\n\tout.colorIndex = 0.0f;\n\n\tfloat colorMin = 1000.0;\n\tfloat orbitTrapTotal = 0.0f;\n\n\tint fractalIndex = 0;\n\tif (force..."
+    },
+    "compute_fractal_180": {
+      "shape": "unknown",
+      "file": "mandelbulber2/opencl/engines/compute_fractal.cl",
+      "line": 181,
+      "iteration_dependent": true,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "if (calcParam->orbitTrapIndex == 0)\n\t\t{\n\t\t\tif (consts->params.common.fakeLightsColor2Enabled) fakeLightsMaxIter = fakeLightsMinIter;\n\t\t}\n\t\telse if (calcParam->orbitTrapIndex == 1)\n\t\t{\n\t\t\tfakeLightsMin..."
+    },
+    "compute_fractal_184": {
+      "shape": "unknown",
+      "file": "mandelbulber2/opencl/engines/compute_fractal.cl",
+      "line": 185,
+      "iteration_dependent": true,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "if (calcParam->orbitTrapIndex == 0)\n\t\t{\n\t\t\tif (consts->params.common.fakeLightsColor2Enabled) fakeLightsMaxIter = fakeLightsMinIter;\n\t\t}\n\t\telse if (calcParam->orbitTrapIndex == 1)\n\t\t{\n\t\t\tfakeLightsMin..."
+    },
+    "compute_fractal_186": {
+      "shape": "unknown",
+      "file": "mandelbulber2/opencl/engines/compute_fractal.cl",
+      "line": 187,
+      "iteration_dependent": true,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "if (calcParam->orbitTrapIndex == 0)\n\t\t{\n\t\t\tif (consts->params.common.fakeLightsColor2Enabled) fakeLightsMaxIter = fakeLightsMinIter;\n\t\t}\n\t\telse if (calcParam->orbitTrapIndex == 1)\n\t\t{\n\t\t\tfakeLightsMin..."
+    },
+    "compute_fractal_190": {
+      "shape": "unknown",
+      "file": "mandelbulber2/opencl/engines/compute_fractal.cl",
+      "line": 191,
+      "iteration_dependent": true,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "if (calcParam->orbitTrapIndex == 0)\n\t\t{\n\t\t\tif (consts->params.common.fakeLightsColor2Enabled) fakeLightsMaxIter = fakeLightsMinIter;\n\t\t}\n\t\telse if (calcParam->orbitTrapIndex == 1)\n\t\t{\n\t\t\tfakeLightsMin..."
+    },
+    "compute_fractal_196": {
+      "shape": "cube",
+      "file": "mandelbulber2/opencl/engines/compute_fractal.cl",
+      "line": 197,
+      "iteration_dependent": true,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "if (consts->params.common.fakeLightsColor2Enabled) fakeLightsMaxIter = fakeLightsMinIter;"
+    },
+    "compute_fractal_436": {
+      "shape": "sphere",
+      "file": "mandelbulber2/opencl/engines/compute_fractal.cl",
+      "line": 437,
+      "iteration_dependent": true,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "if (aux.r > 1e15f || length(z - lastZ) / aux.r < 1e-15f) break;"
+    },
+    "compute_fractal_438": {
+      "shape": "sphere",
+      "file": "mandelbulber2/opencl/engines/compute_fractal.cl",
+      "line": 439,
+      "iteration_dependent": true,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "if (aux.r > 1e15f || length(z - lastZ) / aux.r < 1e-15f) break;"
+    },
+    "compute_fractal_439": {
+      "shape": "sphere",
+      "file": "mandelbulber2/opencl/engines/compute_fractal.cl",
+      "line": 440,
+      "iteration_dependent": true,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "if (aux.r > 1e15f || length(z - lastZ) / aux.r < 1e-15f) break;"
+    },
+    "compute_fractal_442": {
+      "shape": "unknown",
+      "file": "mandelbulber2/opencl/engines/compute_fractal.cl",
+      "line": 443,
+      "iteration_dependent": true,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "float3 orbitTrapPos = consts->params.common.fakeLightsOrbitTrap;\n\t\t\t\tint posMode = consts->params.common.fakeLightsPositionMode;\n\t\t\t\tsFakeLightsModeParamsCl modeParams = consts->params.common.fakeLigh..."
+    },
+    "compute_fractal_443": {
+      "shape": "unknown",
+      "file": "mandelbulber2/opencl/engines/compute_fractal.cl",
+      "line": 444,
+      "iteration_dependent": true,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "float3 orbitTrapPos = consts->params.common.fakeLightsOrbitTrap;\n\t\t\t\tint posMode = consts->params.common.fakeLightsPositionMode;\n\t\t\t\tsFakeLightsModeParamsCl modeParams = consts->params.common.fakeLigh..."
+    },
+    "compute_fractal_447": {
+      "shape": "cube",
+      "file": "mandelbulber2/opencl/engines/compute_fractal.cl",
+      "line": 448,
+      "iteration_dependent": true,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "float3 orbitTrapPos = consts->params.common.fakeLightsOrbitTrap;\n\t\t\t\tint posMode = consts->params.common.fakeLightsPositionMode;\n\t\t\t\tsFakeLightsModeParamsCl modeParams = consts->params.common.fakeLigh..."
+    },
+    "compute_fractal_451": {
+      "shape": "cube",
+      "file": "mandelbulber2/opencl/engines/compute_fractal.cl",
+      "line": 452,
+      "iteration_dependent": true,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "orbitTrapPos = consts->params.camera + orbitTrapPos;"
+    },
+    "compute_fractal_460": {
+      "shape": "cube",
+      "file": "mandelbulber2/opencl/engines/compute_fractal.cl",
+      "line": 461,
+      "iteration_dependent": true,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "orbitTrapPos = consts->params.target + orbitTrapPos;"
+    },
+    "compute_fractal_463": {
+      "shape": "cube",
+      "file": "mandelbulber2/opencl/engines/compute_fractal.cl",
+      "line": 464,
+      "iteration_dependent": true,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "zAdj = z - aux.const_c;"
+    },
+    "compute_fractal_466": {
+      "shape": "cube",
+      "file": "mandelbulber2/opencl/engines/compute_fractal.cl",
+      "line": 467,
+      "iteration_dependent": true,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "zAdj = z - aux.const_c;"
+    },
+    "compute_fractal_472": {
+      "shape": "cube",
+      "file": "mandelbulber2/opencl/engines/compute_fractal.cl",
+      "line": 473,
+      "iteration_dependent": true,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "out.orbitTrapR = orbitTrapTotal;\n\t\t\t\t\tbreak;"
+    },
+    "fractal_coloring_72": {
+      "shape": "unknown",
+      "file": "mandelbulber2/opencl/engines/fractal_coloring.cl",
+      "line": 73,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [
+        "aux.color",
+        "color_range"
+      ],
+      "algorithm_snippet": "xyzC = fabs(xyzC) * fractalColoring->xyzC111;"
+    },
+    "fractal_coloring_73": {
+      "shape": "unknown",
+      "file": "mandelbulber2/opencl/engines/fractal_coloring.cl",
+      "line": 74,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [
+        "aux.color",
+        "color_range"
+      ],
+      "algorithm_snippet": "xyzC = fabs(xyzC) * fractalColoring->xyzC111;"
+    },
+    "fractal_coloring_75": {
+      "shape": "unknown",
+      "file": "mandelbulber2/opencl/engines/fractal_coloring.cl",
+      "line": 76,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [
+        "aux.color",
+        "color_range"
+      ],
+      "algorithm_snippet": "colorValue += colorMin * fractalColoring->orbitTrapWeight;"
+    },
+    "fractal_coloring_216": {
+      "shape": "unknown",
+      "file": "mandelbulber2/opencl/engines/fractal_coloring.cl",
+      "line": 217,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [
+        "aux.color",
+        "color_range"
+      ],
+      "algorithm_snippet": "colorMin = min(100.0f, colorMin);\n\n\t\t\n\t\tfloat mboxColor = extendedAux->color;\n\t\t\n\n\t\t\n\t\tfloat r2 = min(r / fabs(extendedAux->DE), 20.0f);\n\n\t\t\n\t\tif (!fractalColoring->extraColorOptionsEnabledFalse)\n\t\t{\n..."
+    },
+    "fractal_coloring_233": {
+      "shape": "unknown",
+      "file": "mandelbulber2/opencl/engines/fractal_coloring.cl",
+      "line": 234,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [
+        "color_range"
+      ],
+      "algorithm_snippet": "colorIndex = (colorMin * 1000.0f + mboxColor * 100.0f + r2 * 5000.0f);"
+    },
+    "shader_perlin_noise_for_shaders_51": {
+      "shape": "unknown",
+      "file": "mandelbulber2/opencl/engines/shader_perlin_noise_for_shaders.cl",
+      "line": 52,
+      "iteration_dependent": true,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "float3 pointModified = point;\n\n#ifdef FRACTALIZE_TEXTURE\n\t\tif (shaderInputData->material->textureFractalize)\n\t\t{\n\t\t\tformulaOut outF;\n\t\t\toutF = Fractal(\n\t\t\t\tconsts, pointModified, calcParam, calcModeCu..."
+    },
+    "orbit_trap_shape_222": {
+      "shape": "unknown",
+      "file": "mandelbulber2/opencl/engines/orbit_trap_shape.cl",
+      "line": 223,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "d = ApplyShapeModifiers(d, consts);\n\t\t\tdist = length(d) - size;\n\t\t\tbreak;"
+    },
+    "orbit_trap_shape_492": {
+      "shape": "unknown",
+      "file": "mandelbulber2/opencl/engines/orbit_trap_shape.cl",
+      "line": 493,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "d = ApplyShapeModifiers(d, consts);\n\t\t\tdist = length(d) - size;\n\t\t\tbreak;"
+    },
+    "orbit_trap_shape_494": {
+      "shape": "unknown",
+      "file": "mandelbulber2/opencl/engines/orbit_trap_shape.cl",
+      "line": 495,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "float3 delta = z4.xyz - orbitTrapPos;\n\n\tfloat distA = ShapeDistanceInternal(delta, consts->params.common.fakeLightsOrbitTrapShape, consts);\n\tfloat dist = distA;\n\n\tif (consts->params.common.fakeLightsB..."
+    },
+    "orbit_trap_shape_496": {
+      "shape": "unknown",
+      "file": "mandelbulber2/opencl/engines/orbit_trap_shape.cl",
+      "line": 497,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "float3 delta = z4.xyz - orbitTrapPos;\n\n\tfloat distA = ShapeDistanceInternal(delta, consts->params.common.fakeLightsOrbitTrapShape, consts);\n\tfloat dist = distA;\n\n\tif (consts->params.common.fakeLightsB..."
+    },
+    "shader_texture_56": {
+      "shape": "unknown",
+      "file": "mandelbulber2/opencl/engines/shader_texture.cl",
+      "line": 57,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "formulaOut outF;\n\n\t\t\toutF = Fractal(consts, input->point, calcParams, calcModeCubeOrbitTrap, input->material, -1);\n\t\t\tpointModified = outF.z.xyz;"
+    },
+    "shader_fake_lights_51": {
+      "shape": "unknown",
+      "file": "mandelbulber2/opencl/engines/shader_fake_lights.cl",
+      "line": 52,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "delta, 0.0f, 0.0f"
+    },
+    "shader_fake_lights_52": {
+      "shape": "unknown",
+      "file": "mandelbulber2/opencl/engines/shader_fake_lights.cl",
+      "line": 53,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "delta, 0.0f, 0.0f"
+    },
+    "shader_fake_lights_62": {
+      "shape": "unknown",
+      "file": "mandelbulber2/opencl/engines/shader_fake_lights.cl",
+      "line": 63,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "delta, 0.0f, 0.0f"
+    },
+    "shader_fake_lights_63": {
+      "shape": "unknown",
+      "file": "mandelbulber2/opencl/engines/shader_fake_lights.cl",
+      "line": 64,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "delta, 0.0f, 0.0f"
+    },
+    "shader_fake_lights_66": {
+      "shape": "unknown",
+      "file": "mandelbulber2/opencl/engines/shader_fake_lights.cl",
+      "line": 67,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [
+        "surface_color"
+      ],
+      "algorithm_snippet": "delta, 0.0f, 0.0f"
+    },
+    "shader_fake_lights_67": {
+      "shape": "unknown",
+      "file": "mandelbulber2/opencl/engines/shader_fake_lights.cl",
+      "line": 68,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [
+        "surface_color"
+      ],
+      "algorithm_snippet": "delta, 0.0f, 0.0f"
+    },
+    "shader_fake_lights_71": {
+      "shape": "unknown",
+      "file": "mandelbulber2/opencl/engines/shader_fake_lights.cl",
+      "line": 72,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [
+        "surface_color"
+      ],
+      "algorithm_snippet": "delta, 0.0f, 0.0f"
+    },
+    "displacement_map_83": {
+      "shape": "unknown",
+      "file": "mandelbulber2/opencl/engines/displacement_map.cl",
+      "line": 84,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "formulaOut outF;\n\t\toutF = Fractal(consts, point, calcParams, calcModeCubeOrbitTrap, mat, -1);\n\t\tpointFractalized = outF.z.xyz;\n\t\t*reduceDisplacement = pow(2.0f, outF.iters);"
+    },
+    "shader_volumetric_612": {
+      "shape": "unknown",
+      "file": "mandelbulber2/opencl/engines/shader_volumetric.cl",
+      "line": 613,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "case 0: color = consts->params.fakeLightsColor; break;\n\t\t\t\t\tcase 1: color = consts->params.fakeLightsColor2; break;\n\t\t\t\t\tcase 2: color = consts->params.fakeLightsColor3; break;\n\t\t\t\t\tdefault: color = c..."
+    },
+    "shader_volumetric_620": {
+      "shape": "unknown",
+      "file": "mandelbulber2/opencl/engines/shader_volumetric.cl",
+      "line": 621,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "calcParam->orbitTrapIndex = fakeLightLoop;\n\t\t\t\tformulaOut outF;\n\t\t\t\toutF = Fractal(consts, input2.point, calcParam, calcModeOrbitTrap, NULL, -1);\n\t\t\t\tfloat r = outF.orbitTrapR;\n\t\t\t\tr = sqrt(1.0f / (r ..."
+    },
+    "shader_volumetric_622": {
+      "shape": "unknown",
+      "file": "mandelbulber2/opencl/engines/shader_volumetric.cl",
+      "line": 623,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "calcParam->orbitTrapIndex = fakeLightLoop;\n\t\t\t\tformulaOut outF;\n\t\t\t\toutF = Fractal(consts, input2.point, calcParam, calcModeOrbitTrap, NULL, -1);\n\t\t\t\tfloat r = outF.orbitTrapR;\n\t\t\t\tr = sqrt(1.0f / (r ..."
+    },
+    "shader_volumetric_623": {
+      "shape": "unknown",
+      "file": "mandelbulber2/opencl/engines/shader_volumetric.cl",
+      "line": 624,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "calcParam->orbitTrapIndex = fakeLightLoop;\n\t\t\t\tformulaOut outF;\n\t\t\t\toutF = Fractal(consts, input2.point, calcParam, calcModeOrbitTrap, NULL, -1);\n\t\t\t\tfloat r = outF.orbitTrapR;\n\t\t\t\tr = sqrt(1.0f / (r ..."
+    },
+    "shader_fake_lights_v2_1": {
+      "shape": "unknown",
+      "file": "mandelbulber2/opencl/engines/shader_fake_lights_v2.cl",
+      "line": 2,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "return length(p) - radius;"
+    },
+    "shader_fake_lights_v2_3": {
+      "shape": "unknown",
+      "file": "mandelbulber2/opencl/engines/shader_fake_lights_v2.cl",
+      "line": 4,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "return length(p) - radius;"
+    },
+    "shader_fake_lights_v2_253": {
+      "shape": "unknown",
+      "file": "mandelbulber2/opencl/engines/shader_fake_lights_v2.cl",
+      "line": 254,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "case 0:\n            lightColor = consts->params.fakeLightsColor.xyz;\n            break;\n        case 1:\n            lightColor = consts->params.fakeLightsColor2.xyz;\n            break;\n        case 2:..."
+    },
+    "shader_fake_lights_v2_254": {
+      "shape": "unknown",
+      "file": "mandelbulber2/opencl/engines/shader_fake_lights_v2.cl",
+      "line": 255,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "case 0:\n            lightColor = consts->params.fakeLightsColor.xyz;\n            break;\n        case 1:\n            lightColor = consts->params.fakeLightsColor2.xyz;\n            break;\n        case 2:..."
+    },
+    "shader_fake_lights_v2_257": {
+      "shape": "unknown",
+      "file": "mandelbulber2/opencl/engines/shader_fake_lights_v2.cl",
+      "line": 258,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "case 0:\n            lightColor = consts->params.fakeLightsColor.xyz;\n            break;\n        case 1:\n            lightColor = consts->params.fakeLightsColor2.xyz;\n            break;\n        case 2:..."
+    },
+    "shader_fake_lights_v2_258": {
+      "shape": "unknown",
+      "file": "mandelbulber2/opencl/engines/shader_fake_lights_v2.cl",
+      "line": 259,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "case 0:\n            lightColor = consts->params.fakeLightsColor.xyz;\n            break;\n        case 1:\n            lightColor = consts->params.fakeLightsColor2.xyz;\n            break;\n        case 2:..."
+    },
+    "shader_fake_lights_v2_259": {
+      "shape": "unknown",
+      "file": "mandelbulber2/opencl/engines/shader_fake_lights_v2.cl",
+      "line": 260,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "case 0:\n            lightColor = consts->params.fakeLightsColor.xyz;\n            break;\n        case 1:\n            lightColor = consts->params.fakeLightsColor2.xyz;\n            break;\n        case 2:..."
+    },
+    "shader_fake_lights_v2_288": {
+      "shape": "unknown",
+      "file": "mandelbulber2/opencl/engines/shader_fake_lights_v2.cl",
+      "line": 289,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "fakeLightNormal = fakeLightNormal / normalLen;"
+    },
+    "shader_fake_lights_v2_292": {
+      "shape": "unknown",
+      "file": "mandelbulber2/opencl/engines/shader_fake_lights_v2.cl",
+      "line": 293,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "fakeLightNormal = fakeLightNormal / normalLen;"
+    },
+    "shader_fake_lights_v2_294": {
+      "shape": "unknown",
+      "file": "mandelbulber2/opencl/engines/shader_fake_lights_v2.cl",
+      "line": 295,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "fakeLightNormal = fakeLightNormal / normalLen;"
+    },
+    "shader_fake_lights_v2_296": {
+      "shape": "unknown",
+      "file": "mandelbulber2/opencl/engines/shader_fake_lights_v2.cl",
+      "line": 297,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "fakeLightNormal = fakeLightNormal / normalLen;"
+    },
+    "shader_fake_lights_v2_298": {
+      "shape": "unknown",
+      "file": "mandelbulber2/opencl/engines/shader_fake_lights_v2.cl",
+      "line": 299,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [],
+      "algorithm_snippet": "fakeLightNormal = fakeLightNormal / normalLen;"
+    },
+    "shader_fake_lights_v2_299": {
+      "shape": "unknown",
+      "file": "mandelbulber2/opencl/engines/shader_fake_lights_v2.cl",
+      "line": 300,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [
+        "surface_color"
+      ],
+      "algorithm_snippet": "fakeLightNormal = fakeLightNormal / normalLen;"
+    },
+    "shader_fake_lights_v2_300": {
+      "shape": "unknown",
+      "file": "mandelbulber2/opencl/engines/shader_fake_lights_v2.cl",
+      "line": 301,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [
+        "surface_color"
+      ],
+      "algorithm_snippet": "fakeLightNormal = fakeLightNormal / normalLen;"
+    },
+    "shader_fake_lights_v2_321": {
+      "shape": "unknown",
+      "file": "mandelbulber2/opencl/engines/shader_fake_lights_v2.cl",
+      "line": 322,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [
+        "surface_color"
+      ],
+      "algorithm_snippet": "*specularOut = (float3)(0.0f, 0.0f, 0.0f);\n        return finalLight;"
+    },
+    "shader_fake_lights_v2_334": {
+      "shape": "unknown",
+      "file": "mandelbulber2/opencl/engines/shader_fake_lights_v2.cl",
+      "line": 335,
+      "iteration_dependent": false,
+      "parameters": {},
+      "color_components": [
+        "surface_color"
+      ],
+      "algorithm_snippet": "*specularOut = (float3)(0.0f, 0.0f, 0.0f);\n        return finalLight;"
+    }
+  },
+  "parameters": {
+    "fake_lights_enabled": {
+      "type": "inferred",
+      "default": "false, morphLinear, paramStandard",
+      "range": "unlimited",
+      "category": "Toggle",
+      "affects": [],
+      "description": "Parameter controlling fake_lights_enabled"
+    },
+    "fake_lights_color_2_enabled": {
+      "type": "inferred",
+      "default": "false, morphLinear, paramStandard",
+      "range": "unlimited",
+      "category": "Color",
+      "affects": [
+        "surface_color",
+        "gradient",
+        "lighting"
+      ],
+      "description": "Parameter controlling fake_lights_color_2_enabled"
+    },
+    "fake_lights_color_3_enabled": {
+      "type": "inferred",
+      "default": "false, morphLinear, paramStandard",
+      "range": "unlimited",
+      "category": "Color",
+      "affects": [
+        "surface_color",
+        "gradient",
+        "lighting"
+      ],
+      "description": "Parameter controlling fake_lights_color_3_enabled"
+    },
+    "fake_lights_relative_center": {
+      "type": "inferred",
+      "default": "false, morphLinear, paramStandard",
+      "range": "unlimited",
+      "category": "Position",
+      "affects": [
+        "orbit_trap_position",
+        "light_source_location"
+      ],
+      "description": "Parameter controlling fake_lights_relative_center"
+    },
+    "fake_lights_position_mode": {
+      "type": "inferred",
+      "default": "0, morphNone, paramStandard,\n\t\tQStringList({\"World\", \"Camera Relative\", \"Target ...",
+      "range": "unlimited",
+      "category": "Position",
+      "affects": [
+        "orbit_trap_position",
+        "light_source_location"
+      ],
+      "description": "Parameter controlling fake_lights_position_mode"
+    },
+    "fake_lights_intensity": {
+      "type": "inferred",
+      "default": "1.0, 0.0, 1e15, morphLinear, paramStandard",
+      "range": "unlimited",
+      "category": "Intensity",
+      "affects": [
+        "luminosity",
+        "glow",
+        "light_contribution"
+      ],
+      "description": "Parameter controlling fake_lights_intensity"
+    },
+    "fake_lights_visibility": {
+      "type": "inferred",
+      "default": "1.0, 0.0, 1e15, morphLinear, paramStandard",
+      "range": "unlimited",
+      "category": "General",
+      "affects": [],
+      "description": "Parameter controlling fake_lights_visibility"
+    },
+    "fake_lights_visibility_size": {
+      "type": "inferred",
+      "default": "5.0, 0.1, 1e15, morphLinear, paramStandard",
+      "range": "unlimited",
+      "category": "Size/Shape",
+      "affects": [
+        "trap_volume",
+        "influence_radius"
+      ],
+      "description": "Parameter controlling fake_lights_visibility_size"
+    },
+    "fake_lights_thickness": {
+      "type": "inferred",
+      "default": "1.0, 1e-6, 1e15, morphLinear, paramStandard",
+      "range": "unlimited",
+      "category": "General",
+      "affects": [],
+      "description": "Parameter controlling fake_lights_thickness"
+    },
+    "fake_lights_orbit_trap": {
+      "type": "inferred",
+      "default": "CVector3(2.0, 0.0, 0.0), morphLinear, paramStandard",
+      "range": "unlimited",
+      "category": "General",
+      "affects": [],
+      "description": "Parameter controlling fake_lights_orbit_trap"
+    },
+    "fake_lights_min_iter": {
+      "type": "inferred",
+      "default": "1, 0, 250, morphLinear, paramStandard",
+      "range": "unlimited",
+      "category": "General",
+      "affects": [],
+      "description": "Parameter controlling fake_lights_min_iter"
+    },
+    "fake_lights_max_iter": {
+      "type": "inferred",
+      "default": "2, 0, 250, morphLinear, paramStandard",
+      "range": "unlimited",
+      "category": "General",
+      "affects": [],
+      "description": "Parameter controlling fake_lights_max_iter"
+    },
+    "fake_lights_color": {
+      "type": "inferred",
+      "default": "sRGB(65535, 65535, 65535), morphLinear, paramStandard",
+      "range": "unlimited",
+      "category": "Color",
+      "affects": [
+        "surface_color",
+        "gradient",
+        "lighting"
+      ],
+      "description": "Parameter controlling fake_lights_color"
+    },
+    "fake_lights_color_2": {
+      "type": "inferred",
+      "default": "sRGB(65535, 65535, 65535), morphLinear, paramStandard",
+      "range": "unlimited",
+      "category": "Color",
+      "affects": [
+        "surface_color",
+        "gradient",
+        "lighting"
+      ],
+      "description": "Parameter controlling fake_lights_color_2"
+    },
+    "fake_lights_color_3": {
+      "type": "inferred",
+      "default": "sRGB(65535, 65535, 65535), morphLinear, paramStandard",
+      "range": "unlimited",
+      "category": "Color",
+      "affects": [
+        "surface_color",
+        "gradient",
+        "lighting"
+      ],
+      "description": "Parameter controlling fake_lights_color_3"
+    },
+    "fake_lights_orbit_trap_shape": {
+      "type": "inferred",
+      "default": "0, morphNone, paramStandard,\n\t\tQStringList({\"point\", \"line\", \"circle\", \"square\",...",
+      "range": "unlimited",
+      "category": "Shape Type",
+      "affects": [
+        "orbit_trap_algorithm",
+        "trap_geometry"
+      ],
+      "description": "Parameter controlling fake_lights_orbit_trap_shape"
+    },
+    "fake_lights_orbit_rotation": {
+      "type": "inferred",
+      "default": "CVector3(0.0, 0.0, 0.0), morphAkimaAngle, paramStandard",
+      "range": "unlimited",
+      "category": "General",
+      "affects": [],
+      "description": "Parameter controlling fake_lights_orbit_rotation"
+    },
+    "fake_lights_orbit_trap_size": {
+      "type": "inferred",
+      "default": "1.0, 0.0, 1e15, morphAkimaAngle, paramStandard",
+      "range": "unlimited",
+      "category": "Size/Shape",
+      "affects": [
+        "trap_volume",
+        "influence_radius"
+      ],
+      "description": "Parameter controlling fake_lights_orbit_trap_size"
+    },
+    "fake_lights_world_offset": {
+      "type": "inferred",
+      "default": "CVector3(0.0, 0.0, 0.0), morphLinear, paramStandard",
+      "range": "unlimited",
+      "category": "General",
+      "affects": [],
+      "description": "Parameter controlling fake_lights_world_offset"
+    },
+    "fake_lights_world_scale": {
+      "type": "inferred",
+      "default": "1.0, 0.0, 1e15, morphLinear, paramStandard",
+      "range": "unlimited",
+      "category": "General",
+      "affects": [],
+      "description": "Parameter controlling fake_lights_world_scale"
+    },
+    "fake_lights_world_rotation": {
+      "type": "inferred",
+      "default": "CVector3(0.0, 0.0, 0.0), morphAkimaAngle, paramStandard",
+      "range": "unlimited",
+      "category": "General",
+      "affects": [],
+      "description": "Parameter controlling fake_lights_world_rotation"
+    },
+    "fake_lights_camera_offset": {
+      "type": "inferred",
+      "default": "CVector3(0.0, 0.0, 0.0), morphLinear, paramStandard",
+      "range": "unlimited",
+      "category": "General",
+      "affects": [],
+      "description": "Parameter controlling fake_lights_camera_offset"
+    },
+    "fake_lights_camera_scale": {
+      "type": "inferred",
+      "default": "1.0, 0.0, 1e15, morphLinear, paramStandard",
+      "range": "unlimited",
+      "category": "General",
+      "affects": [],
+      "description": "Parameter controlling fake_lights_camera_scale"
+    },
+    "fake_lights_camera_rotation": {
+      "type": "inferred",
+      "default": "CVector3(0.0, 0.0, 0.0), morphAkimaAngle, paramStandard",
+      "range": "unlimited",
+      "category": "General",
+      "affects": [],
+      "description": "Parameter controlling fake_lights_camera_rotation"
+    },
+    "fake_lights_target_offset": {
+      "type": "inferred",
+      "default": "CVector3(0.0, 0.0, 0.0), morphLinear, paramStandard",
+      "range": "unlimited",
+      "category": "General",
+      "affects": [],
+      "description": "Parameter controlling fake_lights_target_offset"
+    },
+    "fake_lights_target_scale": {
+      "type": "inferred",
+      "default": "1.0, 0.0, 1e15, morphLinear, paramStandard",
+      "range": "unlimited",
+      "category": "General",
+      "affects": [],
+      "description": "Parameter controlling fake_lights_target_scale"
+    },
+    "fake_lights_target_rotation": {
+      "type": "inferred",
+      "default": "CVector3(0.0, 0.0, 0.0), morphAkimaAngle, paramStandard",
+      "range": "unlimited",
+      "category": "General",
+      "affects": [],
+      "description": "Parameter controlling fake_lights_target_rotation"
+    },
+    "fake_lights_fractal_center_offset": {
+      "type": "inferred",
+      "default": "CVector3(0.0, 0.0, 0.0), morphLinear, paramStandard",
+      "range": "unlimited",
+      "category": "Position",
+      "affects": [
+        "orbit_trap_position",
+        "light_source_location"
+      ],
+      "description": "Parameter controlling fake_lights_fractal_center_offset"
+    },
+    "fake_lights_fractal_center_scale": {
+      "type": "inferred",
+      "default": "1.0, 0.0, 1e15, morphLinear, paramStandard",
+      "range": "unlimited",
+      "category": "Position",
+      "affects": [
+        "orbit_trap_position",
+        "light_source_location"
+      ],
+      "description": "Parameter controlling fake_lights_fractal_center_scale"
+    },
+    "fake_lights_fractal_center_rotation": {
+      "type": "inferred",
+      "default": "CVector3(0.0, 0.0, 0.0), morphAkimaAngle, paramStandard",
+      "range": "unlimited",
+      "category": "Position",
+      "affects": [
+        "orbit_trap_position",
+        "light_source_location"
+      ],
+      "description": "Parameter controlling fake_lights_fractal_center_rotation"
+    },
+    "fake_lights_shape_twist": {
+      "type": "inferred",
+      "default": "0.0, -1e15, 1e15, morphLinear, paramStandard",
+      "range": "unlimited",
+      "category": "Shape Type",
+      "affects": [
+        "orbit_trap_algorithm",
+        "trap_geometry"
+      ],
+      "description": "Parameter controlling fake_lights_shape_twist"
+    },
+    "fake_lights_shape_bend": {
+      "type": "inferred",
+      "default": "0.0, -1e15, 1e15, morphLinear, paramStandard",
+      "range": "unlimited",
+      "category": "Shape Type",
+      "affects": [
+        "orbit_trap_algorithm",
+        "trap_geometry"
+      ],
+      "description": "Parameter controlling fake_lights_shape_bend"
+    },
+    "fake_lights_shape_taper": {
+      "type": "inferred",
+      "default": "0.0, -1e15, 1e15, morphLinear, paramStandard",
+      "range": "unlimited",
+      "category": "Shape Type",
+      "affects": [
+        "orbit_trap_algorithm",
+        "trap_geometry"
+      ],
+      "description": "Parameter controlling fake_lights_shape_taper"
+    },
+    "fake_lights_shape_fold_symmetry": {
+      "type": "inferred",
+      "default": "0, 0, 16, morphLinear, paramStandard",
+      "range": "unlimited",
+      "category": "Shape Type",
+      "affects": [
+        "orbit_trap_algorithm",
+        "trap_geometry"
+      ],
+      "description": "Parameter controlling fake_lights_shape_fold_symmetry"
+    },
+    "fake_lights_shape_repeat_x": {
+      "type": "inferred",
+      "default": "0.0, 0.0, 1e15, morphLinear, paramStandard",
+      "range": "unlimited",
+      "category": "Shape Type",
+      "affects": [
+        "orbit_trap_algorithm",
+        "trap_geometry"
+      ],
+      "description": "Parameter controlling fake_lights_shape_repeat_x"
+    },
+    "fake_lights_shape_repeat_y": {
+      "type": "inferred",
+      "default": "0.0, 0.0, 1e15, morphLinear, paramStandard",
+      "range": "unlimited",
+      "category": "Shape Type",
+      "affects": [
+        "orbit_trap_algorithm",
+        "trap_geometry"
+      ],
+      "description": "Parameter controlling fake_lights_shape_repeat_y"
+    },
+    "fake_lights_shape_repeat_z": {
+      "type": "inferred",
+      "default": "0.0, 0.0, 1e15, morphLinear, paramStandard",
+      "range": "unlimited",
+      "category": "Shape Type",
+      "affects": [
+        "orbit_trap_algorithm",
+        "trap_geometry"
+      ],
+      "description": "Parameter controlling fake_lights_shape_repeat_z"
+    },
+    "fake_lights_shape_wobble_amplitude": {
+      "type": "inferred",
+      "default": "0.0, 0.0, 1e15, morphLinear, paramStandard",
+      "range": "unlimited",
+      "category": "Shape Type",
+      "affects": [
+        "orbit_trap_algorithm",
+        "trap_geometry"
+      ],
+      "description": "Parameter controlling fake_lights_shape_wobble_amplitude"
+    },
+    "fake_lights_shape_wobble_frequency": {
+      "type": "inferred",
+      "default": "0.0, 0.0, 1e15, morphLinear, paramStandard",
+      "range": "unlimited",
+      "category": "Shape Type",
+      "affects": [
+        "orbit_trap_algorithm",
+        "trap_geometry"
+      ],
+      "description": "Parameter controlling fake_lights_shape_wobble_frequency"
+    },
+    "fake_lights_shape_chamfer": {
+      "type": "inferred",
+      "default": "0.0, 0.0, 1e15, morphLinear, paramStandard",
+      "range": "unlimited",
+      "category": "Shape Type",
+      "affects": [
+        "orbit_trap_algorithm",
+        "trap_geometry"
+      ],
+      "description": "Parameter controlling fake_lights_shape_chamfer"
+    },
+    "fake_lights_onion_thickness": {
+      "type": "inferred",
+      "default": "0.0, 0.0, 1e15, morphLinear, paramStandard",
+      "range": "unlimited",
+      "category": "General",
+      "affects": [],
+      "description": "Parameter controlling fake_lights_onion_thickness"
+    },
+    "fake_lights_shape_param1": {
+      "type": "inferred",
+      "default": "5.0, 0.0, 1e15, morphLinear, paramStandard",
+      "range": "unlimited",
+      "category": "Shape Type",
+      "affects": [
+        "orbit_trap_algorithm",
+        "trap_geometry"
+      ],
+      "description": "Parameter controlling fake_lights_shape_param1"
+    },
+    "fake_lights_shape_param2": {
+      "type": "inferred",
+      "default": "0.2, 0.0, 1e15, morphLinear, paramStandard",
+      "range": "unlimited",
+      "category": "Shape Type",
+      "affects": [
+        "orbit_trap_algorithm",
+        "trap_geometry"
+      ],
+      "description": "Parameter controlling fake_lights_shape_param2"
+    },
+    "fake_lights_radial_repeat_count": {
+      "type": "inferred",
+      "default": "0, 0, 100, morphLinear, paramStandard",
+      "range": "unlimited",
+      "category": "General",
+      "affects": [],
+      "description": "Parameter controlling fake_lights_radial_repeat_count"
+    },
+    "fake_lights_radial_repeat_radius": {
+      "type": "inferred",
+      "default": "0.0, 0.0, 1e15, morphLinear, paramStandard",
+      "range": "unlimited",
+      "category": "Size/Shape",
+      "affects": [
+        "trap_volume",
+        "influence_radius"
+      ],
+      "description": "Parameter controlling fake_lights_radial_repeat_radius"
+    },
+    "fake_lights_blend_shape": {
+      "type": "inferred",
+      "default": "0, 0, 25, morphLinear, paramStandard",
+      "range": "unlimited",
+      "category": "Shape Type",
+      "affects": [
+        "orbit_trap_algorithm",
+        "trap_geometry"
+      ],
+      "description": "Parameter controlling fake_lights_blend_shape"
+    },
+    "fake_lights_blend_amount": {
+      "type": "inferred",
+      "default": "0.0, 0.0, 1.0, morphLinear, paramStandard",
+      "range": "unlimited",
+      "category": "General",
+      "affects": [],
+      "description": "Parameter controlling fake_lights_blend_amount"
+    }
+  },
+  "shader_functions": {},
+  "opencl_implementation": {},
+  "raymarching_integration": {
+    "insertion_point": "Inside iteration loop or post-DE calculation",
+    "condition": "When orbit trap is enabled and fake lights active",
+    "distance_calculation": "Based on distance to orbit trap shape center",
+    "color_accumulation": "Additive blending with surface color",
+    "performance_impact": "O(iterations) per pixel, can be GPU intensive"
+  },
+  "material_pipeline": {
+    "input_parameters": [],
+    "processing_stages": [
+      "1. Orbit trap calculation in iteration loop",
+      "2. Distance to trap shape evaluation",
+      "3. Color contribution based on proximity",
+      "4. Accumulation with surface color",
+      "5. Final shading with light contribution"
+    ],
+    "output": "Final pixel color with fake lights contribution",
+    "dependencies": [
+      "fractal iteration",
+      "DE calculation",
+      "material properties"
+    ]
+  },
+  "ui_bindings": {
+    "parameter_files": {
+      "tabWidgetFlightKeyframe": "mandelbulber2/qt/dock_animation.ui",
+      "tab_flight_animation": "mandelbulber2/qt/dock_animation.ui",
+      "verticalLayout_flight_animtion": "mandelbulber2/qt/dock_animation.ui",
+      "pushButton_render_flight": "mandelbulber2/qt/dock_animation.ui",
+      "pushButton_record_flight": "mandelbulber2/qt/dock_animation.ui",
+      "pushButton_flight_refresh_table": "mandelbulber2/qt/dock_animation.ui",
+      "pushButton_flight_to_keyframe_export": "mandelbulber2/qt/dock_animation.ui",
+      "scrollArea_flight_animation_parameters": "mandelbulber2/qt/dock_animation.ui",
+      "scrollAreaWidgetContents_flightAnimationParameters": "mandelbulber2/qt/dock_animation.ui",
+      "text_anim_flight_dir": "mandelbulber2/qt/dock_animation.ui",
+      "comboBox_flight_speed_control": "mandelbulber2/qt/dock_animation.ui",
+      "button_selectAnimFlightImageDir": "mandelbulber2/qt/dock_animation.ui",
+      "checkBox_flight_show_thumbnails": "mandelbulber2/qt/dock_animation.ui",
+      "checkBox_flight_add_speeds": "mandelbulber2/qt/dock_animation.ui",
+      "comboBox_flight_animation_image_type": "mandelbulber2/qt/dock_animation.ui",
+      "logedit_flight_speed": "mandelbulber2/qt/dock_animation.ui",
+      "spinbox_flight_inertia": "mandelbulber2/qt/dock_animation.ui",
+      "spinbox_flight_rotation_speed": "mandelbulber2/qt/dock_animation.ui",
+      "spinbox_flight_roll_speed": "mandelbulber2/qt/dock_animation.ui",
+      "spinboxInt_flight_first_to_render": "mandelbulber2/qt/dock_animation.ui",
+      "spinboxInt_flight_last_to_render": "mandelbulber2/qt/dock_animation.ui",
+      "spinbox_flight_sec_per_frame": "mandelbulber2/qt/dock_animation.ui",
+      "tableWidget_flightAnimation": "mandelbulber2/qt/dock_animation.ui",
+      "verticalLayout_flight_animtion_2": "mandelbulber2/qt/dock_animation.ui",
+      "pushButton_keyframe_to_flight_export": "mandelbulber2/qt/dock_animation.ui",
+      "checkBox_show_light_path_1": "mandelbulber2/qt/dock_animation.ui",
+      "checkBox_show_light_path_2": "mandelbulber2/qt/dock_animation.ui",
+      "checkBox_show_light_path_3": "mandelbulber2/qt/dock_animation.ui",
+      "checkBox_show_light_path_4": "mandelbulber2/qt/dock_animation.ui",
+      "frame_lightmap_texture": "mandelbulber2/qt/dock_effects.ui",
+      "text_file_lightmap": "mandelbulber2/qt/dock_effects.ui",
+      "spinboxd3_ao_light_map_rotation_x": "mandelbulber2/qt/dock_effects.ui",
+      "spinboxd3_ao_light_map_rotation_y": "mandelbulber2/qt/dock_effects.ui",
+      "spinboxd3_ao_light_map_rotation_z": "mandelbulber2/qt/dock_effects.ui",
+      "logedit_volumetric_light_DE_Factor": "mandelbulber2/qt/dock_effects.ui",
+      "spinbox_clouds_ambient_light": "mandelbulber2/qt/dock_effects.ui",
+      "logedit_clouds_lights_boost": "mandelbulber2/qt/dock_effects.ui",
+      "tab_lights": "mandelbulber2/qt/dock_effects.ui",
+      "logedit_all_lights_intensity": "mandelbulber2/qt/dock_effects.ui",
+      "logedit_all_lights_size": "mandelbulber2/qt/dock_effects.ui",
+      "colorButton_fill_light_color": "mandelbulber2/qt/dock_effects.ui",
+      "logedit_all_lights_visibility": "mandelbulber2/qt/dock_effects.ui",
+      "logedit_aux_light_manual_placement_dist": "mandelbulber2/qt/dock_effects.ui",
+      "checkBox_aux_light_place_behind": "mandelbulber2/qt/dock_effects.ui",
+      "widget_light_sources_manager": "mandelbulber2/qt/dock_effects.ui",
+      "groupCheck_random_lights_group": "mandelbulber2/qt/dock_effects.ui",
+      "verticalLayout_random_lights": "mandelbulber2/qt/dock_effects.ui",
+      "gridLayout_random_lights": "mandelbulber2/qt/dock_effects.ui",
+      "label_random_lights_intensity_3": "mandelbulber2/qt/dock_effects.ui",
+      "label_random_lights_center_of_distribution": "mandelbulber2/qt/dock_effects.ui",
+      "logedit_random_lights_intensity": "mandelbulber2/qt/dock_effects.ui",
+      "logedit_random_lights_max_distance_from_fractal": "mandelbulber2/qt/dock_effects.ui",
+      "label_random_lights_intensity": "mandelbulber2/qt/dock_effects.ui",
+      "label_random_lights_max_distance_from_fractal": "mandelbulber2/qt/dock_effects.ui",
+      "label_random_lights_intensity_5": "mandelbulber2/qt/dock_effects.ui",
+      "vect3_random_lights_distribution_center_y": "mandelbulber2/qt/dock_effects.ui",
+      "label_random_lights_first_color": "mandelbulber2/qt/dock_effects.ui",
+      "label_random_lights_intensity_2": "mandelbulber2/qt/dock_effects.ui",
+      "label_random_lights_intensity_4": "mandelbulber2/qt/dock_effects.ui",
+      "label_random_lights_random_seed": "mandelbulber2/qt/dock_effects.ui",
+      "comboBox_random_lights_coloring_type": "mandelbulber2/qt/dock_effects.ui",
+      "spinboxInt_random_lights_number": "mandelbulber2/qt/dock_effects.ui",
+      "spinboxInt_random_lights_random_seed": "mandelbulber2/qt/dock_effects.ui",
+      "checkBox_random_lights_cast_shadows": "mandelbulber2/qt/dock_effects.ui",
+      "label_random_lights_number": "mandelbulber2/qt/dock_effects.ui",
+      "pushButton_place_random_lights_by_mouse": "mandelbulber2/qt/dock_effects.ui",
+      "label_random_lights_second_color": "mandelbulber2/qt/dock_effects.ui",
+      "logedit_random_lights_distribution_radius": "mandelbulber2/qt/dock_effects.ui",
+      "vect3_random_lights_distribution_center_x": "mandelbulber2/qt/dock_effects.ui",
+      "label_random_lights_distribution_radius": "mandelbulber2/qt/dock_effects.ui",
+      "vect3_random_lights_distribution_center_z": "mandelbulber2/qt/dock_effects.ui",
+      "logedit_random_lights_soft_shadow_cone": "mandelbulber2/qt/dock_effects.ui",
+      "checkBox_random_lights_penetrating": "mandelbulber2/qt/dock_effects.ui",
+      "logedit_random_lights_size": "mandelbulber2/qt/dock_effects.ui",
+      "logedit_random_lights_visibility": "mandelbulber2/qt/dock_effects.ui",
+      "colorButton_random_lights_color_2": "mandelbulber2/qt/dock_effects.ui",
+      "colorButton_random_lights_color": "mandelbulber2/qt/dock_effects.ui",
+      "groupCheck_fake_lights_enabled": "mandelbulber2/qt/dock_effects.ui",
+      "checkBox_fake_lights_relative_center": "mandelbulber2/qt/dock_effects.ui",
+      "logedit_fake_lights_orbit_trap_size": "mandelbulber2/qt/dock_effects.ui",
+      "vect3_fake_lights_orbit_trap_y": "mandelbulber2/qt/dock_effects.ui",
+      "vect3_fake_lights_orbit_trap_z": "mandelbulber2/qt/dock_effects.ui",
+      "spinboxInt_fake_lights_min_iter": "mandelbulber2/qt/dock_effects.ui",
+      "logedit_fake_lights_thickness": "mandelbulber2/qt/dock_effects.ui",
+      "comboBox_fake_lights_orbit_trap_shape": "mandelbulber2/qt/dock_effects.ui",
+      "logedit_fake_lights_visibility": "mandelbulber2/qt/dock_effects.ui",
+      "colorButton_fake_lights_color": "mandelbulber2/qt/dock_effects.ui",
+      "spinboxd3_fake_lights_orbit_rotation_z": "mandelbulber2/qt/dock_effects.ui",
+      "spinboxd3_fake_lights_orbit_rotation_x": "mandelbulber2/qt/dock_effects.ui",
+      "spinboxd3_fake_lights_orbit_rotation_y": "mandelbulber2/qt/dock_effects.ui",
+      "groupCheck_fake_lights_color_2_enabled": "mandelbulber2/qt/dock_effects.ui",
+      "colorButton_fake_lights_color_2": "mandelbulber2/qt/dock_effects.ui",
+      "groupCheck_fake_lights_color_3_enabled": "mandelbulber2/qt/dock_effects.ui",
+      "colorButton_fake_lights_color_3": "mandelbulber2/qt/dock_effects.ui",
+      "logedit_fake_lights_intensity": "mandelbulber2/qt/dock_effects.ui",
+      "spinboxInt_fake_lights_max_iter": "mandelbulber2/qt/dock_effects.ui",
+      "spinbox_fake_lights_visibility_size": "mandelbulber2/qt/dock_effects.ui",
+      "vect3_fake_lights_orbit_trap_x": "mandelbulber2/qt/dock_effects.ui",
+      "comboBox_fake_lights_position_mode": "mandelbulber2/qt/dock_effects.ui",
+      "stackedWidget_fake_lights_mode": "mandelbulber2/qt/dock_effects.ui",
+      "page_fake_lights_world": "mandelbulber2/qt/dock_effects.ui",
+      "groupBox_fake_lights_world": "mandelbulber2/qt/dock_effects.ui",
+      "vect3_fake_lights_world_offset_x": "mandelbulber2/qt/dock_effects.ui",
+      "vect3_fake_lights_world_offset_y": "mandelbulber2/qt/dock_effects.ui",
+      "vect3_fake_lights_world_offset_z": "mandelbulber2/qt/dock_effects.ui",
+      "logedit_fake_lights_world_scale": "mandelbulber2/qt/dock_effects.ui",
+      "spinboxd3_fake_lights_world_rotation_x": "mandelbulber2/qt/dock_effects.ui",
+      "spinboxd3_fake_lights_world_rotation_y": "mandelbulber2/qt/dock_effects.ui",
+      "spinboxd3_fake_lights_world_rotation_z": "mandelbulber2/qt/dock_effects.ui",
+      "page_fake_lights_camera": "mandelbulber2/qt/dock_effects.ui",
+      "groupBox_fake_lights_camera": "mandelbulber2/qt/dock_effects.ui",
+      "vect3_fake_lights_camera_offset_x": "mandelbulber2/qt/dock_effects.ui",
+      "vect3_fake_lights_camera_offset_y": "mandelbulber2/qt/dock_effects.ui",
+      "vect3_fake_lights_camera_offset_z": "mandelbulber2/qt/dock_effects.ui",
+      "logedit_fake_lights_camera_scale": "mandelbulber2/qt/dock_effects.ui",
+      "spinboxd3_fake_lights_camera_rotation_x": "mandelbulber2/qt/dock_effects.ui",
+      "spinboxd3_fake_lights_camera_rotation_y": "mandelbulber2/qt/dock_effects.ui",
+      "spinboxd3_fake_lights_camera_rotation_z": "mandelbulber2/qt/dock_effects.ui",
+      "page_fake_lights_target": "mandelbulber2/qt/dock_effects.ui",
+      "groupBox_fake_lights_target": "mandelbulber2/qt/dock_effects.ui",
+      "vect3_fake_lights_target_offset_x": "mandelbulber2/qt/dock_effects.ui",
+      "vect3_fake_lights_target_offset_y": "mandelbulber2/qt/dock_effects.ui",
+      "vect3_fake_lights_target_offset_z": "mandelbulber2/qt/dock_effects.ui",
+      "logedit_fake_lights_target_scale": "mandelbulber2/qt/dock_effects.ui",
+      "spinboxd3_fake_lights_target_rotation_x": "mandelbulber2/qt/dock_effects.ui",
+      "spinboxd3_fake_lights_target_rotation_y": "mandelbulber2/qt/dock_effects.ui",
+      "spinboxd3_fake_lights_target_rotation_z": "mandelbulber2/qt/dock_effects.ui",
+      "page_fake_lights_fractal_center": "mandelbulber2/qt/dock_effects.ui",
+      "groupBox_fake_lights_fractal_center": "mandelbulber2/qt/dock_effects.ui",
+      "vect3_fake_lights_fractal_center_offset_x": "mandelbulber2/qt/dock_effects.ui",
+      "vect3_fake_lights_fractal_center_offset_y": "mandelbulber2/qt/dock_effects.ui",
+      "vect3_fake_lights_fractal_center_offset_z": "mandelbulber2/qt/dock_effects.ui",
+      "logedit_fake_lights_fractal_center_scale": "mandelbulber2/qt/dock_effects.ui",
+      "spinboxd3_fake_lights_fractal_center_rotation_x": "mandelbulber2/qt/dock_effects.ui",
+      "spinboxd3_fake_lights_fractal_center_rotation_y": "mandelbulber2/qt/dock_effects.ui",
+      "spinboxd3_fake_lights_fractal_center_rotation_z": "mandelbulber2/qt/dock_effects.ui",
+      "groupBox_fake_lights_shape_modifiers": "mandelbulber2/qt/dock_effects.ui",
+      "spinbox_fake_lights_shape_twist": "mandelbulber2/qt/dock_effects.ui",
+      "spinbox_fake_lights_shape_bend": "mandelbulber2/qt/dock_effects.ui",
+      "spinbox_fake_lights_shape_taper": "mandelbulber2/qt/dock_effects.ui",
+      "spinboxInt_fake_lights_shape_fold_symmetry": "mandelbulber2/qt/dock_effects.ui",
+      "spinbox_fake_lights_shape_repeat_x": "mandelbulber2/qt/dock_effects.ui",
+      "spinbox_fake_lights_shape_repeat_y": "mandelbulber2/qt/dock_effects.ui",
+      "spinbox_fake_lights_shape_repeat_z": "mandelbulber2/qt/dock_effects.ui",
+      "spinbox_fake_lights_shape_wobble_amplitude": "mandelbulber2/qt/dock_effects.ui",
+      "spinbox_fake_lights_shape_wobble_frequency": "mandelbulber2/qt/dock_effects.ui",
+      "spinbox_fake_lights_shape_chamfer": "mandelbulber2/qt/dock_effects.ui",
+      "spinbox_fake_lights_onion_thickness": "mandelbulber2/qt/dock_effects.ui",
+      "spinbox_fake_lights_shape_param1": "mandelbulber2/qt/dock_effects.ui",
+      "spinbox_fake_lights_shape_param2": "mandelbulber2/qt/dock_effects.ui",
+      "spinbox_fake_lights_radial_repeat_count": "mandelbulber2/qt/dock_effects.ui",
+      "spinbox_fake_lights_radial_repeat_radius": "mandelbulber2/qt/dock_effects.ui",
+      "spinbox_fake_lights_blend_shape": "mandelbulber2/qt/dock_effects.ui",
+      "spinbox_fake_lights_blend_amount": "mandelbulber2/qt/dock_effects.ui",
+      "cLightSourcesManager": "mandelbulber2/qt/light_sources_manager.ui",
+      "checkBox_show_wireframe_lights": "mandelbulber2/qt/light_sources_manager.ui",
+      "pushButton_newLight": "mandelbulber2/qt/light_sources_manager.ui",
+      "pushButton_duplicateLight": "mandelbulber2/qt/light_sources_manager.ui",
+      "pushButton_deleteLight": "mandelbulber2/qt/light_sources_manager.ui",
+      "pushButton_placeLight": "mandelbulber2/qt/light_sources_manager.ui",
+      "tabWidget_lightSources": "mandelbulber2/qt/light_sources_manager.ui",
+      "checkBox_all_primitives_invisible_alpha": "mandelbulber2/qt/dock_fractal.ui",
+      "maxVisibleItems": "mandelbulber2/qt/tab_fractal.ui",
+      "notchesVisible": "mandelbulber2/qt/slider_popup.ui",
+      "cLightEditor": "mandelbulber2/qt/light_editor.ui",
+      "pushButton_slight": "mandelbulber2/qt/randomizer_dialog.ui",
+      "visible": "mandelbulber2/qt/render_window.ui",
+      "spinbox_fractal_coloring_orbit_trap_scale1": "mandelbulber2/qt/material_editor.ui",
+      "groupCheck_fractal_coloring_orbit_trap_true": "mandelbulber2/qt/material_editor.ui",
+      "spinbox_fractal_coloring_orbit_trap_weight": "mandelbulber2/qt/material_editor.ui"
+    },
+    "dock_location": "Effects dock -> Illumination tab",
+    "real_time_preview": true,
+    "parameter_groups": [
+      "Enable/Disable",
+      "Orbit Trap Shape",
+      "Position/Size",
+      "Color/Intensity",
+      "Advanced Options"
+    ]
+  },
+  "dependencies": {},
+  "performance_profile": {
+    "computational_complexity": {
+      "orbit_trap_sphere": "O(iterations) - 1 distance calc per iteration",
+      "orbit_trap_cube": "O(iterations) - 3 abs + max per iteration",
+      "orbit_trap_line": "O(iterations) - cross product per iteration",
+      "color_accumulation": "O(1) per iteration"
+    },
+    "memory_usage": {
+      "aux_color": "4 bytes per iteration (float)",
+      "orbit_trap_distance": "4 bytes per iteration",
+      "total_per_pixel": "~8-16 bytes additional"
+    },
+    "bottlenecks": [
+      "Iteration loop execution (CPU bound)",
+      "Distance calculations in OpenCL",
+      "Color blending operations",
+      "Memory bandwidth for aux data"
+    ],
+    "optimization_opportunities": [
+      "Early exit when trap distance > threshold",
+      "Vectorized operations in OpenCL",
+      "Shared memory for trap parameters",
+      "Approximation for distant iterations"
+    ],
+    "gpu_vs_cpu": {
+      "cpu_advantages": [
+        "Precise control",
+        "No memory limits",
+        "Easy debugging"
+      ],
+      "gpu_advantages": [
+        "Massive parallelism",
+        "Vectorized math",
+        "Memory coalescing"
+      ],
+      "recommended": "GPU (OpenCL) for production, CPU for development"
+    }
+  },
+  "implementation_secrets": {
+    "orbit_trap_calculation": {
+      "location": "Inside fractal iteration loop (ComputeFractal)",
+      "timing": "Calculated every iteration, accumulated over all iterations",
+      "formula": "trap_distance = distance(iterated_z, trap_shape)",
+      "color_contribution": "Based on minimum trap distance across iterations"
+    },
+    "fake_lights_integration": {
+      "cpu_path": "shader_surface.cpp -> CalculateSurfaceColor()",
+      "opencl_path": "opencl/surface_shader.cl",
+      "hybrid_mode": "Orbit trap color blended with aux.color and radius/DE",
+      "boolean_mode": "Each boolean component can have separate trap settings"
+    },
+    "volumetric_effects": {
+      "visible_lights": "Glowing spheres at trap positions",
+      "volumetric_lights": "Light scattering through fog",
+      "iteration_fog": "Fog density based on iteration count"
+    },
+    "optimization_hints": {
+      "early_exit": "Skip trap calc if distance already large",
+      "vectorization": "Use float4 for parallel trap calculations",
+      "shared_params": "Pass trap center/size as kernel constants",
+      "texture_lookup": "Use 3D texture for complex trap shapes"
+    },
+    "common_issues": {
+      "performance": "High iteration counts make trap calc expensive",
+      "artifacts": "Sharp trap boundaries need smoothing",
+      "color_bleeding": "Trap color can dominate surface color",
+      "opencl_sync": "Trap params must match between CPU and GPU"
+    }
+  },
+  "code_references": {
+    "orbit_trap_shapes": {
+      "sphere": "length(z - center) - radius",
+      "cube": "max(abs(z - center)) - size",
+      "line": "length(cross(z - center, direction))",
+      "cross": "min(abs(z.x), abs(z.y))",
+      "z_dot_point": "dot(z, point)"
+    },
+    "color_calculation": {
+      "standard": "color += orbitTrapColor * (1.0 - trap_distance / max_distance)",
+      "weighted": "final_color = mix(surface_color, trap_color, orbitTrapWeight)",
+      "hybrid": "final_color = orbittrap + aux.color + radius/DE"
+    },
+    "parameter_names": {
+      "enable": "fakeLightsEnabled / orbitTrapEnabled",
+      "shape": "orbitTrapShape (0=sphere, 1=cube, 2=line, 3=cross)",
+      "position": "orbitTrapCenter / fakeLightsPosition",
+      "size": "orbitTrapSize / fakeLightsSize",
+      "color": "orbitTrapColor / fakeLightsColor",
+      "intensity": "orbitTrapIntensity / fakeLightsIntensity"
+    }
+  },
+  "reverse_engineering_notes": {
+    "algorithm_flow": [
+      "1. Initialize orbit trap distance to large value",
+      "2. For each iteration:",
+      "   a. Calculate iterated z position",
+      "   b. Compute distance to trap shape",
+      "   c. Update minimum trap distance",
+      "   d. Accumulate trap color contribution",
+      "3. After all iterations:",
+      "   a. Normalize trap contribution",
+      "   b. Blend with surface color based on weight",
+      "4. Apply final shading with light sources"
+    ],
+    "data_structures": {
+      "sFractalOut": "Contains aux.color, orbit trap distance, DE",
+      "sOrbitTrap": "Trap center, size, shape type, color",
+      "sShaderInput": "Position, normal, material properties"
+    },
+    "extension_points": [
+      "Add new trap shapes by implementing distance function",
+      "Custom trap coloring using gradient textures",
+      "Animated traps by varying center over time",
+      "Multiple simultaneous trap shapes"
+    ]
+  }
+}

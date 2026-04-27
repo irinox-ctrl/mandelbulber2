@@ -1,0 +1,136 @@
+# DIEPE ANALYSE MANDELBULBER - Clip Mode Implementatie
+
+## 1. BASIS BEGRIPPEN
+
+### 1.1 Wat is een Fractal Iteratie?
+Een fractal wordt gedefinieerd door een formule die herhaaldelijk wordt toegepast:
+- Startpunt: z₀ (bijv. de camera positie)
+- Iteratie: zₙ₊₁ = f(zₙ)
+- Voorbeeld: Mandelbulb: zₙ₊₁ = zₙ^8 + c
+
+### 1.2 Wat is Bailout?
+Bailout is een drempelwaarde (meestal 4.0 of 1024.0):
+- Als |z| > bailout: het punt is "ge-escaped" (buiten het fractal)
+- Als |z| ≤ bailout na max iteraties: het punt is "binnen" het fractal
+
+### 1.3 Wat is aux.r?
+- aux.r = |z| = lengte van de vector z
+- Dit is de afstand van het huidige punt tot de oorsprong
+- Wordt geüpdatet na elke iteratie: aux.r = z.Length()
+
+### 1.4 Wat is aux.DE?
+- DE = Distance Estimation (de afgeleide)
+- Startwaarde: aux.DE = 1.0
+- Wordt aangepast door de fractal formule
+- Gebruikt om de echte afstand tot het oppervlak te schatten: `distance = aux.r / aux.DE`
+
+## 2. ORBIT TRAP LIGHTS (Fake Lights)
+
+### 2.1 Hoe werkt het?
+In plaats van licht van een vaste positie, gebruikt orbit trap lighting de iteratie geschiedenis:
+- Tijdens elke iteratie wordt de afstand tot een "trap shape" gemeten
+- Deze afstanden worden geaccumuleerd: `orbitTrapTotal += 1/distance²`
+- Hoe dichter bij de trap, hoe meer licht
+
+### 2.2 Wat is de accumulatie?
+```
+Voor elke iteratie i:
+  distance = afstand van z[i] tot trap shape
+  als i binnen [minIter, maxIter]:
+    orbitTrapTotal += 1.0 / (distance * distance)
+```
+
+Dit is een som over ALLE iteraties, niet alleen de laatste!
+
+### 2.3 Waarom "Fake" Lights?
+- Het is geen fysiek lichtbron
+- Het is een "heatmap" van waar de fractal iteratie is geweest
+- Geeft organische, fractal-specifieke verlichting
+
+## 3. CLIP MODE - HET PROBLEEM
+
+### 3.1 Wat willen we?
+Alleen fake lights accumuleren wanneer het iteratie punt BINNEN het fractal ligt.
+
+### 3.2 Wat is "binnen" het fractal?
+Een punt is binnen het fractal als:
+- `aux.r <= bailout` aan het einde van de iteratie
+- Of: de iteratie bereikt maxN zonder te escapen (`out->maxiter = true`)
+
+### 3.3 Waarom is dit moeilijk?
+De orbit trap accumulatie gebeurt TIJDENS de iteratie, niet aan het einde.
+We moeten per iteratie beslissen of we accumuleren.
+
+### 3.4 De Oplossing
+In `calcModeOrbitTrap` mode:
+```cpp
+// Check of punt binnen fractal is
+bool inside = (aux.r <= fractals.GetBailout(sequence));
+
+// Alleen accumuleren als binnen
+if (inside && i >= fakeLightsMinIter && i <= fakeLightsMaxIter)
+    orbitTrapTotal += (1.0 / (distance * distance));
+```
+
+## 4. IMPLEMENTATIE PLAN
+
+### Stap 1: Parameter toevoegen
+- Naam: fakeLightsClipMode
+- Type: enum (None=0, Inside=1, Outside=2)
+- Default: 0 (None)
+
+### Stap 2: Struct veld toevoegen
+In sCommonParams:
+```cpp
+enumFakeLightsClipMode fakeLightsClipMode;
+```
+
+### Stap 3: CPU Implementatie
+In compute_fractal.cpp, calcModeOrbitTrap sectie:
+```cpp
+bool clipAllows = true;
+if (in.common->fakeLightsClipMode == fakeLightsClipInside)
+    clipAllows = (aux.r <= fractals.GetBailout(sequence));
+else if (in.common->fakeLightsClipMode == fakeLightsClipOutside)
+    clipAllows = (aux.r > fractals.GetBailout(sequence));
+
+if (clipAllows && i >= fakeLightsMinIter && i <= fakeLightsMaxIter)
+    orbitTrapTotal += (1.0 / (distance * distance));
+```
+
+### Stap 4: OpenCL Implementatie
+Idem, maar met float types.
+
+### Stap 5: UI Widget
+ComboBox met opties: None, Inside, Outside
+
+## 5. BELANGRIJKE OVERWEGINGEN
+
+### 5.1 Performance
+- Extra check per iteratie: `(aux.r <= bailout)`
+- Dit is een simpele float vergelijking
+- Minimale performance impact
+
+### 5.2 Coordinate Space
+- aux.r is in fractal space (niet world space)
+- bailout is ook in fractal space
+- Dit is correct zoals het is
+
+### 5.3 Multi-fractal support
+- Hybrid fractals kunnen verschillende bailouts hebben
+- We gebruiken `fractals.GetBailout(sequence)` per iteratie
+- Dit is correct
+
+## 6. RISICO'S
+
+### 6.1 Wat kan misgaan?
+1. **Type mismatch**: double vs float in CPU vs OpenCL
+2. **Verkeerde bailout**: niet alle fractals gebruiken dezelfde bailout
+3. **Performance**: als de check te duur is
+4. **UI overlap**: bij toevoegen van widget
+
+### 6.2 Hoe te testen?
+1. Test met simpele fractal (Mandelbulb)
+2. Test met hybrid fractal (Menger Sponge)
+3. Test CPU vs GPU
+4. Test alle clip modes (None, Inside, Outside)

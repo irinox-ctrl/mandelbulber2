@@ -32,7 +32,7 @@
  * Nebula dractal renderig kernel
  */
 
-#define MANDELBULBER_VERSION 2.34
+#define MANDELBULBER_VERSION 2.35
 
 #ifndef FORMULA_ITER_0
 #define FORMULA_ITER_0 DummyIteration

@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>transf_advanced_demo</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>799</width>
+    <height>380</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string notr="true">transf_advanced_demo</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>2</number>
+   </property>
+   <property name="leftMargin">
+    <number>2</number>
+   </property>
+   <property name="topMargin">
+    <number>2</number>
+   </property>
+   <property name="rightMargin">
+    <number>2</number>
+   </property>
+   <property name="bottomMargin">
+    <number>2</number>
+   </property>
+   <item>
+    <widget class="QLabel" name="label_title">
+     <property name="text">
+      <string notr="true">T>Advanced Demo</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout_params">
+     <property name="spacing">
+      <number>2</number>
+     </property>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_position">
+       <property name="text">
+        <string notr="true">Position</string>
+       </property>
+       <property name="toolTip">
+        <string>Transform position in 3D space</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <layout class="QHBoxLayout" name="hLayout_position">
+       <item>
+        <widget class="MyDoubleSpinBox" name="spinboxd3_transf_advanced_demo_position_x">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="toolTip">
+          <string>Transform position in 3D space (X)</string>
+         </property>
+         <property name="prefix">
+          <string/>
+         </property>
+         <property name="suffix">
+          <string/>
+         </property>
+         <property name="decimals">
+          <number>6</number>
+         </property>
+         <property name="minimum">
+          <double>-100.0</double>
+         </property>
+         <property name="maximum">
+          <double>100.0</double>
+         </property>
+         <property name="value">
+          <double>0.0</double>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="MyDoubleSpinBox" name="spinboxd3_transf_advanced_demo_position_y">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="toolTip">
+          <string>Transform position in 3D space (Y)</string>
+         </property>
+         <property name="prefix">
+          <string/>
+         </property>
+         <property name="suffix">
+          <string/>
+         </property>
+         <property name="decimals">
+          <number>6</number>
+         </property>
+         <property name="minimum">
+          <double>-100.0</double>
+         </property>
+         <property name="maximum">
+          <double>100.0</double>
+         </property>
+         <property name="value">
+          <double>0.0</double>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="MyDoubleSpinBox" name="spinboxd3_transf_advanced_demo_position_z">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="toolTip">
+          <string>Transform position in 3D space (Z)</string>
+         </property>
+         <property name="prefix">
+          <string/>
+         </property>
+         <property name="suffix">
+          <string/>
+         </property>
+         <property name="decimals">
+          <number>6</number>
+         </property>
+         <property name="minimum">
+          <double>-100.0</double>
+         </property>
+         <property name="maximum">
+          <double>100.0</double>
+         </property>
+         <property name="value">
+          <double>0.0</double>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_scale">
+       <property name="text">
+        <string notr="true">Scale factor</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="MyDoubleSpinBox" name="spinboxd_transf_advanced_demo_scale">
+       <property name="decimals">
+        <number>3</number>
+       </property>
+       <property name="minimum">
+        <double>0.001</double>
+       </property>
+       <property name="maximum">
+        <double>100.0</double>
+       </property>
+       <property name="singleStep">
+        <double>0.1</double>
+       </property>
+       <property name="value">
+        <double>1.0</double>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_iterations">
+       <property name="text">
+        <string notr="true">Iterations</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="MySpinBox" name="spinbox_transf_advanced_demo_iterations">
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>250</number>
+       </property>
+       <property name="value">
+        <number>10</number>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0" colspan="2">
+      <widget class="MyCheckBox" name="checkBox_transf_advanced_demo_enabled">
+       <property name="text">
+        <string notr="true">Enable transform</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="label_mode">
+       <property name="text">
+        <string notr="true">Mode</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="MyComboBox" name="comboBox_transf_advanced_demo_mode">
+       <item>
+        <property name="text">
+         <string>Linear</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Spherical</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Cylindrical</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Custom</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="5" column="0">
+      <widget class="QLabel" name="label_color">
+       <property name="text">
+        <string notr="true">Highlight color</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="1">
+      <widget class="MyColorButton" name="colorButton_transf_advanced_demo_color">
+       <property name="text">
+        <string>Color</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="0">
+      <widget class="QLabel" name="label_quaternion">
+       <property name="text">
+        <string notr="true">Quaternion (x,y,z,w)</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="1">
+      <layout class="QHBoxLayout" name="hLayout_quaternion">
+       <item>
+        <widget class="MyDoubleSpinBox" name="spinboxd4_transf_advanced_demo_quaternion_x">
+         <property name="decimals">
+          <number>6</number>
+         </property>
+         <property name="minimum">
+          <double>-1.0</double>
+         </property>
+         <property name="maximum">
+          <double>1.0</double>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="MyDoubleSpinBox" name="spinboxd4_transf_advanced_demo_quaternion_y">
+         <property name="decimals">
+          <number>6</number>
+         </property>
+         <property name="minimum">
+          <double>-1.0</double>
+         </property>
+         <property name="maximum">
+          <double>1.0</double>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="MyDoubleSpinBox" name="spinboxd4_transf_advanced_demo_quaternion_z">
+         <property name="decimals">
+          <number>6</number>
+         </property>
+         <property name="minimum">
+          <double>-1.0</double>
+         </property>
+         <property name="maximum">
+          <double>1.0</double>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="MyDoubleSpinBox" name="spinboxd4_transf_advanced_demo_quaternion_w">
+         <property name="decimals">
+          <number>6</number>
+         </property>
+         <property name="minimum">
+          <double>-1.0</double>
+         </property>
+         <property name="maximum">
+          <double>1.0</double>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>MyDoubleSpinBox</class>
+   <extends>QDoubleSpinBox</extends>
+   <header>my_double_spin_box.h</header>
+  </customwidget>
+  <customwidget>
+   <class>MySpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>my_spin_box.h</header>
+  </customwidget>
+  <customwidget>
+   <class>MyCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>my_check_box.h</header>
+  </customwidget>
+  <customwidget>
+   <class>MyGroupBox</class>
+   <extends>QGroupBox</extends>
+   <header>my_group_box.h</header>
+  </customwidget>
+  <customwidget>
+   <class>MyComboBox</class>
+   <extends>QComboBox</extends>
+   <header>my_combo_box.h</header>
+  </customwidget>
+  <customwidget>
+   <class>MyColorButton</class>
+   <extends>QPushButton</extends>
+   <header>my_color_button.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

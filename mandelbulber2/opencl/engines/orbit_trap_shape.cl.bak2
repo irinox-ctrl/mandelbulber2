@@ -1,0 +1,477 @@
+/**
+ * Mandelbulber v2, a 3D fractal generator       ,=#MKNmMMKmmßMNWy,
+ *                                             ,B" ]L,,p%%%,,,§;, "K
+ * Copyright (C) 2019 Mandelbulber Team        §R-==%w["'~5]m%=L.=~5N
+ *                                        ,=mm=§M ]=4 yJKA"/-Nsaj  "Bw,==,,
+ * This file is part of Mandelbulber.    §R.r= jw",M  Km .mM  FW ",§=ß., ,TN
+ *                                     ,4R =%["w[N=7]J '"5=],""]]M,w,-; T=]M
+ * Mandelbulber is free software:     §R.ß~-Q/M=,=5"v"]=Qf,'§"M= =,M.§ Rz]M"Kw
+ * you can redistribute it and/or     §w "xDY.J ' -"m=====WeC=\ ""%""y=%"]"" §
+ * modify it under the terms of the    "§M=M =D=4"N #"%==A%p M§ M6  R' #"=~.4M
+ * GNU General Public License as        §W =, ][T"]C  §  § '§ e===~ U  !§[Z ]N
+ * published by the                    4M",,Jm=,"=e~  §  §  j]]""N  BmM"py=ßM
+ * Free Software Foundation,          ]§ T,M=& 'YmMMpM9MMM%=w=,,=MT]M m§;'§,
+ * either version 3 of the License,    TWw [.j"5=~N[=§%=%W,T ]R,"=="Y[LFT ]N
+ * or (at your option)                   TW=,-#"%=;[  =Q:["V""  ],,M.m == ]N
+ * any later version.                      J§"mr"] ,=,," =="""J]= M"M"]==ß"
+ *                                          §= "=C=4 §"eM "=B:m|4"]#F,§~
+ * Mandelbulber is distributed in            "9w=,,]w em%wJ '"~" ,=,,ß"
+ * the hope that it will be useful,                 . "K=  ,=RMMMßM"""
+ * but WITHOUT ANY WARRANTY;                            .'''
+ * without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * See the GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with Mandelbulber. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * ###########################################################################
+ *
+ * Authors: Krzysztof Marczak (buddhi1980@gmail.com)
+ *
+ * calculation of distance from orbit trap for "fake lights"
+ */
+
+#ifdef FAKE_LIGHTS
+
+// Helper: 2D extrusion
+static inline float Extrude2D(float d2d, float z)
+{
+	return sqrt(d2d * d2d + z * z);
+}
+
+// Helper: mod for patterns
+static inline float SdfMod(float x, float y)
+{
+	return x - y * floor(x / y);
+}
+
+// Helper: Koch snowflake distance
+static inline float KochSnowflakeDist(float x, float y, float size)
+{
+	x /= size;
+	y /= size;
+	for (int i = 0; i < 2; i++)
+	{
+		x = fabs(x);
+		y = fabs(y);
+		float dot = x * 0.5f + y * 0.86602540378f;
+		if (dot > y)
+		{
+			float tx = dot;
+			float ty = x * 0.86602540378f - y * 0.5f;
+			x = tx;
+			y = ty;
+		}
+		x = x * 3.0f - 2.0f;
+		y = y * 3.0f;
+		if (x < -1.0f) x = -2.0f - x;
+	}
+	return (y - 0.5f) * size;
+}
+
+// Helper: Menger sponge distance
+static inline float MengerSpongeDist(float3 p, float size)
+{
+	float3 s = p / size;
+	float d = fmax(fabs(s.x), fmax(fabs(s.y), fabs(s.z))) - 1.0f;
+	for (int i = 0; i < 2; i++)
+	{
+		s.x = fabs(s.x);
+		s.y = fabs(s.y);
+		s.z = fabs(s.z);
+		if (s.x < s.y) { float t = s.x; s.x = s.y; s.y = t; }
+		if (s.x < s.z) { float t = s.x; s.x = s.z; s.z = t; }
+		if (s.y < s.z) { float t = s.y; s.y = s.z; s.z = t; }
+		s = s * 3.0f - (float3)(2.0f, 2.0f, 2.0f);
+		if (s.z < -1.0f) s.z = -2.0f - s.z;
+		if (s.y < -1.0f) s.y = -2.0f - s.y;
+		if (s.x < -1.0f) s.x = -2.0f - s.x;
+	}
+	return d * size * pow(3.0f, -2.0f);
+}
+
+// Helper: Sierpinski tetrahedron distance
+static inline float SierpinskiTetraDist(float3 p, float size)
+{
+	float3 s = p / size;
+	for (int i = 0; i < 2; i++)
+	{
+		if (s.x + s.y < 0.0f) { float t = s.x; s.x = -s.y; s.y = -t; }
+		if (s.x + s.z < 0.0f) { float t = s.x; s.x = -s.z; s.z = -t; }
+		if (s.y + s.z < 0.0f) { float t = s.y; s.y = -s.z; s.z = -t; }
+		s = s * 2.0f - (float3)(1.0f, 1.0f, 1.0f);
+	}
+	return (length(s) - 1.73205f) * size * pow(2.0f, -2.0f);
+}
+
+// Helper: Apollonian distance
+static inline float ApollonianDist(float3 p, float size)
+{
+	float3 s = p / size;
+	float scale = 1.0f;
+	for (int i = 0; i < 3; i++)
+	{
+		s.x = fabs(s.x);
+		s.y = fabs(s.y);
+		s.z = fabs(s.z);
+		float r2 = dot(s, s);
+		if (r2 < 0.001f) r2 = 0.001f;
+		s = s * (1.0f / r2);
+		s = s * 2.5f - (float3)(1.0f, 1.0f, 1.0f);
+		scale *= 2.5f;
+	}
+	return length(s) * size / scale;
+}
+
+// Apply universal shape modifiers to delta
+static inline float3 ApplyShapeModifiers(float3 delta, __constant sClInConstants *consts)
+{
+	// 1. Fold symmetry (radial folding in XY plane)
+	int fold = consts->params.common.fakeLightsShapeFoldSymmetry;
+	if (fold > 1)
+	{
+		float angle = atan2(delta.y, delta.x);
+		float r = length(delta.xy);
+		float period = 2.0f * 3.14159265359f / (float)fold;
+		angle = fmod(angle + period / 2.0f, period);
+		if (angle < 0.0f) angle += period;
+		angle -= period / 2.0f;
+		delta.x = cos(angle) * r;
+		delta.y = sin(angle) * r;
+	}
+
+	// 2. Taper: scale xz based on y
+	float taperScale = 1.0f + consts->params.common.fakeLightsShapeTaper * delta.y;
+	if (taperScale < 1e-10f) taperScale = 1e-10f;
+	delta.x *= taperScale;
+	delta.z *= taperScale;
+
+	// 3. Twist: rotate xz around y
+	float twistAngle = consts->params.common.fakeLightsShapeTwist * delta.y;
+	float cosT = cos(twistAngle);
+	float sinT = sin(twistAngle);
+	float nx = delta.x * cosT - delta.z * sinT;
+	float nz = delta.x * sinT + delta.z * cosT;
+	delta.x = nx;
+	delta.z = nz;
+
+	// 4. Bend: curve space around a circle
+	float bend = consts->params.common.fakeLightsShapeBend;
+	if (fabs(bend) > 1e-10f)
+	{
+		float bendAngle = bend * delta.y;
+		delta.y = sin(bendAngle) / bend;
+		delta.x += (1.0f - cos(bendAngle)) / bend;
+	}
+
+	// 5. Repeat / Tiling
+	float repeatX = consts->params.common.fakeLightsShapeRepeatX;
+	float repeatY = consts->params.common.fakeLightsShapeRepeatY;
+	float repeatZ = consts->params.common.fakeLightsShapeRepeatZ;
+	if (repeatX > 1e-10f) delta.x = SdfMod(delta.x + repeatX * 0.5f, repeatX) - repeatX * 0.5f;
+	if (repeatY > 1e-10f) delta.y = SdfMod(delta.y + repeatY * 0.5f, repeatY) - repeatY * 0.5f;
+	if (repeatZ > 1e-10f) delta.z = SdfMod(delta.z + repeatZ * 0.5f, repeatZ) - repeatZ * 0.5f;
+
+	// 6. Wobble
+	float wobbleAmp = consts->params.common.fakeLightsShapeWobbleAmplitude;
+	float wobbleFreq = consts->params.common.fakeLightsShapeWobbleFrequency;
+	if (fabs(wobbleAmp) > 1e-10f && fabs(wobbleFreq) > 1e-10f)
+	{
+		delta.x += wobbleAmp * sin(wobbleFreq * delta.y);
+		delta.y += wobbleAmp * sin(wobbleFreq * delta.z);
+		delta.z += wobbleAmp * sin(wobbleFreq * delta.x);
+	}
+
+	// 7. Scale
+	float scaleX = consts->params.common.fakeLightsShapeScaleX;
+	float scaleY = consts->params.common.fakeLightsShapeScaleY;
+	float scaleZ = consts->params.common.fakeLightsShapeScaleZ;
+	if (fabs(scaleX) > 1e-10f) delta.x /= scaleX;
+	if (fabs(scaleY) > 1e-10f) delta.y /= scaleY;
+	if (fabs(scaleZ) > 1e-10f) delta.z /= scaleZ;
+
+	// 8. Mirror
+	if (consts->params.common.fakeLightsShapeMirrorX) delta.x = fabs(delta.x);
+	if (consts->params.common.fakeLightsShapeMirrorY) delta.y = fabs(delta.y);
+	if (consts->params.common.fakeLightsShapeMirrorZ) delta.z = fabs(delta.z);
+
+	return delta;
+}
+
+float OrbitTrapShapeDistance(float4 z4, __constant sClInConstants *consts, sClCalcParams *calcParams)
+{
+	float dist = 0.0f;
+	float3 z = z4.xyz;
+	float3 orbitTrapPos = (calcParams != NULL) ? calcParams->orbitTrap : consts->params.common.fakeLightsOrbitTrap;
+	float3 delta = z - orbitTrapPos;
+	float thicknessDivisor = consts->params.common.fakeLightsThickness;
+
+#ifdef FAKE_LIGHTS_POINT
+	delta = ApplyShapeModifiers(delta, consts);
+	dist = length(delta) - consts->params.common.fakeLightsOrbitTrapSize;
+#endif
+
+#ifdef FAKE_LIGHTS_LINE
+	delta = Matrix33MulFloat3(consts->params.common.mRotFakeLightsRotation, delta);
+	delta = ApplyShapeModifiers(delta, consts);
+	float halfLen = consts->params.common.fakeLightsShapeLineLength * 0.5f;
+	float tubeR = consts->params.common.fakeLightsShapeTubeRadius;
+	if (halfLen > 1e-10f)
+	{
+		float py = delta.y;
+		if (py < -halfLen) py = -halfLen;
+		if (py > halfLen) py = halfLen;
+		dist = sqrt(delta.x * delta.x + (delta.y - py) * (delta.y - py) + delta.z * delta.z);
+	}
+	else
+	{
+		dist = length(delta.xz);
+	}
+	dist -= tubeR;
+	thicknessDivisor = consts->params.common.fakeLightsShapeLineThickness;
+#endif
+
+#ifdef FAKE_LIGHTS_CIRCLE
+	delta = Matrix33MulFloat3(consts->params.common.mRotFakeLightsRotation, delta);
+	delta = ApplyShapeModifiers(delta, consts);
+	float lengthYZ = length(delta.yz) - consts->params.common.fakeLightsOrbitTrapSize;
+	dist = length((float2){lengthYZ, delta.x});
+#endif
+
+#ifdef FAKE_LIGHTS_SQUARE
+	delta = Matrix33MulFloat3(consts->params.common.mRotFakeLightsRotation, delta);
+	delta = ApplyShapeModifiers(delta, consts);
+	float size = consts->params.common.fakeLightsOrbitTrapSize;
+
+	float dy = max(fabs(fabs(delta.y) - size), fabs(delta.z) - size);
+	float dz = max(fabs(fabs(delta.z) - size), fabs(delta.y) - size);
+	float deltaRect = min(dy, dz);
+	dist = length((float2){deltaRect, delta.x});
+#endif
+
+#ifdef FAKE_LIGHTS_SPHERE
+	delta = Matrix33MulFloat3(consts->params.common.mRotFakeLightsRotation, delta);
+	delta = ApplyShapeModifiers(delta, consts);
+	float lengthYZ = length(delta.yz) - consts->params.common.fakeLightsOrbitTrapSize;
+	float distYZ = length((float2){lengthYZ, delta.x});
+
+	float lengthXZ = length(delta.xz) - consts->params.common.fakeLightsOrbitTrapSize;
+	float distXZ = length((float2){lengthXZ, delta.y});
+
+	float lengthXY = length(delta.xy) - consts->params.common.fakeLightsOrbitTrapSize;
+	float distXY = length((float2){lengthXY, delta.z});
+
+	dist = min(min(distYZ, distXZ), distXY);
+#endif
+
+#ifdef FAKE_LIGHTS_CUBE
+	delta = Matrix33MulFloat3(consts->params.common.mRotFakeLightsRotation, delta);
+	delta = ApplyShapeModifiers(delta, consts);
+	float size = consts->params.common.fakeLightsOrbitTrapSize;
+
+	float qx = fabs(fabs(delta.x) - size);
+	float qy = fabs(fabs(delta.y) - size);
+	float qz = fabs(fabs(delta.z) - size);
+	float distX = sqrt(qy * qy + qz * qz);
+	float distY = sqrt(qx * qx + qz * qz);
+	float distZ = sqrt(qx * qx + qy * qy);
+
+	dist = min(min(distX, distY), distZ);
+#endif
+
+#ifdef FAKE_LIGHTS_TORUS
+	delta = Matrix33MulFloat3(consts->params.common.mRotFakeLightsRotation, delta);
+	delta = ApplyShapeModifiers(delta, consts);
+	float q = length(delta.xy) - consts->params.common.fakeLightsOrbitTrapSize;
+	dist = sqrt(q * q + delta.z * delta.z);
+#endif
+
+#ifdef FAKE_LIGHTS_TRIANGLE
+	delta = Matrix33MulFloat3(consts->params.common.mRotFakeLightsRotation, delta);
+	delta = ApplyShapeModifiers(delta, consts);
+	float h = consts->params.common.fakeLightsOrbitTrapSize * 1.5f;
+	float d2d = max(fabs(delta.x) * 0.86602540378f + delta.y * 0.5f, -delta.y) - h / 3.0f;
+	dist = Extrude2D(d2d, delta.z);
+#endif
+
+#ifdef FAKE_LIGHTS_HEXAGON
+	delta = Matrix33MulFloat3(consts->params.common.mRotFakeLightsRotation, delta);
+	delta = ApplyShapeModifiers(delta, consts);
+	float d2d = max(fabs(delta.x) * 0.86602540378f + fabs(delta.y) * 0.5f, fabs(delta.y))
+				- consts->params.common.fakeLightsOrbitTrapSize;
+	dist = Extrude2D(d2d, delta.z);
+#endif
+
+#ifdef FAKE_LIGHTS_STAR
+	delta = Matrix33MulFloat3(consts->params.common.mRotFakeLightsRotation, delta);
+	delta = ApplyShapeModifiers(delta, consts);
+	float a = atan2(delta.y, delta.x);
+	float r = length(delta.xy);
+	float d2d = r - consts->params.common.fakeLightsOrbitTrapSize * (0.55f + 0.45f * cos(a * 5.0f));
+	dist = Extrude2D(d2d, delta.z);
+#endif
+
+#ifdef FAKE_LIGHTS_CROSS
+	delta = Matrix33MulFloat3(consts->params.common.mRotFakeLightsRotation, delta);
+	delta = ApplyShapeModifiers(delta, consts);
+	float r = consts->params.common.fakeLightsOrbitTrapSize;
+	float tubeR = consts->params.common.fakeLightsShapeTubeRadius;
+	if (tubeR < 1e-10f) tubeR = r;
+	float d1 = length(delta.yz) - tubeR;
+	float d2 = length(delta.xz) - tubeR;
+	float d3 = length(delta.xy) - tubeR;
+	dist = min(min(d1, d2), d3);
+#endif
+
+#ifdef FAKE_LIGHTS_CAPSULE
+	delta = Matrix33MulFloat3(consts->params.common.mRotFakeLightsRotation, delta);
+	delta = ApplyShapeModifiers(delta, consts);
+	float h = consts->params.common.fakeLightsOrbitTrapSize;
+	float tubeR = consts->params.common.fakeLightsShapeTubeRadius;
+	if (tubeR < 1e-10f) tubeR = h * 0.2f;
+	float py = delta.y;
+	if (py < -h) py = -h;
+	if (py > h) py = h;
+	dist = sqrt(delta.x * delta.x + (delta.y - py) * (delta.y - py) + delta.z * delta.z) - tubeR;
+#endif
+
+#ifdef FAKE_LIGHTS_CONE
+	delta = Matrix33MulFloat3(consts->params.common.mRotFakeLightsRotation, delta);
+	delta = ApplyShapeModifiers(delta, consts);
+	float c = consts->params.common.fakeLightsOrbitTrapSize * 0.3f;
+	dist = length(delta.xz) - c * fabs(delta.y);
+#endif
+
+#ifdef FAKE_LIGHTS_PYRAMID
+	delta = Matrix33MulFloat3(consts->params.common.mRotFakeLightsRotation, delta);
+	delta = ApplyShapeModifiers(delta, consts);
+	float h = consts->params.common.fakeLightsOrbitTrapSize;
+	float m = max(fabs(delta.x), fabs(delta.z));
+	dist = max(m - delta.y * 0.5f - h * 0.5f, delta.y);
+#endif
+
+#ifdef FAKE_LIGHTS_TETRAHEDRON
+	delta = Matrix33MulFloat3(consts->params.common.mRotFakeLightsRotation, delta);
+	delta = ApplyShapeModifiers(delta, consts);
+	float md = max(max(-delta.x - delta.y - delta.z, delta.x + delta.y - delta.z),
+				max(delta.x - delta.y + delta.z, -delta.x + delta.y + delta.z));
+	dist = md * 0.57735026919f - consts->params.common.fakeLightsOrbitTrapSize * 0.57735026919f;
+#endif
+
+#ifdef FAKE_LIGHTS_OCTAHEDRON
+	delta = Matrix33MulFloat3(consts->params.common.mRotFakeLightsRotation, delta);
+	delta = ApplyShapeModifiers(delta, consts);
+	dist = (fabs(delta.x) + fabs(delta.y) + fabs(delta.z)
+			- consts->params.common.fakeLightsOrbitTrapSize) * 0.57735026919f;
+#endif
+
+#ifdef FAKE_LIGHTS_DODECAHEDRON
+	delta = Matrix33MulFloat3(consts->params.common.mRotFakeLightsRotation, delta);
+	delta = ApplyShapeModifiers(delta, consts);
+	float px = fabs(delta.x);
+	float py = fabs(delta.y);
+	float pz = fabs(delta.z);
+	float d = max(max(px + py + pz, px + py - pz),
+				max(px - py + pz, -px + py + pz));
+	float r = consts->params.common.fakeLightsOrbitTrapSize;
+	dist = d * 0.57735f - r * 0.57735f + (px * py + py * pz + pz * px) * 0.05f / r;
+#endif
+
+#ifdef FAKE_LIGHTS_ICOSAHEDRON
+	delta = Matrix33MulFloat3(consts->params.common.mRotFakeLightsRotation, delta);
+	delta = ApplyShapeModifiers(delta, consts);
+	float px = fabs(delta.x);
+	float py = fabs(delta.y);
+	float pz = fabs(delta.z);
+	float m = max(max(px, py), pz);
+	float r = consts->params.common.fakeLightsOrbitTrapSize;
+	dist = (px + py + pz - r) * 0.57735f + (px * py * pz) * 0.1f / (r * r);
+#endif
+
+#ifdef FAKE_LIGHTS_MENGER_SPONGE
+	delta = Matrix33MulFloat3(consts->params.common.mRotFakeLightsRotation, delta);
+	delta = ApplyShapeModifiers(delta, consts);
+	dist = MengerSpongeDist(delta, consts->params.common.fakeLightsOrbitTrapSize);
+#endif
+
+#ifdef FAKE_LIGHTS_SIERPINSKI_TETRAHEDRON
+	delta = Matrix33MulFloat3(consts->params.common.mRotFakeLightsRotation, delta);
+	delta = ApplyShapeModifiers(delta, consts);
+	dist = SierpinskiTetraDist(delta, consts->params.common.fakeLightsOrbitTrapSize);
+#endif
+
+#ifdef FAKE_LIGHTS_KOCH_SNOWFLAKE
+	delta = Matrix33MulFloat3(consts->params.common.mRotFakeLightsRotation, delta);
+	delta = ApplyShapeModifiers(delta, consts);
+	float d2d = KochSnowflakeDist(delta.x, delta.y, consts->params.common.fakeLightsOrbitTrapSize);
+	dist = Extrude2D(d2d, delta.z);
+#endif
+
+#ifdef FAKE_LIGHTS_HEX_GRID
+	delta = Matrix33MulFloat3(consts->params.common.mRotFakeLightsRotation, delta);
+	delta = ApplyShapeModifiers(delta, consts);
+	float s = consts->params.common.fakeLightsOrbitTrapSize * 0.5f;
+	float x = delta.x;
+	float y = delta.y;
+	float qx = x * 0.57735026918f;
+	float qy = y + x * 0.33333333333f;
+	float rx = SdfMod(qx, s) - s * 0.5f;
+	float ry = SdfMod(qy, s) - s * 0.5f;
+	float d2d = max(fabs(rx) * 0.86602540378f + fabs(ry) * 0.5f, fabs(ry)) - s * 0.5f;
+	dist = Extrude2D(d2d, delta.z);
+#endif
+
+#ifdef FAKE_LIGHTS_SPIRAL
+	delta = Matrix33MulFloat3(consts->params.common.mRotFakeLightsRotation, delta);
+	delta = ApplyShapeModifiers(delta, consts);
+	float a = atan2(delta.y, delta.x);
+	if (a < 0.0f) a += 2.0f * 3.14159265359f;
+	float r = length(delta.xy);
+	float spiralR = consts->params.common.fakeLightsOrbitTrapSize * (0.1f + 0.15f * a);
+	float d2d = fabs(r - spiralR);
+	dist = Extrude2D(d2d, delta.z);
+#endif
+
+#ifdef FAKE_LIGHTS_GRID
+	delta = Matrix33MulFloat3(consts->params.common.mRotFakeLightsRotation, delta);
+	delta = ApplyShapeModifiers(delta, consts);
+	float s = consts->params.common.fakeLightsOrbitTrapSize;
+	float tubeR = consts->params.common.fakeLightsShapeTubeRadius;
+	if (tubeR < 1e-10f) tubeR = s * 0.1f;
+	float dx = SdfMod(delta.x + s * 0.5f, s) - s * 0.5f;
+	float dy = SdfMod(delta.y + s * 0.5f, s) - s * 0.5f;
+	float dz = SdfMod(delta.z + s * 0.5f, s) - s * 0.5f;
+	float d1 = sqrt(dx * dx + dy * dy) - tubeR;
+	float d2 = sqrt(dy * dy + dz * dz) - tubeR;
+	float d3 = sqrt(dx * dx + dz * dz) - tubeR;
+	dist = min(min(d1, d2), d3);
+#endif
+
+#ifdef FAKE_LIGHTS_BUCKYBALL
+	delta = Matrix33MulFloat3(consts->params.common.mRotFakeLightsRotation, delta);
+	delta = ApplyShapeModifiers(delta, consts);
+	float px = fabs(delta.x);
+	float py = fabs(delta.y);
+	float pz = fabs(delta.z);
+	float r = consts->params.common.fakeLightsOrbitTrapSize;
+	float d1 = max(max(px + py + pz, px + py - pz),
+				max(px - py + pz, -px + py + pz)) * 0.57735f - r * 0.57735f;
+	float d2 = (px + py + pz - r) * 0.57735f + (px * py * pz) * 0.1f / (r * r);
+	dist = max(d1, d2) * 0.95f;
+#endif
+
+#ifdef FAKE_LIGHTS_APOLLONIAN
+	delta = Matrix33MulFloat3(consts->params.common.mRotFakeLightsRotation, delta);
+	delta = ApplyShapeModifiers(delta, consts);
+	dist = ApollonianDist(delta, consts->params.common.fakeLightsOrbitTrapSize);
+#endif
+
+	dist -= consts->params.common.fakeLightsShapeChamfer;
+	if (dist < 0.0f) dist = 0.0f;
+	dist -= consts->params.common.fakeLightsShapeInflate;
+	if (dist < 0.0f) dist = 0.0f;
+	return dist / thicknessDivisor;
+}
+
+#endif // FAKE_LIGHTS

@@ -1,0 +1,219 @@
+/**
+ * Mandelbulber v2, a 3D fractal generator
+ *
+ * PROOF OF CONCEPT: Reference Orbit Calculator Implementation
+ *
+ * Authors: Claude AI Assistant
+ */
+
+#include "reference_orbit.hpp"
+#include <sstream>
+#include <iomanip>
+#include <cstring>
+
+cReferenceOrbit::cReferenceOrbit(int precision_bits)
+	: precision_bits(precision_bits), iterations_calculated(0), orbit_x(nullptr), orbit_y(nullptr), max_iterations(0)
+{
+	// Constructor - mpfr variables allocated on demand in CalculateMandelbrot()
+}
+
+cReferenceOrbit::~cReferenceOrbit()
+{
+	Clear();
+}
+
+void cReferenceOrbit::CalculateMandelbrot(
+	double center_x,
+	double center_y,
+	int max_iters,
+	double bailout)
+{
+	// Clear previous calculation
+	Clear();
+
+	// Allocate orbit storage
+	max_iterations = max_iters;
+	orbit_x = new mpfr_t[max_iterations];
+	orbit_y = new mpfr_t[max_iterations];
+
+	// Initialize mpfr variables for computation
+	mpfr_t zx, zy;          // Current orbit point
+	mpfr_t zx_sq, zy_sq;    // Squares (for z² calculation)
+	mpfr_t cx, cy;          // Constant (center point)
+	mpfr_t temp;            // Temporary for calculations
+	mpfr_t r_squared;       // |z|² for bailout test
+
+	mpfr_init2(zx, precision_bits);
+	mpfr_init2(zy, precision_bits);
+	mpfr_init2(zx_sq, precision_bits);
+	mpfr_init2(zy_sq, precision_bits);
+	mpfr_init2(cx, precision_bits);
+	mpfr_init2(cy, precision_bits);
+	mpfr_init2(temp, precision_bits);
+	mpfr_init2(r_squared, precision_bits);
+
+	// Set initial values
+	// z_0 = 0 + 0i
+	mpfr_set_d(zx, 0.0, MPFR_RNDN);
+	mpfr_set_d(zy, 0.0, MPFR_RNDN);
+
+	// c = center_x + i*center_y
+	mpfr_set_d(cx, center_x, MPFR_RNDN);
+	mpfr_set_d(cy, center_y, MPFR_RNDN);
+
+	// Bailout squared (for faster comparison)
+	double bailout_sq = bailout * bailout;
+
+	// Iterate: z_{n+1} = z_n² + c
+	for (int i = 0; i < max_iterations; i++)
+	{
+		// Allocate storage for this orbit point
+		mpfr_init2(orbit_x[i], precision_bits);
+		mpfr_init2(orbit_y[i], precision_bits);
+
+		// Store current z before iteration
+		mpfr_set(orbit_x[i], zx, MPFR_RNDN);
+		mpfr_set(orbit_y[i], zy, MPFR_RNDN);
+
+		// Check bailout: |z|² = zx² + zy²
+		mpfr_sqr(zx_sq, zx, MPFR_RNDN);
+		mpfr_sqr(zy_sq, zy, MPFR_RNDN);
+		mpfr_add(r_squared, zx_sq, zy_sq, MPFR_RNDN);
+
+		// Convert to double for comparison
+		double r_sq_d = mpfr_get_d(r_squared, MPFR_RNDN);
+		if (r_sq_d > bailout_sq)
+		{
+			// Escaped - stop iteration
+			iterations_calculated = i + 1;
+			break;
+		}
+
+		// Calculate z² + c
+		// (zx + zy*i)² = (zx² - zy²) + (2*zx*zy)*i
+
+		// Imaginary part: zy_new = 2*zx*zy + cy
+		mpfr_mul(temp, zx, zy, MPFR_RNDN);      // temp = zx * zy
+		mpfr_mul_si(temp, temp, 2, MPFR_RNDN);  // temp = 2 * zx * zy
+		mpfr_add(temp, temp, cy, MPFR_RNDN);    // temp = 2*zx*zy + cy
+
+		// Real part: zx_new = zx² - zy² + cx
+		// Note: zx_sq and zy_sq already computed above for bailout
+		mpfr_sub(zx, zx_sq, zy_sq, MPFR_RNDN);  // zx = zx² - zy²
+		mpfr_add(zx, zx, cx, MPFR_RNDN);        // zx = zx² - zy² + cx
+
+		// Copy temp to zy (must be done AFTER zx calculation!)
+		mpfr_set(zy, temp, MPFR_RNDN);
+	}
+
+	// If didn't escape, we calculated all iterations
+	if (iterations_calculated == 0)
+	{
+		iterations_calculated = max_iterations;
+	}
+
+	// Cleanup temporary variables
+	mpfr_clear(zx);
+	mpfr_clear(zy);
+	mpfr_clear(zx_sq);
+	mpfr_clear(zy_sq);
+	mpfr_clear(cx);
+	mpfr_clear(cy);
+	mpfr_clear(temp);
+	mpfr_clear(r_squared);
+}
+
+void cReferenceOrbit::GetReferenceAsFloat(int iteration, float &x, float &y) const
+{
+	if (iteration < 0 || iteration >= iterations_calculated)
+	{
+		x = 0.0f;
+		y = 0.0f;
+		return;
+	}
+
+	// Convert mpfr to float
+	x = mpfr_get_flt(orbit_x[iteration], MPFR_RNDN);
+	y = mpfr_get_flt(orbit_y[iteration], MPFR_RNDN);
+}
+
+void cReferenceOrbit::GetReferenceAsDouble(int iteration, double &x, double &y) const
+{
+	if (iteration < 0 || iteration >= iterations_calculated)
+	{
+		x = 0.0;
+		y = 0.0;
+		return;
+	}
+
+	// Convert mpfr to double
+	x = mpfr_get_d(orbit_x[iteration], MPFR_RNDN);
+	y = mpfr_get_d(orbit_y[iteration], MPFR_RNDN);
+}
+
+std::string cReferenceOrbit::GetReferenceAsString(int iteration) const
+{
+	if (iteration < 0 || iteration >= iterations_calculated)
+	{
+		return "Invalid iteration";
+	}
+
+	// Convert to string with full precision
+	char *x_str = nullptr;
+	char *y_str = nullptr;
+
+	mpfr_asprintf(&x_str, "%.50Re", orbit_x[iteration]);  // 50 significant digits
+	mpfr_asprintf(&y_str, "%.50Re", orbit_y[iteration]);
+
+	std::ostringstream oss;
+	oss << "(" << x_str << ", " << y_str << ")";
+
+	// Free mpfr allocated strings
+	mpfr_free_str(x_str);
+	mpfr_free_str(y_str);
+
+	return oss.str();
+}
+
+void cReferenceOrbit::Clear()
+{
+	// Free all mpfr variables
+	if (orbit_x != nullptr)
+	{
+		for (int i = 0; i < iterations_calculated; i++)
+		{
+			if (mpfr_get_prec(orbit_x[i]) > 0)  // Check if initialized
+			{
+				mpfr_clear(orbit_x[i]);
+			}
+		}
+		delete[] orbit_x;
+		orbit_x = nullptr;
+	}
+
+	if (orbit_y != nullptr)
+	{
+		for (int i = 0; i < iterations_calculated; i++)
+		{
+			if (mpfr_get_prec(orbit_y[i]) > 0)
+			{
+				mpfr_clear(orbit_y[i]);
+			}
+		}
+		delete[] orbit_y;
+		orbit_y = nullptr;
+	}
+
+	iterations_calculated = 0;
+	max_iterations = 0;
+}
+
+size_t cReferenceOrbit::GetMemoryUsage() const
+{
+	// Each mpfr_t stores precision_bits
+	// Plus overhead (~32 bytes per variable)
+	size_t bytes_per_point = (precision_bits / 8) * 2;  // x and y
+	bytes_per_point += 64;  // mpfr overhead per point
+
+	return bytes_per_point * iterations_calculated;
+}

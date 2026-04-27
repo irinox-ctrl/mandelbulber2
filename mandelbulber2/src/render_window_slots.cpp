@@ -56,12 +56,36 @@
 #include "system_directories.hpp"
 #include "write_log.hpp"
 
+#include <QGuiApplication>
+#include <QKeyEvent>
+
 #include "qt/detached_window.h"
 #include "qt/material_editor.h"
 #include "qt/mesh_export_dialog.h"
 #include "qt/preferences_dialog.h"
 #include "qt/thumbnail_widget.h"
 #include "qt/voxel_export_dialog.h"
+
+namespace
+{
+CVector2<double> screenPointAtImageCenter(const std::shared_ptr<cImage> &image)
+{
+	if (!image) return CVector2<double>(0, 0);
+	const double s = image->GetPreviewScale();
+	return CVector2<double>(
+		0.5 * double(image->GetWidth()) * s, 0.5 * double(image->GetHeight()) * s);
+}
+} // namespace
+
+void RenderWindow::updateAuxLightManualPlacementDistance(double dist)
+{
+	if (dist < 1e-30) dist = 1e-30;
+	if (dist > 1e30) dist = 1e30;
+	gPar->Set("aux_light_manual_placement_dist", dist);
+	ui->widgetEffects->slotSetAuxLightManualPlacementDistance(dist);
+	gMainInterface->renderedImage->SetFrontDist(dist);
+	gMainInterface->SynchronizeInterface(gPar, gParFractal, qInterface::write);
+}
 
 void RenderWindow::slotResizedScrolledAreaImage(int width, int height) const
 {
@@ -112,8 +136,12 @@ void RenderWindow::slotMouseMovedOnImage(int x, int y)
 
 void RenderWindow::slotMouseClickOnImage(int x, int y, Qt::MouseButton button) const
 {
-	int index = ui->comboBox_mouse_click_function->currentIndex();
-	QList<QVariant> mode = ui->comboBox_mouse_click_function->itemData(index).toList();
+	QList<QVariant> mode = gMainInterface->renderedImage->GetClickModeData();
+	if (mode.isEmpty())
+	{
+		const int index = ui->comboBox_mouse_click_function->currentIndex();
+		mode = ui->comboBox_mouse_click_function->itemData(index).toList();
+	}
 	RenderedImage::enumClickMode clickMode = RenderedImage::enumClickMode(mode.at(0).toInt());
 
 	switch (clickMode)
@@ -122,6 +150,7 @@ void RenderWindow::slotMouseClickOnImage(int x, int y, Qt::MouseButton button) c
 		case RenderedImage::clickFogVisibility:
 		case RenderedImage::clickDOFFocus:
 		case RenderedImage::clickPlaceLight:
+		case RenderedImage::clickPlacePatternLineTrap:
 		case RenderedImage::clickGetJuliaConstant:
 		case RenderedImage::clickPlacePrimitive:
 		case RenderedImage::clickPlaceRandomLightCenter:
@@ -143,14 +172,53 @@ void RenderWindow::slotMouseClickOnImage(int x, int y, Qt::MouseButton button) c
 
 void RenderWindow::slotMouseDragStart(int x, int y, Qt::MouseButtons buttons)
 {
-	int index = ui->comboBox_mouse_click_function->currentIndex();
-	QList<QVariant> mode = ui->comboBox_mouse_click_function->itemData(index).toList();
+	m_auxOffsetDragActive = false;
+
+	QList<QVariant> mode = gMainInterface->renderedImage->GetClickModeData();
+	if (mode.isEmpty())
+	{
+		const int index = ui->comboBox_mouse_click_function->currentIndex();
+		mode = ui->comboBox_mouse_click_function->itemData(index).toList();
+	}
 	RenderedImage::enumClickMode clickMode = RenderedImage::enumClickMode(mode.at(0).toInt());
 
 	switch (clickMode)
 	{
-		case RenderedImage::clickMoveCamera:
+		case RenderedImage::clickPlacePatternLineTrap:
+		{
+			if (gMainInterface->renderedImage->GetEnableClickModes())
+			{
+				gMainInterface->SynchronizeInterface(gPar, gParFractal, qInterface::read);
+				m_auxDistAtOffsetDragStart = gPar->Get<double>("aux_light_manual_placement_dist");
+				m_auxOffsetDragSceneRef = cInterface::GetDistanceForPoint(
+					gPar->Get<CVector3>("camera"), gPar, gParFractal);
+				if (m_auxOffsetDragSceneRef < 1e-30) m_auxOffsetDragSceneRef = 1.0;
+				m_auxOffsetDragLowStart = (m_auxDistAtOffsetDragStart
+					< 1e-20 * (m_auxOffsetDragSceneRef + 1.0));
+				m_auxOffsetDragActive = true;
+			}
+			return;
+		}
 		case RenderedImage::clickPlaceLight:
+		{
+			if (QGuiApplication::keyboardModifiers() & Qt::AltModifier)
+			{
+				if (gMainInterface->renderedImage->GetEnableClickModes())
+				{
+					gMainInterface->SynchronizeInterface(gPar, gParFractal, qInterface::read);
+					m_auxDistAtOffsetDragStart = gPar->Get<double>("aux_light_manual_placement_dist");
+					m_auxOffsetDragSceneRef = cInterface::GetDistanceForPoint(
+						gPar->Get<CVector3>("camera"), gPar, gParFractal);
+					if (m_auxOffsetDragSceneRef < 1e-30) m_auxOffsetDragSceneRef = 1.0;
+					m_auxOffsetDragLowStart = (m_auxDistAtOffsetDragStart
+						< 1e-20 * (m_auxOffsetDragSceneRef + 1.0));
+					m_auxOffsetDragActive = true;
+				}
+				return;
+			}
+		}
+			// fall through — sleep zonder Alt: licht verplaatsen
+		case RenderedImage::clickMoveCamera:
 		case RenderedImage::clickPlacePrimitive:
 		{
 			if (gMainInterface->renderedImage->GetEnableClickModes())
@@ -167,11 +235,38 @@ void RenderWindow::slotMouseDragStart(int x, int y, Qt::MouseButtons buttons)
 
 void RenderWindow::slotMouseDragFinish()
 {
+	const bool wasAuxOffsetDrag = m_auxOffsetDragActive;
+	if (wasAuxOffsetDrag && m_auxOffsetDragStartRenderDebounce)
+		m_auxOffsetDragStartRenderDebounce->stop();
+	m_auxOffsetDragActive = false;
+	m_auxOffsetDragLowStart = false;
 	manipulations->MouseDragFinish();
+	if (wasAuxOffsetDrag) gMainInterface->StartRenderFromCurrentParams(true);
 }
 
 void RenderWindow::slotMouseDragDelta(int dx, int dy)
 {
+	(void) dx;
+	if (m_auxOffsetDragActive)
+	{
+		// dy: cumulatief t.o.v. begin (RenderedImage::mouseMove); omhoog = negatief → grotere afstand
+		const double k = 0.0006;
+		double dist;
+		if (m_auxOffsetDragLowStart)
+		{
+			// d0*e^(…) is 0 wanneer d0==0 (Nauwkeurige modus)
+			const double sens = 0.0001;
+			dist = -double(dy) * sens * m_auxOffsetDragSceneRef;
+			if (dist < 0.0) dist = 0.0;
+		}
+		else
+		{
+			dist = m_auxDistAtOffsetDragStart * exp(-k * double(dy));
+		}
+		updateAuxLightManualPlacementDistance(dist);
+		if (m_auxOffsetDragStartRenderDebounce) m_auxOffsetDragStartRenderDebounce->start();
+		return;
+	}
 	manipulations->MouseDragDelta(dx, dy);
 }
 
@@ -187,6 +282,44 @@ void RenderWindow::slotChangedComboMouseClickFunction(int index) const
 
 void RenderWindow::slotKeyPressOnImage(QKeyEvent *event)
 {
+	QList<QVariant> mode = gMainInterface->renderedImage->GetClickModeData();
+	if (mode.isEmpty())
+	{
+		const int index = ui->comboBox_mouse_click_function->currentIndex();
+		if (index >= 0) mode = ui->comboBox_mouse_click_function->itemData(index).toList();
+	}
+	if (!mode.isEmpty())
+	{
+		const RenderedImage::enumClickMode cm = RenderedImage::enumClickMode(mode.at(0).toInt());
+		if (cm == RenderedImage::clickPlacePatternLineTrap || cm == RenderedImage::clickPlaceLight)
+		{
+			const int k = event->key();
+			// Zonder muis: plaatsen op midden beeld
+			if (!event->isAutoRepeat() && (k == Qt::Key_Return || k == Qt::Key_Enter || k == Qt::Key_Space))
+			{
+				if (gMainInterface->mainImage)
+					manipulations->SetByMouse(
+						screenPointAtImageCenter(gMainInterface->mainImage), Qt::LeftButton, mode);
+				return;
+			}
+			// Offsets: zelfde log-stap als Alt+wiel
+			if (k == Qt::Key_BracketLeft || k == Qt::Key_BracketRight)
+			{
+				const int dir = (k == Qt::Key_BracketRight) ? 1 : -1;
+				gMainInterface->SynchronizeInterface(gPar, gParFractal, qInterface::read);
+				double dist = gPar->Get<double>("aux_light_manual_placement_dist");
+				dist *= exp(double(dir) * 120.0 * 0.001);
+				updateAuxLightManualPlacementDistance(dist);
+				return;
+			}
+			// Arrow nudge
+			if (k == Qt::Key_Left || k == Qt::Key_Right || k == Qt::Key_Up || k == Qt::Key_Down)
+			{
+				manipulations->MovePatternLineTrapByKey(k, event->modifiers());
+				return;
+			}
+		}
+	}
 	currentKeyEvents.append(event->key());
 	lastKeyEventModifiers = event->modifiers();
 	slotKeyHandle();
@@ -320,8 +453,12 @@ void RenderWindow::slotMouseWheelRotatedWithKeyOnImage(
 {
 	if (gMainInterface->renderedImage->GetEnableClickModes())
 	{
-		int index = ui->comboBox_mouse_click_function->currentIndex();
-		QList<QVariant> mode = ui->comboBox_mouse_click_function->itemData(index).toList();
+		QList<QVariant> mode = gMainInterface->renderedImage->GetClickModeData();
+		if (mode.isEmpty())
+		{
+			const int index = ui->comboBox_mouse_click_function->currentIndex();
+			mode = ui->comboBox_mouse_click_function->itemData(index).toList();
+		}
 		RenderedImage::enumClickMode clickMode = RenderedImage::enumClickMode(mode.at(0).toInt());
 		switch (clickMode)
 		{
@@ -337,6 +474,21 @@ void RenderWindow::slotMouseWheelRotatedWithKeyOnImage(
 				else if (keyModifiers == Qt::NoModifier)
 				{
 					manipulations->MoveLightByWheel(delta);
+				}
+				break;
+			}
+			case RenderedImage::clickPlacePatternLineTrap:
+			{
+				if (keyModifiers & Qt::AltModifier)
+				{
+					double deltaLog = exp(delta * 0.001);
+					double dist = ui->widgetEffects->GetAuxLightManualPlacementDistance();
+					dist *= deltaLog;
+					ui->widgetEffects->slotSetAuxLightManualPlacementDistance(dist);
+				}
+				else if (keyModifiers == Qt::NoModifier)
+				{
+					manipulations->MovePatternLineTrapByWheel(delta);
 				}
 				break;
 			}

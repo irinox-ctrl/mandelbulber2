@@ -45,7 +45,8 @@ typedef enum
 	lightPoint = 1,
 	lightConical = 2,
 	lightProjection = 3,
-	lightBeam = 4
+	lightBeam = 4,
+	lightPrimitive = 5
 } enumLightTypeCl;
 
 typedef enum
@@ -53,6 +54,8 @@ typedef enum
 	lightDecay1R = 0,
 	lightDecay1R2 = 1,
 	lightDecay1R3 = 2,
+	lightDecaySmooth = 3,
+	lightDecayPhysical = 4
 } enumLightDecayFunctionCl;
 
 typedef struct
@@ -70,6 +73,7 @@ typedef struct
 	enumLightDecayFunctionCl decayFunction;
 
 	cl_int colorTextureIndex;
+	cl_int primitiveId;
 
 	cl_float coneAngle;
 	cl_float coneSoftAngle;
@@ -96,6 +100,38 @@ typedef struct
 	cl_float3 lightRightVector;
 
 	matrix33 rotMatrix;
+
+	// === AUX LIGHTS UPGRADE ===
+	cl_int useColorTemperature;
+	cl_float colorTemperature;
+	cl_int shadowType;
+	cl_int shadowSamples;
+	cl_float shadowSoftness;
+	cl_float shadowBias;
+	cl_int useShadowNoise;
+	cl_int affectDiffuse;
+	cl_int affectSpecular;
+	cl_int affectVolumetric;
+	cl_int lightGroup;
+	cl_int useAreaLight;
+	cl_float areaLightRadius;
+	cl_int areaLightSamples;
+	cl_float angularDiameter;
+	cl_int useAngularSize;
+	cl_float atmosphericDensity;
+	cl_float atmosphericScatteringIntensity;
+	cl_float3 atmosphericColor;
+	cl_float penumbraAngle;
+	cl_float penumbraSoftness;
+	cl_float projectionSoftEdge;
+	cl_float projectionFeather;
+	cl_int projectionBlendMode;
+	cl_float beamLength;
+	cl_float beamFalloff;
+	cl_int beamVolumeSamples;
+	cl_int beamUseNoise;
+	cl_float beamNoiseScale;
+	cl_float beamNoiseStrength;
 
 } sLightCl;
 

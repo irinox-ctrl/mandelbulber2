@@ -42,6 +42,7 @@
 
 #include "algebra.hpp"
 #include "color_structures.hpp"
+#include "common_params.hpp"
 #include "texture_enums.hpp"
 
 // forward declarations
@@ -250,6 +251,9 @@ private:
 	sRGBAFloat BackgroundShader(const sShaderInputData &input) const;
 	sRGBAFloat FakeLights(
 		const sShaderInputData &input, sRGBAFloat surfaceColor, sRGBAFloat *fakeSpec) const;
+	sRGBAFloat SingleTrapLights(
+		const sShaderInputData &input, sRGBAFloat surfaceColor) const;
+	sRGBAFloat PatternLineTraps(const sShaderInputData &input, sRGBAFloat surfaceColor) const;
 	sRGBAFloat VolumetricShader(
 		const sShaderInputData &input, sRGBAFloat oldPixel, sRGBAFloat *opacityOut) const;
 
@@ -267,6 +271,8 @@ private:
 		const sShaderInputData &shaderInputData, sRGBFloat &reflectDiffused);
 	void PerlinNoiseForTransparency(
 		const sShaderInputData &shaderInputData, sRGBAFloat &transparency, bool volumeMode);
+
+	sCommonParams CommonParamsWithAdjustedFakeLightsOrbitTrap() const;
 
 	// data got from main thread
 	const sParamRender *params;

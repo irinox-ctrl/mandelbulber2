@@ -52,6 +52,7 @@
 #include "headless.h"
 #include "initparameters.hpp"
 #include "lights.hpp"
+#include "pattern_line_traps.hpp"
 #include "manipulations.h"
 #include "material_item_model.h"
 #include "my_ui_loader.h"
@@ -84,6 +85,7 @@
 
 #include "qt/detached_window.h"
 #include "qt/dock_effects.h"
+#include "qt/dock_pattern_lines.h"
 #include "qt/dock_navigation.h"
 #include "qt/material_editor.h"
 #include "qt/my_group_box.h"
@@ -209,6 +211,10 @@ void cInterface::ShowUi()
 	mainWindow->ui->widgetEffects->AssignSpecialWidgets(
 		renderedImage, mainWindow->ui->comboBox_mouse_click_function);
 
+	mainWindow->ui->widgetPatternLines->AssignParameterContainers(gPar, gParFractal);
+	mainWindow->ui->widgetPatternLines->AssignSpecialWidgets(
+		renderedImage, mainWindow->ui->comboBox_mouse_click_function);
+
 	mainWindow->ui->widgetDockFractal->AssignParameterContainers(gPar, gParFractal);
 	mainWindow->ui->widgetDockFractal->AssignSpecialWidgets(
 		renderedImage, mainWindow->ui->comboBox_mouse_click_function);
@@ -285,6 +291,10 @@ void cInterface::ShowUi()
 	mainWindow->setCorner(Qt::BottomLeftCorner, Qt::LeftDockWidgetArea);
 	mainWindow->setCorner(Qt::BottomRightCorner, Qt::RightDockWidgetArea);
 
+	// Baseline for "reset dock positions" must match actual dock widgets (e.g. gamepad dock may be
+	// deleted above); saving too early would make restoreState(defaultState) crash.
+	mainWindow->CaptureDefaultWindowLayout();
+
 	// loading default ui for all fractal components
 	mainWindow->ui->widgetDockFractal->InitializeFractalUi();
 	InitMaterialsUi();
@@ -314,7 +324,9 @@ void cInterface::ShowUi()
 	if (!mainWindow->restoreState(settings.value("mainWindowState").toByteArray()))
 	{
 		mainWindow->tabifyDockWidget(
-			mainWindow->ui->dockWidget_materialEditor, mainWindow->ui->dockWidget_effects);
+			mainWindow->ui->dockWidget_materialEditor, mainWindow->ui->dockWidget_pattern_lines);
+		mainWindow->tabifyDockWidget(
+			mainWindow->ui->dockWidget_pattern_lines, mainWindow->ui->dockWidget_effects);
 		mainWindow->tabifyDockWidget(
 			mainWindow->ui->dockWidget_effects, mainWindow->ui->dockWidget_image_adjustments);
 		mainWindow->tabifyDockWidget(
@@ -328,6 +340,15 @@ void cInterface::ShowUi()
 		mainWindow->ui->dockWidget_histogram->hide();
 		mainWindow->ui->dockWidget_queue_dock->hide();
 	}
+
+	// Second tab (after Material editor): always visible; not merged into the Effects dock body.
+	mainWindow->ui->dockWidget_pattern_lines->setVisible(true);
+	mainWindow->tabifyDockWidget(
+		mainWindow->ui->dockWidget_materialEditor, mainWindow->ui->dockWidget_pattern_lines);
+	mainWindow->tabifyDockWidget(
+		mainWindow->ui->dockWidget_pattern_lines, mainWindow->ui->dockWidget_effects);
+	mainWindow->tabifyDockWidget(
+		mainWindow->ui->dockWidget_effects, mainWindow->ui->dockWidget_image_adjustments);
 
 	// installing event filter for disabling tooltips
 	gApplication->installEventFilter(mainWindow);
@@ -372,6 +393,8 @@ void cInterface::ConnectSignals() const
 		mainWindow->ui->widgetEffects, &cDockEffects::slotSynchronizeInterfaceDOF);
 	connect(mainWindow->manipulations, &cManipulations::signalWriteInterfaceLights,
 		mainWindow->ui->widgetEffects, &cDockEffects::slotSynchronizeInterfaceLights);
+	connect(mainWindow->manipulations, &cManipulations::signalWriteInterfacePatternLineTraps,
+		mainWindow->ui->widgetPatternLines, &cDockPatternLines::slotSynchronizeInterfacePatternLineTraps);
 	connect(mainWindow->manipulations, &cManipulations::signalWriteInterfaceRandomLights,
 		mainWindow->ui->widgetEffects, &cDockEffects::slotSynchronizeInterfaceRandomLights);
 	connect(mainWindow->manipulations, &cManipulations::signalWriteInterfaceJulia,
@@ -578,6 +601,8 @@ void cInterface::SynchronizeInterface(std::shared_ptr<cParameterContainer> par,
 
 	WriteLog("cInterface::SynchronizeInterface: dockWidget_effects", 3);
 	SynchronizeInterfaceWindow(mainWindow->ui->dockWidget_effects, par, mode);
+	WriteLog("cInterface::SynchronizeInterface: dockWidget_pattern_lines", 3);
+	SynchronizeInterfaceWindow(mainWindow->ui->dockWidget_pattern_lines, par, mode);
 	WriteLog("cInterface::SynchronizeInterface: dockWidget_image_adjustments", 3);
 	SynchronizeInterfaceWindow(mainWindow->ui->dockWidget_image_adjustments, par, mode);
 	WriteLog("cInterface::SynchronizeInterface: dockWidget_navigation", 3);
@@ -602,11 +627,49 @@ void cInterface::SynchronizeInterface(std::shared_ptr<cParameterContainer> par,
 	}
 
 	mainWindow->ui->widgetDockFractal->SynchronizeInterfaceFractals(par, parFractal, mode);
+
+	// Nauwkeurige delta voor Extra positie X/Y/Z (patroon-dock) na elke param ↔ UI-synchronisatie
+	mainWindow->ui->widgetPatternLines->syncAuxLightPlacementOffsetBaseline();
 }
 
-void cInterface::StartRender(bool noUndo)
+void cInterface::SyncAutoRefreshHashWithGpar()
 {
-	mainWindow->manipulations->IncreaseNumberOfStartedRenders();
+	cSettings tempSettings(cSettings::formatCondensedText);
+	tempSettings.CreateText(gPar, gParFractal);
+	autoRefreshLastHash = tempSettings.GetHashCode();
+}
+
+void cInterface::RefreshLightAndPatternLineDocksFromGpar()
+{
+	mainWindow->ui->widgetEffects->slotSynchronizeInterfaceLights(gPar);
+	mainWindow->ui->widgetPatternLines->slotSynchronizeInterfacePatternLineTraps(gPar);
+}
+
+void cInterface::WriteLightAndPatternLineWorldPositionFieldsFromGpar()
+{
+	QList<QLineEdit *> ed;
+	for (QLineEdit *e : mainWindow->ui->widgetPatternLines->findChildren<QLineEdit *>())
+	{
+		const QString n = e->objectName();
+		if (n.startsWith(QStringLiteral("vect3_")) && n.contains(QStringLiteral("pattern_line_trap_"))
+				&& n.contains(QStringLiteral("_position_")))
+			ed.append(e);
+	}
+	for (QLineEdit *e : mainWindow->ui->widgetEffects->findChildren<QLineEdit *>())
+	{
+		const QString n = e->objectName();
+		// cLightEditor hernoemt widgets naar vect3_lightN_position_*
+		if (n.startsWith(QStringLiteral("vect3_light")) && n.contains(QStringLiteral("_position_")))
+			ed.append(e);
+	}
+	if (!ed.isEmpty()) SynchronizeInterfaceQLineEdit(ed, gPar, qInterface::write);
+}
+
+void cInterface::startRenderImpl(
+	const bool noUndo, const bool synchronizeWithUi, const bool setupMainImagePreviewInInit)
+{
+	RenderWindow *const mainWin = mainWindow;
+	mainWin->manipulations->IncreaseNumberOfStartedRenders();
 	if (!mainImage->IsUsed())
 	{
 		mainImage->BlockImage();
@@ -615,11 +678,11 @@ void cInterface::StartRender(bool noUndo)
 	else
 	{
 		WriteLog("cInterface::StartRender(void) - image was used by another instance", 2);
-		bool isStopped = StopRender();
+		const bool isStopped = StopRender();
 		if (!isStopped)
 		{
-			mainWindow->manipulations->DecreaseNumberOfStartedRenders();
-			mainWindow->currentKeyEvents.clear();
+			mainWin->manipulations->DecreaseNumberOfStartedRenders();
+			mainWin->currentKeyEvents.clear();
 			return;
 		}
 
@@ -635,9 +698,9 @@ void cInterface::StartRender(bool noUndo)
 
 	repeatRequest = false;
 	progressBarAnimation->hide();
-	SynchronizeInterface(gPar, gParFractal, qInterface::read);
+	if (synchronizeWithUi) SynchronizeInterface(gPar, gParFractal, qInterface::read);
 
-	if (mainWindow->ui->widgetDockNavigation->AutoRefreshIsChecked())
+	if (mainWin->ui->widgetDockNavigation->AutoRefreshIsChecked())
 	{
 		// check if something was changed in settings
 		cSettings tempSettings(cSettings::formatCondensedText);
@@ -649,35 +712,35 @@ void cInterface::StartRender(bool noUndo)
 
 	UpdateCameraRotation(gPar);
 
-	SynchronizeInterface(gPar, gParFractal, qInterface::write);
+	if (synchronizeWithUi) SynchronizeInterface(gPar, gParFractal, qInterface::write);
 
 	if (!noUndo) gUndo->Store(gPar, gParFractal);
 
 	DisableJuliaPointMode();
 
-	int temporaryScale = int(pow(int(2), gPar->Get<int>("temporary_scale")));
+	const int temporaryScale = int(pow(int(2), gPar->Get<int>("temporary_scale")));
 	timerForAbortWarnings.start();
 
-	cRenderJob *renderJob = new cRenderJob(gPar, gParFractal, mainImage, temporaryScale, &stopRequest,
+	cRenderJob *const renderJob = new cRenderJob(gPar, gParFractal, mainImage, temporaryScale, &stopRequest,
 		renderedImage); // deleted by deleteLater()
 
-	connect(renderJob, SIGNAL(updateProgressAndStatus(const QString &, const QString &, double)),
-		mainWindow, SLOT(slotUpdateProgressAndStatus(const QString &, const QString &, double)));
-	connect(renderJob, SIGNAL(updateStatistics(cStatistics)), mainWindow->ui->widgetDockStatistics,
+	QObject::connect(renderJob, SIGNAL(updateProgressAndStatus(const QString &, const QString &, double)),
+		mainWin, SLOT(slotUpdateProgressAndStatus(const QString &, const QString &, double)));
+	QObject::connect(renderJob, SIGNAL(updateStatistics(cStatistics)), mainWin->ui->widgetDockStatistics,
 		SLOT(slotUpdateStatistics(cStatistics)));
-	connect(renderJob, &cRenderJob::fullyRendered, systemTray, &cSystemTray::showMessage);
-	connect(renderJob, SIGNAL(updateImage()), renderedImage, SLOT(update()));
-	connect(renderJob, SIGNAL(sendRenderedTilesList(QList<sRenderedTileData>)), renderedImage,
+	QObject::connect(renderJob, &cRenderJob::fullyRendered, systemTray, &cSystemTray::showMessage);
+	QObject::connect(renderJob, SIGNAL(updateImage()), renderedImage, SLOT(update()));
+	QObject::connect(renderJob, SIGNAL(sendRenderedTilesList(QList<sRenderedTileData>)), renderedImage,
 		SLOT(showRenderedTilesList(QList<sRenderedTileData>)));
-	connect(renderJob, &cRenderJob::fullyRenderedTime, this, &cInterface::slotAutoSaveImage);
-	connect(renderJob, &cRenderJob::signalSmallPartRendered, mainWindow->manipulations,
+	QObject::connect(renderJob, &cRenderJob::fullyRenderedTime, this, &cInterface::slotAutoSaveImage);
+	QObject::connect(renderJob, &cRenderJob::signalSmallPartRendered, mainWin->manipulations,
 		&cManipulations::slotSmallPartRendered);
 
 	cRenderingConfiguration config;
 	config.EnableNetRender();
 	if (gPar->Get<bool>("nebula_mode")) config.SetNebulaMode();
 
-	if (!renderJob->Init(cRenderJob::still, config))
+	if (!renderJob->Init(cRenderJob::still, config, setupMainImagePreviewInInit))
 	{
 		mainImage->ReleaseImage();
 		cErrorMessage::showMessage(
@@ -687,11 +750,11 @@ void cInterface::StartRender(bool noUndo)
 	}
 
 	// show distance in statistics table
-	double distance = GetDistanceForPoint(gPar->Get<CVector3>("camera"), gPar, gParFractal);
-	mainWindow->ui->widgetDockStatistics->UpdateDistanceToFractal(distance);
+	const double distance = GetDistanceForPoint(gPar->Get<CVector3>("camera"), gPar, gParFractal);
+	mainWin->ui->widgetDockStatistics->UpdateDistanceToFractal(distance);
 	gKeyframeAnimation->UpdateActualCameraPosition(gPar->Get<CVector3>("camera"));
 
-	QThread *thread = new QThread; // deleted by deleteLater()
+	QThread *const thread = new QThread; // deleted by deleteLater()
 	renderJob->moveToThread(thread);
 	QObject::connect(thread, SIGNAL(started()), renderJob, SLOT(slotExecute()));
 	QObject::connect(renderJob, SIGNAL(finished()), thread, SLOT(quit()));
@@ -701,7 +764,17 @@ void cInterface::StartRender(bool noUndo)
 	thread->setObjectName("RenderJob");
 	thread->start();
 
-	mainWindow->manipulations->DecreaseNumberOfStartedRenders();
+	mainWin->manipulations->DecreaseNumberOfStartedRenders();
+}
+
+void cInterface::StartRender(const bool noUndo)
+{
+	startRenderImpl(noUndo, true, true);
+}
+
+void cInterface::StartRenderFromCurrentParams(const bool noUndo)
+{
+	startRenderImpl(noUndo, false, false);
 }
 
 void cInterface::RenderFlame()
@@ -1267,6 +1340,14 @@ void cInterface::ComboMouseClickUpdate(
 		combo->addItem(QObject::tr("Place light #%1").arg(lightIndex), item);
 	}
 
+	for (int plLayer = 1; plLayer <= PATTERN_LINE_TRAP_COUNT; plLayer++)
+	{
+		item.clear();
+		item.append(int(RenderedImage::clickPlacePatternLineTrap));
+		item.append(plLayer);
+		combo->addItem(QObject::tr("Place pattern line layer #%1 (click in image)").arg(plLayer), item);
+	}
+
 	item.clear();
 	item.append(int(RenderedImage::clickPlaceRandomLightCenter));
 	combo->addItem(QObject::tr("Place random light center"), item);
@@ -1629,20 +1710,27 @@ void cInterface::ResetFormula(int fractalNumber) const
 
 void cInterface::PeriodicRefresh()
 {
+	// Tijdens render geen Synchronize+hash: anders dure sync op main thread bovenop OpenCL/CPU.
+	if (mainImage->IsUsed())
+	{
+		autoRefreshTimer->start(int(gPar->Get<double>("auto_refresh_period") * 1000.0));
+		return;
+	}
 	if (!mainWindow->manipulations->isDraggingStarted())
 	{
 		if (mainWindow->ui->widgetDockNavigation->AutoRefreshIsChecked())
 		{
-			// check if something was changed in settings
+			// gPar is hierna actueel; StartRender() zou nóg eens read+write doen — extra zwaar
+			// met patroonlijnen-dock, dubbele render-gevoel. Alleen de render, zonder 2e sync.
 			SynchronizeInterface(gPar, gParFractal, qInterface::read);
 			cSettings tempSettings(cSettings::formatCondensedText);
 			tempSettings.CreateText(gPar, gParFractal);
-			QString newHash = tempSettings.GetHashCode();
+			const QString newHash = tempSettings.GetHashCode();
 
 			if (newHash != autoRefreshLastHash)
 			{
 				autoRefreshLastHash = newHash;
-				StartRender();
+				StartRenderFromCurrentParams(false);
 			}
 		}
 	}

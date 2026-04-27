@@ -603,6 +603,8 @@ enum enumFractalFormula
 	testingTransform = 2104,
 	testingTransform2 = 2105,
 
+	transfDemoScaleV2 = 2106,
+	transfWizardDemo = 2107,
 	custom = 10000,
 };
 }

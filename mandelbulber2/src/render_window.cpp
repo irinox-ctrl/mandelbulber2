@@ -42,6 +42,7 @@
 #include "ui_render_window.h"
 
 #include "automated_widgets.hpp"
+#include "interface.hpp"
 #include "manipulations.h"
 
 RenderWindow::RenderWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::RenderWindow)
@@ -56,18 +57,27 @@ RenderWindow::RenderWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::Re
 	automatedWidgets = new cAutomatedWidgets(this);
 	automatedWidgets->ConnectSignalsForSlidersInWindow(this);
 
-	// store default geometry and state
-	defaultGeometry = saveGeometry();
-	defaultState = saveState();
-
 	buttonPressTimer = new QTimer(this);
 	connect(buttonPressTimer, &QTimer::timeout, this, &RenderWindow::slotButtonLongPress);
 	buttonPressTimer->start(100);
+
+	m_auxOffsetDragStartRenderDebounce = new QTimer(this);
+	m_auxOffsetDragStartRenderDebounce->setSingleShot(true);
+	m_auxOffsetDragStartRenderDebounce->setInterval(120);
+	connect(m_auxOffsetDragStartRenderDebounce, &QTimer::timeout, this, []() {
+		if (gMainInterface) gMainInterface->StartRenderFromCurrentParams(true);
+	});
 
 #ifndef USE_GAMEPAD
 	ui->menuView->removeAction(ui->actionShow_gamepad_dock);
 	removeDockWidget(ui->dockWidget_gamepad_dock);
 #endif
+}
+
+void RenderWindow::CaptureDefaultWindowLayout()
+{
+	defaultGeometry = saveGeometry();
+	defaultState = saveState();
 }
 
 RenderWindow::~RenderWindow()
@@ -118,6 +128,11 @@ cDockFractal *RenderWindow::GetWidgetDockFractal() const
 cDockEffects *RenderWindow::GetWidgetDockEffects() const
 {
 	return ui->widgetEffects;
+}
+
+cDockPatternLines *RenderWindow::GetWidgetDockPatternLines() const
+{
+	return ui->widgetPatternLines;
 }
 
 QComboBox *RenderWindow::GetComboBoxMouseClickFunction() const

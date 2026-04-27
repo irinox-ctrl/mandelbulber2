@@ -34,6 +34,8 @@
 
 #include "manipulations.h"
 
+#include <algorithm>
+#include <cmath>
 #include <memory>
 
 #include "camera_movement_modes.h"
@@ -42,6 +44,7 @@
 #include "fractal_container.hpp"
 #include "interface.hpp"
 #include "light.h"
+#include "pattern_line_traps.hpp"
 #include "parameters.hpp"
 #include "projection_3d.hpp"
 #include "rendered_image_widget.hpp"
@@ -51,6 +54,33 @@
 #include "qt/dock_effects.h"
 #include "qt/dock_fractal.h"
 #include "qt/dock_navigation.h"
+
+namespace
+{
+static float BilinearZBufferAt(
+	const std::shared_ptr<cImage> &img, double x, double y, int w, int h)
+{
+	if (w < 1 || h < 1) return 1.0e20f;
+	if (x < 0) x = 0;
+	if (y < 0) y = 0;
+	if (x > w - 1.0) x = w - 1.0;
+	if (y > h - 1.0) y = h - 1.0;
+	int x0 = int(floor(x));
+	int y0 = int(floor(y));
+	if (x0 < 0) x0 = 0;
+	if (y0 < 0) y0 = 0;
+	int x1 = (std::min)(x0 + 1, w - 1);
+	int y1 = (std::min)(y0 + 1, h - 1);
+	const float z00 = img->GetPixelZBuffer((quint64)x0, (quint64)y0);
+	const float z10 = img->GetPixelZBuffer((quint64)x1, (quint64)y0);
+	const float z01 = img->GetPixelZBuffer((quint64)x0, (quint64)y1);
+	const float z11 = img->GetPixelZBuffer((quint64)x1, (quint64)y1);
+	const double fx = x - (double)x0;
+	const double fy = y - (double)y0;
+	return float(
+		(1.0 - fx) * (1.0 - fy) * z00 + fx * (1.0 - fy) * z10 + (1.0 - fx) * fy * z01 + fx * fy * z11);
+}
+} // namespace
 
 cManipulations::cManipulations(QObject *parent) : QObject(parent)
 {
@@ -393,11 +423,10 @@ void cManipulations::SetByMouse(
 		QString("MoveCameraByMouse(CVector2<double> screenPoint, Qt::MouseButton button): button: ")
 			+ QString::number(int(button)),
 		2);
-	// get data from interface
-
+	// get data from interface (alle docks: o.a. patroonlijnen X/Y/Z, Effects-afstand, navigatie)
 	RenderedImage::enumClickMode clickMode = RenderedImage::enumClickMode(mode.at(0).toInt());
 
-	SynchronizeInterfaceWindow(navigationWidget, par, qInterface::read);
+	gMainInterface->SynchronizeInterface(par, parFractal, qInterface::read);
 	CVector3 camera = par->Get<CVector3>("camera");
 	CVector3 target = par->Get<CVector3>("target");
 	CVector3 topVector = par->Get<CVector3>("camera_top");
@@ -422,13 +451,39 @@ void cManipulations::SetByMouse(
 	CVector2<double> imagePoint;
 	imagePoint = screenPoint / image->GetPreviewScale();
 
-	int width = image->GetWidth();
-	int height = image->GetHeight();
+	const int width = int(image->GetWidth());
+	const int height = int(image->GetHeight());
 
 	if (imagePoint.x >= 0 && imagePoint.x < image->GetWidth() && imagePoint.y >= 0
 			&& imagePoint.y < image->GetHeight())
 	{
-		double depth = image->GetPixelZBuffer(imagePoint.x, imagePoint.y);
+		CVector2<double> pointForNormal = imagePoint;
+		double depth;
+		if (clickMode == RenderedImage::clickPlacePatternLineTrap)
+		{
+			const bool subPrec = (par->Get<int>("pattern_line_precision_mode") != 0);
+			if (subPrec)
+			{
+				// Midden van pixel + bilineaire Z: dichter op de klik
+				const double w = double(width);
+				const double h = double(height);
+				pointForNormal.x = (std::min)((std::max)(imagePoint.x + 0.5, 0.5), w - 0.5);
+				pointForNormal.y = (std::min)((std::max)(imagePoint.y + 0.5, 0.5), h - 0.5);
+				depth = BilinearZBufferAt(image, pointForNormal.x, pointForNormal.y, width, height);
+			}
+			else
+			{
+				// Eerdere stijl: zelfde resolutie/offset-gedrag, leuke zachte offset mogelijk
+				pointForNormal = imagePoint;
+				depth = image->GetPixelZBuffer(
+					quint64(imagePoint.x + 0.0), quint64(imagePoint.y + 0.0));
+			}
+		}
+		else
+		{
+			depth = image->GetPixelZBuffer(
+				quint64(imagePoint.x + 0.0), quint64(imagePoint.y + 0.0));
+		}
 		if (depth < 1e10 || true)
 		{
 			CVector3 viewVector;
@@ -454,8 +509,8 @@ void cManipulations::SetByMouse(
 			mRot.RotateX(sweetSpotVAngle);
 
 			CVector2<double> normalizedPoint;
-			normalizedPoint.x = (imagePoint.x / width - 0.5) * aspectRatio;
-			normalizedPoint.y = (imagePoint.y / height - 0.5) * (-1.0) * reverse;
+			normalizedPoint.x = (pointForNormal.x / double(width) - 0.5) * aspectRatio;
+			normalizedPoint.y = (pointForNormal.y / double(height) - 0.5) * (-1.0) * reverse;
 
 			normalizedPoint *= wheelDistance;
 
@@ -587,6 +642,35 @@ void cManipulations::SetByMouse(
 					par->Set(cLight::Name("position", lightIndex), pointCorrected);
 					par->Set(cLight::Name("intensity", lightIndex), intensity);
 					emit signalWriteInterfaceLights(par);
+					emit signalRender();
+					break;
+				}
+				case RenderedImage::clickPlacePatternLineTrap:
+				{
+					const int layerIndex = mode.at(1).toInt();
+					if (layerIndex < 1 || layerIndex > PATTERN_LINE_TRAP_COUNT) break;
+
+					double frontDist = par->Get<double>("aux_light_manual_placement_dist");
+					const bool placeBehind = par->Get<bool>("aux_light_place_behind");
+					const double distanceLimit = par->Get<double>("view_distance_max");
+
+					CVector3 pointCorrected;
+					if (!placeBehind)
+					{
+						pointCorrected = point - viewVector * frontDist;
+					}
+					else
+					{
+						frontDist = traceBehindFractal(par, parFractal, frontDist, viewVector, depth,
+													1.0 / image->GetHeight(), distanceLimit)
+												* (-1.0);
+						pointCorrected = point - viewVector * frontDist;
+					}
+
+					par->Set("pattern_line_traps_enabled", true);
+					par->Set(QString("pattern_line_trap_%1_enabled").arg(layerIndex), true);
+					par->Set(QString("pattern_line_trap_%1_position").arg(layerIndex), pointCorrected);
+					emit signalWriteInterfacePatternLineTraps(par);
 					emit signalRender();
 					break;
 				}
@@ -1183,6 +1267,72 @@ void cManipulations::MoveLightByWheel(double deltaWheel)
 	{
 		SynchronizeInterfaceWindow(effectsWidget, par, qInterface::write);
 	}
+	renderedImageWidget->update();
+}
+
+void cManipulations::MovePatternLineTrapByWheel(double deltaWheel)
+{
+	double deltaLog = exp(deltaWheel * 0.0001);
+
+	QList<QVariant> mode = renderedImageWidget->GetClickModeData();
+	if (mode.size() < 2) return;
+	int layerIndex = mode.at(1).toInt();
+	if (layerIndex < 1 || layerIndex > PATTERN_LINE_TRAP_COUNT) return;
+
+	QString pPos = QString("pattern_line_trap_%1_position").arg(layerIndex);
+	CVector3 linePosition = par->Get<CVector3>(pPos);
+
+	CVector3 cameraPosition = par->Get<CVector3>("camera");
+	CVector3 lineVector = linePosition - cameraPosition;
+	CVector3 newLineVector = lineVector * deltaLog;
+	CVector3 newLinePosition = cameraPosition + newLineVector;
+
+	par->Set(pPos, newLinePosition);
+
+	emit signalWriteInterfacePatternLineTraps(par);
+	renderedImageWidget->update();
+}
+
+void cManipulations::MovePatternLineTrapByKey(int key, Qt::KeyboardModifiers modifiers)
+{
+	QList<QVariant> mode = renderedImageWidget->GetClickModeData();
+	if (mode.size() < 2) return;
+	int layerIndex = mode.at(1).toInt();
+	if (layerIndex < 1 || layerIndex > PATTERN_LINE_TRAP_COUNT) return;
+
+	gMainInterface->SynchronizeInterface(par, parFractal, qInterface::read);
+
+	QString pPos = QString("pattern_line_trap_%1_position").arg(layerIndex);
+	CVector3 pos = par->Get<CVector3>(pPos);
+
+	CVector3 camera = par->Get<CVector3>("camera");
+	CVector3 target = par->Get<CVector3>("target");
+	CVector3 topVector = par->Get<CVector3>("camera_top");
+	cCameraTarget cameraTarget(camera, target, topVector);
+
+	CVector3 forward = cameraTarget.GetForwardVector();
+	CVector3 right = cameraTarget.GetRightVector();
+	CVector3 up = cameraTarget.GetTopVector();
+
+	double step = (camera - target).Length() * 0.005;
+	if (step < 1e-10) step = 0.001;
+
+	if (modifiers & Qt::ShiftModifier)
+	{
+		if (key == Qt::Key_Up) pos += forward * step;
+		else if (key == Qt::Key_Down) pos -= forward * step;
+	}
+	else
+	{
+		if (key == Qt::Key_Left) pos -= right * step;
+		else if (key == Qt::Key_Right) pos += right * step;
+		else if (key == Qt::Key_Up) pos += up * step;
+		else if (key == Qt::Key_Down) pos -= up * step;
+	}
+
+	par->Set(pPos, pos);
+
+	emit signalWriteInterfacePatternLineTraps(par);
 	renderedImageWidget->update();
 }
 

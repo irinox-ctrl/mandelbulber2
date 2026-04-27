@@ -1,0 +1,751 @@
+{
+  "cpp_issues": [
+    "No obvious issues found"
+  ],
+  "cl_status": "OK",
+  "cl_msg": "Braces balanced (67), no syntax markers",
+  "shape_results": [
+    {
+      "idx": 0,
+      "name": "Point",
+      "avg": 8.257333333333333,
+      "max": 11.0,
+      "status": "OK"
+    },
+    {
+      "idx": 1,
+      "name": "Line",
+      "avg": 43.62791111111111,
+      "max": 255.0,
+      "status": "OK"
+    },
+    {
+      "idx": 2,
+      "name": "Circle",
+      "avg": 8.707566666666667,
+      "max": 11.0,
+      "status": "OK"
+    },
+    {
+      "idx": 3,
+      "name": "Square",
+      "avg": 8.8159,
+      "max": 11.0,
+      "status": "OK"
+    },
+    {
+      "idx": 4,
+      "name": "Sphere",
+      "avg": 9.456533333333333,
+      "max": 12.0,
+      "status": "OK"
+    },
+    {
+      "idx": 5,
+      "name": "Cube",
+      "avg": 10.032066666666667,
+      "max": 12.0,
+      "status": "OK"
+    },
+    {
+      "idx": 6,
+      "name": "Triangle",
+      "avg": 6.4069666666666665,
+      "max": 9.0,
+      "status": "OK"
+    },
+    {
+      "idx": 7,
+      "name": "Hexagon",
+      "avg": 7.094133333333334,
+      "max": 23.0,
+      "status": "OK"
+    },
+    {
+      "idx": 8,
+      "name": "Torus",
+      "avg": 9.0159,
+      "max": 12.0,
+      "status": "OK"
+    },
+    {
+      "idx": 9,
+      "name": "Cylinder",
+      "avg": 10.766966666666667,
+      "max": 14.0,
+      "status": "OK"
+    },
+    {
+      "idx": 10,
+      "name": "Cone",
+      "avg": 11.105466666666667,
+      "max": 14.0,
+      "status": "OK"
+    },
+    {
+      "idx": 11,
+      "name": "Pyramid",
+      "avg": 11.2422,
+      "max": 15.0,
+      "status": "OK"
+    },
+    {
+      "idx": 12,
+      "name": "Octahedron",
+      "avg": 6.577,
+      "max": 8.0,
+      "status": "OK"
+    },
+    {
+      "idx": 13,
+      "name": "Ellipse",
+      "avg": 8.524366666666667,
+      "max": 10.0,
+      "status": "OK"
+    },
+    {
+      "idx": 14,
+      "name": "Rectangle",
+      "avg": 8.834433333333333,
+      "max": 11.0,
+      "status": "OK"
+    },
+    {
+      "idx": 15,
+      "name": "Cross",
+      "avg": 7.127833333333333,
+      "max": 8.0,
+      "status": "OK"
+    },
+    {
+      "idx": 16,
+      "name": "Star",
+      "avg": 6.444466666666667,
+      "max": 8.0,
+      "status": "OK"
+    },
+    {
+      "idx": 17,
+      "name": "Diamond",
+      "avg": 6.806933333333333,
+      "max": 9.0,
+      "status": "OK"
+    },
+    {
+      "idx": 18,
+      "name": "Ring",
+      "avg": 43.5998,
+      "max": 255.0,
+      "status": "OK"
+    },
+    {
+      "idx": 19,
+      "name": "Capsule",
+      "avg": 9.0234,
+      "max": 12.0,
+      "status": "OK"
+    },
+    {
+      "idx": 20,
+      "name": "Prism",
+      "avg": 38.77934444444445,
+      "max": 255.0,
+      "status": "OK"
+    },
+    {
+      "idx": 21,
+      "name": "TorusKnot",
+      "avg": 8.6575,
+      "max": 11.0,
+      "status": "OK"
+    },
+    {
+      "idx": 22,
+      "name": "BoxFrame",
+      "avg": 9.954733333333333,
+      "max": 13.0,
+      "status": "OK"
+    },
+    {
+      "idx": 23,
+      "name": "ConeInfinite",
+      "avg": 179.78673333333333,
+      "max": 255.0,
+      "status": "OK"
+    },
+    {
+      "idx": 24,
+      "name": "CylinderCap",
+      "avg": 10.6947,
+      "max": 14.0,
+      "status": "OK"
+    },
+    {
+      "idx": 25,
+      "name": "Superellipsoid",
+      "avg": 2.2784666666666666,
+      "max": 4.0,
+      "status": "OK"
+    },
+    {
+      "idx": 26,
+      "name": "Plane",
+      "avg": 17.09658888888889,
+      "max": 255.0,
+      "status": "OK"
+    },
+    {
+      "idx": 27,
+      "name": "Disc",
+      "avg": 9.525433333333334,
+      "max": 12.0,
+      "status": "OK"
+    },
+    {
+      "idx": 28,
+      "name": "Gear",
+      "avg": 24.6603,
+      "max": 47.0,
+      "status": "OK"
+    },
+    {
+      "idx": 29,
+      "name": "Spiral",
+      "avg": 21.725066666666667,
+      "max": 37.0,
+      "status": "OK"
+    },
+    {
+      "idx": 30,
+      "name": "Heart",
+      "avg": 12.946733333333333,
+      "max": 55.0,
+      "status": "OK"
+    },
+    {
+      "idx": 31,
+      "name": "Crescent",
+      "avg": 26.633133333333333,
+      "max": 49.0,
+      "status": "OK"
+    },
+    {
+      "idx": 32,
+      "name": "Arrow",
+      "avg": 27.5622,
+      "max": 48.0,
+      "status": "OK"
+    },
+    {
+      "idx": 33,
+      "name": "RoundedBox",
+      "avg": 9.8885,
+      "max": 13.0,
+      "status": "OK"
+    },
+    {
+      "idx": 34,
+      "name": "Stadium",
+      "avg": 192.68295555555557,
+      "max": 255.0,
+      "status": "OK"
+    },
+    {
+      "idx": 35,
+      "name": "Polygon5",
+      "avg": 18.560055555555557,
+      "max": 180.0,
+      "status": "OK"
+    },
+    {
+      "idx": 36,
+      "name": "Polygon8",
+      "avg": 28.0518,
+      "max": 65.0,
+      "status": "OK"
+    },
+    {
+      "idx": 37,
+      "name": "TrefoilKnot",
+      "avg": 8.800666666666666,
+      "max": 11.0,
+      "status": "OK"
+    },
+    {
+      "idx": 38,
+      "name": "FigureEight",
+      "avg": 16.69236666666667,
+      "max": 30.0,
+      "status": "OK"
+    },
+    {
+      "idx": 39,
+      "name": "MobiusStrip",
+      "avg": 9.4994,
+      "max": 12.0,
+      "status": "OK"
+    },
+    {
+      "idx": 40,
+      "name": "TorusSector",
+      "avg": 8.7051,
+      "max": 11.0,
+      "status": "OK"
+    },
+    {
+      "idx": 41,
+      "name": "Helix",
+      "avg": 22.526044444444445,
+      "max": 255.0,
+      "status": "OK"
+    },
+    {
+      "idx": 42,
+      "name": "ConeRounded",
+      "avg": 12.525033333333333,
+      "max": 17.0,
+      "status": "OK"
+    },
+    {
+      "idx": 43,
+      "name": "CylinderHollow",
+      "avg": 12.7471,
+      "max": 16.0,
+      "status": "OK"
+    },
+    {
+      "idx": 44,
+      "name": "SphereHollow",
+      "avg": 9.464533333333334,
+      "max": 12.0,
+      "status": "OK"
+    },
+    {
+      "idx": 45,
+      "name": "TorusTwist",
+      "avg": 9.019,
+      "max": 12.0,
+      "status": "OK"
+    },
+    {
+      "idx": 46,
+      "name": "Grid",
+      "avg": 100.07352222222222,
+      "max": 255.0,
+      "status": "OK"
+    },
+    {
+      "idx": 47,
+      "name": "Lattice",
+      "avg": 100.15185555555556,
+      "max": 255.0,
+      "status": "OK"
+    },
+    {
+      "idx": 48,
+      "name": "Sponge",
+      "avg": 13.487933333333334,
+      "max": 255.0,
+      "status": "OK"
+    },
+    {
+      "idx": 49,
+      "name": "Tree",
+      "avg": 12.0162,
+      "max": 108.0,
+      "status": "OK"
+    },
+    {
+      "idx": 50,
+      "name": "Knot34",
+      "avg": 9.318466666666666,
+      "max": 12.0,
+      "status": "OK"
+    },
+    {
+      "idx": 51,
+      "name": "Spiral3D",
+      "avg": 10.110533333333333,
+      "max": 151.0,
+      "status": "OK"
+    },
+    {
+      "idx": 52,
+      "name": "Noise",
+      "avg": 9.208333333333334,
+      "max": 12.0,
+      "status": "OK"
+    },
+    {
+      "idx": 53,
+      "name": "Voronoi",
+      "avg": 212.41438888888888,
+      "max": 255.0,
+      "status": "OK"
+    },
+    {
+      "idx": 54,
+      "name": "Mandelbrot2D",
+      "avg": 2.8747666666666665,
+      "max": 134.0,
+      "status": "OK"
+    },
+    {
+      "idx": 55,
+      "name": "Julia2D",
+      "avg": 2.2713666666666668,
+      "max": 65.0,
+      "status": "OK"
+    },
+    {
+      "idx": 56,
+      "name": "Sierpinski",
+      "avg": 6.5776666666666666,
+      "max": 9.0,
+      "status": "OK"
+    },
+    {
+      "idx": 57,
+      "name": "Koch",
+      "avg": 11.796,
+      "max": 255.0,
+      "status": "OK"
+    },
+    {
+      "idx": 58,
+      "name": "Dragon",
+      "avg": 11.780366666666668,
+      "max": 255.0,
+      "status": "OK"
+    },
+    {
+      "idx": 59,
+      "name": "Hilbert",
+      "avg": 8.903366666666667,
+      "max": 11.0,
+      "status": "OK"
+    },
+    {
+      "idx": 60,
+      "name": "Gyroid",
+      "avg": 117.55265555555556,
+      "max": 255.0,
+      "status": "OK"
+    },
+    {
+      "idx": 61,
+      "name": "SchwarzP",
+      "avg": 24.340544444444443,
+      "max": 255.0,
+      "status": "OK"
+    },
+    {
+      "idx": 62,
+      "name": "SchwarzD",
+      "avg": 98.84303333333334,
+      "max": 255.0,
+      "status": "OK"
+    },
+    {
+      "idx": 63,
+      "name": "Neovius",
+      "avg": 103.44984444444444,
+      "max": 255.0,
+      "status": "OK"
+    },
+    {
+      "idx": 64,
+      "name": "Labyrinth",
+      "avg": 117.8053,
+      "max": 255.0,
+      "status": "OK"
+    },
+    {
+      "idx": 65,
+      "name": "Fiber",
+      "avg": 37.42108888888889,
+      "max": 255.0,
+      "status": "OK"
+    },
+    {
+      "idx": 66,
+      "name": "Astroid",
+      "avg": 19.255,
+      "max": 28.0,
+      "status": "OK"
+    },
+    {
+      "idx": 67,
+      "name": "Deltoid",
+      "avg": 18.425166666666666,
+      "max": 26.0,
+      "status": "OK"
+    },
+    {
+      "idx": 68,
+      "name": "Lemniscate",
+      "avg": 18.7603,
+      "max": 28.0,
+      "status": "OK"
+    },
+    {
+      "idx": 69,
+      "name": "Limacon",
+      "avg": 16.067733333333333,
+      "max": 22.0,
+      "status": "OK"
+    },
+    {
+      "idx": 70,
+      "name": "SphericalHarmonics",
+      "avg": 9.396966666666666,
+      "max": 11.0,
+      "status": "OK"
+    },
+    {
+      "idx": 71,
+      "name": "Superformula",
+      "avg": 19.793066666666668,
+      "max": 33.0,
+      "status": "OK"
+    },
+    {
+      "idx": 72,
+      "name": "Fern",
+      "avg": 8.338333333333333,
+      "max": 11.0,
+      "status": "OK"
+    },
+    {
+      "idx": 73,
+      "name": "Shell",
+      "avg": 9.806466666666667,
+      "max": 105.0,
+      "status": "OK"
+    },
+    {
+      "idx": 74,
+      "name": "Coral",
+      "avg": 12.6122,
+      "max": 243.0,
+      "status": "OK"
+    },
+    {
+      "idx": 75,
+      "name": "Crystal",
+      "avg": 6.9467,
+      "max": 10.0,
+      "status": "OK"
+    },
+    {
+      "idx": 76,
+      "name": "Honeycomb",
+      "avg": 212.30156666666667,
+      "max": 255.0,
+      "status": "OK"
+    },
+    {
+      "idx": 77,
+      "name": "Chain",
+      "avg": 8.644866666666667,
+      "max": 134.0,
+      "status": "OK"
+    },
+    {
+      "idx": 78,
+      "name": "Woven",
+      "avg": 24.33697777777778,
+      "max": 255.0,
+      "status": "OK"
+    },
+    {
+      "idx": 79,
+      "name": "Net",
+      "avg": 98.79476666666666,
+      "max": 255.0,
+      "status": "OK"
+    },
+    {
+      "idx": 80,
+      "name": "Coil",
+      "avg": 10.083366666666667,
+      "max": 192.0,
+      "status": "OK"
+    },
+    {
+      "idx": 81,
+      "name": "Vortex",
+      "avg": 7.152166666666667,
+      "max": 10.0,
+      "status": "OK"
+    },
+    {
+      "idx": 82,
+      "name": "Ripple",
+      "avg": 37.558933333333336,
+      "max": 255.0,
+      "status": "OK"
+    },
+    {
+      "idx": 83,
+      "name": "Shockwave",
+      "avg": 7.8124,
+      "max": 10.0,
+      "status": "OK"
+    },
+    {
+      "idx": 84,
+      "name": "Orbital",
+      "avg": 9.520533333333333,
+      "max": 14.0,
+      "status": "OK"
+    },
+    {
+      "idx": 85,
+      "name": "Nebula",
+      "avg": 9.500566666666666,
+      "max": 12.0,
+      "status": "OK"
+    },
+    {
+      "idx": 86,
+      "name": "Julia3D",
+      "avg": 2.1663,
+      "max": 4.0,
+      "status": "OK"
+    },
+    {
+      "idx": 87,
+      "name": "Mandelbrot3D",
+      "avg": 8.360733333333334,
+      "max": 11.0,
+      "status": "OK"
+    },
+    {
+      "idx": 88,
+      "name": "BurningShip",
+      "avg": 8.873933333333333,
+      "max": 255.0,
+      "status": "OK"
+    },
+    {
+      "idx": 89,
+      "name": "Tricorn",
+      "avg": 8.839366666666667,
+      "max": 212.0,
+      "status": "OK"
+    },
+    {
+      "idx": 90,
+      "name": "Multibrot",
+      "avg": 8.846033333333333,
+      "max": 94.0,
+      "status": "OK"
+    },
+    {
+      "idx": 91,
+      "name": "Phoenix",
+      "avg": 11.8349,
+      "max": 255.0,
+      "status": "OK"
+    },
+    {
+      "idx": 92,
+      "name": "Newton",
+      "avg": 9.9391,
+      "max": 14.0,
+      "status": "OK"
+    },
+    {
+      "idx": 93,
+      "name": "Nova",
+      "avg": 9.9416,
+      "max": 15.0,
+      "status": "OK"
+    },
+    {
+      "idx": 94,
+      "name": "Spider",
+      "avg": 11.8054,
+      "max": 254.0,
+      "status": "OK"
+    },
+    {
+      "idx": 95,
+      "name": "Dendrite",
+      "avg": 8.4717,
+      "max": 255.0,
+      "status": "OK"
+    },
+    {
+      "idx": 96,
+      "name": "Lorenz",
+      "avg": 8.412266666666667,
+      "max": 11.0,
+      "status": "OK"
+    },
+    {
+      "idx": 97,
+      "name": "Rossler",
+      "avg": 8.6993,
+      "max": 11.0,
+      "status": "OK"
+    },
+    {
+      "idx": 98,
+      "name": "Polyfold",
+      "avg": 5.7449666666666666,
+      "max": 169.0,
+      "status": "OK"
+    },
+    {
+      "idx": 99,
+      "name": "Apollonian",
+      "avg": 8.742333333333333,
+      "max": 159.0,
+      "status": "OK"
+    },
+    {
+      "idx": 100,
+      "name": "Kleinian",
+      "avg": 8.747233333333334,
+      "max": 98.0,
+      "status": "OK"
+    },
+    {
+      "idx": 101,
+      "name": "Fibonacci",
+      "avg": 103.47964444444445,
+      "max": 255.0,
+      "status": "OK"
+    },
+    {
+      "idx": 102,
+      "name": "Celtic",
+      "avg": 8.579333333333333,
+      "max": 255.0,
+      "status": "OK"
+    },
+    {
+      "idx": 103,
+      "name": "Crown",
+      "avg": 8.5618,
+      "max": 251.0,
+      "status": "OK"
+    },
+    {
+      "idx": 104,
+      "name": "Cactus",
+      "avg": 12.6451,
+      "max": 187.0,
+      "status": "OK"
+    },
+    {
+      "idx": 105,
+      "name": "SiegelDisk",
+      "avg": 8.9008,
+      "max": 88.0,
+      "status": "OK"
+    }
+  ]
+}

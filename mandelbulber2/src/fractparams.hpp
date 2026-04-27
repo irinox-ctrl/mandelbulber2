@@ -45,8 +45,9 @@
 #include "objects_tree.h"
 #include "primitives.h"
 #include "projection_3d.hpp"
-#include "single_trap_light.hpp"
 #include "glow_sphere.hpp"
+#include "pattern_line_traps.hpp"
+#include "single_trap_lights.hpp"
 
 // forward declarations
 class cObjectData;
@@ -299,11 +300,14 @@ struct sParamRender
 
 	sCommonParams common;
 
-	// Single Trap Light v1 (separate system)
-	sSingleTrapLight singleTrapLight0;
-
 	// Glow Sphere - simple placeable light
 	sGlowSphere glowSphere1;
+
+	// Single Trap Lights — multi-layer spatial light system
+	sSingleTrapLights singleTrapLights;
+
+	/** Simple pattern lines (3 layers, world space, line SDF only) — parallel to single-trap UI. */
+	sPatternLineTraps patternLineTraps;
 };
 
 #endif /* MANDELBULBER2_SRC_FRACTPARAMS_HPP_ */

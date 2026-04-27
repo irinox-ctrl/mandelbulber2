@@ -225,6 +225,10 @@ void RenderedImage::DisplayCoordinates()
 			text += tr("\nCtrl + Mouse wheel - light fwd/bkwd ");
 			text += tr("\nAlt + Mouse wheel - placement fwd/bkwd ");
 			break;
+		case clickPlacePatternLineTrap:
+			text = tr("Place pattern line layer #") + QString::number(clickModeData.at(1).toInt());
+			text += tr("\nAlt + Mouse wheel — offset (same as aux light placement dist)");
+			break;
 		case clickPlacePrimitive:
 			text = tr("Place ")
 						 + cPrimitives::PrimitiveNames(fractal::enumObjectType(clickModeData.at(1).toInt()))
@@ -307,7 +311,7 @@ void RenderedImage::Display3DCursor(CVector2<int> screenPoint, double z)
 {
 	clickMode = enumClickMode(clickModeData.at(0).toInt());
 
-	if (clickMode == clickPlaceLight)
+	if (clickMode == clickPlaceLight || clickMode == clickPlacePatternLineTrap)
 	{
 		if (!placeLightBehind)
 		{
@@ -376,7 +380,7 @@ void RenderedImage::Display3DCursor(CVector2<int> screenPoint, double z)
 		CVector3 viewVector = CalculateViewVector(pTemp, fov, perspType, mRot);
 		CVector3 point = camera + viewVector * z;
 
-		if (clickMode == clickPlaceLight)
+		if (clickMode == clickPlaceLight || clickMode == clickPlacePatternLineTrap)
 		{
 			if (placeLightBehind)
 			{
@@ -561,12 +565,14 @@ void RenderedImage::Draw3DBox(
 					sPoint.y - sh * 0.05f, z, z, sRGB8(0, 0, 0), opacity, 1.0f, 1);
 			}
 
-			if (clickMode == clickPlaceLight)
+			if (clickMode == clickPlaceLight || clickMode == clickPlacePatternLineTrap)
 			{
 				float r = 1.5f * (boxWidth * n / aspectRatio);
 				if (r > 1.0f) r = 1.0f;
+				const sRGB8 ringColor =
+					(clickMode == clickPlacePatternLineTrap) ? sRGB8(255, 180, 0) : sRGB8(0, 100, 255);
 				image->CircleBorder(
-					sPoint.x, sPoint.y, z, r * sw, sRGB8(0, 100, 255), r * 0.1f * sw, opacity, 1);
+					sPoint.x, sPoint.y, z, r * sw, ringColor, r * 0.1f * sw, opacity, 1);
 			}
 		}
 	}

@@ -79,7 +79,11 @@ public:
 		flightAnimRecord
 	};
 
-	bool Init(enumMode _mode, const cRenderingConfiguration &config);
+	/** @param setupMainImagePreview Als true: CreatePreview+UpdatePreview in Init (kan preview zwart
+	 *  vullen bij buffer-resize). Zet op false wanneer gPar al goed is en het vorige beeld
+	 *  zichtbaar moet blijven tot de nieuwe render tegels levert (bijv. extra offset). */
+	bool Init(
+		enumMode _mode, const cRenderingConfiguration &config, bool setupMainImagePreview = true);
 	bool Execute();
 	std::shared_ptr<cImage> GetImagePtr() const { return image; }
 	int GetNumberOfCPUs() const { return totalNumberOfCPUs; }
@@ -99,7 +103,7 @@ public slots:
 	void slotExecute();
 
 private:
-	bool InitImage(int w, int h, const sImageOptional &optional);
+	bool InitImage(int w, int h, const sImageOptional &optional, bool setupMainImagePreview = true);
 	void PrepareData();
 	void ReduceDetail() const;
 	QStringList CreateListOfUsedTextures() const;

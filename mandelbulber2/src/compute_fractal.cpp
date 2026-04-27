@@ -158,8 +158,8 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 	// main iteration loop
 	for (i = 0; i < maxN; i++)
 	{
+		lastLastZ = lastGoodZ; // FIX: was lastZ, maar moet z_{i-2} zijn
 		lastGoodZ = lastZ;
-		lastLastZ = lastZ;
 
 		lastZ = z;
 

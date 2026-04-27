@@ -16,6 +16,15 @@ m1: {
 ROOT = $$PWD/..
 SHARED = $$ROOT/deploy/share/mandelbulber2
 
+# Linux dev builds: use this checkout’s deploy/share (OpenCL, formula, etc.).
+# Without this, the binary looks for ../share/mandelbulber2 above the exe or /usr/share/mandelbulber2 — often stale.
+# Packaging: pass SHARED_PATH to qmake so installer.pri sets CUSTOM_PREFIX instead (this block is skipped).
+unix:!macx:isEmpty(SHARED_PATH) {
+	SHARE_DATA_ABS = $$clean_path($$absolute_path($$ROOT/deploy/share/mandelbulber2))
+	SHARE_DOC_ABS = $$clean_path($$absolute_path($$ROOT/deploy/doc))
+	DEFINES += SHARED_DIR=\\\"$$SHARE_DATA_ABS\\\"
+	DEFINES += SHARED_DOC_DIR=\\\"$$SHARE_DOC_ABS\\\"
+}
 
 
 QMAKE_FULL_VERSION = 2.35

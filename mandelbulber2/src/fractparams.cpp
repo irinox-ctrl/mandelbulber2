@@ -508,15 +508,6 @@ sParamRender::sParamRender(const std::shared_ptr<cParameterContainer> container,
 		container->Set("fake_lights_transition_blend", 1.0);
 	}
 
-	// Single Trap Light v1 (separate system)
-	singleTrapLight0.enabled = container->Get<bool>("single_trap_light_0_enabled");
-	singleTrapLight0.center = container->Get<CVector3>("single_trap_light_0_center");
-	singleTrapLight0.rotation = container->Get<CVector3>("single_trap_light_0_rotation");
-	singleTrapLight0.size = container->Get<double>("single_trap_light_0_size");
-	singleTrapLight0.radius = container->Get<double>("single_trap_light_0_radius");
-	singleTrapLight0.color = container->Get<sRGB>("single_trap_light_0_color");
-	singleTrapLight0.intensity = container->Get<double>("single_trap_light_0_intensity");
-
 	// Glow Sphere
 	glowSphere1.enabled = container->Get<bool>("glow_sphere_1_enabled");
 	glowSphere1.position = container->Get<CVector3>("glow_sphere_1_position");
@@ -524,6 +515,103 @@ sParamRender::sParamRender(const std::shared_ptr<cParameterContainer> container,
 	glowSphere1.radius = container->Get<double>("glow_sphere_1_radius");
 	glowSphere1.color = container->Get<sRGB>("glow_sphere_1_color");
 	glowSphere1.intensity = container->Get<double>("glow_sphere_1_intensity");
+
+	// Single Trap Lights
+	singleTrapLights.enabled = container->Get<bool>("single_trap_lights_enabled");
+	singleTrapLights.activeLayerCount = container->Get<int>("single_trap_lights_active_count");
+	if (singleTrapLights.activeLayerCount < 0) singleTrapLights.activeLayerCount = 0;
+	if (singleTrapLights.activeLayerCount > MAX_SINGLE_TRAP_LIGHT_LAYERS)
+		singleTrapLights.activeLayerCount = MAX_SINGLE_TRAP_LIGHT_LAYERS;
+	singleTrapLights.soloLayerIndex = container->Get<int>("single_trap_lights_solo_layer");
+	if (singleTrapLights.soloLayerIndex < 0) singleTrapLights.soloLayerIndex = 0;
+	if (singleTrapLights.soloLayerIndex > MAX_SINGLE_TRAP_LIGHT_LAYERS)
+		singleTrapLights.soloLayerIndex = MAX_SINGLE_TRAP_LIGHT_LAYERS;
+	{
+		int cm = container->Get<int>("single_trap_lights_combine_mode");
+		if (cm < 0) cm = 0;
+		if (cm > 1) cm = 1;
+		singleTrapLights.combineMode = params::enumSingleTrapLightsCombineMode(cm);
+	}
+	for (int i = 0; i < MAX_SINGLE_TRAP_LIGHT_LAYERS; i++)
+	{
+		QString prefix = QString("single_trap_light_%1").arg(i + 1);
+		singleTrapLights.layers[i].enabled = container->Get<bool>(prefix + "_enabled");
+		singleTrapLights.layers[i].shape = params::enumSingleTrapLightShape(
+			container->Get<int>(prefix + "_shape"));
+		singleTrapLights.layers[i].position = container->Get<CVector3>(prefix + "_position");
+		singleTrapLights.layers[i].size = container->Get<double>(prefix + "_size");
+		singleTrapLights.layers[i].size2 = container->Get<double>(prefix + "_size2");
+		singleTrapLights.layers[i].thickness = container->Get<double>(prefix + "_thickness");
+		singleTrapLights.layers[i].rotation = container->Get<CVector3>(prefix + "_rotation");
+		singleTrapLights.layers[i].UpdateRotationMatrix();
+		singleTrapLights.layers[i].intensity = container->Get<double>(prefix + "_intensity");
+		singleTrapLights.layers[i].color = toRGBFloat(container->Get<sRGB>(prefix + "_color"));
+		singleTrapLights.layers[i].gradientColor = toRGBFloat(container->Get<sRGB>(prefix + "_gradient_color"));
+		singleTrapLights.layers[i].visibility = container->Get<double>(prefix + "_visibility");
+		singleTrapLights.layers[i].maxDistance = container->Get<double>(prefix + "_max_distance");
+		singleTrapLights.layers[i].sharpening = container->Get<double>(prefix + "_sharpening");
+		singleTrapLights.layers[i].blur = container->Get<double>(prefix + "_blur");
+		singleTrapLights.layers[i].solidIntensity = container->Get<double>(prefix + "_solid_intensity");
+		singleTrapLights.layers[i].softness = container->Get<double>(prefix + "_softness");
+		singleTrapLights.layers[i].relativeSize = container->Get<double>(prefix + "_relative_size");
+		singleTrapLights.layers[i].preTransformed = container->Get<bool>(prefix + "_pre_transformed");
+		singleTrapLights.layers[i].positionMode = container->Get<int>(prefix + "_position_mode");
+		singleTrapLights.layers[i].coloringMode = params::enumSingleTrapLightColoringMode(
+			container->Get<int>(prefix + "_coloring_mode"));
+		singleTrapLights.layers[i].falloffType = params::enumSingleTrapLightFalloffType(
+			container->Get<int>(prefix + "_falloff_type"));
+		singleTrapLights.layers[i].edgeSoftness = container->Get<double>(prefix + "_edge_softness");
+		singleTrapLights.layers[i].animOrbitRadius = container->Get<double>(prefix + "_anim_orbit_radius");
+		singleTrapLights.layers[i].animOrbitSpeed = container->Get<double>(prefix + "_anim_orbit_speed");
+		singleTrapLights.layers[i].animPulsateSpeed = container->Get<double>(prefix + "_anim_pulsate_speed");
+		singleTrapLights.layers[i].animPulsateAmount = container->Get<double>(prefix + "_anim_pulsate_amount");
+	}
+
+	// Pattern line traps (world-space lines, explicit control)
+	patternLineTraps.enabled = container->Get<bool>("pattern_line_traps_enabled");
+	patternLineTraps.soloLayerIndex = container->Get<int>("pattern_line_trap_solo_layer");
+	int cm = container->Get<int>("pattern_line_traps_combine_mode");
+	if (cm < 0) cm = 0;
+	if (cm > 1) cm = 1;
+	patternLineTraps.combineMode = cm;
+	if (patternLineTraps.soloLayerIndex < 0) patternLineTraps.soloLayerIndex = 0;
+	if (patternLineTraps.soloLayerIndex > PATTERN_LINE_TRAP_COUNT)
+		patternLineTraps.soloLayerIndex = PATTERN_LINE_TRAP_COUNT;
+	for (int i = 0; i < PATTERN_LINE_TRAP_COUNT; i++)
+	{
+		const QString p = QString("pattern_line_trap_%1").arg(i + 1);
+		patternLineTraps.layers[i].enabled = container->Get<bool>(p + "_enabled");
+		patternLineTraps.layers[i].position = container->Get<CVector3>(p + "_position");
+		patternLineTraps.layers[i].rotation = container->Get<CVector3>(p + "_rotation");
+		patternLineTraps.layers[i].UpdateRotationMatrix();
+		patternLineTraps.layers[i].radius = container->Get<double>(p + "_radius");
+		patternLineTraps.layers[i].thickness = container->Get<double>(p + "_thickness");
+		patternLineTraps.layers[i].scale = container->Get<double>(p + "_scale");
+		patternLineTraps.layers[i].relativeThickness = container->Get<double>(p + "_relative_thickness");
+		patternLineTraps.layers[i].edgeSoftness = container->Get<double>(p + "_edge_softness");
+		patternLineTraps.layers[i].intensity = container->Get<double>(p + "_intensity");
+		patternLineTraps.layers[i].maxDistance = container->Get<double>(p + "_max_distance");
+		patternLineTraps.layers[i].falloffSharpness = container->Get<double>(p + "_falloff_sharpness");
+		patternLineTraps.layers[i].glowSpread = container->Get<double>(p + "_glow_spread");
+		int fp = container->Get<int>(p + "_falloff_profile");
+		if (fp < 0) fp = 0;
+		if (fp > 3) fp = 3;
+		patternLineTraps.layers[i].falloffProfile = fp;
+		int esd = container->Get<int>(p + "_edge_side");
+		if (esd < 0) esd = 0;
+		if (esd > 2) esd = 2;
+		patternLineTraps.layers[i].edgeSide = esd;
+		patternLineTraps.layers[i].segmentHalfLength = container->Get<double>(p + "_segment_half_length");
+		int sh = container->Get<int>(p + "_shape");
+		if (sh < 0) sh = 0;
+		if (sh > 49) sh = 49;
+		patternLineTraps.layers[i].shape = sh;
+		patternLineTraps.layers[i].shapeAux = container->Get<double>(p + "_shape_aux");
+		patternLineTraps.layers[i].relativeSize = container->Get<double>(p + "_relative_size");
+		patternLineTraps.layers[i].color = toRGBFloat(container->Get<sRGB>(p + "_color"));
+		patternLineTraps.layers[i].color2 = toRGBFloat(container->Get<sRGB>(p + "_color_2"));
+		patternLineTraps.layers[i].color3 = toRGBFloat(container->Get<sRGB>(p + "_color_3"));
+	}
 
 	// formula = Get<int>("tile_number");
 }

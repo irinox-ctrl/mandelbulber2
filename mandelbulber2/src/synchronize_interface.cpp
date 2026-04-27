@@ -816,8 +816,9 @@ widgetProperties parseWidgetProperties(QWidget *widget, QStringList allowedClass
 	widgetProperties props;
 	props.name = widget->objectName();
 	props.className = widget->metaObject()->className();
-	props.allowed = (props.name.length() > 1 && (allowedClassNames.contains(props.className)));
 	int firstDashPosition = props.name.indexOf("_");
+	props.allowed = (props.name.length() > 1 && firstDashPosition > 0
+									 && (allowedClassNames.contains(props.className)));
 	props.typeName = props.name.left(firstDashPosition);
 	props.paramName = props.name.mid(firstDashPosition + 1);
 	return props;

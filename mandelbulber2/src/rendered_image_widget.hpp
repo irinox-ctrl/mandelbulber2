@@ -72,6 +72,8 @@ public:
 		clickPlaceRandomLightCenter = 8,
 		clickGetPoint = 9,
 		clickWrapLimitsAroundObject = 10,
+		/** Place pattern line trap layer N (mode.at(1) = 1…PATTERN_LINE_TRAP_COUNT); Z-buffer + view vector. */
+		clickPlacePatternLineTrap = 11,
 	};
 
 	enum enumGridType
@@ -107,6 +109,8 @@ public:
 	}
 	void setNewZ(double z) { smoothLastZMouse = z; }
 	void setClickMode(QList<QVariant> _clickMode);
+	/** Actieve muisactie (zelfde als in setClickMode); bron van waarheid naast combo (sync kan combo resetten). */
+	QList<QVariant> GetClickModeData() const { return clickModeData; }
 	void SetEnableClickModes(bool enable) { clickModesEnables = enable; }
 	bool GetEnableClickModes() const { return clickModesEnables; }
 	void SetFrontDist(double dist) { frontDist = dist; }

@@ -58,8 +58,9 @@
 #include "src/image_adjustments.h"
 #endif /* OPENCL_KERNEL_CODE */
 
-#include "single_trap_light_cl.hpp"
 #include "glow_sphere_cl.hpp"
+#include "pattern_line_traps_cl.hpp"
+#include "single_trap_lights_cl.hpp"
 
 typedef enum
 {
@@ -290,17 +291,21 @@ typedef struct
 
 	sCommonParamsCl common;
 
-	// Single Trap Light v1 (separate system)
-	sClSingleTrapLight singleTrapLight0;
-
 	// Glow Sphere - simple placeable light
 	sGlowSphereCl glowSphere1;
+
+	// Single Trap Lights — multi-layer spatial light system
+	sSingleTrapLightsCl singleTrapLights;
+
+	sPatternLineTrapsCl patternLineTraps;
 } sParamRenderCl;
 
 #ifndef OPENCL_KERNEL_CODE
 inline sParamRenderCl clCopySParamRenderCl(const sParamRender &source)
 {
-	sParamRenderCl target;
+	// Zero first: if populateOpenCL / struct drift omits a field, uninitialized constants on GPU
+	// corrupt lighting (e.g. uniform orange) or other params.
+	sParamRenderCl target{};
 	target.antialiasingSize = source.antialiasingSize;
 	target.antialiasingOclDepth = source.antialiasingOclDepth;
 	target.ambientOcclusionQuality = source.ambientOcclusionQuality;
@@ -535,11 +540,35 @@ inline sParamRenderCl clCopySParamRenderCl(const sParamRender &source)
 		toClMatrix33(source.mRotAmbientOcclusionLightMapRotation);
 	target.common = clCopySCommonParamsCl(source.common);
 
-	// Single Trap Light v1 (separate system)
-	target.singleTrapLight0 = clCopySSingleTrapLight(source.singleTrapLight0);
-
 	// Glow Sphere
 	target.glowSphere1 = clCopySGlowSphere(source.glowSphere1);
+
+	// Single Trap Lights
+	target.singleTrapLights.enabled = source.singleTrapLights.enabled ? 1 : 0;
+	{
+		int alc = source.singleTrapLights.activeLayerCount;
+		if (alc < 0) alc = 0;
+		if (alc > MAX_SINGLE_TRAP_LIGHT_LAYERS) alc = MAX_SINGLE_TRAP_LIGHT_LAYERS;
+		target.singleTrapLights.activeLayerCount = alc;
+	}
+	{
+		int sl = source.singleTrapLights.soloLayerIndex;
+		if (sl < 0) sl = 0;
+		if (sl > MAX_SINGLE_TRAP_LIGHT_LAYERS) sl = MAX_SINGLE_TRAP_LIGHT_LAYERS;
+		target.singleTrapLights.soloLayerIndex = sl;
+	}
+	{
+		int cm = int(source.singleTrapLights.combineMode);
+		if (cm < 0) cm = 0;
+		if (cm > 1) cm = 1;
+		target.singleTrapLights.combineMode = cm;
+	}
+	for (int i = 0; i < MAX_SINGLE_TRAP_LIGHT_LAYERS; i++)
+	{
+		target.singleTrapLights.layers[i] = clCopySSingleTrapLightLayerCl(source.singleTrapLights.layers[i]);
+	}
+
+	target.patternLineTraps = clCopyPatternLineTraps(source.patternLineTraps);
 
 	return target;
 }

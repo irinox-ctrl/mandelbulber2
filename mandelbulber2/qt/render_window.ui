@@ -754,6 +754,76 @@
     </layout>
    </widget>
   </widget>
+  <widget class="QDockWidget" name="dockWidget_pattern_lines">
+   <property name="features">
+    <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
+   </property>
+   <property name="windowTitle">
+    <string>Patroon-lijnen</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents_pattern_lines">
+    <layout class="QVBoxLayout" name="verticalLayout_pattern_lines_wrap">
+     <property name="spacing">
+      <number>2</number>
+     </property>
+     <property name="leftMargin">
+      <number>2</number>
+     </property>
+     <property name="topMargin">
+      <number>2</number>
+     </property>
+     <property name="rightMargin">
+      <number>2</number>
+     </property>
+     <property name="bottomMargin">
+      <number>2</number>
+     </property>
+     <item>
+      <widget class="QScrollArea" name="scrollArea_pattern_lines_dock">
+       <property name="horizontalScrollBarPolicy">
+        <enum>Qt::ScrollBarAsNeeded</enum>
+       </property>
+       <property name="widgetResizable">
+        <bool>true</bool>
+       </property>
+       <widget class="QWidget" name="scrollAreaWidgetContents_pattern_lines">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>480</width>
+          <height>900</height>
+         </rect>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_pattern_lines_inner">
+         <property name="spacing">
+          <number>2</number>
+         </property>
+         <property name="leftMargin">
+          <number>2</number>
+         </property>
+         <property name="topMargin">
+          <number>2</number>
+         </property>
+         <property name="rightMargin">
+          <number>2</number>
+         </property>
+         <property name="bottomMargin">
+          <number>2</number>
+         </property>
+         <item>
+          <widget class="cDockPatternLines" name="widgetPatternLines" native="true"/>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
   <widget class="QDockWidget" name="dockWidget_objects">
    <property name="features">
     <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
@@ -1811,6 +1881,12 @@
    <class>cDockEffects</class>
    <extends>QWidget</extends>
    <header>dock_effects.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>cDockPatternLines</class>
+   <extends>QWidget</extends>
+   <header>dock_pattern_lines.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>

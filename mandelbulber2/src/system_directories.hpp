@@ -54,6 +54,7 @@ struct sSystemDirectories
 	QString GetMaterialsFolder() const { return GetDataDirectoryUsed() + "materials"; }
 	QString GetAnimationFolder() const { return GetDataDirectoryUsed() + "animation"; }
 	QString GetGradientsFolder() const { return GetDataDirectoryUsed() + "gradients"; }
+	QString GetPatternLinePresetsFolder() const { return GetDataDirectoryUsed() + "pattern_presets"; }
 	QString GetHistoryFolder() const { return GetDataDirectoryUsed() + "history"; }
 	QString GetTexturesFolder() const { return sharedDir + "textures"; }
 	QString GetUserTexturesFolder() const { return GetDataDirectoryUsed() + "textures"; }

@@ -122,16 +122,25 @@ float3 ObjectShader(__constant sClInConstants *consts, sRenderData *renderData,
 
 	float3 fakeLights = 0.0f;
 	float3 fakeLightsSpecular = 0.0f;
+	float3 singleTrapLights = 0.0f;
+	float3 patternLineTraps = 0.0f;
+
+	if (consts->params.singleTrapLights.enabled)
+	{
+		singleTrapLights = SingleTrapLightsShader(consts, input, calcParam);
+	}
+	if (consts->params.patternLineTraps.enabled)
+	{
+		patternLineTraps = PatternLineTrapsShader(consts, input->point);
+	}
 #ifdef FAKE_LIGHTS
-	if (consts->params.singleTrapLight0.enabled == 0)
+	/* Independent of pattern lines (matches CPU shader_object.cpp / single-trap interaction). */
+	if (consts->params.fakeLightsEnabled)
 	{
 		fakeLights =
 			FakeLightsShader(consts, input, calcParam, surfaceColor, gradients, &fakeLightsSpecular);
 	}
 #endif
-
-	// Single Trap Light v1 (apart systeem - additief, geen materiaal-modulatie)
-	float3 singleTrap = SingleTrapLightShaderGPU(consts, input->point);
 
 	// Glow Sphere - visible light source
 	float3 glowSphere = GlowSphereShaderGPU(consts, input->point);
@@ -194,7 +203,7 @@ float3 ObjectShader(__constant sClInConstants *consts, sRenderData *renderData,
 	*outLuminosityEmissive = luminosity * input->material->luminosityEmissive;
 
 	color = surfaceColor * (fillLight + auxLights + fakeLights + AO) + envMapping + totalSpecular
-					+ luminosity + singleTrap + glowSphere;
+					+ luminosity + singleTrapLights + patternLineTraps + glowSphere;
 	*outSpecular = totalSpecular;
 
 	*outSurfaceColor = surfaceColor;

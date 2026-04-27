@@ -70,7 +70,22 @@ public:
 	void ConnectProgressAndStatisticsSignals() const;
 	void SynchronizeInterface(std::shared_ptr<cParameterContainer> par,
 		std::shared_ptr<cFractalContainer> parFractal, qInterface::enumReadWrite mode) const;
+	/** Alleen licht-lijst (Effects) + patroonlijnen-dock; geen zware Synchronize over alle docks. */
+	void RefreshLightAndPatternLineDocksFromGpar();
+	/** Alleen world-position QLineEdits (vect3) — gebruikt bij extra-offset debounce i.p.v. volledig dock. */
+	void WriteLightAndPatternLineWorldPositionFieldsFromGpar();
+	/**
+	 * Zet autoRefreshLastHash = hash(huidige gPar). Nodig na gPar-wijziging vanuit patroonlijnen
+	 * of licht-UI, anders triggert PeriodicRefresh (korte interval) extra StartRender = vertraging.
+	 */
+	void SyncAutoRefreshHashWithGpar();
 	void StartRender(bool noUndo = false);
+	/**
+	 * Zelfde render als StartRender, maar zonder SynchronizeInterface(read/write).
+	 * Gebruik wanneer gPar al actueel is (bv. extra wereld-offset); voorkomt dat UI-sync
+	 * sImageOptionals of beeldgrootte laat wisselen en daarmee het beeld leegt (zwarte flits).
+	 */
+	void StartRenderFromCurrentParams(bool noUndo = true);
 	void RenderFlame();
 	bool StopRender();
 	void RefreshMainImage();
@@ -160,6 +175,10 @@ public:
 
 	bool stopRequest;
 	bool repeatRequest; // request to repeat start loop
+
+private:
+	/** Gedeeld door StartRender / StartRenderFromCurrentParams. */
+	void startRenderImpl(bool noUndo, bool synchronizeWithUi, bool setupMainImagePreviewInInit);
 
 private slots:
 	void slotAutoSaveImage(double timeSeconds);

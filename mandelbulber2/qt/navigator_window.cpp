@@ -505,6 +505,7 @@ void cNavigatorWindow::slotMouseClickOnImage(int x, int y, Qt::MouseButton butto
 		case RenderedImage::clickFogVisibility:
 		case RenderedImage::clickDOFFocus:
 		case RenderedImage::clickPlaceLight:
+		case RenderedImage::clickPlacePatternLineTrap:
 		case RenderedImage::clickGetJuliaConstant:
 		case RenderedImage::clickPlacePrimitive:
 		case RenderedImage::clickPlaceRandomLightCenter:
@@ -578,6 +579,23 @@ void cNavigatorWindow::slotMouseWheelRotatedWithKeyOnImage(
 			else if (keyModifiers == Qt::NoModifier)
 			{
 				manipulations->MoveLightByWheel(delta);
+			}
+			break;
+		}
+		case RenderedImage::clickPlacePatternLineTrap:
+		{
+			if (keyModifiers & Qt::AltModifier)
+			{
+				if (leftWidget)
+				{
+					if (cDockEffects *widgetEffects = dynamic_cast<cDockEffects *>(leftWidget))
+					{
+						double deltaLog = exp(delta * 0.001);
+						double dist = widgetEffects->GetAuxLightManualPlacementDistance();
+						dist *= deltaLog;
+						widgetEffects->slotSetAuxLightManualPlacementDistance(dist);
+					}
+				}
 			}
 			break;
 		}

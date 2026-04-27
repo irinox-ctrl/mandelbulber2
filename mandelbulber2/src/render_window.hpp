@@ -43,6 +43,7 @@
 #include <QMainWindow>
 #include <QMessageBox>
 #include <QSettings>
+#include <QTimer>
 
 #include "files.h"
 #include "progress_text.hpp"
@@ -57,6 +58,7 @@ class cDockImageAdjustments;
 class cDockRenderingEngine;
 class cDockFractal;
 class cDockEffects;
+class cDockPatternLines;
 class cManipulations;
 
 namespace Ui
@@ -81,6 +83,7 @@ public:
 	cDockRenderingEngine *GetWidgetDockRenderingEngine() const;
 	cDockFractal *GetWidgetDockFractal() const;
 	cDockEffects *GetWidgetDockEffects() const;
+	cDockPatternLines *GetWidgetDockPatternLines() const;
 
 	QWidget *GetCentralWidget() const;
 	QComboBox *GetComboBoxMouseClickFunction() const;
@@ -129,6 +132,8 @@ private slots:
 	void slotMaterialSelected(int matIndex) const;
 	static void slotMaterialEdited();
 	void ResetDocksPositions();
+	/** Call after final dock-widget setup (e.g. optional gamepad removal) so restoreState(defaultState) is safe. */
+	void CaptureDefaultWindowLayout();
 	void ResetGlobalStopRequest();
 	void ToggleFullScreen();
 
@@ -202,6 +207,7 @@ private slots:
 	void slotMouseDragStart(int x, int y, Qt::MouseButtons buttons);
 	void slotMouseDragFinish();
 	void slotMouseDragDelta(int dx, int dy);
+	void updateAuxLightManualPlacementDistance(double dist);
 
 private:
 	Ui::RenderWindow *ui;
@@ -216,6 +222,15 @@ private:
 	QList<int> currentKeyEvents;
 	Qt::KeyboardModifiers lastKeyEventModifiers;
 	cManipulations *manipulations;
+	/** Coalesce StartRender tijdens verticaal slepen (afstand); voorkomt flikkeren. */
+	QTimer *m_auxOffsetDragStartRenderDebounce = nullptr;
+	bool m_auxOffsetDragActive = false;
+	/** Huidige (start) handmatige afstand — nodig voor exp-sleep. */
+	double m_auxDistAtOffsetDragStart = 0.0;
+	/** Wanneer start ≈0 (bijv. Nauwkeurige plaatsing) levert d0·exp(…) niks: dan additieve sleep. */
+	bool m_auxOffsetDragLowStart = false;
+	/** Schaal voor additieve sleep: typische oppervlakafstand. */
+	double m_auxOffsetDragSceneRef = 0.0;
 
 signals:
 	void updateProgressAndStatus(const QString &text, const QString &progressText, double progress);

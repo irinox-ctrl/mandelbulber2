@@ -40,6 +40,7 @@
 #include "material.h"
 #include "netrender.hpp"
 #include "parameters.hpp"
+#include "pattern_line_traps.hpp"
 #include "stereo.h"
 #include "system_data.hpp"
 #include "system_directories.hpp"
@@ -544,15 +545,6 @@ void InitParams(std::shared_ptr<cParameterContainer> par)
 	par->addParam("fake_lights_shape_wave_z", 0.0, -1e15, 1e15, morphLinear, paramStandard);
 	par->addParam("fake_lights_shape_wave_frequency", 1.0, 0.0, 1e15, morphLinear, paramStandard);
 
-	// Single Trap Light v1 (separate system)
-	par->addParam("single_trap_light_0_enabled", false, morphLinear, paramStandard);
-	par->addParam("single_trap_light_0_center", CVector3(0.0, 0.0, 0.0), morphLinear, paramStandard);
-	par->addParam("single_trap_light_0_rotation", CVector3(0.0, 0.0, 0.0), morphAkimaAngle, paramStandard);
-	par->addParam("single_trap_light_0_size", 1.0, 0.001, 1000.0, morphLinear, paramStandard);
-	par->addParam("single_trap_light_0_radius", 0.05, 0.0, 100.0, morphLinear, paramStandard);
-	par->addParam("single_trap_light_0_color", sRGB(65535, 65535, 65535), morphLinear, paramStandard);
-	par->addParam("single_trap_light_0_intensity", 1.0, 0.0, 1000.0, morphLinear, paramStandard);
-
 	// Glow Sphere - simple placeable light source
 	par->addParam("glow_sphere_1_enabled", false, morphLinear, paramStandard);
 	par->addParam("glow_sphere_1_position", CVector3(2.0, 0.0, 0.0), morphLinear, paramStandard);
@@ -560,6 +552,94 @@ void InitParams(std::shared_ptr<cParameterContainer> par)
 	par->addParam("glow_sphere_1_radius", 0.5, 0.01, 100.0, morphLinear, paramStandard);
 	par->addParam("glow_sphere_1_color", sRGB(65535, 65535, 65535), morphLinear, paramStandard);
 	par->addParam("glow_sphere_1_intensity", 2.0, 0.0, 1000.0, morphLinear, paramStandard);
+
+	// Single Trap Lights — multi-layer spatial light system
+	par->addParam("single_trap_lights_enabled", false, morphLinear, paramStandard);
+	par->addParam("single_trap_lights_active_count", 1, 0, MAX_SINGLE_TRAP_LIGHT_LAYERS, morphLinear, paramStandard);
+	par->addParam("single_trap_lights_solo_layer", 0, 0, MAX_SINGLE_TRAP_LIGHT_LAYERS, morphLinear, paramStandard);
+	par->addParam("single_trap_lights_combine_mode", 0, morphNone, paramStandard,
+		QStringList({"add", "max per channel"}));
+	par->addParam("single_trap_copy_from", 1, 1, MAX_SINGLE_TRAP_LIGHT_LAYERS, morphLinear, paramStandard);
+	par->addParam("single_trap_copy_to", 2, 1, MAX_SINGLE_TRAP_LIGHT_LAYERS, morphLinear, paramStandard);
+	par->addParam("single_trap_randomize_layer", 1, 1, MAX_SINGLE_TRAP_LIGHT_LAYERS, morphLinear, paramStandard);
+	par->addParam("single_trap_preset", 0, 0, 7, morphLinear, paramStandard);
+
+	for (int i = 1; i <= MAX_SINGLE_TRAP_LIGHT_LAYERS; i++)
+	{
+		QString prefix = QString("single_trap_light_%1").arg(i);
+		par->addParam(prefix + "_enabled", false, morphLinear, paramStandard);
+		par->addParam(prefix + "_shape", 0, morphNone, paramStandard,
+			QStringList({"point", "line", "circle", "square", "sphere", "cube", "torus", "capsule", "ring", "ellipse", "cross", "cylinder", "plane", "disc"}));
+		par->addParam(prefix + "_position", CVector3(0.0, 0.0, 0.0), morphLinear, paramStandard);
+		par->addParam(prefix + "_size", 1.0, 0.0, 1e15, morphLinear, paramStandard);
+		par->addParam(prefix + "_size2", 0.25, 0.0, 1e15, morphLinear, paramStandard);
+		par->addParam(prefix + "_thickness", 1.0, 1e-6, 1e15, morphLinear, paramStandard);
+		par->addParam(prefix + "_rotation", CVector3(0.0, 0.0, 0.0), morphAkimaAngle, paramStandard);
+		par->addParam(prefix + "_intensity", 1.0, 0.0, 1e15, morphLinear, paramStandard);
+		par->addParam(prefix + "_color", sRGB(65535, 65535, 65535), morphLinear, paramStandard);
+		par->addParam(prefix + "_gradient_color", sRGB(65535, 65535, 65535), morphLinear, paramStandard);
+		par->addParam(prefix + "_visibility", 1.0, 0.0, 1.0, morphLinear, paramStandard);
+		par->addParam(prefix + "_max_distance", 0.5, 0.0, 1e15, morphLinear, paramStandard);
+		par->addParam(prefix + "_sharpening", 1.0, 0.0, 1e15, morphLinear, paramStandard);
+		par->addParam(prefix + "_blur", 0.0, 0.0, 10.0, morphLinear, paramStandard);
+		par->addParam(prefix + "_solid_intensity", 1.0, 0.0, 1000.0, morphLinear, paramStandard);
+		par->addParam(prefix + "_softness", 0.0, 0.0, 10.0, morphLinear, paramStandard);
+		par->addParam(prefix + "_relative_size", 1.0, 0.01, 100.0, morphLinear, paramStandard);
+		par->addParam(prefix + "_pre_transformed", false, morphLinear, paramStandard);
+		par->addParam(prefix + "_position_mode", 0, morphNone, paramStandard,
+			QStringList({"absolute", "relative to camera", "relative to fractal center", "relative to target"}));
+		par->addParam(prefix + "_coloring_mode", 0, morphNone, paramStandard,
+			QStringList({"solid", "distance based", "orbit trap based"}));
+		par->addParam(prefix + "_falloff_type", 0, morphNone, paramStandard,
+			QStringList({"gaussian", "inverse square", "linear", "exponential", "smoothstep"}));
+		par->addParam(prefix + "_edge_softness", 0.0, 0.0, 10.0, morphLinear, paramStandard);
+		par->addParam(prefix + "_anim_orbit_radius", 0.0, 0.0, 100.0, morphLinear, paramStandard);
+		par->addParam(prefix + "_anim_orbit_speed", 0.0, -100.0, 100.0, morphLinear, paramStandard);
+		par->addParam(prefix + "_anim_pulsate_speed", 0.0, -100.0, 100.0, morphLinear, paramStandard);
+		par->addParam(prefix + "_anim_pulsate_amount", 0.0, 0.0, 1.0, morphLinear, paramStandard);
+	}
+
+	// Pattern line traps — world-space line accents (parallel to single-trap lights)
+	par->addParam("pattern_line_traps_enabled", false, morphLinear, paramStandard);
+	par->addParam("pattern_line_trap_solo_layer", 0, 0, PATTERN_LINE_TRAP_COUNT, morphLinear, paramStandard);
+	par->addParam("pattern_line_traps_combine_mode", 0, morphNone, paramStandard,
+		QStringList({"Optellen (additief)", "Maximum per kanaal"}));
+	for (int i = 1; i <= PATTERN_LINE_TRAP_COUNT; i++)
+	{
+		const QString p = QString("pattern_line_trap_%1").arg(i);
+		par->addParam(p + "_enabled", false, morphLinear, paramStandard);
+		par->addParam(p + "_position", CVector3(0.0, 0.0, 0.0), morphLinear, paramStandard);
+		par->addParam(p + "_rotation", CVector3(0.0, 0.0, 0.0), morphAkimaAngle, paramStandard);
+		par->addParam(p + "_radius", 0.05, 1e-6, 1e15, morphLinear, paramStandard);
+		par->addParam(p + "_thickness", 1.0, 1e-6, 1e15, morphLinear, paramStandard);
+		par->addParam(p + "_scale", 1.0, 1e-6, 1e15, morphLinear, paramStandard);
+		par->addParam(p + "_relative_thickness", 1.0, 1e-6, 1e15, morphLinear, paramStandard);
+		par->addParam(p + "_edge_softness", 0.0, 0.0, 10.0, morphLinear, paramStandard);
+		par->addParam(p + "_intensity", 1.0, 0.0, 1e15, morphLinear, paramStandard);
+		par->addParam(p + "_max_distance", 5.0, 0.0, 1e15, morphLinear, paramStandard);
+		par->addParam(p + "_falloff_sharpness", 22.0, 0.25, 200.0, morphLinear, paramStandard);
+		par->addParam(p + "_glow_spread", 1.0, 0.02, 500.0, morphLinear, paramStandard);
+		par->addParam(p + "_falloff_profile", 0, morphNone, paramStandard,
+			QStringList({"Gauss (zacht)", "Strak (smooth)", "Hard (lineair)", "Exponentieel"}));
+		par->addParam(p + "_edge_side", 0, morphNone, paramStandard,
+			QStringList({"Omtrek (beide)", "Alleen buiten", "Alleen binnen"}));
+		par->addParam(p + "_segment_half_length", 0.0, 0.0, 1e15, morphLinear, paramStandard);
+		par->addParam(p + "_shape", 0, morphNone, paramStandard,
+			QStringList({"Buis (rond)", "Lint (vlak)", "Vierkant", "Ruit", "Ovaal", "Zeshoek", "Kruis",
+				"Achthoek", "Squircle", "Ring", "Vijfhoek", "Rechthoek", "Capsule", "Driehoek",
+				"Ster-5 (roos)", "Tienhoek", "Superellips n=3", "Superellips n=6", "Sikkel", "Tandwiel",
+				"Sierpinski tapijt", "Sierpinski driehoek", "Koch (1 iter)", "Mandelbrot (afstand)", "Julia (afstand)",
+				"Burning ship", "Cantor-achtig", "Pythagoras boom", "Draak (polylijn)", "Hilbert (orde 1)",
+				"Vicsek (5 blokken)", "Griekse kruis", "Multibrot³ (afstand)", "Multibrot⁴ (afstand)", "Tricorn (afstand)",
+				"3-ary boom (Y)", "Peano-achtig (8×)", "Levy C (1 iter)", "Ring-Cantor", "Gouden L-vorm",
+				"3 cirkels (Apollonius)", "Lissajous 2:3", "Julia³ (afstand)", "Multibrot⁵ (afstand)", "H-boom (1 iter)",
+				"Sierpinski tapijt (2 niv.)", "Zes-lob rimpel", "Binaire boom (2 niv.)", "Fermat-spiraal", "Dubbel kruis"}));
+		par->addParam(p + "_shape_aux", 1.0, 1e-6, 1e6, morphLinear, paramStandard);
+		par->addParam(p + "_relative_size", 0.0, 0.0, 1e15, morphLinear, paramStandard);
+		par->addParam(p + "_color", sRGB(65535, 65535, 65535), morphLinear, paramStandard);
+		par->addParam(p + "_color_2", sRGB(65535, 65535, 65535), morphLinear, paramStandard);
+		par->addParam(p + "_color_3", sRGB(65535, 65535, 65535), morphLinear, paramStandard);
+	}
 
 	par->addParam("rayleigh_scattering_blue", 0.0, 0.0, 1e15, morphAkimaAngle, paramStandard);
 	par->addParam("rayleigh_scattering_red", 0.0, 0.0, 1e15, morphAkimaAngle, paramStandard);
@@ -667,6 +747,8 @@ void InitParams(std::shared_ptr<cParameterContainer> par)
 	par->addParam("net_render_client_IP", QString("10.0.0.4"), morphNone, paramApp);
 	par->addParam("net_render_server_port", QString("5555"), morphNone, paramApp);
 	par->addParam("aux_light_manual_placement_dist", 0.1, 1e-15, 1e15, morphNone, paramApp);
+	/** Vaste verschuiving in wereldcoördinaten, na de view-afstand; geldt voor hulplicht- en patroonlijn-klik. */
+	par->addParam("aux_light_manual_placement_offset", CVector3(0.0, 0.0, 0.0), morphLinear, paramApp);
 
 	par->addParam("camera_movement_step", 0.5, 1e-15, 1e5, morphNone, paramApp);
 	par->addParam("camera_rotation_step", 15.0, 1e-15, 360.0, morphNone, paramApp);
@@ -679,6 +761,8 @@ void InitParams(std::shared_ptr<cParameterContainer> par)
 	par->addParam("camera_rotation_mode", 0, morphNone, paramApp,
 		QStringList({"rotate_camera", "rotate_around_target"}));
 	par->addParam("mouse_click_function", 1, morphNone, paramNoSave);
+	/** 0=offset/effect, 1=nauwkeurig; sync met comboBox_pattern_line_precision_mode */
+	par->addParam("pattern_line_precision_mode", 0, 0, 1, morphNone, paramNoSave);
 	par->addParam("show_cursor", true, morphNone, paramApp);
 
 	par->addParam("auto_save_images", false, morphNone, paramApp);
@@ -1461,6 +1545,15 @@ void InitFractalParams(std::shared_ptr<cParameterContainer> par)
 	par->addParam("transf_spheres_enabled", true, morphLinear, paramStandard);
 
 	// par->addParam("transf_function_enabled_temp_false", false, morphLinear,
+	// transf_demo_scale_v2 parameters
+	par->addParam("transf_demo_scale_v2_scale", 2.0, 0.001, 100.0, morphAkima, paramStandard);
+	par->addParam("transf_demo_scale_v2_offset", CVector3(0.0, 0.0, 0.0), morphAkima, paramStandard);
+	par->addParam("transf_demo_scale_v2_iterations", 10, 1, 250, morphLinear, paramStandard);
+	par->addParam("transf_demo_scale_v2_enabled", true, morphLinear, paramStandard);
+	// transf_wizard_demo parameters
+	par->addParam("transf_wizard_demo_scale", 2.0, 0.001, 100.0, morphAkima, paramStandard);
+
+
 	// paramStandard);
 
 	// platonic_solid
@@ -2307,7 +2400,7 @@ void InitLightParams(int lightId, std::shared_ptr<cParameterContainer> par)
 	par->addParam(cLight::Name("primitive_id", lightId), -1, morphLinear, paramStandard);
 
 	par->addParam(cLight::Name("decayFunction", lightId), int(cLight::lightDecay1R2), morphLinear,
-		paramStandard, QStringList({"1/r", "1/r2", "1/r3", "smooth"}));
+		paramStandard, QStringList({"1/r", "1/r2", "1/r3", "smooth", "physical"}));
 	par->addParam(cLight::Name("file_texture", lightId),
 		QDir::toNativeSeparators(
 			systemDirectories.sharedDir + "textures" + QDir::separator() + "water_caustics.jpg"),
@@ -2318,6 +2411,42 @@ void InitLightParams(int lightId, std::shared_ptr<cParameterContainer> par)
 		paramStandard);
 	par->addParam(cLight::Name("projection_vertical_angle", lightId), 60.0, 0.0, 179.9, morphLinear,
 		paramStandard);
+
+	// === AUX LIGHTS UPGRADE ===
+	par->addParam(cLight::Name("use_color_temperature", lightId), false, morphLinear, paramStandard);
+	par->addParam(
+		cLight::Name("color_temperature", lightId), 5500.0, 1000.0, 40000.0, morphLinear, paramStandard);
+	par->addParam(cLight::Name("shadow_type", lightId), 0, morphLinear, paramStandard);
+	par->addParam(cLight::Name("shadow_samples", lightId), 16, morphLinear, paramStandard);
+	par->addParam(cLight::Name("shadow_softness", lightId), 0.5, 0.0, 1.0, morphLinear, paramStandard);
+	par->addParam(cLight::Name("shadow_bias", lightId), 0.001, 0.0001, 0.01, morphLinear, paramStandard);
+	par->addParam(cLight::Name("use_shadow_noise", lightId), false, morphLinear, paramStandard);
+	par->addParam(cLight::Name("affect_diffuse", lightId), true, morphLinear, paramStandard);
+	par->addParam(cLight::Name("affect_specular", lightId), true, morphLinear, paramStandard);
+	par->addParam(cLight::Name("affect_volumetric", lightId), true, morphLinear, paramStandard);
+	par->addParam(cLight::Name("light_group", lightId), 0, morphLinear, paramStandard);
+	par->addParam(cLight::Name("use_area_light", lightId), false, morphLinear, paramStandard);
+	par->addParam(
+		cLight::Name("area_light_radius", lightId), 0.1, 0.001, 1000.0, morphLinear, paramStandard);
+	par->addParam(cLight::Name("area_light_samples", lightId), 4, morphLinear, paramStandard);
+	par->addParam(cLight::Name("angular_diameter", lightId), 0.53, 0.0, 180.0, morphLinear, paramStandard);
+	par->addParam(cLight::Name("use_angular_size", lightId), false, morphLinear, paramStandard);
+	par->addParam(cLight::Name("atmospheric_density", lightId), 0.0, 0.0, 1.0, morphLinear, paramStandard);
+	par->addParam(cLight::Name("atmospheric_scattering_intensity", lightId), 1.0, 0.0, 100.0,
+		morphLinear, paramStandard);
+	par->addParam(
+		cLight::Name("atmospheric_color", lightId), sRGB(36044, 49087, 65535), morphLinear, paramStandard);
+	par->addParam(cLight::Name("penumbra_angle", lightId), 5.0, 0.0, 180.0, morphLinear, paramStandard);
+	par->addParam(cLight::Name("penumbra_softness", lightId), 0.5, 0.0, 1.0, morphLinear, paramStandard);
+	par->addParam(cLight::Name("projection_soft_edge", lightId), 0.1, 0.0, 1.0, morphLinear, paramStandard);
+	par->addParam(cLight::Name("projection_feather", lightId), 0.0, 0.0, 1.0, morphLinear, paramStandard);
+	par->addParam(cLight::Name("projection_blend_mode", lightId), 0, morphLinear, paramStandard);
+	par->addParam(cLight::Name("beam_length", lightId), 100.0, 0.1, 10000.0, morphLinear, paramStandard);
+	par->addParam(cLight::Name("beam_falloff", lightId), 1.0, 0.0, 10.0, morphLinear, paramStandard);
+	par->addParam(cLight::Name("beam_volume_samples", lightId), 16, morphLinear, paramStandard);
+	par->addParam(cLight::Name("beam_use_noise", lightId), false, morphLinear, paramStandard);
+	par->addParam(cLight::Name("beam_noise_scale", lightId), 1.0, 0.01, 100.0, morphLinear, paramStandard);
+	par->addParam(cLight::Name("beam_noise_strength", lightId), 0.3, 0.0, 1.0, morphLinear, paramStandard);
 }
 
 void DeletePrimitiveParams(fractal::enumObjectType objectType, const QString primitiveName,

@@ -54,9 +54,9 @@ std::shared_ptr<cParameterContainer> ContainerSelector(QString fullParameterName
 	{
 		container = params;
 	}
-	else if (containerName.indexOf("fractal") >= 0)
+	else if (containerName.startsWith("fractal"))
 	{
-		const int index = containerName.right(1).toInt();
+		const int index = containerName.mid(7).toInt(); // FIX: was right(1), ondersteunt nu multi-digit
 		if (index < NUMBER_OF_FRACTALS)
 		{
 			container = fractal->at(index);
@@ -83,9 +83,9 @@ std::shared_ptr<cParameterContainer> ContainerSelectorByContainerName(QString co
 	{
 		container = params;
 	}
-	else if (containerName.indexOf("fractal") >= 0)
+	else if (containerName.startsWith("fractal"))
 	{
-		const int index = containerName.right(1).toInt();
+		const int index = containerName.mid(7).toInt(); // FIX: was right(1), ondersteunt nu multi-digit
 		if (index < NUMBER_OF_FRACTALS)
 		{
 			container = fractal->at(index);

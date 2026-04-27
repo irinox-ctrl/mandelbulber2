@@ -104,9 +104,34 @@ private slots:
 	void slotPressedButtonResetPathSpiral();
 	void slotPressedButtonResetOrbitTarget();
 	void slotPressedButtonResetMultiCenter();
+	void slotPressedButtonPlaceLightAtCamera();
+	void slotPressedButtonPlaceSingleTrapLightAtSurface();
+	void slotPressedButtonPlaceSingleTrapLightAtTarget();
+	void slotPressedButtonCopySingleTrapLight();
+	void slotPressedButtonRandomizeSingleTrapLight();
+	void slotPressedButtonSingleTrapWorldAnchor();
+	void slotPressedButtonRandomizeAllSingleTrapLights();
+	void slotPressedButtonSingleTrapPresetApply();
+	void slotPressedButtonSingleTrapResetAll();
+	void slotChangedSingleTrapLightShape(int index) const;
 
 private:
 	void ConnectSignals() const;
+	void RandomizeSingleTrapLightLayer(int layer, bool syncAndRender = true);
+	void ApplySingleTrapPreset(int presetIndex);
+	void ResetSingleTrapLightLayer(int layer);
+	void EnsureSingleTrapEngineOnAndActiveThrough(int layerIndex);
+	void SyncSingleTrapActiveCountToHighestEnabledLayer();
+	void InstallSingleTrapPlacementHelp();
+	/** Minimum distance (m) light center should stay from a reference point to avoid SDF blow-out. */
+	double SingleTrapRadialClearance(const QString &prefix) const;
+	/** Nudge distance for surface / in-fractal placement (depends on shape and view depth). */
+	double SingleTrapPlacementBumpFromView(const QString &prefix, double camTargetLen) const;
+	/** Raymarch along dirUnit from origin; returns true if DE converged to a surface hit. */
+	bool SingleTrapRaymarchFirstSurface(
+		const CVector3 &origin, const CVector3 &dirUnit, CVector3 *hitPoint) const;
+	static double SingleTrapForwardAlongView(double camTargetDist);
+	static bool SingleTrapShapeUsesSecondSize(int shapeIndex);
 
 signals:
 	void signalRefreshPostEffects(void);

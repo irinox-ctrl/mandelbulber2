@@ -77,6 +77,57 @@ cRenderWorker::~cRenderWorker()
 	// nothing to delete
 }
 
+sCommonParams cRenderWorker::CommonParamsWithAdjustedFakeLightsOrbitTrap() const
+{
+	sCommonParams commonWithPosition = params->common;
+	if (params->common.fakeLightsOrbitTrapPreTransformed)
+	{
+		commonWithPosition.fakeLightsOrbitTrap = params->common.fakeLightsOrbitTrap;
+	}
+	else
+	{
+		int posMode = params->common.fakeLightsPositionMode;
+		const sFakeLightsModeParams &mode = params->common.fakeLightsModes[posMode];
+		CRotationMatrix modeRot;
+		modeRot.SetRotation2(mode.rotation * M_PI / 180.0);
+		CVector3 transformedTrap =
+			mode.offset + modeRot.RotateVector(params->common.fakeLightsOrbitTrap * mode.scale);
+
+		if (posMode == params::fakeLightsPositionCamera)
+		{
+			commonWithPosition.fakeLightsOrbitTrap = params->camera + transformedTrap;
+		}
+		else if (posMode == params::fakeLightsPositionTarget)
+		{
+			commonWithPosition.fakeLightsOrbitTrap = params->target + transformedTrap;
+		}
+		else if (posMode == params::fakeLightsPositionPathCircle)
+		{
+			double angle = mode.rotation.y * M_PI / 180.0;
+			CVector3 pathOffset(cos(angle) * mode.pathRadius, 0.0, sin(angle) * mode.pathRadius);
+			commonWithPosition.fakeLightsOrbitTrap = transformedTrap + pathOffset;
+		}
+		else if (posMode == params::fakeLightsPositionPathSpiral)
+		{
+			double angle = mode.rotation.y * M_PI / 180.0;
+			double yOffset = angle * mode.pathRadius * 0.1;
+			CVector3 pathOffset(cos(angle) * mode.pathRadius, yOffset, sin(angle) * mode.pathRadius);
+			commonWithPosition.fakeLightsOrbitTrap = transformedTrap + pathOffset;
+		}
+		else if (posMode == params::fakeLightsPositionOrbitTarget)
+		{
+			double angle = mode.rotation.y * M_PI / 180.0;
+			CVector3 pathOffset(cos(angle) * mode.pathRadius, 0.0, sin(angle) * mode.pathRadius);
+			commonWithPosition.fakeLightsOrbitTrap = params->target + transformedTrap + pathOffset;
+		}
+		else
+		{
+			commonWithPosition.fakeLightsOrbitTrap = transformedTrap;
+		}
+	}
+	return commonWithPosition;
+}
+
 // main render engine function called as multiple threads
 void cRenderWorker::doWork()
 {

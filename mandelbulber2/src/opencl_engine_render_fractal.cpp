@@ -160,6 +160,7 @@ void cOpenClEngineRenderFractal::CreateListOfHeaderFiles(QStringList &clHeaderFi
 	clHeaderFiles.append("primitives_cl.h");
 	clHeaderFiles.append("input_data_structures.h");
 	clHeaderFiles.append("light_cl.h");
+	clHeaderFiles.append("single_trap_lights_cl.hpp");
 	clHeaderFiles.append("render_data_cl.h");
 }
 
@@ -260,8 +261,9 @@ void cOpenClEngineRenderFractal::CreateListOfIncludes(const QStringList &clHeade
 			AddInclude(programEngine, openclEnginePath + "shader_roughness_texture.cl");
 			AddInclude(programEngine, openclEnginePath + "shader_fresnel.cl");
 			AddInclude(programEngine, openclEnginePath + "shader_env_mapping.cl");
-			AddInclude(programEngine, openclEnginePath + "shader_single_trap_light.cl");
 			AddInclude(programEngine, openclEnginePath + "shader_glow_sphere.cl");
+			AddInclude(programEngine, openclEnginePath + "shader_single_trap_lights.cl");
+			AddInclude(programEngine, openclEnginePath + "shader_pattern_line_traps.cl");
 			AddInclude(programEngine, openclEnginePath + "shader_object.cl");
 			if (params->Get<bool>("MC_fog_illumination"))
 			{
@@ -589,10 +591,13 @@ void cOpenClEngineRenderFractal::SetParametersForShaders(
 	}
 	if (paramRender->slowShading) definesCollector += " -DSLOW_SHADING";
 
+	/* Aux / scene lights: always compile LightShading for full GPU pipeline. The kernel loops
+	 * `numberOfLights` (may be 0). Tying -DAUX_LIGHTS to IsAnyLightEnabled() at compile time
+	 * could leave a stale kernel with aux disabled while CPU and dynamic light buffers are correct. */
+	definesCollector += " -DAUX_LIGHTS";
+
 	if (renderData->lights.IsAnyLightEnabled())
 	{
-		definesCollector += " -DAUX_LIGHTS";
-
 		bool anyLightVolumetric = false;
 		bool anyLightVisible = false;
 		bool anyLightCastShadows = false;

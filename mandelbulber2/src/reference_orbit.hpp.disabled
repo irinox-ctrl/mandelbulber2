@@ -1,0 +1,157 @@
+/**
+ * Mandelbulber v2, a 3D fractal generator       ,=#MKNmMMKmmßMNWy,
+ *                                             ,B" ]L,,p%%%,,,§;, "K
+ * Copyright (C) 2025 Mandelbulber Team     §R-==%w["'~5]m%=L.=~5N
+ *                                        ,=mm=§M ]=4 yJKA"/-Nsaj  "Bw,==,,
+ * This file is part of Mandelbulber.    §R.r= jw",M  Km .mM  FW ",§=ß., ,TN
+ *                                     ,4R =%["w[N=7]J '"5=],""]]M,w,-; T=]M
+ * Mandelbulber is free software:     §R.ß~-Q/M=,=5"v"]=Qf,'§"M= =,M.§ Rz]M"Kw
+ * you can redistribute it and/or     §w "xDY.J ' -"m=====WeC=\ ""%""y=%"]"" §
+ * modify it under the terms of the    "§M=M =D=4"N #"%==A%p M§ M6  R' #"=~.4M
+ * GNU General Public License as        §W =, ][T"]C  §  § '§ e===~ U  !§[Z ]N
+ * published by the                    4M",,Jm=,"=e~  §  §  j]]""N  BmM"py=ßM
+ * Free Software Foundation,          ]§ T,M=& 'YmMMpM9MMM%=w=,,=MT]M m§;'§,
+ * either version 3 of the License,    TWw [.j"5=~N[=§%=%W,T ]R,"=="Y[LFT ]N
+ * or (at your option)                   TW=,-#"%=;[  =Q:["V""  ],,M.m == ]N
+ * any later version.                      J§"mr"] ,=,," =="""J]= M"M"]==ß"
+ *                                          §= "=C=4 §"eM "=B:m|4"]#F,§~
+ * Mandelbulber is distributed in            "9w=,,]w em%wJ '"~" ,=,,ß"
+ * the hope that it will be useful,                 . "K=  ,=RMMMßM"""
+ * but WITHOUT ANY WARRANTY;                            .'''
+ * without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * See the GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with Mandelbulber. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * ###########################################################################
+ *
+ * Authors: Claude AI Assistant
+ *
+ * PROOF OF CONCEPT: Reference Orbit Calculator for Perturbation Theory
+ *
+ * This class calculates a reference orbit using arbitrary precision arithmetic (mpfr).
+ * The reference orbit is computed at the center point and then used by GPU to calculate
+ * millions of delta orbits in parallel.
+ *
+ * SCOPE: Only 2D Mandelbrot (z² + c) for initial POC
+ * TODO: Extend to 3D/4D formulas with numerical Jacobian
+ */
+
+#ifndef MANDELBULBER2_SRC_REFERENCE_ORBIT_HPP_
+#define MANDELBULBER2_SRC_REFERENCE_ORBIT_HPP_
+
+#include <mpfr.h>
+#include <vector>
+#include <string>
+
+/**
+ * Reference orbit calculator using arbitrary precision (mpfr)
+ *
+ * Purpose: Calculate ONE reference orbit at center point with extreme precision
+ *          This orbit is shared by ALL pixels on GPU
+ *
+ * Formula: z_{n+1} = z_n² + c  (2D Mandelbrot only for POC)
+ *
+ * Precision: Configurable (default 1000 bits ≈ 300 decimal digits)
+ *            Allows zoom to 1e-200 and beyond
+ */
+class cReferenceOrbit
+{
+public:
+	/**
+	 * Constructor
+	 * @param precision_bits Number of bits for mpfr precision (default 1000)
+	 *                       1000 bits ≈ 300 decimal digits
+	 *                       Zoom limit ≈ 1e-280
+	 */
+	explicit cReferenceOrbit(int precision_bits = 1000);
+
+	/**
+	 * Destructor - cleans up mpfr variables
+	 */
+	~cReferenceOrbit();
+
+	/**
+	 * Calculate reference orbit for 2D Mandelbrot
+	 *
+	 * @param center_x X coordinate of center point (double precision input)
+	 * @param center_y Y coordinate of center point
+	 * @param max_iterations Maximum number of iterations to calculate
+	 * @param bailout Bailout radius (default 1e20 for deep zoom)
+	 *
+	 * Formula: z_{n+1} = z_n² + c, z_0 = 0
+	 *          c = center_x + i*center_y
+	 *
+	 * The orbit is stored internally and can be queried via GetReference()
+	 */
+	void CalculateMandelbrot(
+		double center_x,
+		double center_y,
+		int max_iterations,
+		double bailout = 1e20);
+
+	/**
+	 * Get reference point at specific iteration
+	 *
+	 * @param iteration Iteration number (0 to max_iterations-1)
+	 * @param[out] x X coordinate (converted to float for GPU)
+	 * @param[out] y Y coordinate (converted to float for GPU)
+	 *
+	 * Note: Converts from mpfr (arbitrary precision) to float
+	 *       Precision loss acceptable - reference is stable
+	 */
+	void GetReferenceAsFloat(int iteration, float &x, float &y) const;
+
+	/**
+	 * Get reference point as double (for validation/testing)
+	 */
+	void GetReferenceAsDouble(int iteration, double &x, double &y) const;
+
+	/**
+	 * Get number of iterations in calculated orbit
+	 */
+	int GetIterationCount() const { return iterations_calculated; }
+
+	/**
+	 * Get precision in bits
+	 */
+	int GetPrecisionBits() const { return precision_bits; }
+
+	/**
+	 * Check if orbit has been calculated
+	 */
+	bool IsCalculated() const { return iterations_calculated > 0; }
+
+	/**
+	 * Get orbit point as string (for debugging, shows full precision)
+	 */
+	std::string GetReferenceAsString(int iteration) const;
+
+	/**
+	 * Clear orbit data (free memory)
+	 */
+	void Clear();
+
+	/**
+	 * Get memory usage in bytes
+	 */
+	size_t GetMemoryUsage() const;
+
+private:
+	int precision_bits;           // mpfr precision in bits
+	int iterations_calculated;    // Number of iterations actually calculated
+
+	// Orbit data (mpfr arbitrary precision)
+	// Note: mpfr_t is a C array type, cannot use std::vector directly
+	mpfr_t* orbit_x;              // X coordinates (dynamic array)
+	mpfr_t* orbit_y;              // Y coordinates (dynamic array)
+	int max_iterations;           // Size of allocated arrays
+
+	// Disable copy (mpfr requires special handling)
+	cReferenceOrbit(const cReferenceOrbit&) = delete;
+	cReferenceOrbit& operator=(const cReferenceOrbit&) = delete;
+};
+
+#endif // MANDELBULBER2_SRC_REFERENCE_ORBIT_HPP_

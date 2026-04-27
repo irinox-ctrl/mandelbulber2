@@ -48,7 +48,7 @@ float3 CalculateBeam(__global sLightCl *light, float3 point1, float3 point2, int
 }
 
 float3 CalculateLightVector(__global sLightCl *light, float3 point, float delta, float resolution,
-	float viewDistanceMax, float *outDistance, int *randomSeed)
+	float viewDistanceMax, float *outDistance, int *randomSeed, sRenderData *renderData)
 {
 	float3 lightVector;
 	if (light->type == lightDirectional)
@@ -63,6 +63,36 @@ float3 CalculateLightVector(__global sLightCl *light, float3 point, float delta,
 			*outDistance = viewDistanceMax;
 		}
 	}
+	else if (light->type == lightPrimitive && light->primitiveId >= 0)
+	{
+		// Find primitive with matching objectId
+		float3 primitiveCenter = point; // fallback
+		bool found = false;
+
+		for (int i = 0; i < renderData->numberOfPrimitives; i++)
+		{
+			if (renderData->primitives[i].object.objectId == light->primitiveId && renderData->primitives[i].object.enable)
+			{
+				primitiveCenter = renderData->primitives[i].object.position;
+				found = true;
+				break;
+			}
+		}
+
+		if (found)
+		{
+			// Use primitive center as light source
+			float3 d = primitiveCenter - point;
+			lightVector = normalize(d);
+			*outDistance = length(d);
+		}
+		else
+		{
+			// Primitive not found, fallback
+			lightVector = (float3)(0.0f, 1.0f, 0.0f);
+			*outDistance = viewDistanceMax;
+		}
+	}
 	else
 	{
 		float3 d = CalculateBeam(light, light->position, light->target, randomSeed) - point;
@@ -74,6 +104,10 @@ float3 CalculateLightVector(__global sLightCl *light, float3 point, float delta,
 
 float LightDecay(float dist, enumLightDecayFunctionCl decayFunction)
 {
+	if (decayFunction == lightDecaySmooth)
+		return (1.0f + dist) * (1.0f + dist);  // smooth: 1/(1+d)²
+	if (decayFunction == lightDecayPhysical)
+		return dist * dist + 1.0f;  // physical: 1/(d²+1)
 	return pown(dist, (int)decayFunction + 1);
 }
 
@@ -162,6 +196,34 @@ float CalculateLightCone(__global sLightCl *light, sRenderData *renderData, floa
 	return intensity;
 }
 
+// === AUX LIGHTS: Kelvin to RGB ===
+float3 KelvinToRGB_CL(float kelvin)
+{
+	kelvin = clamp(kelvin, 1000.0f, 40000.0f);
+	float temp = kelvin / 100.0f;
+	float r, g, b;
+	if (temp <= 66.0f) r = 255.0f;
+	else { r = 329.698727446f * pow(temp - 60.0f, -0.1332047592f); r = clamp(r, 0.0f, 255.0f); }
+	if (temp <= 66.0f) { g = 99.4708025861f * log(temp) - 161.1195681661f; g = clamp(g, 0.0f, 255.0f); }
+	else { g = 288.1221695283f * pow(temp - 60.0f, -0.0755148492f); g = clamp(g, 0.0f, 255.0f); }
+	if (temp >= 66.0f) b = 255.0f;
+	else if (temp <= 19.0f) b = 0.0f;
+	else { b = 138.5177312231f * log(temp - 10.0f) - 305.0447927307f; b = clamp(b, 0.0f, 255.0f); }
+	return (float3)(r / 255.0f, g / 255.0f, b / 255.0f);
+}
+
+// === AUX LIGHTS: Atmospheric scattering ===
+float3 CalculateAtmosphericScattering_CL(float3 viewDir, float3 lightDir,
+	float dist, float density, float intensity, float3 tint)
+{
+	if (density <= 0.0f) return (float3)(0.0f, 0.0f, 0.0f);
+	float cosTheta = dot(viewDir, lightDir);
+	float phase = 0.75f * (1.0f + cosTheta * cosTheta);
+	float atten = 1.0f - exp(-dist * density * 0.01f);
+	float a = phase * atten * intensity;
+	return a * tint;
+}
+
 float3 LightShading(__constant sClInConstants *consts, sRenderData *renderData,
 	sShaderInputDataCl *input, sClCalcParams *calcParam, float3 surfaceColor,
 	__global sLightCl *light, sClGradientsCollection *gradients, float3 *outSpecular,
@@ -172,7 +234,7 @@ float3 LightShading(__constant sClInConstants *consts, sRenderData *renderData,
 	float dist = 0.0f;
 
 	float3 lightVector = CalculateLightVector(light, input->point, input->delta,
-		consts->params.resolution, consts->params.viewDistanceMax, &dist, &input->randomSeed);
+		consts->params.resolution, consts->params.viewDistanceMax, &dist, &input->randomSeed, renderData);
 
 	float intensity = 0.0f;
 	if (light->type == lightDirectional)
@@ -231,8 +293,24 @@ float3 LightShading(__constant sClInConstants *consts, sRenderData *renderData,
 	}
 #endif // SHADOWS
 
-	shading = shade * light->color * auxShadow * textureColor;
-	*outSpecular = specular * light->color * textureColor;
+	// === AUX LIGHTS: Apply color temperature ===
+	float3 lightColor = light->color;
+	if (light->useColorTemperature)
+		lightColor = KelvinToRGB_CL(light->colorTemperature);
+
+	shading = shade * lightColor * auxShadow * textureColor;
+
+	// === AUX LIGHTS: Atmospheric scattering for directional lights ===
+	if (light->type == lightDirectional && light->atmosphericDensity > 0.0f)
+	{
+		float3 viewDir = normalize(input->viewVector);
+		float3 atmosphericContrib = CalculateAtmosphericScattering_CL(
+			viewDir, lightVector, dist, light->atmosphericDensity,
+			light->atmosphericScatteringIntensity, light->atmosphericColor);
+		shading += atmosphericContrib;
+	}
+
+	*outSpecular = specular * lightColor * textureColor;
 
 	*outShadow = auxShadow;
 

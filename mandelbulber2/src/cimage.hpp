@@ -121,20 +121,9 @@ public:
 	inline quint64 getImageIndex(const quint64 x, const quint64 y) const
 	{
 #ifdef QT_DEBUG
-		// assert(x >= 0 && x < width && y >= 0 && y < height);
-		if (x < width && y < height)
-		{
+		Q_ASSERT(x < width && y < height); // FIX: was fail-unsafe (return 0 corrupteert pixel 0,0)
 #endif
-			return x + y * width;
-#ifdef QT_DEBUG
-		}
-		else
-		{
-			qCritical() << "getImageIndex out of range"
-									<< "x" << x << "y" << y;
-			return 0;
-		}
-#endif
+		return x + y * width;
 	}
 
 	inline void PutPixelImage(quint64 x, quint64 y, const sRGBFloat &pixel)

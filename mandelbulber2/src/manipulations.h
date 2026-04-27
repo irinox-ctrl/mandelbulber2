@@ -144,6 +144,8 @@ public:
 	void LightDragLeftButton(const sMouseDragTempData &dragTempData, double dx, double dy);
 	void PrimitiveDragLeftButton(const sMouseDragTempData &dragTempData, double dx, double dy);
 	void MoveLightByWheel(double deltaWheel);
+	void MovePatternLineTrapByWheel(double deltaWheel);
+	void MovePatternLineTrapByKey(int key, Qt::KeyboardModifiers modifiers);
 	void MovePrimitiveByWheel(double deltaWheel);
 
 	bool isDraggingStarted() { return mouseDragData.draggingStarted; }
@@ -186,6 +188,7 @@ signals:
 	void signalWriteInterfacePrimitives(std::shared_ptr<cParameterContainer> par);
 	void signalWriteInterfaceRandomLights(std::shared_ptr<cParameterContainer> par);
 	void signalWriteInterfaceMeasuremets(std::shared_ptr<cParameterContainer> par);
+	void signalWriteInterfacePatternLineTraps(std::shared_ptr<cParameterContainer> par);
 	void signalDisablePeriodicRefresh();
 	void signalReEnablePeriodicRefresh();
 	void signalEnableJuliaMode();

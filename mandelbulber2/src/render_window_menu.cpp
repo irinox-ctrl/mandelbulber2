@@ -563,9 +563,10 @@ void RenderWindow::slotMenuResetDocksPositions()
 	ui->dockWidget_queue_dock->hide();
 	ui->dockWidget_animation->hide();
 	ui->dockWidget_measurement->hide();
-	ui->dockWidget_gamepad_dock->hide();
+	if (ui->dockWidget_gamepad_dock != nullptr) ui->dockWidget_gamepad_dock->hide();
 
-	tabifyDockWidget(ui->dockWidget_materialEditor, ui->dockWidget_effects);
+	tabifyDockWidget(ui->dockWidget_materialEditor, ui->dockWidget_pattern_lines);
+	tabifyDockWidget(ui->dockWidget_pattern_lines, ui->dockWidget_effects);
 	tabifyDockWidget(ui->dockWidget_effects, ui->dockWidget_image_adjustments);
 	tabifyDockWidget(ui->dockWidget_image_adjustments, ui->dockWidget_rendering_engine);
 	tabifyDockWidget(ui->dockWidget_rendering_engine, ui->dockWidget_objects);
@@ -586,7 +587,8 @@ void RenderWindow::slotMenuAnimationDocksPositions()
 #endif
 	ui->dockWidget_queue_dock->hide();
 
-	tabifyDockWidget(ui->dockWidget_materialEditor, ui->dockWidget_effects);
+	tabifyDockWidget(ui->dockWidget_materialEditor, ui->dockWidget_pattern_lines);
+	tabifyDockWidget(ui->dockWidget_pattern_lines, ui->dockWidget_effects);
 	tabifyDockWidget(ui->dockWidget_effects, ui->dockWidget_image_adjustments);
 	tabifyDockWidget(ui->dockWidget_image_adjustments, ui->dockWidget_rendering_engine);
 	tabifyDockWidget(ui->dockWidget_rendering_engine, ui->dockWidget_objects);
@@ -963,7 +965,8 @@ void RenderWindow::slotUpdateDocksAndToolbarByView() const
 
 void RenderWindow::slotStackAllDocks()
 {
-	tabifyDockWidget(ui->dockWidget_materialEditor, ui->dockWidget_effects);
+	tabifyDockWidget(ui->dockWidget_materialEditor, ui->dockWidget_pattern_lines);
+	tabifyDockWidget(ui->dockWidget_pattern_lines, ui->dockWidget_effects);
 	tabifyDockWidget(ui->dockWidget_effects, ui->dockWidget_image_adjustments);
 	tabifyDockWidget(ui->dockWidget_image_adjustments, ui->dockWidget_rendering_engine);
 	tabifyDockWidget(ui->dockWidget_rendering_engine, ui->dockWidget_objects);

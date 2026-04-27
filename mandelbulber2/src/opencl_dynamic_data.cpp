@@ -538,9 +538,42 @@ void cOpenClDynamicData::BuildLightsData(
 		lightCl.type = static_cast<enumLightTypeCl>(light->type);
 		lightCl.decayFunction = static_cast<enumLightDecayFunctionCl>(light->decayFunction);
 
+		// === AUX LIGHTS UPGRADE ===
+		lightCl.useColorTemperature = light->useColorTemperature ? 1 : 0;
+		lightCl.colorTemperature = light->colorTemperature;
+		lightCl.shadowType = light->shadowType;
+		lightCl.shadowSamples = light->shadowSamples;
+		lightCl.shadowSoftness = light->shadowSoftness;
+		lightCl.shadowBias = light->shadowBias;
+		lightCl.useShadowNoise = light->useShadowNoise ? 1 : 0;
+		lightCl.affectDiffuse = light->affectDiffuse ? 1 : 0;
+		lightCl.affectSpecular = light->affectSpecular ? 1 : 0;
+		lightCl.affectVolumetric = light->affectVolumetric ? 1 : 0;
+		lightCl.lightGroup = light->lightGroup;
+		lightCl.useAreaLight = light->useAreaLight ? 1 : 0;
+		lightCl.areaLightRadius = light->areaLightRadius;
+		lightCl.areaLightSamples = light->areaLightSamples;
+		lightCl.angularDiameter = light->angularDiameter;
+		lightCl.useAngularSize = light->useAngularSize ? 1 : 0;
+		lightCl.atmosphericDensity = light->atmosphericDensity;
+		lightCl.atmosphericScatteringIntensity = light->atmosphericScatteringIntensity;
+		lightCl.atmosphericColor = toClFloat3(light->atmosphericColor);
+		lightCl.penumbraAngle = light->penumbraAngle;
+		lightCl.penumbraSoftness = light->penumbraSoftness;
+		lightCl.projectionSoftEdge = light->projectionSoftEdge;
+		lightCl.projectionFeather = light->projectionFeather;
+		lightCl.projectionBlendMode = light->projectionBlendMode;
+		lightCl.beamLength = light->beamLength;
+		lightCl.beamFalloff = light->beamFalloff;
+		lightCl.beamVolumeSamples = light->beamVolumeSamples;
+		lightCl.beamUseNoise = light->beamUseNoise ? 1 : 0;
+		lightCl.beamNoiseScale = light->beamNoiseScale;
+		lightCl.beamNoiseStrength = light->beamNoiseStrength;
+
 		QString textureName = light->colorTexture.GetFileName();
 		lightCl.colorTextureIndex =
 			textureIndexes.contains(textureName) ? textureIndexes[textureName] : -1;
+		lightCl.primitiveId = light->primitiveId;
 
 		data.append(reinterpret_cast<char *>(&lightCl), sizeof(lightCl));
 		totalDataOffset += sizeof(lightCl);

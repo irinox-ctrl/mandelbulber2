@@ -35,7 +35,6 @@
 #include "fractparams.hpp"
 #include "material.h"
 #include "render_worker.hpp"
-#include "single_trap_light_shader.hpp"
 
 sRGBAFloat cRenderWorker::ObjectShader(const sShaderInputData &_input, sRGBAFloat *surfaceColour,
 	sRGBAFloat *specularOut, sRGBFloat *iridescenceOut, sRGBAFloat *outShadow,
@@ -139,16 +138,25 @@ sRGBAFloat cRenderWorker::ObjectShader(const sShaderInputData &_input, sRGBAFloa
 	sRGBAFloat auxLightsSpecular;
 	auxLights = AuxLightsShader(input, colour, gradients, &auxLightsSpecular, outShadow);
 
-	// fake orbit trap lights
+	// Single-trap / pattern lines / fake lights: surface adds each enabled system (volumetric uses
+	// !singleTrapLights for fake lights only; surface matches single-trap + pattern as additive).
 	sRGBAFloat fakeLights(0.0, 0.0, 0.0, 0.0);
 	sRGBAFloat fakeLightsSpecular(0.0, 0.0, 0.0, 0.0);
-	if (params->fakeLightsEnabled && !params->singleTrapLight0.enabled)
+	sRGBAFloat singleTrapLights(0.0, 0.0, 0.0, 0.0);
+	sRGBAFloat patternLineTraps(0.0, 0.0, 0.0, 0.0);
+
+	if (params->singleTrapLights.enabled)
+	{
+		singleTrapLights = SingleTrapLights(input, colour);
+	}
+	if (params->patternLineTraps.enabled)
+	{
+		patternLineTraps = PatternLineTraps(input, colour);
+	}
+	if (params->fakeLightsEnabled)
 	{
 		fakeLights = FakeLights(input, colour, &fakeLightsSpecular);
 	}
-
-	// Single Trap Light v1 (apart systeem - additief, geen materiaal-modulatie)
-	sRGBFloat singleTrap = SingleTrapLightEvaluate(input.point, params->singleTrapLight0);
 
 	// luminosity
 	sRGBAFloat luminosity;
@@ -213,18 +221,13 @@ sRGBAFloat cRenderWorker::ObjectShader(const sShaderInputData &_input, sRGBAFloa
 	output.G = envMapping.G + (fillLight.G + ambient2.G) * colour.G;
 	output.B = envMapping.B + (fillLight.B + ambient2.B) * colour.B;
 
-	output.R += (auxLights.R + fakeLights.R) * colour.R;
-	output.G += (auxLights.G + fakeLights.G) * colour.G;
-	output.B += (auxLights.B + fakeLights.B) * colour.B;
+	output.R += (auxLights.R + fakeLights.R) * colour.R + singleTrapLights.R + patternLineTraps.R;
+	output.G += (auxLights.G + fakeLights.G) * colour.G + singleTrapLights.G + patternLineTraps.G;
+	output.B += (auxLights.B + fakeLights.B) * colour.B + singleTrapLights.B + patternLineTraps.B;
 
 	output.R += luminosity.R;
 	output.G += luminosity.G;
 	output.B += luminosity.B;
-
-	// Additive contribution from Single Trap Light (no material modulation)
-	output.R += singleTrap.R;
-	output.G += singleTrap.G;
-	output.B += singleTrap.B;
 
 	output.A = alpha;
 

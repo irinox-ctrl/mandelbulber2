@@ -502,8 +502,8 @@ void CRotationMatrix44::RotateYZ(double angle)
 		const double c = cos(angle);
 		rot.m22 = c;
 		rot.m23 = s;
-		rot.m11 = -s;
-		rot.m31 = c;
+		rot.m32 = -s; // FIX: was m11, moet m32 zijn (YZ rotation)
+		rot.m33 = c;  // FIX: was m31, moet m33 zijn
 		rot.m11 = 1.0;
 		rot.m44 = 1.0;
 		matrix = matrix * rot;

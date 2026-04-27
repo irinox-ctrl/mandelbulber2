@@ -610,7 +610,8 @@ float4 VolumetricShader(__constant sClInConstants *consts, sRenderData *renderDa
 #endif
 
 #ifdef FAKE_LIGHTS
-		// fake lights (orbit trap)
+		// fake lights (orbit trap) — match CPU: single-trap off and fake lights enabled
+		if (!consts->params.singleTrapLights.enabled && consts->params.fakeLightsEnabled)
 		{
 			// V2: Adjust orbit trap position for all modes using per-mode params
 			float3 orbitTrapAdjusted;
@@ -722,6 +723,147 @@ float4 VolumetricShader(__constant sClInConstants *consts, sRenderData *renderDa
 			calcParam->orbitTrapIndex = originalOrbitTrapIndex;
 		}
 #endif // FAKE_LIGHTS
+
+		// Single Trap Lights (volumetric)
+		if (consts->params.singleTrapLights.enabled)
+		{
+			int soloL = consts->params.singleTrapLights.soloLayerIndex;
+			int combine = consts->params.singleTrapLights.combineMode;
+			float3 stlAccum = (float3)(0.0f, 0.0f, 0.0f);
+			for (int i = 0; i < consts->params.singleTrapLights.activeLayerCount; i++)
+			{
+				__constant sSingleTrapLightLayerCl *layer = &consts->params.singleTrapLights.layers[i];
+				if (!layer->enabled) continue;
+				if (soloL > 0 && soloL != i + 1) continue;
+
+				float3 effectivePosition = layer->position.xyz;
+				if (!layer->preTransformed)
+				{
+					if (layer->positionMode == 1)
+						effectivePosition += consts->params.camera;
+					else if (layer->positionMode == 2)
+						effectivePosition += consts->params.common.fractalPosition;
+					else if (layer->positionMode == 3)
+						effectivePosition += consts->params.target;
+				}
+
+				// Apply animation
+				float time = (float)consts->params.frameNo;
+				float animSize = layer->size;
+				if (layer->animOrbitSpeed != 0.0f || layer->animPulsateSpeed != 0.0f)
+				{
+					float orbitAngle = time * layer->animOrbitSpeed * 0.01f + i * 0.7f;
+					effectivePosition.x += cos(orbitAngle) * layer->animOrbitRadius;
+					effectivePosition.y += sin(orbitAngle) * layer->animOrbitRadius;
+
+					float pulsate = 1.0f + sin(time * layer->animPulsateSpeed * 0.1f + i * 1.3f) * layer->animPulsateAmount;
+					animSize *= pulsate;
+				}
+
+				if (layer->maxDistance > 1e-30f)
+				{
+					float rs = fabs(layer->relativeSize);
+					float sz = max(fabs(animSize), fabs(layer->size2)) * rs + fabs(layer->edgeSoftness) * rs;
+					float margin = sz + layer->maxDistance * rs + fabs(layer->animOrbitRadius);
+					float3 dC = point - effectivePosition;
+					if (length(dC) > margin * 2.8f) continue;
+				}
+
+				float3 adjustedPoint = point - effectivePosition + layer->position.xyz * layer->relativeSize;
+				float3 scaledPoint = adjustedPoint / layer->relativeSize;
+				float rawDist = SingleTrapLightDistanceCl(scaledPoint, layer, animSize) * layer->relativeSize;
+				float dist = rawDist;
+				if (dist < 0.0f) dist = 0.0f;
+
+				float maxDistFade = layer->maxDistance;
+				float volFade = 1.0f;
+				if (maxDistFade > 1e-30f && dist > 0.0f)
+				{
+					float tVol = dist / maxDistFade;
+					if (tVol >= 1.0f) continue;
+					tVol = tVol * tVol * (3.0f - 2.0f * tVol);
+					volFade = 1.0f - tVol;
+				}
+
+				float blur = layer->blur;
+				float distForFalloff = dist;
+				if (blur > 1e-20f)
+				{
+					float blurScale = blur * (0.4f + 0.65f * fabs(layer->relativeSize));
+					distForFalloff = sqrt(dist * dist + blurScale * blurScale);
+				}
+				float effectiveSharpening =
+					layer->sharpening / (1.0f + blur * 1.75f + blur * blur * 0.4f);
+				float effectiveDist = distForFalloff;
+				float falloff;
+				int ft = layer->falloffType;
+				if (ft == 1)
+				{
+					falloff = 1.0f / (1.0f + effectiveDist * effectiveDist * effectiveSharpening);
+				}
+				else if (ft == 2)
+				{
+					falloff = max(0.0f, 1.0f - effectiveDist * sqrt(effectiveSharpening) * 1.35f);
+				}
+				else if (ft == 3)
+				{
+					falloff = exp(-effectiveDist * sqrt(effectiveSharpening) * 1.15f);
+				}
+				else if (ft == 4)
+				{
+					float edge = 1.0f / sqrt(effectiveSharpening + 1e-10f);
+					float tSm = effectiveDist / edge;
+					if (tSm >= 1.0f) falloff = 0.0f;
+					else if (tSm <= 0.0f) falloff = 1.0f;
+					else falloff = 1.0f - tSm * tSm * (3.0f - 2.0f * tSm);
+				}
+				else
+				{
+					falloff = exp(-effectiveDist * effectiveDist * effectiveSharpening);
+				}
+				if (layer->softness > 1e-10f && distForFalloff > 0.0f)
+					falloff *= exp(-distForFalloff * layer->softness * 1.2f);
+				float solidBoost = (rawDist < 0.0f) ? layer->solidIntensity : 1.0f;
+				float innerGlow = 1.0f;
+				if (rawDist < 0.0f)
+				{
+					float depth = min(1.0f, -rawDist / 2.0f);
+					innerGlow = 1.0f + layer->softness * depth * 3.2f;
+				}
+				float light =
+					layer->intensity * layer->visibility * falloff * solidBoost * innerGlow * volFade;
+				float gradT = 0.0f;
+				if (layer->maxDistance > 1e-30f)
+				{
+					gradT = dist / layer->maxDistance;
+					if (gradT > 1.0f) gradT = 1.0f;
+				}
+				float3 layerColor = layer->color.xyz * (1.0f - gradT) + layer->gradientColor.xyz * gradT;
+				// Orbit coloring: same distance proxy as CPU volumetric (surface/GPU use orbitTrapR).
+				if (layer->coloringMode == 1 || layer->coloringMode == 2)
+				{
+					layerColor *= (1.0f - gradT);
+				}
+
+				float3 contrib = light * layerColor;
+				if (combine == 1)
+				{
+					stlAccum.x = max(stlAccum.x, contrib.x);
+					stlAccum.y = max(stlAccum.y, contrib.y);
+					stlAccum.z = max(stlAccum.z, contrib.z);
+				}
+				else
+				{
+					stlAccum += contrib;
+				}
+			}
+			output += stlAccum * step;
+		}
+
+		if (consts->params.patternLineTraps.enabled)
+		{
+			output += PatternLineTrapsShader(consts, point) * step;
+		}
 
 		if (totalOpacity > 1.0f) totalOpacity = 1.0f;
 		if (out4.s3 > 1.0f) out4.s3 = 1.0f; // alpha channel

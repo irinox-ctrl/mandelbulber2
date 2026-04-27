@@ -2,6 +2,29 @@
 This folder contains maintaining and packaging commands & scripts for the mandelbulber project.
 This file describes how to work with these commands & scripts and when to use them.
 
+### (0) Structure Validation (NEW!)
+**analyzeStructures.py** - Comprehensive validation tool for core data structures
+- Validates sCommonParams (CPU/OpenCL alignment)
+- Validates sClCalcParams (OpenCL runtime structure)
+- Validates morph type enumeration
+- Finds unused parameters
+- Checks initialization patterns
+- See `ANALYZE_STRUCTURES_README.md` for full documentation
+
+```bash
+# Quick validation
+./tools/analyzeStructures.py --validate-all
+
+# Check specific structures
+./tools/analyzeStructures.py --check-commonparams
+./tools/analyzeStructures.py --check-calcparams
+./tools/analyzeStructures.py --check-morph
+
+# Find issues
+./tools/analyzeStructures.py --find-unused-params
+./tools/analyzeStructures.py --report
+```
+
 ### (1) Ongoing changes
 The project should be kept updated and clean with the following steps (when necessary):
 - 1. Refactoring of the codebase
