@@ -8394,42 +8394,7 @@ of lights:</string>
             <widget class="MyComboBox" name="comboBox_single_trap_preset">
              <item>
               <property name="text">
-               <string>Zon</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>Neon</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>Vuur</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>IJs</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>Onderwater</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>Disco</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>Film Noir</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>Magisch</string>
+               <string>Custom</string>
               </property>
              </item>
             </widget>

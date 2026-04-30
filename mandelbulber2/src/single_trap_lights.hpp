@@ -55,7 +55,20 @@ enum enumSingleTrapLightShape
 	singleTrapLightShapeCross = 10,
 	singleTrapLightShapeCylinder = 11,
 	singleTrapLightShapePlane = 12,
-	singleTrapLightShapeDisc = 13
+	singleTrapLightShapeDisc = 13,
+	singleTrapLightShapeCone = 14,
+	singleTrapLightShapeHexagon = 15,
+	singleTrapLightShapeTriangle = 16,
+	singleTrapLightShapeRoundedBox = 17,
+	singleTrapLightShapeDiamond = 18,
+	singleTrapLightShapeHollowSphere = 19,
+	singleTrapLightShapeHollowCube = 20,
+	singleTrapLightShapeEllipsoid = 21,
+	singleTrapLightShapeSuperellipsoid = 22,
+	singleTrapLightShapeStar5 = 23,
+	singleTrapLightShapeStar6 = 24,
+	singleTrapLightShapeGear = 25,
+	singleTrapLightShapeHeart = 26
 };
 
 enum enumSingleTrapLightColoringMode

@@ -151,6 +151,143 @@ double SingleTrapLightDistance(CVector3 point, const sSingleTrapLightLayer &laye
 			dist = sqrt(dx * dx + dy * dy) + std::min(std::max(d1, d2), 0.0);
 			break;
 		}
+		case params::singleTrapLightShapeCone:
+		{
+			// Cone: apex at (-size2, 0, 0), base at (size2, 0, 0) with radius size
+			double qx = sqrt(delta.y * delta.y + delta.z * delta.z);
+			double qy = delta.x;
+			double tix = 0.0, tiy = -layer.size2;
+			double bax = layer.size, bay = layer.size2;
+			double cbx = tix - bax, cby = tiy - bay;
+			double dotCb = cbx * cbx + cby * cby;
+			double dotQCb = (qx - bax) * cbx + (qy - bay) * cby;
+			double h = std::max(0.0, std::min(1.0, dotQCb / dotCb));
+			double rx = qx - bax - cbx * h;
+			double ry = qy - bay - cby * h;
+			dist = sqrt(rx * rx + ry * ry);
+			break;
+		}
+		case params::singleTrapLightShapeHexagon:
+		{
+			// 2D hexagon in YZ, extruded along X
+			const double k = sqrt(3.0);
+			double pz = fabs(delta.z);
+			double py = fabs(delta.y);
+			double d2 = std::max(pz * k + py * 0.5, py) - layer.size;
+			double dx = fabs(delta.x) - layer.size2;
+			double dOut = sqrt(std::max(d2, 0.0) * std::max(d2, 0.0) + std::max(dx, 0.0) * std::max(dx, 0.0));
+			double dIn = std::min(std::max(d2, dx), 0.0);
+			dist = dOut + dIn;
+			break;
+		}
+		case params::singleTrapLightShapeTriangle:
+		{
+			// 2D equilateral triangle in YZ, extruded along X
+			const double k = sqrt(3.0);
+			double pz = fabs(delta.z);
+			double py = delta.y;
+			double d2 = std::max(pz * k + py, -py + pz * k) * 0.5 - layer.size;
+			double dx = fabs(delta.x) - layer.size2;
+			double dOut = sqrt(std::max(d2, 0.0) * std::max(d2, 0.0) + std::max(dx, 0.0) * std::max(dx, 0.0));
+			double dIn = std::min(std::max(d2, dx), 0.0);
+			dist = dOut + dIn;
+			break;
+		}
+		case params::singleTrapLightShapeRoundedBox:
+		{
+			CVector3 q = CVector3(fabs(delta.x), fabs(delta.y), fabs(delta.z)) - CVector3(layer.size, layer.size, layer.size) + CVector3(layer.size2, layer.size2, layer.size2);
+			dist = sqrt(std::max(q.x, 0.0) * std::max(q.x, 0.0) + std::max(q.y, 0.0) * std::max(q.y, 0.0) + std::max(q.z, 0.0) * std::max(q.z, 0.0))
+				+ std::min(std::max(q.x, std::max(q.y, q.z)), 0.0) - layer.size2;
+			break;
+		}
+		case params::singleTrapLightShapeDiamond:
+		{
+			// Octahedron: |x|+|y|+|z| = size
+			dist = (fabs(delta.x) + fabs(delta.y) + fabs(delta.z) - layer.size) / sqrt(3.0);
+			break;
+		}
+		case params::singleTrapLightShapeHollowSphere:
+		{
+			dist = fabs(delta.Length() - layer.size);
+			break;
+		}
+		case params::singleTrapLightShapeHollowCube:
+		{
+			CVector3 q = CVector3(fabs(delta.x), fabs(delta.y), fabs(delta.z)) - CVector3(layer.size, layer.size, layer.size);
+			dist = fabs(sqrt(std::max(q.x, 0.0) * std::max(q.x, 0.0) + std::max(q.y, 0.0) * std::max(q.y, 0.0) + std::max(q.z, 0.0) * std::max(q.z, 0.0))
+				+ std::min(std::max(q.x, std::max(q.y, q.z)), 0.0));
+			break;
+		}
+		case params::singleTrapLightShapeEllipsoid:
+		{
+			// Approximate ellipsoid: size=Y radius, size2=Z radius, X=(size+size2)/2
+			CVector3 r = CVector3((layer.size + layer.size2) * 0.5, layer.size, layer.size2);
+			CVector3 p = CVector3(delta.x / r.x, delta.y / r.y, delta.z / r.z);
+			dist = (p.Length() - 1.0) * std::min(r.x, std::min(r.y, r.z));
+			break;
+		}
+		case params::singleTrapLightShapeSuperellipsoid:
+		{
+			// Superellipsoid with n=4: size=Y scale, size2=Z scale, X=(size+size2)/2
+			CVector3 r = CVector3((layer.size + layer.size2) * 0.5, layer.size, layer.size2);
+			double n = 4.0;
+			dist = pow(pow(fabs(delta.x / r.x), n) + pow(fabs(delta.y / r.y), n)
+							 + pow(fabs(delta.z / r.z), n), 1.0 / n) - 1.0;
+			break;
+		}
+		case params::singleTrapLightShapeStar5:
+		{
+			// 2D 5-point star in YZ, extruded along X (simple approximation)
+			double angle = atan2(delta.z, delta.y);
+			double r = sqrt(delta.y * delta.y + delta.z * delta.z);
+			double starR = layer.size * (0.5 + 0.5 * cos(5.0 * angle)) * 0.6 + layer.size * 0.2;
+			double d2 = r - starR;
+			double dx = fabs(delta.x) - layer.size2;
+			double dOut = sqrt(std::max(d2, 0.0) * std::max(d2, 0.0) + std::max(dx, 0.0) * std::max(dx, 0.0));
+			double dIn = std::min(std::max(d2, dx), 0.0);
+			dist = dOut + dIn;
+			break;
+		}
+		case params::singleTrapLightShapeStar6:
+		{
+			// 2D 6-point star in YZ, extruded along X (simple approximation)
+			double angle = atan2(delta.z, delta.y);
+			double r = sqrt(delta.y * delta.y + delta.z * delta.z);
+			double starR = layer.size * (0.5 + 0.5 * cos(6.0 * angle)) * 0.6 + layer.size * 0.2;
+			double d2 = r - starR;
+			double dx = fabs(delta.x) - layer.size2;
+			double dOut = sqrt(std::max(d2, 0.0) * std::max(d2, 0.0) + std::max(dx, 0.0) * std::max(dx, 0.0));
+			double dIn = std::min(std::max(d2, dx), 0.0);
+			dist = dOut + dIn;
+			break;
+		}
+		case params::singleTrapLightShapeGear:
+		{
+			// 2D gear in YZ, extruded along X (simple approximation)
+			double angle = atan2(delta.z, delta.y);
+			double r = sqrt(delta.y * delta.y + delta.z * delta.z);
+			double teeth = 8.0;
+			double gearR = layer.size * (0.7 + 0.3 * cos(teeth * angle));
+			double d2 = r - gearR;
+			double dx = fabs(delta.x) - layer.size2;
+			double dOut = sqrt(std::max(d2, 0.0) * std::max(d2, 0.0) + std::max(dx, 0.0) * std::max(dx, 0.0));
+			double dIn = std::min(std::max(d2, dx), 0.0);
+			dist = dOut + dIn;
+			break;
+		}
+		case params::singleTrapLightShapeHeart:
+		{
+			// 2D heart in YZ, extruded along X (simple approximation)
+			double y = delta.y / layer.size;
+			double z = delta.z / layer.size;
+			double d2 = pow(y * y + z * z - 1.0, 3.0) - y * y * z * z * z;
+			d2 = (d2 > 0.0 ? 1.0 : -1.0) * pow(fabs(d2), 1.0 / 6.0) * layer.size;
+			double dx = fabs(delta.x) - layer.size2;
+			double dOut = sqrt(std::max(d2, 0.0) * std::max(d2, 0.0) + std::max(dx, 0.0) * std::max(dx, 0.0));
+			double dIn = std::min(std::max(d2, dx), 0.0);
+			dist = dOut + dIn;
+			break;
+		}
 	}
 	if (layer.edgeSoftness > 0.0)
 	{

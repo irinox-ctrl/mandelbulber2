@@ -114,6 +114,7 @@ private slots:
 	void slotPressedButtonSingleTrapPresetApply();
 	void slotPressedButtonSingleTrapResetAll();
 	void slotChangedSingleTrapLightShape(int index) const;
+	void slotSingleTrapLayerEnabledToggled(bool enabled);
 
 private:
 	void ConnectSignals() const;

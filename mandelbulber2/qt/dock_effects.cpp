@@ -47,6 +47,8 @@
 #include <QPushButton>
 #include <QRegularExpression>
 
+#include "my_group_box.h"
+
 #include "dock_image_adjustments.h"
 #include "navigator_window.h"
 
@@ -93,8 +95,16 @@ cDockEffects::cDockEffects(QWidget *parent)
 
 bool cDockEffects::SingleTrapShapeUsesSecondSize(int shapeIndex)
 {
-	// Plane (12) only uses primary size; torus–disc need thickness / secondary radius.
-	return shapeIndex >= 6 && shapeIndex != 12;
+	// Shapes that don't use size2: point–cube (0-5), plane (12), cone (14),
+	// diamond (18), hollowSphere (19), hollowCube (20)
+	switch (shapeIndex)
+	{
+		case 0: case 1: case 2: case 3: case 4: case 5:
+		case 12: case 14: case 18: case 19: case 20:
+			return false;
+		default:
+			return true;
+	}
 }
 
 void cDockEffects::EnsureSingleTrapEngineOnAndActiveThrough(int layerIndex)
@@ -329,6 +339,14 @@ void cDockEffects::ConnectSignals() const
 		{
 			connect(shapeCombo, SIGNAL(currentIndexChanged(int)), this,
 				SLOT(slotChangedSingleTrapLightShape(int)));
+		}
+
+		MyGroupBox *groupCheck = findChild<MyGroupBox *>(
+			QString("groupCheck_single_trap_light_%1_enabled").arg(i));
+		if (groupCheck)
+		{
+			connect(groupCheck, SIGNAL(clicked(bool)), this,
+				SLOT(slotSingleTrapLayerEnabledToggled(bool)));
 		}
 	}
 
@@ -1084,13 +1102,15 @@ void cDockEffects::ResetSingleTrapLightLayer(int layer)
 
 void cDockEffects::ApplySingleTrapPreset(int preset)
 {
+	// Only "Custom" (0) remains — reset all layers to defaults and enable the system.
+	if (preset != 0) return;
+
 	gMainInterface->SynchronizeInterface(gPar, gParFractal, qInterface::read);
 	gPar->Set("fake_lights_enabled", false);
 	gPar->Set("single_trap_lights_enabled", true);
 	if (ui->groupCheck_single_trap_lights_enabled)
 		ui->groupCheck_single_trap_lights_enabled->setChecked(true);
 
-	// Reset all first
 	for (int layer = 1; layer <= 20; layer++)
 	{
 		ResetSingleTrapLightLayer(layer);
@@ -1100,353 +1120,14 @@ void cDockEffects::ApplySingleTrapPreset(int preset)
 	if (ui->spinboxInt_single_trap_lights_solo_layer)
 		ui->spinboxInt_single_trap_lights_solo_layer->setValue(0);
 
-	const CVector3 camera = gPar->Get<CVector3>("camera");
-	const CVector3 target = gPar->Get<CVector3>("target");
-	CVector3 viewDir = target - camera;
-	const double camTgtLen = viewDir.Length();
-	if (camTgtLen < 1e-20)
-		viewDir = CVector3(0.0, 0.0, 1.0);
-	else
-		viewDir.Normalize();
-	// Robust orthonormal basis
-	CVector3 worldUp(0.0, 0.0, 1.0);
-	if (fabs(viewDir.z) > 0.99) worldUp = CVector3(0.0, 1.0, 0.0);
-	CVector3 right = worldUp.Cross(viewDir);
-	right.Normalize();
-	CVector3 up = viewDir.Cross(right);
-	up.Normalize();
-	// Scale rigs with camera–target distance so presets stay readable on any zoom.
-	const double fwd = std::max(0.48 * camTgtLen, 1.5);
-	const double lat = std::max(0.32 * camTgtLen, 1.05);
-	const double vert = std::max(0.26 * camTgtLen, 0.9);
-	const double szSphere = std::max(0.35 * fwd, 1.15);
-
-	switch (preset)
-	{
-		case 0: // Zon — high-key + rim (add)
-		{
-			gPar->Set("single_trap_lights_combine_mode", 0);
-			if (ui->comboBox_single_trap_lights_combine_mode)
-				ui->comboBox_single_trap_lights_combine_mode->setCurrentIndex(0);
-
-			gPar->Set("single_trap_light_1_enabled", true);
-			gPar->Set("single_trap_light_1_shape", 4);
-			gPar->Set("single_trap_light_1_position", camera + viewDir * fwd * 1.25 + up * vert * 2.0);
-			gPar->Set("single_trap_light_1_size", szSphere * 2.0);
-			gPar->Set("single_trap_light_1_intensity", 3.4);
-			gPar->Set("single_trap_light_1_solid_intensity", 1.35);
-			gPar->Set("single_trap_light_1_visibility", 1.0);
-			gPar->Set("single_trap_light_1_color", sRGB(65535, 58000, 42000));
-			gPar->Set("single_trap_light_1_gradient_color", sRGB(65535, 42000, 18000));
-			gPar->Set("single_trap_light_1_max_distance", 0.82);
-			gPar->Set("single_trap_light_1_sharpening", 0.55);
-			gPar->Set("single_trap_light_1_falloff_type", 1);
-			gPar->Set("single_trap_light_1_softness", 0.25);
-			gPar->Set("single_trap_light_1_blur", 0.08);
-
-			gPar->Set("single_trap_light_2_enabled", true);
-			gPar->Set("single_trap_light_2_shape", 4);
-			gPar->Set("single_trap_light_2_position", camera + viewDir * fwd * 0.72 - right * lat * 1.35 + up * vert * 0.6);
-			gPar->Set("single_trap_light_2_size", szSphere * 1.15);
-			gPar->Set("single_trap_light_2_intensity", 1.85);
-			gPar->Set("single_trap_light_2_visibility", 1.0);
-			gPar->Set("single_trap_light_2_color", sRGB(35000, 48000, 65535));
-			gPar->Set("single_trap_light_2_gradient_color", sRGB(25000, 38000, 65535));
-			gPar->Set("single_trap_light_2_max_distance", 0.62);
-			gPar->Set("single_trap_light_2_sharpening", 0.5);
-			gPar->Set("single_trap_light_2_falloff_type", 3);
-			gPar->Set("single_trap_light_2_softness", 0.2);
-
-			gPar->Set("single_trap_light_3_enabled", true);
-			gPar->Set("single_trap_light_3_shape", 4);
-			gPar->Set("single_trap_light_3_position", camera + viewDir * fwd * 0.35 + up * vert * 2.4 + right * lat * 0.45);
-			gPar->Set("single_trap_light_3_size", szSphere * 0.75);
-			gPar->Set("single_trap_light_3_intensity", 2.5);
-			gPar->Set("single_trap_light_3_visibility", 1.0);
-			gPar->Set("single_trap_light_3_color", sRGB(65535, 52000, 38000));
-			gPar->Set("single_trap_light_3_gradient_color", sRGB(65535, 40000, 22000));
-			gPar->Set("single_trap_light_3_max_distance", 0.48);
-			gPar->Set("single_trap_light_3_sharpening", 0.95);
-			gPar->Set("single_trap_light_3_falloff_type", 2);
-			break;
-		}
-		case 1: // Neon — max combine, saturated tubes
-		{
-			gPar->Set("single_trap_lights_combine_mode", 1);
-			if (ui->comboBox_single_trap_lights_combine_mode)
-				ui->comboBox_single_trap_lights_combine_mode->setCurrentIndex(1);
-
-			sRGB colors[6] = {
-				sRGB(65535, 0, 65535), sRGB(0, 65535, 65535), sRGB(65535, 65535, 0),
-				sRGB(65535, 0, 30000), sRGB(0, 65535, 20000), sRGB(65535, 40000, 0),
-			};
-			for (int i = 0; i < 6; i++)
-			{
-				QString p = QString("single_trap_light_%1").arg(i + 1);
-				gPar->Set(p + "_enabled", true);
-				gPar->Set(p + "_shape", 1);
-				double angle = i * M_PI / 3.0;
-				CVector3 pos = camera + viewDir * fwd * 1.05 + right * cos(angle) * lat * 1.55 + up * sin(angle) * lat * 1.55;
-				gPar->Set(p + "_position", pos);
-				gPar->Set(p + "_rotation", CVector3(0.0, angle * 180.0 / M_PI, 20.0 + i * 12.0));
-				gPar->Set(p + "_size", std::max(0.55, lat * 0.22));
-				gPar->Set(p + "_intensity", 2.85);
-				gPar->Set(p + "_solid_intensity", 1.25);
-				gPar->Set(p + "_visibility", 1.0);
-				gPar->Set(p + "_color", colors[i]);
-				gPar->Set(p + "_gradient_color", colors[(i + 1) % 6]);
-				gPar->Set(p + "_max_distance", 0.45);
-				gPar->Set(p + "_sharpening", 0.85);
-				gPar->Set(p + "_blur", 0.18);
-				gPar->Set(p + "_falloff_type", i % 2);
-				gPar->Set(p + "_coloring_mode", 1);
-			}
-			break;
-		}
-		case 2: // Vuur — clustered embers + soft halo torus
-		{
-			gPar->Set("single_trap_lights_combine_mode", 0);
-			if (ui->comboBox_single_trap_lights_combine_mode)
-				ui->comboBox_single_trap_lights_combine_mode->setCurrentIndex(0);
-
-			sRGB fireColors[5] = {
-				sRGB(65535, 50000, 0), sRGB(65535, 30000, 0), sRGB(65535, 15000, 0),
-				sRGB(65535, 60000, 20000), sRGB(65535, 20000, 0),
-			};
-			for (int i = 0; i < 5; i++)
-			{
-				QString p = QString("single_trap_light_%1").arg(i + 1);
-				gPar->Set(p + "_enabled", true);
-				gPar->Set(p + "_shape", 4);
-				double t = double(i) / 4.0;
-				CVector3 pos = camera + viewDir * fwd * (0.65 + t * 0.55) + right * (double(i) - 2.0) * lat * 0.42
-											 + up * (vert * 0.55 + t * vert * 1.1);
-				gPar->Set(p + "_position", pos);
-				gPar->Set(p + "_size", szSphere * (0.85 + t * 0.35));
-				gPar->Set(p + "_intensity", 2.0 + t * 1.1);
-				gPar->Set(p + "_solid_intensity", 1.5 + t * 0.4);
-				gPar->Set(p + "_visibility", 1.0);
-				gPar->Set(p + "_color", fireColors[i]);
-				gPar->Set(p + "_gradient_color", fireColors[(i + 1) % 5]);
-				gPar->Set(p + "_max_distance", 0.68);
-				gPar->Set(p + "_softness", 0.35 + t * 0.45);
-				gPar->Set(p + "_sharpening", 0.45);
-				gPar->Set(p + "_falloff_type", t > 0.5 ? 3 : 0);
-				gPar->Set(p + "_anim_pulsate_speed", 0.8 + t * 0.6);
-				gPar->Set(p + "_anim_pulsate_amount", 0.12 + t * 0.08);
-			}
-			gPar->Set("single_trap_light_6_enabled", true);
-			gPar->Set("single_trap_light_6_shape", 6);
-			gPar->Set("single_trap_light_6_position", camera + viewDir * fwd * 0.55);
-			gPar->Set("single_trap_light_6_rotation", CVector3(90.0, 0.0, 0.0));
-			gPar->Set("single_trap_light_6_size", std::max(0.9, lat * 0.5));
-			gPar->Set("single_trap_light_6_size2", std::max(0.12, lat * 0.07));
-			gPar->Set("single_trap_light_6_intensity", 1.1);
-			gPar->Set("single_trap_light_6_max_distance", 0.88);
-			gPar->Set("single_trap_light_6_sharpening", 0.35);
-			gPar->Set("single_trap_light_6_softness", 0.55);
-			gPar->Set("single_trap_light_6_blur", 0.35);
-			gPar->Set("single_trap_light_6_color", sRGB(65535, 35000, 4000));
-			gPar->Set("single_trap_light_6_gradient_color", sRGB(65535, 20000, 0));
-			gPar->Set("single_trap_light_6_falloff_type", 4);
-			break;
-		}
-		case 3: // IJs — cool key + fill + wide disc bounce
-		{
-			gPar->Set("single_trap_lights_combine_mode", 0);
-			if (ui->comboBox_single_trap_lights_combine_mode)
-				ui->comboBox_single_trap_lights_combine_mode->setCurrentIndex(0);
-
-			gPar->Set("single_trap_light_1_enabled", true);
-			gPar->Set("single_trap_light_1_shape", 4);
-			gPar->Set("single_trap_light_1_position", camera + viewDir * fwd * 1.1 + up * vert * 1.85);
-			gPar->Set("single_trap_light_1_size", szSphere * 1.9);
-			gPar->Set("single_trap_light_1_intensity", 2.6);
-			gPar->Set("single_trap_light_1_visibility", 1.0);
-			gPar->Set("single_trap_light_1_color", sRGB(48000, 62000, 65535));
-			gPar->Set("single_trap_light_1_gradient_color", sRGB(38000, 52000, 65535));
-			gPar->Set("single_trap_light_1_max_distance", 0.78);
-			gPar->Set("single_trap_light_1_sharpening", 0.55);
-			gPar->Set("single_trap_light_1_edge_softness", 0.35);
-			gPar->Set("single_trap_light_1_falloff_type", 3);
-			gPar->Set("single_trap_light_1_blur", 0.12);
-
-			gPar->Set("single_trap_light_2_enabled", true);
-			gPar->Set("single_trap_light_2_shape", 4);
-			gPar->Set("single_trap_light_2_position", camera + viewDir * fwd * 0.68 - right * lat * 1.1);
-			gPar->Set("single_trap_light_2_size", szSphere * 1.25);
-			gPar->Set("single_trap_light_2_intensity", 1.55);
-			gPar->Set("single_trap_light_2_visibility", 1.0);
-			gPar->Set("single_trap_light_2_color", sRGB(58000, 65535, 65535));
-			gPar->Set("single_trap_light_2_gradient_color", sRGB(48000, 60000, 65535));
-			gPar->Set("single_trap_light_2_max_distance", 0.58);
-			gPar->Set("single_trap_light_2_sharpening", 0.48);
-			gPar->Set("single_trap_light_2_falloff_type", 0);
-
-			gPar->Set("single_trap_light_3_enabled", true);
-			gPar->Set("single_trap_light_3_shape", 13);
-			gPar->Set("single_trap_light_3_position", camera + viewDir * fwd * 0.45 - up * vert * 0.35);
-			gPar->Set("single_trap_light_3_rotation", CVector3(0.0, 0.0, 0.0));
-			gPar->Set("single_trap_light_3_size", std::max(1.4, lat * 0.85));
-			gPar->Set("single_trap_light_3_size2", std::max(0.08, fwd * 0.04));
-			gPar->Set("single_trap_light_3_intensity", 1.25);
-			gPar->Set("single_trap_light_3_max_distance", 0.92);
-			gPar->Set("single_trap_light_3_sharpening", 0.32);
-			gPar->Set("single_trap_light_3_softness", 0.4);
-			gPar->Set("single_trap_light_3_blur", 0.28);
-			gPar->Set("single_trap_light_3_color", sRGB(55000, 65535, 65535));
-			gPar->Set("single_trap_light_3_gradient_color", sRGB(40000, 52000, 65535));
-			gPar->Set("single_trap_light_3_falloff_type", 4);
-			break;
-		}
-		case 4: // Onderwater — murky beams, mixed falloff
-		{
-			gPar->Set("single_trap_lights_combine_mode", 0);
-			if (ui->comboBox_single_trap_lights_combine_mode)
-				ui->comboBox_single_trap_lights_combine_mode->setCurrentIndex(0);
-
-			for (int i = 0; i < 5; i++)
-			{
-				QString p = QString("single_trap_light_%1").arg(i + 1);
-				gPar->Set(p + "_enabled", true);
-				gPar->Set(p + "_shape", 4);
-				double t = double(i) / 4.0;
-				CVector3 pos = camera + viewDir * fwd * (0.85 + t * 0.45) + right * cos(t * M_PI * 2.0) * lat * 1.25
-											 + up * sin(t * M_PI * 2.0) * vert * 0.95;
-				gPar->Set(p + "_position", pos);
-				gPar->Set(p + "_size", szSphere * (1.0 + 0.2 * t));
-				gPar->Set(p + "_intensity", 1.65 + t * 0.55);
-				gPar->Set(p + "_visibility", 1.0);
-				int green = 38000 + int(t * 22000);
-				gPar->Set(p + "_color", sRGB(8000, green, 65535));
-				gPar->Set(p + "_gradient_color", sRGB(4000, green + 6000, 62000));
-				gPar->Set(p + "_max_distance", 0.62 + t * 0.18);
-				gPar->Set(p + "_blur", 0.55 + t * 0.45);
-				gPar->Set(p + "_softness", 0.4 + t * 0.25);
-				gPar->Set(p + "_sharpening", 0.42);
-				gPar->Set(p + "_falloff_type", i % 3);
-				gPar->Set(p + "_coloring_mode", (i & 1) ? 1 : 0);
-			}
-			break;
-		}
-		case 5: // Disco — max combine, hard sparkle points
-		{
-			gPar->Set("single_trap_lights_combine_mode", 1);
-			if (ui->comboBox_single_trap_lights_combine_mode)
-				ui->comboBox_single_trap_lights_combine_mode->setCurrentIndex(1);
-
-			for (int i = 0; i < 8; i++)
-			{
-				QString p = QString("single_trap_light_%1").arg(i + 1);
-				gPar->Set(p + "_enabled", true);
-				gPar->Set(p + "_shape", 0);
-				double angle = i * M_PI / 4.0;
-				double rad = lat * (1.05 + 0.12 * (i % 3));
-				CVector3 pos = camera + viewDir * fwd * 0.95 + right * cos(angle) * rad + up * sin(angle) * vert * 1.05;
-				gPar->Set(p + "_position", pos);
-				gPar->Set(p + "_size", std::max(0.42, lat * 0.14));
-				gPar->Set(p + "_intensity", 1.85 + (i % 3) * 0.35);
-				gPar->Set(p + "_solid_intensity", 1.4);
-				gPar->Set(p + "_visibility", 1.0);
-				int hue = (i * 65535) / 8;
-				int r = (hue < 21845) ? 65535 - hue * 3 : (hue < 43690) ? 0 : (hue - 43690) * 3;
-				int g = (hue < 21845) ? hue * 3 : (hue < 43690) ? 65535 : 65535 - (hue - 43690) * 3;
-				int b = (hue < 21845) ? 0 : (hue < 43690) ? (hue - 21845) * 3 : 65535 - (hue - 43690) * 3;
-				gPar->Set(p + "_color", sRGB(qBound(0, r, 65535), qBound(0, g, 65535), qBound(0, b, 65535)));
-				gPar->Set(p + "_gradient_color", sRGB(65535, 65535, 65535));
-				gPar->Set(p + "_max_distance", 0.34);
-				gPar->Set(p + "_sharpening", 1.05);
-				gPar->Set(p + "_blur", 0.06);
-				gPar->Set(p + "_falloff_type", (i % 2) ? 2 : 0);
-			}
-			break;
-		}
-		case 6: // Film Noir — hard key + weak cool fill
-		{
-			gPar->Set("single_trap_lights_combine_mode", 0);
-			if (ui->comboBox_single_trap_lights_combine_mode)
-				ui->comboBox_single_trap_lights_combine_mode->setCurrentIndex(0);
-
-			gPar->Set("single_trap_light_1_enabled", true);
-			gPar->Set("single_trap_light_1_shape", 4);
-			gPar->Set("single_trap_light_1_position", camera + viewDir * fwd * 1.05 + right * lat * 1.45 + up * vert * 1.9);
-			gPar->Set("single_trap_light_1_size", szSphere * 1.1);
-			gPar->Set("single_trap_light_1_intensity", 3.8);
-			gPar->Set("single_trap_light_1_visibility", 1.0);
-			gPar->Set("single_trap_light_1_color", sRGB(65535, 56000, 44000));
-			gPar->Set("single_trap_light_1_gradient_color", sRGB(65535, 48000, 32000));
-			gPar->Set("single_trap_light_1_max_distance", 0.58);
-			gPar->Set("single_trap_light_1_sharpening", 1.05);
-			gPar->Set("single_trap_light_1_falloff_type", 1);
-			gPar->Set("single_trap_light_1_softness", 0.08);
-
-			gPar->Set("single_trap_light_2_enabled", true);
-			gPar->Set("single_trap_light_2_shape", 4);
-			gPar->Set("single_trap_light_2_position", camera + viewDir * fwd * 0.42 - right * lat * 1.55 + up * vert * 0.35);
-			gPar->Set("single_trap_light_2_size", szSphere * 1.35);
-			gPar->Set("single_trap_light_2_intensity", 0.72);
-			gPar->Set("single_trap_light_2_visibility", 1.0);
-			gPar->Set("single_trap_light_2_color", sRGB(38000, 42000, 52000));
-			gPar->Set("single_trap_light_2_gradient_color", sRGB(28000, 32000, 45000));
-			gPar->Set("single_trap_light_2_max_distance", 0.88);
-			gPar->Set("single_trap_light_2_sharpening", 0.38);
-			gPar->Set("single_trap_light_2_falloff_type", 2);
-			gPar->Set("single_trap_light_2_blur", 0.22);
-			break;
-		}
-		case 7: // Magisch — max combine, orbit + sparks
-		{
-			gPar->Set("single_trap_lights_combine_mode", 1);
-			if (ui->comboBox_single_trap_lights_combine_mode)
-				ui->comboBox_single_trap_lights_combine_mode->setCurrentIndex(1);
-
-			gPar->Set("single_trap_light_1_enabled", true);
-			gPar->Set("single_trap_light_1_shape", 6);
-			gPar->Set("single_trap_light_1_position", camera + viewDir * fwd * 0.92 + up * vert * 1.1);
-			gPar->Set("single_trap_light_1_rotation", CVector3(35.0, 15.0, 0.0));
-			gPar->Set("single_trap_light_1_size", std::max(1.0, lat * 0.55));
-			gPar->Set("single_trap_light_1_size2", std::max(0.14, lat * 0.09));
-			gPar->Set("single_trap_light_1_intensity", 2.35);
-			gPar->Set("single_trap_light_1_solid_intensity", 1.45);
-			gPar->Set("single_trap_light_1_visibility", 1.0);
-			gPar->Set("single_trap_light_1_color", sRGB(52000, 28000, 65535));
-			gPar->Set("single_trap_light_1_gradient_color", sRGB(65535, 45000, 18000));
-			gPar->Set("single_trap_light_1_max_distance", 0.72);
-			gPar->Set("single_trap_light_1_softness", 0.55);
-			gPar->Set("single_trap_light_1_sharpening", 0.62);
-			gPar->Set("single_trap_light_1_falloff_type", 4);
-			gPar->Set("single_trap_light_1_anim_orbit_radius", std::max(0.25, lat * 0.12));
-			gPar->Set("single_trap_light_1_anim_orbit_speed", 0.65);
-
-			for (int i = 0; i < 5; i++)
-			{
-				QString p = QString("single_trap_light_%1").arg(i + 2);
-				gPar->Set(p + "_enabled", true);
-				gPar->Set(p + "_shape", 0);
-				double angle = i * (2.0 * M_PI / 5.0);
-				CVector3 pos = camera + viewDir * fwd * 0.72 + right * cos(angle) * lat * 1.05 + up * sin(angle) * vert * 0.88;
-				gPar->Set(p + "_position", pos);
-				gPar->Set(p + "_size", std::max(0.35, lat * 0.11));
-				gPar->Set(p + "_intensity", 1.55 + 0.2 * i);
-				gPar->Set(p + "_solid_intensity", 1.65);
-				gPar->Set(p + "_visibility", 1.0);
-				gPar->Set(p + "_color", sRGB(65535, 52000 + i * 2500, 35000));
-				gPar->Set(p + "_gradient_color", sRGB(50000, 28000, 65535));
-				gPar->Set(p + "_max_distance", 0.28);
-				gPar->Set(p + "_sharpening", 0.95);
-				gPar->Set(p + "_blur", 0.05);
-				gPar->Set(p + "_falloff_type", i % 3);
-				gPar->Set(p + "_coloring_mode", 2);
-			}
-			break;
-		}
-	}
-
-	SyncSingleTrapActiveCountToHighestEnabledLayer();
+	gPar->Set("single_trap_lights_combine_mode", 0);
+	if (ui->comboBox_single_trap_lights_combine_mode)
+		ui->comboBox_single_trap_lights_combine_mode->setCurrentIndex(0);
 
 	gMainInterface->SynchronizeInterface(gPar, gParFractal, qInterface::write);
 	gMainInterface->StartRender(true);
 }
+
 
 void cDockEffects::slotChangedSingleTrapLightShape(int index) const
 {
@@ -1468,6 +1149,33 @@ void cDockEffects::slotChangedSingleTrapLightShape(int index) const
 
 	if (label) label->setVisible(usesSize2);
 	if (edit) edit->setVisible(usesSize2);
+}
+
+void cDockEffects::slotSingleTrapLayerEnabledToggled(bool enabled)
+{
+	MyGroupBox *group = qobject_cast<MyGroupBox *>(sender());
+	if (!group) return;
+
+	QString name = group->objectName();
+	QRegularExpression re("groupCheck_single_trap_light_(\\d+)_enabled");
+	QRegularExpressionMatch match = re.match(name);
+	if (!match.hasMatch()) return;
+
+	int layerNum = match.captured(1).toInt();
+
+	// Directly update the parameter so gPar always matches the checkbox
+	gPar->Set(QString("single_trap_light_%1_enabled").arg(layerNum), enabled);
+
+	if (enabled)
+	{
+		EnsureSingleTrapEngineOnAndActiveThrough(layerNum);
+	}
+	else
+	{
+		SyncSingleTrapActiveCountToHighestEnabledLayer();
+	}
+
+	gMainInterface->SynchronizeInterface(gPar, gParFractal, qInterface::write);
 }
 
 void cDockEffects::slotPressedButtonResetMultiCenter()

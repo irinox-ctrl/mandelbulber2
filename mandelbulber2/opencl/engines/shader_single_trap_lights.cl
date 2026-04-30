@@ -144,6 +144,124 @@ float SingleTrapLightDistanceCl(float3 point, __constant sSingleTrapLightLayerCl
 			dist = sqrt(dx * dx + dy * dy) + min(max(d1, d2), 0.0f);
 			break;
 		}
+		case 14: // cone
+		{
+			float2 q = (float2)(length(delta.yz), delta.x);
+			float2 tip = (float2)(0.0f, -animSize);
+			float2 base = (float2)(layer->size2, animSize); // size=base radius, size2=height in CPU; here animSize used for base radius
+			float2 cb = tip - base;
+			float h = clamp(dot(q - base, cb) / dot(cb, cb), 0.0f, 1.0f);
+			dist = length(q - base - cb * h);
+			break;
+		}
+		case 15: // hexagon
+		{
+			const float k = 1.732050807f;
+			float2 p = (float2)(fabs(delta.z), fabs(delta.y));
+			float d2 = max(p.x * k + p.y * 0.5f, p.y) - animSize;
+			float dx = fabs(delta.x) - layer->size2;
+			float dOut = length(max((float2)(d2, dx), 0.0f));
+			float dIn = min(max(d2, dx), 0.0f);
+			dist = dOut + dIn;
+			break;
+		}
+		case 16: // triangle
+		{
+			const float k = 1.732050807f;
+			float2 p = (float2)(fabs(delta.z), delta.y);
+			float d2 = max(p.x * k + p.y, -p.y + p.x * k) * 0.5f - animSize;
+			float dx = fabs(delta.x) - layer->size2;
+			float dOut = length(max((float2)(d2, dx), 0.0f));
+			float dIn = min(max(d2, dx), 0.0f);
+			dist = dOut + dIn;
+			break;
+		}
+		case 17: // rounded box
+		{
+			float3 q = fabs(delta) - animSize + layer->size2;
+			dist = length(max(q, 0.0f)) + min(max(q.x, max(q.y, q.z)), 0.0f) - layer->size2;
+			break;
+		}
+		case 18: // diamond (octahedron)
+		{
+			dist = (fabs(delta.x) + fabs(delta.y) + fabs(delta.z) - animSize) / 1.732050807f;
+			break;
+		}
+		case 19: // hollow sphere
+		{
+			dist = fabs(length(delta) - animSize);
+			break;
+		}
+		case 20: // hollow cube
+		{
+			float3 q = fabs(delta) - animSize;
+			dist = fabs(length(max(q, 0.0f)) + min(max(q.x, max(q.y, q.z)), 0.0f));
+			break;
+		}
+		case 21: // ellipsoid
+		{
+			float3 r = (float3)((animSize + layer->size2) * 0.5f, animSize, layer->size2);
+			float3 p = delta / r;
+			dist = (length(p) - 1.0f) * min(r.x, min(r.y, r.z));
+			break;
+		}
+		case 22: // superellipsoid
+		{
+			float3 r = (float3)((animSize + layer->size2) * 0.5f, animSize, layer->size2);
+			float n = 4.0f;
+			dist = pow(pow(fabs(delta.x / r.x), n) + pow(fabs(delta.y / r.y), n)
+						 + pow(fabs(delta.z / r.z), n), 1.0f / n) - 1.0f;
+			break;
+		}
+		case 23: // star 5
+		{
+			float angle = atan2(delta.z, delta.y);
+			float r = length((float2)(delta.y, delta.z));
+			float starR = animSize * (0.5f + 0.5f * cos(5.0f * angle)) * 0.6f + animSize * 0.2f;
+			float d2 = r - starR;
+			float dx = fabs(delta.x) - layer->size2;
+			float dOut = length(max((float2)(d2, dx), 0.0f));
+			float dIn = min(max(d2, dx), 0.0f);
+			dist = dOut + dIn;
+			break;
+		}
+		case 24: // star 6
+		{
+			float angle = atan2(delta.z, delta.y);
+			float r = length((float2)(delta.y, delta.z));
+			float starR = animSize * (0.5f + 0.5f * cos(6.0f * angle)) * 0.6f + animSize * 0.2f;
+			float d2 = r - starR;
+			float dx = fabs(delta.x) - layer->size2;
+			float dOut = length(max((float2)(d2, dx), 0.0f));
+			float dIn = min(max(d2, dx), 0.0f);
+			dist = dOut + dIn;
+			break;
+		}
+		case 25: // gear
+		{
+			float angle = atan2(delta.z, delta.y);
+			float r = length((float2)(delta.y, delta.z));
+			float teeth = 8.0f;
+			float gearR = animSize * (0.7f + 0.3f * cos(teeth * angle));
+			float d2 = r - gearR;
+			float dx = fabs(delta.x) - layer->size2;
+			float dOut = length(max((float2)(d2, dx), 0.0f));
+			float dIn = min(max(d2, dx), 0.0f);
+			dist = dOut + dIn;
+			break;
+		}
+		case 26: // heart
+		{
+			float y = delta.y / animSize;
+			float z = delta.z / animSize;
+			float d2 = pow(y * y + z * z - 1.0f, 3.0f) - y * y * z * z * z;
+			d2 = (d2 > 0.0f ? 1.0f : -1.0f) * pow(fabs(d2), 1.0f / 6.0f) * animSize;
+			float dx = fabs(delta.x) - layer->size2;
+			float dOut = length(max((float2)(d2, dx), 0.0f));
+			float dIn = min(max(d2, dx), 0.0f);
+			dist = dOut + dIn;
+			break;
+		}
 	}
 	if (layer->edgeSoftness > 1e-10f)
 	{

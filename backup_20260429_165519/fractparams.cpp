@@ -518,17 +518,10 @@ sParamRender::sParamRender(const std::shared_ptr<cParameterContainer> container,
 
 	// Single Trap Lights
 	singleTrapLights.enabled = container->Get<bool>("single_trap_lights_enabled");
-	int storedActiveCount = container->Get<int>("single_trap_lights_active_count");
-	if (storedActiveCount < 0) storedActiveCount = 0;
-	if (storedActiveCount > MAX_SINGLE_TRAP_LIGHT_LAYERS) storedActiveCount = MAX_SINGLE_TRAP_LIGHT_LAYERS;
-	// Automatically derive active count from highest enabled layer so the UI
-	// spinbox cannot hide layers that are enabled.
-	int highestEnabled = 0;
-	for (int i = 1; i <= MAX_SINGLE_TRAP_LIGHT_LAYERS; i++)
-	{
-		if (container->Get<bool>(QString("single_trap_light_%1_enabled").arg(i))) highestEnabled = i;
-	}
-	singleTrapLights.activeLayerCount = std::max(storedActiveCount, highestEnabled);
+	singleTrapLights.activeLayerCount = container->Get<int>("single_trap_lights_active_count");
+	if (singleTrapLights.activeLayerCount < 0) singleTrapLights.activeLayerCount = 0;
+	if (singleTrapLights.activeLayerCount > MAX_SINGLE_TRAP_LIGHT_LAYERS)
+		singleTrapLights.activeLayerCount = MAX_SINGLE_TRAP_LIGHT_LAYERS;
 	singleTrapLights.soloLayerIndex = container->Get<int>("single_trap_lights_solo_layer");
 	if (singleTrapLights.soloLayerIndex < 0) singleTrapLights.soloLayerIndex = 0;
 	if (singleTrapLights.soloLayerIndex > MAX_SINGLE_TRAP_LIGHT_LAYERS)
@@ -585,12 +578,6 @@ sParamRender::sParamRender(const std::shared_ptr<cParameterContainer> container,
 	if (colm < 0) colm = 0;
 	if (colm > 2) colm = 2;
 	patternLineTraps.coloringMode = colm;
-	patternLineTraps.coloringSpeed = container->Get<double>("pattern_line_traps_coloring_speed");
-	patternLineTraps.paletteOffset = container->Get<double>("pattern_line_traps_palette_offset");
-	patternLineTraps.globalIntensity = container->Get<double>("pattern_line_traps_global_intensity");
-	patternLineTraps.globalMaxDistance = container->Get<double>("pattern_line_traps_global_max_distance");
-	patternLineTraps.globalScale = container->Get<double>("pattern_line_traps_global_scale");
-	patternLineTraps.globalRelativeThickness = container->Get<double>("pattern_line_traps_global_relative_thickness");
 	if (patternLineTraps.soloLayerIndex < 0) patternLineTraps.soloLayerIndex = 0;
 	if (patternLineTraps.soloLayerIndex > PATTERN_LINE_TRAP_COUNT)
 		patternLineTraps.soloLayerIndex = PATTERN_LINE_TRAP_COUNT;
