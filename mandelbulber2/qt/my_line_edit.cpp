@@ -550,34 +550,42 @@ void MyLineEdit::keyPressEvent(QKeyEvent *event)
 		}
 
 		double value = systemData.locale.toDouble(text());
-		if (event->key() == Qt::Key_Up)
+		const bool isLog = objectName().left(3) == QString("log");
+		const bool up = event->key() == Qt::Key_Up;
+		const bool down = event->key() == Qt::Key_Down;
+
+		if (up || down)
 		{
-			// if shift pressed
+			const double direction = up ? 1.0 : -1.0;
+
 			if (event->modifiers() & Qt::ShiftModifier)
 			{
-				value += change;
+				if (qIsNull(value))
+				{
+					value = isLog ? change : direction * change;
+				}
+				else
+				{
+					value += direction * change;
+					if (isLog && value <= 0.0) value = change;
+				}
 			}
 			else
 			{
-				value *= (1.0 + change);
+				if (qIsNull(value))
+				{
+					value = isLog ? 0.1 : direction * 0.1;
+				}
+				else
+				{
+					value *= (1.0 + direction * change);
+					if (isLog && value <= 0.0) value = change;
+				}
 			}
+
 			setText(QString("%L1").arg(value, 0, 'g', 15));
 			emit returnPressed();
-			event->accept();
-			return;
-		}
-		else if (event->key() == Qt::Key_Down)
-		{
-			if (event->modifiers() & Qt::ShiftModifier)
-			{
-				value -= change;
-			}
-			else
-			{
-				value *= (1.0 - change);
-			}
-			setText(QString("%L1").arg(value, 0, 'g', 15));
-			emit returnPressed();
+			emit editingFinished();
 			event->accept();
 			return;
 		}
