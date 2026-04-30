@@ -153,7 +153,8 @@ cDockEffects::cDockEffects(QWidget *parent)
 	{
 		ui->comboBox_single_trap_lights_combine_mode->clear();
 		ui->comboBox_single_trap_lights_combine_mode->addItems(
-			QStringList({tr("Optellen"), tr("Max per kanaal")}));
+			QStringList({tr("Optellen"), tr("Max per kanaal"), tr("Screen"),
+				tr("Gemiddelde"), tr("Vermenigvuldigen")}));
 	}
 
 	for (int i = 1; i <= 20; i++)
