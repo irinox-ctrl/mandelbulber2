@@ -8391,18 +8391,36 @@ of lights:</string>
             </widget>
            </item>
            <item>
-            <widget class="MyComboBox" name="comboBox_single_trap_preset">
-             <item>
-              <property name="text">
-               <string>Custom</string>
-              </property>
-             </item>
+            <widget class="MyComboBox" name="comboBox_single_trap_presets">
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="pushButton_single_trap_preset_apply">
+            <widget class="QPushButton" name="pushButton_single_trap_preset_refresh">
              <property name="text">
-              <string>Toepassen</string>
+              <string>Ververs</string>
+             </property>
+             <property name="toolTip">
+              <string>Herlaad de lijst met presets uit de map</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButton_single_trap_preset_load">
+             <property name="text">
+              <string>Laden</string>
+             </property>
+             <property name="toolTip">
+              <string>Laad de geselecteerde preset</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButton_single_trap_preset_save">
+             <property name="text">
+              <string>Opslaan</string>
+             </property>
+             <property name="toolTip">
+              <string>Sla huidige Single Trap Lights instellingen op als preset</string>
              </property>
             </widget>
            </item>

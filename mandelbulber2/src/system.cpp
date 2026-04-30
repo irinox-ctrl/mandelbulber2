@@ -325,6 +325,7 @@ bool CreateDefaultFolders()
 	result &= CreateFolder(systemDirectories.GetUndoFolder());
 	result &= CreateFolder(systemDirectories.GetHistoryFolder());
 	result &= CreateFolder(systemDirectories.GetPatternLinePresetsFolder());
+	result &= CreateFolder(systemDirectories.GetSingleTrapLightPresetsFolder());
 	result &= PutClangFormatFileToDataDirectoryHidden();
 
 	RetrieveToolbarPresets(false);

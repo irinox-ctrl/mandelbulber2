@@ -42,8 +42,12 @@
 
 #include <QApplication>
 #include <QComboBox>
+#include <QDir>
+#include <QFile>
 #include <QGroupBox>
+#include <QInputDialog>
 #include <QLabel>
+#include <QMessageBox>
 #include <QPushButton>
 #include <QRegularExpression>
 
@@ -52,17 +56,67 @@
 #include "dock_image_adjustments.h"
 #include "navigator_window.h"
 
+#include "src/animation_frames.hpp"
 #include "src/ao_modes.h"
 #include "src/automated_widgets.hpp"
 #include "src/fractal_container.hpp"
+#include "src/global_data.hpp"
 #include "src/initparameters.hpp"
 #include "src/interface.hpp"
+#include "src/keyframes.hpp"
 #include "src/primitives.h"
 #include "src/random.hpp"
 #include "src/render_window.hpp"
 #include "src/rendered_image_widget.hpp"
+#include "src/settings.hpp"
+#include "src/single_trap_lights.hpp"
 #include "src/synchronize_interface.hpp"
 #include "src/system_data.hpp"
+#include "src/system_directories.hpp"
+
+static QStringList singleTrapLightPresetMainParameterNames()
+{
+	QStringList list;
+	list << QStringLiteral("single_trap_lights_enabled");
+	list << QStringLiteral("single_trap_lights_active_count");
+	list << QStringLiteral("single_trap_lights_solo_layer");
+	list << QStringLiteral("single_trap_lights_combine_mode");
+	const QStringList suffixes = {
+		QStringLiteral("_enabled"),
+		QStringLiteral("_shape"),
+		QStringLiteral("_position"),
+		QStringLiteral("_size"),
+		QStringLiteral("_size2"),
+		QStringLiteral("_thickness"),
+		QStringLiteral("_rotation"),
+		QStringLiteral("_intensity"),
+		QStringLiteral("_color"),
+		QStringLiteral("_gradient_color"),
+		QStringLiteral("_visibility"),
+		QStringLiteral("_max_distance"),
+		QStringLiteral("_sharpening"),
+		QStringLiteral("_blur"),
+		QStringLiteral("_solid_intensity"),
+		QStringLiteral("_softness"),
+		QStringLiteral("_relative_size"),
+		QStringLiteral("_pre_transformed"),
+		QStringLiteral("_position_mode"),
+		QStringLiteral("_coloring_mode"),
+		QStringLiteral("_falloff_type"),
+		QStringLiteral("_edge_softness"),
+		QStringLiteral("_anim_orbit_radius"),
+		QStringLiteral("_anim_orbit_speed"),
+		QStringLiteral("_anim_pulsate_speed"),
+		QStringLiteral("_anim_pulsate_amount"),
+	};
+	for (int i = 1; i <= MAX_SINGLE_TRAP_LIGHT_LAYERS; i++)
+	{
+		const QString p = QStringLiteral("single_trap_light_%1").arg(i);
+		for (const QString &s : suffixes)
+			list << p + s;
+	}
+	return list;
+}
 
 cDockEffects::cDockEffects(QWidget *parent)
 		: QWidget(parent), cMyWidgetWithParams(), ui(new Ui::cDockEffects)
@@ -73,14 +127,24 @@ cDockEffects::cDockEffects(QWidget *parent)
 	automatedWidgets->ConnectSignalsForSlidersInWindow(this);
 	ConnectSignals();
 	InstallSingleTrapPlacementHelp();
+	RefreshSingleTrapLightPresetCombo();
 
-	// Initialize size2 visibility based on current shape selection
+	// Populate shape comboboxes with all 27 shape names
+	const QStringList shapeNames({
+		tr("Punt"), tr("Lijn"), tr("Cirkel"), tr("Vierkant"), tr("Bol"), tr("Kubus"),
+		tr("Torus"), tr("Capsule"), tr("Ring"), tr("Ellips"), tr("Kruis"), tr("Cilinder"),
+		tr("Vlak"), tr("Schijf"), tr("Cone"), tr("Hexagon"), tr("Driehoek"), tr("Afgeronde box"),
+		tr("Diamant"), tr("Holle bol"), tr("Holle kubus"), tr("Ellipsoïde"), tr("Superellipsoïde"),
+		tr("Ster-5"), tr("Ster-6"), tr("Tandwiel"), tr("Hart")
+	});
 	for (int i = 1; i <= 20; i++)
 	{
 		QComboBox *shapeCombo = findChild<QComboBox *>(
 			QString("comboBox_single_trap_light_%1_shape").arg(i));
 		if (shapeCombo)
 		{
+			shapeCombo->clear();
+			shapeCombo->addItems(shapeNames);
 			int shape = shapeCombo->currentIndex();
 			bool usesSize2 = SingleTrapShapeUsesSecondSize(shape);
 			QLabel *label = findChild<QLabel *>(
@@ -133,6 +197,85 @@ void cDockEffects::SyncSingleTrapActiveCountToHighestEnabledLayer()
 	gPar->Set("single_trap_lights_active_count", maxOn);
 	if (ui->spinboxInt_single_trap_lights_active_count)
 		ui->spinboxInt_single_trap_lights_active_count->setValue(maxOn);
+}
+
+void cDockEffects::RefreshSingleTrapLightPresetCombo()
+{
+	if (!ui->comboBox_single_trap_presets) return;
+	ui->comboBox_single_trap_presets->clear();
+	const QString folder = systemDirectories.GetSingleTrapLightPresetsFolder();
+	QDir dir(folder);
+	if (!dir.exists()) return;
+	const QStringList files = dir.entryList(
+		QStringList{QStringLiteral("*.m3p"), QStringLiteral("*.fract"), QStringLiteral("*.txt")},
+		QDir::Files, QDir::Name);
+	for (const QString &name : files)
+		ui->comboBox_single_trap_presets->addItem(name, QVariant(dir.absoluteFilePath(name)));
+}
+
+void cDockEffects::slotSingleTrapPresetRefresh()
+{
+	RefreshSingleTrapLightPresetCombo();
+}
+
+void cDockEffects::slotSingleTrapPresetLoad()
+{
+	if (!ui->comboBox_single_trap_presets) return;
+	const int idx = ui->comboBox_single_trap_presets->currentIndex();
+	if (idx < 0) return;
+	const QString path = ui->comboBox_single_trap_presets->itemData(idx).toString();
+	if (path.isEmpty()) return;
+
+	cSettings parSettings(cSettings::formatCondensedText);
+	if (!parSettings.LoadFromFile(path))
+	{
+		QMessageBox::warning(this, tr("Single Trap Preset"),
+			tr("Kon preset niet laden:\n%1").arg(path));
+		return;
+	}
+	parSettings.Decode(gPar, gParFractal, gAnimFrames, gKeyframes);
+
+	gMainInterface->SynchronizeInterface(gPar, gParFractal, qInterface::write);
+	gMainInterface->StartRender(true);
+}
+
+void cDockEffects::slotSingleTrapPresetSave()
+{
+	gMainInterface->SynchronizeInterface(gPar, gParFractal, qInterface::read);
+	QDir().mkpath(systemDirectories.GetSingleTrapLightPresetsFolder());
+
+	bool ok = false;
+	QString name = QInputDialog::getText(this, tr("Preset opslaan"),
+		tr("Naam voor nieuwe preset:"), QLineEdit::Normal, QString(), &ok);
+	if (!ok || name.isEmpty()) return;
+
+	name = name.trimmed();
+	name.replace(QRegularExpression(QStringLiteral("[<>:\"/\\|?*]")), QStringLiteral("_"));
+
+	const QString path =
+		systemDirectories.GetSingleTrapLightPresetsFolder() + QDir::separator() + name;
+
+	if (QFile::exists(path))
+	{
+		const int ret = QMessageBox::question(this, tr("Preset overschrijven?"),
+			tr("'%1' bestaat al. Overschrijven?").arg(name),
+			QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
+		if (ret != QMessageBox::Yes) return;
+	}
+
+	cSettings parSettings(cSettings::formatCondensedText);
+	parSettings.SetListOfParametersToProcess(singleTrapLightPresetMainParameterNames());
+	parSettings.CreateText(gPar, gParFractal, gAnimFrames, gKeyframes);
+	if (!parSettings.SaveToFile(path))
+	{
+		QMessageBox::warning(this, tr("Single Trap Preset"),
+			tr("Kon preset niet opslaan:\n%1").arg(path));
+		return;
+	}
+
+	RefreshSingleTrapLightPresetCombo();
+	const int newIdx = ui->comboBox_single_trap_presets->findData(QVariant(path));
+	if (newIdx >= 0) ui->comboBox_single_trap_presets->setCurrentIndex(newIdx);
 }
 
 double cDockEffects::SingleTrapForwardAlongView(double camTargetDist)
@@ -362,8 +505,14 @@ void cDockEffects::ConnectSignals() const
 	connect(ui->pushButton_single_trap_randomize_all, &QPushButton::clicked, this,
 		&cDockEffects::slotPressedButtonRandomizeAllSingleTrapLights);
 
-	connect(ui->pushButton_single_trap_preset_apply, &QPushButton::clicked, this,
-		&cDockEffects::slotPressedButtonSingleTrapPresetApply);
+	connect(ui->pushButton_single_trap_preset_refresh, &QPushButton::clicked, this,
+		&cDockEffects::slotSingleTrapPresetRefresh);
+	connect(ui->pushButton_single_trap_preset_load, &QPushButton::clicked, this,
+		&cDockEffects::slotSingleTrapPresetLoad);
+	connect(ui->comboBox_single_trap_presets, QOverload<int>::of(&QComboBox::activated), this,
+		&cDockEffects::slotSingleTrapPresetLoad);
+	connect(ui->pushButton_single_trap_preset_save, &QPushButton::clicked, this,
+		&cDockEffects::slotSingleTrapPresetSave);
 
 	connect(ui->pushButton_single_trap_reset_all, &QPushButton::clicked, this,
 		&cDockEffects::slotPressedButtonSingleTrapResetAll);
@@ -1044,12 +1193,6 @@ void cDockEffects::RandomizeSingleTrapLightLayer(int layer, bool syncAndRender)
 		gMainInterface->SynchronizeInterface(gPar, gParFractal, qInterface::write);
 		gMainInterface->StartRender(true);
 	}
-}
-
-void cDockEffects::slotPressedButtonSingleTrapPresetApply()
-{
-	int preset = ui->comboBox_single_trap_preset->currentIndex();
-	ApplySingleTrapPreset(preset);
 }
 
 void cDockEffects::slotPressedButtonSingleTrapResetAll()

@@ -111,10 +111,12 @@ private slots:
 	void slotPressedButtonRandomizeSingleTrapLight();
 	void slotPressedButtonSingleTrapWorldAnchor();
 	void slotPressedButtonRandomizeAllSingleTrapLights();
-	void slotPressedButtonSingleTrapPresetApply();
 	void slotPressedButtonSingleTrapResetAll();
 	void slotChangedSingleTrapLightShape(int index) const;
 	void slotSingleTrapLayerEnabledToggled(bool enabled);
+	void slotSingleTrapPresetRefresh();
+	void slotSingleTrapPresetLoad();
+	void slotSingleTrapPresetSave();
 
 private:
 	void ConnectSignals() const;
@@ -123,6 +125,7 @@ private:
 	void ResetSingleTrapLightLayer(int layer);
 	void EnsureSingleTrapEngineOnAndActiveThrough(int layerIndex);
 	void SyncSingleTrapActiveCountToHighestEnabledLayer();
+	void RefreshSingleTrapLightPresetCombo();
 	void InstallSingleTrapPlacementHelp();
 	/** Minimum distance (m) light center should stay from a reference point to avoid SDF blow-out. */
 	double SingleTrapRadialClearance(const QString &prefix) const;
