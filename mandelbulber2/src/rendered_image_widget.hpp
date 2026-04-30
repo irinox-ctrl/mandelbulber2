@@ -117,6 +117,7 @@ public:
 	void SetCursorVisibility(bool enable) { cursorVisible = enable; }
 	void SetLightsVisibility(bool enable) { lightsVisible = enable; }
 	void SetPrimitivesVisibility(bool enable) { primitivesVisible = enable; }
+	void SetPatternLineTrapsVisibility(bool enable) { patternLineTrapsVisible = enable; }
 	void SetGridType(enumGridType gridType);
 	void SetFlightData(const sFlightData &fData) { flightData = fData; }
 	void SetPlaceBehindObjects(bool behind) { placeLightBehind = behind; }
@@ -169,6 +170,7 @@ private:
 	void PaintLastRenderedTilesInfo();
 	void DisplayAllLights();
 	void DisplayAllPrimitives();
+	void DisplayPatternLineTraps();
 	void line3D(const CVector3 &p1, const CVector3 &p2, const CVector3 &camera,
 		const CVector3 &target, const CRotationMatrix &mRotInv,
 		params::enumPerspectiveType perspectiveType, double fov, double imgWidth, double imgHeight,
@@ -182,6 +184,7 @@ private:
 	bool cursorVisible;
 	bool lightsVisible;
 	bool primitivesVisible;
+	bool patternLineTrapsVisible = false;
 	bool mcNoiseVisible = false;
 	bool isFocus;
 	bool isOnObject;

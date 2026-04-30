@@ -44,6 +44,10 @@ private slots:
 	void slotPressedButtonPlacePatternLineTrapAtTarget();
 	void slotPressedButtonPlacePatternLineTrapAtSurface();
 	void slotPressedButtonPatternLineTrapsQuickTest();
+	void slotEnableAllPatternLineTraps();
+	void slotDisableAllPatternLineTraps();
+	void slotSoloSelectedPatternLineTrap();
+	void slotResetPatternLineTraps();
 	void slotPatternLineTrapPresetRefresh();
 	void slotPatternLineTrapPresetLoad();
 	void slotPatternLineTrapPresetSave();

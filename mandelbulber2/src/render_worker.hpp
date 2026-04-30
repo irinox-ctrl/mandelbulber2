@@ -209,6 +209,8 @@ private:
 		sRGBFloat roughness;
 		sRGBFloat reflectance;
 		sRGBFloat trasparency;
+		double colorIndex;
+		int iters;
 	};
 
 	// functions
@@ -253,7 +255,8 @@ private:
 		const sShaderInputData &input, sRGBAFloat surfaceColor, sRGBAFloat *fakeSpec) const;
 	sRGBAFloat SingleTrapLights(
 		const sShaderInputData &input, sRGBAFloat surfaceColor) const;
-	sRGBAFloat PatternLineTraps(const sShaderInputData &input, sRGBAFloat surfaceColor) const;
+	sRGBAFloat PatternLineTraps(
+		const sShaderInputData &input, sRGBAFloat surfaceColor, sGradientsCollection *gradients) const;
 	sRGBAFloat VolumetricShader(
 		const sShaderInputData &input, sRGBAFloat oldPixel, sRGBAFloat *opacityOut) const;
 

@@ -603,7 +603,15 @@ void InitParams(std::shared_ptr<cParameterContainer> par)
 	par->addParam("pattern_line_traps_enabled", false, morphLinear, paramStandard);
 	par->addParam("pattern_line_trap_solo_layer", 0, 0, PATTERN_LINE_TRAP_COUNT, morphLinear, paramStandard);
 	par->addParam("pattern_line_traps_combine_mode", 0, morphNone, paramStandard,
-		QStringList({"Optellen (additief)", "Maximum per kanaal"}));
+		QStringList() << "Optellen (additief)" << "Maximum per kanaal");
+	par->addParam("pattern_line_traps_coloring_mode", 0, morphNone, paramStandard,
+		QStringList() << "Geometrisch (muurafstand)" << "Orbit-trap (kleurindex)" << "Iteraties (aantal)");
+	par->addParam("pattern_line_traps_coloring_speed", 1.0, 0.0, 100.0, morphLinear, paramStandard);
+	par->addParam("pattern_line_traps_palette_offset", 0.0, 0.0, 1.0, morphLinear, paramStandard);
+	par->addParam("pattern_line_traps_global_intensity", 1.0, 0.0, 10.0, morphLinear, paramStandard);
+	par->addParam("pattern_line_traps_global_max_distance", 0.0, 0.0, 100.0, morphLinear, paramStandard);
+	par->addParam("pattern_line_traps_global_scale", 1.0, 0.001, 1000.0, morphLinear, paramStandard);
+	par->addParam("pattern_line_traps_global_relative_thickness", 1.0, 0.001, 100.0, morphLinear, paramStandard);
 	for (int i = 1; i <= PATTERN_LINE_TRAP_COUNT; i++)
 	{
 		const QString p = QString("pattern_line_trap_%1").arg(i);
@@ -633,7 +641,58 @@ void InitParams(std::shared_ptr<cParameterContainer> par)
 				"Vicsek (5 blokken)", "Griekse kruis", "Multibrot³ (afstand)", "Multibrot⁴ (afstand)", "Tricorn (afstand)",
 				"3-ary boom (Y)", "Peano-achtig (8×)", "Levy C (1 iter)", "Ring-Cantor", "Gouden L-vorm",
 				"3 cirkels (Apollonius)", "Lissajous 2:3", "Julia³ (afstand)", "Multibrot⁵ (afstand)", "H-boom (1 iter)",
-				"Sierpinski tapijt (2 niv.)", "Zes-lob rimpel", "Binaire boom (2 niv.)", "Fermat-spiraal", "Dubbel kruis"}));
+				"Sierpinski tapijt (2 niv.)", "Zes-lob rimpel", "Binaire boom (2 niv.)", "Fermat-spiraal", "Dubbel kruis",
+				"Hendecagon (11-hoek)",
+"Dodecagon (12-hoek)",
+"Tetradecagon (14-hoek)",
+"Hexadecagon (16-hoek)",
+"Icosagon (20-hoek)",
+"Ster-6 (hexagram)",
+"Ster-7",
+"Ster-8",
+"Ster-9",
+"Ster-10",
+"Ster-12",
+"Ster-16",
+"Roos-3",
+"Roos-4",
+"Roos-6",
+"Roos-7",
+"Roos-8",
+"Roos-10",
+"Roos-12",
+"Roos-16",
+"Heptagon (7-hoek)",
+"Enneagon (9-hoek)",
+"Tandwiel-6",
+"Tandwiel-8",
+"Tandwiel-10",
+"Tandwiel-12",
+"Tandwiel-16",
+"Tandwiel-20",
+"Hart",
+"Infinity",
+"Druppel",
+"Oog",
+"Maan",
+"Pijl",
+"Bliksem",
+"Sinus-golf",
+"Zaagtand",
+"Block-golf",
+"Cirkel-sektor 60°",
+"Cirkel-sektor 90°",
+"Cirkel-sektor 120°",
+"Halve cirkel",
+"Taartpunt",
+"Kruis met bol",
+"Ring-kruis",
+"Vierkant met kruis",
+"Target",
+"Genestelde vierkanten",
+"Meander",
+"Spiraal",
+			}));
 		par->addParam(p + "_shape_aux", 1.0, 1e-6, 1e6, morphLinear, paramStandard);
 		par->addParam(p + "_relative_size", 0.0, 0.0, 1e15, morphLinear, paramStandard);
 		par->addParam(p + "_color", sRGB(65535, 65535, 65535), morphLinear, paramStandard);

@@ -117,6 +117,13 @@ private:
 	std::shared_ptr<cFractalContainer> sourceFractalParams;
 	std::shared_ptr<cImage> image;
 
+	// Offset-drag staat (pattern-line exact placement, zelfde als RenderWindow)
+	QTimer *m_auxOffsetDragStartRenderDebounce = nullptr;
+	bool m_auxOffsetDragActive = false;
+	double m_auxDistAtOffsetDragStart = 0.0;
+	bool m_auxOffsetDragLowStart = false;
+	double m_auxOffsetDragSceneRef = 0.0;
+
 	bool stopRequest = false;
 
 	QString autoRefreshLastHash;

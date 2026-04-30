@@ -3,6 +3,7 @@
  */
 
 #include "fractparams.hpp"
+#include "material.h"
 #include "render_worker.hpp"
 
 #include <QtGlobal>
@@ -10,7 +11,8 @@
 #include <algorithm>
 #include <cmath>
 
-sRGBAFloat cRenderWorker::PatternLineTraps(const sShaderInputData &input, sRGBAFloat surfaceColor) const
+sRGBAFloat cRenderWorker::PatternLineTraps(
+	const sShaderInputData &input, sRGBAFloat surfaceColor, sGradientsCollection *gradients) const
 {
 	Q_UNUSED(surfaceColor)
 
@@ -27,6 +29,10 @@ sRGBAFloat cRenderWorker::PatternLineTraps(const sShaderInputData &input, sRGBAF
 		sPatternLineTrapLayer effLayer = layer;
 		const double camDist = (params->camera - layer.position).Length();
 		effLayer.radius = PatternLineTrapEffectiveRadius(layer, camDist);
+		effLayer.radius *= params->patternLineTraps.globalScale;
+		if (params->patternLineTraps.globalMaxDistance > 1e-30)
+			effLayer.maxDistance = std::min(effLayer.maxDistance, params->patternLineTraps.globalMaxDistance);
+		effLayer.relativeThickness *= params->patternLineTraps.globalRelativeThickness;
 
 		CVector3 delta = input.point - layer.position;
 		delta = effLayer.mRotRotation.RotateVector(delta);
@@ -54,17 +60,37 @@ sRGBAFloat cRenderWorker::PatternLineTraps(const sShaderInputData &input, sRGBAF
 		const double wallDist = PatternLineTrapWallDist(layer, rawDist);
 
 		double fade = 1.0;
-		if (layer.maxDistance > 1e-30)
+		if (effLayer.maxDistance > 1e-30)
 		{
-			double t = wallDist / layer.maxDistance;
+			double t = wallDist / effLayer.maxDistance;
 			if (t >= 1.0) continue;
 			t = t * t * (3.0 - 2.0 * t);
 			fade = 1.0 - t;
 		}
 
 		const double falloff = PatternLineTrapGlowFalloff(layer, wallDist);
-		const double intens = layer.intensity * falloff * fade * axialFade;
-		const double tGrad = PatternLineTrapGradientT(layer, wallDist);
+		const double intens = layer.intensity * falloff * fade * axialFade
+			* params->patternLineTraps.globalIntensity;
+
+		double tGrad;
+		if (params->patternLineTraps.coloringMode == 1 && gradients)
+		{
+			double nrCol = fmod(fabs(gradients->colorIndex), 248.0 * 256.0);
+			tGrad = fmod(nrCol / 256.0 / 10.0 * input.material->coloring_speed
+							 + input.material->paletteOffset,
+				1.0);
+		}
+		else if (params->patternLineTraps.coloringMode == 2 && gradients)
+		{
+			tGrad = fmod(double(gradients->iters) / params->N * params->patternLineTraps.coloringSpeed
+						 + params->patternLineTraps.paletteOffset,
+				1.0);
+		}
+		else
+		{
+			tGrad = PatternLineTrapGradientT(layer, wallDist);
+		}
+
 		const sRGBFloat grad = PatternLineTrapGradientRgb(layer, tGrad);
 
 		if (params->patternLineTraps.combineMode == 0)

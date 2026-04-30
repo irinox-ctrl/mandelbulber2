@@ -131,7 +131,7 @@ float3 ObjectShader(__constant sClInConstants *consts, sRenderData *renderData,
 	}
 	if (consts->params.patternLineTraps.enabled)
 	{
-		patternLineTraps = PatternLineTrapsShader(consts, input->point);
+		patternLineTraps = PatternLineTrapsShader(consts, input->point, input, gradients);
 	}
 #ifdef FAKE_LIGHTS
 	/* Independent of pattern lines (matches CPU shader_object.cpp / single-trap interaction). */

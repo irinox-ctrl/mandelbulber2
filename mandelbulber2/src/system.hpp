@@ -105,6 +105,7 @@ void UpdateUISkin();
 void UpdateLanguage();
 void RetrieveToolbarPresets(bool force);
 void RetrieveExampleMaterials(bool force);
+void RetrieveExamplePatternLinePresets(bool force);
 void CalcPreferredFontSize(bool noGui);
 bool IsOutputTty();
 bool PutClangFormatFileToDataDirectoryHidden();

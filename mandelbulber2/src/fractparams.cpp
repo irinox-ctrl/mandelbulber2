@@ -574,6 +574,16 @@ sParamRender::sParamRender(const std::shared_ptr<cParameterContainer> container,
 	if (cm < 0) cm = 0;
 	if (cm > 1) cm = 1;
 	patternLineTraps.combineMode = cm;
+	int colm = container->Get<int>("pattern_line_traps_coloring_mode");
+	if (colm < 0) colm = 0;
+	if (colm > 2) colm = 2;
+	patternLineTraps.coloringMode = colm;
+	patternLineTraps.coloringSpeed = container->Get<double>("pattern_line_traps_coloring_speed");
+	patternLineTraps.paletteOffset = container->Get<double>("pattern_line_traps_palette_offset");
+	patternLineTraps.globalIntensity = container->Get<double>("pattern_line_traps_global_intensity");
+	patternLineTraps.globalMaxDistance = container->Get<double>("pattern_line_traps_global_max_distance");
+	patternLineTraps.globalScale = container->Get<double>("pattern_line_traps_global_scale");
+	patternLineTraps.globalRelativeThickness = container->Get<double>("pattern_line_traps_global_relative_thickness");
 	if (patternLineTraps.soloLayerIndex < 0) patternLineTraps.soloLayerIndex = 0;
 	if (patternLineTraps.soloLayerIndex > PATTERN_LINE_TRAP_COUNT)
 		patternLineTraps.soloLayerIndex = PATTERN_LINE_TRAP_COUNT;

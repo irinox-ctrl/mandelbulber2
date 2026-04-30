@@ -40,6 +40,7 @@
 
 #include "dock_effects.h"
 #include "dock_fractal.h"
+#include "dock_pattern_lines.h"
 #include "tab_fractal.h"
 
 #include "src/ao_modes.h"
@@ -124,6 +125,13 @@ cNavigatorWindow::cNavigatorWindow(QWidget *parent) : QDialog(parent), ui(new Ui
 	connect(ui->comboBox_mouse_click_function, SIGNAL(currentIndexChanged(int)), this,
 		SLOT(slotChangedComboMouseClickFunction(int)));
 
+	m_auxOffsetDragStartRenderDebounce = new QTimer(this);
+	m_auxOffsetDragStartRenderDebounce->setSingleShot(true);
+	m_auxOffsetDragStartRenderDebounce->setInterval(120);
+	connect(m_auxOffsetDragStartRenderDebounce, &QTimer::timeout, this, [this]() {
+		StartRender();
+	});
+
 	connect(ui->checkBox_navigator_dark_glow, &QCheckBox::stateChanged, this,
 		&cNavigatorWindow::slotDarkGlowEnabled);
 
@@ -177,6 +185,13 @@ void cNavigatorWindow::AddLeftWidget(QWidget *widget)
 				&cNavigatorWindow::slotRefreshMainImage);
 			connect(manipulations, &cManipulations::signalWriteInterfaceLights, dockEffects,
 				&cDockEffects::slotSynchronizeInterfaceLights);
+		}
+
+		cDockPatternLines *dockPatternLines = dynamic_cast<cDockPatternLines *>(leftWidget);
+		if (dockPatternLines)
+		{
+			connect(manipulations, &cManipulations::signalWriteInterfacePatternLineTraps,
+				dockPatternLines, &cDockPatternLines::slotSynchronizeInterfacePatternLineTraps);
 		}
 	}
 }
@@ -524,11 +539,28 @@ void cNavigatorWindow::slotMouseClickOnImage(int x, int y, Qt::MouseButton butto
 
 void cNavigatorWindow::slotMouseDragStart(int x, int y, Qt::MouseButtons buttons)
 {
+	m_auxOffsetDragActive = false;
+
 	RenderedImage::enumClickMode clickMode =
 		RenderedImage::enumClickMode(mouseClickFunction.at(0).toInt());
 
 	switch (clickMode)
 	{
+		case RenderedImage::clickPlacePatternLineTrap:
+		{
+			if (ui->widgetRenderedImage->GetEnableClickModes())
+			{
+				SynchronizeInterfaceWindow(this, params, qInterface::read);
+				m_auxDistAtOffsetDragStart = params->Get<double>("aux_light_manual_placement_dist");
+				m_auxOffsetDragSceneRef = cInterface::GetDistanceForPoint(
+					params->Get<CVector3>("camera"), params, fractalParams);
+				if (m_auxOffsetDragSceneRef < 1e-30) m_auxOffsetDragSceneRef = 1.0;
+				m_auxOffsetDragLowStart = (m_auxDistAtOffsetDragStart
+					< 1e-20 * (m_auxOffsetDragSceneRef + 1.0));
+				m_auxOffsetDragActive = true;
+			}
+			return;
+		}
 		case RenderedImage::clickMoveCamera:
 		case RenderedImage::clickPlaceLight:
 		{
@@ -546,11 +578,40 @@ void cNavigatorWindow::slotMouseDragStart(int x, int y, Qt::MouseButtons buttons
 
 void cNavigatorWindow::slotMouseDragFinish()
 {
+	const bool wasAuxOffsetDrag = m_auxOffsetDragActive;
+	if (wasAuxOffsetDrag && m_auxOffsetDragStartRenderDebounce)
+		m_auxOffsetDragStartRenderDebounce->stop();
+	m_auxOffsetDragActive = false;
+	m_auxOffsetDragLowStart = false;
 	manipulations->MouseDragFinish();
+	if (wasAuxOffsetDrag) StartRender();
 }
 
 void cNavigatorWindow::slotMouseDragDelta(int dx, int dy)
 {
+	(void)dx;
+	if (m_auxOffsetDragActive)
+	{
+		const double k = 0.0006;
+		double dist;
+		if (m_auxOffsetDragLowStart)
+		{
+			const double sens = 0.0001;
+			dist = -double(dy) * sens * m_auxOffsetDragSceneRef;
+			if (dist < 0.0) dist = 0.0;
+		}
+		else
+		{
+			dist = m_auxDistAtOffsetDragStart * exp(-k * double(dy));
+		}
+		if (dist < 1e-30) dist = 1e-30;
+		if (dist > 1e30) dist = 1e30;
+		params->Set("aux_light_manual_placement_dist", dist);
+		ui->widgetRenderedImage->SetFrontDist(dist);
+		if (leftWidget) SynchronizeInterfaceWindow(leftWidget, params, qInterface::write);
+		if (m_auxOffsetDragStartRenderDebounce) m_auxOffsetDragStartRenderDebounce->start();
+		return;
+	}
 	manipulations->MouseDragDelta(dx, dy);
 }
 
@@ -586,15 +647,17 @@ void cNavigatorWindow::slotMouseWheelRotatedWithKeyOnImage(
 		{
 			if (keyModifiers & Qt::AltModifier)
 			{
+				double deltaLog = exp(delta * 0.001);
+				double dist = params->Get<double>("aux_light_manual_placement_dist");
+				dist *= deltaLog;
+				if (dist < 1e-30) dist = 1e-30;
+				if (dist > 1e30) dist = 1e30;
+				params->Set("aux_light_manual_placement_dist", dist);
+				ui->widgetRenderedImage->SetFrontDist(dist);
+				// Sync het linker-dock als het een pattern-lines of effects dock is
 				if (leftWidget)
 				{
-					if (cDockEffects *widgetEffects = dynamic_cast<cDockEffects *>(leftWidget))
-					{
-						double deltaLog = exp(delta * 0.001);
-						double dist = widgetEffects->GetAuxLightManualPlacementDistance();
-						dist *= deltaLog;
-						widgetEffects->slotSetAuxLightManualPlacementDistance(dist);
-					}
+					SynchronizeInterfaceWindow(leftWidget, params, qInterface::write);
 				}
 			}
 			break;

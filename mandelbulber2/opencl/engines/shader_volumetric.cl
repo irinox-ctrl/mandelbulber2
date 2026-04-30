@@ -862,7 +862,7 @@ float4 VolumetricShader(__constant sClInConstants *consts, sRenderData *renderDa
 
 		if (consts->params.patternLineTraps.enabled)
 		{
-			output += PatternLineTrapsShader(consts, point) * step;
+			output += PatternLineTrapsShader(consts, point, NULL, NULL) * step;
 		}
 
 		if (totalOpacity > 1.0f) totalOpacity = 1.0f;

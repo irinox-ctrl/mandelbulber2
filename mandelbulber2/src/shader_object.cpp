@@ -32,6 +32,8 @@
  * cRenderWorker::ObjectShader method - calculates surface
  */
 
+#include <iostream>
+
 #include "fractparams.hpp"
 #include "material.h"
 #include "render_worker.hpp"
@@ -64,6 +66,8 @@ sRGBAFloat cRenderWorker::ObjectShader(const sShaderInputData &_input, sRGBAFloa
 	}
 
 	gradients->specular = sRGBFloat(1.0, 1.0, 1.0);
+	gradients->colorIndex = 0.0;
+	gradients->iters = 0;
 
 	sRGBAFloat colour(1.0, 1.0, 1.0, 1.0);
 
@@ -151,7 +155,7 @@ sRGBAFloat cRenderWorker::ObjectShader(const sShaderInputData &_input, sRGBAFloa
 	}
 	if (params->patternLineTraps.enabled)
 	{
-		patternLineTraps = PatternLineTraps(input, colour);
+		patternLineTraps = PatternLineTraps(input, colour, gradients);
 	}
 	if (params->fakeLightsEnabled)
 	{

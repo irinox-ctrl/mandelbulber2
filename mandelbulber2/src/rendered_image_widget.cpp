@@ -50,8 +50,10 @@
 #include "light.h"
 #include "nine_fractals.hpp"
 #include "parameters.hpp"
+#include "pattern_line_traps.hpp"
 #include "primitive.hpp"
 #include "primitives.h"
+#include "projection_3d.hpp"
 #include "trace_behind.h"
 
 using namespace Qt;
@@ -125,6 +127,11 @@ void RenderedImage::paintEvent(QPaintEvent *event)
 			if (primitivesVisible)
 			{
 				DisplayAllPrimitives();
+			}
+
+			if (patternLineTrapsVisible)
+			{
+				DisplayPatternLineTraps();
 			}
 
 			if (cursorVisible && isFocus)
@@ -1764,6 +1771,69 @@ void RenderedImage::DisplayAllPrimitives()
 
 			line3D(point1, point2, camera, target, mRotInv, perspectiveType, fov, width, height, color,
 				thickness, sRGBFloat(0.7, 0.7, 0.7), 10, 1);
+		}
+	}
+}
+
+void RenderedImage::DisplayPatternLineTraps()
+{
+	if (!params) return;
+	if (!params->Get<bool>("pattern_line_traps_enabled")) return;
+
+	CVector3 camera = params->Get<CVector3>("camera");
+	CVector3 target = params->Get<CVector3>("target");
+	CVector3 rotation = params->Get<CVector3>("camera_rotation");
+	params::enumPerspectiveType perspectiveType =
+		static_cast<params::enumPerspectiveType>(params->Get<int>("perspective_type"));
+	double fov = CalcFOV(params->Get<double>("fov"), perspectiveType);
+	int width = image->GetPreviewWidth();
+	int height = image->GetPreviewHeight();
+
+	CRotationMatrix mRotInv;
+	mRotInv.RotateY(-rotation.z / 180.0 * M_PI);
+	mRotInv.RotateX(-rotation.y / 180.0 * M_PI);
+	mRotInv.RotateZ(-rotation.x / 180.0 * M_PI);
+
+	for (int i = 1; i <= PATTERN_LINE_TRAP_COUNT; i++)
+	{
+		const QString p = QString("pattern_line_trap_%1").arg(i);
+		if (!params->Get<bool>(p + "_enabled")) continue;
+
+		CVector3 position = params->Get<CVector3>(p + "_position");
+		CVector3 rotDeg = params->Get<CVector3>(p + "_rotation");
+		double segHalf = params->Get<double>(p + "_segment_half_length");
+		double radius = params->Get<double>(p + "_radius");
+		sRGB color = params->Get<sRGB>(p + "_color");
+
+		CRotationMatrix mRot;
+		mRot.SetRotation2(rotDeg * M_PI / 180.0);
+		CVector3 dir = mRot.RotateVector(CVector3(1.0, 0.0, 0.0));
+
+		CVector3 p1 = position - dir * segHalf;
+		CVector3 p2 = position + dir * segHalf;
+
+		sRGB8 c = toRGB8(color);
+		// Oranje accent voor de actieve laag als we in plaatsingsmodus zijn
+		if (clickMode == clickPlacePatternLineTrap)
+		{
+			QList<QVariant> mode = clickModeData;
+			if (mode.size() >= 2 && mode.at(1).toInt() == i)
+			{
+				c = sRGB8(255, 255, 0); // geel = actief
+			}
+		}
+
+		line3D(p1, p2, camera, target, mRotInv, perspectiveType, fov, width, height,
+			c, 2.0, sRGBFloat(1.0, 1.0, 1.0), 10, 1);
+
+		// Klein cirkeltje op het midden om de positie te markeren
+		CVector3 midProjected = InvProjection3D(position, camera, mRotInv, perspectiveType, fov, width, height);
+		if (midProjected.z > 0)
+		{
+			double visibleRadius = radius / midProjected.z / fov * height;
+			visibleRadius = clamp(visibleRadius, 2.0, double(width / 4.0));
+			image->CircleBorder(midProjected.x, midProjected.y, midProjected.z, visibleRadius,
+				sRGB8(255, 255, 255), 1.5, sRGBFloat(1.0, 1.0, 1.0), 1);
 		}
 	}
 }

@@ -149,6 +149,8 @@ float3 SurfaceColor(__constant sClInConstants *consts, sRenderData *renderData,
 #endif
 				fout =
 					Fractal(consts, pointTemp, calcParams, calcModeColouring, input->material, formulaIndex);
+				gradients->colorIndex = fout.colorIndex;
+				gradients->iters = fout.iters;
 				float nCol = fmod(fabs(fout.colorIndex), 248.0f * 256.0f);
 
 				float colorPosition = fmod(

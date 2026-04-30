@@ -168,6 +168,7 @@ void cOpenClEngineRenderFractal::CreateListOfIncludes(const QStringList &clHeade
 	const QString &openclPathSlash, std::shared_ptr<const cParameterContainer> params,
 	const QString &openclEnginePath, QByteArray &programEngine)
 {
+	std::cerr << "DEBUG CreateListOfIncludes: renderEngineMode=" << renderEngineMode << " clRenderEngineTypeFull=" << clRenderEngineTypeFull << "\n";
 	// common includes
 	for (int i = 0; i < clHeaderFiles.size(); i++)
 	{

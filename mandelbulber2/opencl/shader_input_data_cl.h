@@ -115,4 +115,6 @@ typedef struct
 #ifdef USE_TRANSPARENCY_GRADIENT
 	float3 transparency;
 #endif
+	float colorIndex;
+	float iters;
 } sClGradientsCollection;

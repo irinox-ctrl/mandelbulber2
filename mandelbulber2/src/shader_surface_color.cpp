@@ -67,6 +67,8 @@ sRGBAFloat cRenderWorker::SurfaceColour(
 				sFractalOut fractOut;
 	fractOut.normal = CVector3(0, 0, 0);
 				Compute<fractal::calcModeColouring>(*fractal, nullptr, fractIn, &fractOut);
+				gradients->colorIndex = fractOut.colorIndex;
+				gradients->iters = fractOut.iters;
 				double nrCol = fmod(fabs(fractOut.colorIndex), 248.0 * 256.0); // kept for compatibility
 
 				double colorPosition = fmod(

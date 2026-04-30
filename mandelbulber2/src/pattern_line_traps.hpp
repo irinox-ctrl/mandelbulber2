@@ -846,6 +846,56 @@ inline double PatternLineTrapProfileExtent(const sPatternLineTrapLayer &layer)
 		case 47: base = r * 1.2; break;
 		case 48: base = r * 1.05; break;
 		case 49: base = r * 1.05; break;
+		case 50: base = r * 1.05; break;
+		case 51: base = r * 1.05; break;
+		case 52: base = r * 1.05; break;
+		case 53: base = r * 1.05; break;
+		case 54: base = r * 1.05; break;
+		case 55: base = r * (1.0 + 0.12); break;
+		case 56: base = r * (1.0 + 0.12); break;
+		case 57: base = r * (1.0 + 0.12); break;
+		case 58: base = r * (1.0 + 0.1); break;
+		case 59: base = r * (1.0 + 0.1); break;
+		case 60: base = r * (1.0 + 0.08); break;
+		case 61: base = r * (1.0 + 0.06); break;
+		case 62: base = r * (1.0 + 0.2); break;
+		case 63: base = r * (1.0 + 0.2); break;
+		case 64: base = r * (1.0 + 0.18); break;
+		case 65: base = r * (1.0 + 0.18); break;
+		case 66: base = r * (1.0 + 0.15); break;
+		case 67: base = r * (1.0 + 0.12); break;
+		case 68: base = r * (1.0 + 0.1); break;
+		case 69: base = r * (1.0 + 0.08); break;
+		case 70: base = r * 1.05; break;
+		case 71: base = r * 1.05; break;
+		case 72: base = r * (1.0 + 0.12); break;
+		case 73: base = r * (1.0 + 0.1); break;
+		case 74: base = r * (1.0 + 0.08); break;
+		case 75: base = r * (1.0 + 0.08); break;
+		case 76: base = r * (1.0 + 0.06); break;
+		case 77: base = r * (1.0 + 0.05); break;
+		case 78: base = r * 1.3; break;
+		case 79: base = r * 1.3; break;
+		case 80: base = r * 1.4; break;
+		case 81: base = r * 1.1; break;
+		case 82: base = r * 1.2; break;
+		case 83: base = r * 1.1; break;
+		case 84: base = r * 1.3; break;
+		case 85: base = r * 1.4; break;
+		case 86: base = r * 1.4; break;
+		case 87: base = r * 1.4; break;
+		case 88: base = r; break;
+		case 89: base = r; break;
+		case 90: base = r; break;
+		case 91: base = r; break;
+		case 92: base = r; break;
+		case 93: base = r * 1.05; break;
+		case 94: base = r * 1.05; break;
+		case 95: base = r; break;
+		case 96: base = r; break;
+		case 97: base = r; break;
+		case 98: base = r * 1.4; break;
+		case 99: base = r; break;
 		default: base = r; break;
 	}
 	return base * sc;
@@ -858,9 +908,25 @@ struct sPatternLineTraps
 	int soloLayerIndex;
 	/** 0 = additief (huidig), 1 = max per kanaal. */
 	int combineMode;
+	/** 0 = geometric (wall-dist), 1 = orbit-trap colorIndex, 2 = iteration count. */
+	int coloringMode;
+	/** Coloring speed for orbit-trap / iteration modes (independent from material). */
+	double coloringSpeed;
+	/** Palette offset for orbit-trap / iteration modes (independent from material). */
+	double paletteOffset;
+	/** Master intensity multiplier applied to all layers (1.0 = no change). */
+	double globalIntensity;
+	/** If > 0, caps maxDistance for all layers at this value. */
+	double globalMaxDistance;
+	/** Master scale multiplier for all layer radii (1.0 = no change). */
+	double globalScale;
+	/** Master multiplier for all layer relative thicknesses (1.0 = no change). */
+	double globalRelativeThickness;
 	sPatternLineTrapLayer layers[PATTERN_LINE_TRAP_COUNT];
 
-	sPatternLineTraps() : enabled(false), soloLayerIndex(0), combineMode(0) {}
+	sPatternLineTraps() : enabled(false), soloLayerIndex(0), combineMode(0), coloringMode(0),
+		coloringSpeed(1.0), paletteOffset(0.0), globalIntensity(1.0), globalMaxDistance(0.0),
+		globalScale(1.0), globalRelativeThickness(1.0) {}
 };
 
 #endif /* MANDELBULBER2_SRC_PATTERN_LINE_TRAPS_HPP_ */

@@ -276,6 +276,56 @@ float PatternLineTrapProfileExtentCl(sPatternLineTrapLayerCl *layer)
 		case 47: base = r * 1.2f; break;
 		case 48: base = r * 1.05f; break;
 		case 49: base = r * 1.05f; break;
+		case 50: base = r * 1.05; break;
+		case 51: base = r * 1.05; break;
+		case 52: base = r * 1.05; break;
+		case 53: base = r * 1.05; break;
+		case 54: base = r * 1.05; break;
+		case 55: base = r * (1.0 + 0.12); break;
+		case 56: base = r * (1.0 + 0.12); break;
+		case 57: base = r * (1.0 + 0.12); break;
+		case 58: base = r * (1.0 + 0.1); break;
+		case 59: base = r * (1.0 + 0.1); break;
+		case 60: base = r * (1.0 + 0.08); break;
+		case 61: base = r * (1.0 + 0.06); break;
+		case 62: base = r * (1.0 + 0.2); break;
+		case 63: base = r * (1.0 + 0.2); break;
+		case 64: base = r * (1.0 + 0.18); break;
+		case 65: base = r * (1.0 + 0.18); break;
+		case 66: base = r * (1.0 + 0.15); break;
+		case 67: base = r * (1.0 + 0.12); break;
+		case 68: base = r * (1.0 + 0.1); break;
+		case 69: base = r * (1.0 + 0.08); break;
+		case 70: base = r * 1.05; break;
+		case 71: base = r * 1.05; break;
+		case 72: base = r * (1.0 + 0.12); break;
+		case 73: base = r * (1.0 + 0.1); break;
+		case 74: base = r * (1.0 + 0.08); break;
+		case 75: base = r * (1.0 + 0.08); break;
+		case 76: base = r * (1.0 + 0.06); break;
+		case 77: base = r * (1.0 + 0.05); break;
+		case 78: base = r * 1.3; break;
+		case 79: base = r * 1.3; break;
+		case 80: base = r * 1.4; break;
+		case 81: base = r * 1.1; break;
+		case 82: base = r * 1.2; break;
+		case 83: base = r * 1.1; break;
+		case 84: base = r * 1.3; break;
+		case 85: base = r * 1.4; break;
+		case 86: base = r * 1.4; break;
+		case 87: base = r * 1.4; break;
+		case 88: base = r; break;
+		case 89: base = r; break;
+		case 90: base = r; break;
+		case 91: base = r; break;
+		case 92: base = r; break;
+		case 93: base = r * 1.05; break;
+		case 94: base = r * 1.05; break;
+		case 95: base = r; break;
+		case 96: base = r; break;
+		case 97: base = r; break;
+		case 98: base = r * 1.4; break;
+		case 99: base = r; break;
 		default: base = r; break;
 	}
 	return base * sc;
@@ -724,6 +774,425 @@ float PatternLineTrapCrossSectionSignedCl(float y, float z, sPatternLineTrapLaye
 			float d2b = fmax(fabs(y) - 0.75f * r, fabs(z) - w2);
 			return fmin(fmin(d1a, d1b), fmin(d2a, d2b));
 		}
+		case 50: // Hendecagon (11-hoek)
+{
+			float angle = atan2(z, y);
+			float rad = native_sqrt(y * y + z * z);
+			float sector = 2.0f * M_PI_F / 11.0f;
+			float halfSector = 0.5f * sector;
+			float a = angle;
+			a -= sector * floor((a + halfSector) / sector);
+			a -= halfSector;
+			return native_cos(a) * rad - r;
+		}
+		case 51: // Dodecagon (12-hoek)
+{
+			float angle = atan2(z, y);
+			float rad = native_sqrt(y * y + z * z);
+			float sector = 2.0f * M_PI_F / 12.0f;
+			float halfSector = 0.5f * sector;
+			float a = angle;
+			a -= sector * floor((a + halfSector) / sector);
+			a -= halfSector;
+			return native_cos(a) * rad - r;
+		}
+		case 52: // Tetradecagon (14-hoek)
+{
+			float angle = atan2(z, y);
+			float rad = native_sqrt(y * y + z * z);
+			float sector = 2.0f * M_PI_F / 14.0f;
+			float halfSector = 0.5f * sector;
+			float a = angle;
+			a -= sector * floor((a + halfSector) / sector);
+			a -= halfSector;
+			return native_cos(a) * rad - r;
+		}
+		case 53: // Hexadecagon (16-hoek)
+{
+			float angle = atan2(z, y);
+			float rad = native_sqrt(y * y + z * z);
+			float sector = 2.0f * M_PI_F / 16.0f;
+			float halfSector = 0.5f * sector;
+			float a = angle;
+			a -= sector * floor((a + halfSector) / sector);
+			a -= halfSector;
+			return native_cos(a) * rad - r;
+		}
+		case 54: // Icosagon (20-hoek)
+{
+			float angle = atan2(z, y);
+			float rad = native_sqrt(y * y + z * z);
+			float sector = 2.0f * M_PI_F / 20.0f;
+			float halfSector = 0.5f * sector;
+			float a = angle;
+			a -= sector * floor((a + halfSector) / sector);
+			a -= halfSector;
+			return native_cos(a) * rad - r;
+		}
+		case 55: // Ster-6 (hexagram)
+{
+			float ang = atan2(z, y);
+			float rad = native_sqrt(y * y + z * z);
+			float k = 0.12f * fmin(fmax(aux, 0.01f), 1.0f);
+			float Rb = r * (1.0f + k * native_cos(6.0f * ang));
+			return rad - Rb;
+		}
+		case 56: // Ster-7
+{
+			float ang = atan2(z, y);
+			float rad = native_sqrt(y * y + z * z);
+			float k = 0.12f * fmin(fmax(aux, 0.01f), 1.0f);
+			float Rb = r * (1.0f + k * native_cos(7.0f * ang));
+			return rad - Rb;
+		}
+		case 57: // Ster-8
+{
+			float ang = atan2(z, y);
+			float rad = native_sqrt(y * y + z * z);
+			float k = 0.12f * fmin(fmax(aux, 0.01f), 1.0f);
+			float Rb = r * (1.0f + k * native_cos(8.0f * ang));
+			return rad - Rb;
+		}
+		case 58: // Ster-9
+{
+			float ang = atan2(z, y);
+			float rad = native_sqrt(y * y + z * z);
+			float k = 0.1f * fmin(fmax(aux, 0.01f), 1.0f);
+			float Rb = r * (1.0f + k * native_cos(9.0f * ang));
+			return rad - Rb;
+		}
+		case 59: // Ster-10
+{
+			float ang = atan2(z, y);
+			float rad = native_sqrt(y * y + z * z);
+			float k = 0.1f * fmin(fmax(aux, 0.01f), 1.0f);
+			float Rb = r * (1.0f + k * native_cos(10.0f * ang));
+			return rad - Rb;
+		}
+		case 60: // Ster-12
+{
+			float ang = atan2(z, y);
+			float rad = native_sqrt(y * y + z * z);
+			float k = 0.08f * fmin(fmax(aux, 0.01f), 1.0f);
+			float Rb = r * (1.0f + k * native_cos(12.0f * ang));
+			return rad - Rb;
+		}
+		case 61: // Ster-16
+{
+			float ang = atan2(z, y);
+			float rad = native_sqrt(y * y + z * z);
+			float k = 0.06f * fmin(fmax(aux, 0.01f), 1.0f);
+			float Rb = r * (1.0f + k * native_cos(16.0f * ang));
+			return rad - Rb;
+		}
+		case 62: // Roos-3
+{
+			float ang = atan2(z, y);
+			float rad = native_sqrt(y * y + z * z);
+			float k = 0.2f * fmin(fmax(aux, 0.01f), 1.0f);
+			float Rb = r * (1.0f + k * native_cos(3.0f * ang));
+			return rad - Rb;
+		}
+		case 63: // Roos-4
+{
+			float ang = atan2(z, y);
+			float rad = native_sqrt(y * y + z * z);
+			float k = 0.2f * fmin(fmax(aux, 0.01f), 1.0f);
+			float Rb = r * (1.0f + k * native_cos(4.0f * ang));
+			return rad - Rb;
+		}
+		case 64: // Roos-6
+{
+			float ang = atan2(z, y);
+			float rad = native_sqrt(y * y + z * z);
+			float k = 0.18f * fmin(fmax(aux, 0.01f), 1.0f);
+			float Rb = r * (1.0f + k * native_cos(6.0f * ang));
+			return rad - Rb;
+		}
+		case 65: // Roos-7
+{
+			float ang = atan2(z, y);
+			float rad = native_sqrt(y * y + z * z);
+			float k = 0.18f * fmin(fmax(aux, 0.01f), 1.0f);
+			float Rb = r * (1.0f + k * native_cos(7.0f * ang));
+			return rad - Rb;
+		}
+		case 66: // Roos-8
+{
+			float ang = atan2(z, y);
+			float rad = native_sqrt(y * y + z * z);
+			float k = 0.15f * fmin(fmax(aux, 0.01f), 1.0f);
+			float Rb = r * (1.0f + k * native_cos(8.0f * ang));
+			return rad - Rb;
+		}
+		case 67: // Roos-10
+{
+			float ang = atan2(z, y);
+			float rad = native_sqrt(y * y + z * z);
+			float k = 0.12f * fmin(fmax(aux, 0.01f), 1.0f);
+			float Rb = r * (1.0f + k * native_cos(10.0f * ang));
+			return rad - Rb;
+		}
+		case 68: // Roos-12
+{
+			float ang = atan2(z, y);
+			float rad = native_sqrt(y * y + z * z);
+			float k = 0.1f * fmin(fmax(aux, 0.01f), 1.0f);
+			float Rb = r * (1.0f + k * native_cos(12.0f * ang));
+			return rad - Rb;
+		}
+		case 69: // Roos-16
+{
+			float ang = atan2(z, y);
+			float rad = native_sqrt(y * y + z * z);
+			float k = 0.08f * fmin(fmax(aux, 0.01f), 1.0f);
+			float Rb = r * (1.0f + k * native_cos(16.0f * ang));
+			return rad - Rb;
+		}
+		case 70: // Heptagon (7-hoek)
+{
+			float angle = atan2(z, y);
+			float rad = native_sqrt(y * y + z * z);
+			float sector = 2.0f * M_PI_F / 7.0f;
+			float halfSector = 0.5f * sector;
+			float a = angle;
+			a -= sector * floor((a + halfSector) / sector);
+			a -= halfSector;
+			return native_cos(a) * rad - r;
+		}
+		case 71: // Enneagon (9-hoek)
+{
+			float angle = atan2(z, y);
+			float rad = native_sqrt(y * y + z * z);
+			float sector = 2.0f * M_PI_F / 9.0f;
+			float halfSector = 0.5f * sector;
+			float a = angle;
+			a -= sector * floor((a + halfSector) / sector);
+			a -= halfSector;
+			return native_cos(a) * rad - r;
+		}
+		case 72: // Tandwiel-6
+{
+			float ang = atan2(z, y);
+			float rad = native_sqrt(y * y + z * z);
+			float tn = 6.0f + floor(fmin(12.0f, fmax(0.0f, aux * 2.0f)));
+			float w = 0.12f * (1.0f - 0.5f * (tn - 6.0f) / 12.0f);
+			float Rb = r * (1.0f + w * native_cos(tn * ang));
+			return rad - Rb;
+		}
+		case 73: // Tandwiel-8
+{
+			float ang = atan2(z, y);
+			float rad = native_sqrt(y * y + z * z);
+			float tn = 8.0f + floor(fmin(12.0f, fmax(0.0f, aux * 2.0f)));
+			float w = 0.1f * (1.0f - 0.5f * (tn - 8.0f) / 12.0f);
+			float Rb = r * (1.0f + w * native_cos(tn * ang));
+			return rad - Rb;
+		}
+		case 74: // Tandwiel-10
+{
+			float ang = atan2(z, y);
+			float rad = native_sqrt(y * y + z * z);
+			float tn = 10.0f + floor(fmin(12.0f, fmax(0.0f, aux * 2.0f)));
+			float w = 0.08f * (1.0f - 0.5f * (tn - 10.0f) / 12.0f);
+			float Rb = r * (1.0f + w * native_cos(tn * ang));
+			return rad - Rb;
+		}
+		case 75: // Tandwiel-12
+{
+			float ang = atan2(z, y);
+			float rad = native_sqrt(y * y + z * z);
+			float tn = 12.0f + floor(fmin(12.0f, fmax(0.0f, aux * 2.0f)));
+			float w = 0.08f * (1.0f - 0.5f * (tn - 12.0f) / 12.0f);
+			float Rb = r * (1.0f + w * native_cos(tn * ang));
+			return rad - Rb;
+		}
+		case 76: // Tandwiel-16
+{
+			float ang = atan2(z, y);
+			float rad = native_sqrt(y * y + z * z);
+			float tn = 16.0f + floor(fmin(12.0f, fmax(0.0f, aux * 2.0f)));
+			float w = 0.06f * (1.0f - 0.5f * (tn - 16.0f) / 12.0f);
+			float Rb = r * (1.0f + w * native_cos(tn * ang));
+			return rad - Rb;
+		}
+		case 77: // Tandwiel-20
+{
+			float ang = atan2(z, y);
+			float rad = native_sqrt(y * y + z * z);
+			float tn = 20.0f + floor(fmin(12.0f, fmax(0.0f, aux * 2.0f)));
+			float w = 0.05f * (1.0f - 0.5f * (tn - 20.0f) / 12.0f);
+			float Rb = r * (1.0f + w * native_cos(tn * ang));
+			return rad - Rb;
+		}
+		case 78: // Hart
+{
+			float yy = y / r;
+			float zz = (z - 0.3f * r) / r;
+			float d0 = native_sqrt(yy * yy + zz * zz) - 1.0f;
+			float d1 = native_sqrt(yy * yy + (zz + 0.8f) * (zz + 0.8f)) - 0.2f;
+			return fmax(d0, -d1) * r;
+		}
+		case 79: // Infinity
+{
+			float a = 0.6f * r;
+			float d1 = native_sqrt((y - a) * (y - a) + z * z) - a;
+			float d2 = native_sqrt((y + a) * (y + a) + z * z) - a;
+			return fmin(d1, d2);
+		}
+		case 80: // Druppel
+{
+			float yy = y / r;
+			float zz = z / r;
+			float d0 = native_sqrt(yy * yy + (zz + 0.3f) * (zz + 0.3f)) - 1.0f;
+			float d1 = zz - 0.5f;
+			return fmax(d0, d1) * r;
+		}
+		case 81: // Oog
+{
+			float a = 0.35f * r;
+			float d1 = native_sqrt((y - a) * (y - a) + z * z) - r * 0.7f;
+			float d2 = native_sqrt((y + a) * (y + a) + z * z) - r * 0.7f;
+			float d3 = fmax(d1, d2);
+			return fmax(d3, fabs(z) - r * 0.5f);
+		}
+		case 82: // Maan
+{
+			float d0 = native_sqrt(y * y + z * z) - r;
+			float d1 = r * 0.45f - native_sqrt((y - r * 0.55f) * (y - r * 0.55f) + z * z);
+			return fmax(d0, d1);
+		}
+		case 83: // Pijl
+{
+			float d1 = fmax(fabs(y + r * 0.3f) - r * 0.15f, fabs(z) - r * 0.5f);
+			float yy = y - r * 0.3f;
+			float d2 = PatternLineEquilateralIqCl(yy, z, r * 0.6f);
+			return fmin(d1, d2);
+		}
+		case 84: // Bliksem
+{
+			float s = 0.3f * r;
+			float m = PatternLineSdf2dSegCl(y, z, -r, r * 0.5f, -s, -r * 0.5f);
+			m = fmin(m, PatternLineSdf2dSegCl(y, z, -s, -r * 0.5f, s, r * 0.5f));
+			m = fmin(m, PatternLineSdf2dSegCl(y, z, s, r * 0.5f, r, -r * 0.5f));
+			return m - 0.04f * r;
+		}
+		case 85: // Sinus-golf
+{
+			float w = y / r;
+			float zz = z / r;
+			return fabs(zz - 0.3f * native_sin(w * 4.0f)) * r - r * 0.08f;
+		}
+		case 86: // Zaagtand
+{
+			float w = y / r;
+			float zz = z / r;
+			float saw = w - floor(w + 0.5f);
+			return fabs(zz - saw) * r - r * 0.08f;
+		}
+		case 87: // Block-golf
+{
+			float w = y / r;
+			float zz = z / r;
+			float sq = (fmod(floor(w + 0.5f), 2.0f) == 0.0f) ? 0.3f : -0.3f;
+			return fabs(zz - sq) * r - r * 0.08f;
+		}
+		case 88: // Cirkel-sektor 60°
+{
+			float rad = native_sqrt(y * y + z * z);
+			float ang = atan2(z, y);
+			float d0 = rad - r;
+			float d1 = fmax(fabs(ang) - M_PI_F / 6.0f, 0.0f);
+			return fmax(d0, d1 * r);
+		}
+		case 89: // Cirkel-sektor 90°
+{
+			float rad = native_sqrt(y * y + z * z);
+			float ang = atan2(z, y);
+			float d0 = rad - r;
+			float d1 = fmax(fabs(ang) - M_PI_F / 4.0f, 0.0f);
+			return fmax(d0, d1 * r);
+		}
+		case 90: // Cirkel-sektor 120°
+{
+			float rad = native_sqrt(y * y + z * z);
+			float ang = atan2(z, y);
+			float d0 = rad - r;
+			float d1 = fmax(fabs(ang) - M_PI_F / 3.0f, 0.0f);
+			return fmax(d0, d1 * r);
+		}
+		case 91: // Halve cirkel
+{
+			float rad = native_sqrt(y * y + z * z);
+			float ang = atan2(z, y);
+			float d0 = rad - r;
+			float d1 = fmax(fabs(ang) - M_PI_F / 2.0f, 0.0f);
+			return fmax(d0, d1 * r);
+		}
+		case 92: // Taartpunt
+{
+			float rad = native_sqrt(y * y + z * z);
+			float ang = atan2(z, y);
+			float alpha = M_PI_F / 6.0f + M_PI_F / 3.0f * fmin(fmax(aux, 0.0f), 1.0f);
+			float d0 = rad - r;
+			float d1 = fmax(fabs(ang) - alpha, 0.0f);
+			return fmax(d0, d1 * r);
+		}
+		case 93: // Kruis met bol
+{
+			float w = r * 0.18f;
+			float dv = fmax(fabs(y) - w, fabs(z) - r);
+			float dh = fmax(fabs(y) - r, fabs(z) - w);
+			float dc = native_sqrt(y * y + z * z) - r * 0.35f;
+			return fmin(fmin(dv, dh), dc);
+		}
+		case 94: // Ring-kruis
+{
+			float dc = fabs(native_sqrt(y * y + z * z) - r * 0.6f) - r * 0.15f;
+			float w = r * 0.15f;
+			float dv = fmax(fabs(y) - w, fabs(z) - r);
+			float dh = fmax(fabs(y) - r, fabs(z) - w);
+			return fmin(dc, fmin(dv, dh));
+		}
+		case 95: // Vierkant met kruis
+{
+			float db = fmax(fabs(y) - r, fabs(z) - r);
+			float w = r * 0.12f;
+			float dv = fmax(fabs(y) - w, fabs(z) - r * 0.7f);
+			float dh = fmax(fabs(y) - r * 0.7f, fabs(z) - w);
+			return fmax(db, -fmin(dv, dh));
+		}
+		case 96: // Target
+{
+			float rad = native_sqrt(y * y + z * z);
+			float d0 = fabs(rad - r * 0.25f) - r * 0.06f;
+			float d1 = fabs(rad - r * 0.55f) - r * 0.06f;
+			float d2 = fabs(rad - r * 0.85f) - r * 0.06f;
+			return fmin(fmin(d0, d1), d2);
+		}
+		case 97: // Genestelde vierkanten
+{
+			float d0 = fmax(fabs(y) - r, fabs(z) - r);
+			float d1 = fmax(fabs(y) - r * 0.7f, fabs(z) - r * 0.7f);
+			float d2 = fmax(fabs(y) - r * 0.4f, fabs(z) - r * 0.4f);
+			return fmin(d0, fmin(-d1, d2));
+		}
+		case 98: // Meander
+{
+			float w = y / r;
+			float zz = z / r;
+			float saw = w - floor(w + 0.5f);
+			float me = fabs(fabs(saw) - 0.25f) - 0.1f;
+			return fabs(zz - me * 2.0f) * r - r * 0.06f;
+		}
+		case 99: // Spiraal
+{
+			float rad = native_sqrt(y * y + z * z);
+			float ang = atan2(z, y);
+			float turns = 2.0f + fmin(fmax(aux, 0.0f), 4.0f);
+			float rt = r * (0.1f + 0.9f * fmod(fabs(ang) / (2.0f * M_PI_F * turns), 1.0f));
+			return fabs(rad - rt) - r * 0.05f;
+		}
 		default:
 			return native_sqrt(y * y + z * z) - r;
 	}
@@ -754,7 +1223,8 @@ float3 PatternLineTrapGradientRgbCl(float t, float3 c0, float3 c1, float3 c2)
 	return c1 * (1.0f - tt) + c2 * tt;
 }
 
-float3 PatternLineTrapsShader(__constant sClInConstants *consts, float3 point)
+float3 PatternLineTrapsShader(__constant sClInConstants *consts, float3 point,
+	sShaderInputDataCl *input, sClGradientsCollection *gradients)
 {
 	float3 result = 0.0f;
 	if (!consts->params.patternLineTraps.enabled) return result;
@@ -772,6 +1242,10 @@ float3 PatternLineTrapsShader(__constant sClInConstants *consts, float3 point)
 			float camDist = length(consts->params.camera - layer->position.xyz);
 			effLayer.radius *= camDist * layer->relativeSize;
 		}
+		effLayer.radius *= consts->params.patternLineTraps.globalScale;
+		if (consts->params.patternLineTraps.globalMaxDistance > 1e-30f)
+			effLayer.maxDistance = fmin(effLayer.maxDistance, consts->params.patternLineTraps.globalMaxDistance);
+		effLayer.relativeThickness *= consts->params.patternLineTraps.globalRelativeThickness;
 
 		float3 delta = Matrix33MulFloat3(effLayer.mRotRotation, point - effLayer.position.xyz);
 
@@ -829,9 +1303,28 @@ float3 PatternLineTrapsShader(__constant sClInConstants *consts, float3 point)
 		}
 		else
 			falloff = native_exp(-u);
-		float intens = effLayer.intensity * falloff * fade * axialFade;
+		float intens = effLayer.intensity * falloff * fade * axialFade
+			* consts->params.patternLineTraps.globalIntensity;
+		float tGrad;
+		if (gradients != NULL && consts->params.patternLineTraps.coloringMode == 1)
+		{
+			float nCol = fmod(fabs(gradients->colorIndex), 248.0f * 256.0f);
+			tGrad = fmod(nCol / 256.0f / 10.0f * consts->params.patternLineTraps.coloringSpeed
+							 + consts->params.patternLineTraps.paletteOffset,
+				1.0f);
+		}
+		else if (gradients != NULL && consts->params.patternLineTraps.coloringMode == 2)
+		{
+			tGrad = fmod(gradients->iters / consts->params.N * consts->params.patternLineTraps.coloringSpeed
+							 + consts->params.patternLineTraps.paletteOffset,
+				1.0f);
+		}
+		else
+		{
+			tGrad = u;
+		}
 		float3 gradCol = PatternLineTrapGradientRgbCl(
-			u, effLayer.color.xyz, effLayer.color2.xyz, effLayer.color3.xyz);
+			tGrad, effLayer.color.xyz, effLayer.color2.xyz, effLayer.color3.xyz);
 
 		if (consts->params.patternLineTraps.combineMode == 0)
 		{

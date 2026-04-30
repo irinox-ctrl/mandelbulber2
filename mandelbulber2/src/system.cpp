@@ -324,10 +324,12 @@ bool CreateDefaultFolders()
 	result &= CreateFolder(systemDirectories.GetOpenCLCacheFolder());
 	result &= CreateFolder(systemDirectories.GetUndoFolder());
 	result &= CreateFolder(systemDirectories.GetHistoryFolder());
+	result &= CreateFolder(systemDirectories.GetPatternLinePresetsFolder());
 	result &= PutClangFormatFileToDataDirectoryHidden();
 
 	RetrieveToolbarPresets(false);
 	RetrieveExampleMaterials(false);
+	RetrieveExamplePatternLinePresets(false);
 
 #ifdef CLSUPPORT
 	string oclDir = systemData.dataDirectory + "/custom_ocl_formulas";
@@ -688,6 +690,29 @@ void RetrieveExampleMaterials(bool force)
 			if (materialFiles.fileName() == "." || materialFiles.fileName() == "..") continue;
 			fcopy(materialFiles.filePath(),
 				systemDirectories.GetMaterialsFolder() + QDir::separator() + materialFiles.fileName());
+		}
+	}
+}
+
+void RetrieveExamplePatternLinePresets(bool force)
+{
+	const QString destFolder = systemDirectories.GetPatternLinePresetsFolder();
+	const bool folderEmpty =
+		QDir(destFolder).entryInfoList(QDir::NoDotAndDotDot | QDir::AllEntries).count() == 0;
+
+	QDirIterator presetFiles(systemDirectories.sharedDir + "pattern_presets");
+	while (presetFiles.hasNext())
+	{
+		presetFiles.next();
+		if (presetFiles.fileName() == "." || presetFiles.fileName() == "..") continue;
+		const QString destPath = destFolder + QDir::separator() + presetFiles.fileName();
+		const bool needsCopy = folderEmpty || force || !QFile::exists(destPath)
+											 || QFileInfo(presetFiles.filePath()).lastModified()
+													> QFileInfo(destPath).lastModified();
+		if (needsCopy)
+		{
+			if (QFile::exists(destPath)) QFile::remove(destPath);
+			fcopy(presetFiles.filePath(), destPath);
 		}
 	}
 }

@@ -18,6 +18,7 @@
 #include <QMessageBox>
 #include <QPushButton>
 #include <QSignalBlocker>
+#include <QInputDialog>
 #include <QRegularExpression>
 #include <QSpinBox>
 #include <QLabel>
@@ -28,6 +29,7 @@
 #include "navigator_window.h"
 
 #include "src/animation_frames.hpp"
+#include "src/write_log.hpp"
 #include "src/automated_widgets.hpp"
 #include "src/fractal_container.hpp"
 #include "src/global_data.hpp"
@@ -64,6 +66,14 @@ QStringList patternLineTrapPresetMainParameterNames()
 	QStringList list;
 	list << QStringLiteral("main_pattern_line_traps_enabled");
 	list << QStringLiteral("main_pattern_line_trap_solo_layer");
+	list << QStringLiteral("main_pattern_line_traps_combine_mode");
+	list << QStringLiteral("main_pattern_line_traps_coloring_mode");
+	list << QStringLiteral("main_pattern_line_traps_coloring_speed");
+	list << QStringLiteral("main_pattern_line_traps_palette_offset");
+	list << QStringLiteral("main_pattern_line_traps_global_intensity");
+	list << QStringLiteral("main_pattern_line_traps_global_max_distance");
+	list << QStringLiteral("main_pattern_line_traps_global_scale");
+	list << QStringLiteral("main_pattern_line_traps_global_relative_thickness");
 	for (int i = 1; i <= PATTERN_LINE_TRAP_COUNT; i++)
 	{
 		const QString p = QStringLiteral("pattern_line_trap_%1").arg(i);
@@ -236,7 +246,7 @@ bool cDockPatternLines::applyExactClickPlacementForLayer(const int layer)
 			   "standaard render-venster."));
 		return false;
 	}
-	gMainInterface->SynchronizeInterface(gPar, gParFractal, qInterface::read);
+	SynchronizeInterfaceWindow(this, params, qInterface::read);
 
 	QList<QVariant> item;
 	item.append(int(RenderedImage::clickPlacePatternLineTrap));
@@ -262,24 +272,23 @@ bool cDockPatternLines::applyExactClickPlacementForLayer(const int layer)
 	const int precIdx = ui->comboBox_pattern_line_precision_mode
 		? ui->comboBox_pattern_line_precision_mode->currentIndex()
 		: 0;
-	// Moet in gPar staan: SynchronizeInterface(write) stelt combo vanuit param pattern_line_precision_mode
-	gPar->Set("pattern_line_precision_mode", precIdx);
+	params->Set("pattern_line_precision_mode", precIdx);
 	const bool subPrecise = (precIdx == 1);
 	if (subPrecise)
 	{
-		gPar->Set("aux_light_manual_placement_dist", 0.0);
+		params->Set("aux_light_manual_placement_dist", 0.0);
 	}
 	else
 	{
-		const CVector3 camera = gPar->Get<CVector3>("camera");
-		const double dist = cInterface::GetDistanceForPoint(camera, gPar, gParFractal);
-		gPar->Set("aux_light_manual_placement_dist", dist * 0.1);
+		const CVector3 camera = params->Get<CVector3>("camera");
+		const double dist = cInterface::GetDistanceForPoint(camera, params, fractalParams);
+		params->Set("aux_light_manual_placement_dist", dist * 0.1);
 	}
 	// Moet overeenkomen met combo; anders zet SynchronizeInterface(write) muisactie terug
 	// (mouse_click_function) en overschrijft setClickMode weer.
-	gPar->Set("mouse_click_function", idx);
+	params->Set("mouse_click_function", idx);
 
-	gMainInterface->SynchronizeInterface(gPar, gParFractal, qInterface::write);
+	SynchronizeInterfaceWindow(this, params, qInterface::write);
 
 	if (gMainInterface->mainWindow && gMainInterface->mainWindow->statusBar())
 	{
@@ -295,6 +304,9 @@ bool cDockPatternLines::applyExactClickPlacementForLayer(const int layer)
 		gMainInterface->mainWindow->activateWindow();
 	}
 	renderedImageWidget->setFocus(Qt::OtherFocusReason);
+	// Zorg dat knop visueel AAN staat (QSignalBlocker kan currentIndexChanged-signal hebben
+	// onderdrukt, waardoor slotMouseFunctionComboChanged de knop niet heeft aangezet).
+	setExactPlacementButtonCheckedNoSignals(true);
 	if (ui->pushButton_pattern_line_exact_activate) ui->pushButton_pattern_line_exact_activate->update();
 	return true;
 }
@@ -322,7 +334,7 @@ void cDockPatternLines::deactivateExactClickPlacement()
 		const QSignalBlocker blockCombo(mouseFunctionComboWidget);
 		mouseFunctionComboWidget->setCurrentIndex(i0);
 	}
-	gPar->Set("mouse_click_function", i0);
+	if (params) params->Set("mouse_click_function", i0);
 	renderedImageWidget->setClickMode(none);
 	if (gMainInterface->mainWindow && gMainInterface->mainWindow->statusBar())
 	{
@@ -376,8 +388,8 @@ void cDockPatternLines::slotExactLayerNumberChanged(const int layer)
 void cDockPatternLines::slotPatternLinePrecisionModeChanged(const int index)
 {
 	(void)index;
-	if (gPar && ui->comboBox_pattern_line_precision_mode)
-		gPar->Set("pattern_line_precision_mode", ui->comboBox_pattern_line_precision_mode->currentIndex());
+	if (params && ui->comboBox_pattern_line_precision_mode)
+		params->Set("pattern_line_precision_mode", ui->comboBox_pattern_line_precision_mode->currentIndex());
 	if (!ui->pushButton_pattern_line_exact_activate || !ui->pushButton_pattern_line_exact_activate->isChecked())
 		return;
 	if (!applyExactClickPlacementForLayer(ui->spinbox_pattern_line_exact_layer->value()))
@@ -444,6 +456,11 @@ void cDockPatternLines::AssignSpecialWidgets(
 			QOverload<int>::of(&QSpinBox::valueChanged), this,
 			&cDockPatternLines::slotExactLayerNumberChanged);
 	}
+	if (renderedImageWidget && ui->checkBox_pattern_line_traps_overlay_visible)
+	{
+		renderedImageWidget->SetPatternLineTrapsVisibility(
+			ui->checkBox_pattern_line_traps_overlay_visible->isChecked());
+	}
 	slotMouseFunctionComboChanged(-1);
 }
 
@@ -496,10 +513,11 @@ void cDockPatternLines::applyAuxLightWorldOffsetFromUi(const bool flushStartRend
 	}
 	for (int l = 1; l <= PATTERN_LINE_TRAP_COUNT; l++)
 	{
-		if (!gPar->Get<bool>(QString("pattern_line_trap_%1_enabled").arg(l))) continue;
+		std::shared_ptr<cParameterContainer> pl = params ? params : gPar;
+		if (!pl->Get<bool>(QString("pattern_line_trap_%1_enabled").arg(l))) continue;
 		const QString pPos = QString("pattern_line_trap_%1_position").arg(l);
-		const CVector3 p = gPar->Get<CVector3>(pPos);
-		gPar->Set(pPos, p + d);
+		const CVector3 p = pl->Get<CVector3>(pPos);
+		pl->Set(pPos, p + d);
 	}
 	m_lastAuxWorldOffset = now;
 
@@ -565,12 +583,45 @@ void cDockPatternLines::ConnectSignals()
 	if (ui->pushButton_pattern_line_traps_quick_test)
 		connect(ui->pushButton_pattern_line_traps_quick_test, &QPushButton::clicked, this,
 			&cDockPatternLines::slotPressedButtonPatternLineTrapsQuickTest);
+	if (ui->pushButton_pattern_line_traps_enable_all)
+		connect(ui->pushButton_pattern_line_traps_enable_all, &QPushButton::clicked, this,
+			&cDockPatternLines::slotEnableAllPatternLineTraps);
+	if (ui->pushButton_pattern_line_traps_disable_all)
+		connect(ui->pushButton_pattern_line_traps_disable_all, &QPushButton::clicked, this,
+			&cDockPatternLines::slotDisableAllPatternLineTraps);
+	if (ui->pushButton_pattern_line_traps_solo_selected)
+		connect(ui->pushButton_pattern_line_traps_solo_selected, &QPushButton::clicked, this,
+			&cDockPatternLines::slotSoloSelectedPatternLineTrap);
+	if (ui->spinboxInt_pattern_line_trap_solo_layer)
+	{
+		connect(ui->spinboxInt_pattern_line_trap_solo_layer,
+			QOverload<int>::of(&QSpinBox::valueChanged), this, [this](int value) {
+				if (params) params->Set("pattern_line_trap_solo_layer", value);
+				gMainInterface->StartRender(true);
+			});
+	}
+	if (ui->checkBox_pattern_line_traps_overlay_visible)
+	{
+		connect(ui->checkBox_pattern_line_traps_overlay_visible, &QCheckBox::stateChanged, this,
+			[this](int state) {
+				if (renderedImageWidget)
+					renderedImageWidget->SetPatternLineTrapsVisibility(state == Qt::Checked);
+			});
+		// Initieel aan zetten
+		if (renderedImageWidget)
+			renderedImageWidget->SetPatternLineTrapsVisibility(
+				ui->checkBox_pattern_line_traps_overlay_visible->isChecked());
+	}
 
 	if (ui->pushButton_pattern_line_trap_preset_refresh)
 		connect(ui->pushButton_pattern_line_trap_preset_refresh, &QPushButton::clicked, this,
 			&cDockPatternLines::slotPatternLineTrapPresetRefresh);
 	if (ui->pushButton_pattern_line_trap_preset_load)
 		connect(ui->pushButton_pattern_line_trap_preset_load, &QPushButton::clicked, this,
+			&cDockPatternLines::slotPatternLineTrapPresetLoad);
+	// Laad ook automatisch bij selectie in de dropdown (intuïtiever)
+	if (ui->comboBox_pattern_line_trap_presets)
+		connect(ui->comboBox_pattern_line_trap_presets, QOverload<int>::of(&QComboBox::activated), this,
 			&cDockPatternLines::slotPatternLineTrapPresetLoad);
 	if (ui->pushButton_pattern_line_trap_preset_save)
 		connect(ui->pushButton_pattern_line_trap_preset_save, &QPushButton::clicked, this,
@@ -581,6 +632,12 @@ void cDockPatternLines::ConnectSignals()
 
 	connect(ui->pushButton_pattern_dock_navi, &QPushButton::clicked, this,
 		&cDockPatternLines::slotPressedButtonNavi);
+	if (ui->pushButton_pattern_dock_reset)
+	{
+		ui->pushButton_pattern_dock_reset->disconnect();
+		connect(ui->pushButton_pattern_dock_reset, &QPushButton::clicked, this,
+			&cDockPatternLines::slotResetPatternLineTraps);
+	}
 	// Offset: textChanged → debounce (alleen gPar+ docks). Beeld: Enter / editingFinished (één render).
 	if (ui->vect3_aux_light_manual_placement_offset_x)
 	{
@@ -623,10 +680,12 @@ void cDockPatternLines::RefreshPatternLinePresetCombo()
 	ui->comboBox_pattern_line_trap_presets->clear();
 	const QString folder = systemDirectories.GetPatternLinePresetsFolder();
 	QDir dir(folder);
-	if (!dir.exists()) return;
+	WriteLogString("RefreshPatternLinePresetCombo: folder", folder, 1);
+	if (!dir.exists()) { WriteLog("RefreshPatternLinePresetCombo: folder does not exist", 1); return; }
 	const QStringList files =
 		dir.entryList(QStringList{QStringLiteral("*.m3p"), QStringLiteral("*.fract"), QStringLiteral("*.txt")},
 			QDir::Files, QDir::Name);
+	WriteLogInt("RefreshPatternLinePresetCombo: found files", files.size(), 1);
 	for (const QString &name : files)
 		ui->comboBox_pattern_line_trap_presets->addItem(name, QVariant(dir.absoluteFilePath(name)));
 }
@@ -638,22 +697,65 @@ void cDockPatternLines::slotPatternLineTrapPresetRefresh()
 
 void cDockPatternLines::slotPatternLineTrapPresetLoad()
 {
-	if (!ui->comboBox_pattern_line_trap_presets) return;
+	WriteLog("[PatternLines] slotPatternLineTrapPresetLoad() called", 1);
+	if (!ui->comboBox_pattern_line_trap_presets)
+	{
+		WriteLog("[PatternLines] early return: no comboBox", 1);
+		return;
+	}
 	const int idx = ui->comboBox_pattern_line_trap_presets->currentIndex();
-	if (idx < 0) return;
+	if (idx < 0)
+	{
+		WriteLog("[PatternLines] early return: idx < 0", 1);
+		return;
+	}
 	const QString path = ui->comboBox_pattern_line_trap_presets->itemData(idx).toString();
-	if (path.isEmpty()) return;
+	if (path.isEmpty())
+	{
+		WriteLog("[PatternLines] early return: path empty", 1);
+		return;
+	}
 
-	gMainInterface->SynchronizeInterface(gPar, gParFractal, qInterface::read);
+	std::shared_ptr<cParameterContainer> targetPar = params ? params : gPar;
+	std::shared_ptr<cFractalContainer> targetFract = fractalParams ? fractalParams : gParFractal;
+
+	WriteLogString("[PatternLines] Loading preset", path, 1);
+
+	// Eerst ALLE pattern-line parameters resetten naar default zodat de preset
+	// als een schone lei laadt (condensed text overschrijft alleen wat erin staat).
+	const QStringList paramNames = patternLineTrapPresetMainParameterNames();
+	for (const QString &fullName : paramNames)
+	{
+		const int firstUnderscore = fullName.indexOf('_');
+		const QString containerName = fullName.left(firstUnderscore);
+		const QString parameterName = fullName.mid(firstUnderscore + 1);
+		if (containerName != QStringLiteral("main")) continue;
+		if (!targetPar->IfExists(parameterName)) continue;
+		cOneParameter oneParam = targetPar->GetAsOneParameter(parameterName);
+		oneParam.SetMultiVal(oneParam.GetMultiVal(valueDefault), valueActual);
+		targetPar->SetFromOneParameter(parameterName, oneParam);
+	}
+
+	SynchronizeInterfaceWindow(this, targetPar, qInterface::write);
 
 	cSettings parSettings(cSettings::formatFullText);
-	parSettings.SetListOfParametersToProcess(patternLineTrapPresetMainParameterNames());
+	parSettings.SetListOfParametersToProcess(paramNames);
 
 	gMainInterface->DisablePeriodicRefresh();
 	gInterfaceReadyForSynchronization = false;
-	parSettings.LoadFromFile(path);
-	parSettings.Decode(gPar, gParFractal, gAnimFrames, gKeyframes);
-	gMainInterface->SynchronizeInterface(gPar, gParFractal, qInterface::write);
+	bool loadOk = parSettings.LoadFromFile(path);
+	WriteLogString("[PatternLines] LoadFromFile result", loadOk ? "true" : "false", 1);
+	bool decodeOk = parSettings.Decode(targetPar, targetFract, gAnimFrames, gKeyframes);
+	WriteLogString("[PatternLines] Decode result", decodeOk ? "true" : "false", 1);
+	WriteLogString("[PatternLines] After decode - enabled",
+		(targetPar->Get<bool>("pattern_line_traps_enabled") ? "true" : "false"), 1);
+	WriteLogInt("[PatternLines] After decode - solo",
+		targetPar->Get<int>("pattern_line_trap_solo_layer"), 1);
+	WriteLogDouble("[PatternLines] After decode - l1_int",
+		targetPar->Get<double>("pattern_line_trap_1_intensity"), 1);
+	WriteLogDouble("[PatternLines] After decode - l1_rad",
+		targetPar->Get<double>("pattern_line_trap_1_radius"), 1);
+	SynchronizeInterfaceWindow(this, targetPar, qInterface::write);
 	gInterfaceReadyForSynchronization = true;
 	gMainInterface->ComboMouseClickUpdate();
 	gMainInterface->ReEnablePeriodicRefresh();
@@ -662,31 +764,47 @@ void cDockPatternLines::slotPatternLineTrapPresetLoad()
 
 void cDockPatternLines::slotPatternLineTrapPresetSave()
 {
-	gMainInterface->SynchronizeInterface(gPar, gParFractal, qInterface::read);
+	std::shared_ptr<cParameterContainer> targetPar = params ? params : gPar;
+	std::shared_ptr<cFractalContainer> targetFract = fractalParams ? fractalParams : gParFractal;
+	SynchronizeInterfaceWindow(this, targetPar, qInterface::read);
 	QDir().mkpath(systemDirectories.GetPatternLinePresetsFolder());
-	QFileDialog dialog(this);
-	dialog.setOption(QFileDialog::DontUseNativeDialog);
-	dialog.setFileMode(QFileDialog::AnyFile);
-	dialog.setAcceptMode(QFileDialog::AcceptSave);
-	dialog.setDirectory(systemDirectories.GetPatternLinePresetsFolder());
-	dialog.setNameFilter(tr("Pattern preset (*.m3p);;Fractal fragment (*.fract *.txt)"));
-	dialog.setDefaultSuffix(QStringLiteral("m3p"));
-	dialog.setWindowTitle(tr("Patroon-preset opslaan"));
-	if (!dialog.exec()) return;
-	const QString path = QDir::toNativeSeparators(dialog.selectedFiles().value(0));
-	if (path.isEmpty()) return;
+
+	bool ok = false;
+	QString name = QInputDialog::getText(this, tr("Preset opslaan"),
+		tr("Naam voor nieuwe preset:"), QLineEdit::Normal, QString(), &ok);
+	if (!ok || name.isEmpty()) return;
+
+	name = name.trimmed();
+	if (!name.endsWith(QStringLiteral(".m3p"), Qt::CaseInsensitive))
+		name += QStringLiteral(".m3p");
+
+	/* Verwijder ongeldige tekens uit bestandsnaam */
+	name.replace(QRegularExpression(QStringLiteral("[<>:\"/\\|?*]")), QStringLiteral("_"));
+
+	const QString path =
+		systemDirectories.GetPatternLinePresetsFolder() + QDir::separator() + name;
+
+	if (QFile::exists(path))
+	{
+		const int ret = QMessageBox::question(this, tr("Preset overschrijven?"),
+			tr("'%1' bestaat al. Overschrijven?").arg(name),
+			QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
+		if (ret != QMessageBox::Yes) return;
+	}
 
 	cSettings parSettings(cSettings::formatCondensedText);
 	parSettings.SetListOfParametersToProcess(patternLineTrapPresetMainParameterNames());
-	parSettings.CreateText(gPar, gParFractal, gAnimFrames, gKeyframes);
+	parSettings.CreateText(targetPar, targetFract, gAnimFrames, gKeyframes);
 	if (!parSettings.SaveToFile(path))
 	{
-		QMessageBox::warning(this, tr("Patroon-preset"), tr("Kon niet opslaan: %1").arg(path));
+		QMessageBox::warning(this, tr("Patroon-preset"),
+			tr("Kon preset niet opslaan:\n%1").arg(path));
 		return;
 	}
+
 	RefreshPatternLinePresetCombo();
-	const int i = ui->comboBox_pattern_line_trap_presets->findData(QVariant(path));
-	if (i >= 0) ui->comboBox_pattern_line_trap_presets->setCurrentIndex(i);
+	const int idx = ui->comboBox_pattern_line_trap_presets->findData(QVariant(path));
+	if (idx >= 0) ui->comboBox_pattern_line_trap_presets->setCurrentIndex(idx);
 }
 
 void cDockPatternLines::slotPatternLineTrapCopyLayer()
@@ -694,21 +812,25 @@ void cDockPatternLines::slotPatternLineTrapCopyLayer()
 	const int from = ui->spinbox_pattern_line_trap_copy_from->value();
 	const int to = ui->spinbox_pattern_line_trap_copy_to->value();
 	if (from == to) return;
-	gMainInterface->SynchronizeInterface(gPar, gParFractal, qInterface::read);
+	std::shared_ptr<cParameterContainer> targetPar = params ? params : gPar;
+	SynchronizeInterfaceWindow(this, targetPar, qInterface::read);
 	const QString pf = QStringLiteral("pattern_line_trap_%1").arg(from);
 	const QString pt = QStringLiteral("pattern_line_trap_%1").arg(to);
 	for (const QString &s : patternLineTrapLayerSuffixes())
-		gPar->SetFromOneParameter(pt + s, gPar->GetAsOneParameter(pf + s));
+		targetPar->SetFromOneParameter(pt + s, targetPar->GetAsOneParameter(pf + s));
 	if (QWidget *fw = QApplication::focusWidget()) fw->clearFocus();
-	gMainInterface->SynchronizeInterface(gPar, gParFractal, qInterface::write);
+	SynchronizeInterfaceWindow(this, targetPar, qInterface::write);
 	gMainInterface->StartRender(true);
 }
 
 void cDockPatternLines::EnsurePatternLineTrapsMasterAndLayer(int layerIndex)
 {
 	if (layerIndex < 1 || layerIndex > PATTERN_LINE_TRAP_COUNT) return;
-	gPar->Set("pattern_line_traps_enabled", true);
-	gPar->Set(QString("pattern_line_trap_%1_enabled").arg(layerIndex), true);
+	if (params)
+	{
+		params->Set("pattern_line_traps_enabled", true);
+		params->Set(QString("pattern_line_trap_%1_enabled").arg(layerIndex), true);
+	}
 	if (ui->checkBox_pattern_line_traps_enabled)
 		ui->checkBox_pattern_line_traps_enabled->setChecked(true);
 	if (QGroupBox *layerBox =
@@ -720,13 +842,13 @@ double cDockPatternLines::PatternLineTrapBumpFromView(int layerNum) const
 {
 	const QString p = QString("pattern_line_trap_%1").arg(layerNum);
 	sPatternLineTrapLayer tmp;
-	tmp.radius = gPar->Get<double>(p + "_radius");
-	tmp.shape = gPar->Get<int>(p + "_shape");
-	tmp.shapeAux = gPar->Get<double>(p + "_shape_aux");
+	tmp.radius = params->Get<double>(p + "_radius");
+	tmp.shape = params->Get<int>(p + "_shape");
+	tmp.shapeAux = params->Get<double>(p + "_shape_aux");
 	const double ext = PatternLineTrapProfileExtent(tmp);
-	const double es = fabs(gPar->Get<double>(p + "_edge_softness"));
-	const double md = fabs(gPar->Get<double>(p + "_max_distance"));
-	const double seg = fabs(gPar->Get<double>(p + "_segment_half_length"));
+	const double es = fabs(params->Get<double>(p + "_edge_softness"));
+	const double md = fabs(params->Get<double>(p + "_max_distance"));
+	const double seg = fabs(params->Get<double>(p + "_segment_half_length"));
 	return std::max(0.1, ext * 2.5 + es * 0.6 + std::min(md, 3.0) * 0.12 + seg * 0.08);
 }
 
@@ -738,7 +860,7 @@ bool cDockPatternLines::RaymarchFirstSurface(
 	const double maxDist = 100.0;
 	for (int i = 0; i < 1000; i++)
 	{
-		double dist = cInterface::GetDistanceForPoint(point, gPar, gParFractal);
+		double dist = cInterface::GetDistanceForPoint(point, params, fractalParams);
 		if (dist < 1e-6)
 		{
 			*hitPoint = point;
@@ -782,11 +904,11 @@ void cDockPatternLines::slotPressedButtonPlacePatternLineTrapAtTarget()
 	if (!match.hasMatch()) return;
 
 	const int layerNum = match.captured(1).toInt();
-	gMainInterface->SynchronizeInterface(gPar, gParFractal, qInterface::read);
+	SynchronizeInterfaceWindow(this, params, qInterface::read);
 	EnsurePatternLineTrapsMasterAndLayer(layerNum);
 
-	const CVector3 camera = gPar->Get<CVector3>("camera");
-	const CVector3 target = gPar->Get<CVector3>("target");
+	const CVector3 camera = params->Get<CVector3>("camera");
+	const CVector3 target = params->Get<CVector3>("target");
 	CVector3 toCam = camera - target;
 	const double len = toCam.Length();
 	const double bump = PatternLineTrapBumpFromView(layerNum);
@@ -800,10 +922,10 @@ void cDockPatternLines::slotPressedButtonPlacePatternLineTrapAtTarget()
 	}
 
 	const QString p = QString("pattern_line_trap_%1").arg(layerNum);
-	gPar->Set(p + "_position", placedWorld);
+	params->Set(p + "_position", placedWorld);
 
 	if (QWidget *fw = QApplication::focusWidget()) fw->clearFocus();
-	gMainInterface->SynchronizeInterface(gPar, gParFractal, qInterface::write);
+	SynchronizeInterfaceWindow(this, params, qInterface::write);
 	gMainInterface->StartRender(true);
 }
 
@@ -817,11 +939,11 @@ void cDockPatternLines::slotPressedButtonPlacePatternLineTrapAtSurface()
 	if (!match.hasMatch()) return;
 
 	const int layerNum = match.captured(1).toInt();
-	gMainInterface->SynchronizeInterface(gPar, gParFractal, qInterface::read);
+	SynchronizeInterfaceWindow(this, params, qInterface::read);
 	EnsurePatternLineTrapsMasterAndLayer(layerNum);
 
-	const CVector3 camera = gPar->Get<CVector3>("camera");
-	const CVector3 target = gPar->Get<CVector3>("target");
+	const CVector3 camera = params->Get<CVector3>("camera");
+	const CVector3 target = params->Get<CVector3>("target");
 	CVector3 direction = target - camera;
 	const double camTargetLen = direction.Length();
 	if (camTargetLen < 1e-20)
@@ -839,35 +961,36 @@ void cDockPatternLines::slotPressedButtonPlacePatternLineTrapAtSurface()
 	const CVector3 placedWorld = point - direction * back;
 
 	const QString p = QString("pattern_line_trap_%1").arg(layerNum);
-	gPar->Set(p + "_position", placedWorld);
+	params->Set(p + "_position", placedWorld);
 
 	if (QWidget *fw = QApplication::focusWidget()) fw->clearFocus();
-	gMainInterface->SynchronizeInterface(gPar, gParFractal, qInterface::write);
+	SynchronizeInterfaceWindow(this, params, qInterface::write);
 	gMainInterface->StartRender(true);
 }
 
 void cDockPatternLines::slotPressedButtonPatternLineTrapsQuickTest()
 {
-	gMainInterface->SynchronizeInterface(gPar, gParFractal, qInterface::read);
+	std::shared_ptr<cParameterContainer> targetPar = params ? params : gPar;
+	SynchronizeInterfaceWindow(this, targetPar, qInterface::read);
 	const int layerNum = 1;
 	EnsurePatternLineTrapsMasterAndLayer(layerNum);
 	const QString p = QString("pattern_line_trap_%1").arg(layerNum);
-	gPar->Set(p + "_radius", 0.035);
-	gPar->Set(p + "_thickness", 1.0);
-	gPar->Set(p + "_scale", 1.0);
-	gPar->Set(p + "_relative_thickness", 1.0);
-	gPar->Set(p + "_edge_softness", 0.0);
-	gPar->Set(p + "_max_distance", 0.12);
-	gPar->Set(p + "_falloff_sharpness", 22.0);
-	gPar->Set(p + "_segment_half_length", 0.0);
-	gPar->Set(p + "_intensity", 4.0);
-	gPar->Set(p + "_rotation", CVector3(0.0, 0.0, 0.0));
-	gPar->Set(p + "_color", sRGB(65535, 8192, 8192));
-	gPar->Set(p + "_color_2", sRGB(8192, 65535, 8192));
-	gPar->Set(p + "_color_3", sRGB(8192, 8192, 65535));
+	targetPar->Set(p + "_radius", 0.035);
+	targetPar->Set(p + "_thickness", 1.0);
+	targetPar->Set(p + "_scale", 1.0);
+	targetPar->Set(p + "_relative_thickness", 1.0);
+	targetPar->Set(p + "_edge_softness", 0.0);
+	targetPar->Set(p + "_max_distance", 0.12);
+	targetPar->Set(p + "_falloff_sharpness", 22.0);
+	targetPar->Set(p + "_segment_half_length", 0.0);
+	targetPar->Set(p + "_intensity", 4.0);
+	targetPar->Set(p + "_rotation", CVector3(0.0, 0.0, 0.0));
+	targetPar->Set(p + "_color", sRGB(65535, 8192, 8192));
+	targetPar->Set(p + "_color_2", sRGB(8192, 65535, 8192));
+	targetPar->Set(p + "_color_3", sRGB(8192, 8192, 65535));
 
-	const CVector3 camera = gPar->Get<CVector3>("camera");
-	const CVector3 target = gPar->Get<CVector3>("target");
+	const CVector3 camera = targetPar->Get<CVector3>("camera");
+	const CVector3 target = targetPar->Get<CVector3>("target");
 	CVector3 toCam = camera - target;
 	const double len = toCam.Length();
 	const double bump = PatternLineTrapBumpFromView(layerNum);
@@ -878,9 +1001,66 @@ void cDockPatternLines::slotPressedButtonPatternLineTrapsQuickTest()
 		const double move = std::min(bump, len * 0.42);
 		placedWorld = target + toCam * move;
 	}
-	gPar->Set(p + "_position", placedWorld);
+	targetPar->Set(p + "_position", placedWorld);
 
 	if (QWidget *fw = QApplication::focusWidget()) fw->clearFocus();
-	gMainInterface->SynchronizeInterface(gPar, gParFractal, qInterface::write);
+	SynchronizeInterfaceWindow(this, targetPar, qInterface::write);
+	gMainInterface->StartRender(true);
+}
+
+void cDockPatternLines::slotEnableAllPatternLineTraps()
+{
+	if (!params) return;
+	SynchronizeInterfaceWindow(this, params, qInterface::read);
+	for (int i = 1; i <= PATTERN_LINE_TRAP_COUNT; i++)
+		params->Set(QString("pattern_line_trap_%1_enabled").arg(i), true);
+	SynchronizeInterfaceWindow(this, params, qInterface::write);
+	gMainInterface->StartRender(true);
+}
+
+void cDockPatternLines::slotDisableAllPatternLineTraps()
+{
+	if (!params) return;
+	SynchronizeInterfaceWindow(this, params, qInterface::read);
+	for (int i = 1; i <= PATTERN_LINE_TRAP_COUNT; i++)
+		params->Set(QString("pattern_line_trap_%1_enabled").arg(i), false);
+	SynchronizeInterfaceWindow(this, params, qInterface::write);
+	gMainInterface->StartRender(true);
+}
+
+void cDockPatternLines::slotSoloSelectedPatternLineTrap()
+{
+	if (!params) return;
+	const int soloLayer = ui->spinboxInt_pattern_line_trap_solo_layer
+		? ui->spinboxInt_pattern_line_trap_solo_layer->value()
+		: 1;
+	SynchronizeInterfaceWindow(this, params, qInterface::read);
+	for (int i = 1; i <= PATTERN_LINE_TRAP_COUNT; i++)
+		params->Set(QString("pattern_line_trap_%1_enabled").arg(i), (i == soloLayer));
+	SynchronizeInterfaceWindow(this, params, qInterface::write);
+	gMainInterface->StartRender(true);
+}
+
+void cDockPatternLines::slotResetPatternLineTraps()
+{
+	if (!params) return;
+	SynchronizeInterfaceWindow(this, params, qInterface::read);
+	const QStringList paramNames = patternLineTrapPresetMainParameterNames();
+	for (const QString &fullName : paramNames)
+	{
+		const int firstUnderscore = fullName.indexOf('_');
+		const QString containerName = fullName.left(firstUnderscore);
+		const QString parameterName = fullName.mid(firstUnderscore + 1);
+		if (containerName != QStringLiteral("main")) continue;
+		cOneParameter oneParam = params->GetAsOneParameter(parameterName);
+		oneParam.SetMultiVal(oneParam.GetMultiVal(valueDefault), valueActual);
+		params->SetFromOneParameter(parameterName, oneParam);
+	}
+	SynchronizeInterfaceWindow(this, params, qInterface::write);
+	if (renderedImageWidget)
+		renderedImageWidget->SetPatternLineTrapsVisibility(
+			ui->checkBox_pattern_line_traps_overlay_visible
+				? ui->checkBox_pattern_line_traps_overlay_visible->isChecked()
+				: true);
 	gMainInterface->StartRender(true);
 }

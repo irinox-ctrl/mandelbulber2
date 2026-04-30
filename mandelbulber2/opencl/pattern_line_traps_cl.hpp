@@ -53,7 +53,14 @@ typedef struct
 	cl_int enabled;
 	cl_int soloLayerIndex;
 	cl_int combineMode;
+	cl_int coloringMode;
 	sPatternLineTrapLayerCl layers[PATTERN_LINE_TRAP_COUNT];
+	cl_float coloringSpeed;
+	cl_float paletteOffset;
+	cl_float globalIntensity;
+	cl_float globalMaxDistance;
+	cl_float globalScale;
+	cl_float globalRelativeThickness;
 } sPatternLineTrapsCl;
 
 #ifndef OPENCL_KERNEL_CODE
@@ -90,8 +97,15 @@ inline sPatternLineTrapsCl clCopyPatternLineTraps(const sPatternLineTraps &sourc
 	target.enabled = source.enabled ? 1 : 0;
 	target.soloLayerIndex = cl_int(source.soloLayerIndex);
 	target.combineMode = cl_int(source.combineMode);
+	target.coloringMode = cl_int(source.coloringMode);
 	for (int i = 0; i < PATTERN_LINE_TRAP_COUNT; i++)
 		target.layers[i] = clCopyPatternLineTrapLayer(source.layers[i]);
+	target.coloringSpeed = cl_float(source.coloringSpeed);
+	target.paletteOffset = cl_float(source.paletteOffset);
+	target.globalIntensity = cl_float(source.globalIntensity);
+	target.globalMaxDistance = cl_float(source.globalMaxDistance);
+	target.globalScale = cl_float(source.globalScale);
+	target.globalRelativeThickness = cl_float(source.globalRelativeThickness);
 	return target;
 }
 #endif
