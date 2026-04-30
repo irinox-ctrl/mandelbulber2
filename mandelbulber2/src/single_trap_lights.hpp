@@ -90,7 +90,10 @@ enum enumSingleTrapLightFalloffType
 enum enumSingleTrapLightsCombineMode
 {
 	singleTrapLightsCombineAdd = 0,
-	singleTrapLightsCombineMax = 1
+	singleTrapLightsCombineMax = 1,
+	singleTrapLightsCombineScreen = 2,
+	singleTrapLightsCombineAverage = 3,
+	singleTrapLightsCombineMultiply = 4
 };
 } // namespace params
 

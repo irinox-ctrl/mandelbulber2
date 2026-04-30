@@ -558,7 +558,7 @@ void InitParams(std::shared_ptr<cParameterContainer> par)
 	par->addParam("single_trap_lights_active_count", 1, 0, MAX_SINGLE_TRAP_LIGHT_LAYERS, morphLinear, paramStandard);
 	par->addParam("single_trap_lights_solo_layer", 0, 0, MAX_SINGLE_TRAP_LIGHT_LAYERS, morphLinear, paramStandard);
 	par->addParam("single_trap_lights_combine_mode", 0, morphNone, paramStandard,
-		QStringList({"add", "max per channel"}));
+		QStringList({"add", "max per channel", "screen", "average", "multiply"}));
 	par->addParam("single_trap_copy_from", 1, 1, MAX_SINGLE_TRAP_LIGHT_LAYERS, morphLinear, paramStandard);
 	par->addParam("single_trap_copy_to", 2, 1, MAX_SINGLE_TRAP_LIGHT_LAYERS, morphLinear, paramStandard);
 	par->addParam("single_trap_randomize_layer", 1, 1, MAX_SINGLE_TRAP_LIGHT_LAYERS, morphLinear, paramStandard);

@@ -852,6 +852,21 @@ float4 VolumetricShader(__constant sClInConstants *consts, sRenderData *renderDa
 					stlAccum.y = max(stlAccum.y, contrib.y);
 					stlAccum.z = max(stlAccum.z, contrib.z);
 				}
+				else if (combine == 2)
+				{
+					// Screen: softer addition that never blows out as fast
+					stlAccum = stlAccum + contrib - stlAccum * contrib;
+				}
+				else if (combine == 3)
+				{
+					// Average: subtle blend, halfway between layers
+					stlAccum = (stlAccum + contrib) * 0.5f;
+				}
+				else if (combine == 4)
+				{
+					// Multiply: darkening / intensity modulation
+					stlAccum = stlAccum * contrib;
+				}
 				else
 				{
 					stlAccum += contrib;

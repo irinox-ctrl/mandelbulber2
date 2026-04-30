@@ -536,7 +536,7 @@ sParamRender::sParamRender(const std::shared_ptr<cParameterContainer> container,
 	{
 		int cm = container->Get<int>("single_trap_lights_combine_mode");
 		if (cm < 0) cm = 0;
-		if (cm > 1) cm = 1;
+		if (cm > 4) cm = 4;
 		singleTrapLights.combineMode = params::enumSingleTrapLightsCombineMode(cm);
 	}
 	for (int i = 0; i < MAX_SINGLE_TRAP_LIGHT_LAYERS; i++)

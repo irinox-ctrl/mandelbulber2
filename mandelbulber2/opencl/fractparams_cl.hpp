@@ -560,7 +560,7 @@ inline sParamRenderCl clCopySParamRenderCl(const sParamRender &source)
 	{
 		int cm = int(source.singleTrapLights.combineMode);
 		if (cm < 0) cm = 0;
-		if (cm > 1) cm = 1;
+		if (cm > 4) cm = 4;
 		target.singleTrapLights.combineMode = cm;
 	}
 	for (int i = 0; i < MAX_SINGLE_TRAP_LIGHT_LAYERS; i++)
