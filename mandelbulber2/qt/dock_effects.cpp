@@ -145,6 +145,23 @@ cDockEffects::cDockEffects(QWidget *parent)
 		{
 			shapeCombo->clear();
 			shapeCombo->addItems(shapeNames);
+		}
+	}
+
+	// Populate combine mode combobox
+	if (ui->comboBox_single_trap_lights_combine_mode)
+	{
+		ui->comboBox_single_trap_lights_combine_mode->clear();
+		ui->comboBox_single_trap_lights_combine_mode->addItems(
+			QStringList({tr("Optellen"), tr("Max per kanaal")}));
+	}
+
+	for (int i = 1; i <= 20; i++)
+	{
+		QComboBox *shapeCombo = findChild<QComboBox *>(
+			QString("comboBox_single_trap_light_%1_shape").arg(i));
+		if (shapeCombo)
+		{
 			int shape = shapeCombo->currentIndex();
 			bool usesSize2 = SingleTrapShapeUsesSecondSize(shape);
 			QLabel *label = findChild<QLabel *>(
