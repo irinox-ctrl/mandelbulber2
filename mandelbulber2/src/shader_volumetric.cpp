@@ -754,11 +754,11 @@ sRGBAFloat cRenderWorker::VolumetricShader(
 		if (params->singleTrapLights.enabled)
 		{
 			const int soloLayer = params->singleTrapLights.soloLayerIndex;
-			const bool combineMax =
-				(params->singleTrapLights.combineMode == params::singleTrapLightsCombineMax);
+			const int combineMode = int(params->singleTrapLights.combineMode);
 			float stlR = 0.0f;
 			float stlG = 0.0f;
 			float stlB = 0.0f;
+			int processedLayers = 0;
 
 			for (int i = 0; i < params->singleTrapLights.activeLayerCount; i++)
 			{
@@ -885,17 +885,44 @@ sRGBAFloat cRenderWorker::VolumetricShader(
 				const float cr = light * layerColor.R;
 				const float cg = light * layerColor.G;
 				const float cb = light * layerColor.B;
-				if (combineMax)
+				switch (combineMode)
 				{
-					stlR = std::max(stlR, cr);
-					stlG = std::max(stlG, cg);
-					stlB = std::max(stlB, cb);
-				}
-				else
-				{
-					stlR += cr;
-					stlG += cg;
-					stlB += cb;
+					case 1: // Max per channel
+						stlR = std::max(stlR, cr);
+						stlG = std::max(stlG, cg);
+						stlB = std::max(stlB, cb);
+						break;
+					case 2: // Screen
+						stlR = stlR + cr - stlR * cr;
+						stlG = stlG + cg - stlG * cg;
+						stlB = stlB + cb - stlB * cb;
+						break;
+					case 3: // Average
+						stlR = (stlR * float(processedLayers) + cr) / float(processedLayers + 1);
+						stlG = (stlG * float(processedLayers) + cg) / float(processedLayers + 1);
+						stlB = (stlB * float(processedLayers) + cb) / float(processedLayers + 1);
+						processedLayers++;
+						break;
+					case 4: // Multiply
+						if (processedLayers == 0)
+						{
+							stlR = cr;
+							stlG = cg;
+							stlB = cb;
+						}
+						else
+						{
+							stlR = stlR * cr;
+							stlG = stlG * cg;
+							stlB = stlB * cb;
+						}
+						processedLayers++;
+						break;
+					default: // Add
+						stlR += cr;
+						stlG += cg;
+						stlB += cb;
+						break;
 				}
 			}
 

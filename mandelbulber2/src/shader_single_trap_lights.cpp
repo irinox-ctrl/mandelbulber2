@@ -72,6 +72,9 @@ sRGBAFloat cRenderWorker::SingleTrapLights(
 		orbitTrapRForColor = fractOut.orbitTrapR;
 	}
 
+	const int combineMode = int(params->singleTrapLights.combineMode);
+	int processedLayers = 0;
+
 	for (int i = 0; i < params->singleTrapLights.activeLayerCount; i++)
 	{
 		const sSingleTrapLightLayer &layer = params->singleTrapLights.layers[i];
@@ -207,17 +210,44 @@ sRGBAFloat cRenderWorker::SingleTrapLights(
 		const float cr = float(intensity * double(layerColor.R));
 		const float cg = float(intensity * double(layerColor.G));
 		const float cb = float(intensity * double(layerColor.B));
-		if (params->singleTrapLights.combineMode == params::singleTrapLightsCombineMax)
+		switch (combineMode)
 		{
-			result.R = std::max(result.R, cr);
-			result.G = std::max(result.G, cg);
-			result.B = std::max(result.B, cb);
-		}
-		else
-		{
-			result.R += cr;
-			result.G += cg;
-			result.B += cb;
+			case 1: // Max per channel
+				result.R = std::max(result.R, cr);
+				result.G = std::max(result.G, cg);
+				result.B = std::max(result.B, cb);
+				break;
+			case 2: // Screen
+				result.R = result.R + cr - result.R * cr;
+				result.G = result.G + cg - result.G * cg;
+				result.B = result.B + cb - result.B * cb;
+				break;
+			case 3: // Average
+				result.R = (result.R * float(processedLayers) + cr) / float(processedLayers + 1);
+				result.G = (result.G * float(processedLayers) + cg) / float(processedLayers + 1);
+				result.B = (result.B * float(processedLayers) + cb) / float(processedLayers + 1);
+				processedLayers++;
+				break;
+			case 4: // Multiply
+				if (processedLayers == 0)
+				{
+					result.R = cr;
+					result.G = cg;
+					result.B = cb;
+				}
+				else
+				{
+					result.R = result.R * cr;
+					result.G = result.G * cg;
+					result.B = result.B * cb;
+				}
+				processedLayers++;
+				break;
+			default: // Add
+				result.R += cr;
+				result.G += cg;
+				result.B += cb;
+				break;
 		}
 	}
 

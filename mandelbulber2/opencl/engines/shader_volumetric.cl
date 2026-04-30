@@ -730,6 +730,7 @@ float4 VolumetricShader(__constant sClInConstants *consts, sRenderData *renderDa
 			int soloL = consts->params.singleTrapLights.soloLayerIndex;
 			int combine = consts->params.singleTrapLights.combineMode;
 			float3 stlAccum = (float3)(0.0f, 0.0f, 0.0f);
+			int layerCount = 0;
 			for (int i = 0; i < consts->params.singleTrapLights.activeLayerCount; i++)
 			{
 				__constant sSingleTrapLightLayerCl *layer = &consts->params.singleTrapLights.layers[i];
@@ -859,13 +860,16 @@ float4 VolumetricShader(__constant sClInConstants *consts, sRenderData *renderDa
 				}
 				else if (combine == 3)
 				{
-					// Average: subtle blend, halfway between layers
-					stlAccum = (stlAccum + contrib) * 0.5f;
+					// Average: cumulative mean so first layer is not halved
+					stlAccum = (stlAccum * (float)(layerCount) + contrib) / (float)(layerCount + 1);
+					layerCount++;
 				}
 				else if (combine == 4)
 				{
-					// Multiply: darkening / intensity modulation
-					stlAccum = stlAccum * contrib;
+					// Multiply: guard first layer so accumulation doesn't start from 0
+					if (layerCount == 0) stlAccum = contrib;
+					else stlAccum = stlAccum * contrib;
+					layerCount++;
 				}
 				else
 				{

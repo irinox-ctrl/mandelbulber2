@@ -275,6 +275,7 @@ float3 SingleTrapLightsShader(__constant sClInConstants *consts, sShaderInputDat
 	sClCalcParams *calcParam)
 {
 	float3 result = 0.0f;
+	int layerCount = 0;
 
 	if (!consts->params.singleTrapLights.enabled) return result;
 
@@ -480,6 +481,21 @@ float3 SingleTrapLightsShader(__constant sClInConstants *consts, sShaderInputDat
 			result.x = max(result.x, contrib.x);
 			result.y = max(result.y, contrib.y);
 			result.z = max(result.z, contrib.z);
+		}
+		else if (combine == 2)
+		{
+			result = result + contrib - result * contrib;
+		}
+		else if (combine == 3)
+		{
+			result = (result * (float)(layerCount) + contrib) / (float)(layerCount + 1);
+			layerCount++;
+		}
+		else if (combine == 4)
+		{
+			if (layerCount == 0) result = contrib;
+			else result = result * contrib;
+			layerCount++;
 		}
 		else
 		{
