@@ -1710,12 +1710,6 @@ void cInterface::ResetFormula(int fractalNumber) const
 
 void cInterface::PeriodicRefresh()
 {
-	// Tijdens render geen Synchronize+hash: anders dure sync op main thread bovenop OpenCL/CPU.
-	if (mainImage->IsUsed())
-	{
-		autoRefreshTimer->start(int(gPar->Get<double>("auto_refresh_period") * 1000.0));
-		return;
-	}
 	if (!mainWindow->manipulations->isDraggingStarted())
 	{
 		if (mainWindow->ui->widgetDockNavigation->AutoRefreshIsChecked())
