@@ -624,6 +624,11 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 		}
 	}
 
+	if (mode == calcModeOrbitTrap)
+	{
+		out.orbitTrapR = orbitTrapTotal;
+	}
+
 	// calculate estimated distance
 
 #ifdef IS_HYBRID

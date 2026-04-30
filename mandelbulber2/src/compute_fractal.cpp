@@ -613,6 +613,11 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 		}
 	}
 
+	if (Mode == calcModeOrbitTrap)
+	{
+		out->orbitTrapR = orbitTrapTotal;
+	}
+
 	// final calculations
 	if (Mode == calcModeNormal) // analytic
 	{
