@@ -77,10 +77,10 @@
 static QStringList singleTrapLightPresetMainParameterNames()
 {
 	QStringList list;
-	list << QStringLiteral("single_trap_lights_enabled");
-	list << QStringLiteral("single_trap_lights_active_count");
-	list << QStringLiteral("single_trap_lights_solo_layer");
-	list << QStringLiteral("single_trap_lights_combine_mode");
+	list << QStringLiteral("main_single_trap_lights_enabled");
+	list << QStringLiteral("main_single_trap_lights_active_count");
+	list << QStringLiteral("main_single_trap_lights_solo_layer");
+	list << QStringLiteral("main_single_trap_lights_combine_mode");
 	const QStringList suffixes = {
 		QStringLiteral("_enabled"),
 		QStringLiteral("_shape"),
@@ -113,7 +113,7 @@ static QStringList singleTrapLightPresetMainParameterNames()
 	{
 		const QString p = QStringLiteral("single_trap_light_%1").arg(i);
 		for (const QString &s : suffixes)
-			list << p + s;
+			list << QStringLiteral("main_") + p + s;
 	}
 	return list;
 }
@@ -226,16 +226,45 @@ void cDockEffects::slotSingleTrapPresetLoad()
 	const QString path = ui->comboBox_single_trap_presets->itemData(idx).toString();
 	if (path.isEmpty()) return;
 
-	cSettings parSettings(cSettings::formatCondensedText);
-	if (!parSettings.LoadFromFile(path))
+	// Eerst ALLE single-trap parameters resetten naar default zodat de preset
+	// als een schone lei laadt (condensed text overschrijft alleen wat erin staat).
+	const QStringList paramNames = singleTrapLightPresetMainParameterNames();
+	for (const QString &fullName : paramNames)
+	{
+		const int firstUnderscore = fullName.indexOf('_');
+		const QString containerName = fullName.left(firstUnderscore);
+		const QString parameterName = fullName.mid(firstUnderscore + 1);
+		if (containerName != QStringLiteral("main")) continue;
+		if (!gPar->IfExists(parameterName)) continue;
+		cOneParameter oneParam = gPar->GetAsOneParameter(parameterName);
+		oneParam.SetMultiVal(oneParam.GetMultiVal(valueDefault), valueActual);
+		gPar->SetFromOneParameter(parameterName, oneParam);
+	}
+
+	SynchronizeInterfaceWindow(this, gPar, qInterface::write);
+
+	cSettings parSettings(cSettings::formatFullText);
+	parSettings.SetListOfParametersToProcess(paramNames);
+
+	gMainInterface->DisablePeriodicRefresh();
+	gInterfaceReadyForSynchronization = false;
+
+	bool loadOk = parSettings.LoadFromFile(path);
+	if (!loadOk)
 	{
 		QMessageBox::warning(this, tr("Single Trap Preset"),
 			tr("Kon preset niet laden:\n%1").arg(path));
+		gInterfaceReadyForSynchronization = true;
+		gMainInterface->ReEnablePeriodicRefresh();
 		return;
 	}
+
 	parSettings.Decode(gPar, gParFractal, gAnimFrames, gKeyframes);
 
-	gMainInterface->SynchronizeInterface(gPar, gParFractal, qInterface::write);
+	SynchronizeInterfaceWindow(this, gPar, qInterface::write);
+	gInterfaceReadyForSynchronization = true;
+	gMainInterface->ComboMouseClickUpdate();
+	gMainInterface->ReEnablePeriodicRefresh();
 	gMainInterface->StartRender(true);
 }
 
@@ -250,6 +279,9 @@ void cDockEffects::slotSingleTrapPresetSave()
 	if (!ok || name.isEmpty()) return;
 
 	name = name.trimmed();
+	if (!name.endsWith(QStringLiteral(".m3p"), Qt::CaseInsensitive))
+		name += QStringLiteral(".m3p");
+
 	name.replace(QRegularExpression(QStringLiteral("[<>:\"/\\|?*]")), QStringLiteral("_"));
 
 	const QString path =
