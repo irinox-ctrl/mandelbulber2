@@ -414,27 +414,53 @@ void cLightSourcesManager::slotButtonSnapToRay()
 	if (distToLight < 1e-20) return;
 	dir.Normalize();
 
-	auto result = RayMarchSurface(params, fractalParams, cam, dir, 10000.0);
-
-	CVector3 surfacePoint;
-	if (result.hit)
+	// Phase 1: ray-march from camera, stop at light position
+	// If we hit a surface before the light, the light is BEHIND the surface
+	double t = 0.0;
+	bool hitBeforeLight = false;
+	CVector3 surfacePointBefore;
+	for (int i = 0; i < 10000 && t < distToLight; i++)
 	{
-		surfacePoint = result.point;
-	}
-	else if (result.minDist < 10.0)
-	{
-		// No direct hit, but surface is close to the ray - snap to nearest point on ray
-		surfacePoint = result.bestPoint;
-	}
-	else
-	{
-		return; // surface too far from this ray
+		CVector3 p = cam + dir * t;
+		double d = cInterface::GetDistanceForPoint(p, params, fractalParams);
+		if (d < 1e-6)
+		{
+			hitBeforeLight = true;
+			surfacePointBefore = p;
+			break;
+		}
+		t += d;
 	}
 
-	SetLightPosition(params, currentLightIndex, surfacePoint);
+	if (hitBeforeLight)
+	{
+		// Light is behind the surface - snap to the surface (camera side)
+		SetLightPosition(params, currentLightIndex, surfacePointBefore);
+		SynchronizeInterfaceWindow(ui->tabWidget_lightSources, params, qInterface::write);
+		renderedImageWidget->update();
+		return;
+	}
 
-	SynchronizeInterfaceWindow(ui->tabWidget_lightSources, params, qInterface::write);
-	renderedImageWidget->update();
+	// Phase 2: no surface before the light.
+	// The light is in front of the surface (or beside it).
+	// Continue ray-marching past the light to find the surface on the other side.
+	t = distToLight;
+	for (int i = 0; i < 10000 && t < 10000.0; i++)
+	{
+		CVector3 p = cam + dir * t;
+		double d = cInterface::GetDistanceForPoint(p, params, fractalParams);
+		if (d < 1e-6)
+		{
+			// Found surface past the light - snap to it (light side)
+			SetLightPosition(params, currentLightIndex, p);
+			SynchronizeInterfaceWindow(ui->tabWidget_lightSources, params, qInterface::write);
+			renderedImageWidget->update();
+			return;
+		}
+		t += d;
+	}
+
+	// No surface found on this ray at all
 }
 
 void cLightSourcesManager::slotChangedCurrentTab(int index)
