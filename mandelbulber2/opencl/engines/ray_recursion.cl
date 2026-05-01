@@ -1044,7 +1044,7 @@ sRayRecursionOut RayRecursion(sRayRecursionIn in, sRenderData *renderData,
 								float intensity = 0.0f;
 								if (light->type == lightDirectional)
 									intensity = light->intensity;
-								else if (light->type == lightConical)
+								else if (light->type == lightConical || light->type == lightProjection)
 									intensity = 10.0f * light->intensity;
 								else
 									intensity = 100.0f * light->intensity

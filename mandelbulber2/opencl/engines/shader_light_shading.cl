@@ -179,7 +179,7 @@ float3 LightShading(__constant sClInConstants *consts, sRenderData *renderData,
 	{
 		intensity = light->intensity;
 	}
-	else if (light->type == lightConical)
+	else if (light->type == lightConical || light->type == lightProjection)
 	{
 		intensity = 10.0f * light->intensity;
 	}

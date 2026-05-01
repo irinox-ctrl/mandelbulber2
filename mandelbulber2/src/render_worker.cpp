@@ -1481,7 +1481,7 @@ cRenderWorker::sRayRecursionOut cRenderWorker::RayRecursion(
 								float intensity;
 								if (light->type == cLight::lightDirectional)
 									intensity = light->intensity;
-								else if (light->type == cLight::lightConical)
+								else if (light->type == cLight::lightConical || light->type == cLight::lightProjection)
 									intensity = 10.0 * light->intensity;
 								else
 									intensity = 100 * light->intensity / light->Decay(distanceLight) / 6.0;

@@ -408,7 +408,7 @@ sRGBAFloat cRenderWorker::VolumetricShader(
 						float lightIntensity;
 						if (light->type == cLight::lightDirectional)
 							lightIntensity = light->intensity;
-						else if (light->type == cLight::lightConical)
+						else if (light->type == cLight::lightConical || light->type == cLight::lightProjection)
 							lightIntensity = light->intensity * 10.0;
 						else
 							lightIntensity = light->intensity / light->Decay(distanceLight) * 4.0;
@@ -603,7 +603,7 @@ sRGBAFloat cRenderWorker::VolumetricShader(
 						double r2 = lightDist / lightSize;
 
 						double bellFunction;
-						if (light->type == cLight::lightConical)
+						if (light->type == cLight::lightConical || light->type == cLight::lightProjection)
 						{
 							bellFunction = 1.0;
 						}
