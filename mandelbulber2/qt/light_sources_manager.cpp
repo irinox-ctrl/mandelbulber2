@@ -112,8 +112,10 @@ void cLightSourcesManager::AddLight(bool init, int indexInParameters)
 		{
 			indexInParameters = lightIndexOnTab.last() + 1;
 		}
-		InitLightParams(indexInParameters, params);
 	}
+
+	// Ensure all light parameters exist (backward compatibility for old lights)
+	InitLightParams(indexInParameters, params);
 
 	if (!init && indexInParameters < 0)
 	{

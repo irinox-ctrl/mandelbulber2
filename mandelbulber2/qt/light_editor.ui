@@ -337,7 +337,7 @@
          </widget>
         </item>
         <item>
-         <widget class="MyDoubleSpinBox" name="spinboxd3_surface_offset">
+         <widget class="MyDoubleSpinBox" name="spinbox_surface_offset">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
             <horstretch>0</horstretch>
