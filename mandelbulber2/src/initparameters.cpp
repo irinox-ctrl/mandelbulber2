@@ -2460,12 +2460,10 @@ void InitLightParams(int lightId, std::shared_ptr<cParameterContainer> par)
 
 	par->addParam(cLight::Name("type", lightId),
 		(lightId == 1) ? int(cLight::lightDirectional) : int(cLight::lightPoint), morphLinear,
-		paramStandard, QStringList({"directional", "point", "spot", "projection", "beam", "primitive"}));
-
-	par->addParam(cLight::Name("primitive_id", lightId), -1, morphLinear, paramStandard);
+		paramStandard, QStringList({"directional", "point", "spot", "projection", "beam"}));
 
 	par->addParam(cLight::Name("decayFunction", lightId), int(cLight::lightDecay1R2), morphLinear,
-		paramStandard, QStringList({"1/r", "1/r2", "1/r3", "smooth", "physical"}));
+		paramStandard, QStringList({"1/r", "1/r2", "1/r3"}));
 	par->addParam(cLight::Name("file_texture", lightId),
 		QDir::toNativeSeparators(
 			systemDirectories.sharedDir + "textures" + QDir::separator() + "water_caustics.jpg"),
@@ -2476,42 +2474,6 @@ void InitLightParams(int lightId, std::shared_ptr<cParameterContainer> par)
 		paramStandard);
 	par->addParam(cLight::Name("projection_vertical_angle", lightId), 60.0, 0.0, 179.9, morphLinear,
 		paramStandard);
-
-	// === AUX LIGHTS UPGRADE ===
-	par->addParam(cLight::Name("use_color_temperature", lightId), false, morphLinear, paramStandard);
-	par->addParam(
-		cLight::Name("color_temperature", lightId), 5500.0, 1000.0, 40000.0, morphLinear, paramStandard);
-	par->addParam(cLight::Name("shadow_type", lightId), 0, morphLinear, paramStandard);
-	par->addParam(cLight::Name("shadow_samples", lightId), 16, morphLinear, paramStandard);
-	par->addParam(cLight::Name("shadow_softness", lightId), 0.5, 0.0, 1.0, morphLinear, paramStandard);
-	par->addParam(cLight::Name("shadow_bias", lightId), 0.001, 0.0001, 0.01, morphLinear, paramStandard);
-	par->addParam(cLight::Name("use_shadow_noise", lightId), false, morphLinear, paramStandard);
-	par->addParam(cLight::Name("affect_diffuse", lightId), true, morphLinear, paramStandard);
-	par->addParam(cLight::Name("affect_specular", lightId), true, morphLinear, paramStandard);
-	par->addParam(cLight::Name("affect_volumetric", lightId), true, morphLinear, paramStandard);
-	par->addParam(cLight::Name("light_group", lightId), 0, morphLinear, paramStandard);
-	par->addParam(cLight::Name("use_area_light", lightId), false, morphLinear, paramStandard);
-	par->addParam(
-		cLight::Name("area_light_radius", lightId), 0.1, 0.001, 1000.0, morphLinear, paramStandard);
-	par->addParam(cLight::Name("area_light_samples", lightId), 4, morphLinear, paramStandard);
-	par->addParam(cLight::Name("angular_diameter", lightId), 0.53, 0.0, 180.0, morphLinear, paramStandard);
-	par->addParam(cLight::Name("use_angular_size", lightId), false, morphLinear, paramStandard);
-	par->addParam(cLight::Name("atmospheric_density", lightId), 0.0, 0.0, 1.0, morphLinear, paramStandard);
-	par->addParam(cLight::Name("atmospheric_scattering_intensity", lightId), 1.0, 0.0, 100.0,
-		morphLinear, paramStandard);
-	par->addParam(
-		cLight::Name("atmospheric_color", lightId), sRGB(36044, 49087, 65535), morphLinear, paramStandard);
-	par->addParam(cLight::Name("penumbra_angle", lightId), 5.0, 0.0, 180.0, morphLinear, paramStandard);
-	par->addParam(cLight::Name("penumbra_softness", lightId), 0.5, 0.0, 1.0, morphLinear, paramStandard);
-	par->addParam(cLight::Name("projection_soft_edge", lightId), 0.1, 0.0, 1.0, morphLinear, paramStandard);
-	par->addParam(cLight::Name("projection_feather", lightId), 0.0, 0.0, 1.0, morphLinear, paramStandard);
-	par->addParam(cLight::Name("projection_blend_mode", lightId), 0, morphLinear, paramStandard);
-	par->addParam(cLight::Name("beam_length", lightId), 100.0, 0.1, 10000.0, morphLinear, paramStandard);
-	par->addParam(cLight::Name("beam_falloff", lightId), 1.0, 0.0, 10.0, morphLinear, paramStandard);
-	par->addParam(cLight::Name("beam_volume_samples", lightId), 16, morphLinear, paramStandard);
-	par->addParam(cLight::Name("beam_use_noise", lightId), false, morphLinear, paramStandard);
-	par->addParam(cLight::Name("beam_noise_scale", lightId), 1.0, 0.01, 100.0, morphLinear, paramStandard);
-	par->addParam(cLight::Name("beam_noise_strength", lightId), 0.3, 0.0, 1.0, morphLinear, paramStandard);
 }
 
 void DeletePrimitiveParams(fractal::enumObjectType objectType, const QString primitiveName,

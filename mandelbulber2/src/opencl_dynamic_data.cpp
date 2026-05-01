@@ -510,7 +510,6 @@ void cOpenClDynamicData::BuildLightsData(
 		lightCl.relativePosition = light->relativePosition;
 		lightCl.repeatTexture = light->repeatTexture;
 		lightCl.volumetric = light->volumetric;
-		lightCl.useTargetPoint = light->useTargetPoint ? 1 : 0;
 
 		lightCl.coneAngle = light->coneAngle;
 		lightCl.coneSoftAngle = light->coneSoftAngle;
@@ -539,42 +538,9 @@ void cOpenClDynamicData::BuildLightsData(
 		lightCl.type = static_cast<enumLightTypeCl>(light->type);
 		lightCl.decayFunction = static_cast<enumLightDecayFunctionCl>(light->decayFunction);
 
-		// === AUX LIGHTS UPGRADE ===
-		lightCl.useColorTemperature = light->useColorTemperature ? 1 : 0;
-		lightCl.colorTemperature = light->colorTemperature;
-		lightCl.shadowType = light->shadowType;
-		lightCl.shadowSamples = light->shadowSamples;
-		lightCl.shadowSoftness = light->shadowSoftness;
-		lightCl.shadowBias = light->shadowBias;
-		lightCl.useShadowNoise = light->useShadowNoise ? 1 : 0;
-		lightCl.affectDiffuse = light->affectDiffuse ? 1 : 0;
-		lightCl.affectSpecular = light->affectSpecular ? 1 : 0;
-		lightCl.affectVolumetric = light->affectVolumetric ? 1 : 0;
-		lightCl.lightGroup = light->lightGroup;
-		lightCl.useAreaLight = light->useAreaLight ? 1 : 0;
-		lightCl.areaLightRadius = light->areaLightRadius;
-		lightCl.areaLightSamples = light->areaLightSamples;
-		lightCl.angularDiameter = light->angularDiameter;
-		lightCl.useAngularSize = light->useAngularSize ? 1 : 0;
-		lightCl.atmosphericDensity = light->atmosphericDensity;
-		lightCl.atmosphericScatteringIntensity = light->atmosphericScatteringIntensity;
-		lightCl.atmosphericColor = toClFloat3(light->atmosphericColor);
-		lightCl.penumbraAngle = light->penumbraAngle;
-		lightCl.penumbraSoftness = light->penumbraSoftness;
-		lightCl.projectionSoftEdge = light->projectionSoftEdge;
-		lightCl.projectionFeather = light->projectionFeather;
-		lightCl.projectionBlendMode = light->projectionBlendMode;
-		lightCl.beamLength = light->beamLength;
-		lightCl.beamFalloff = light->beamFalloff;
-		lightCl.beamVolumeSamples = light->beamVolumeSamples;
-		lightCl.beamUseNoise = light->beamUseNoise ? 1 : 0;
-		lightCl.beamNoiseScale = light->beamNoiseScale;
-		lightCl.beamNoiseStrength = light->beamNoiseStrength;
-
 		QString textureName = light->colorTexture.GetFileName();
 		lightCl.colorTextureIndex =
 			textureIndexes.contains(textureName) ? textureIndexes[textureName] : -1;
-		lightCl.primitiveId = light->primitiveId;
 
 		data.append(reinterpret_cast<char *>(&lightCl), sizeof(lightCl));
 		totalDataOffset += sizeof(lightCl);
@@ -675,93 +641,6 @@ QString cOpenClDynamicData::BuildPrimitivesData(const cPrimitives *primitivesCon
 			static_cast<enumClPrimitiveBooleanOperator>(primitive->booleanOperator);
 		primitiveCl.object.usedForVolumetric = primitive->usedForVolumetric;
 		primitiveCl.object.wallThickness = primitive->wallThickness;
-		// Pivot
-		primitiveCl.object.pivot = toClFloat3(primitive->pivot);
-		primitiveCl.object.useWorldSpacePivot = primitive->useWorldSpacePivot ? 1 : 0;
-		// Cloner
-		primitiveCl.object.clonerEnabled = primitive->cloner.enabled ? 1 : 0;
-		primitiveCl.object.clonerMode = primitive->cloner.mode;
-		primitiveCl.object.clonerCount = primitive->cloner.count;
-		primitiveCl.object.clonerOffset = toClFloat3(primitive->cloner.offset);
-		primitiveCl.object.clonerRadius = primitive->cloner.radius;
-		primitiveCl.object.clonerStartAngle = primitive->cloner.startAngle;
-		primitiveCl.object.clonerEndAngle = primitive->cloner.endAngle;
-		primitiveCl.object.clonerPlane = primitive->cloner.plane;
-		primitiveCl.object.clonerGridCount = toClFloat3(primitive->cloner.gridCount);
-		primitiveCl.object.clonerGridSize = toClFloat3(primitive->cloner.gridSize);
-		// Repeat
-		primitiveCl.object.repeatMode = primitive->repeatMode;
-		primitiveCl.object.repeatRotationStep = primitive->repeatRotationStep;
-		primitiveCl.object.repeatFibonacciCount = primitive->repeatFibonacciCount;
-		primitiveCl.object.repeatFibonacciSpread = primitive->repeatFibonacciSpread;
-		primitiveCl.object.repeatSpiralStep = toClFloat3(primitive->repeatSpiralStep);
-		primitiveCl.object.repeatSpiralAngle = toClFloat3(primitive->repeatSpiralAngle);
-		primitiveCl.object.repeatSpiralRadius = toClFloat3(primitive->repeatSpiralRadius);
-		primitiveCl.object.repeatWaveAmplitude = toClFloat3(primitive->repeatWaveAmplitude);
-		primitiveCl.object.repeatWaveFrequency = toClFloat3(primitive->repeatWaveFrequency);
-		primitiveCl.object.repeatWavePhase = toClFloat3(primitive->repeatWavePhase);
-		primitiveCl.object.repeatWaveAxis = primitive->repeatWaveAxis;
-		// Deformers
-		primitiveCl.object.deformBendEnable = primitive->deformBendEnable ? 1 : 0;
-		primitiveCl.object.deformBendAngle = primitive->deformBendAngle;
-		primitiveCl.object.deformBendAxis = primitive->deformBendAxis;
-		primitiveCl.object.deformTwistEnable = primitive->deformTwistEnable ? 1 : 0;
-		primitiveCl.object.deformTwistAngle = primitive->deformTwistAngle;
-		primitiveCl.object.deformTwistAxis = primitive->deformTwistAxis;
-		primitiveCl.object.deformTaperEnable = primitive->deformTaperEnable ? 1 : 0;
-		primitiveCl.object.deformTaperRate = primitive->deformTaperRate;
-		primitiveCl.object.deformTaperAxis = primitive->deformTaperAxis;
-
-		// Effectors
-		for (int ei = 0; ei < 4; ei++)
-		{
-			auto &eff = primitive->effectors[ei];
-			if (eff && eff->enabled)
-			{
-				primitiveCl.effectors[ei].type = 0;
-				primitiveCl.effectors[ei].mode = eff->mode;
-				primitiveCl.effectors[ei].strength = eff->strength;
-				if (auto *re = dynamic_cast<sPrimitiveBasic::RandomEffector *>(eff.get()))
-				{
-					primitiveCl.effectors[ei].type = 1;
-					primitiveCl.effectors[ei].seed = re->seed;
-					primitiveCl.effectors[ei].posAmp = toClFloat3(re->positionAmp);
-					primitiveCl.effectors[ei].rotAmp = toClFloat3(re->rotationAmp);
-					primitiveCl.effectors[ei].scaleAmp = toClFloat3(re->scaleAmp);
-				}
-				else if (auto *se = dynamic_cast<sPrimitiveBasic::StepEffector *>(eff.get()))
-				{
-					primitiveCl.effectors[ei].type = 2;
-					primitiveCl.effectors[ei].seed = 0;
-					primitiveCl.effectors[ei].posAmp = toClFloat3(se->positionStep);
-					primitiveCl.effectors[ei].rotAmp = toClFloat3(se->rotationStep);
-					primitiveCl.effectors[ei].scaleAmp = toClFloat3(se->scaleStep);
-				}
-				else if (auto *fe = dynamic_cast<sPrimitiveBasic::FormulaEffector *>(eff.get()))
-				{
-					primitiveCl.effectors[ei].type = 3;
-					primitiveCl.effectors[ei].seed = 0;
-					primitiveCl.effectors[ei].formulaPreset = fe->formulaPreset;
-					primitiveCl.effectors[ei].posAmp = (cl_float3){{0.0f, 0.0f, 0.0f, 0.0f}};
-					primitiveCl.effectors[ei].rotAmp = (cl_float3){{0.0f, 0.0f, 0.0f, 0.0f}};
-					primitiveCl.effectors[ei].scaleAmp = (cl_float3){{0.0f, 0.0f, 0.0f, 0.0f}};
-				}
-				else if (auto *te = dynamic_cast<sPrimitiveBasic::TimeEffector *>(eff.get()))
-				{
-					primitiveCl.effectors[ei].type = 4;
-					primitiveCl.effectors[ei].timeOffset = te->timeOffset;
-					primitiveCl.effectors[ei].timeScale = te->timeScale;
-					primitiveCl.effectors[ei].posAmp = (cl_float3){{0.0f, 0.0f, 0.0f, 0.0f}};
-					primitiveCl.effectors[ei].rotAmp = (cl_float3){{0.0f, 0.0f, 0.0f, 0.0f}};
-					primitiveCl.effectors[ei].scaleAmp = (cl_float3){{0.0f, 0.0f, 0.0f, 0.0f}};
-				}
-			}
-			else
-			{
-				primitiveCl.effectors[ei].type = 0;
-				primitiveCl.effectors[ei].strength = 0.0f;
-			}
-		}
 
 		try
 		{

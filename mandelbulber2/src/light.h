@@ -46,7 +46,6 @@
 
 // forward declarations
 class cParameterContainer;
-class cPrimitives;
 
 class cLight
 {
@@ -67,17 +66,10 @@ public:
 		return QString("light%1_").arg(lightId) + name;
 	}
 
-	inline float Decay(float distance) const
-	{
-		if (decayFunction == lightDecaySmooth)
-			return (1.0f + distance) * (1.0f + distance);  // smooth: 1/(1+d)² — no singularity at d=0
-		if (decayFunction == lightDecayPhysical)
-			return distance * distance + 1.0f;  // physical: 1/(d²+1) — inverse-square without d=0 singularity
-		return pow(distance, float(decayFunction + 1));
-	}
+	inline float Decay(float distance) const { return pow(distance, float(decayFunction + 1)); }
 	float CalculateCone(CVector3 point, const CVector3 &lightVector, sRGBFloat &outColor) const;
 	CVector3 CalculateLightVector(const CVector3 &point, double delta, double resolution,
-		double viewDistanceMax, double &outDistance, const class cPrimitives *primitives = nullptr) const;
+		double viewDistanceMax, double &outDistance) const;
 	CVector3 CalculateBeam(const CVector3 &point1, const CVector3 &point2) const;
 
 	static const QStringList paramsList;
@@ -88,8 +80,7 @@ public:
 		lightPoint = 1,
 		lightConical = 2,
 		lightProjection = 3,
-		lightBeam = 4,
-		lightPrimitive = 5
+		lightBeam = 4
 	};
 
 	enum enumLightDecayFunction
@@ -97,8 +88,6 @@ public:
 		lightDecay1R = 0,
 		lightDecay1R2 = 1,
 		lightDecay1R3 = 2,
-		lightDecaySmooth = 3,
-		lightDecayPhysical = 4
 	};
 
 	bool enabled = false;
@@ -109,48 +98,7 @@ public:
 	bool useTargetPoint = false;
 	bool volumetric = false;
 
-	// === AUX LIGHTS UPGRADE ===
-	bool useColorTemperature = false;
-	float colorTemperature = 5500.0f;
-
-	enum enumShadowType { shadowHard = 0, shadowPCF = 1, shadowPCSS = 2 };
-	enumShadowType shadowType = shadowHard;
-	int shadowSamples = 16;
-	float shadowSoftness = 0.5f;
-	float shadowBias = 0.001f;
-	bool useShadowNoise = false;
-
-	bool affectDiffuse = true;
-	bool affectSpecular = true;
-	bool affectVolumetric = true;
-	int lightGroup = 0;
-
-	bool useAreaLight = false;
-	float areaLightRadius = 0.1f;
-	int areaLightSamples = 4;
-
-	float angularDiameter = 0.53f;
-	bool useAngularSize = false;
-	float atmosphericDensity = 0.0f;
-	float atmosphericScatteringIntensity = 1.0f;
-	sRGBFloat atmosphericColor = sRGBFloat(0.55f, 0.75f, 1.0f);
-
-	float penumbraAngle = 5.0f;
-	float penumbraSoftness = 0.5f;
-
-	float projectionSoftEdge = 0.1f;
-	float projectionFeather = 0.0f;
-	int projectionBlendMode = 0;
-
-	float beamLength = 100.0f;
-	float beamFalloff = 1.0f;
-	int beamVolumeSamples = 16;
-	bool beamUseNoise = false;
-	float beamNoiseScale = 1.0f;
-	float beamNoiseStrength = 0.3f;
-
 	int id = -1;
-	int primitiveId = -1;
 
 	float coneAngle = 0.0f;
 	float coneSoftAngle = 0.0f;

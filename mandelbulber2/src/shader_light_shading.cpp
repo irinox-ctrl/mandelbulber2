@@ -45,7 +45,7 @@ sRGBAFloat cRenderWorker::LightShading(sShaderInputData &input, sRGBAFloat surfa
 
 	double distance = 0.0;
 	CVector3 lightVector = light->CalculateLightVector(
-		input.point, input.delta, params->resolution, params->viewDistanceMax, distance, &params->primitives);
+		input.point, input.delta, params->resolution, params->viewDistanceMax, distance);
 
 	// intensity of lights is divided by 6 because of backward compatibility. There was an error
 	// where number of light was always 24
@@ -94,7 +94,7 @@ sRGBAFloat cRenderWorker::LightShading(sShaderInputData &input, sRGBAFloat surfa
 	sRGBAFloat auxShadow(1.0, 1.0, 1.0, 1.0);
 	if (light->castShadows)
 	{
-		if (shade > 0.01f || specularMax > 0.01f)
+		if (shade > 0.001f || specularMax > 0.001f)
 		{
 			auxShadow = AuxShadow(input, light, distance, lightVector);
 			specular.R *= auxShadow.R;
@@ -108,48 +108,13 @@ sRGBAFloat cRenderWorker::LightShading(sShaderInputData &input, sRGBAFloat surfa
 		}
 	}
 
-	// === AUX LIGHTS: Apply color temperature ===
-	sRGBFloat lightColor = light->color;
-	if (light->useColorTemperature)
-	{
-		// Match OpenCL KelvinToRGB_CL: invalid/low values would make log(temp) undefined on CPU
-		const float kelvin = qBound(1000.0f, light->colorTemperature, 40000.0f);
-		float temp = kelvin / 100.0f;
-		float r, g, b;
-		if (temp <= 66.0f) r = 255.0f;
-		else { r = 329.698727446f * pow(temp - 60.0f, -0.1332047592f); r = qBound(0.0f, r, 255.0f); }
-		if (temp <= 66.0f) { g = 99.4708025861f * log(temp) - 161.1195681661f; g = qBound(0.0f, g, 255.0f); }
-		else { g = 288.1221695283f * pow(temp - 60.0f, -0.0755148492f); g = qBound(0.0f, g, 255.0f); }
-		if (temp >= 66.0f) b = 255.0f;
-		else if (temp <= 19.0f) b = 0.0f;
-		else { b = 138.5177312231f * log(temp - 10.0f) - 305.0447927307f; b = qBound(0.0f, b, 255.0f); }
-		lightColor = sRGBFloat(r / 255.0f, g / 255.0f, b / 255.0f);
-	}
+	shading.R = shade * light->color.R * auxShadow.R * textureColor.R;
+	shading.G = shade * light->color.G * auxShadow.G * textureColor.G;
+	shading.B = shade * light->color.B * auxShadow.B * textureColor.B;
 
-	shading.R = shade * lightColor.R * auxShadow.R * textureColor.R;
-	shading.G = shade * lightColor.G * auxShadow.G * textureColor.G;
-	shading.B = shade * lightColor.B * auxShadow.B * textureColor.B;
-
-	// === AUX LIGHTS: Atmospheric scattering for directional lights ===
-	if (light->type == cLight::lightDirectional && light->atmosphericDensity > 0.0f)
-	{
-		CVector3 viewDir = input.viewVector;
-		viewDir.Normalize();
-		float cosTheta = viewDir.Dot(lightVector);
-		float phase = 0.75f * (1.0f + cosTheta * cosTheta);
-		float atten = 1.0f - exp(-distance * light->atmosphericDensity * 0.01f);
-		float intensity_atm = light->atmosphericScatteringIntensity;
-		// Single multiply by tint; per-channel 0.28/0.58/1.0 on top of a blueish tint
-		// oversaturated the B channel when atten -> 1 (directional, large distance).
-		const float a = phase * atten * intensity_atm;
-		shading.R += a * light->atmosphericColor.R;
-		shading.G += a * light->atmosphericColor.G;
-		shading.B += a * light->atmosphericColor.B;
-	}
-
-	outSpecular->R = specular.R * lightColor.R * textureColor.R;
-	outSpecular->G = specular.G * lightColor.G * textureColor.G;
-	outSpecular->B = specular.B * lightColor.B * textureColor.B;
+	outSpecular->R = specular.R * light->color.R * textureColor.R;
+	outSpecular->G = specular.G * light->color.G * textureColor.G;
+	outSpecular->B = specular.B * light->color.B * textureColor.B;
 
 	*outShadow = auxShadow;
 

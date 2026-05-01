@@ -37,8 +37,6 @@
 #include "camera_target.hpp"
 #include "common_math.h"
 #include "parameters.hpp"
-#include "primitives.h"
-#include "primitive.hpp"
 
 cLight::cLight()
 {
@@ -58,17 +56,7 @@ const QStringList cLight::paramsList = {"is_defined", "enabled", "cast_shadows",
 	"relative_position", "volumetric", "cone_angle", "cone_soft_angle", "intensity", "visibility",
 	"volumetric_visibility", "size", "soft_shadow_cone", "contour_sharpness", "position", "rotation",
 	"use_target_point", "target", "alpha", "beta", "color", "type", "decayFunction", "file_texture",
-	"repeat_texture", "projection_horizonal_angle", "projection_vertical_angle", "name", "primitive_id",
-	"use_color_temperature", "color_temperature",
-	"shadow_type", "shadow_samples", "shadow_softness", "shadow_bias", "use_shadow_noise",
-	"affect_diffuse", "affect_specular", "affect_volumetric", "light_group",
-	"use_area_light", "area_light_radius", "area_light_samples",
-	"angular_diameter", "use_angular_size", "atmospheric_density",
-	"atmospheric_scattering_intensity", "atmospheric_color",
-	"penumbra_angle", "penumbra_softness",
-	"projection_soft_edge", "projection_feather", "projection_blend_mode",
-	"beam_length", "beam_falloff", "beam_volume_samples",
-	"beam_use_noise", "beam_noise_scale", "beam_noise_strength"};
+	"repeat_texture", "projection_horizonal_angle", "projection_vertical_angle", "name"};
 
 void cLight::setParameters(int _id, const std::shared_ptr<cParameterContainer> lightParam,
 	bool loadTextures, bool quiet, bool useNetRender)
@@ -79,7 +67,6 @@ void cLight::setParameters(int _id, const std::shared_ptr<cParameterContainer> l
 
 	enabled = lightParam->Get<bool>(Name("enabled", id));
 	type = enumLightType(lightParam->Get<int>(Name("type", id)));
-	primitiveId = lightParam->Get<int>(Name("primitive_id", id));
 	castShadows = lightParam->Get<bool>(Name("cast_shadows", id));
 	penetrating = lightParam->Get<bool>(Name("penetrating", id));
 	relativePosition = lightParam->Get<bool>(Name("relative_position", id));
@@ -100,7 +87,7 @@ void cLight::setParameters(int _id, const std::shared_ptr<cParameterContainer> l
 	softShadowCone = lightParam->Get<double>(Name("soft_shadow_cone", id)) / 180.0 * M_PI;
 	contourSharpness = lightParam->Get<double>(Name("contour_sharpness", id));
 
-	rotation = lightParam->Get<CVector3>(Name("rotation", id)) / 180.0 * M_PI;
+	rotation = lightParam->Get<CVector3>(Name("rotation", id)) / 180.8 * M_PI;
 
 	if (type == lightDirectional)
 	{
@@ -207,38 +194,6 @@ void cLight::setParameters(int _id, const std::shared_ptr<cParameterContainer> l
 
 	decayFunction = enumLightDecayFunction(lightParam->Get<int>(Name("decayFunction", id)));
 
-	// === AUX LIGHTS UPGRADE ===
-	useColorTemperature = lightParam->Get<bool>(Name("use_color_temperature", id));
-	colorTemperature = lightParam->Get<double>(Name("color_temperature", id));
-	shadowType = enumShadowType(lightParam->Get<int>(Name("shadow_type", id)));
-	shadowSamples = lightParam->Get<int>(Name("shadow_samples", id));
-	shadowSoftness = lightParam->Get<double>(Name("shadow_softness", id));
-	shadowBias = lightParam->Get<double>(Name("shadow_bias", id));
-	useShadowNoise = lightParam->Get<bool>(Name("use_shadow_noise", id));
-	affectDiffuse = lightParam->Get<bool>(Name("affect_diffuse", id));
-	affectSpecular = lightParam->Get<bool>(Name("affect_specular", id));
-	affectVolumetric = lightParam->Get<bool>(Name("affect_volumetric", id));
-	lightGroup = lightParam->Get<int>(Name("light_group", id));
-	useAreaLight = lightParam->Get<bool>(Name("use_area_light", id));
-	areaLightRadius = lightParam->Get<double>(Name("area_light_radius", id));
-	areaLightSamples = lightParam->Get<int>(Name("area_light_samples", id));
-	angularDiameter = lightParam->Get<double>(Name("angular_diameter", id));
-	useAngularSize = lightParam->Get<bool>(Name("use_angular_size", id));
-	atmosphericDensity = lightParam->Get<double>(Name("atmospheric_density", id));
-	atmosphericScatteringIntensity = lightParam->Get<double>(Name("atmospheric_scattering_intensity", id));
-	atmosphericColor = toRGBFloat(lightParam->Get<sRGB>(Name("atmospheric_color", id)));
-	penumbraAngle = lightParam->Get<double>(Name("penumbra_angle", id));
-	penumbraSoftness = lightParam->Get<double>(Name("penumbra_softness", id));
-	projectionSoftEdge = lightParam->Get<double>(Name("projection_soft_edge", id));
-	projectionFeather = lightParam->Get<double>(Name("projection_feather", id));
-	projectionBlendMode = lightParam->Get<int>(Name("projection_blend_mode", id));
-	beamLength = lightParam->Get<double>(Name("beam_length", id));
-	beamFalloff = lightParam->Get<double>(Name("beam_falloff", id));
-	beamVolumeSamples = lightParam->Get<int>(Name("beam_volume_samples", id));
-	beamUseNoise = lightParam->Get<bool>(Name("beam_use_noise", id));
-	beamNoiseScale = lightParam->Get<double>(Name("beam_noise_scale", id));
-	beamNoiseStrength = lightParam->Get<double>(Name("beam_noise_strength", id));
-
 	coneRatio = sin(coneAngle);
 	coneSoftRatio = sin(coneSoftAngle + coneAngle);
 	projectionHorizontalRatio =
@@ -320,7 +275,7 @@ float cLight::CalculateCone(CVector3 point, const CVector3 &lightVector, sRGBFlo
 }
 
 CVector3 cLight::CalculateLightVector(const CVector3 &point, double delta, double resolution,
-	double viewDistanceMax, double &outDistance, const cPrimitives *primitives) const
+	double viewDistanceMax, double &outDistance) const
 {
 	CVector3 lightVector;
 	if (type == cLight::lightDirectional)
@@ -332,74 +287,6 @@ CVector3 cLight::CalculateLightVector(const CVector3 &point, double delta, doubl
 		}
 		else
 		{
-			outDistance = viewDistanceMax;
-		}
-	}
-	else if (type == cLight::lightPrimitive && primitives != nullptr && primitiveId >= 0)
-	{
-		// Find the primitive with matching objectId
-		const sPrimitiveBasic *primitive = nullptr;
-		for (int i = 0; i < primitives->GetNumberOfPrimivives(); i++)
-		{
-			if (primitives->GetPrimitive(i)->objectId == primitiveId)
-			{
-				primitive = primitives->GetPrimitive(i).get();
-				break;
-			}
-		}
-
-		if (primitive != nullptr && primitive->enable)
-		{
-			// Sphere trace to find closest point on primitive surface
-			CVector3 primitiveCenter = primitive->position;
-			CVector3 direction = primitiveCenter - point;
-			double totalDistance = direction.Length();
-
-			if (totalDistance > 0.0)
-			{
-				direction.Normalize();
-
-				// Sphere trace from point towards primitive
-				CVector3 currentPoint = point;
-				double marchDistance = 0.0;
-				const int maxSteps = 64;
-				const double minDistance = delta * 0.1; // Close enough to surface
-
-				for (int step = 0; step < maxSteps && marchDistance < totalDistance * 2.0; step++)
-				{
-					double dist = primitive->PrimitiveDistance(currentPoint);
-
-					if (fabs(dist) < minDistance)
-					{
-						// Found surface point
-						lightVector = currentPoint - point;
-						outDistance = lightVector.Length();
-						if (outDistance > 0.0)
-							lightVector.Normalize();
-						else
-							lightVector = direction;
-						return lightVector;
-					}
-
-					// March towards surface (from inside or outside)
-					double stepSize = fabs(dist) * 0.5; // Conservative step
-					currentPoint = currentPoint + direction * stepSize;
-					marchDistance += stepSize;
-				}
-			}
-
-			// Fallback: use primitive center
-			lightVector = primitiveCenter - point;
-			outDistance = lightVector.Length();
-			if (outDistance > 0.0)
-				lightVector.Normalize();
-			else
-				lightVector = CVector3(0.0, 1.0, 0.0);
-		}
-		else
-		{
-			// Primitive not found or disabled, fallback to default
-			lightVector = CVector3(0.0, 1.0, 0.0);
 			outDistance = viewDistanceMax;
 		}
 	}
