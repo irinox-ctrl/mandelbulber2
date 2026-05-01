@@ -196,8 +196,7 @@ float OrbitTrapShapeDistance(float4 z4, __constant sClInConstants *consts, sClCa
 	float3 delta = z - orbitTrapPos;
 	float thicknessDivisor = consts->params.common.fakeLightsThickness;
 #ifdef FAKE_LIGHTS_POINT
-	delta = Matrix33MulFloat3(consts->params.common.mRotFakeLightsRotation, delta);
-	delta = ApplyShapeModifiers(delta, consts);
+	// Point: no rotation or modifiers (matches CPU orbit_trap_shape.cpp)
 	dist = length(delta);
 #endif
 
@@ -263,7 +262,7 @@ float OrbitTrapShapeDistance(float4 z4, __constant sClInConstants *consts, sClCa
 	float size = consts->params.common.fakeLightsOrbitTrapSize;
 	float angle = atan2(delta.z, delta.y);
 	float radius = length(delta.yz);
-	float triangleRadius = size * cos(M_PI_F / 3.0f) / cos(fmod(angle + M_PI_F / 3.0f, 2.0f * M_PI_F / 3.0f) - M_PI_F / 3.0f);
+	float triangleRadius = size * cos(M_PI_F / 3.0f) / cos(SdfMod(angle + M_PI_F / 3.0f, 2.0f * M_PI_F / 3.0f) - M_PI_F / 3.0f);
 	dist = fabs(radius - triangleRadius) + fabs(delta.x);
 #endif
 
@@ -273,7 +272,7 @@ float OrbitTrapShapeDistance(float4 z4, __constant sClInConstants *consts, sClCa
 	float size = consts->params.common.fakeLightsOrbitTrapSize;
 	float angle = atan2(delta.z, delta.y);
 	float radius = length(delta.yz);
-	float hexRadius = size * cos(M_PI_F / 6.0f) / cos(fmod(angle + M_PI_F / 6.0f, M_PI_F / 3.0f) - M_PI_F / 6.0f);
+	float hexRadius = size * cos(M_PI_F / 6.0f) / cos(SdfMod(angle + M_PI_F / 6.0f, M_PI_F / 3.0f) - M_PI_F / 6.0f);
 	dist = fabs(radius - hexRadius) + fabs(delta.x);
 #endif
 
@@ -472,7 +471,7 @@ float OrbitTrapShapeDistance(float4 z4, __constant sClInConstants *consts, sClCa
 	float size = consts->params.common.fakeLightsOrbitTrapSize;
 	float angle = atan2(delta.z, delta.y);
 	float r = length(delta.yz);
-	float spiralRadius = size * (0.1f + 0.9f * fmod(angle / (2.0f * M_PI_F) + 3.0f, 1.0f));
+	float spiralRadius = size * (0.1f + 0.9f * SdfMod(angle / (2.0f * M_PI_F) + 3.0f, 1.0f));
 	dist = fabs(r - spiralRadius) + fabs(delta.x) * 0.1f;
 #endif
 
@@ -521,7 +520,7 @@ float OrbitTrapShapeDistance(float4 z4, __constant sClInConstants *consts, sClCa
 	float sizeP5 = consts->params.common.fakeLightsOrbitTrapSize;
 	float angleP5 = atan2(delta.z, delta.y);
 	float rP5 = length(delta.yz);
-	float polyRadiusP5 = sizeP5 * cos(3.14159265359f / 5.0f) / cos(fmod(angleP5 + 3.14159265359f / 5.0f, 2.0f * 3.14159265359f / 5.0f) - 3.14159265359f / 5.0f);
+	float polyRadiusP5 = sizeP5 * cos(3.14159265359f / 5.0f) / cos(SdfMod(angleP5 + 3.14159265359f / 5.0f, 2.0f * 3.14159265359f / 5.0f) - 3.14159265359f / 5.0f);
 	dist = fabs(rP5 - polyRadiusP5) + fabs(delta.x) * 0.1f;
 #endif
 
@@ -531,7 +530,7 @@ float OrbitTrapShapeDistance(float4 z4, __constant sClInConstants *consts, sClCa
 	float sizeP8 = consts->params.common.fakeLightsOrbitTrapSize;
 	float angleP8 = atan2(delta.z, delta.y);
 	float rP8 = length(delta.yz);
-	float polyRadiusP8 = sizeP8 * cos(3.14159265359f / 8.0f) / cos(fmod(angleP8 + 3.14159265359f / 8.0f, 3.14159265359f / 4.0f) - 3.14159265359f / 8.0f);
+	float polyRadiusP8 = sizeP8 * cos(3.14159265359f / 8.0f) / cos(SdfMod(angleP8 + 3.14159265359f / 8.0f, 3.14159265359f / 4.0f) - 3.14159265359f / 8.0f);
 	dist = fabs(rP8 - polyRadiusP8) + fabs(delta.x) * 0.1f;
 #endif
 
@@ -735,9 +734,9 @@ float OrbitTrapShapeDistance(float4 z4, __constant sClInConstants *consts, sClCa
 	float r = length(delta.xz);
 	float h = delta.y;
 	float angle = atan2(delta.z, delta.x);
-	float branch = fmod(angle * 4.0f + h * 2.0f, 2.0f * M_PI_F);
+	float branch = SdfMod(angle * 4.0f + h * 2.0f, 2.0f * M_PI_F);
 	float branchR = size * (1.0f - h / (size * 4.0f)) * (0.5f + 0.3f * cos(branch));
-	dist = sqrt(pow(r - branchR, 2.0f) + pow(fmod(h, size) - size * 0.5f, 2.0f)) - size * 0.1f;
+	dist = sqrt(pow(r - branchR, 2.0f) + pow(SdfMod(h, size) - size * 0.5f, 2.0f)) - size * 0.1f;
 #endif
 
 #ifdef FAKE_LIGHTS_NOISE
@@ -1001,9 +1000,9 @@ float OrbitTrapShapeDistance(float4 z4, __constant sClInConstants *consts, sClCa
 	float fibers = 5.0f; // Number of fibers
 	float twist = 2.0f;  // Twist amount per unit
 	float zNorm = delta.z / size; // Normalized Z
-	float fiberAngle = fmod(angle * fibers + zNorm * twist, 2.0f * M_PI_F);
+	float fiberAngle = SdfMod(angle * fibers + zNorm * twist, 2.0f * M_PI_F);
 	float distToFiber = fabs(sin(fiberAngle)) * r * size; // Scale back to world
-	dist = distToFiber - size * 0.1f + fabs(fmod(zNorm, 1.0f) - 0.5f) * size * 0.2f;
+	dist = distToFiber - size * 0.1f + fabs(SdfMod(zNorm, 1.0f) - 0.5f) * size * 0.2f;
 #endif
 
 #ifdef FAKE_LIGHTS_ASTROID
@@ -1106,7 +1105,7 @@ float OrbitTrapShapeDistance(float4 z4, __constant sClInConstants *consts, sClCa
 	float angle = t * 3.0f;
 	float shellX = shellR * cos(angle);
 	float shellZ = shellR * sin(angle);
-	dist = sqrt(pow(delta.x - shellX, 2.0f) + pow(delta.z - shellZ, 2.0f)) + fabs(fmod(t, 1.0f) - 0.5f) * size * 0.1f;
+	dist = sqrt(pow(delta.x - shellX, 2.0f) + pow(delta.z - shellZ, 2.0f)) + fabs(SdfMod(t, 1.0f) - 0.5f) * size * 0.1f;
 #endif
 
 #ifdef FAKE_LIGHTS_CORAL
@@ -1118,9 +1117,9 @@ float OrbitTrapShapeDistance(float4 z4, __constant sClInConstants *consts, sClCa
 	float h = delta.y;
 	float angle = atan2(delta.z, delta.x);
 	float branches = 6.0f;
-	float branch = fmod(angle * branches + h * 1.5f, 2.0f * M_PI_F);
+	float branch = SdfMod(angle * branches + h * 1.5f, 2.0f * M_PI_F);
 	float coralR = size * (1.0f - h / (size * 3.0f)) * (0.3f + 0.2f * fabs(sin(branch)));
-	dist = sqrt(pow(r - coralR, 2.0f) + pow(fmod(h, size * 0.5f) - size * 0.25f, 2.0f)) - size * 0.05f;
+	dist = sqrt(pow(r - coralR, 2.0f) + pow(SdfMod(h, size * 0.5f) - size * 0.25f, 2.0f)) - size * 0.05f;
 #endif
 
 #ifdef FAKE_LIGHTS_CRYSTAL
@@ -1158,7 +1157,7 @@ float OrbitTrapShapeDistance(float4 z4, __constant sClInConstants *consts, sClCa
 	float size = consts->params.common.fakeLightsOrbitTrapSize;
 	// Chain of linked rings
 	float t = delta.z / (size * 0.8f);
-	float link = fmod(t, 2.0f);
+	float link = SdfMod(t, 2.0f);
 	float offset = ((int)floor(t) % 2 == 0) ? 0.0f : size * 0.5f;
 	float linkY = (link < 1.0f) ? cos(link * M_PI_F) * size * 0.3f : 0.0f;
 	float linkX = sin(link * M_PI_F) * size * 0.3f + offset;
@@ -1250,7 +1249,7 @@ float OrbitTrapShapeDistance(float4 z4, __constant sClInConstants *consts, sClCa
 	float r = length(delta.xz);
 	float angle = atan2(delta.z, delta.x);
 	float orbits = 3.0f;
-	float orbitR = size * (0.3f + 0.7f * (fmod(angle * orbits / (2.0f * M_PI_F) + 0.5f, 1.0f)));
+	float orbitR = size * (0.3f + 0.7f * (SdfMod(angle * orbits / (2.0f * M_PI_F) + 0.5f, 1.0f)));
 	dist = fabs(r - orbitR) - size * 0.08f + fabs(delta.y) * 0.15f;
 #endif
 
@@ -1524,7 +1523,7 @@ float OrbitTrapShapeDistance(float4 z4, __constant sClInConstants *consts, sClCa
 	{
 		float angle = atan2(zy, zx);
 		float r = sqrt(zx * zx + zy * zy);
-		angle = fmod(angle * 3.0f, 2.0f * M_PI_F);
+		angle = SdfMod(angle * 3.0f, 2.0f * M_PI_F);
 		zx = r * cos(angle) + cx;
 		zy = r * sin(angle) + cy;
 		len = zx * zx + zy * zy;
@@ -1544,9 +1543,9 @@ float OrbitTrapShapeDistance(float4 z4, __constant sClInConstants *consts, sClCa
 	for (int i = 0; i < 3; i++)
 	{
 		float scale = pow(3.0f, (float)i);
-		float sx = fmod(px * scale, 1.0f) - 0.5f;
-		float sy = fmod(py * scale, 1.0f) - 0.5f;
-		float sz = fmod(pz * scale, 1.0f) - 0.5f;
+		float sx = SdfMod(px * scale, 1.0f) - 0.5f;
+		float sy = SdfMod(py * scale, 1.0f) - 0.5f;
+		float sz = SdfMod(pz * scale, 1.0f) - 0.5f;
 		float sd = sqrt(sx * sx + sy * sy + sz * sz) - 0.3f / scale;
 		if (sd < d) d = sd;
 	}

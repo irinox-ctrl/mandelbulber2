@@ -130,6 +130,7 @@ struct sParamRender
 	bool backgroundAsEnvmap;
 	bool backgroundAsLightmap;
 	bool fakeLightsEnabled;
+	bool fakeLightsMaskEnabled;
 	bool fogEnabled;
 	bool fogCastShadows;
 	bool glowEnabled;
@@ -229,6 +230,8 @@ struct sParamRender
 	double fakeLightsIntensity;
 	float fakeLightsVisibility;
 	float fakeLightsVisibilitySize;
+	float fakeLightsMaskThreshold;
+	float fakeLightsMaskSharpness;
 	double fogVisibility;
 	double formulaScale[NUMBER_OF_FRACTALS];
 	double fov; // perspective factor

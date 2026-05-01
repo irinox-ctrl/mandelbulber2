@@ -724,6 +724,14 @@ sRGBAFloat cRenderWorker::VolumetricShader(
 					fakeLight *= factor;
 				}
 
+				// V2: Distance masking based on DE from fractal surface
+				if (params->fakeLightsMaskEnabled)
+				{
+					float normalizedDist = float(distance) / (float(params->fakeLightsMaskThreshold) + 1e-10f);
+					float maskFactor = 1.0f / (1.0f + powf(normalizedDist, params->fakeLightsMaskSharpness));
+					fakeLight *= maskFactor;
+				}
+
 				fakeLight *= 1.0f + params->cloudsLightsBoost * cloudDensity;
 
 				sRGBFloat color;

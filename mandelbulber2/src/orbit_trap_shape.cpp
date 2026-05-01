@@ -65,8 +65,10 @@ static double KochSnowflakeDist(double x, double y, double size)
 		double dot = x * 0.5 + y * 0.86602540378;
 		if (dot > y)
 		{
-			x = dot;
-			y = x * 0.86602540378 - y * 0.5;
+			double newX = dot;
+			double newY = x * 0.86602540378 - y * 0.5;
+			x = newX;
+			y = newY;
 		}
 		else
 		{
@@ -253,6 +255,7 @@ double OrbitTrapShapeDistance(CVector4 z4, const sCommonParams *par)
 			delta = ApplyShapeModifiers(delta, par);
 			// Line with thickness (radius) - distance from Y axis with offset
 			dist = sqrt(delta.y * delta.y + delta.z * delta.z) - par->fakeLightsOrbitTrapSize;
+			thicknessDivisor = par->fakeLightsShapeLineThickness;
 			break;
 		}
 		case params::fakeLightsShapeCircle:
@@ -317,7 +320,7 @@ double OrbitTrapShapeDistance(CVector4 z4, const sCommonParams *par)
 			double size = par->fakeLightsOrbitTrapSize;
 			double angle = atan2(delta.z, delta.y);
 			double radius = sqrt(delta.y * delta.y + delta.z * delta.z);
-			double triangleRadius = size * cos(M_PI / 3.0) / cos(fmod(angle + M_PI / 3.0, 2.0 * M_PI / 3.0) - M_PI / 3.0);
+			double triangleRadius = size * cos(M_PI / 3.0) / cos(SdfMod(angle + M_PI / 3.0, 2.0 * M_PI / 3.0) - M_PI / 3.0);
 			dist = fabs(radius - triangleRadius) + fabs(delta.x);
 			break;
 		}
@@ -328,7 +331,7 @@ double OrbitTrapShapeDistance(CVector4 z4, const sCommonParams *par)
 			double size = par->fakeLightsOrbitTrapSize;
 			double angle = atan2(delta.z, delta.y);
 			double radius = sqrt(delta.y * delta.y + delta.z * delta.z);
-			double hexRadius = size * cos(M_PI / 6.0) / cos(fmod(angle + M_PI / 6.0, M_PI / 3.0) - M_PI / 6.0);
+			double hexRadius = size * cos(M_PI / 6.0) / cos(SdfMod(angle + M_PI / 6.0, M_PI / 3.0) - M_PI / 6.0);
 			dist = fabs(radius - hexRadius) + fabs(delta.x);
 			break;
 		}
@@ -636,7 +639,7 @@ double OrbitTrapShapeDistance(CVector4 z4, const sCommonParams *par)
 			double angle = atan2(delta.z, delta.y);
 			double r = sqrt(delta.y * delta.y + delta.z * delta.z);
 			// Pentagon
-			double polyRadius = size * cos(M_PI / 5.0) / cos(fmod(angle + M_PI / 5.0, 2.0 * M_PI / 5.0) - M_PI / 5.0);
+			double polyRadius = size * cos(M_PI / 5.0) / cos(SdfMod(angle + M_PI / 5.0, 2.0 * M_PI / 5.0) - M_PI / 5.0);
 			dist = fabs(r - polyRadius) + fabs(delta.x) * 0.1;
 			break;
 		}
@@ -648,7 +651,7 @@ double OrbitTrapShapeDistance(CVector4 z4, const sCommonParams *par)
 			double angle = atan2(delta.z, delta.y);
 			double r = sqrt(delta.y * delta.y + delta.z * delta.z);
 			// Octagon
-			double polyRadius = size * cos(M_PI / 8.0) / cos(fmod(angle + M_PI / 8.0, M_PI / 4.0) - M_PI / 8.0);
+			double polyRadius = size * cos(M_PI / 8.0) / cos(SdfMod(angle + M_PI / 8.0, M_PI / 4.0) - M_PI / 8.0);
 			dist = fabs(r - polyRadius) + fabs(delta.x) * 0.1;
 			break;
 		}
@@ -836,9 +839,9 @@ double OrbitTrapShapeDistance(CVector4 z4, const sCommonParams *par)
 			double r = sqrt(delta.x * delta.x + delta.z * delta.z);
 			double h = delta.y;
 			double angle = atan2(delta.z, delta.x);
-			double branch = fmod(angle * 4.0 + h * 2.0, 2.0 * M_PI);
+			double branch = SdfMod(angle * 4.0 + h * 2.0, 2.0 * M_PI);
 			double branchR = size * (1.0 - h / (size * 4.0)) * (0.5 + 0.3 * cos(branch));
-			dist = sqrt(pow(r - branchR, 2.0) + pow(fmod(h, size) - size * 0.5, 2.0)) - size * 0.1;
+			dist = sqrt(pow(r - branchR, 2.0) + pow(SdfMod(h, size) - size * 0.5, 2.0)) - size * 0.1;
 			break;
 		}
 		case params::fakeLightsShapeKnot34:
@@ -1135,9 +1138,9 @@ double OrbitTrapShapeDistance(CVector4 z4, const sCommonParams *par)
 			double fibers = 5.0; // Number of fibers
 			double twist = 2.0;  // Twist amount per unit
 			double zNorm = delta.z / size; // Normalized Z
-			double fiberAngle = fmod(angle * fibers + zNorm * twist, 2.0 * M_PI);
+			double fiberAngle = SdfMod(angle * fibers + zNorm * twist, 2.0 * M_PI);
 			double distToFiber = fabs(sin(fiberAngle)) * r * size; // Scale back to world
-			dist = distToFiber - size * 0.1 + fabs(fmod(zNorm, 1.0) - 0.5) * size * 0.2;
+			dist = distToFiber - size * 0.1 + fabs(SdfMod(zNorm, 1.0) - 0.5) * size * 0.2;
 			break;
 		}
 		case params::fakeLightsShapeAstroid:
@@ -1247,7 +1250,7 @@ double OrbitTrapShapeDistance(CVector4 z4, const sCommonParams *par)
 			double angle = t * 3.0;
 			double shellX = shellR * cos(angle);
 			double shellZ = shellR * sin(angle);
-			dist = sqrt(pow(delta.x - shellX, 2.0) + pow(delta.z - shellZ, 2.0)) + fabs(fmod(t, 1.0) - 0.5) * size * 0.1;
+			dist = sqrt(pow(delta.x - shellX, 2.0) + pow(delta.z - shellZ, 2.0)) + fabs(SdfMod(t, 1.0) - 0.5) * size * 0.1;
 			break;
 		}
 		case params::fakeLightsShapeCoral:
@@ -1260,9 +1263,9 @@ double OrbitTrapShapeDistance(CVector4 z4, const sCommonParams *par)
 			double h = delta.y;
 			double angle = atan2(delta.z, delta.x);
 			double branches = 6.0;
-			double branch = fmod(angle * branches + h * 1.5, 2.0 * M_PI);
+			double branch = SdfMod(angle * branches + h * 1.5, 2.0 * M_PI);
 			double coralR = size * (1.0 - h / (size * 3.0)) * (0.3 + 0.2 * fabs(sin(branch)));
-			dist = sqrt(pow(r - coralR, 2.0) + pow(fmod(h, size * 0.5) - size * 0.25, 2.0)) - size * 0.05;
+			dist = sqrt(pow(r - coralR, 2.0) + pow(SdfMod(h, size * 0.5) - size * 0.25, 2.0)) - size * 0.05;
 			break;
 		}
 		case params::fakeLightsShapeCrystal:
@@ -1303,7 +1306,7 @@ double OrbitTrapShapeDistance(CVector4 z4, const sCommonParams *par)
 			double size = par->fakeLightsOrbitTrapSize;
 			// Chain of linked rings
 			double t = delta.z / (size * 0.8);
-			double link = fmod(t, 2.0);
+			double link = SdfMod(t, 2.0);
 			double offset = ((int)floor(t) % 2 == 0) ? 0.0 : size * 0.5;
 			double linkY = (link < 1.0) ? cos(link * M_PI) * size * 0.3 : 0.0;
 			double linkX = sin(link * M_PI) * size * 0.3 + offset;
@@ -1402,7 +1405,7 @@ double OrbitTrapShapeDistance(CVector4 z4, const sCommonParams *par)
 			double r = sqrt(delta.x * delta.x + delta.z * delta.z);
 			double angle = atan2(delta.z, delta.x);
 			double orbits = 3.0;
-			double orbitR = size * (0.3 + 0.7 * (fmod(angle * orbits / (2.0 * M_PI) + 0.5, 1.0)));
+			double orbitR = size * (0.3 + 0.7 * (SdfMod(angle * orbits / (2.0 * M_PI) + 0.5, 1.0)));
 			dist = fabs(r - orbitR) - size * 0.08 + fabs(delta.y) * 0.15;
 			break;
 		}
@@ -1704,7 +1707,7 @@ double OrbitTrapShapeDistance(CVector4 z4, const sCommonParams *par)
 			{
 				double angle = atan2(zy, zx);
 				double r = sqrt(zx * zx + zy * zy);
-				angle = fmod(angle * 3.0, 2.0 * M_PI);
+				angle = SdfMod(angle * 3.0, 2.0 * M_PI);
 				zx = r * cos(angle) + cx;
 				zy = r * sin(angle) + cy;
 				len = zx * zx + zy * zy;
@@ -1726,9 +1729,9 @@ double OrbitTrapShapeDistance(CVector4 z4, const sCommonParams *par)
 			for (int i = 0; i < 3; i++)
 			{
 				double scale = pow(3.0, i);
-				double sx = fmod(px * scale, 1.0) - 0.5;
-				double sy = fmod(py * scale, 1.0) - 0.5;
-				double sz = fmod(pz * scale, 1.0) - 0.5;
+				double sx = SdfMod(px * scale, 1.0) - 0.5;
+				double sy = SdfMod(py * scale, 1.0) - 0.5;
+				double sz = SdfMod(pz * scale, 1.0) - 0.5;
 				double sd = sqrt(sx * sx + sy * sy + sz * sz) - 0.3 / scale;
 				if (sd < d) d = sd;
 			}
@@ -1872,5 +1875,5 @@ double OrbitTrapShapeDistance(CVector4 z4, const sCommonParams *par)
 		}
 	}
 
-	return dist / par->fakeLightsThickness;
+	return dist / thicknessDivisor;
 }

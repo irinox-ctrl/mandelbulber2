@@ -130,6 +130,7 @@ typedef struct
 	cl_int DOFMonteCarloChromaticAberration;
 	cl_int envMappingEnable;
 	cl_int fakeLightsEnabled;
+	cl_int fakeLightsMaskEnabled;
 	cl_int fogEnabled;
 	cl_int fogCastShadows;
 	cl_int glowEnabled;
@@ -227,6 +228,8 @@ typedef struct
 	cl_float fakeLightsIntensity;
 	cl_float fakeLightsVisibility;
 	cl_float fakeLightsVisibilitySize;
+	cl_float fakeLightsMaskThreshold;
+	cl_float fakeLightsMaskSharpness;
 	cl_float fogVisibility;
 	cl_float formulaScale[NUMBER_OF_FRACTALS];
 	cl_float fov; // perspective factor
@@ -360,6 +363,7 @@ inline sParamRenderCl clCopySParamRenderCl(const sParamRender &source)
 	target.DOFMonteCarloChromaticAberration = source.DOFMonteCarloChromaticAberration;
 	target.envMappingEnable = source.envMappingEnable;
 	target.fakeLightsEnabled = source.fakeLightsEnabled;
+	target.fakeLightsMaskEnabled = source.fakeLightsMaskEnabled;
 	target.fogEnabled = source.fogEnabled;
 	target.fogCastShadows = source.fogCastShadows;
 	target.glowEnabled = source.glowEnabled;
@@ -461,6 +465,8 @@ inline sParamRenderCl clCopySParamRenderCl(const sParamRender &source)
 	target.fakeLightsIntensity = source.fakeLightsIntensity;
 	target.fakeLightsVisibility = source.fakeLightsVisibility;
 	target.fakeLightsVisibilitySize = source.fakeLightsVisibilitySize;
+	target.fakeLightsMaskThreshold = source.fakeLightsMaskThreshold;
+	target.fakeLightsMaskSharpness = source.fakeLightsMaskSharpness;
 	target.fogVisibility = source.fogVisibility;
 	for (int i = 0; i < NUMBER_OF_FRACTALS; i++)
 	{

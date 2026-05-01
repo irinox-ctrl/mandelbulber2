@@ -544,6 +544,9 @@ void InitParams(std::shared_ptr<cParameterContainer> par)
 	par->addParam("fake_lights_shape_wave_y", 0.0, -1e15, 1e15, morphLinear, paramStandard);
 	par->addParam("fake_lights_shape_wave_z", 0.0, -1e15, 1e15, morphLinear, paramStandard);
 	par->addParam("fake_lights_shape_wave_frequency", 1.0, 0.0, 1e15, morphLinear, paramStandard);
+	par->addParam("fake_lights_mask_enabled", false, morphLinear, paramStandard);
+	par->addParam("fake_lights_mask_threshold", 0.1, 0.0, 100.0, morphLinear, paramStandard);
+	par->addParam("fake_lights_mask_sharpness", 1.0, 0.0, 100.0, morphLinear, paramStandard);
 
 	// Glow Sphere - simple placeable light source
 	par->addParam("glow_sphere_1_enabled", false, morphLinear, paramStandard);

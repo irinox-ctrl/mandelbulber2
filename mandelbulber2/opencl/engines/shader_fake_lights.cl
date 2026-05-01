@@ -108,7 +108,7 @@ float3 FakeLightsShader(__constant sClInConstants *consts, sShaderInputDataCl *i
 		outF = Fractal(consts, input->point, calcParams, calcModeOrbitTrap, NULL, -1);
 		float rr = outF.orbitTrapR;
 		if (fakeLightLoop == 0) centerIndex = outF.orbitTrapCenterIndex;
-		float r = 1.0f / (rr + 1e-20f);
+		float r = 1.0f / (rr + 1e-30f);
 
 		float fakeLight = consts->params.fakeLightsIntensity * pow(rr, consts->params.common.fakeLightsShapeFalloff);
 

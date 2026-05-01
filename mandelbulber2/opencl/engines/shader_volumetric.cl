@@ -671,6 +671,7 @@ float4 VolumetricShader(__constant sClInConstants *consts, sRenderData *renderDa
 			if (consts->params.common.fakeLightsColor2Enabled) fakeLightMaxLoop = 2;
 			if (consts->params.common.fakeLightsColor3Enabled) fakeLightMaxLoop = 3;
 
+			int centerIndex = 0;
 			for (int fakeLightLoop = 0; fakeLightLoop < fakeLightMaxLoop; fakeLightLoop++)
 			{
 				calcParam->orbitTrapIndex = fakeLightLoop;
@@ -678,6 +679,7 @@ float4 VolumetricShader(__constant sClInConstants *consts, sRenderData *renderDa
 				formulaOut outF;
 				outF = Fractal(consts, input2.point, calcParam, calcModeOrbitTrap, NULL, -1);
 				float r = outF.orbitTrapR;
+				if (fakeLightLoop == 0) centerIndex = outF.orbitTrapCenterIndex;
 				r = sqrt(1.0f / (r + 1.0e-20f));
 				float fakeLight = 1.0f
 													/ (pow(r, 10.0f / consts->params.fakeLightsVisibilitySize)
@@ -700,18 +702,34 @@ float4 VolumetricShader(__constant sClInConstants *consts, sRenderData *renderDa
 					fakeLight *= factor;
 				}
 
+				// V2: Distance masking based on DE from fractal surface
+				if (consts->params.fakeLightsMaskEnabled)
+				{
+					float normalizedDist = distance / (consts->params.fakeLightsMaskThreshold + 1e-10f);
+					float maskFactor = 1.0f / (1.0f + pow(normalizedDist, consts->params.fakeLightsMaskSharpness));
+					fakeLight *= maskFactor;
+				}
+
 				float3 light = fakeLight * step * consts->params.fakeLightsVisibility;
 #ifdef CLOUDS
 				light *= 1.0f + consts->params.cloudsLightsBoost * cloudDensity;
 #endif
 
 				float3 color;
-				switch (fakeLightLoop)
+				if (fakeLightLoop == 0 && consts->params.common.fakeLightsMultiCenterEnabled
+					&& centerIndex >= 0 && centerIndex < 4)
 				{
-					case 0: color = consts->params.fakeLightsColor; break;
-					case 1: color = consts->params.fakeLightsColor2; break;
-					case 2: color = consts->params.fakeLightsColor3; break;
-					default: color = consts->params.fakeLightsColor; break;
+					color = consts->params.fakeLightsMultiCenterColor[centerIndex];
+				}
+				else
+				{
+					switch (fakeLightLoop)
+					{
+						case 0: color = consts->params.fakeLightsColor; break;
+						case 1: color = consts->params.fakeLightsColor2; break;
+						case 2: color = consts->params.fakeLightsColor3; break;
+						default: color = consts->params.fakeLightsColor; break;
+					}
 				}
 
 				output += light * color;

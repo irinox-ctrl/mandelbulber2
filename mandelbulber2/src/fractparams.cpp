@@ -139,6 +139,9 @@ sParamRender::sParamRender(const std::shared_ptr<cParameterContainer> container,
 	fakeLightsIntensity = container->Get<double>("fake_lights_intensity");
 	fakeLightsVisibility = container->Get<double>("fake_lights_visibility");
 	fakeLightsVisibilitySize = container->Get<double>("fake_lights_visibility_size");
+	fakeLightsMaskEnabled = container->Get<bool>("fake_lights_mask_enabled");
+	fakeLightsMaskThreshold = container->Get<double>("fake_lights_mask_threshold");
+	fakeLightsMaskSharpness = container->Get<double>("fake_lights_mask_sharpness");
 	fillLightColor = toRGBFloat(container->Get<sRGB>("fill_light_color"));
 	fogColor = toRGBFloat(container->Get<sRGB>("basic_fog_color"));
 	fogEnabled = container->Get<bool>("basic_fog_enabled");
