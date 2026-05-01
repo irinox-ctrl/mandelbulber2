@@ -75,6 +75,7 @@ private slots:
 	void slotChangedLightAngles(double alpha, double beta);
 	void slotChangedRelativeMode(int state);
 	void slotChangedUseTarget(int state);
+	void slotButtonApplyOrbit();
 };
 
 #endif /* MANDELBULBER2_QT_LIGHT_EDITOR_H_ */

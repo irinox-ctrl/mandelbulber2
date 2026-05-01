@@ -41,7 +41,9 @@
 #include "my_combo_box.h"
 
 #include "src/automated_widgets.hpp"
+#include "src/camera_target.hpp"
 #include "src/light.h"
+#include "src/parameters.hpp"
 
 cLightEditor::cLightEditor(QWidget *parent) : QWidget(parent), ui(new Ui::cLightEditor)
 {
@@ -64,6 +66,8 @@ cLightEditor::cLightEditor(QWidget *parent) : QWidget(parent), ui(new Ui::cLight
 		&cLightEditor::slotChangedRelativeMode);
 	connect(ui->checkBox_use_target_point, &MyCheckBox::stateChanged, this,
 		&cLightEditor::slotChangedUseTarget);
+	connect(ui->pushButton_applyOrbit, &QPushButton::clicked, this,
+		&cLightEditor::slotButtonApplyOrbit);
 
 	slotChangedUseTarget(false);
 }
@@ -195,4 +199,54 @@ void cLightEditor::slotChangedUseTarget(int state)
 	ui->vect3_target_x->setVisible(state);
 	ui->vect3_target_y->setVisible(state);
 	ui->vect3_target_z->setVisible(state);
+}
+
+void cLightEditor::slotButtonApplyOrbit()
+{
+	if (!parameterContainer || lightIndex < 0) return;
+
+	double distance = parameterContainer->Get<double>(cLight::Name("orbit_distance", lightIndex));
+	double yaw = parameterContainer->Get<double>(cLight::Name("orbit_yaw", lightIndex));
+	double pitch = parameterContainer->Get<double>(cLight::Name("orbit_pitch", lightIndex));
+
+	CVector3 target = parameterContainer->Get<CVector3>("target");
+
+	// Spherical to cartesian (yaw = horizontal angle, pitch = vertical angle)
+	double yawRad = yaw * M_PI / 180.0;
+	double pitchRad = pitch * M_PI / 180.0;
+
+	CVector3 offset;
+	offset.x = distance * cos(pitchRad) * sin(yawRad);
+	offset.y = distance * sin(pitchRad);
+	offset.z = distance * cos(pitchRad) * cos(yawRad);
+
+	CVector3 newPos = target + offset;
+
+	bool relativePosition =
+		parameterContainer->Get<bool>(cLight::Name("relative_position", lightIndex));
+
+	if (relativePosition)
+	{
+		CVector3 cam = parameterContainer->Get<CVector3>("camera");
+		CVector3 camTarget = parameterContainer->Get<CVector3>("target");
+		CVector3 top = parameterContainer->Get<CVector3>("camera_top");
+		cCameraTarget cameraTarget(cam, camTarget, top);
+		CVector3 delta = newPos - cam;
+		newPos.x = cameraTarget.GetRightVector().Dot(delta);
+		newPos.y = cameraTarget.GetTopVector().Dot(delta);
+		newPos.z = cameraTarget.GetForwardVector().Dot(delta);
+	}
+
+	parameterContainer->Set(cLight::Name("position", lightIndex), newPos);
+
+	// Update position line edits directly
+	ui->vect3_position_x->blockSignals(true);
+	ui->vect3_position_y->blockSignals(true);
+	ui->vect3_position_z->blockSignals(true);
+	ui->vect3_position_x->setText(QString("%L1").arg(newPos.x, 0, 'g', 15));
+	ui->vect3_position_y->setText(QString("%L1").arg(newPos.y, 0, 'g', 15));
+	ui->vect3_position_z->setText(QString("%L1").arg(newPos.z, 0, 'g', 15));
+	ui->vect3_position_x->blockSignals(false);
+	ui->vect3_position_y->blockSignals(false);
+	ui->vect3_position_z->blockSignals(false);
 }
