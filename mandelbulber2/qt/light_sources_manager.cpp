@@ -340,22 +340,37 @@ namespace
 		params->Set(cLight::Name("position", lightIndex), paramPos);
 	}
 
-	CVector3 RayMarchSurface(const std::shared_ptr<cParameterContainer> &params,
+	struct RayMarchResult
+	{
+		bool hit;
+		CVector3 point;
+		double minDist;
+		CVector3 bestPoint;
+	};
+
+	RayMarchResult RayMarchSurface(const std::shared_ptr<cParameterContainer> &params,
 		const std::shared_ptr<cFractalContainer> &fractalParams, const CVector3 &origin,
 		const CVector3 &dir, double maxDistance)
 	{
 		double t = 0.0;
+		double minDist = 1e20;
+		CVector3 bestPoint;
 		for (int i = 0; i < 10000 && t < maxDistance; i++)
 		{
 			CVector3 p = origin + dir * t;
 			double d = cInterface::GetDistanceForPoint(p, params, fractalParams);
+			if (d < minDist)
+			{
+				minDist = d;
+				bestPoint = p;
+			}
 			if (d < 1e-6)
 			{
-				return p;
+				return {true, p, minDist, bestPoint};
 			}
 			t += d;
 		}
-		return CVector3();
+		return {false, CVector3(), minDist, bestPoint};
 	}
 }
 
@@ -374,10 +389,10 @@ void cLightSourcesManager::slotButtonSnapToView()
 	if (viewDirLen < 1e-20) return;
 	viewDir.Normalize();
 
-	CVector3 surfacePoint = RayMarchSurface(params, fractalParams, cam, viewDir, 1000.0);
-	if (surfacePoint.Length() < 1e-20) return; // no hit
+	auto result = RayMarchSurface(params, fractalParams, cam, viewDir, 10000.0);
+	if (!result.hit) return;
 
-	SetLightPosition(params, currentLightIndex, surfacePoint);
+	SetLightPosition(params, currentLightIndex, result.point);
 
 	SynchronizeInterfaceWindow(ui->tabWidget_lightSources, params, qInterface::write);
 	renderedImageWidget->update();
@@ -399,8 +414,22 @@ void cLightSourcesManager::slotButtonSnapToRay()
 	if (distToLight < 1e-20) return;
 	dir.Normalize();
 
-	CVector3 surfacePoint = RayMarchSurface(params, fractalParams, cam, dir, 1000.0);
-	if (surfacePoint.Length() < 1e-20) return; // no hit
+	auto result = RayMarchSurface(params, fractalParams, cam, dir, 10000.0);
+
+	CVector3 surfacePoint;
+	if (result.hit)
+	{
+		surfacePoint = result.point;
+	}
+	else if (result.minDist < 10.0)
+	{
+		// No direct hit, but surface is close to the ray - snap to nearest point on ray
+		surfacePoint = result.bestPoint;
+	}
+	else
+	{
+		return; // surface too far from this ray
+	}
 
 	SetLightPosition(params, currentLightIndex, surfacePoint);
 
