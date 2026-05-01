@@ -41,6 +41,7 @@
 #include "light_editor.h"
 #include "my_tab_bar_with_checkbox.h"
 
+#include "src/camera_target.hpp"
 #include "src/initparameters.hpp"
 #include "src/interface.hpp"
 #include "src/light.h"
@@ -303,9 +304,27 @@ void cLightSourcesManager::slotButtonSnapToSurface()
 	SynchronizeInterfaceWindow(ui->tabWidget_lightSources, params, qInterface::read);
 
 	CVector3 cam = params->Get<CVector3>("camera");
-	CVector3 lightPos = params->Get<CVector3>(cLight::Name("position", currentLightIndex));
+	CVector3 target = params->Get<CVector3>("target");
+	CVector3 top = params->Get<CVector3>("camera_top");
+	CVector3 lightPosParam = params->Get<CVector3>(cLight::Name("position", currentLightIndex));
+	bool relativePosition = params->Get<bool>(cLight::Name("relative_position", currentLightIndex));
 
-	CVector3 dir = lightPos - cam;
+	// Compute world-space light position
+	CVector3 lightPosWorld;
+	if (relativePosition)
+	{
+		cCameraTarget cameraTarget(cam, target, top);
+		CVector3 deltaRotated = cameraTarget.GetForwardVector() * lightPosParam.z
+														+ cameraTarget.GetTopVector() * lightPosParam.y
+														+ cameraTarget.GetRightVector() * lightPosParam.x;
+		lightPosWorld = cam + deltaRotated;
+	}
+	else
+	{
+		lightPosWorld = lightPosParam;
+	}
+
+	CVector3 dir = lightPosWorld - cam;
 	double maxDist = dir.Length();
 	if (maxDist < 1e-20) return;
 
@@ -321,15 +340,30 @@ void cLightSourcesManager::slotButtonSnapToSurface()
 		t += d;
 	}
 
-	CVector3 surfacePoint = cam + dir * t;
+	CVector3 surfacePointWorld = cam + dir * t;
 
 	// If we didn't hit anything, keep original position
 	if (t >= maxDist)
 	{
-		surfacePoint = lightPos;
+		surfacePointWorld = lightPosWorld;
 	}
 
-	params->Set(cLight::Name("position", currentLightIndex), surfacePoint);
+	// Convert back to parameter-space position
+	CVector3 surfacePointParam;
+	if (relativePosition)
+	{
+		cCameraTarget cameraTarget(cam, target, top);
+		CVector3 delta = surfacePointWorld - cam;
+		surfacePointParam.x = cameraTarget.GetRightVector().Dot(delta);
+		surfacePointParam.y = cameraTarget.GetTopVector().Dot(delta);
+		surfacePointParam.z = cameraTarget.GetForwardVector().Dot(delta);
+	}
+	else
+	{
+		surfacePointParam = surfacePointWorld;
+	}
+
+	params->Set(cLight::Name("position", currentLightIndex), surfacePointParam);
 
 	// Update UI and render
 	SynchronizeInterfaceWindow(ui->tabWidget_lightSources, params, qInterface::write);
