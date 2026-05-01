@@ -72,8 +72,7 @@ private slots:
 	void slotButtonDuplicateLight();
 	void slotButtonDeleteLight();
 	void slotButtonPlaceLight();
-	void slotButtonSnapToView();
-	void slotButtonSnapToRay();
+	void slotButtonSnapToSurface();
 	void slotPeriodicRefresh();
 	void slorChangedWireframeVisibikity(int);
 	void slotChangedCurrentTab(int);

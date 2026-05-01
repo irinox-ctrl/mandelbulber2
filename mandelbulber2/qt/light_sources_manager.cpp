@@ -64,10 +64,8 @@ cLightSourcesManager::cLightSourcesManager(QWidget *parent)
 		&cLightSourcesManager::slotButtonDuplicateLight);
 	connect(ui->pushButton_placeLight, &QPushButton::clicked, this,
 		&cLightSourcesManager::slotButtonPlaceLight);
-	connect(ui->pushButton_snapToView, &QPushButton::clicked, this,
-		&cLightSourcesManager::slotButtonSnapToView);
-	connect(ui->pushButton_snapToRay, &QPushButton::clicked, this,
-		&cLightSourcesManager::slotButtonSnapToRay);
+	connect(ui->pushButton_snapToSurface, &QPushButton::clicked, this,
+		&cLightSourcesManager::slotButtonSnapToSurface);
 
 	connect(ui->checkBox_show_wireframe_lights, &MyCheckBox::stateChanged, this,
 		&cLightSourcesManager::slorChangedWireframeVisibikity);
@@ -297,25 +295,6 @@ void cLightSourcesManager::slotButtonPlaceLight()
 
 namespace
 {
-	CVector3 GetLightWorldPosition(const std::shared_ptr<cParameterContainer> &params, int lightIndex)
-	{
-		CVector3 cam = params->Get<CVector3>("camera");
-		CVector3 target = params->Get<CVector3>("target");
-		CVector3 top = params->Get<CVector3>("camera_top");
-		CVector3 lightPosParam = params->Get<CVector3>(cLight::Name("position", lightIndex));
-		bool relativePosition = params->Get<bool>(cLight::Name("relative_position", lightIndex));
-
-		if (relativePosition)
-		{
-			cCameraTarget cameraTarget(cam, target, top);
-			CVector3 deltaRotated = cameraTarget.GetForwardVector() * lightPosParam.z
-														+ cameraTarget.GetTopVector() * lightPosParam.y
-														+ cameraTarget.GetRightVector() * lightPosParam.x;
-			return cam + deltaRotated;
-		}
-		return lightPosParam;
-	}
-
 	void SetLightPosition(const std::shared_ptr<cParameterContainer> &params, int lightIndex,
 		const CVector3 &worldPos)
 	{
@@ -340,41 +319,26 @@ namespace
 		params->Set(cLight::Name("position", lightIndex), paramPos);
 	}
 
-	struct RayMarchResult
-	{
-		bool hit;
-		CVector3 point;
-		double minDist;
-		CVector3 bestPoint;
-	};
-
-	RayMarchResult RayMarchSurface(const std::shared_ptr<cParameterContainer> &params,
+	CVector3 RayMarchSurface(const std::shared_ptr<cParameterContainer> &params,
 		const std::shared_ptr<cFractalContainer> &fractalParams, const CVector3 &origin,
 		const CVector3 &dir, double maxDistance)
 	{
 		double t = 0.0;
-		double minDist = 1e20;
-		CVector3 bestPoint;
 		for (int i = 0; i < 10000 && t < maxDistance; i++)
 		{
 			CVector3 p = origin + dir * t;
 			double d = cInterface::GetDistanceForPoint(p, params, fractalParams);
-			if (d < minDist)
-			{
-				minDist = d;
-				bestPoint = p;
-			}
 			if (d < 1e-6)
 			{
-				return {true, p, minDist, bestPoint};
+				return p;
 			}
 			t += d;
 		}
-		return {false, CVector3(), minDist, bestPoint};
+		return CVector3();
 	}
 }
 
-void cLightSourcesManager::slotButtonSnapToView()
+void cLightSourcesManager::slotButtonSnapToSurface()
 {
 	int currentTabIndex = ui->tabWidget_lightSources->currentIndex();
 	if (currentTabIndex < 0) return;
@@ -389,78 +353,13 @@ void cLightSourcesManager::slotButtonSnapToView()
 	if (viewDirLen < 1e-20) return;
 	viewDir.Normalize();
 
-	auto result = RayMarchSurface(params, fractalParams, cam, viewDir, 10000.0);
-	if (!result.hit) return;
+	CVector3 surfacePoint = RayMarchSurface(params, fractalParams, cam, viewDir, 10000.0);
+	if (surfacePoint.Length() < 1e-20) return;
 
-	SetLightPosition(params, currentLightIndex, result.point);
+	SetLightPosition(params, currentLightIndex, surfacePoint);
 
 	SynchronizeInterfaceWindow(ui->tabWidget_lightSources, params, qInterface::write);
 	renderedImageWidget->update();
-}
-
-void cLightSourcesManager::slotButtonSnapToRay()
-{
-	int currentTabIndex = ui->tabWidget_lightSources->currentIndex();
-	if (currentTabIndex < 0) return;
-	int currentLightIndex = lightIndexOnTab.at(currentTabIndex);
-
-	SynchronizeInterfaceWindow(ui->tabWidget_lightSources, params, qInterface::read);
-
-	CVector3 cam = params->Get<CVector3>("camera");
-	CVector3 lightPosWorld = GetLightWorldPosition(params, currentLightIndex);
-
-	CVector3 dir = lightPosWorld - cam;
-	double distToLight = dir.Length();
-	if (distToLight < 1e-20) return;
-	dir.Normalize();
-
-	// Phase 1: ray-march from camera, stop at light position
-	// If we hit a surface before the light, the light is BEHIND the surface
-	double t = 0.0;
-	bool hitBeforeLight = false;
-	CVector3 surfacePointBefore;
-	for (int i = 0; i < 10000 && t < distToLight; i++)
-	{
-		CVector3 p = cam + dir * t;
-		double d = cInterface::GetDistanceForPoint(p, params, fractalParams);
-		if (d < 1e-6)
-		{
-			hitBeforeLight = true;
-			surfacePointBefore = p;
-			break;
-		}
-		t += d;
-	}
-
-	if (hitBeforeLight)
-	{
-		// Light is behind the surface - snap to the surface (camera side)
-		SetLightPosition(params, currentLightIndex, surfacePointBefore);
-		SynchronizeInterfaceWindow(ui->tabWidget_lightSources, params, qInterface::write);
-		renderedImageWidget->update();
-		return;
-	}
-
-	// Phase 2: no surface before the light.
-	// The light is in front of the surface (or beside it).
-	// Continue ray-marching past the light to find the surface on the other side.
-	t = distToLight;
-	for (int i = 0; i < 10000 && t < 10000.0; i++)
-	{
-		CVector3 p = cam + dir * t;
-		double d = cInterface::GetDistanceForPoint(p, params, fractalParams);
-		if (d < 1e-6)
-		{
-			// Found surface past the light - snap to it (light side)
-			SetLightPosition(params, currentLightIndex, p);
-			SynchronizeInterfaceWindow(ui->tabWidget_lightSources, params, qInterface::write);
-			renderedImageWidget->update();
-			return;
-		}
-		t += d;
-	}
-
-	// No surface found on this ray at all
 }
 
 void cLightSourcesManager::slotChangedCurrentTab(int index)
