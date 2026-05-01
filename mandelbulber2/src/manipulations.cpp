@@ -611,18 +611,25 @@ void cManipulations::SetByMouse(
 					bool placeBehind = par->Get<bool>("aux_light_place_behind");
 					double distanceLimit = par->Get<double>("view_distance_max");
 					bool relativePosition = par->Get<bool>(cLight::Name("relative_position", lightIndex));
+					bool snapToSurface = par->Get<bool>(cLight::Name("snap_to_surface", lightIndex));
+					double surfaceOffset = par->Get<double>(cLight::Name("surface_offset", lightIndex));
 
 					CVector3 pointCorrected;
 
-					if (!placeBehind)
+					if (snapToSurface)
+					{
+						// Snap to fractal surface + offset along view direction
+						pointCorrected = point - viewVector * surfaceOffset;
+					}
+					else if (!placeBehind)
 					{
 						pointCorrected = point - viewVector * frontDist;
 					}
 					else
 					{
 						frontDist = traceBehindFractal(par, parFractal, frontDist, viewVector, depth,
-													1.0 / image->GetHeight(), distanceLimit)
-												* (-1.0);
+																			1.0 / image->GetHeight(), distanceLimit)
+																			* (-1.0);
 						pointCorrected = point - viewVector * frontDist;
 					}
 
@@ -635,8 +642,17 @@ void cManipulations::SetByMouse(
 						CVector3 viewVectorTemp =
 							CalculateViewVector(normalizedPoint, fov, perspType, CRotationMatrix());
 
-						CVector3 point2 = viewVectorTemp * (depth - frontDist);
-						pointCorrected = CVector3(point2.x, point2.z, point2.y);
+						if (snapToSurface)
+						{
+							CVector3 point2 = viewVectorTemp * depth;
+							pointCorrected = CVector3(point2.x, point2.z, point2.y)
+																			 - viewVectorTemp * surfaceOffset;
+						}
+						else
+						{
+							CVector3 point2 = viewVectorTemp * (depth - frontDist);
+							pointCorrected = CVector3(point2.x, point2.z, point2.y);
+						}
 					}
 
 					par->Set(cLight::Name("position", lightIndex), pointCorrected);

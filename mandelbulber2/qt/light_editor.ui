@@ -315,6 +315,55 @@
        </layout>
       </item>
       <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_snap">
+        <property name="spacing">
+         <number>2</number>
+        </property>
+        <item>
+         <widget class="MyCheckBox" name="checkBox_snap_to_surface">
+          <property name="text">
+           <string>Snap to surface</string>
+          </property>
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When enabled, click-to-place in viewport snaps the light to the fractal surface plus offset.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_snap_offset">
+          <property name="text">
+           <string>Offset:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="MyDoubleSpinBox" name="spinboxd3_surface_offset">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Distance from surface along view direction. Positive = outside surface, Negative = inside surface.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="decimals">
+           <number>4</number>
+          </property>
+          <property name="minimum">
+           <double>-1e15</double>
+          </property>
+          <property name="maximum">
+           <double>1e15</double>
+          </property>
+          <property name="singleStep">
+           <double>0.0001</double>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
        <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0">
         <property name="spacing">
          <number>2</number>
