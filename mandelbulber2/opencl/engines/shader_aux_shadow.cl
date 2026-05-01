@@ -52,6 +52,7 @@ float3 AuxShadow(constant sClInConstants *consts, sRenderData *renderData,
 #endif
 
 	float start = input->distThresh;
+	if (consts->params.interiorMode) start = input->distThresh * DEFactor;
 
 #ifdef MC_SOFT_SHADOWS
 	float softRange;
@@ -279,7 +280,6 @@ float3 AuxShadow(constant sClInConstants *consts, sRenderData *renderData,
 				lightVector = fast_normalize(lightVector);
 			}
 
-			float opacityFactor = dot(lightVector, lightVectorUnmodified);
 #endif // MC_SOFT_SHADOWS
 
 			float opacityCollected = 1.0f;
@@ -323,10 +323,6 @@ float3 AuxShadow(constant sClInConstants *consts, sRenderData *renderData,
 			float opacity =
 				(-1.0f + 1.0f / (opacityCollected * input->material->transparencyOfInterior)) * step;
 
-#ifdef MC_SOFT_SHADOWS
-			opacity *= opacityFactor;
-#endif
-
 			opacity *= (distance - i) / distance;
 			opacity = min(opacity, 1.0f);
 			totalOpacity = opacity + (1.0f - opacity) * totalOpacity;
@@ -356,7 +352,7 @@ float3 AuxShadow(constant sClInConstants *consts, sRenderData *renderData,
 			break;
 		}
 		step = min(dist, lastDistanceToClouds) * DEFactor;
-		step = max(step, 1e-6f);
+		step = max(step, 1e-15f);
 
 		count++;
 		if (count > MAX_RAYMARCHING) break;

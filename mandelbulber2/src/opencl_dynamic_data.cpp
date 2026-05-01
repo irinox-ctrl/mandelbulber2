@@ -510,6 +510,7 @@ void cOpenClDynamicData::BuildLightsData(
 		lightCl.relativePosition = light->relativePosition;
 		lightCl.repeatTexture = light->repeatTexture;
 		lightCl.volumetric = light->volumetric;
+		lightCl.useTargetPoint = light->useTargetPoint ? 1 : 0;
 
 		lightCl.coneAngle = light->coneAngle;
 		lightCl.coneSoftAngle = light->coneSoftAngle;

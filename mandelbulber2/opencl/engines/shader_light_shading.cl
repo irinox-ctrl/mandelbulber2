@@ -279,7 +279,7 @@ float3 LightShading(__constant sClInConstants *consts, sRenderData *renderData,
 #ifdef SHADOWS
 	if (light->castShadows)
 	{
-		if (shade > 0.001f || specularMax > 0.001f)
+		if (shade > 0.01f || specularMax > 0.01f)
 		{
 			auxShadow =
 				AuxShadow(consts, renderData, input, light, dist, lightVector, calcParam, light->intensity);

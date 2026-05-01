@@ -67,6 +67,7 @@ typedef struct
 	cl_int relativePosition;
 	cl_int repeatTexture;
 	cl_int volumetric;
+	cl_int useTargetPoint;
 
 	// enums
 	enumLightTypeCl type;
