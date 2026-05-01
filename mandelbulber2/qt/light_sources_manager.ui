@@ -83,13 +83,24 @@ light</string>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_snapToSurface">
+      <widget class="QPushButton" name="pushButton_snapToView">
        <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Snap selected light to the nearest fractal surface along the camera view direction.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Snap selected light to the fractal surface in the camera view direction.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
         <string>Snap to
-surface</string>
+view</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_snapToRay">
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Snap selected light to the fractal surface along the camera-to-light ray. If no surface is found before the light, it continues past the light.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>Snap to
+ray</string>
        </property>
       </widget>
      </item>
