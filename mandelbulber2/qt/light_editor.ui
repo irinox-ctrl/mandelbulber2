@@ -671,6 +671,73 @@
     </widget>
    </item>
    <item>
+    <widget class="QGroupBox" name="groupBox_autoIntensity">
+     <property name="title">
+      <string>Auto intensity</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_autoIntensity">
+      <property name="leftMargin">
+       <number>2</number>
+      </property>
+      <property name="topMargin">
+       <number>2</number>
+      </property>
+      <property name="rightMargin">
+       <number>2</number>
+      </property>
+      <property name="bottomMargin">
+       <number>2</number>
+      </property>
+      <property name="spacing">
+       <number>2</number>
+      </property>
+      <item row="0" column="0" colspan="2">
+       <widget class="MyCheckBox" name="checkBox_auto_intensity">
+        <property name="text">
+         <string>Auto-adjust intensity by distance</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_auto_intensity_factor">
+        <property name="text">
+         <string>Factor:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="MyDoubleSpinBox" name="spinboxd_auto_intensity_factor">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Multiplier for auto-calculated intensity. Formula: intensity = distance² × factor. Default 0.01 gives reasonable brightness at typical distances.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="decimals">
+         <number>4</number>
+        </property>
+        <property name="minimum">
+         <double>0.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>1.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.001000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0" colspan="2">
+       <widget class="QPushButton" name="pushButton_applyAutoIntensity">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculate intensity based on distance to fractal surface and apply&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Apply auto intensity</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <widget class="QGroupBox" name="groupBox_4">
      <property name="title">
       <string>Shadows</string>

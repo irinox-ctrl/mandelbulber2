@@ -57,7 +57,8 @@ const QStringList cLight::paramsList = {"is_defined", "enabled", "cast_shadows",
 	"volumetric_visibility", "size", "soft_shadow_cone", "contour_sharpness", "position", "rotation",
 	"use_target_point", "target", "alpha", "beta", "color", "type", "decayFunction", "file_texture",
 	"repeat_texture", "projection_horizonal_angle", "projection_vertical_angle", "snap_to_surface",
-	"surface_offset", "name", "orbit_distance", "orbit_yaw", "orbit_pitch"};
+	"surface_offset", "name", "orbit_distance", "orbit_yaw", "orbit_pitch",
+	"auto_intensity", "auto_intensity_factor"};
 
 void cLight::setParameters(int _id, const std::shared_ptr<cParameterContainer> lightParam,
 	bool loadTextures, bool quiet, bool useNetRender)

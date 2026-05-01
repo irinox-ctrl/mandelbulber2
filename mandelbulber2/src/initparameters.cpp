@@ -2478,6 +2478,9 @@ void InitLightParams(int lightId, std::shared_ptr<cParameterContainer> par)
 	par->addParam(cLight::Name("orbit_distance", lightId), 5.0, 0.0, 1e10, morphLinear, paramStandard);
 	par->addParam(cLight::Name("orbit_yaw", lightId), 0.0, -360.0, 360.0, morphLinear, paramStandard);
 	par->addParam(cLight::Name("orbit_pitch", lightId), 0.0, -90.0, 90.0, morphLinear, paramStandard);
+
+	par->addParam(cLight::Name("auto_intensity", lightId), false, morphLinear, paramStandard);
+	par->addParam(cLight::Name("auto_intensity_factor", lightId), 0.01, 0.0, 1.0, morphLinear, paramStandard);
 }
 
 void DeletePrimitiveParams(fractal::enumObjectType objectType, const QString primitiveName,

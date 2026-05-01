@@ -43,6 +43,8 @@
 #include "src/automated_widgets.hpp"
 #include "src/camera_target.hpp"
 #include "src/light.h"
+#include "src/fractal_container.hpp"
+#include "src/interface.hpp"
 #include "src/parameters.hpp"
 
 cLightEditor::cLightEditor(QWidget *parent) : QWidget(parent), ui(new Ui::cLightEditor)
@@ -68,6 +70,8 @@ cLightEditor::cLightEditor(QWidget *parent) : QWidget(parent), ui(new Ui::cLight
 		&cLightEditor::slotChangedUseTarget);
 	connect(ui->pushButton_applyOrbit, &QPushButton::clicked, this,
 		&cLightEditor::slotButtonApplyOrbit);
+	connect(ui->pushButton_applyAutoIntensity, &QPushButton::clicked, this,
+		&cLightEditor::slotButtonApplyAutoIntensity);
 
 	slotChangedUseTarget(false);
 }
@@ -199,6 +203,44 @@ void cLightEditor::slotChangedUseTarget(int state)
 	ui->vect3_target_x->setVisible(state);
 	ui->vect3_target_y->setVisible(state);
 	ui->vect3_target_z->setVisible(state);
+}
+
+void cLightEditor::slotButtonApplyAutoIntensity()
+{
+	if (!parameterContainer || lightIndex < 0) return;
+
+	CVector3 cam = parameterContainer->Get<CVector3>("camera");
+	CVector3 target = parameterContainer->Get<CVector3>("target");
+	CVector3 top = parameterContainer->Get<CVector3>("camera_top");
+	CVector3 lightPosParam = parameterContainer->Get<CVector3>(cLight::Name("position", lightIndex));
+	bool relativePosition = parameterContainer->Get<bool>(cLight::Name("relative_position", lightIndex));
+
+	CVector3 lightPosWorld;
+	if (relativePosition)
+	{
+		cCameraTarget cameraTarget(cam, target, top);
+		CVector3 deltaRotated = cameraTarget.GetForwardVector() * lightPosParam.z
+														+ cameraTarget.GetTopVector() * lightPosParam.y
+														+ cameraTarget.GetRightVector() * lightPosParam.x;
+		lightPosWorld = cam + deltaRotated;
+	}
+	else
+	{
+		lightPosWorld = lightPosParam;
+	}
+
+	double dist = cInterface::GetDistanceForPoint(lightPosWorld, parameterContainer, gParFractal);
+	double factor = parameterContainer->Get<double>(cLight::Name("auto_intensity_factor", lightIndex));
+
+	// Physical inverse-square law: intensity proportional to distance^2
+	// At distance 1, intensity = 1. At distance 10, intensity = 100.
+	double newIntensity = dist * dist * factor;
+
+	parameterContainer->Set(cLight::Name("intensity", lightIndex), newIntensity);
+
+	ui->logedit_intensity->blockSignals(true);
+	ui->logedit_intensity->setText(QString("%L1").arg(newIntensity, 0, 'g', 15));
+	ui->logedit_intensity->blockSignals(false);
 }
 
 void cLightEditor::slotButtonApplyOrbit()
