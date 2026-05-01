@@ -2474,11 +2474,6 @@ void InitLightParams(int lightId, std::shared_ptr<cParameterContainer> par)
 		paramStandard);
 	par->addParam(cLight::Name("projection_vertical_angle", lightId), 60.0, 0.0, 179.9, morphLinear,
 		paramStandard);
-
-	// Snap to surface placement
-	par->addParam(cLight::Name("snap_to_surface", lightId), false, morphLinear, paramStandard);
-	par->addParam(
-		cLight::Name("surface_offset", lightId), 0.0, -1e15, 1e15, morphLinear, paramStandard);
 }
 
 void DeletePrimitiveParams(fractal::enumObjectType objectType, const QString primitiveName,

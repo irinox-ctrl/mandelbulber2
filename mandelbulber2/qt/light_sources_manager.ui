@@ -82,6 +82,17 @@ light</string>
        </property>
       </widget>
      </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_snapToSurface">
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Snap selected light to the nearest fractal surface along the camera view direction.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>Snap to
+surface</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
    <item>

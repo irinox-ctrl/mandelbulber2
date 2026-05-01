@@ -63,6 +63,8 @@ cLightSourcesManager::cLightSourcesManager(QWidget *parent)
 		&cLightSourcesManager::slotButtonDuplicateLight);
 	connect(ui->pushButton_placeLight, &QPushButton::clicked, this,
 		&cLightSourcesManager::slotButtonPlaceLight);
+	connect(ui->pushButton_snapToSurface, &QPushButton::clicked, this,
+		&cLightSourcesManager::slotButtonSnapToSurface);
 
 	connect(ui->checkBox_show_wireframe_lights, &MyCheckBox::stateChanged, this,
 		&cLightSourcesManager::slorChangedWireframeVisibikity);
@@ -112,10 +114,8 @@ void cLightSourcesManager::AddLight(bool init, int indexInParameters)
 		{
 			indexInParameters = lightIndexOnTab.last() + 1;
 		}
+		InitLightParams(indexInParameters, params);
 	}
-
-	// Ensure all light parameters exist (backward compatibility for old lights)
-	InitLightParams(indexInParameters, params);
 
 	if (!init && indexInParameters < 0)
 	{
@@ -290,6 +290,50 @@ void cLightSourcesManager::slotButtonPlaceLight()
 	params->Set("aux_light_manual_placement_dist", optimalDistance);
 	emit signalChangeLightPlacementDistance(optimalDistance);
 	// ui->logedit_aux_light_manual_placement_dist->setText(QString("%L1").arg(distance * 0.1));
+}
+
+void cLightSourcesManager::slotButtonSnapToSurface()
+{
+	int currentTabIndex = ui->tabWidget_lightSources->currentIndex();
+	if (currentTabIndex < 0) return;
+
+	int currentLightIndex = lightIndexOnTab.at(currentTabIndex);
+
+	// Sync UI to params first
+	SynchronizeInterfaceWindow(ui->tabWidget_lightSources, params, qInterface::read);
+
+	CVector3 cam = params->Get<CVector3>("camera");
+	CVector3 lightPos = params->Get<CVector3>(cLight::Name("position", currentLightIndex));
+
+	CVector3 dir = lightPos - cam;
+	double maxDist = dir.Length();
+	if (maxDist < 1e-20) return;
+
+	dir.Normalize();
+
+	// Ray march from camera towards light to find surface
+	double t = 0.0;
+	for (int i = 0; i < 1000 && t < maxDist; i++)
+	{
+		CVector3 p = cam + dir * t;
+		double d = cInterface::GetDistanceForPoint(p, params, fractalParams);
+		if (d < 1e-6) break;
+		t += d;
+	}
+
+	CVector3 surfacePoint = cam + dir * t;
+
+	// If we didn't hit anything, keep original position
+	if (t >= maxDist)
+	{
+		surfacePoint = lightPos;
+	}
+
+	params->Set(cLight::Name("position", currentLightIndex), surfacePoint);
+
+	// Update UI and render
+	SynchronizeInterfaceWindow(ui->tabWidget_lightSources, params, qInterface::write);
+	renderedImageWidget->update();
 }
 
 void cLightSourcesManager::slotChangedCurrentTab(int index)
