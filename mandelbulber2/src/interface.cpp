@@ -85,6 +85,7 @@
 
 #include "qt/detached_window.h"
 #include "qt/dock_effects.h"
+#include "qt/dock_fake_lights.h"
 #include "qt/dock_pattern_lines.h"
 #include "qt/dock_navigation.h"
 #include "qt/material_editor.h"
@@ -328,7 +329,9 @@ void cInterface::ShowUi()
 		mainWindow->tabifyDockWidget(
 			mainWindow->ui->dockWidget_pattern_lines, mainWindow->ui->dockWidget_effects);
 		mainWindow->tabifyDockWidget(
-			mainWindow->ui->dockWidget_effects, mainWindow->ui->dockWidget_image_adjustments);
+			mainWindow->ui->dockWidget_effects, mainWindow->ui->dockWidget_fake_lights);
+		mainWindow->tabifyDockWidget(
+			mainWindow->ui->dockWidget_fake_lights, mainWindow->ui->dockWidget_image_adjustments);
 		mainWindow->tabifyDockWidget(
 			mainWindow->ui->dockWidget_image_adjustments, mainWindow->ui->dockWidget_rendering_engine);
 		mainWindow->tabifyDockWidget(
@@ -449,6 +452,8 @@ void cInterface::ConnectSignals() const
 	connect(mainWindow->ui->actionShow_queue_dock, &QAction::triggered, mainWindow,
 		&RenderWindow::slotUpdateDocksAndToolbarByAction);
 	connect(mainWindow->ui->actionShow_measurement_dock, &QAction::triggered, mainWindow,
+		&RenderWindow::slotUpdateDocksAndToolbarByAction);
+	connect(mainWindow->ui->actionShow_fake_lights_dock, &QAction::triggered, mainWindow,
 		&RenderWindow::slotUpdateDocksAndToolbarByAction);
 	connect(mainWindow->ui->actionSave_settings, &QAction::triggered, mainWindow,
 		&RenderWindow::slotMenuSaveSettings);
@@ -601,6 +606,8 @@ void cInterface::SynchronizeInterface(std::shared_ptr<cParameterContainer> par,
 
 	WriteLog("cInterface::SynchronizeInterface: dockWidget_effects", 3);
 	SynchronizeInterfaceWindow(mainWindow->ui->dockWidget_effects, par, mode);
+	WriteLog("cInterface::SynchronizeInterface: dockWidget_fake_lights", 3);
+	SynchronizeInterfaceWindow(mainWindow->ui->dockWidget_fake_lights, par, mode);
 	WriteLog("cInterface::SynchronizeInterface: dockWidget_pattern_lines", 3);
 	SynchronizeInterfaceWindow(mainWindow->ui->dockWidget_pattern_lines, par, mode);
 	WriteLog("cInterface::SynchronizeInterface: dockWidget_image_adjustments", 3);

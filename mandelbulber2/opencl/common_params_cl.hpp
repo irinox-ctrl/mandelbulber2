@@ -226,7 +226,6 @@ typedef struct
 	cl_float fakeLightsOrbitTrapSize;
 	cl_float fakeLightsThickness;
 	cl_float linearDEOffset;
-	cl_int fakeLightsDecayFunction;
 
 	cl_float3 fakeLightsOrbitTrap;
 	cl_float3 fakeLightsRotation;
@@ -243,6 +242,7 @@ typedef struct
 	cl_float pad_mc[3];
 	cl_float3 fakeLightsMultiCenter[4];
 	cl_float fakeLightsMultiCenterWeight[4];
+	cl_int fakeLightsDecayFunction;
 
 	cl_int fakeLightsPositionMode;
 	cl_float pad_pm[3];
@@ -322,7 +322,6 @@ inline sCommonParamsCl clCopySCommonParamsCl(const sCommonParams &source)
 	target.fakeLightsOrbitTrapSize = source.fakeLightsOrbitTrapSize;
 	target.fakeLightsThickness = source.fakeLightsThickness;
 	target.linearDEOffset = source.linearDEOffset;
-	target.fakeLightsDecayFunction = source.fakeLightsDecayFunction;
 	target.fakeLightsOrbitTrap = toClFloat3(source.fakeLightsOrbitTrap);
 	target.fakeLightsRotation = toClFloat3(source.fakeLightsRotation);
 	target.fractalPosition = toClFloat3(source.fractalPosition);
@@ -338,6 +337,8 @@ inline sCommonParamsCl clCopySCommonParamsCl(const sCommonParams &source)
 		target.fakeLightsMultiCenter[i] = toClFloat3(source.fakeLightsMultiCenter[i]);
 		target.fakeLightsMultiCenterWeight[i] = source.fakeLightsMultiCenterWeight[i];
 	}
+
+	target.fakeLightsDecayFunction = source.fakeLightsDecayFunction;
 
 	target.fakeLightsPositionMode = source.fakeLightsPositionMode;
 

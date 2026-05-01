@@ -515,6 +515,7 @@
     <addaction name="actionShow_gamepad_dock"/>
     <addaction name="actionShow_queue_dock"/>
     <addaction name="actionShow_measurement_dock"/>
+    <addaction name="actionShow_fake_lights_dock"/>
     <addaction name="separator"/>
    </widget>
    <widget class="QMenu" name="menuAbout">
@@ -746,6 +747,76 @@
          </property>
          <item>
           <widget class="cDockEffects" name="widgetEffects" native="true"/>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QDockWidget" name="dockWidget_fake_lights">
+   <property name="features">
+    <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
+   </property>
+   <property name="windowTitle">
+    <string>Fake Lights</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents_fake_lights">
+    <layout class="QVBoxLayout" name="verticalLayout_fake_lights">
+     <property name="spacing">
+      <number>2</number>
+     </property>
+     <property name="leftMargin">
+      <number>2</number>
+     </property>
+     <property name="topMargin">
+      <number>2</number>
+     </property>
+     <property name="rightMargin">
+      <number>2</number>
+     </property>
+     <property name="bottomMargin">
+      <number>2</number>
+     </property>
+     <item>
+      <widget class="QScrollArea" name="scrollArea_fake_lights">
+       <property name="horizontalScrollBarPolicy">
+        <enum>Qt::ScrollBarAsNeeded</enum>
+       </property>
+       <property name="widgetResizable">
+        <bool>true</bool>
+       </property>
+       <widget class="QWidget" name="scrollAreaWidgetContents_fake_lights">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>73</width>
+          <height>146</height>
+         </rect>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_fake_lights_scroll">
+         <property name="spacing">
+          <number>2</number>
+         </property>
+         <property name="leftMargin">
+          <number>2</number>
+         </property>
+         <property name="topMargin">
+          <number>2</number>
+         </property>
+         <property name="rightMargin">
+          <number>2</number>
+         </property>
+         <property name="bottomMargin">
+          <number>2</number>
+         </property>
+         <item>
+          <widget class="cDockFakeLights" name="widgetFakeLights" native="true"/>
          </item>
         </layout>
        </widget>
@@ -1697,6 +1768,14 @@
     <string>Add c&amp;urrent window settings</string>
    </property>
   </action>
+  <action name="actionShow_fake_lights_dock">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Fake Lights dock</string>
+   </property>
+  </action>
   <action name="actionShow_measurement_dock">
    <property name="checkable">
     <bool>true</bool>
@@ -1881,6 +1960,12 @@
    <class>cDockEffects</class>
    <extends>QWidget</extends>
    <header>dock_effects.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>cDockFakeLights</class>
+   <extends>QWidget</extends>
+   <header>dock_fake_lights.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>

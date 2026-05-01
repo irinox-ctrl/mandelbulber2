@@ -96,14 +96,6 @@ private slots:
 	void slotNewParametersFromNavi();
 	void slotRandomLightColoringTypeChanged(int index);
 	void slotEnvMappingToggled(bool state);
-	void slotPressedButtonResetWorld();
-	void slotPressedButtonResetCamera();
-	void slotPressedButtonResetTarget();
-	void slotPressedButtonResetFractalCenter();
-	void slotPressedButtonResetPathCircle();
-	void slotPressedButtonResetPathSpiral();
-	void slotPressedButtonResetOrbitTarget();
-	void slotPressedButtonResetMultiCenter();
 	void slotPressedButtonPlaceLightAtCamera();
 	void slotPressedButtonPlaceSingleTrapLightAtSurface();
 	void slotPressedButtonPlaceSingleTrapLightAtTarget();
