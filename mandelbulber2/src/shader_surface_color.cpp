@@ -77,8 +77,7 @@ sRGBAFloat cRenderWorker::SurfaceColour(
 
 				if (input.material->surfaceGradientEnable)
 				{
-					colour = input.material->gradientSurface.GetColorFloat(colorPosition, false);
-					// TODO - smooth mode for gradient
+					colour = input.material->gradientSurface.GetColorFloat(colorPosition);
 					gradients->surface = colour;
 				}
 				else
@@ -91,36 +90,36 @@ sRGBAFloat cRenderWorker::SurfaceColour(
 				if (input.material->specularGradientEnable)
 				{
 					gradients->specular =
-						input.material->gradientSpecular.GetColorFloat(colorPosition, false);
+						input.material->gradientSpecular.GetColorFloat(colorPosition);
 				}
 
 				if (input.material->diffuseGradientEnable)
 				{
-					gradients->diffuse = input.material->gradientDiffuse.GetColorFloat(colorPosition, false);
+					gradients->diffuse = input.material->gradientDiffuse.GetColorFloat(colorPosition);
 				}
 
 				if (input.material->luminosityGradientEnable)
 				{
 					gradients->luminosity =
-						input.material->gradientLuminosity.GetColorFloat(colorPosition, false);
+						input.material->gradientLuminosity.GetColorFloat(colorPosition);
 				}
 
 				if (input.material->roughnessGradientEnable)
 				{
 					gradients->roughness =
-						input.material->gradientRoughness.GetColorFloat(colorPosition, false);
+						input.material->gradientRoughness.GetColorFloat(colorPosition);
 				}
 
 				if (input.material->reflectanceGradientEnable)
 				{
 					gradients->reflectance =
-						input.material->gradientReflectance.GetColorFloat(colorPosition, false);
+						input.material->gradientReflectance.GetColorFloat(colorPosition);
 				}
 
 				if (input.material->transparencyGradientEnable)
 				{
 					gradients->trasparency =
-						input.material->gradientTransparency.GetColorFloat(colorPosition, false);
+						input.material->gradientTransparency.GetColorFloat(colorPosition);
 				}
 			}
 			else

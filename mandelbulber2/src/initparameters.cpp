@@ -2310,6 +2310,20 @@ void InitMaterialParams(int materialId, std::shared_ptr<cParameterContainer> par
 		cMaterial::Name("reflectance_gradient_enable", materialId), false, morphLinear, paramStandard);
 	par->addParam(
 		cMaterial::Name("transparency_gradient_enable", materialId), false, morphLinear, paramStandard);
+	par->addParam(cMaterial::Name("surface_gradient_mask_enable", materialId), false, morphLinear,
+		paramStandard);
+	par->addParam(cMaterial::Name("specular_gradient_mask_enable", materialId), false, morphLinear,
+		paramStandard);
+	par->addParam(cMaterial::Name("diffuse_gradient_mask_enable", materialId), false, morphLinear,
+		paramStandard);
+	par->addParam(cMaterial::Name("luminosity_gradient_mask_enable", materialId), false, morphLinear,
+		paramStandard);
+	par->addParam(cMaterial::Name("roughness_gradient_mask_enable", materialId), false, morphLinear,
+		paramStandard);
+	par->addParam(cMaterial::Name("reflectance_gradient_mask_enable", materialId), false, morphLinear,
+		paramStandard);
+	par->addParam(cMaterial::Name("transparency_gradient_mask_enable", materialId), false, morphLinear,
+		paramStandard);
 
 	par->addParam(
 		cMaterial::Name("surface_gradient_opacity", materialId), 1.0, morphLinear, paramStandard);
@@ -2474,6 +2488,21 @@ void InitLightParams(int lightId, std::shared_ptr<cParameterContainer> par)
 		paramStandard);
 	par->addParam(cLight::Name("projection_vertical_angle", lightId), 60.0, 0.0, 179.9, morphLinear,
 		paramStandard);
+	par->addParam(cLight::Name("projection_soft_edge", lightId), 0.0, 0.0, 0.5, morphLinear,
+		paramStandard);
+	par->addParam(cLight::Name("projection_use_as_mask", lightId), false, morphNone, paramStandard);
+	par->addParam(cLight::Name("projection_texture_offset_x", lightId), 0.0, -10.0, 10.0, morphLinear,
+		paramStandard);
+	par->addParam(cLight::Name("projection_texture_offset_y", lightId), 0.0, -10.0, 10.0, morphLinear,
+		paramStandard);
+	par->addParam(cLight::Name("projection_texture_scale_x", lightId), 1.0, 0.01, 10.0, morphLinear,
+		paramStandard);
+	par->addParam(cLight::Name("projection_texture_scale_y", lightId), 1.0, 0.01, 10.0, morphLinear,
+		paramStandard);
+	par->addParam(cLight::Name("projection_texture_rotation", lightId), 0.0, -180.0, 180.0, morphLinear,
+		paramStandard);
+	par->addParam(cLight::Name("projection_repeat_mode", lightId), int(0), morphLinear, paramStandard,
+		QStringList({"Clamp", "Repeat", "Mirror"}));
 
 	par->addParam(cLight::Name("orbit_distance", lightId), 5.0, 0.0, 1e10, morphLinear, paramStandard);
 	par->addParam(cLight::Name("orbit_yaw", lightId), 0.0, -360.0, 360.0, morphLinear, paramStandard);

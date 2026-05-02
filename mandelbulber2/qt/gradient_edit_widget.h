@@ -35,6 +35,8 @@
 #ifndef MANDELBULBER2_QT_GRADIENT_EDIT_WIDGET_H_
 #define MANDELBULBER2_QT_GRADIENT_EDIT_WIDGET_H_
 
+#include <QCheckBox>
+#include <QComboBox>
 #include <QToolButton>
 #include <QWidget>
 
@@ -90,6 +92,9 @@ private slots:
 	void pressedButtonSaturationInc();
 	void pressedButtonSaturationDec();
 	void pressedButtonInvert();
+	void pressedButtonSettings();
+	void slotInterpolationModeChanged(int index);
+	void slotMaskToggled(bool checked);
 
 private:
 	cColorGradient gradient;
@@ -112,6 +117,7 @@ private:
 	QToolButton *buttonSaturationInc;
 	QToolButton *buttonSaturationDec;
 	QToolButton *buttonPaletteInvert;
+	QToolButton *buttonSettings;
 
 signals:
 	void openEditor();

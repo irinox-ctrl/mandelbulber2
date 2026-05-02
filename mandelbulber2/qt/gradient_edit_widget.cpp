@@ -89,6 +89,16 @@ cGradientEditWidget::cGradientEditWidget(QWidget *parent)
 	AddToolButton(buttonSaturationDec, margins + (toolbarHeight + 2) * 6,
 		":gradient/icons/gradient-low-saturation.svg");
 
+	// Settings button (advanced gradient options)
+	buttonSettings = new QToolButton(this);
+	buttonSettings->setObjectName("button");
+	buttonSettings->setFixedSize(toolbarHeight, toolbarHeight);
+	buttonSettings->setText("⚙");
+	buttonSettings->setToolTip(tr("Advanced gradient settings (interpolation mode, mask)"));
+	buttonSettings->move(margins + (toolbarHeight + 2) * 7, 0);
+	buttonSettings->show();
+	connect(buttonSettings, SIGNAL(clicked()), this, SLOT(pressedButtonSettings()));
+
 	connect(buttonRandomColors, SIGNAL(clicked()), this, SLOT(pressedButtonRandomColors()));
 	connect(buttonRandomColorsAndPositions, SIGNAL(clicked()), this,
 		SLOT(pressedButtonRandomColorsAndPositions()));
@@ -107,6 +117,55 @@ cGradientEditWidget::cGradientEditWidget(QWidget *parent)
 	buttonPaletteInvert->setToolTip(tr("Invert palette"));
 	buttonSaturationInc->setToolTip(tr("Increase saturation of colors in gradient"));
 	buttonSaturationDec->setToolTip(tr("Decrease saturation of colors in gradient"));
+}
+
+void cGradientEditWidget::pressedButtonSettings()
+{
+	QMenu menu(this);
+
+	// Interpolation mode submenu
+	QMenu *modeMenu = menu.addMenu(tr("Interpolation Mode"));
+	QActionGroup *modeGroup = new QActionGroup(&menu);
+
+	QAction *actionLinear = new QAction(tr("Linear"), modeGroup);
+	actionLinear->setCheckable(true);
+	actionLinear->setChecked(gradient.GetInterpolationMode() == cColorGradient::InterpolationMode::Linear);
+	modeMenu->addAction(actionLinear);
+
+	QAction *actionSmooth = new QAction(tr("Smooth"), modeGroup);
+	actionSmooth->setCheckable(true);
+	actionSmooth->setChecked(gradient.GetInterpolationMode() == cColorGradient::InterpolationMode::Smooth);
+	modeMenu->addAction(actionSmooth);
+
+	QAction *actionSpline = new QAction(tr("Spline"), modeGroup);
+	actionSpline->setCheckable(true);
+	actionSpline->setChecked(gradient.GetInterpolationMode() == cColorGradient::InterpolationMode::Spline);
+	modeMenu->addAction(actionSpline);
+
+	connect(actionLinear, &QAction::triggered, [this]() {
+		gradient.SetInterpolationMode(cColorGradient::InterpolationMode::Linear);
+		update();
+	});
+	connect(actionSmooth, &QAction::triggered, [this]() {
+		gradient.SetInterpolationMode(cColorGradient::InterpolationMode::Smooth);
+		update();
+	});
+	connect(actionSpline, &QAction::triggered, [this]() {
+		gradient.SetInterpolationMode(cColorGradient::InterpolationMode::Spline);
+		update();
+	});
+
+	// Mask checkbox
+	QAction *actionMask = new QAction(tr("Use as Mask"), &menu);
+	actionMask->setCheckable(true);
+	actionMask->setChecked(gradient.IsMaskEnabled());
+	menu.addAction(actionMask);
+	connect(actionMask, &QAction::toggled, [this](bool checked) {
+		gradient.SetMaskEnable(checked);
+		update();
+	});
+
+	menu.exec(buttonSettings->mapToGlobal(QPoint(0, buttonSettings->height())));
 }
 
 cGradientEditWidget::~cGradientEditWidget()
@@ -151,11 +210,15 @@ void cGradientEditWidget::paintEvent(QPaintEvent *event)
 	int gradientHeight = (viewMode) ? height() : (height() - toolbarHeight) / 2;
 
 	QPainter painter(this);
-	QVector<sRGB> grad = gradient.GetGradient(gradientWidth, false);
+	// Use GetGradientRGBA to respect interpolation mode (Linear/Smooth/Spline)
+	QVector<sRGBAFloat> grad = gradient.GetGradientRGBA(gradientWidth);
 
 	for (int x = 0; x < grad.size(); x++)
 	{
-		QColor color(QColor(grad[x].R, grad[x].G, grad[x].B));
+		int r = qBound(0, int(grad[x].R * 255.0f), 255);
+		int g = qBound(0, int(grad[x].G * 255.0f), 255);
+		int b = qBound(0, int(grad[x].B * 255.0f), 255);
+		QColor color(r, g, b);
 		painter.setPen(color);
 		painter.drawLine(x + margins, toolbarHeight, x + margins, toolbarHeight + gradientHeight);
 	}
@@ -729,3 +792,15 @@ QString cGradientEditWidget::getFullParameterName()
 }
 
 void cGradientEditWidget::UpdateScriptAppearance(bool hasScript) {}
+
+void cGradientEditWidget::slotInterpolationModeChanged(int index)
+{
+	gradient.SetInterpolationMode(static_cast<cColorGradient::InterpolationMode>(index));
+	update();
+}
+
+void cGradientEditWidget::slotMaskToggled(bool checked)
+{
+	gradient.SetMaskEnable(checked);
+	update();
+}

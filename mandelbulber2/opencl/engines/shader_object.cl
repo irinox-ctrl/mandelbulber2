@@ -62,7 +62,8 @@ float3 ObjectShader(__constant sClInConstants *consts, sRenderData *renderData,
 			float colorPosition =
 				fmod(perlin * input->material->coloring_speed + input->material->paletteOffset, 1.0f);
 
-			float3 gradientColor = GetColorFromGradient(colorPosition, false, input->paletteSurfaceLength,
+			float3 gradientColor = GetColorFromGradient(colorPosition,
+				input->material->surfaceGradientMode, input->paletteSurfaceLength,
 				input->palette + input->paletteSurfaceOffset);
 
 			surfaceColor *= gradientColor * perlinColInt + perlinIntN;
@@ -180,8 +181,9 @@ float3 ObjectShader(__constant sClInConstants *consts, sRenderData *renderData,
 			float colorPosition =
 				fmod(perlin * input->material->coloring_speed + input->material->paletteOffset, 1.0f);
 
-			float3 gradientColor = GetColorFromGradient(colorPosition, false,
-				input->paletteLuminosityLength, input->palette + input->paletteLuminosityOffset);
+			float3 gradientColor = GetColorFromGradient(colorPosition,
+				input->material->luminosityGradientMode, input->paletteLuminosityLength,
+				input->palette + input->paletteLuminosityOffset);
 
 			luminosity += gradientColor * perlinLumInt;
 		}

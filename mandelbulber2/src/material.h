@@ -194,6 +194,15 @@ public:
 	bool reflectanceGradientEnable;
 	bool transparencyGradientEnable;
 
+	// Advanced gradient: mask enable flags (per-gradient masking)
+	bool surfaceGradientMaskEnable;
+	bool specularGradientMaskEnable;
+	bool diffuseGradientMaskEnable;
+	bool luminosityGradientMaskEnable;
+	bool roughnessGradientMaskEnable;
+	bool reflectanceGradientMaskEnable;
+	bool transparencyGradientMaskEnable;
+
 	sFractalColoring fractalColoring;
 };
 

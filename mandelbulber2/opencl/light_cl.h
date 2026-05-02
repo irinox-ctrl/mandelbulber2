@@ -85,6 +85,9 @@ typedef struct
 
 	cl_float projectionHorizontalRatio;
 	cl_float projectionVerticalRatio;
+	cl_float projectionSoftEdge;
+
+	cl_int projectionUseAsMask;
 
 	cl_float3 color;
 
@@ -96,6 +99,12 @@ typedef struct
 	cl_float3 lightRightVector;
 
 	matrix33 rotMatrix;
+
+	// projection texture UV transforms (packed as float4 for guaranteed alignment)
+	// projectionParams1: x=offsetX, y=offsetY, z=scaleX, w=scaleY
+	// projectionParams2: x=rotation, y=repeatMode
+	cl_float4 projectionParams1;
+	cl_float4 projectionParams2;
 
 } sLightCl;
 

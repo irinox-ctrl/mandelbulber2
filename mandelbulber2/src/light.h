@@ -112,6 +112,14 @@ public:
 	float coneSoftRatio = 0.0;
 	float projectionHorizontalRatio = 0.0;
 	float projectionVerticalRatio = 0.0;
+	float projectionSoftEdge = 0.0;
+	bool projectionUseAsMask = false;
+	float projectionTextureOffsetX = 0.0f;
+	float projectionTextureOffsetY = 0.0f;
+	float projectionTextureScaleX = 1.0f;
+	float projectionTextureScaleY = 1.0f;
+	float projectionTextureRotation = 0.0f;
+	int projectionRepeatMode = 0;
 
 	CVector3 position;
 	CVector3 rotation;

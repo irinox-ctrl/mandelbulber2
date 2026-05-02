@@ -116,6 +116,8 @@ float CalculateLightCone(__global sLightCl *light, sRenderData *renderData, floa
 	}
 	else if (light->type == lightProjection)
 	{
+		intensity = 0.0f;
+		color = 0.0f;
 #ifdef USE_LIGHT_TEXTURE
 		if (light->colorTextureIndex >= 0)
 		{
@@ -130,9 +132,76 @@ float CalculateLightCone(__global sLightCl *light, sRenderData *renderData, floa
 					dot(light->lightTopVector, lightVector) / light->projectionVerticalRatio / axiality
 					+ 0.5f;
 
-				if (light->repeatTexture || (texX > 0.0f && texX < 1.0f && texY > 0.0f && texY < 1.0f))
+				// Apply UV transform: scale, rotation, offset
 				{
-					float2 texturePoint = (float2){texX, texY};
+					float u = texX - 0.5f;
+					float v = texY - 0.5f;
+					u *= light->projectionParams1.z;
+					v *= light->projectionParams1.w;
+					float rot = light->projectionParams2.x;
+					if (rot != 0.0f)
+					{
+						float rad = rot * 3.14159265f / 180.0f;
+						float c = cos(rad);
+						float s = sin(rad);
+						float ur = u * c - v * s;
+						float vr = u * s + v * c;
+						u = ur;
+						v = vr;
+					}
+					u += light->projectionParams1.x;
+					v += light->projectionParams1.y;
+					texX = u + 0.5f;
+					texY = v + 0.5f;
+				}
+
+				int repeatMode = (int)light->projectionParams2.y;
+				bool useRepeat = light->repeatTexture || repeatMode != 0;
+
+				float fade = 1.0f;
+				int outOfBounds = 0;
+
+				if (repeatMode == 0) // Clamp
+				{
+					if (light->projectionSoftEdge > 0.0f)
+					{
+						float effectiveEdge = min(light->projectionSoftEdge, 0.5f);
+						float fx, fy;
+						if (texX <= 0.0f || texX >= 1.0f) fx = 0.0f;
+						else if (texX < effectiveEdge) fx = texX / effectiveEdge;
+						else if (texX > 1.0f - effectiveEdge) fx = (1.0f - texX) / effectiveEdge;
+						else fx = 1.0f;
+
+						if (texY <= 0.0f || texY >= 1.0f) fy = 0.0f;
+						else if (texY < effectiveEdge) fy = texY / effectiveEdge;
+						else if (texY > 1.0f - effectiveEdge) fy = (1.0f - texY) / effectiveEdge;
+						else fy = 1.0f;
+
+						fade = clamp(fx * fy, 0.0f, 1.0f);
+					}
+
+					if (texX <= 0.0f || texX >= 1.0f || texY <= 0.0f || texY >= 1.0f)
+					{
+						if (fade <= 0.0f) outOfBounds = 1;
+					}
+				}
+				else if (repeatMode == 1) // Repeat
+				{
+					texX = texX - floor(texX);
+					texY = texY - floor(texY);
+				}
+				else if (repeatMode == 2) // Mirror
+				{
+					texX = fabs(fmod(texX, 2.0f) - 1.0f);
+					texY = fabs(fmod(texY, 2.0f) - 1.0f);
+				}
+
+				if (!outOfBounds)
+				{
+					float sampleX = (repeatMode == 0) ? clamp(texX, 0.0f, 1.0f) : texX;
+					float sampleY = (repeatMode == 0) ? clamp(texY, 0.0f, 1.0f) : texY;
+
+					float2 texturePoint = (float2){sampleX, sampleY};
 
 					int2 textureSize = renderData->textureSizes[light->colorTextureIndex];
 					__global uchar4 *texture = renderData->textures[light->colorTextureIndex];
@@ -140,19 +209,18 @@ float CalculateLightCone(__global sLightCl *light, sRenderData *renderData, floa
 					float3 texOut = BicubicInterpolation(
 						texturePoint.x, texturePoint.y, texture, textureSize.x, textureSize.y);
 
-					color = texOut;
-					intensity = 1.0f;
+					if (light->projectionUseAsMask)
+					{
+						float luminance = dot(texOut, (float3)(0.299f, 0.587f, 0.114f));
+						color = 1.0f;
+						intensity = luminance * fade;
+					}
+					else
+					{
+						color = texOut;
+						intensity = fade;
+					}
 				}
-				else
-				{
-					color = 0.0f;
-					intensity = 0.0f;
-				}
-			}
-			else
-			{
-				color = 0.0f;
-				intensity = 0.0f;
 			}
 		}
 #endif // USE_LIGHT_TEXTURE

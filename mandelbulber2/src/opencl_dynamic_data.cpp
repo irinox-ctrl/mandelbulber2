@@ -523,6 +523,8 @@ void cOpenClDynamicData::BuildLightsData(
 		lightCl.coneSoftRatio = light->coneSoftRatio;
 		lightCl.projectionHorizontalRatio = light->projectionHorizontalRatio;
 		lightCl.projectionVerticalRatio = light->projectionVerticalRatio;
+		lightCl.projectionSoftEdge = light->projectionSoftEdge;
+		lightCl.projectionUseAsMask = light->projectionUseAsMask;
 
 		lightCl.position = toClFloat3(light->position);
 		lightCl.rotation = toClFloat3(light->rotation);
@@ -534,6 +536,17 @@ void cOpenClDynamicData::BuildLightsData(
 		lightCl.color = toClFloat3(light->color);
 
 		lightCl.rotMatrix = toClMatrix33(light->rotMatrix);
+
+		lightCl.projectionParams1 = {{
+			cl_float(light->projectionTextureOffsetX),
+			cl_float(light->projectionTextureOffsetY),
+			cl_float(light->projectionTextureScaleX),
+			cl_float(light->projectionTextureScaleY)}};
+		lightCl.projectionParams2 = {{
+			cl_float(light->projectionTextureRotation),
+			cl_float(light->projectionRepeatMode),
+			0.0f,
+			0.0f}};
 
 		lightCl.type = static_cast<enumLightTypeCl>(light->type);
 		lightCl.decayFunction = static_cast<enumLightDecayFunctionCl>(light->decayFunction);

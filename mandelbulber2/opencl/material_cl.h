@@ -163,6 +163,24 @@ typedef struct
 	cl_int transparencyGradientEnable;
 
 	sFractalColoringCl fractalColoring;
+
+	// Advanced gradient: mask enable flags (NEW — added at end to preserve alignment)
+	cl_int surfaceGradientMaskEnable;
+	cl_int specularGradientMaskEnable;
+	cl_int diffuseGradientMaskEnable;
+	cl_int luminosityGradientMaskEnable;
+	cl_int roughnessGradientMaskEnable;
+	cl_int reflectanceGradientMaskEnable;
+	cl_int transparencyGradientMaskEnable;
+
+	// Advanced gradient: interpolation mode per gradient (0=Linear, 1=Smooth, 2=Spline)
+	cl_int surfaceGradientMode;
+	cl_int specularGradientMode;
+	cl_int diffuseGradientMode;
+	cl_int luminosityGradientMode;
+	cl_int roughnessGradientMode;
+	cl_int reflectanceGradientMode;
+	cl_int transparencyGradientMode;
 } sMaterialCl;
 
 #ifndef OPENCL_KERNEL_CODE
@@ -286,6 +304,24 @@ sMaterialCl clCopySMaterialCl(const cMaterial &source)
 	target.roughnessTextureIndex = 0;
 
 	target.fractalColoring = clCopySFractalColoringCl(source.fractalColoring);
+
+	// Advanced gradient mask enable flags (NEW — at end of struct)
+	target.surfaceGradientMaskEnable = source.surfaceGradientMaskEnable;
+	target.specularGradientMaskEnable = source.specularGradientMaskEnable;
+	target.diffuseGradientMaskEnable = source.diffuseGradientMaskEnable;
+	target.luminosityGradientMaskEnable = source.luminosityGradientMaskEnable;
+	target.roughnessGradientMaskEnable = source.roughnessGradientMaskEnable;
+	target.reflectanceGradientMaskEnable = source.reflectanceGradientMaskEnable;
+	target.transparencyGradientMaskEnable = source.transparencyGradientMaskEnable;
+
+	// Advanced gradient interpolation modes (NEW)
+	target.surfaceGradientMode = static_cast<cl_int>(source.gradientSurface.GetInterpolationMode());
+	target.specularGradientMode = static_cast<cl_int>(source.gradientSpecular.GetInterpolationMode());
+	target.diffuseGradientMode = static_cast<cl_int>(source.gradientDiffuse.GetInterpolationMode());
+	target.luminosityGradientMode = static_cast<cl_int>(source.gradientLuminosity.GetInterpolationMode());
+	target.roughnessGradientMode = static_cast<cl_int>(source.gradientRoughness.GetInterpolationMode());
+	target.reflectanceGradientMode = static_cast<cl_int>(source.gradientReflectance.GetInterpolationMode());
+	target.transparencyGradientMode = static_cast<cl_int>(source.gradientTransparency.GetInterpolationMode());
 
 	return target;
 }
