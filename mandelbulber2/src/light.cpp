@@ -54,7 +54,8 @@ cLight::cLight(int _id, const std::shared_ptr<cParameterContainer> lightParam, b
 // this static list will be use to optimize usage of material parameters
 const QStringList cLight::paramsList = {"is_defined", "enabled", "cast_shadows", "penetrating",
 	"relative_position", "volumetric", "cone_angle", "cone_soft_angle", "intensity", "visibility",
-	"volumetric_visibility", "size", "soft_shadow_cone", "contour_sharpness", "position", "rotation",
+	"volumetric_visibility", "size", "soft_shadow_cone", "contour_sharpness", "beam_radius",
+	"beam_soft_edge", "position", "rotation",
 	"use_target_point", "target", "alpha", "beta", "color", "type", "decayFunction", "file_texture",
 	"file_texture_alpha", "repeat_texture", "projection_horizonal_angle", "projection_vertical_angle",
 	"projection_soft_edge", "projection_intensity", "projection_use_as_mask", "projection_texture_offset_x",
@@ -97,6 +98,8 @@ void cLight::setParameters(int _id, const std::shared_ptr<cParameterContainer> l
 	size = lightParam->Get<double>(Name("size", id)) * allLightsSize;
 	softShadowCone = lightParam->Get<double>(Name("soft_shadow_cone", id)) / 180.0 * M_PI;
 	contourSharpness = lightParam->Get<double>(Name("contour_sharpness", id));
+	beamRadius = lightParam->Get<double>(Name("beam_radius", id));
+	beamSoftEdge = lightParam->Get<double>(Name("beam_soft_edge", id));
 
 	rotation = lightParam->Get<CVector3>(Name("rotation", id)) / 180.8 * M_PI;
 
@@ -485,7 +488,7 @@ float cLight::CalculateCone(CVector3 point, const CVector3 &lightVector, sRGBFlo
 }
 
 CVector3 cLight::CalculateLightVector(const CVector3 &point, double delta, double resolution,
-	double viewDistanceMax, double &outDistance) const
+	double viewDistanceMax, double &outDistance, double *outBeamFade) const
 {
 	CVector3 lightVector;
 	if (type == cLight::lightDirectional)
@@ -499,27 +502,79 @@ CVector3 cLight::CalculateLightVector(const CVector3 &point, double delta, doubl
 		{
 			outDistance = viewDistanceMax;
 		}
+		if (outBeamFade) *outBeamFade = 1.0;
 	}
 	else
 	{
-		CVector3 d = CalculateBeam(position, target) - point;
+		double fade = 1.0;
+		CVector3 d = CalculateBeam(position, target, &fade) - point;
 		lightVector = d;
 		lightVector.Normalize();
 		outDistance = d.Length();
+		if (outBeamFade) *outBeamFade = fade;
 	}
 
 	return lightVector;
 }
 
-CVector3 cLight::CalculateBeam(const CVector3 &point1, const CVector3 &point2) const
+CVector3 cLight::CalculateBeam(const CVector3 &point1, const CVector3 &point2, double *outFade) const
 {
 	if (type == cLight::lightBeam)
 	{
 		CVector3 direction = point2 - point1;
-		return point1 + direction * Random(10000) / 10000.0;
+		CVector3 pointOnLine = point1 + direction * Random(10000) / 10000.0;
+		double fade = 1.0;
+
+		if (beamRadius > 0.0)
+		{
+			// Generate a random offset perpendicular to the beam direction
+			CVector3 dirNormalized = direction;
+			dirNormalized.Normalize();
+
+			// Find a perpendicular vector
+			CVector3 perp1;
+			if (fabs(dirNormalized.z) < 0.99)
+			{
+				perp1 = CVector3(0.0, 0.0, 1.0).Cross(dirNormalized);
+			}
+			else
+			{
+				perp1 = CVector3(1.0, 0.0, 0.0).Cross(dirNormalized);
+			}
+			perp1.Normalize();
+			CVector3 perp2 = dirNormalized.Cross(perp1);
+
+			// Uniform distribution over disk: r = radius * sqrt(random)
+			double angle = Random(10000) / 10000.0 * 2.0 * M_PI;
+			double r = beamRadius * sqrt(Random(10000) / 10000.0);
+
+			pointOnLine += perp1 * cos(angle) * r + perp2 * sin(angle) * r;
+
+			// Calculate radial fade
+			if (beamSoftEdge > 0.0)
+			{
+				double innerRadius = beamRadius * (1.0 - beamSoftEdge);
+				if (r <= innerRadius)
+				{
+					fade = 1.0;
+				}
+				else if (r < beamRadius)
+				{
+					fade = 1.0 - (r - innerRadius) / (beamRadius * beamSoftEdge);
+				}
+				else
+				{
+					fade = 0.0;
+				}
+			}
+		}
+
+		if (outFade) *outFade = fade;
+		return pointOnLine;
 	}
 	else
 	{
+		if (outFade) *outFade = 1.0;
 		return point1;
 	}
 }

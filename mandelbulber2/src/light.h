@@ -69,8 +69,8 @@ public:
 	inline float Decay(float distance) const { return pow(distance, float(decayFunction + 1)); }
 	float CalculateCone(CVector3 point, const CVector3 &lightVector, sRGBFloat &outColor) const;
 	CVector3 CalculateLightVector(const CVector3 &point, double delta, double resolution,
-		double viewDistanceMax, double &outDistance) const;
-	CVector3 CalculateBeam(const CVector3 &point1, const CVector3 &point2) const;
+		double viewDistanceMax, double &outDistance, double *outBeamFade = nullptr) const;
+	CVector3 CalculateBeam(const CVector3 &point1, const CVector3 &point2, double *outFade = nullptr) const;
 
 	static const QStringList paramsList;
 
@@ -108,6 +108,8 @@ public:
 	float size = 0.0f;
 	float softShadowCone = 0.0f;
 	float contourSharpness = 0.0f;
+	float beamRadius = 0.0f;
+	float beamSoftEdge = 0.0f;
 	float coneRatio = 0.0;
 	float coneSoftRatio = 0.0;
 	float projectionHorizontalRatio = 0.0;

@@ -391,7 +391,7 @@ float4 VolumetricShader(__constant sClInConstants *consts, sRenderData *renderDa
 
 					float3 lightVectorTemp =
 						CalculateLightVector(light, point, input2.delta, consts->params.resolution,
-							consts->params.viewDistanceMax, &distanceLight, &input->randomSeed);
+							consts->params.viewDistanceMax, &distanceLight, &input->randomSeed, 0);
 
 					float lightIntensity = 0.0f;
 					if (light->type == lightDirectional)
@@ -555,8 +555,9 @@ float4 VolumetricShader(__constant sClInConstants *consts, sRenderData *renderDa
 					float lastMiniSteps = -1.0f;
 					float miniStep = 0.0f;
 
+					float beamFade = 1.0f;
 					float3 lightPosition =
-						CalculateBeam(light, light->position, light->target, &input->randomSeed);
+						CalculateBeam(light, light->position, light->target, &input->randomSeed, &beamFade);
 
 					for (float miniSteps = 0.0f; miniSteps < step; miniSteps += miniStep)
 					{
@@ -587,6 +588,7 @@ float4 VolumetricShader(__constant sClInConstants *consts, sRenderData *renderDa
 						float3 textureColor;
 						bellFunction *=
 							CalculateLightCone(light, renderData, point, (-1.0f) * lightDirection, &textureColor);
+						bellFunction *= beamFade;
 
 						float lightDensity = miniStep * bellFunction * light->visibility / lightSize;
 

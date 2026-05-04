@@ -1554,6 +1554,65 @@
      </layout>
     </widget>
    </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_beam_options">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="title">
+      <string>Beam options</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_beam">
+      <property name="spacing">
+       <number>2</number>
+      </property>
+      <property name="leftMargin">
+       <number>2</number>
+      </property>
+      <property name="topMargin">
+       <number>2</number>
+      </property>
+      <property name="rightMargin">
+       <number>2</number>
+      </property>
+      <property name="bottomMargin">
+       <number>2</number>
+      </property>
+      <item>
+       <layout class="QGridLayout" name="gridLayout_beam">
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_beam_radius">
+          <property name="text">
+           <string>Beam radius</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="MyLineEdit" name="logedit_beam_radius">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Radius of the beam cylinder. 0.0 = thin line (original behavior). Larger values create a thicker, volumetric beam.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_beam_soft_edge">
+          <property name="text">
+           <string>Beam soft edge</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="MyLineEdit" name="logedit_beam_soft_edge">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Softness of the beam edge. 0.0 = hard cutoff at radius, 1.0 = maximum softness (intensity fades from center to edge).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
   </layout>
  </widget>
  <customwidgets>

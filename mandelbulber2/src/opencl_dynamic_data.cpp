@@ -899,6 +899,8 @@ void cOpenClDynamicData::BuildLightsData(
 		lightCl.size = light->size;
 		lightCl.softShadowCone = light->softShadowCone;
 		lightCl.contourSharpness = light->contourSharpness;
+		lightCl.beamRadius = light->beamRadius;
+		lightCl.beamSoftEdge = light->beamSoftEdge;
 		lightCl.coneRatio = light->coneRatio;
 		lightCl.coneSoftRatio = light->coneSoftRatio;
 		lightCl.projectionHorizontalRatio = light->projectionHorizontalRatio;

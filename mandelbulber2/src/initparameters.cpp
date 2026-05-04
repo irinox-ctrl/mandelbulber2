@@ -2449,6 +2449,10 @@ void InitLightParams(int lightId, std::shared_ptr<cParameterContainer> par)
 		cLight::Name("soft_shadow_cone", lightId), 1.0, 0.0, 1e10, morphLinear, paramStandard);
 	par->addParam(
 		cLight::Name("contour_sharpness", lightId), 1.0, 0.0, 1e10, morphLinear, paramStandard);
+	par->addParam(cLight::Name("beam_radius", lightId), 0.0, 0.0, 10.0, morphLinear,
+		paramStandard);
+	par->addParam(cLight::Name("beam_soft_edge", lightId), 0.0, 0.0, 1.0, morphLinear,
+		paramStandard);
 	par->addParam(cLight::Name("position", lightId), newLightPosition, morphAkima, paramStandard);
 
 	par->addParam(cLight::Name("rotation", lightId),

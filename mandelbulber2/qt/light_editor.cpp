@@ -118,6 +118,7 @@ void cLightEditor::slotChangedLightType(int index)
 
 	ui->groupBox_cone_options->setEnabled(lightType == cLight::lightConical);
 	ui->groupBox_projection_options->setEnabled(lightType == cLight::lightProjection);
+	ui->groupBox_beam_options->setEnabled(lightType == cLight::lightBeam);
 	ui->widget_angle_preview->setEnabled(lightType == cLight::lightDirectional);
 
 	bool visibleTarget = useTarget || (lightType == cLight::lightBeam);

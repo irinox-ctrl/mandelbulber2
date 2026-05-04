@@ -585,7 +585,8 @@ sRGBAFloat cRenderWorker::VolumetricShader(
 					double lastMiniSteps = -1.0;
 					double miniStep;
 
-					CVector3 lightPosition = light->CalculateBeam(light->position, light->target);
+					double beamFade = 1.0;
+					CVector3 lightPosition = light->CalculateBeam(light->position, light->target, &beamFade);
 
 					for (double miniSteps = 0.0; miniSteps < step; miniSteps += miniStep)
 					{
@@ -616,6 +617,7 @@ sRGBAFloat cRenderWorker::VolumetricShader(
 						lightDirection.Normalize();
 						sRGBFloat textureColor;
 						bellFunction *= light->CalculateCone(point, (-1.0) * lightDirection, textureColor);
+						bellFunction *= beamFade;
 
 						float lightDensity = miniStep * bellFunction * light->visibility / lightSize;
 

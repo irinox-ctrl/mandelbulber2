@@ -34,21 +34,70 @@
 
 #ifdef AUX_LIGHTS
 
-float3 CalculateBeam(__global sLightCl *light, float3 point1, float3 point2, int *randomSeed)
+float3 CalculateBeam(__global sLightCl *light, float3 point1, float3 point2, int *randomSeed,
+	float *outFade)
 {
 	if (light->type == lightBeam)
 	{
 		float3 direction = point2 - point1;
-		return point1 + direction * Random(10000, randomSeed) / 10000.0f;
+		float3 pointOnLine = point1 + direction * Random(10000, randomSeed) / 10000.0f;
+		float fade = 1.0f;
+
+		if (light->beamRadius > 0.0f)
+		{
+			// Generate a random offset perpendicular to the beam direction
+			float3 dirNormalized = normalize(direction);
+
+			// Find a perpendicular vector
+			float3 perp1;
+			if (fabs(dirNormalized.z) < 0.99f)
+			{
+				perp1 = cross((float3)(0.0f, 0.0f, 1.0f), dirNormalized);
+			}
+			else
+			{
+				perp1 = cross((float3)(1.0f, 0.0f, 0.0f), dirNormalized);
+			}
+			perp1 = normalize(perp1);
+			float3 perp2 = cross(dirNormalized, perp1);
+
+			// Uniform distribution over disk: r = radius * sqrt(random)
+			float angle = Random(10000, randomSeed) / 10000.0f * 2.0f * M_PI_F;
+			float r = light->beamRadius * sqrt(Random(10000, randomSeed) / 10000.0f);
+
+			pointOnLine += perp1 * cos(angle) * r + perp2 * sin(angle) * r;
+
+			// Calculate radial fade
+			if (light->beamSoftEdge > 0.0f)
+			{
+				float innerRadius = light->beamRadius * (1.0f - light->beamSoftEdge);
+				if (r <= innerRadius)
+				{
+					fade = 1.0f;
+				}
+				else if (r < light->beamRadius)
+				{
+					fade = 1.0f - (r - innerRadius) / (light->beamRadius * light->beamSoftEdge);
+				}
+				else
+				{
+					fade = 0.0f;
+				}
+			}
+		}
+
+		if (outFade) *outFade = fade;
+		return pointOnLine;
 	}
 	else
 	{
+		if (outFade) *outFade = 1.0f;
 		return point1;
 	}
 }
 
 float3 CalculateLightVector(__global sLightCl *light, float3 point, float delta, float resolution,
-	float viewDistanceMax, float *outDistance, int *randomSeed)
+	float viewDistanceMax, float *outDistance, int *randomSeed, float *outBeamFade)
 {
 	float3 lightVector;
 	if (light->type == lightDirectional)
@@ -62,12 +111,15 @@ float3 CalculateLightVector(__global sLightCl *light, float3 point, float delta,
 		{
 			*outDistance = viewDistanceMax;
 		}
+		if (outBeamFade) *outBeamFade = 1.0f;
 	}
 	else
 	{
-		float3 d = CalculateBeam(light, light->position, light->target, randomSeed) - point;
+		float fade = 1.0f;
+		float3 d = CalculateBeam(light, light->position, light->target, randomSeed, &fade) - point;
 		lightVector = normalize(d);
 		*outDistance = length(d);
+		if (outBeamFade) *outBeamFade = fade;
 	}
 	return lightVector;
 }
@@ -354,9 +406,10 @@ float3 LightShading(__constant sClInConstants *consts, sRenderData *renderData,
 	float3 shading = 0.0f;
 
 	float dist = 0.0f;
+	float beamFade = 1.0f;
 
 	float3 lightVector = CalculateLightVector(light, input->point, input->delta,
-		consts->params.resolution, consts->params.viewDistanceMax, &dist, &input->randomSeed);
+		consts->params.resolution, consts->params.viewDistanceMax, &dist, &input->randomSeed, &beamFade);
 
 	float intensity = 0.0f;
 	if (light->type == lightDirectional)
@@ -374,6 +427,7 @@ float3 LightShading(__constant sClInConstants *consts, sRenderData *renderData,
 
 	float3 textureColor;
 	intensity *= CalculateLightCone(light, renderData, input->point, lightVector, &textureColor);
+	intensity *= beamFade;
 
 	// Apply blend mode between light color and projection texture color
 	float3 blendedColor;

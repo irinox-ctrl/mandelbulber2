@@ -1151,7 +1151,7 @@ sRayRecursionOut RayRecursion(sRayRecursionIn in, sRenderData *renderData,
 
 								float3 lightVectorTemp =
 									CalculateLightVector(light, input2.point, input2.delta, consts->params.resolution,
-										consts->params.viewDistanceMax, &distanceLight, &input2.randomSeed);
+										consts->params.viewDistanceMax, &distanceLight, &input2.randomSeed, 0);
 
 								float intensity = 0.0f;
 								if (light->type == lightDirectional)

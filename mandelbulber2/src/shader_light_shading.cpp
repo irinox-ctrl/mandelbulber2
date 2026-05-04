@@ -44,8 +44,9 @@ sRGBAFloat cRenderWorker::LightShading(sShaderInputData &input, sRGBAFloat surfa
 	sRGBAFloat shading;
 
 	double distance = 0.0;
+	double beamFade = 1.0;
 	CVector3 lightVector = light->CalculateLightVector(
-		input.point, input.delta, params->resolution, params->viewDistanceMax, distance);
+		input.point, input.delta, params->resolution, params->viewDistanceMax, distance, &beamFade);
 
 	// intensity of lights is divided by 6 because of backward compatibility. There was an error
 	// where number of light was always 24
@@ -66,6 +67,7 @@ sRGBAFloat cRenderWorker::LightShading(sShaderInputData &input, sRGBAFloat surfa
 
 	sRGBFloat textureColor;
 	intensity *= light->CalculateCone(input.point, lightVector, textureColor);
+	intensity *= beamFade;
 
 	float shade = input.normal.Dot(lightVector);
 	if (shade < 0) shade = 0;
