@@ -402,6 +402,7 @@ float CalculateLightCone(__global sLightCl *light, sRenderData *renderData, floa
 					}
 			}
 		}
+#endif // USE_LIGHT_TEXTURE
 	}
 
 	else if (light->type == lightPoint)

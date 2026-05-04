@@ -40,7 +40,10 @@ float3 GradientInterpolate(
 	// if last element then just copy color value (no interpolation)
 	if (paletteIndex == gradientSize - 1)
 	{
-		color = palette[paletteIndex - 1].xyz;
+		if (paletteIndex > 0)
+			color = palette[paletteIndex - 1].xyz;
+		else
+			color = palette[paletteIndex].xyz;
 	}
 	else
 	{
@@ -126,12 +129,15 @@ float3 GetColorFromGradient(float position, int mode, int gradientSize,
 
 float GetAlphaFromGradient(float position, int gradientSize, __global float4 *palette)
 {
-	if (gradientSize < 2) return 1.0f;
+	if (gradientSize < 1) return 1.0f;
 	int paletteIndex = GradientIterator(0, position, gradientSize, palette);
 	// if last element then just copy alpha value
 	if (paletteIndex == gradientSize - 1)
 	{
-		return palette[paletteIndex - 1].x;
+		if (paletteIndex > 0)
+			return palette[paletteIndex - 1].x;
+		else
+			return palette[paletteIndex].x;
 	}
 	float alpha1 = palette[paletteIndex].x;
 	float pos1 = palette[paletteIndex].w;

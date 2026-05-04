@@ -246,7 +246,12 @@ sRGBAFloat cColorGradient::InterpolateColorSegment(int seg, float localT) const
 sRGBFloat cColorGradient::SplineInterpolateRGB(int seg, float localT) const
 {
 	int n = sortedColorStops.size();
-	if (n < 2) return sRGBFloat(1.0f, 1.0f, 1.0f);
+	if (n < 1) return sRGBFloat(1.0f, 1.0f, 1.0f);
+	if (n == 1)
+	{
+		sRGBAFloat c = sortedColorStops[0].color;
+		return sRGBFloat(c.R, c.G, c.B);
+	}
 
 	// Get control points
 	int i0 = qMax(0, seg - 1);
@@ -286,8 +291,14 @@ sRGBAFloat cColorGradient::GetColorRGBA(float position)
 {
 	Sort();
 
-	if (sortedColorStops.size() < 2)
+	if (sortedColorStops.size() < 1)
 		return sRGBAFloat(1.0f, 1.0f, 1.0f, 1.0f);
+
+	if (sortedColorStops.size() == 1)
+	{
+		sRGBAFloat c = sortedColorStops[0].color;
+		return sRGBAFloat(c.R, c.G, c.B, 1.0f);
+	}
 
 	// Clamp position
 	position = qBound(0.0f, position, 1.0f);
@@ -331,20 +342,27 @@ sRGBAFloat cColorGradient::GetColorRGBA(float position)
 
 	// Interpolate alpha (using separate opacity stops with their own segments)
 	float alpha = 1.0f;
-	if (sortedOpacityStops.size() >= 2)
+	if (sortedOpacityStops.size() >= 1)
 	{
-		int alphaSeg = FindOpacitySegment(position);
-		if (alphaSeg >= 0 && alphaSeg < sortedOpacityStops.size() - 1)
+		if (sortedOpacityStops.size() == 1)
 		{
-			float alphaPos1 = sortedOpacityStops[alphaSeg].position;
-			float alphaPos2 = sortedOpacityStops[alphaSeg + 1].position;
-			float alphaDenom = alphaPos2 - alphaPos1;
-			float alphaT = 0.0f;
-			if (alphaDenom > 0.0f)
+			alpha = sortedOpacityStops[0].alpha;
+		}
+		else
+		{
+			int alphaSeg = FindOpacitySegment(position);
+			if (alphaSeg >= 0 && alphaSeg < sortedOpacityStops.size() - 1)
 			{
-				alphaT = (position - alphaPos1) / alphaDenom;
+				float alphaPos1 = sortedOpacityStops[alphaSeg].position;
+				float alphaPos2 = sortedOpacityStops[alphaSeg + 1].position;
+				float alphaDenom = alphaPos2 - alphaPos1;
+				float alphaT = 0.0f;
+				if (alphaDenom > 0.0f)
+				{
+					alphaT = (position - alphaPos1) / alphaDenom;
+				}
+				alpha = InterpolateAlphaSegment(alphaSeg, alphaT);
 			}
-			alpha = InterpolateAlphaSegment(alphaSeg, alphaT);
 		}
 	}
 
@@ -362,8 +380,11 @@ float cColorGradient::GetAlpha(float position)
 {
 	Sort();
 
-	if (sortedOpacityStops.size() < 2)
+	if (sortedOpacityStops.size() < 1)
 		return 1.0f;
+
+	if (sortedOpacityStops.size() == 1)
+		return sortedOpacityStops[0].alpha;
 
 	position = qBound(0.0f, position, 1.0f);
 	int seg = FindOpacitySegment(position);
