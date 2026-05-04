@@ -59,6 +59,10 @@ sRGBAFloat cRenderWorker::AuxShadow(
 		double lightSize = sqrt(light->intensity) * light->size;
 		softRange = lightSize / distance;
 	}
+	else if (light->type == cLight::lightPoint && light->size > 0.0)
+	{
+		softRange = light->size / distance;
+	}
 	else
 	{
 		softRange = tan(light->softShadowCone);

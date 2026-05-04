@@ -65,7 +65,15 @@ float3 AuxShadow(constant sClInConstants *consts, sRenderData *renderData,
 		softRange = lightSize / distance;
 	}
 #else
-	float softRange = tan(light->softShadowCone);
+	float softRange;
+	if (light->type == lightPoint && light->size > 0.0f)
+	{
+		softRange = light->size / distance;
+	}
+	else
+	{
+		softRange = tan(light->softShadowCone);
+	}
 #endif
 
 	bool goThrough = input->material->subsurfaceScattering;
