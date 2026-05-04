@@ -55,7 +55,9 @@ cGradientEditWidget::cGradientEditWidget(QWidget *parent)
 {
 	viewMode = false;
 	mouseDragStarted = false;
+	isDraggingMidpoint = false;
 	pressedColorIndex = 0;
+	pressedMidpointIndex = -1;
 	dragStartX = 0;
 	grayscale = false;
 
@@ -166,6 +168,12 @@ void cGradientEditWidget::paintEvent(QPaintEvent *event)
 		for (cColorGradient::sColor posColor : listOfColors)
 		{
 			PaintButton(posColor, painter);
+			// Draw midpoint handles
+			QList<cColorGradient::sColor> sortedColors = gradient.GetListOfSortedColors();
+			for (int i = 0; i < sortedColors.size() - 1; i++)
+			{
+				PaintMidpointHandle(i, painter);
+			}
 		}
 	}
 }
@@ -173,6 +181,17 @@ void cGradientEditWidget::paintEvent(QPaintEvent *event)
 int cGradientEditWidget::CalcButtonPosition(float position)
 {
 	return int(margins + position * (width() - 2 * margins - 1));
+}
+
+int cGradientEditWidget::CalcMidpointPosition(int segmentIndex)
+{
+	QList<cColorGradient::sColor> sortedColors = gradient.GetListOfSortedColors();
+	if (segmentIndex < 0 || segmentIndex >= sortedColors.size() - 1) return 0;
+	float p1 = sortedColors[segmentIndex].position;
+	float p2 = sortedColors[segmentIndex + 1].position;
+	float mp = gradient.GetMidpoint(segmentIndex);
+	float pos = p1 + mp * (p2 - p1);
+	return int(margins + pos * (width() - 2 * margins - 1));
 }
 
 void cGradientEditWidget::PaintButton(const cColorGradient::sColor &posColor, QPainter &painter)
@@ -206,6 +225,31 @@ void cGradientEditWidget::PaintButton(const cColorGradient::sColor &posColor, QP
 	painter.drawRect(rect);
 }
 
+void cGradientEditWidget::PaintMidpointHandle(int segmentIndex, QPainter &painter)
+{
+	int midpointPosition = CalcMidpointPosition(segmentIndex);
+	int handleTop = toolbarHeight + buttonWidth / 2;
+	int handleSize = buttonWidth / 2;
+	if (handleSize < 3) handleSize = 3;
+
+	QVector<QPoint> diamond = {
+		QPoint(midpointPosition, handleTop - handleSize),
+		QPoint(midpointPosition - handleSize, handleTop),
+		QPoint(midpointPosition, handleTop + handleSize),
+		QPoint(midpointPosition + handleSize, handleTop)};
+	QPolygon pDiamond(diamond);
+	QPainterPath pathDiamond;
+	pathDiamond.addPolygon(pDiamond);
+
+	QColor handleColor(200, 200, 200);
+	if (pressedMidpointIndex == segmentIndex)
+		handleColor = QColor(255, 255, 0);
+	QBrush brush(handleColor, Qt::SolidPattern);
+	painter.fillPath(pathDiamond, brush);
+	painter.setPen(Qt::black);
+	painter.drawPolygon(pDiamond);
+}
+
 int cGradientEditWidget::FindButtonAtPosition(int x)
 {
 	QList<cColorGradient::sColor> listOfColors = gradient.GetListOfColors();
@@ -221,9 +265,37 @@ int cGradientEditWidget::FindButtonAtPosition(int x)
 	return -1; //-1 means nothing found
 }
 
+int cGradientEditWidget::FindMidpointAtPosition(int x)
+{
+	QList<cColorGradient::sColor> sortedColors = gradient.GetListOfSortedColors();
+	int handleSize = buttonWidth / 2 + 2;
+	if (handleSize < 5) handleSize = 5;
+
+	for (int i = 0; i < sortedColors.size() - 1; i++)
+	{
+		int xMid = CalcMidpointPosition(i);
+		if ((x > xMid - handleSize) && (x <= xMid + handleSize))
+		{
+			return i;
+		}
+	}
+	return -1;
+}
+
 void cGradientEditWidget::mouseMoveEvent(QMouseEvent *event)
 {
-	if (pressedColorIndex >= 2)
+	if (isDraggingMidpoint && pressedMidpointIndex >= 0)
+	{
+		float pos = float(event->x() - margins) / (width() - 2 * margins - 1);
+		QList<cColorGradient::sColor> sortedColors = gradient.GetListOfSortedColors();
+		float p1 = sortedColors[pressedMidpointIndex].position;
+		float p2 = sortedColors[pressedMidpointIndex + 1].position;
+		float mp = (pos - p1) / (p2 - p1);
+		mp = qBound(0.01f, mp, 0.99f);
+		gradient.SetMidpoint(pressedMidpointIndex, mp);
+		emit update();
+	}
+	else if (pressedColorIndex >= 2)
 	{
 		if (event->x() != dragStartX)
 		{
@@ -255,9 +327,18 @@ void cGradientEditWidget::mousePressEvent(QMouseEvent *event)
 			if (mouseY > height() / 2)
 			{
 				int index = FindButtonAtPosition(mouseX);
-
 				dragStartX = mouseX;
 				pressedColorIndex = index;
+			}
+			else
+			{
+				int mpIndex = FindMidpointAtPosition(mouseX);
+				if (mpIndex >= 0)
+				{
+					isDraggingMidpoint = true;
+					pressedMidpointIndex = mpIndex;
+					dragStartX = mouseX;
+				}
 			}
 		}
 	}
@@ -295,6 +376,8 @@ void cGradientEditWidget::mouseReleaseEvent(QMouseEvent *event)
 			}
 
 			pressedColorIndex = -1;
+				pressedMidpointIndex = -1;
+				isDraggingMidpoint = false;
 			mouseDragStarted = false;
 		}
 	}

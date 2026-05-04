@@ -67,8 +67,11 @@ private:
 	void contextMenuEvent(QContextMenuEvent *event) override;
 
 	void PaintButton(const cColorGradient::sColor &posColor, QPainter &painter);
+	void PaintMidpointHandle(int segmentIndex, QPainter &painter);
 	int CalcButtonPosition(float colorPosition);
+	int CalcMidpointPosition(int segmentIndex);
 	int FindButtonAtPosition(int x);
+	int FindMidpointAtPosition(int x);
 	void AddColor(QContextMenuEvent *event);
 	void RemoveColor(QContextMenuEvent *event);
 	void Clear();
@@ -96,7 +99,9 @@ private:
 	int buttonWidth;
 	int margins;
 	bool mouseDragStarted;
+	bool isDraggingMidpoint;
 	int pressedColorIndex;
+	int pressedMidpointIndex;
 	int dragStartX;
 	int toolbarHeight;
 	bool viewMode;
