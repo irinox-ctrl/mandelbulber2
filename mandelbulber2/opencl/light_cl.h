@@ -104,7 +104,7 @@ typedef struct
 
 	// projection texture UV transforms (packed as float4 for guaranteed alignment)
 	// projectionParams1: x=offsetX, y=offsetY, z=scaleX, w=scaleY
-	// projectionParams2: x=rotationZ, y=repeatMode, z=useAlphaAsMask, w=unused
+	// projectionParams2: x=rotationZ, y=repeatMode, z=useAlphaAsMask, w=useTextureAlphaAsMask
 	// projectionParams3: x=offsetZ, y=scaleZ, z=rotationX, w=rotationY
 	cl_float4 projectionParams1;
 	cl_float4 projectionParams2;

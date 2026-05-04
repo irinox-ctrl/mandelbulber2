@@ -569,11 +569,6 @@ float3 AuxShadow(constant sClInConstants *consts, sRenderData *renderData,
 			lightShaded = 0.0f;
 		}
 	}
-#else
-	if (light->type == lightProjection)
-	{
-		lightShaded = 0.0f;
-	}
 #endif
 
 	return lightShaded;
