@@ -103,6 +103,7 @@ int cOpenClTexturesData::CheckNumberOfTextures(
 		cLight const *light = lights.GetLight(i);
 		CountTexture(&light->colorTexture, false, &listOfTextures, &texturesCounter);
 		CountTexture(&light->alphaTexture, false, &listOfTextures, &texturesCounter);
+		CountTexture(&light->sphericalTexture, false, &listOfTextures, &texturesCounter);
 	}
 
 	return texturesCounter;
@@ -250,6 +251,18 @@ void cOpenClTexturesData::BuildAllTexturesData(const sTextures &textures,
 		{
 			BuildTextureData(&light->colorTexture, textureIndex, false);
 			textureIndexes->insert(light->colorTexture.GetFileName(), textureIndex);
+		}
+		if (light->alphaTexture.IsLoaded()) useLightTexture = true;
+		if (CountTexture(&light->alphaTexture, false, &listOfTextures, &textureIndex))
+		{
+			BuildTextureData(&light->alphaTexture, textureIndex, false);
+			textureIndexes->insert(light->alphaTexture.GetFileName(), textureIndex);
+		}
+		if (light->sphericalTexture.IsLoaded()) useLightTexture = true;
+		if (CountTexture(&light->sphericalTexture, false, &listOfTextures, &textureIndex))
+		{
+			BuildTextureData(&light->sphericalTexture, textureIndex, false);
+			textureIndexes->insert(light->sphericalTexture.GetFileName(), textureIndex);
 		}
 	}
 
