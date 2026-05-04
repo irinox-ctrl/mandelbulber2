@@ -904,6 +904,7 @@ void cOpenClDynamicData::BuildLightsData(
 		lightCl.projectionHorizontalRatio = light->projectionHorizontalRatio;
 		lightCl.projectionVerticalRatio = light->projectionVerticalRatio;
 		lightCl.projectionSoftEdge = light->projectionSoftEdge;
+		lightCl.projectionIntensity = light->projectionIntensity;
 		lightCl.projectionUseAsMask = light->projectionUseAsMask;
 		lightCl.projectionInvertAlphaMask = light->projectionInvertAlphaMask;
 
@@ -942,7 +943,7 @@ void cOpenClDynamicData::BuildLightsData(
 		lightCl.alphaTextureParams2 = {{
 			cl_float(light->alphaTextureRotationZ),
 			cl_float(light->alphaTextureRepeatMode),
-			0.0f,
+			cl_float(light->alphaTextureSoftEdge),
 			0.0f}};
 
 		lightCl.type = static_cast<enumLightTypeCl>(light->type);

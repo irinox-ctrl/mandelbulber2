@@ -2491,6 +2491,8 @@ void InitLightParams(int lightId, std::shared_ptr<cParameterContainer> par)
 		paramStandard);
 	par->addParam(cLight::Name("projection_soft_edge", lightId), 0.0, 0.0, 0.5, morphLinear,
 		paramStandard);
+	par->addParam(cLight::Name("projection_intensity", lightId), 1.0, 0.0, 10.0, morphLinear,
+		paramStandard);
 	par->addParam(cLight::Name("projection_use_as_mask", lightId), false, morphNone, paramStandard);
 	par->addParam(cLight::Name("projection_texture_offset_x", lightId), 0.0, -10.0, 10.0, morphLinear,
 		paramStandard);
@@ -2522,6 +2524,8 @@ void InitLightParams(int lightId, std::shared_ptr<cParameterContainer> par)
 	par->addParam(cLight::Name("alpha_texture_rotation_z", lightId), 0.0, -180.0, 180.0, morphLinear, paramStandard);
 	par->addParam(cLight::Name("alpha_texture_repeat_mode", lightId), int(0), morphLinear, paramStandard,
 		QStringList({"Clamp", "Repeat", "Mirror"}));
+	par->addParam(cLight::Name("alpha_texture_soft_edge", lightId), 0.0, 0.0, 0.5, morphLinear,
+		paramStandard);
 
 	par->addParam(cLight::Name("orbit_distance", lightId), 5.0, 0.0, 1e10, morphLinear, paramStandard);
 	par->addParam(cLight::Name("orbit_yaw", lightId), 0.0, -360.0, 360.0, morphLinear, paramStandard);

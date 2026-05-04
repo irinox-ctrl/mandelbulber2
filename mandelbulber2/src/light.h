@@ -113,6 +113,7 @@ public:
 	float projectionHorizontalRatio = 0.0;
 	float projectionVerticalRatio = 0.0;
 	float projectionSoftEdge = 0.0;
+	float projectionIntensity = 1.0f;
 	bool projectionUseAsMask = false;
 	float projectionTextureOffsetX = 0.0f;
 	float projectionTextureOffsetY = 0.0f;
@@ -133,6 +134,7 @@ public:
 	float alphaTextureScaleY = 1.0f;
 	float alphaTextureRotationZ = 0.0f;
 	int alphaTextureRepeatMode = 0;
+	float alphaTextureSoftEdge = 0.0f;
 
 	CVector3 position;
 	CVector3 rotation;

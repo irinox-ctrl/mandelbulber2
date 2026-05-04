@@ -1192,7 +1192,7 @@
            </sizepolicy>
           </property>
           <property name="text">
-           <string>Texture scale X</string>
+           <string>Texture offset Z</string>
           </property>
           <property name="wordWrap">
            <bool>true</bool>
@@ -1215,7 +1215,7 @@
            </sizepolicy>
           </property>
           <property name="text">
-           <string>Texture scale Y</string>
+           <string>Texture scale X</string>
           </property>
           <property name="wordWrap">
            <bool>true</bool>
@@ -1238,7 +1238,7 @@
            </sizepolicy>
           </property>
           <property name="text">
-           <string>Texture offset Z</string>
+           <string>Texture scale Y</string>
           </property>
           <property name="wordWrap">
            <bool>true</bool>
@@ -1384,6 +1384,20 @@
           </property>
          </widget>
         </item>
+        <item row="17" column="0">
+         <widget class="QLabel" name="label_projection_intensity">
+          <property name="text">
+           <string>Projection intensity</string>
+          </property>
+         </widget>
+        </item>
+        <item row="17" column="1">
+         <widget class="MyLineEdit" name="logedit_projection_intensity">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Intensity multiplier for the projection light. 1.0 = normal brightness, 0.0 = off, higher values make the projection brighter.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
       <item>
@@ -1485,6 +1499,20 @@
             <string>Mirror</string>
            </property>
           </item>
+         </widget>
+        </item>
+        <item row="6" column="0">
+         <widget class="QLabel" name="label_alpha_soft_edge">
+          <property name="text">
+           <string>Alpha soft edge</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="1">
+         <widget class="MyLineEdit" name="logedit_alpha_texture_soft_edge">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Soft edge feather width for alpha mask texture. 0.0 = hard edges, 0.5 = maximum soft fade. Only applies in Clamp mode.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
          </widget>
         </item>
        </layout>

@@ -87,6 +87,7 @@ typedef struct
 	cl_float projectionHorizontalRatio;
 	cl_float projectionVerticalRatio;
 	cl_float projectionSoftEdge;
+	cl_float projectionIntensity;
 
 	cl_int projectionUseAsMask;
 	cl_int projectionInvertAlphaMask;
@@ -112,7 +113,7 @@ typedef struct
 
 	// alpha texture UV transforms (separate from color texture)
 	// alphaTextureParams1: x=offsetX, y=offsetY, z=scaleX, w=scaleY
-	// alphaTextureParams2: x=rotationZ, y=repeatMode, unused, unused
+	// alphaTextureParams2: x=rotationZ, y=repeatMode, z=softEdge, unused
 	cl_float4 alphaTextureParams1;
 	cl_float4 alphaTextureParams2;
 

@@ -217,6 +217,7 @@ float CalculateLightCone(__global sLightCl *light, sRenderData *renderData, floa
 							bool useRepeat = light->repeatTexture || repeatMode != 0;
 
 							float fade = 1.0f;
+							float alphaFade = 1.0f;
 							int outOfBounds = 0;
 
 							if (repeatMode == 0) // Clamp
@@ -265,6 +266,26 @@ float CalculateLightCone(__global sLightCl *light, sRenderData *renderData, floa
 								alphaTexX = fabs(fmod(alphaTexX, 2.0f) - 1.0f);
 								alphaTexY = fabs(fmod(alphaTexY, 2.0f) - 1.0f);
 							}
+							else if (alphaRepeatMode == 0) // Clamp
+							{
+								float alphaSoftEdge = light->alphaTextureParams2.z;
+								if (alphaSoftEdge > 0.0f)
+								{
+									float effectiveEdge = min(alphaSoftEdge, 0.5f);
+									float fx, fy;
+									if (alphaTexX <= 0.0f || alphaTexX >= 1.0f) fx = 0.0f;
+									else if (alphaTexX < effectiveEdge) fx = alphaTexX / effectiveEdge;
+									else if (alphaTexX > 1.0f - effectiveEdge) fx = (1.0f - alphaTexX) / effectiveEdge;
+									else fx = 1.0f;
+
+									if (alphaTexY <= 0.0f || alphaTexY >= 1.0f) fy = 0.0f;
+									else if (alphaTexY < effectiveEdge) fy = alphaTexY / effectiveEdge;
+									else if (alphaTexY > 1.0f - effectiveEdge) fy = (1.0f - alphaTexY) / effectiveEdge;
+									else fy = 1.0f;
+
+									alphaFade = clamp(fx * fy, 0.0f, 1.0f);
+								}
+							}
 
 							if (!outOfBounds)
 							{
@@ -291,7 +312,7 @@ float CalculateLightCone(__global sLightCl *light, sRenderData *renderData, floa
 										alphaTexturePoint.x, alphaTexturePoint.y, alphaTexture, alphaTextureSize.x, alphaTextureSize.y);
 									if (light->projectionInvertAlphaMask) alpha = 1.0f - alpha;
 									color = texOut;
-									intensity = alpha * fade;
+									intensity = alpha * fade * alphaFade * light->projectionIntensity;
 								}
 								else if (light->projectionParams2.z > 0.5f)
 								{
@@ -300,19 +321,19 @@ float CalculateLightCone(__global sLightCl *light, sRenderData *renderData, floa
 										colorTexturePoint.x, colorTexturePoint.y, texture, textureSize.x, textureSize.y);
 									if (light->projectionInvertAlphaMask) alpha = 1.0f - alpha;
 									color = 1.0f;
-									intensity = alpha * fade;
+									intensity = alpha * fade * light->projectionIntensity;
 								}
 								else if (light->projectionUseAsMask)
 								{
 									float luminance = dot(texOut, (float3)(0.299f, 0.587f, 0.114f));
 									if (light->projectionInvertAlphaMask) luminance = 1.0f - luminance;
 									color = 1.0f;
-									intensity = luminance * fade;
+									intensity = luminance * fade * light->projectionIntensity;
 								}
 								else
 								{
 									color = texOut;
-									intensity = fade;
+									intensity = fade * light->projectionIntensity;
 								}
 							}
 					}

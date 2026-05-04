@@ -57,13 +57,14 @@ const QStringList cLight::paramsList = {"is_defined", "enabled", "cast_shadows",
 	"volumetric_visibility", "size", "soft_shadow_cone", "contour_sharpness", "position", "rotation",
 	"use_target_point", "target", "alpha", "beta", "color", "type", "decayFunction", "file_texture",
 	"file_texture_alpha", "repeat_texture", "projection_horizonal_angle", "projection_vertical_angle",
-	"projection_soft_edge", "projection_use_as_mask", "projection_texture_offset_x",
+	"projection_soft_edge", "projection_intensity", "projection_use_as_mask", "projection_texture_offset_x",
 	"projection_texture_offset_y", "projection_texture_offset_z",
 	"projection_texture_scale_x", "projection_texture_scale_y", "projection_texture_scale_z",
 	"projection_texture_rotation_x", "projection_texture_rotation_y", "projection_texture_rotation_z",
 	"projection_repeat_mode", "projection_use_alpha_as_mask", "projection_use_texture_alpha_as_mask",
+	"projection_invert_alpha_mask",
 	"alpha_texture_offset_x", "alpha_texture_offset_y", "alpha_texture_scale_x", "alpha_texture_scale_y",
-	"alpha_texture_rotation_z", "alpha_texture_repeat_mode",
+	"alpha_texture_rotation_z", "alpha_texture_repeat_mode", "alpha_texture_soft_edge",
 	"snap_to_surface", "surface_offset", "name", "orbit_distance", "orbit_yaw", "orbit_pitch",
 	"auto_intensity", "auto_intensity_factor"};
 
@@ -210,6 +211,7 @@ void cLight::setParameters(int _id, const std::shared_ptr<cParameterContainer> l
 	projectionVerticalRatio =
 		tan(lightParam->Get<double>(Name("projection_vertical_angle", id)) / 360.0 * M_PI) * 2.0;
 	projectionSoftEdge = lightParam->Get<double>(Name("projection_soft_edge", id));
+	projectionIntensity = lightParam->Get<double>(Name("projection_intensity", id));
 	projectionUseAsMask = lightParam->Get<bool>(Name("projection_use_as_mask", id));
 	projectionTextureOffsetX = lightParam->Get<double>(Name("projection_texture_offset_x", id));
 	projectionTextureOffsetY = lightParam->Get<double>(Name("projection_texture_offset_y", id));
@@ -230,6 +232,7 @@ void cLight::setParameters(int _id, const std::shared_ptr<cParameterContainer> l
 	alphaTextureScaleY = lightParam->Get<double>(Name("alpha_texture_scale_y", id));
 	alphaTextureRotationZ = lightParam->Get<double>(Name("alpha_texture_rotation_z", id));
 	alphaTextureRepeatMode = lightParam->Get<int>(Name("alpha_texture_repeat_mode", id));
+	alphaTextureSoftEdge = lightParam->Get<double>(Name("alpha_texture_soft_edge", id));
 
 	// backward compatibility: old repeat_texture parameter maps to Repeat mode
 	if (repeatTexture && projectionRepeatMode == 0)
@@ -360,6 +363,7 @@ float cLight::CalculateCone(CVector3 point, const CVector3 &lightVector, sRGBFlo
 				}
 
 				double fade = 1.0;
+				double alphaFade = 1.0;
 				bool outOfBounds = false;
 
 				if (projectionRepeatMode == 0) // Clamp
@@ -405,6 +409,22 @@ float cLight::CalculateCone(CVector3 point, const CVector3 &lightVector, sRGBFlo
 						alphaTexX = fabs(fmod(alphaTexX, 2.0) - 1.0);
 						alphaTexY = fabs(fmod(alphaTexY, 2.0) - 1.0);
 					}
+					else if (alphaTextureRepeatMode == 0) // Clamp
+					{
+						if (alphaTextureSoftEdge > 0.0)
+						{
+							double effectiveEdge = std::min(alphaTextureSoftEdge, 0.5f);
+							auto edgeFade = [&](double t) -> double {
+								if (t <= 0.0 || t >= 1.0) return 0.0;
+								if (t < effectiveEdge) return t / effectiveEdge;
+								if (t > 1.0 - effectiveEdge) return (1.0 - t) / effectiveEdge;
+								return 1.0;
+							};
+							double fx = edgeFade(alphaTexX);
+							double fy = edgeFade(alphaTexY);
+							alphaFade = std::max(0.0, std::min(1.0, fx * fy));
+						}
+					}
 
 					if (!outOfBounds)
 					{
@@ -419,26 +439,26 @@ float cLight::CalculateCone(CVector3 point, const CVector3 &lightVector, sRGBFlo
 							float alpha = alphaTexture.PixelAlpha(CVector2<float>(alphaSampleX, alphaSampleY));
 							if (projectionInvertAlphaMask) alpha = 1.0f - alpha;
 							outColor = pixel;
-							intens = alpha * fade;
+							intens = alpha * fade * alphaFade * projectionIntensity;
 						}
 					else if (projectionUseAlphaAsMask && colorTexture.HasAlpha())
 					{
 						float alpha = colorTexture.PixelAlpha(CVector2<float>(colorSampleX, colorSampleY));
 						if (projectionInvertAlphaMask) alpha = 1.0f - alpha;
 						outColor = {1.0, 1.0, 1.0};
-						intens = alpha * fade;
+						intens = alpha * fade * projectionIntensity;
 					}
 					else if (projectionUseAsMask)
 					{
 						double luminance = pixel.R * 0.299 + pixel.G * 0.587 + pixel.B * 0.114;
 						if (projectionInvertAlphaMask) luminance = 1.0 - luminance;
 						outColor = {1.0, 1.0, 1.0};
-						intens = luminance * fade;
+						intens = luminance * fade * projectionIntensity;
 					}
 					else
 					{
 						outColor = pixel;
-						intens = fade;
+						intens = fade * projectionIntensity;
 					}
 				}
 				else
