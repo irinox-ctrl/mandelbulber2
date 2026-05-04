@@ -397,9 +397,6 @@ bool cOpenClEngineRenderFractal::LoadSourcesAndCompile(
 		// main engine
 		LoadSourceWithMainEngine(openclEnginePath, programEngine);
 
-		QFile f("/tmp/opencl_program_debug.cl");
-		if (f.open(QIODevice::WriteOnly)) f.write(programEngine);
-
 		// qDebug() << programEngine.toStdString().c_str();
 	}
 	catch (const QString &ex)
