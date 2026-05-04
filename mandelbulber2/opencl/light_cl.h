@@ -71,6 +71,8 @@ typedef struct
 
 	cl_int colorTextureIndex;
 	cl_int alphaTextureIndex;
+	cl_int sphericalTextureIndex;
+	cl_float sphericalTextureIntensity;
 
 	cl_float coneAngle;
 	cl_float coneSoftAngle;

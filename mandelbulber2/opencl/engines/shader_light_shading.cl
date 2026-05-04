@@ -402,6 +402,22 @@ float CalculateLightCone(__global sLightCl *light, sRenderData *renderData, floa
 					}
 			}
 		}
+		else if (light->type == lightPoint)
+		{
+			if (light->sphericalTextureIndex >= 0)
+			{
+				// Sample spherical texture using world-space light direction
+				// lightVector points from surface to light
+				float phi = atan2(lightVector.z, lightVector.x);
+				float theta = acos(clamp(lightVector.y, -1.0f, 1.0f));
+				float u = (phi + M_PI_F) / (2.0f * M_PI_F);
+				float v = theta / M_PI_F;
+				int2 textureSize = renderData->textureSizes[light->sphericalTextureIndex];
+				__global uchar4 *texture = renderData->textures[light->sphericalTextureIndex];
+				color = BicubicInterpolation(u, v, texture, textureSize.x, textureSize.y);
+				intensity = light->sphericalTextureIntensity;
+			}
+		}
 #endif // USE_LIGHT_TEXTURE
 	}
 

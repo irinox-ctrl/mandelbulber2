@@ -112,6 +112,7 @@ public:
 	float beamSoftEdge = 0.0f;
 	float beamFadeIn = 0.0f;
 	float beamFadeOut = 0.0f;
+	float sphericalTextureIntensity = 1.0f;
 	float coneRatio = 0.0;
 	float coneSoftRatio = 0.0;
 	float projectionHorizontalRatio = 0.0;
@@ -157,6 +158,7 @@ public:
 
 	cTexture colorTexture;
 	cTexture alphaTexture;
+	cTexture sphericalTexture;
 };
 
 #endif /* MANDELBULBER2_SRC_LIGHT_H_ */

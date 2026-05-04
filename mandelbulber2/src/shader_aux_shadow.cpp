@@ -306,8 +306,9 @@ sRGBAFloat cRenderWorker::AuxShadow(
 		lightShaded.B = 1.0f - maxSoft;
 	}
 
-	// Apply projection texture mask to shadows
-	if (light->type == cLight::lightProjection)
+	// Apply projection/spherical texture mask to shadows
+	if (light->type == cLight::lightProjection
+		|| (light->type == cLight::lightPoint && light->sphericalTexture.IsLoaded()))
 	{
 		sRGBFloat textureColor;
 		double mask = light->CalculateCone(input.point, originalLightVector, textureColor);

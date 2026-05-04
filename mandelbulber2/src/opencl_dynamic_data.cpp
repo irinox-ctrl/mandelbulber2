@@ -962,6 +962,11 @@ void cOpenClDynamicData::BuildLightsData(
 		lightCl.alphaTextureIndex =
 			textureIndexes.contains(textureName) ? textureIndexes[textureName] : -1;
 
+		textureName = light->sphericalTexture.GetFileName();
+		lightCl.sphericalTextureIndex =
+			textureIndexes.contains(textureName) ? textureIndexes[textureName] : -1;
+		lightCl.sphericalTextureIntensity = light->sphericalTextureIntensity;
+
 		data.append(reinterpret_cast<char *>(&lightCl), sizeof(lightCl));
 		totalDataOffset += sizeof(lightCl);
 	}

@@ -602,6 +602,20 @@ float3 AuxShadow(constant sClInConstants *consts, sRenderData *renderData,
 			lightShaded = 0.0f;
 		}
 	}
+	else if (light->type == lightPoint && light->sphericalTextureIndex >= 0)
+	{
+		// Apply spherical texture mask to shadows
+		float3 lv = originalLightVector;
+		float phi = atan2(lv.z, lv.x);
+		float theta = acos(clamp(lv.y, -1.0f, 1.0f));
+		float u = (phi + M_PI_F) / (2.0f * M_PI_F);
+		float v = theta / M_PI_F;
+		int2 textureSize = renderData->textureSizes[light->sphericalTextureIndex];
+		__global uchar4 *texture = renderData->textures[light->sphericalTextureIndex];
+		float3 texOut = BicubicInterpolation(u, v, texture, textureSize.x, textureSize.y);
+		float mask = dot(texOut, (float3)(0.299f, 0.587f, 0.114f)) * light->sphericalTextureIntensity;
+		lightShaded *= mask;
+	}
 #endif
 
 	return lightShaded;

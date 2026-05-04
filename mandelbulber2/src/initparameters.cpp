@@ -2457,6 +2457,10 @@ void InitLightParams(int lightId, std::shared_ptr<cParameterContainer> par)
 		paramStandard);
 	par->addParam(cLight::Name("beam_fade_out", lightId), 0.0, 0.0, 1.0, morphLinear,
 		paramStandard);
+	par->addParam(cLight::Name("file_texture_spherical", lightId), QString(""), morphLinear,
+		paramStandard);
+	par->addParam(cLight::Name("spherical_texture_intensity", lightId), 1.0, 0.0, 10.0, morphLinear,
+		paramStandard);
 	par->addParam(cLight::Name("position", lightId), newLightPosition, morphAkima, paramStandard);
 
 	par->addParam(cLight::Name("rotation", lightId),

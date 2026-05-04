@@ -55,7 +55,8 @@ cLight::cLight(int _id, const std::shared_ptr<cParameterContainer> lightParam, b
 const QStringList cLight::paramsList = {"is_defined", "enabled", "cast_shadows", "penetrating",
 	"relative_position", "volumetric", "cone_angle", "cone_soft_angle", "intensity", "visibility",
 	"volumetric_visibility", "size", "soft_shadow_cone", "contour_sharpness", "beam_radius",
-	"beam_soft_edge", "beam_fade_in", "beam_fade_out", "position", "rotation",
+	"beam_soft_edge", "beam_fade_in", "beam_fade_out", "file_texture_spherical",
+	"spherical_texture_intensity", "position", "rotation",
 	"use_target_point", "target", "alpha", "beta", "color", "type", "decayFunction", "file_texture",
 	"file_texture_alpha", "repeat_texture", "projection_horizonal_angle", "projection_vertical_angle",
 	"projection_soft_edge", "projection_intensity", "projection_use_as_mask", "projection_texture_offset_x",
@@ -102,6 +103,7 @@ void cLight::setParameters(int _id, const std::shared_ptr<cParameterContainer> l
 	beamSoftEdge = lightParam->Get<double>(Name("beam_soft_edge", id));
 	beamFadeIn = lightParam->Get<double>(Name("beam_fade_in", id));
 	beamFadeOut = lightParam->Get<double>(Name("beam_fade_out", id));
+	sphericalTextureIntensity = lightParam->Get<double>(Name("spherical_texture_intensity", id));
 
 	rotation = lightParam->Get<CVector3>(Name("rotation", id)) / 180.8 * M_PI;
 
@@ -257,6 +259,15 @@ void cLight::setParameters(int _id, const std::shared_ptr<cParameterContainer> l
 			if (!alphaTextureFile.isEmpty())
 			{
 				alphaTexture = cTexture(alphaTextureFile, cTexture::doNotUseMipmaps, frameNo, quiet, useNetRender);
+			}
+		}
+
+		if (type == lightPoint)
+		{
+			QString sphericalTextureFile = lightParam->Get<QString>(Name("file_texture_spherical", id));
+			if (!sphericalTextureFile.isEmpty())
+			{
+				sphericalTexture = cTexture(sphericalTextureFile, cTexture::doNotUseMipmaps, frameNo, quiet, useNetRender);
 			}
 		}
 	}
@@ -484,6 +495,21 @@ float cLight::CalculateCone(CVector3 point, const CVector3 &lightVector, sRGBFlo
 		{
 			outColor = {0.0, 0.0, 0.0};
 			intens = 0.0;
+		}
+	}
+	else if (type == lightPoint)
+	{
+		if (sphericalTexture.IsLoaded())
+		{
+			// Sample spherical texture using world-space light direction
+			// lightVector points from surface to light
+			double phi = atan2(lightVector.z, lightVector.x);
+			double theta = acos(clamp(lightVector.y, -1.0, 1.0));
+			double u = (phi + M_PI) / (2.0 * M_PI);
+			double v = theta / M_PI;
+			sRGBFloat pixel = sphericalTexture.Pixel(CVector2<float>(u, v), 0.0);
+			outColor = pixel;
+			intens = sphericalTextureIntensity;
 		}
 	}
 	return intens;
