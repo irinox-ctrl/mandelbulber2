@@ -32,8 +32,8 @@
  * surface color calculation
  */
 
-float3 GradientInterpolate(
-	int paletteIndex, float pos, bool smooth, int gradientSize, __global float4 *palette)
+float3 GradientInterpolate(int paletteIndex, float pos, bool smooth, int gradientSize,
+	__global float4 *palette, __global float4 *midpoints, int midpointSize)
 {
 	float3 color = 0.0f;
 	// if last element then just copy color value (no interpolation)
@@ -55,6 +55,20 @@ float3 GradientInterpolate(
 			float delta = (pos - pos1) / (pos2 - pos1);
 
 			if (smooth) delta = 0.5f * (1.0f - cos(delta * M_PI_F));
+
+			// apply midpoint curve
+			if (midpoints && paletteIndex < midpointSize)
+			{
+				float m = clamp(midpoints[paletteIndex].s0, 0.01f, 0.99f);
+				if (delta < m)
+				{
+					delta = 0.5f * delta / m;
+				}
+				else
+				{
+					delta = 0.5f + 0.5f * (delta - m) / (1.0f - m);
+				}
+			}
 
 			float nDelta = 1.0f - delta;
 			color.s0 = color1.s0 * nDelta + color2.s0 * delta;
@@ -80,10 +94,11 @@ int GradientIterator(
 	return newIndex;
 }
 
-float3 GetColorFromGradient(float position, bool smooth, int gradientSize, __global float4 *palette)
+float3 GetColorFromGradient(float position, bool smooth, int gradientSize,
+	__global float4 *palette, __global float4 *midpoints, int midpointSize)
 {
 	int paletteIndex = GradientIterator(0, position, gradientSize, palette);
-	return GradientInterpolate(paletteIndex, position, smooth, gradientSize, palette);
+	return GradientInterpolate(paletteIndex, position, smooth, gradientSize, palette, midpoints, midpointSize);
 }
 
 float3 SurfaceColor(__constant sClInConstants *consts, sRenderData *renderData,
@@ -161,7 +176,8 @@ float3 SurfaceColor(__constant sClInConstants *consts, sRenderData *renderData,
 				if (input->material->surfaceGradientEnable)
 				{
 					color = GetColorFromGradient(colorPosition, false, input->paletteSurfaceLength,
-						input->palette + input->paletteSurfaceOffset);
+						input->palette + input->paletteSurfaceOffset,
+						input->palette + input->midpointSurfaceOffset, input->midpointSurfaceLength);
 					gradients->surface = color;
 				}
 				else
@@ -174,42 +190,48 @@ float3 SurfaceColor(__constant sClInConstants *consts, sRenderData *renderData,
 				if (input->material->specularGradientEnable)
 				{
 					gradients->specular = GetColorFromGradient(colorPosition, false,
-						input->paletteSpecularLength, input->palette + input->paletteSpecularOffset);
+						input->paletteSpecularLength, input->palette + input->paletteSpecularOffset,
+						input->palette + input->midpointSpecularOffset, input->midpointSpecularLength);
 				}
 #endif
 #ifdef USE_DIFFUSE_GRADIENT
 				if (input->material->diffuseGradientEnable)
 				{
 					gradients->diffuse = GetColorFromGradient(colorPosition, false,
-						input->paletteDiffuseLength, input->palette + input->paletteDiffuseOffset);
+						input->paletteDiffuseLength, input->palette + input->paletteDiffuseOffset,
+						input->palette + input->midpointDiffuseOffset, input->midpointDiffuseLength);
 				}
 #endif
 #ifdef USE_LUMINOSITY_GRADIENT
 				if (input->material->luminosityGradientEnable)
 				{
 					gradients->luminosity = GetColorFromGradient(colorPosition, false,
-						input->paletteLuminosityLength, input->palette + input->paletteLuminosityOffset);
+						input->paletteLuminosityLength, input->palette + input->paletteLuminosityOffset,
+						input->palette + input->midpointLuminosityOffset, input->midpointLuminosityLength);
 				}
 #endif
 #ifdef USE_ROUGHNESS_GRADIENT
 				if (input->material->roughnessGradientEnable)
 				{
 					gradients->roughness = GetColorFromGradient(colorPosition, false,
-						input->paletteRoughnessLength, input->palette + input->paletteRoughnessOffset);
+						input->paletteRoughnessLength, input->palette + input->paletteRoughnessOffset,
+						input->palette + input->midpointRoughnessOffset, input->midpointRoughnessLength);
 				}
 #endif
 #ifdef USE_REFLECTANCE_GRADIENT
 				if (input->material->reflectanceGradientEnable)
 				{
 					gradients->reflectance = GetColorFromGradient(colorPosition, false,
-						input->paletteReflectanceLength, input->palette + input->paletteReflectanceOffset);
+						input->paletteReflectanceLength, input->palette + input->paletteReflectanceOffset,
+						input->palette + input->midpointReflectanceOffset, input->midpointReflectanceLength);
 				}
 #endif
 #ifdef USE_TRANSPARENCY_GRADIENT
 				if (input->material->transparencyGradientEnable)
 				{
 					gradients->transparency = GetColorFromGradient(colorPosition, false,
-						input->paletteTransparencyLength, input->palette + input->paletteTransparencyOffset);
+						input->paletteTransparencyLength, input->palette + input->paletteTransparencyOffset,
+						input->palette + input->midpointTransparencyOffset, input->midpointTransparencyLength);
 				}
 #endif
 			}

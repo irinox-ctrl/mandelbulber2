@@ -147,6 +147,29 @@ int cOpenClDynamicData::BuildMaterialsData(
 		cl_int paletteSizeReflectance;
 		cl_int paletteOffsetTransparency;
 		cl_int paletteSizeTransparency;
+		// Dummy opacity offsets (not yet implemented)
+		cl_int opacityOffsetSurface = -1, opacitySizeSurface = 0;
+		cl_int opacityOffsetSpecular = -1, opacitySizeSpecular = 0;
+		cl_int opacityOffsetDiffuse = -1, opacitySizeDiffuse = 0;
+		cl_int opacityOffsetLuminosity = -1, opacitySizeLuminosity = 0;
+		cl_int opacityOffsetRoughness = -1, opacitySizeRoughness = 0;
+		cl_int opacityOffsetReflectance = -1, opacitySizeReflectance = 0;
+		cl_int opacityOffsetTransparency = -1, opacitySizeTransparency = 0;
+		// Midpoint offsets
+		cl_int midpointOffsetSurface;
+		cl_int midpointSizeSurface;
+		cl_int midpointOffsetSpecular;
+		cl_int midpointSizeSpecular;
+		cl_int midpointOffsetDiffuse;
+		cl_int midpointSizeDiffuse;
+		cl_int midpointOffsetLuminosity;
+		cl_int midpointSizeLuminosity;
+		cl_int midpointOffsetRoughness;
+		cl_int midpointSizeRoughness;
+		cl_int midpointOffsetReflectance;
+		cl_int midpointSizeReflectance;
+		cl_int midpointOffsetTransparency;
+		cl_int midpointSizeTransparency;
 
 		if (materials.find(materialIndex) != materials.end())
 		{
@@ -285,6 +308,60 @@ int cOpenClDynamicData::BuildMaterialsData(
 					CVector4(gradientTransparency[i].color.R / 256.0, gradientTransparency[i].color.G / 256.0,
 						gradientTransparency[i].color.B / 256.0, gradientTransparency[i].position));
 			}
+
+			// Midpoint data (one per segment)
+			midpointOffsetSurface = totalSizeOfGradients;
+			midpointSizeSurface = qMax(0, gradientSurface.size() - 1);
+			totalSizeOfGradients += midpointSizeSurface;
+
+			midpointOffsetSpecular = totalSizeOfGradients;
+			midpointSizeSpecular = qMax(0, gradientSpecular.size() - 1);
+			totalSizeOfGradients += midpointSizeSpecular;
+
+			midpointOffsetDiffuse = totalSizeOfGradients;
+			midpointSizeDiffuse = qMax(0, gradientDiffuse.size() - 1);
+			totalSizeOfGradients += midpointSizeDiffuse;
+
+			midpointOffsetLuminosity = totalSizeOfGradients;
+			midpointSizeLuminosity = qMax(0, gradientLuminosity.size() - 1);
+			totalSizeOfGradients += midpointSizeLuminosity;
+
+			midpointOffsetRoughness = totalSizeOfGradients;
+			midpointSizeRoughness = qMax(0, gradientRoughness.size() - 1);
+			totalSizeOfGradients += midpointSizeRoughness;
+
+			midpointOffsetReflectance = totalSizeOfGradients;
+			midpointSizeReflectance = qMax(0, gradientReflectance.size() - 1);
+			totalSizeOfGradients += midpointSizeReflectance;
+
+			midpointOffsetTransparency = totalSizeOfGradients;
+			midpointSizeTransparency = qMax(0, gradientTransparency.size() - 1);
+			totalSizeOfGradients += midpointSizeTransparency;
+
+			paletteCl.resize(totalSizeOfGradients);
+
+			// Write midpoint values
+			for (int i = 0; i < midpointSizeSurface; i++)
+				paletteCl[midpointOffsetSurface + i] = toClFloat4(
+					CVector4(material.gradientSurface.GetMidpoint(i), 0.0, 0.0, 0.0));
+			for (int i = 0; i < midpointSizeSpecular; i++)
+				paletteCl[midpointOffsetSpecular + i] = toClFloat4(
+					CVector4(material.gradientSpecular.GetMidpoint(i), 0.0, 0.0, 0.0));
+			for (int i = 0; i < midpointSizeDiffuse; i++)
+				paletteCl[midpointOffsetDiffuse + i] = toClFloat4(
+					CVector4(material.gradientDiffuse.GetMidpoint(i), 0.0, 0.0, 0.0));
+			for (int i = 0; i < midpointSizeLuminosity; i++)
+				paletteCl[midpointOffsetLuminosity + i] = toClFloat4(
+					CVector4(material.gradientLuminosity.GetMidpoint(i), 0.0, 0.0, 0.0));
+			for (int i = 0; i < midpointSizeRoughness; i++)
+				paletteCl[midpointOffsetRoughness + i] = toClFloat4(
+					CVector4(material.gradientRoughness.GetMidpoint(i), 0.0, 0.0, 0.0));
+			for (int i = 0; i < midpointSizeReflectance; i++)
+				paletteCl[midpointOffsetReflectance + i] = toClFloat4(
+					CVector4(material.gradientReflectance.GetMidpoint(i), 0.0, 0.0, 0.0));
+			for (int i = 0; i < midpointSizeTransparency; i++)
+				paletteCl[midpointOffsetTransparency + i] = toClFloat4(
+					CVector4(material.gradientTransparency.GetMidpoint(i), 0.0, 0.0, 0.0));
 		}
 		else
 		{
@@ -304,6 +381,21 @@ int cOpenClDynamicData::BuildMaterialsData(
 			paletteSizeReflectance = 2;
 			paletteOffsetTransparency = 12;
 			paletteSizeTransparency = 2;
+			// Initialize opacity and midpoint dummies for unused material
+			opacityOffsetSurface = -1; opacitySizeSurface = 0;
+			opacityOffsetSpecular = -1; opacitySizeSpecular = 0;
+			opacityOffsetDiffuse = -1; opacitySizeDiffuse = 0;
+			opacityOffsetLuminosity = -1; opacitySizeLuminosity = 0;
+			opacityOffsetRoughness = -1; opacitySizeRoughness = 0;
+			opacityOffsetReflectance = -1; opacitySizeReflectance = 0;
+			opacityOffsetTransparency = -1; opacitySizeTransparency = 0;
+			midpointOffsetSurface = -1; midpointSizeSurface = 0;
+			midpointOffsetSpecular = -1; midpointSizeSpecular = 0;
+			midpointOffsetDiffuse = -1; midpointSizeDiffuse = 0;
+			midpointOffsetLuminosity = -1; midpointSizeLuminosity = 0;
+			midpointOffsetRoughness = -1; midpointSizeRoughness = 0;
+			midpointOffsetReflectance = -1; midpointSizeReflectance = 0;
+			midpointOffsetTransparency = -1; midpointSizeTransparency = 0;
 			paletteCl.resize(14);
 			for (int i = 0; i < 14; i++)
 			{
@@ -385,6 +477,66 @@ int cOpenClDynamicData::BuildMaterialsData(
 		data.append(
 			reinterpret_cast<char *>(&paletteSizeTransparency), sizeof(paletteSizeTransparency));
 		totalDataOffset += sizeof(paletteSizeTransparency);
+
+		// Dummy opacity offsets (for engine compatibility)
+		data.append(reinterpret_cast<char *>(&opacityOffsetSurface), sizeof(opacityOffsetSurface));
+		totalDataOffset += sizeof(opacityOffsetSurface);
+		data.append(reinterpret_cast<char *>(&opacitySizeSurface), sizeof(opacitySizeSurface));
+		totalDataOffset += sizeof(opacitySizeSurface);
+		data.append(reinterpret_cast<char *>(&opacityOffsetSpecular), sizeof(opacityOffsetSpecular));
+		totalDataOffset += sizeof(opacityOffsetSpecular);
+		data.append(reinterpret_cast<char *>(&opacitySizeSpecular), sizeof(opacitySizeSpecular));
+		totalDataOffset += sizeof(opacitySizeSpecular);
+		data.append(reinterpret_cast<char *>(&opacityOffsetDiffuse), sizeof(opacityOffsetDiffuse));
+		totalDataOffset += sizeof(opacityOffsetDiffuse);
+		data.append(reinterpret_cast<char *>(&opacitySizeDiffuse), sizeof(opacitySizeDiffuse));
+		totalDataOffset += sizeof(opacitySizeDiffuse);
+		data.append(reinterpret_cast<char *>(&opacityOffsetLuminosity), sizeof(opacityOffsetLuminosity));
+		totalDataOffset += sizeof(opacityOffsetLuminosity);
+		data.append(reinterpret_cast<char *>(&opacitySizeLuminosity), sizeof(opacitySizeLuminosity));
+		totalDataOffset += sizeof(opacitySizeLuminosity);
+		data.append(reinterpret_cast<char *>(&opacityOffsetRoughness), sizeof(opacityOffsetRoughness));
+		totalDataOffset += sizeof(opacityOffsetRoughness);
+		data.append(reinterpret_cast<char *>(&opacitySizeRoughness), sizeof(opacitySizeRoughness));
+		totalDataOffset += sizeof(opacitySizeRoughness);
+		data.append(reinterpret_cast<char *>(&opacityOffsetReflectance), sizeof(opacityOffsetReflectance));
+		totalDataOffset += sizeof(opacityOffsetReflectance);
+		data.append(reinterpret_cast<char *>(&opacitySizeReflectance), sizeof(opacitySizeReflectance));
+		totalDataOffset += sizeof(opacitySizeReflectance);
+		data.append(reinterpret_cast<char *>(&opacityOffsetTransparency), sizeof(opacityOffsetTransparency));
+		totalDataOffset += sizeof(opacityOffsetTransparency);
+		data.append(reinterpret_cast<char *>(&opacitySizeTransparency), sizeof(opacitySizeTransparency));
+		totalDataOffset += sizeof(opacitySizeTransparency);
+
+		// Midpoint offsets
+		data.append(reinterpret_cast<char *>(&midpointOffsetSurface), sizeof(midpointOffsetSurface));
+		totalDataOffset += sizeof(midpointOffsetSurface);
+		data.append(reinterpret_cast<char *>(&midpointSizeSurface), sizeof(midpointSizeSurface));
+		totalDataOffset += sizeof(midpointSizeSurface);
+		data.append(reinterpret_cast<char *>(&midpointOffsetSpecular), sizeof(midpointOffsetSpecular));
+		totalDataOffset += sizeof(midpointOffsetSpecular);
+		data.append(reinterpret_cast<char *>(&midpointSizeSpecular), sizeof(midpointSizeSpecular));
+		totalDataOffset += sizeof(midpointSizeSpecular);
+		data.append(reinterpret_cast<char *>(&midpointOffsetDiffuse), sizeof(midpointOffsetDiffuse));
+		totalDataOffset += sizeof(midpointOffsetDiffuse);
+		data.append(reinterpret_cast<char *>(&midpointSizeDiffuse), sizeof(midpointSizeDiffuse));
+		totalDataOffset += sizeof(midpointSizeDiffuse);
+		data.append(reinterpret_cast<char *>(&midpointOffsetLuminosity), sizeof(midpointOffsetLuminosity));
+		totalDataOffset += sizeof(midpointOffsetLuminosity);
+		data.append(reinterpret_cast<char *>(&midpointSizeLuminosity), sizeof(midpointSizeLuminosity));
+		totalDataOffset += sizeof(midpointSizeLuminosity);
+		data.append(reinterpret_cast<char *>(&midpointOffsetRoughness), sizeof(midpointOffsetRoughness));
+		totalDataOffset += sizeof(midpointOffsetRoughness);
+		data.append(reinterpret_cast<char *>(&midpointSizeRoughness), sizeof(midpointSizeRoughness));
+		totalDataOffset += sizeof(midpointSizeRoughness);
+		data.append(reinterpret_cast<char *>(&midpointOffsetReflectance), sizeof(midpointOffsetReflectance));
+		totalDataOffset += sizeof(midpointOffsetReflectance);
+		data.append(reinterpret_cast<char *>(&midpointSizeReflectance), sizeof(midpointSizeReflectance));
+		totalDataOffset += sizeof(midpointSizeReflectance);
+		data.append(reinterpret_cast<char *>(&midpointOffsetTransparency), sizeof(midpointOffsetTransparency));
+		totalDataOffset += sizeof(midpointOffsetTransparency);
+		data.append(reinterpret_cast<char *>(&midpointSizeTransparency), sizeof(midpointSizeTransparency));
+		totalDataOffset += sizeof(midpointSizeTransparency);
 
 		// add dummy bytes for alignment to 16
 		totalDataOffset += PutDummyToAlign(totalDataOffset, 16, &data);
