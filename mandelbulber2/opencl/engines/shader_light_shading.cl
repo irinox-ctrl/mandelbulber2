@@ -40,8 +40,19 @@ float3 CalculateBeam(__global sLightCl *light, float3 point1, float3 point2, int
 	if (light->type == lightBeam)
 	{
 		float3 direction = point2 - point1;
-		float3 pointOnLine = point1 + direction * Random(10000, randomSeed) / 10000.0f;
+		float t = Random(10000, randomSeed) / 10000.0f;
+		float3 pointOnLine = point1 + direction * t;
 		float fade = 1.0f;
+
+		// Length-wise fade
+		if (light->beamFadeIn > 0.0f && t < light->beamFadeIn)
+		{
+			fade *= t / light->beamFadeIn;
+		}
+		if (light->beamFadeOut > 0.0f && t > (1.0f - light->beamFadeOut))
+		{
+			fade *= (1.0f - t) / light->beamFadeOut;
+		}
 
 		if (light->beamRadius > 0.0f)
 		{
@@ -73,11 +84,11 @@ float3 CalculateBeam(__global sLightCl *light, float3 point1, float3 point2, int
 				float innerRadius = light->beamRadius * (1.0f - light->beamSoftEdge);
 				if (r <= innerRadius)
 				{
-					fade = 1.0f;
+					// fade stays unchanged
 				}
 				else if (r < light->beamRadius)
 				{
-					fade = 1.0f - (r - innerRadius) / (light->beamRadius * light->beamSoftEdge);
+					fade *= 1.0f - (r - innerRadius) / (light->beamRadius * light->beamSoftEdge);
 				}
 				else
 				{

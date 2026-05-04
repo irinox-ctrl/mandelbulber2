@@ -2453,6 +2453,10 @@ void InitLightParams(int lightId, std::shared_ptr<cParameterContainer> par)
 		paramStandard);
 	par->addParam(cLight::Name("beam_soft_edge", lightId), 0.0, 0.0, 1.0, morphLinear,
 		paramStandard);
+	par->addParam(cLight::Name("beam_fade_in", lightId), 0.0, 0.0, 1.0, morphLinear,
+		paramStandard);
+	par->addParam(cLight::Name("beam_fade_out", lightId), 0.0, 0.0, 1.0, morphLinear,
+		paramStandard);
 	par->addParam(cLight::Name("position", lightId), newLightPosition, morphAkima, paramStandard);
 
 	par->addParam(cLight::Name("rotation", lightId),

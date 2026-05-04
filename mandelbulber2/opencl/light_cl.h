@@ -82,6 +82,8 @@ typedef struct
 	cl_float contourSharpness;
 	cl_float beamRadius;
 	cl_float beamSoftEdge;
+	cl_float beamFadeIn;
+	cl_float beamFadeOut;
 
 	cl_float coneRatio;
 	cl_float coneSoftRatio;

@@ -55,7 +55,7 @@ cLight::cLight(int _id, const std::shared_ptr<cParameterContainer> lightParam, b
 const QStringList cLight::paramsList = {"is_defined", "enabled", "cast_shadows", "penetrating",
 	"relative_position", "volumetric", "cone_angle", "cone_soft_angle", "intensity", "visibility",
 	"volumetric_visibility", "size", "soft_shadow_cone", "contour_sharpness", "beam_radius",
-	"beam_soft_edge", "position", "rotation",
+	"beam_soft_edge", "beam_fade_in", "beam_fade_out", "position", "rotation",
 	"use_target_point", "target", "alpha", "beta", "color", "type", "decayFunction", "file_texture",
 	"file_texture_alpha", "repeat_texture", "projection_horizonal_angle", "projection_vertical_angle",
 	"projection_soft_edge", "projection_intensity", "projection_use_as_mask", "projection_texture_offset_x",
@@ -100,6 +100,8 @@ void cLight::setParameters(int _id, const std::shared_ptr<cParameterContainer> l
 	contourSharpness = lightParam->Get<double>(Name("contour_sharpness", id));
 	beamRadius = lightParam->Get<double>(Name("beam_radius", id));
 	beamSoftEdge = lightParam->Get<double>(Name("beam_soft_edge", id));
+	beamFadeIn = lightParam->Get<double>(Name("beam_fade_in", id));
+	beamFadeOut = lightParam->Get<double>(Name("beam_fade_out", id));
 
 	rotation = lightParam->Get<CVector3>(Name("rotation", id)) / 180.8 * M_PI;
 
@@ -522,8 +524,19 @@ CVector3 cLight::CalculateBeam(const CVector3 &point1, const CVector3 &point2, d
 	if (type == cLight::lightBeam)
 	{
 		CVector3 direction = point2 - point1;
-		CVector3 pointOnLine = point1 + direction * Random(10000) / 10000.0;
+		double t = Random(10000) / 10000.0;
+		CVector3 pointOnLine = point1 + direction * t;
 		double fade = 1.0;
+
+		// Length-wise fade
+		if (beamFadeIn > 0.0 && t < beamFadeIn)
+		{
+			fade *= t / beamFadeIn;
+		}
+		if (beamFadeOut > 0.0 && t > (1.0 - beamFadeOut))
+		{
+			fade *= (1.0 - t) / beamFadeOut;
+		}
 
 		if (beamRadius > 0.0)
 		{
@@ -556,11 +569,11 @@ CVector3 cLight::CalculateBeam(const CVector3 &point1, const CVector3 &point2, d
 				double innerRadius = beamRadius * (1.0 - beamSoftEdge);
 				if (r <= innerRadius)
 				{
-					fade = 1.0;
+					// fade stays unchanged
 				}
 				else if (r < beamRadius)
 				{
-					fade = 1.0 - (r - innerRadius) / (beamRadius * beamSoftEdge);
+					fade *= 1.0 - (r - innerRadius) / (beamRadius * beamSoftEdge);
 				}
 				else
 				{

@@ -1608,6 +1608,34 @@
           </property>
          </widget>
         </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_beam_fade_in">
+          <property name="text">
+           <string>Beam fade in</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="MyLineEdit" name="logedit_beam_fade_in">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fade-in length from beam start (position), as fraction of total length. 0.0 = no fade, 1.0 = fade over entire length.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_beam_fade_out">
+          <property name="text">
+           <string>Beam fade out</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="MyLineEdit" name="logedit_beam_fade_out">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fade-out length from beam end (target), as fraction of total length. 0.0 = no fade, 1.0 = fade over entire length.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
      </layout>
