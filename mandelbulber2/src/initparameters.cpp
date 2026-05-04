@@ -2514,6 +2514,7 @@ void InitLightParams(int lightId, std::shared_ptr<cParameterContainer> par)
 		QStringList({"Clamp", "Repeat", "Mirror"}));
 	par->addParam(cLight::Name("projection_use_alpha_as_mask", lightId), false, morphNone, paramStandard);
 	par->addParam(cLight::Name("projection_use_texture_alpha_as_mask", lightId), false, morphNone, paramStandard);
+	par->addParam(cLight::Name("projection_invert_alpha_mask", lightId), false, morphNone, paramStandard);
 	par->addParam(cLight::Name("alpha_texture_offset_x", lightId), 0.0, -10.0, 10.0, morphLinear, paramStandard);
 	par->addParam(cLight::Name("alpha_texture_offset_y", lightId), 0.0, -10.0, 10.0, morphLinear, paramStandard);
 	par->addParam(cLight::Name("alpha_texture_scale_x", lightId), 1.0, 0.01, 10.0, morphLinear, paramStandard);

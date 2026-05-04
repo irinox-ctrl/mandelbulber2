@@ -223,6 +223,7 @@ void cLight::setParameters(int _id, const std::shared_ptr<cParameterContainer> l
 	projectionRepeatMode = lightParam->Get<int>(Name("projection_repeat_mode", id));
 	projectionUseAlphaAsMask = lightParam->Get<bool>(Name("projection_use_alpha_as_mask", id));
 	projectionUseTextureAlphaAsMask = lightParam->Get<bool>(Name("projection_use_texture_alpha_as_mask", id));
+	projectionInvertAlphaMask = lightParam->Get<bool>(Name("projection_invert_alpha_mask", id));
 	alphaTextureOffsetX = lightParam->Get<double>(Name("alpha_texture_offset_x", id));
 	alphaTextureOffsetY = lightParam->Get<double>(Name("alpha_texture_offset_y", id));
 	alphaTextureScaleX = lightParam->Get<double>(Name("alpha_texture_scale_x", id));
@@ -416,18 +417,21 @@ float cLight::CalculateCone(CVector3 point, const CVector3 &lightVector, sRGBFlo
 						if (projectionUseTextureAlphaAsMask && alphaTexture.IsLoaded())
 						{
 							float alpha = alphaTexture.PixelAlpha(CVector2<float>(alphaSampleX, alphaSampleY));
+							if (projectionInvertAlphaMask) alpha = 1.0f - alpha;
 							outColor = pixel;
 							intens = alpha * fade;
 						}
 					else if (projectionUseAlphaAsMask && colorTexture.HasAlpha())
 					{
 						float alpha = colorTexture.PixelAlpha(CVector2<float>(colorSampleX, colorSampleY));
+						if (projectionInvertAlphaMask) alpha = 1.0f - alpha;
 						outColor = {1.0, 1.0, 1.0};
 						intens = alpha * fade;
 					}
 					else if (projectionUseAsMask)
 					{
 						double luminance = pixel.R * 0.299 + pixel.G * 0.587 + pixel.B * 0.114;
+						if (projectionInvertAlphaMask) luminance = 1.0 - luminance;
 						outColor = {1.0, 1.0, 1.0};
 						intens = luminance * fade;
 					}

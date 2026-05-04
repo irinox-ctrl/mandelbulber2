@@ -1374,6 +1374,16 @@
           </property>
          </widget>
         </item>
+        <item row="16" column="0" colspan="2">
+         <widget class="MyCheckBox" name="checkBox_projection_invert_alpha_mask">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Invert the alpha mask. Black areas become fully lit and white areas become dark.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="text">
+           <string>Invert alpha mask</string>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
       <item>

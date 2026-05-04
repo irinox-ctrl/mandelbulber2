@@ -89,6 +89,7 @@ typedef struct
 	cl_float projectionSoftEdge;
 
 	cl_int projectionUseAsMask;
+	cl_int projectionInvertAlphaMask;
 
 	cl_float3 color;
 

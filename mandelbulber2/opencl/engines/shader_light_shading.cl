@@ -289,6 +289,7 @@ float CalculateLightCone(__global sLightCl *light, sRenderData *renderData, floa
 									__global uchar4 *alphaTexture = renderData->textures[light->alphaTextureIndex];
 									float alpha = SampleTextureAlpha(
 										alphaTexturePoint.x, alphaTexturePoint.y, alphaTexture, alphaTextureSize.x, alphaTextureSize.y);
+									if (light->projectionInvertAlphaMask) alpha = 1.0f - alpha;
 									color = texOut;
 									intensity = alpha * fade;
 								}
@@ -297,12 +298,14 @@ float CalculateLightCone(__global sLightCl *light, sRenderData *renderData, floa
 									// Alpha mask mode: sample alpha from texture s3 channel
 									float alpha = SampleTextureAlpha(
 										colorTexturePoint.x, colorTexturePoint.y, texture, textureSize.x, textureSize.y);
+									if (light->projectionInvertAlphaMask) alpha = 1.0f - alpha;
 									color = 1.0f;
 									intensity = alpha * fade;
 								}
 								else if (light->projectionUseAsMask)
 								{
 									float luminance = dot(texOut, (float3)(0.299f, 0.587f, 0.114f));
+									if (light->projectionInvertAlphaMask) luminance = 1.0f - luminance;
 									color = 1.0f;
 									intensity = luminance * fade;
 								}

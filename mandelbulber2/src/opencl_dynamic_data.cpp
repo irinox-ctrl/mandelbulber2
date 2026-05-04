@@ -735,6 +735,37 @@ int cOpenClDynamicData::BuildMaterialsData(
 			reinterpret_cast<char *>(&midpointSizeTransparency), sizeof(midpointSizeTransparency));
 		totalDataOffset += sizeof(midpointSizeTransparency);
 
+		// Set midpoint and opacity offsets in materialCl
+		materialCl.midpointSurfaceOffset = midpointOffsetSurface;
+		materialCl.midpointSurfaceSize = midpointSizeSurface;
+		materialCl.midpointSpecularOffset = midpointOffsetSpecular;
+		materialCl.midpointSpecularSize = midpointSizeSpecular;
+		materialCl.midpointDiffuseOffset = midpointOffsetDiffuse;
+		materialCl.midpointDiffuseSize = midpointSizeDiffuse;
+		materialCl.midpointLuminosityOffset = midpointOffsetLuminosity;
+		materialCl.midpointLuminositySize = midpointSizeLuminosity;
+		materialCl.midpointRoughnessOffset = midpointOffsetRoughness;
+		materialCl.midpointRoughnessSize = midpointSizeRoughness;
+		materialCl.midpointReflectanceOffset = midpointOffsetReflectance;
+		materialCl.midpointReflectanceSize = midpointSizeReflectance;
+		materialCl.midpointTransparencyOffset = midpointOffsetTransparency;
+		materialCl.midpointTransparencySize = midpointSizeTransparency;
+
+		materialCl.opacitySurfaceOffset = opacityOffsetSurface;
+		materialCl.opacitySurfaceSize = opacitySizeSurface;
+		materialCl.opacitySpecularOffset = opacityOffsetSpecular;
+		materialCl.opacitySpecularSize = opacitySizeSpecular;
+		materialCl.opacityDiffuseOffset = opacityOffsetDiffuse;
+		materialCl.opacityDiffuseSize = opacitySizeDiffuse;
+		materialCl.opacityLuminosityOffset = opacityOffsetLuminosity;
+		materialCl.opacityLuminositySize = opacitySizeLuminosity;
+		materialCl.opacityRoughnessOffset = opacityOffsetRoughness;
+		materialCl.opacityRoughnessSize = opacitySizeRoughness;
+		materialCl.opacityReflectanceOffset = opacityOffsetReflectance;
+		materialCl.opacityReflectanceSize = opacitySizeReflectance;
+		materialCl.opacityTransparencyOffset = opacityOffsetTransparency;
+		materialCl.opacityTransparencySize = opacitySizeTransparency;
+
 		// add dummy bytes for alignment to 16
 		totalDataOffset += PutDummyToAlign(totalDataOffset, 16, &data);
 
@@ -874,6 +905,7 @@ void cOpenClDynamicData::BuildLightsData(
 		lightCl.projectionVerticalRatio = light->projectionVerticalRatio;
 		lightCl.projectionSoftEdge = light->projectionSoftEdge;
 		lightCl.projectionUseAsMask = light->projectionUseAsMask;
+		lightCl.projectionInvertAlphaMask = light->projectionInvertAlphaMask;
 
 		lightCl.position = toClFloat3(light->position);
 		lightCl.rotation = toClFloat3(light->rotation);

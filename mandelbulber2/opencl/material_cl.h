@@ -185,6 +185,38 @@ typedef struct
 	cl_int roughnessGradientMode;
 	cl_int reflectanceGradientMode;
 	cl_int transparencyGradientMode;
+
+	// Advanced gradient: midpoint offsets and sizes in global midpoint buffer
+	cl_int midpointSurfaceOffset;
+	cl_int midpointSurfaceSize;
+	cl_int midpointSpecularOffset;
+	cl_int midpointSpecularSize;
+	cl_int midpointDiffuseOffset;
+	cl_int midpointDiffuseSize;
+	cl_int midpointLuminosityOffset;
+	cl_int midpointLuminositySize;
+	cl_int midpointRoughnessOffset;
+	cl_int midpointRoughnessSize;
+	cl_int midpointReflectanceOffset;
+	cl_int midpointReflectanceSize;
+	cl_int midpointTransparencyOffset;
+	cl_int midpointTransparencySize;
+
+	// Advanced gradient: opacity stop offsets and sizes in global opacity buffer
+	cl_int opacitySurfaceOffset;
+	cl_int opacitySurfaceSize;
+	cl_int opacitySpecularOffset;
+	cl_int opacitySpecularSize;
+	cl_int opacityDiffuseOffset;
+	cl_int opacityDiffuseSize;
+	cl_int opacityLuminosityOffset;
+	cl_int opacityLuminositySize;
+	cl_int opacityRoughnessOffset;
+	cl_int opacityRoughnessSize;
+	cl_int opacityReflectanceOffset;
+	cl_int opacityReflectanceSize;
+	cl_int opacityTransparencyOffset;
+	cl_int opacityTransparencySize;
 } sMaterialCl;
 
 #ifndef OPENCL_KERNEL_CODE

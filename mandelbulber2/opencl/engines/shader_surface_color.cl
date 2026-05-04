@@ -219,14 +219,17 @@ float3 SurfaceColor(__constant sClInConstants *consts, sRenderData *renderData,
 #ifdef USE_SURFACE_GRADIENT
 				if (input->material->surfaceGradientEnable)
 				{
-					color = GetColorFromGradient(colorPosition, input->material->surfaceGradientMode,
-						input->paletteSurfaceLength, input->palette + input->paletteSurfaceOffset,
-						input->palette + input->midpointSurfaceOffset, input->midpointSurfaceLength);
 					float alpha = GetAlphaFromGradient(colorPosition, input->opacitySurfaceLength,
 						input->palette + input->opacitySurfaceOffset);
 					if (input->material->surfaceGradientMaskEnable)
 					{
-						color *= alpha;
+						color = (float3){alpha, alpha, alpha};
+					}
+					else
+					{
+						color = GetColorFromGradient(colorPosition, input->material->surfaceGradientMode,
+							input->paletteSurfaceLength, input->palette + input->paletteSurfaceOffset,
+							input->palette + input->midpointSurfaceOffset, input->midpointSurfaceLength);
 					}
 					gradients->surface = color;
 				}
@@ -239,90 +242,108 @@ float3 SurfaceColor(__constant sClInConstants *consts, sRenderData *renderData,
 #ifdef USE_SPECULAR_GRADIENT
 				if (input->material->specularGradientEnable)
 				{
-					gradients->specular = GetColorFromGradient(colorPosition,
-						input->material->specularGradientMode, input->paletteSpecularLength,
-						input->palette + input->paletteSpecularOffset,
-						input->palette + input->midpointSpecularOffset, input->midpointSpecularLength);
 					float alpha = GetAlphaFromGradient(colorPosition, input->opacitySpecularLength,
 						input->palette + input->opacitySpecularOffset);
 					if (input->material->specularGradientMaskEnable)
 					{
-						gradients->specular *= alpha;
+						gradients->specular = (float3){alpha, alpha, alpha};
+					}
+					else
+					{
+						gradients->specular = GetColorFromGradient(colorPosition,
+							input->material->specularGradientMode, input->paletteSpecularLength,
+							input->palette + input->paletteSpecularOffset,
+							input->palette + input->midpointSpecularOffset, input->midpointSpecularLength);
 					}
 				}
 #endif
 #ifdef USE_DIFFUSE_GRADIENT
 				if (input->material->diffuseGradientEnable)
 				{
-					gradients->diffuse = GetColorFromGradient(colorPosition,
-						input->material->diffuseGradientMode, input->paletteDiffuseLength,
-						input->palette + input->paletteDiffuseOffset,
-						input->palette + input->midpointDiffuseOffset, input->midpointDiffuseLength);
 					float alpha = GetAlphaFromGradient(colorPosition, input->opacityDiffuseLength,
 						input->palette + input->opacityDiffuseOffset);
 					if (input->material->diffuseGradientMaskEnable)
 					{
-						gradients->diffuse *= alpha;
+						gradients->diffuse = (float3){alpha, alpha, alpha};
+					}
+					else
+					{
+						gradients->diffuse = GetColorFromGradient(colorPosition,
+							input->material->diffuseGradientMode, input->paletteDiffuseLength,
+							input->palette + input->paletteDiffuseOffset,
+							input->palette + input->midpointDiffuseOffset, input->midpointDiffuseLength);
 					}
 				}
 #endif
 #ifdef USE_LUMINOSITY_GRADIENT
 				if (input->material->luminosityGradientEnable)
 				{
-					gradients->luminosity = GetColorFromGradient(colorPosition,
-						input->material->luminosityGradientMode, input->paletteLuminosityLength,
-						input->palette + input->paletteLuminosityOffset,
-						input->palette + input->midpointLuminosityOffset, input->midpointLuminosityLength);
 					float alpha = GetAlphaFromGradient(colorPosition, input->opacityLuminosityLength,
 						input->palette + input->opacityLuminosityOffset);
 					if (input->material->luminosityGradientMaskEnable)
 					{
-						gradients->luminosity *= alpha;
+						gradients->luminosity = (float3){alpha, alpha, alpha};
+					}
+					else
+					{
+						gradients->luminosity = GetColorFromGradient(colorPosition,
+							input->material->luminosityGradientMode, input->paletteLuminosityLength,
+							input->palette + input->paletteLuminosityOffset,
+							input->palette + input->midpointLuminosityOffset, input->midpointLuminosityLength);
 					}
 				}
 #endif
 #ifdef USE_ROUGHNESS_GRADIENT
 				if (input->material->roughnessGradientEnable)
 				{
-					gradients->roughness = GetColorFromGradient(colorPosition,
-						input->material->roughnessGradientMode, input->paletteRoughnessLength,
-						input->palette + input->paletteRoughnessOffset,
-						input->palette + input->midpointRoughnessOffset, input->midpointRoughnessLength);
 					float alpha = GetAlphaFromGradient(colorPosition, input->opacityRoughnessLength,
 						input->palette + input->opacityRoughnessOffset);
 					if (input->material->roughnessGradientMaskEnable)
 					{
-						gradients->roughness *= alpha;
+						gradients->roughness = (float3){alpha, alpha, alpha};
+					}
+					else
+					{
+						gradients->roughness = GetColorFromGradient(colorPosition,
+							input->material->roughnessGradientMode, input->paletteRoughnessLength,
+							input->palette + input->paletteRoughnessOffset,
+							input->palette + input->midpointRoughnessOffset, input->midpointRoughnessLength);
 					}
 				}
 #endif
 #ifdef USE_REFLECTANCE_GRADIENT
 				if (input->material->reflectanceGradientEnable)
 				{
-					gradients->reflectance = GetColorFromGradient(colorPosition,
-						input->material->reflectanceGradientMode, input->paletteReflectanceLength,
-						input->palette + input->paletteReflectanceOffset,
-						input->palette + input->midpointReflectanceOffset, input->midpointReflectanceLength);
 					float alpha = GetAlphaFromGradient(colorPosition, input->opacityReflectanceLength,
 						input->palette + input->opacityReflectanceOffset);
 					if (input->material->reflectanceGradientMaskEnable)
 					{
-						gradients->reflectance *= alpha;
+						gradients->reflectance = (float3){alpha, alpha, alpha};
+					}
+					else
+					{
+						gradients->reflectance = GetColorFromGradient(colorPosition,
+							input->material->reflectanceGradientMode, input->paletteReflectanceLength,
+							input->palette + input->paletteReflectanceOffset,
+							input->palette + input->midpointReflectanceOffset, input->midpointReflectanceLength);
 					}
 				}
 #endif
 #ifdef USE_TRANSPARENCY_GRADIENT
 				if (input->material->transparencyGradientEnable)
 				{
-					gradients->transparency = GetColorFromGradient(colorPosition,
-						input->material->transparencyGradientMode, input->paletteTransparencyLength,
-						input->palette + input->paletteTransparencyOffset,
-						input->palette + input->midpointTransparencyOffset, input->midpointTransparencyLength);
 					float alpha = GetAlphaFromGradient(colorPosition, input->opacityTransparencyLength,
 						input->palette + input->opacityTransparencyOffset);
 					if (input->material->transparencyGradientMaskEnable)
 					{
-						gradients->transparency *= alpha;
+						gradients->transparency = (float3){alpha, alpha, alpha};
+					}
+					else
+					{
+						gradients->transparency = GetColorFromGradient(colorPosition,
+							input->material->transparencyGradientMode, input->paletteTransparencyLength,
+							input->palette + input->paletteTransparencyOffset,
+							input->palette + input->midpointTransparencyOffset, input->midpointTransparencyLength);
 					}
 				}
 #endif
