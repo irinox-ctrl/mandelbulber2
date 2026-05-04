@@ -2287,6 +2287,7 @@ bool cInterface::CheckForMissingTextures()
 	for (const QString &parameterName : listOfTextureParameters)
 	{
 		QString textureFile = gPar->Get<QString>(parameterName);
+		if (textureFile.isEmpty()) continue;
 		textureFile = FilePathHelperTextures(textureFile);
 		QFileInfo fi(textureFile);
 		if (!textureFile.contains("%") && !textureFile.contains("https://")
