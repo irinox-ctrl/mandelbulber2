@@ -116,10 +116,23 @@ public:
 	bool projectionUseAsMask = false;
 	float projectionTextureOffsetX = 0.0f;
 	float projectionTextureOffsetY = 0.0f;
+	float projectionTextureOffsetZ = 0.0f;
 	float projectionTextureScaleX = 1.0f;
 	float projectionTextureScaleY = 1.0f;
-	float projectionTextureRotation = 0.0f;
+	float projectionTextureScaleZ = 1.0f;
+	float projectionTextureRotationX = 0.0f;
+	float projectionTextureRotationY = 0.0f;
+	float projectionTextureRotationZ = 0.0f;
 	int projectionRepeatMode = 0;
+	bool projectionUseAlphaAsMask = false;
+	bool projectionUseTextureAlphaAsMask = false;
+	bool projectionInvertAlphaMask = false;
+	float alphaTextureOffsetX = 0.0f;
+	float alphaTextureOffsetY = 0.0f;
+	float alphaTextureScaleX = 1.0f;
+	float alphaTextureScaleY = 1.0f;
+	float alphaTextureRotationZ = 0.0f;
+	int alphaTextureRepeatMode = 0;
 
 	CVector3 position;
 	CVector3 rotation;
@@ -136,6 +149,7 @@ public:
 	enumLightDecayFunction decayFunction = lightDecay1R;
 
 	cTexture colorTexture;
+	cTexture alphaTexture;
 };
 
 #endif /* MANDELBULBER2_SRC_LIGHT_H_ */

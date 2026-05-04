@@ -75,6 +75,9 @@ sRGBAFloat cRenderWorker::AuxShadow(
 										 && !params->common.iterThreshMode && !params->interiorMode && softRange > 0.0
 										 && !(params->monteCarloSoftShadows && params->DOFMonteCarlo);
 
+	// Preserve original lightVector for projection texture mask calculation
+	CVector3 originalLightVector = lightVector;
+
 	if (params->DOFMonteCarlo && params->monteCarloSoftShadows)
 	{
 		CVector3 randomVector;
@@ -298,5 +301,16 @@ sRGBAFloat cRenderWorker::AuxShadow(
 		lightShaded.G = 1.0f - maxSoft;
 		lightShaded.B = 1.0f - maxSoft;
 	}
+
+	// Apply projection texture mask to shadows
+	if (light->type == cLight::lightProjection)
+	{
+		sRGBFloat textureColor;
+		double mask = light->CalculateCone(input.point, originalLightVector, textureColor);
+		lightShaded.R *= mask;
+		lightShaded.G *= mask;
+		lightShaded.B *= mask;
+	}
+
 	return lightShaded;
 }

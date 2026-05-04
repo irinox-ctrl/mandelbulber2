@@ -293,42 +293,98 @@ sRayRecursionOut RayRecursion(sRayRecursionIn in, sRenderData *renderData,
 				renderData->paletteSurfaceOffsets[objectData->materialId];
 			shaderInputData.paletteSurfaceLength =
 				renderData->paletteSurfaceLengths[objectData->materialId];
+			shaderInputData.opacitySurfaceOffset =
+				renderData->opacitySurfaceOffsets[objectData->materialId];
+			shaderInputData.opacitySurfaceLength =
+				renderData->opacitySurfaceLengths[objectData->materialId];
+			shaderInputData.midpointSurfaceOffset =
+				renderData->midpointSurfaceOffsets[objectData->materialId];
+			shaderInputData.midpointSurfaceLength =
+				renderData->midpointSurfaceLengths[objectData->materialId];
 #endif
 #ifdef USE_SPECULAR_GRADIENT
 			shaderInputData.paletteSpecularOffset =
 				renderData->paletteSpecularOffsets[objectData->materialId];
 			shaderInputData.paletteSpecularLength =
 				renderData->paletteSpecularLengths[objectData->materialId];
+			shaderInputData.opacitySpecularOffset =
+				renderData->opacitySpecularOffsets[objectData->materialId];
+			shaderInputData.opacitySpecularLength =
+				renderData->opacitySpecularLengths[objectData->materialId];
+			shaderInputData.midpointSpecularOffset =
+				renderData->midpointSpecularOffsets[objectData->materialId];
+			shaderInputData.midpointSpecularLength =
+				renderData->midpointSpecularLengths[objectData->materialId];
 #endif
 #ifdef USE_DIFFUSE_GRADIENT
 			shaderInputData.paletteDiffuseOffset =
 				renderData->paletteDiffuseOffsets[objectData->materialId];
 			shaderInputData.paletteDiffuseLength =
 				renderData->paletteDiffuseLengths[objectData->materialId];
+			shaderInputData.opacityDiffuseOffset =
+				renderData->opacityDiffuseOffsets[objectData->materialId];
+			shaderInputData.opacityDiffuseLength =
+				renderData->opacityDiffuseLengths[objectData->materialId];
+			shaderInputData.midpointDiffuseOffset =
+				renderData->midpointDiffuseOffsets[objectData->materialId];
+			shaderInputData.midpointDiffuseLength =
+				renderData->midpointDiffuseLengths[objectData->materialId];
 #endif
 #ifdef USE_LUMINOSITY_GRADIENT
 			shaderInputData.paletteLuminosityOffset =
 				renderData->paletteLuminosityOffsets[objectData->materialId];
 			shaderInputData.paletteLuminosityLength =
 				renderData->paletteLuminosityLengths[objectData->materialId];
+			shaderInputData.opacityLuminosityOffset =
+				renderData->opacityLuminosityOffsets[objectData->materialId];
+			shaderInputData.opacityLuminosityLength =
+				renderData->opacityLuminosityLengths[objectData->materialId];
+			shaderInputData.midpointLuminosityOffset =
+				renderData->midpointLuminosityOffsets[objectData->materialId];
+			shaderInputData.midpointLuminosityLength =
+				renderData->midpointLuminosityLengths[objectData->materialId];
 #endif
 #ifdef USE_ROUGHNESS_GRADIENT
 			shaderInputData.paletteRoughnessOffset =
 				renderData->paletteRoughnessOffsets[objectData->materialId];
 			shaderInputData.paletteRoughnessLength =
 				renderData->paletteRoughnessLengths[objectData->materialId];
+			shaderInputData.opacityRoughnessOffset =
+				renderData->opacityRoughnessOffsets[objectData->materialId];
+			shaderInputData.opacityRoughnessLength =
+				renderData->opacityRoughnessLengths[objectData->materialId];
+			shaderInputData.midpointRoughnessOffset =
+				renderData->midpointRoughnessOffsets[objectData->materialId];
+			shaderInputData.midpointRoughnessLength =
+				renderData->midpointRoughnessLengths[objectData->materialId];
 #endif
 #ifdef USE_REFLECTANCE_GRADIENT
 			shaderInputData.paletteReflectanceOffset =
 				renderData->paletteReflectanceOffsets[objectData->materialId];
 			shaderInputData.paletteReflectanceLength =
 				renderData->paletteReflectanceLengths[objectData->materialId];
+			shaderInputData.opacityReflectanceOffset =
+				renderData->opacityReflectanceOffsets[objectData->materialId];
+			shaderInputData.opacityReflectanceLength =
+				renderData->opacityReflectanceLengths[objectData->materialId];
+			shaderInputData.midpointReflectanceOffset =
+				renderData->midpointReflectanceOffsets[objectData->materialId];
+			shaderInputData.midpointReflectanceLength =
+				renderData->midpointReflectanceLengths[objectData->materialId];
 #endif
 #ifdef USE_TRANSPARENCY_GRADIENT
 			shaderInputData.paletteTransparencyOffset =
 				renderData->paletteTransparencyOffsets[objectData->materialId];
 			shaderInputData.paletteTransparencyLength =
 				renderData->paletteTransparencyLengths[objectData->materialId];
+			shaderInputData.opacityTransparencyOffset =
+				renderData->opacityTransparencyOffsets[objectData->materialId];
+			shaderInputData.opacityTransparencyLength =
+				renderData->opacityTransparencyLengths[objectData->materialId];
+			shaderInputData.midpointTransparencyOffset =
+				renderData->midpointTransparencyOffsets[objectData->materialId];
+			shaderInputData.midpointTransparencyLength =
+				renderData->midpointTransparencyLengths[objectData->materialId];
 #endif
 
 			shaderInputData.stepCount = rayMarchingOut.count;
@@ -592,42 +648,98 @@ sRayRecursionOut RayRecursion(sRayRecursionIn in, sRenderData *renderData,
 				renderData->paletteSurfaceOffsets[objectData->materialId];
 			shaderInputData.paletteSurfaceLength =
 				renderData->paletteSurfaceLengths[objectData->materialId];
+			shaderInputData.opacitySurfaceOffset =
+				renderData->opacitySurfaceOffsets[objectData->materialId];
+			shaderInputData.opacitySurfaceLength =
+				renderData->opacitySurfaceLengths[objectData->materialId];
+			shaderInputData.midpointSurfaceOffset =
+				renderData->midpointSurfaceOffsets[objectData->materialId];
+			shaderInputData.midpointSurfaceLength =
+				renderData->midpointSurfaceLengths[objectData->materialId];
 #endif
 #ifdef USE_SPECULAR_GRADIENT
 			shaderInputData.paletteSpecularOffset =
 				renderData->paletteSpecularOffsets[objectData->materialId];
 			shaderInputData.paletteSpecularLength =
 				renderData->paletteSpecularLengths[objectData->materialId];
+			shaderInputData.opacitySpecularOffset =
+				renderData->opacitySpecularOffsets[objectData->materialId];
+			shaderInputData.opacitySpecularLength =
+				renderData->opacitySpecularLengths[objectData->materialId];
+			shaderInputData.midpointSpecularOffset =
+				renderData->midpointSpecularOffsets[objectData->materialId];
+			shaderInputData.midpointSpecularLength =
+				renderData->midpointSpecularLengths[objectData->materialId];
 #endif
 #ifdef USE_DIFFUSE_GRADIENT
 			shaderInputData.paletteDiffuseOffset =
 				renderData->paletteDiffuseOffsets[objectData->materialId];
 			shaderInputData.paletteDiffuseLength =
 				renderData->paletteDiffuseLengths[objectData->materialId];
+			shaderInputData.opacityDiffuseOffset =
+				renderData->opacityDiffuseOffsets[objectData->materialId];
+			shaderInputData.opacityDiffuseLength =
+				renderData->opacityDiffuseLengths[objectData->materialId];
+			shaderInputData.midpointDiffuseOffset =
+				renderData->midpointDiffuseOffsets[objectData->materialId];
+			shaderInputData.midpointDiffuseLength =
+				renderData->midpointDiffuseLengths[objectData->materialId];
 #endif
 #ifdef USE_LUMINOSITY_GRADIENT
 			shaderInputData.paletteLuminosityOffset =
 				renderData->paletteLuminosityOffsets[objectData->materialId];
 			shaderInputData.paletteLuminosityLength =
 				renderData->paletteLuminosityLengths[objectData->materialId];
+			shaderInputData.opacityLuminosityOffset =
+				renderData->opacityLuminosityOffsets[objectData->materialId];
+			shaderInputData.opacityLuminosityLength =
+				renderData->opacityLuminosityLengths[objectData->materialId];
+			shaderInputData.midpointLuminosityOffset =
+				renderData->midpointLuminosityOffsets[objectData->materialId];
+			shaderInputData.midpointLuminosityLength =
+				renderData->midpointLuminosityLengths[objectData->materialId];
 #endif
 #ifdef USE_ROUGHNESS_GRADIENT
 			shaderInputData.paletteRoughnessOffset =
 				renderData->paletteRoughnessOffsets[objectData->materialId];
 			shaderInputData.paletteRoughnessLength =
 				renderData->paletteRoughnessLengths[objectData->materialId];
+			shaderInputData.opacityRoughnessOffset =
+				renderData->opacityRoughnessOffsets[objectData->materialId];
+			shaderInputData.opacityRoughnessLength =
+				renderData->opacityRoughnessLengths[objectData->materialId];
+			shaderInputData.midpointRoughnessOffset =
+				renderData->midpointRoughnessOffsets[objectData->materialId];
+			shaderInputData.midpointRoughnessLength =
+				renderData->midpointRoughnessLengths[objectData->materialId];
 #endif
 #ifdef USE_REFLECTANCE_GRADIENT
 			shaderInputData.paletteReflectanceOffset =
 				renderData->paletteReflectanceOffsets[objectData->materialId];
 			shaderInputData.paletteReflectanceLength =
 				renderData->paletteReflectanceLengths[objectData->materialId];
+			shaderInputData.opacityReflectanceOffset =
+				renderData->opacityReflectanceOffsets[objectData->materialId];
+			shaderInputData.opacityReflectanceLength =
+				renderData->opacityReflectanceLengths[objectData->materialId];
+			shaderInputData.midpointReflectanceOffset =
+				renderData->midpointReflectanceOffsets[objectData->materialId];
+			shaderInputData.midpointReflectanceLength =
+				renderData->midpointReflectanceLengths[objectData->materialId];
 #endif
 #ifdef USE_TRANSPARENCY_GRADIENT
 			shaderInputData.paletteTransparencyOffset =
 				renderData->paletteTransparencyOffsets[objectData->materialId];
 			shaderInputData.paletteTransparencyLength =
 				renderData->paletteTransparencyLengths[objectData->materialId];
+			shaderInputData.opacityTransparencyOffset =
+				renderData->opacityTransparencyOffsets[objectData->materialId];
+			shaderInputData.opacityTransparencyLength =
+				renderData->opacityTransparencyLengths[objectData->materialId];
+			shaderInputData.midpointTransparencyOffset =
+				renderData->midpointTransparencyOffsets[objectData->materialId];
+			shaderInputData.midpointTransparencyLength =
+				renderData->midpointTransparencyLengths[objectData->materialId];
 #endif
 
 			shaderInputData.stepCount = rayMarchingOut.count;

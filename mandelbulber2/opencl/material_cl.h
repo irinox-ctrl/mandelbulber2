@@ -80,6 +80,7 @@ typedef struct
 	cl_float iridescenceIntensity;
 	cl_float iridescenceSubsurfaceThickness;
 	cl_float textureFractalizeCubeSize;
+	cl_float textureFractalizeSizeMultiplier;
 	cl_float perlinNoiseValueOffset;
 	cl_float perlinNoiseColorIntensity;
 	cl_float perlinNoiseLuminosityIntensity;
@@ -101,6 +102,7 @@ typedef struct
 	cl_float3 textureScale;
 	cl_float3 perlinNoisePeriod;
 	cl_float3 perlinNoisePositionOffset;
+	cl_float3 textureFractalizeOrbitTrapPosition;
 
 	matrix33 rotMatrixTexture;
 	matrix33 rotMatrixPerlinNoise;
@@ -140,6 +142,8 @@ typedef struct
 	cl_int useRoughnessTexture;
 	cl_int iridescenceEnabled;
 	cl_int textureFractalize;
+	cl_int textureFractalizeShape;
+	cl_int textureFractalizeIterationBlend;
 
 	cl_int insideColoringEnable;
 	cl_int subsurfaceScattering;
@@ -221,6 +225,7 @@ sMaterialCl clCopySMaterialCl(const cMaterial &source)
 	target.iridescenceIntensity = source.iridescenceIntensity;
 	target.iridescenceSubsurfaceThickness = source.iridescenceSubsurfaceThickness;
 	target.textureFractalizeCubeSize = source.textureFractalizeCubeSize;
+	target.textureFractalizeSizeMultiplier = source.textureFractalizeSizeMultiplier;
 	target.perlinNoiseValueOffset = source.perlinNoiseValueOffset;
 	target.perlinNoiseColorIntensity = source.perlinNoiseColorIntensity;
 	target.perlinNoiseLuminosityIntensity = source.perlinNoiseLuminosityIntensity;
@@ -242,6 +247,7 @@ sMaterialCl clCopySMaterialCl(const cMaterial &source)
 	target.textureScale = toClFloat3(source.textureScale);
 	target.perlinNoisePeriod = toClFloat3(source.perlinNoisePeriod);
 	target.perlinNoisePositionOffset = toClFloat3(source.perlinNoisePositionOffset);
+	target.textureFractalizeOrbitTrapPosition = toClFloat3(source.textureFractalizeOrbitTrapPosition);
 
 	target.rotMatrixTexture = toClMatrix33(source.rotMatrixTexture);
 	target.rotMatrixPerlinNoise = toClMatrix33(source.rotMatrixPerlinNoise);
@@ -281,6 +287,8 @@ sMaterialCl clCopySMaterialCl(const cMaterial &source)
 	target.useRoughnessTexture = source.useRoughnessTexture;
 	target.iridescenceEnabled = source.iridescenceEnabled;
 	target.textureFractalize = source.textureFractalize;
+	target.textureFractalizeShape = source.textureFractalizeShape;
+	target.textureFractalizeIterationBlend = source.textureFractalizeIterationBlend;
 
 	target.insideColoringEnable = source.insideColoringEnable;
 	target.subsurfaceScattering = source.subsurfaceScattering;

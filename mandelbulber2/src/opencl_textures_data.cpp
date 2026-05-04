@@ -102,6 +102,7 @@ int cOpenClTexturesData::CheckNumberOfTextures(
 	{
 		cLight const *light = lights.GetLight(i);
 		CountTexture(&light->colorTexture, false, &listOfTextures, &texturesCounter);
+		CountTexture(&light->alphaTexture, false, &listOfTextures, &texturesCounter);
 	}
 
 	return texturesCounter;

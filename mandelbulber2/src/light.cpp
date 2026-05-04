@@ -56,11 +56,15 @@ const QStringList cLight::paramsList = {"is_defined", "enabled", "cast_shadows",
 	"relative_position", "volumetric", "cone_angle", "cone_soft_angle", "intensity", "visibility",
 	"volumetric_visibility", "size", "soft_shadow_cone", "contour_sharpness", "position", "rotation",
 	"use_target_point", "target", "alpha", "beta", "color", "type", "decayFunction", "file_texture",
-	"repeat_texture", "projection_horizonal_angle", "projection_vertical_angle",
+	"file_texture_alpha", "repeat_texture", "projection_horizonal_angle", "projection_vertical_angle",
 	"projection_soft_edge", "projection_use_as_mask", "projection_texture_offset_x",
-	"projection_texture_offset_y", "projection_texture_scale_x", "projection_texture_scale_y",
-	"projection_texture_rotation", "projection_repeat_mode", "snap_to_surface",
-	"surface_offset", "name", "orbit_distance", "orbit_yaw", "orbit_pitch",
+	"projection_texture_offset_y", "projection_texture_offset_z",
+	"projection_texture_scale_x", "projection_texture_scale_y", "projection_texture_scale_z",
+	"projection_texture_rotation_x", "projection_texture_rotation_y", "projection_texture_rotation_z",
+	"projection_repeat_mode", "projection_use_alpha_as_mask", "projection_use_texture_alpha_as_mask",
+	"alpha_texture_offset_x", "alpha_texture_offset_y", "alpha_texture_scale_x", "alpha_texture_scale_y",
+	"alpha_texture_rotation_z", "alpha_texture_repeat_mode",
+	"snap_to_surface", "surface_offset", "name", "orbit_distance", "orbit_yaw", "orbit_pitch",
 	"auto_intensity", "auto_intensity_factor"};
 
 void cLight::setParameters(int _id, const std::shared_ptr<cParameterContainer> lightParam,
@@ -209,10 +213,22 @@ void cLight::setParameters(int _id, const std::shared_ptr<cParameterContainer> l
 	projectionUseAsMask = lightParam->Get<bool>(Name("projection_use_as_mask", id));
 	projectionTextureOffsetX = lightParam->Get<double>(Name("projection_texture_offset_x", id));
 	projectionTextureOffsetY = lightParam->Get<double>(Name("projection_texture_offset_y", id));
+	projectionTextureOffsetZ = lightParam->Get<double>(Name("projection_texture_offset_z", id));
 	projectionTextureScaleX = lightParam->Get<double>(Name("projection_texture_scale_x", id));
 	projectionTextureScaleY = lightParam->Get<double>(Name("projection_texture_scale_y", id));
-	projectionTextureRotation = lightParam->Get<double>(Name("projection_texture_rotation", id));
+	projectionTextureScaleZ = lightParam->Get<double>(Name("projection_texture_scale_z", id));
+	projectionTextureRotationX = lightParam->Get<double>(Name("projection_texture_rotation_x", id));
+	projectionTextureRotationY = lightParam->Get<double>(Name("projection_texture_rotation_y", id));
+	projectionTextureRotationZ = lightParam->Get<double>(Name("projection_texture_rotation_z", id));
 	projectionRepeatMode = lightParam->Get<int>(Name("projection_repeat_mode", id));
+	projectionUseAlphaAsMask = lightParam->Get<bool>(Name("projection_use_alpha_as_mask", id));
+	projectionUseTextureAlphaAsMask = lightParam->Get<bool>(Name("projection_use_texture_alpha_as_mask", id));
+	alphaTextureOffsetX = lightParam->Get<double>(Name("alpha_texture_offset_x", id));
+	alphaTextureOffsetY = lightParam->Get<double>(Name("alpha_texture_offset_y", id));
+	alphaTextureScaleX = lightParam->Get<double>(Name("alpha_texture_scale_x", id));
+	alphaTextureScaleY = lightParam->Get<double>(Name("alpha_texture_scale_y", id));
+	alphaTextureRotationZ = lightParam->Get<double>(Name("alpha_texture_rotation_z", id));
+	alphaTextureRepeatMode = lightParam->Get<int>(Name("alpha_texture_repeat_mode", id));
 
 	// backward compatibility: old repeat_texture parameter maps to Repeat mode
 	if (repeatTexture && projectionRepeatMode == 0)
@@ -226,6 +242,11 @@ void cLight::setParameters(int _id, const std::shared_ptr<cParameterContainer> l
 		{
 			colorTexture = cTexture(lightParam->Get<QString>(Name("file_texture", id)),
 				cTexture::doNotUseMipmaps, frameNo, quiet, useNetRender);
+			QString alphaTextureFile = lightParam->Get<QString>(Name("file_texture_alpha", id));
+			if (!alphaTextureFile.isEmpty())
+			{
+				alphaTexture = cTexture(alphaTextureFile, cTexture::doNotUseMipmaps, frameNo, quiet, useNetRender);
+			}
 		}
 	}
 }
@@ -269,82 +290,157 @@ float cLight::CalculateCone(CVector3 point, const CVector3 &lightVector, sRGBFlo
 		double axiality = lightVector.Dot(lightDirection);
 		if (axiality > 0.0 && projectionHorizontalRatio > 0.0 && projectionVerticalRatio > 0.0)
 		{
-			double texX = lightRightVector.Dot(lightVector) / projectionHorizontalRatio / axiality + 0.5;
-			double texY = lightTopVector.Dot(lightVector) / projectionVerticalRatio / axiality + 0.5;
-
-			// Apply UV transform: scale, rotation, offset
+			// Apply Z transforms to axiality (depth scaling/offset)
+			double effectiveAxiality = axiality * projectionTextureScaleZ + projectionTextureOffsetZ;
+			if (effectiveAxiality > 0.0)
 			{
-				double u = texX - 0.5;
-				double v = texY - 0.5;
-				u *= projectionTextureScaleX;
-				v *= projectionTextureScaleY;
-				if (projectionTextureRotation != 0.0)
+				// Rotate lightVector around light axes for 3D texture rotation
+				CVector3 rotatedLightVector = lightVector;
+				if (projectionTextureRotationX != 0.0)
 				{
-					double rad = projectionTextureRotation * M_PI / 180.0;
-					double c = cos(rad);
-					double s = sin(rad);
-					double ur = u * c - v * s;
-					double vr = u * s + v * c;
-					u = ur;
-					v = vr;
+					double rad = projectionTextureRotationX * M_PI / 180.0;
+					rotatedLightVector = rotatedLightVector.RotateAroundVectorByAngle(lightRightVector, rad);
 				}
-				u += projectionTextureOffsetX;
-				v += projectionTextureOffsetY;
-				texX = u + 0.5;
-				texY = v + 0.5;
-			}
-
-			double fade = 1.0;
-			bool outOfBounds = false;
-
-			if (projectionRepeatMode == 0) // Clamp
-			{
-				if (projectionSoftEdge > 0.0)
+				if (projectionTextureRotationY != 0.0)
 				{
-					double effectiveEdge = std::min(projectionSoftEdge, 0.5f);
-					auto edgeFade = [&](double t) -> double {
-						if (t <= 0.0 || t >= 1.0) return 0.0;
-						if (t < effectiveEdge) return t / effectiveEdge;
-						if (t > 1.0 - effectiveEdge) return (1.0 - t) / effectiveEdge;
-						return 1.0;
-					};
-					double fx = edgeFade(texX);
-					double fy = edgeFade(texY);
-					fade = std::max(0.0, std::min(1.0, fx * fy));
+					double rad = projectionTextureRotationY * M_PI / 180.0;
+					rotatedLightVector = rotatedLightVector.RotateAroundVectorByAngle(lightTopVector, rad);
 				}
 
-				if (texX <= 0.0 || texX >= 1.0 || texY <= 0.0 || texY >= 1.0)
+				double texX = lightRightVector.Dot(rotatedLightVector) / projectionHorizontalRatio / effectiveAxiality + 0.5;
+				double texY = lightTopVector.Dot(rotatedLightVector) / projectionVerticalRatio / effectiveAxiality + 0.5;
+
+				// Apply UV transform for color texture
+				double colorTexX = texX;
+				double colorTexY = texY;
 				{
-					if (fade <= 0.0) outOfBounds = true;
+					double u = colorTexX - 0.5;
+					double v = colorTexY - 0.5;
+					u *= projectionTextureScaleX;
+					v *= projectionTextureScaleY;
+					if (projectionTextureRotationZ != 0.0)
+					{
+						double rad = projectionTextureRotationZ * M_PI / 180.0;
+						double c = cos(rad);
+						double s = sin(rad);
+						double ur = u * c - v * s;
+						double vr = u * s + v * c;
+						u = ur;
+						v = vr;
+					}
+					u += projectionTextureOffsetX;
+					v += projectionTextureOffsetY;
+					colorTexX = u + 0.5;
+					colorTexY = v + 0.5;
 				}
-			}
-			else if (projectionRepeatMode == 1) // Repeat
-			{
-				texX = texX - floor(texX);
-				texY = texY - floor(texY);
-			}
-			else if (projectionRepeatMode == 2) // Mirror
-			{
-				texX = fabs(fmod(texX, 2.0) - 1.0);
-				texY = fabs(fmod(texY, 2.0) - 1.0);
-			}
 
-			if (!outOfBounds)
-			{
-				float sampleX = (projectionRepeatMode == 0) ? std::max(0.0, std::min(1.0, texX)) : texX;
-				float sampleY = (projectionRepeatMode == 0) ? std::max(0.0, std::min(1.0, texY)) : texY;
-				sRGBFloat pixel = colorTexture.Pixel(CVector2<float>(sampleX, sampleY), 0.0);
-
-				if (projectionUseAsMask)
+				// Apply UV transform for alpha texture
+				double alphaTexX = texX;
+				double alphaTexY = texY;
 				{
-					double luminance = pixel.R * 0.299 + pixel.G * 0.587 + pixel.B * 0.114;
-					outColor = {1.0, 1.0, 1.0};
-					intens = luminance * fade;
+					double u = alphaTexX - 0.5;
+					double v = alphaTexY - 0.5;
+					u *= alphaTextureScaleX;
+					v *= alphaTextureScaleY;
+					if (alphaTextureRotationZ != 0.0)
+					{
+						double rad = alphaTextureRotationZ * M_PI / 180.0;
+						double c = cos(rad);
+						double s = sin(rad);
+						double ur = u * c - v * s;
+						double vr = u * s + v * c;
+						u = ur;
+						v = vr;
+					}
+					u += alphaTextureOffsetX;
+					v += alphaTextureOffsetY;
+					alphaTexX = u + 0.5;
+					alphaTexY = v + 0.5;
+				}
+
+				double fade = 1.0;
+				bool outOfBounds = false;
+
+				if (projectionRepeatMode == 0) // Clamp
+				{
+					if (projectionSoftEdge > 0.0)
+					{
+						double effectiveEdge = std::min(projectionSoftEdge, 0.5f);
+						auto edgeFade = [&](double t) -> double {
+							if (t <= 0.0 || t >= 1.0) return 0.0;
+							if (t < effectiveEdge) return t / effectiveEdge;
+							if (t > 1.0 - effectiveEdge) return (1.0 - t) / effectiveEdge;
+							return 1.0;
+						};
+						double fx = edgeFade(colorTexX);
+						double fy = edgeFade(colorTexY);
+						fade = std::max(0.0, std::min(1.0, fx * fy));
+					}
+
+					if (colorTexX <= 0.0 || colorTexX >= 1.0 || colorTexY <= 0.0 || colorTexY >= 1.0)
+					{
+						if (fade <= 0.0) outOfBounds = true;
+						}
+				}
+				else if (projectionRepeatMode == 1) // Repeat
+					{
+						colorTexX = colorTexX - floor(colorTexX);
+						colorTexY = colorTexY - floor(colorTexY);
+					}
+					else if (projectionRepeatMode == 2) // Mirror
+					{
+						colorTexX = fabs(fmod(colorTexX, 2.0) - 1.0);
+						colorTexY = fabs(fmod(colorTexY, 2.0) - 1.0);
+					}
+
+					// Alpha texture repeat mode
+					if (alphaTextureRepeatMode == 1) // Repeat
+					{
+						alphaTexX = alphaTexX - floor(alphaTexX);
+						alphaTexY = alphaTexY - floor(alphaTexY);
+					}
+					else if (alphaTextureRepeatMode == 2) // Mirror
+					{
+						alphaTexX = fabs(fmod(alphaTexX, 2.0) - 1.0);
+						alphaTexY = fabs(fmod(alphaTexY, 2.0) - 1.0);
+					}
+
+					if (!outOfBounds)
+					{
+						float colorSampleX = (projectionRepeatMode == 0) ? std::max(0.0, std::min(1.0, colorTexX)) : colorTexX;
+						float colorSampleY = (projectionRepeatMode == 0) ? std::max(0.0, std::min(1.0, colorTexY)) : colorTexY;
+						float alphaSampleX = (alphaTextureRepeatMode == 0) ? std::max(0.0, std::min(1.0, alphaTexX)) : alphaTexX;
+						float alphaSampleY = (alphaTextureRepeatMode == 0) ? std::max(0.0, std::min(1.0, alphaTexY)) : alphaTexY;
+						sRGBFloat pixel = colorTexture.Pixel(CVector2<float>(colorSampleX, colorSampleY), 0.0);
+
+						if (projectionUseTextureAlphaAsMask && alphaTexture.IsLoaded())
+						{
+							float alpha = alphaTexture.PixelAlpha(CVector2<float>(alphaSampleX, alphaSampleY));
+							outColor = pixel;
+							intens = alpha * fade;
+						}
+					else if (projectionUseAlphaAsMask && colorTexture.HasAlpha())
+					{
+						float alpha = colorTexture.PixelAlpha(CVector2<float>(colorSampleX, colorSampleY));
+						outColor = {1.0, 1.0, 1.0};
+						intens = alpha * fade;
+					}
+					else if (projectionUseAsMask)
+					{
+						double luminance = pixel.R * 0.299 + pixel.G * 0.587 + pixel.B * 0.114;
+						outColor = {1.0, 1.0, 1.0};
+						intens = luminance * fade;
+					}
+					else
+					{
+						outColor = pixel;
+						intens = fade;
+					}
 				}
 				else
 				{
-					outColor = pixel;
-					intens = fade;
+					outColor = {0.0, 0.0, 0.0};
+					intens = 0.0;
 				}
 			}
 			else

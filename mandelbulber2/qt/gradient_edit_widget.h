@@ -61,6 +61,11 @@ public:
 	QString getFullParameterName() override;
 	void UpdateScriptAppearance(bool hasScript) override;
 
+public:
+	// Mask enable control (synced to material shader)
+	void SetMaskEnable(bool enabled) { gradient.SetMaskEnable(enabled); update(); }
+	bool IsMaskEnabled() const { return gradient.IsMaskEnabled(); }
+
 private:
 	void paintEvent(QPaintEvent *event) override;
 	void mouseMoveEvent(QMouseEvent *event) override;
@@ -69,10 +74,17 @@ private:
 	void contextMenuEvent(QContextMenuEvent *event) override;
 
 	void PaintButton(const cColorGradient::sColor &posColor, QPainter &painter);
+	void PaintOpacityMarker(const cColorGradient::sOpacityStop &stop, QPainter &painter,
+		int opacityBarY);
+	void PaintMidpointDiamond(int x, int y, int size, QPainter &painter);
 	int CalcButtonPosition(float colorPosition);
 	int FindButtonAtPosition(int x);
+	int FindOpacityMarkerAtPosition(int x, int y, int opacityBarY);
+	int FindMidpointDiamondAtPosition(int x, int y, int colorBarY, int colorBarHeight);
 	void AddColor(QContextMenuEvent *event);
 	void RemoveColor(QContextMenuEvent *event);
+	void AddOpacityStop(QContextMenuEvent *event);
+	void RemoveOpacityStop(QContextMenuEvent *event);
 	void Clear();
 	void ChangeNumberOfColors();
 	void GrabColors();
@@ -93,8 +105,6 @@ private slots:
 	void pressedButtonSaturationDec();
 	void pressedButtonInvert();
 	void pressedButtonSettings();
-	void slotInterpolationModeChanged(int index);
-	void slotMaskToggled(bool checked);
 
 private:
 	cColorGradient gradient;
@@ -102,6 +112,8 @@ private:
 	int margins;
 	bool mouseDragStarted;
 	int pressedColorIndex;
+	int pressedOpacityIndex;
+	int pressedMidpointSegment;
 	int dragStartX;
 	int toolbarHeight;
 	bool viewMode;

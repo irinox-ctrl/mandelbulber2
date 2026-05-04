@@ -84,6 +84,9 @@ float3 AuxShadow(constant sClInConstants *consts, sRenderData *renderData,
 										 && softRange > 0.0f
 										 && !(consts->params.monteCarloSoftShadows && consts->params.DOFMonteCarlo);
 
+	// Preserve original lightVector for projection texture mask calculation
+	float3 originalLightVector = lightVector;
+
 #ifdef MC_SOFT_SHADOWS
 	float3 randomVector;
 	randomVector.x = Random(10000, &input->randomSeed) / 5000.0f - 1.0f;
@@ -370,6 +373,208 @@ float3 AuxShadow(constant sClInConstants *consts, sRenderData *renderData,
 	{
 		lightShaded = 1.0f - maxSoft;
 	}
+
+#ifdef USE_LIGHT_TEXTURE
+	if (light->type == lightProjection && light->colorTextureIndex >= 0)
+	{
+		float shadowAxiality = dot(originalLightVector, light->lightDirection);
+		if (shadowAxiality > 0.0f && light->projectionHorizontalRatio > 0.0f
+				&& light->projectionVerticalRatio > 0.0f)
+		{
+			float effectiveAxiality = shadowAxiality * light->projectionParams3.y + light->projectionParams3.x;
+			if (effectiveAxiality > 0.0f)
+			{
+				float3 rotatedLV = originalLightVector;
+				float rotX = light->projectionParams3.z;
+				if (rotX != 0.0f)
+				{
+					float rad = rotX * 3.14159265f / 180.0f;
+					float c = cos(rad);
+					float s = sin(rad);
+					float3 axis = light->lightRightVector;
+					rotatedLV = rotatedLV * c + cross(axis, rotatedLV) * s
+									+ axis * dot(axis, rotatedLV) * (1.0f - c);
+				}
+				float rotY = light->projectionParams3.w;
+				if (rotY != 0.0f)
+				{
+					float rad = rotY * 3.14159265f / 180.0f;
+					float c = cos(rad);
+					float s = sin(rad);
+					float3 axis = light->lightTopVector;
+					rotatedLV = rotatedLV * c + cross(axis, rotatedLV) * s
+									+ axis * dot(axis, rotatedLV) * (1.0f - c);
+				}
+
+				float texX =
+					dot(light->lightRightVector, rotatedLV) / light->projectionHorizontalRatio / effectiveAxiality
+					+ 0.5f;
+				float texY =
+					dot(light->lightTopVector, rotatedLV) / light->projectionVerticalRatio / effectiveAxiality
+					+ 0.5f;
+
+					float colorTexX = texX;
+
+					float colorTexY = texY;
+
+					float alphaTexX = texX;
+
+					float alphaTexY = texY;
+				{
+					float u = texX - 0.5f;
+					float v = texY - 0.5f;
+					u *= light->projectionParams1.z;
+					v *= light->projectionParams1.w;
+					float rot = light->projectionParams2.x;
+					if (rot != 0.0f)
+					{
+						float rad = rot * 3.14159265f / 180.0f;
+						float c = cos(rad);
+						float s = sin(rad);
+						float ur = u * c - v * s;
+						float vr = u * s + v * c;
+						u = ur;
+						v = vr;
+					}
+					u += light->projectionParams1.x;
+					v += light->projectionParams1.y;
+					colorTexX = u + 0.5f;
+					colorTexY = v + 0.5f;
+				}
+				
+				// Apply UV transform for alpha texture
+				{
+					float u = texX - 0.5f;
+					float v = texY - 0.5f;
+					u *= light->alphaTextureParams1.z;
+					v *= light->alphaTextureParams1.w;
+					float rot = light->alphaTextureParams2.x;
+					if (rot != 0.0f)
+					{
+						float rad = rot * 3.14159265f / 180.0f;
+						float c = cos(rad);
+						float s = sin(rad);
+						float ur = u * c - v * s;
+						float vr = u * s + v * c;
+						u = ur;
+						v = vr;
+					}
+					u += light->alphaTextureParams1.x;
+					v += light->alphaTextureParams1.y;
+					alphaTexX = u + 0.5f;
+					alphaTexY = v + 0.5f;
+				}
+				
+				int repeatMode = (int)light->projectionParams2.y;
+				
+				float fade = 1.0f;
+				int outOfBounds = 0;
+				
+				if (repeatMode == 0) // Clamp
+				{
+					if (light->projectionSoftEdge > 0.0f)
+					{
+						float effectiveEdge = min(light->projectionSoftEdge, 0.5f);
+						float fx, fy;
+						if (colorTexX <= 0.0f || colorTexX >= 1.0f) fx = 0.0f;
+						else if (colorTexX < effectiveEdge) fx = colorTexX / effectiveEdge;
+						else if (colorTexX > 1.0f - effectiveEdge) fx = (1.0f - colorTexX) / effectiveEdge;
+						else fx = 1.0f;
+						
+						if (colorTexY <= 0.0f || colorTexY >= 1.0f) fy = 0.0f;
+						else if (colorTexY < effectiveEdge) fy = colorTexY / effectiveEdge;
+						else if (colorTexY > 1.0f - effectiveEdge) fy = (1.0f - colorTexY) / effectiveEdge;
+						else fy = 1.0f;
+						
+						fade = clamp(fx * fy, 0.0f, 1.0f);
+					}
+					
+					if (colorTexX <= 0.0f || colorTexX >= 1.0f || colorTexY <= 0.0f || colorTexY >= 1.0f)
+					{
+						if (fade <= 0.0f) outOfBounds = 1;
+					}
+				}
+				else if (repeatMode == 1) // Repeat
+				{
+					colorTexX = colorTexX - floor(colorTexX);
+					colorTexY = colorTexY - floor(colorTexY);
+				}
+				else if (repeatMode == 2) // Mirror
+				{
+					colorTexX = fabs(fmod(colorTexX, 2.0f) - 1.0f);
+					colorTexY = fabs(fmod(colorTexY, 2.0f) - 1.0f);
+				}
+				
+				int alphaRepeatMode = (int)light->alphaTextureParams2.y;
+				if (alphaRepeatMode == 1) // Repeat
+				{
+					alphaTexX = alphaTexX - floor(alphaTexX);
+					alphaTexY = alphaTexY - floor(alphaTexY);
+				}
+				else if (alphaRepeatMode == 2) // Mirror
+				{
+					alphaTexX = fabs(fmod(alphaTexX, 2.0f) - 1.0f);
+					alphaTexY = fabs(fmod(alphaTexY, 2.0f) - 1.0f);
+				}
+				
+				if (!outOfBounds)
+				{
+					float colorSampleX = (repeatMode == 0) ? clamp(colorTexX, 0.0f, 1.0f) : colorTexX;
+					float colorSampleY = (repeatMode == 0) ? clamp(colorTexY, 0.0f, 1.0f) : colorTexY;
+					float alphaSampleX = (alphaRepeatMode == 0) ? clamp(alphaTexX, 0.0f, 1.0f) : alphaTexX;
+					float alphaSampleY = (alphaRepeatMode == 0) ? clamp(alphaTexY, 0.0f, 1.0f) : alphaTexY;
+					
+					float2 colorTexturePoint = (float2){colorSampleX, colorSampleY};
+					float2 alphaTexturePoint = (float2){alphaSampleX, alphaSampleY};
+					int2 textureSize = renderData->textureSizes[light->colorTextureIndex];
+					__global uchar4 *texture = renderData->textures[light->colorTextureIndex];
+					
+					float mask = fade;
+					if (light->alphaTextureIndex >= 0 && light->projectionParams2.w > 0.5f)
+					{
+						int2 alphaTextureSize = renderData->textureSizes[light->alphaTextureIndex];
+						__global uchar4 *alphaTexture = renderData->textures[light->alphaTextureIndex];
+						float alpha = SampleTextureAlpha(
+							alphaTexturePoint.x, alphaTexturePoint.y, alphaTexture, alphaTextureSize.x, alphaTextureSize.y);
+						mask = alpha * fade;
+					}
+					else if (light->projectionParams2.z > 0.5f)
+					{
+						float alpha = SampleTextureAlpha(
+							colorTexturePoint.x, colorTexturePoint.y, texture, textureSize.x, textureSize.y);
+						mask = alpha * fade;
+					}
+					else if (light->projectionUseAsMask)
+					{
+						float3 texOut = BicubicInterpolation(
+							colorTexturePoint.x, colorTexturePoint.y, texture, textureSize.x, textureSize.y);
+						float luminance = dot(texOut, (float3)(0.299f, 0.587f, 0.114f));
+						mask = luminance * fade;
+					}
+					
+					lightShaded *= mask;
+				}
+				else
+				{
+					lightShaded = 0.0f;
+				}
+			}
+			else
+			{
+				lightShaded = 0.0f;
+			}
+		}
+		else
+		{
+			lightShaded = 0.0f;
+		}
+	}
+#else
+	if (light->type == lightProjection)
+	{
+		lightShaded = 0.0f;
+	}
+#endif
 
 	return lightShaded;
 }

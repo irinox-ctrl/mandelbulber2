@@ -670,11 +670,20 @@ void SynchronizeInterfaceColorGradientWidget(QList<cGradientEditWidget *> widget
 				{
 					QString palette = colorGradientWidget->GetColors();
 					par->Set(props.paramName, palette);
+					// Sync mask enable back to parameter container
+					QString maskParamName = props.paramName;
+					maskParamName.replace("_color_gradient", "_gradient_mask_enable");
+					par->Set(maskParamName, colorGradientWidget->IsMaskEnabled());
 				}
 				else if (mode == qInterface::write)
 				{
 					QString palette = par->Get<QString>(props.paramName);
 					colorGradientWidget->SetColors(palette);
+					// Sync mask enable from parameter container to widget
+					QString maskParamName = props.paramName;
+					maskParamName.replace("_color_gradient", "_gradient_mask_enable");
+					bool maskEnabled = par->Get<bool>(maskParamName);
+					colorGradientWidget->SetMaskEnable(maskEnabled);
 				}
 			}
 		}

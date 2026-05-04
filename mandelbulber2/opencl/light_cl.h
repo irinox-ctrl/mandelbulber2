@@ -70,6 +70,7 @@ typedef struct
 	enumLightDecayFunctionCl decayFunction;
 
 	cl_int colorTextureIndex;
+	cl_int alphaTextureIndex;
 
 	cl_float coneAngle;
 	cl_float coneSoftAngle;
@@ -102,9 +103,17 @@ typedef struct
 
 	// projection texture UV transforms (packed as float4 for guaranteed alignment)
 	// projectionParams1: x=offsetX, y=offsetY, z=scaleX, w=scaleY
-	// projectionParams2: x=rotation, y=repeatMode
+	// projectionParams2: x=rotationZ, y=repeatMode, z=useAlphaAsMask, w=unused
+	// projectionParams3: x=offsetZ, y=scaleZ, z=rotationX, w=rotationY
 	cl_float4 projectionParams1;
 	cl_float4 projectionParams2;
+	cl_float4 projectionParams3;
+
+	// alpha texture UV transforms (separate from color texture)
+	// alphaTextureParams1: x=offsetX, y=offsetY, z=scaleX, w=scaleY
+	// alphaTextureParams2: x=rotationZ, y=repeatMode, unused, unused
+	cl_float4 alphaTextureParams1;
+	cl_float4 alphaTextureParams2;
 
 } sLightCl;
 

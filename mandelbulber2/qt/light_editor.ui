@@ -1000,6 +1000,32 @@
           </property>
          </widget>
         </item>
+        <item row="1" column="1">
+         <widget class="FileSelectWidget" name="text_file_texture_alpha" native="true">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Path to an optional alpha mask texture. When &amp;quot;Use texture alpha as mask&amp;quot; is enabled, this image's brightness controls where the projection light is visible (white = full light, black = no light).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_alpha_texture">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Alpha mask path:</string>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
       <item>
@@ -1158,7 +1184,7 @@
          </widget>
         </item>
         <item row="6" column="0">
-         <widget class="QLabel" name="label_texture_scale_x">
+         <widget class="QLabel" name="label_texture_offset_z">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -1174,14 +1200,14 @@
          </widget>
         </item>
         <item row="6" column="1">
-         <widget class="MyLineEdit" name="logedit_projection_texture_scale_x">
+         <widget class="MyLineEdit" name="logedit_projection_texture_offset_z">
           <property name="toolTip">
            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Horizontal scale of the projected texture. 1.0 = original size.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
         </item>
         <item row="7" column="0">
-         <widget class="QLabel" name="label_texture_scale_y">
+         <widget class="QLabel" name="label_texture_scale_x">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -1197,14 +1223,14 @@
          </widget>
         </item>
         <item row="7" column="1">
-         <widget class="MyLineEdit" name="logedit_projection_texture_scale_y">
+         <widget class="MyLineEdit" name="logedit_projection_texture_scale_x">
           <property name="toolTip">
            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Vertical scale of the projected texture. 1.0 = original size.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
         </item>
         <item row="8" column="0">
-         <widget class="QLabel" name="label_texture_rotation">
+         <widget class="QLabel" name="label_texture_scale_y">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -1212,7 +1238,7 @@
            </sizepolicy>
           </property>
           <property name="text">
-           <string>Texture rotation</string>
+           <string>Texture offset Z</string>
           </property>
           <property name="wordWrap">
            <bool>true</bool>
@@ -1220,13 +1246,105 @@
          </widget>
         </item>
         <item row="8" column="1">
-         <widget class="MyLineEdit" name="logedit_projection_texture_rotation">
+         <widget class="MyLineEdit" name="logedit_projection_texture_scale_y">
           <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Rotation of the projected texture in degrees.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Depth offset of the projected texture. Shifts the projection focus point along the light direction.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
         </item>
-        <item row="9" column="0" colspan="2">
+        <item row="9" column="0">
+         <widget class="QLabel" name="label_texture_scale_z">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Texture scale Z</string>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="9" column="1">
+         <widget class="MyLineEdit" name="logedit_projection_texture_scale_z">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Depth scale of the projected texture. Scales the projection focus along the light direction.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+         </widget>
+        </item>
+        <item row="10" column="0">
+         <widget class="QLabel" name="label_texture_rotation_x">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Texture rotation X</string>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="10" column="1">
+         <widget class="MyLineEdit" name="logedit_projection_texture_rotation_x">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Rotation of the projected texture around the light right axis (pitch) in degrees.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+         </widget>
+        </item>
+        <item row="11" column="0">
+         <widget class="QLabel" name="label_texture_rotation_y">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Texture rotation Y</string>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="11" column="1">
+         <widget class="MyLineEdit" name="logedit_projection_texture_rotation_y">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Rotation of the projected texture around the light top axis (yaw) in degrees.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+         </widget>
+        </item>
+        <item row="12" column="0">
+         <widget class="QLabel" name="label_texture_rotation_z">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Texture rotation Z</string>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="12" column="1">
+         <widget class="MyLineEdit" name="logedit_projection_texture_rotation_z">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Rotation of the projected texture around the light direction axis (roll) in degrees.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+         </widget>
+        </item>
+        <item row="13" column="0" colspan="2">
          <widget class="MyCheckBox" name="checkBox_projection_use_as_mask">
           <property name="toolTip">
            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use texture as intensity mask instead of color. Light color is preserved; texture brightness controls intensity.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -1234,6 +1352,129 @@
           <property name="text">
            <string>Use texture as mask</string>
           </property>
+         </widget>
+        </item>
+        <item row="14" column="0" colspan="2">
+         <widget class="MyCheckBox" name="checkBox_projection_use_alpha_as_mask">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use texture alpha channel as intensity mask instead of color. Requires a PNG or image with alpha channel.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="text">
+           <string>Use texture alpha as mask</string>
+          </property>
+         </widget>
+        </item>
+        <item row="15" column="0" colspan="2">
+         <widget class="MyCheckBox" name="checkBox_projection_use_texture_alpha_as_mask">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use a separate alpha mask texture to control projection light visibility. The alpha mask path must be set above.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="text">
+           <string>Use separate alpha mask texture</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QGridLayout" name="gridLayout_alpha">
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_alpha_offset_x">
+          <property name="text">
+           <string>Alpha offset X</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="MyLineEdit" name="logedit_alpha_texture_offset_x">
+          <property name="toolTip">
+           <string>Horizontal offset of the alpha mask texture in UV space.</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_alpha_offset_y">
+          <property name="text">
+           <string>Alpha offset Y</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="MyLineEdit" name="logedit_alpha_texture_offset_y">
+          <property name="toolTip">
+           <string>Vertical offset of the alpha mask texture in UV space.</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_alpha_scale_x">
+          <property name="text">
+           <string>Alpha scale X</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="MyLineEdit" name="logedit_alpha_texture_scale_x">
+          <property name="toolTip">
+           <string>Horizontal scale of the alpha mask texture. 1.0 = original size.</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_alpha_scale_y">
+          <property name="text">
+           <string>Alpha scale Y</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="MyLineEdit" name="logedit_alpha_texture_scale_y">
+          <property name="toolTip">
+           <string>Vertical scale of the alpha mask texture. 1.0 = original size.</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="label_alpha_rotation_z">
+          <property name="text">
+           <string>Alpha rotation Z</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="MyLineEdit" name="logedit_alpha_texture_rotation_z">
+          <property name="toolTip">
+           <string>Rotation of the alpha mask texture around the light direction axis in degrees.</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0">
+         <widget class="QLabel" name="label_alpha_repeat_mode">
+          <property name="text">
+           <string>Alpha repeat mode</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="1">
+         <widget class="MyComboBox" name="comboBox_alpha_texture_repeat_mode">
+          <property name="toolTip">
+           <string>Alpha mask texture repeat mode.</string>
+          </property>
+          <item>
+           <property name="text">
+            <string>Clamp</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Repeat</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Mirror</string>
+           </property>
+          </item>
          </widget>
         </item>
        </layout>

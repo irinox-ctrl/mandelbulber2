@@ -86,15 +86,32 @@ cTexture::cTexture(
 
 		// try to load image if it's PNG format (this one supports 16-bit depth images)
 		WriteLogString("Loading texture - LoadPNG()", filename, 3);
-		std::vector<sRGBA16> bitmap16 = LoadPNG(filename, width, height);
+		bool pngHasAlpha = false;
+		std::vector<sRGBA16> bitmap16 = LoadPNG(filename, width, height, &pngHasAlpha);
+		hasAlpha = false;
 		if (!bitmap16.empty())
 		{
 			bitmapFloat.resize(bitmap16.size());
-			for (quint64 i = 0; i < bitmap16.size(); i++)
+			if (pngHasAlpha)
 			{
-				sRGBFloat pixel(
-					bitmap16[i].R / 65536.0f, bitmap16[i].G / 65536.0f, bitmap16[i].B / 65536.0f);
-				bitmapFloat[i] = pixel;
+				hasAlpha = true;
+				bitmapAlpha.resize(bitmap16.size());
+				for (quint64 i = 0; i < bitmap16.size(); i++)
+				{
+					sRGBFloat pixel(
+						bitmap16[i].R / 65536.0f, bitmap16[i].G / 65536.0f, bitmap16[i].B / 65536.0f);
+					bitmapFloat[i] = pixel;
+					bitmapAlpha[i] = bitmap16[i].A / 65536.0f;
+				}
+			}
+			else
+			{
+				for (quint64 i = 0; i < bitmap16.size(); i++)
+				{
+					sRGBFloat pixel(
+						bitmap16[i].R / 65536.0f, bitmap16[i].G / 65536.0f, bitmap16[i].B / 65536.0f);
+					bitmapFloat[i] = pixel;
+				}
 			}
 			bitmap16.clear();
 		}
@@ -113,19 +130,45 @@ cTexture::cTexture(
 			WriteLogString("Loading texture - loading using QImage", filename, 3);
 			QImage qImage;
 			qImage.load(filename);
-			qImage = qImage.convertToFormat(QImage::Format_RGB888);
 			if (!qImage.isNull())
 			{
+				bool imageHasAlpha = qImage.hasAlphaChannel();
+				if (imageHasAlpha)
+				{
+					qImage = qImage.convertToFormat(QImage::Format_ARGB32);
+				}
+				else
+				{
+					qImage = qImage.convertToFormat(QImage::Format_RGB888);
+				}
 				width = qImage.width();
 				height = qImage.height();
 				bitmapFloat.resize(width * height);
-				for (int y = 0; y < height; y++)
+				if (imageHasAlpha)
 				{
-					sRGB8 *line = reinterpret_cast<sRGB8 *>(qImage.scanLine(y));
-					for (int x = 0; x < width; x++)
+					bitmapAlpha.resize(width * height);
+					hasAlpha = true;
+					for (int y = 0; y < height; y++)
 					{
-						const sRGBFloat pixel(line[x].R / 256.0f, line[x].G / 256.0f, line[x].B / 256.0f);
-						bitmapFloat[x + y * width] = pixel;
+						QRgb *line = reinterpret_cast<QRgb *>(qImage.scanLine(y));
+						for (int x = 0; x < width; x++)
+						{
+							const sRGBFloat pixel(qRed(line[x]) / 255.0f, qGreen(line[x]) / 255.0f, qBlue(line[x]) / 255.0f);
+							bitmapFloat[x + y * width] = pixel;
+							bitmapAlpha[x + y * width] = qAlpha(line[x]) / 255.0f;
+						}
+					}
+				}
+				else
+				{
+					for (int y = 0; y < height; y++)
+					{
+						sRGB8 *line = reinterpret_cast<sRGB8 *>(qImage.scanLine(y));
+						for (int x = 0; x < width; x++)
+						{
+							const sRGBFloat pixel(line[x].R / 256.0f, line[x].G / 256.0f, line[x].B / 256.0f);
+							bitmapFloat[x + y * width] = pixel;
+						}
 					}
 				}
 			}
@@ -153,8 +196,10 @@ cTexture::cTexture(
 			width = defaultSize;
 			height = defaultSize;
 			loaded = false;
+			hasAlpha = false;
 			bitmapFloat.resize(defaultSize * defaultSize);
 			std::fill(bitmapFloat.begin(), bitmapFloat.end(), sRGBFloat(1.0, 1.0, 1.0));
+			bitmapAlpha.clear();
 			bitmapHDR.resize(defaultSize * defaultSize);
 			std::fill(bitmapHDR.begin(), bitmapHDR.end(), sRGBA8(255, 255, 255, 255));
 		}
@@ -169,7 +214,9 @@ cTexture::cTexture(const cTexture &tex)
 	width = tex.width;
 	height = tex.height;
 	loaded = tex.loaded;
+	hasAlpha = tex.hasAlpha;
 	bitmapFloat = tex.bitmapFloat;
+	bitmapAlpha = tex.bitmapAlpha;
 	bitmapHDR = tex.bitmapHDR;
 	originalFileName = tex.originalFileName;
 	mipmaps = tex.mipmaps;
@@ -182,7 +229,9 @@ cTexture::cTexture(cTexture &&other)
 	width = other.width;
 	height = other.height;
 	loaded = other.loaded;
+	hasAlpha = other.hasAlpha;
 	bitmapFloat = std::move(other.bitmapFloat);
+	bitmapAlpha = std::move(other.bitmapAlpha);
 	bitmapHDR = std::move(other.bitmapHDR);
 	originalFileName = std::move(other.originalFileName);
 	mipmaps = std::move(other.mipmaps);
@@ -194,7 +243,9 @@ cTexture &cTexture::operator=(const cTexture &tex)
 	width = tex.width;
 	height = tex.height;
 	loaded = tex.loaded;
+	hasAlpha = tex.hasAlpha;
 	bitmapFloat = tex.bitmapFloat;
+	bitmapAlpha = tex.bitmapAlpha;
 	bitmapHDR = tex.bitmapHDR;
 	originalFileName = tex.originalFileName;
 	mipmaps = tex.mipmaps;
@@ -208,7 +259,9 @@ cTexture &cTexture::operator=(cTexture &&other)
 	width = other.width;
 	height = other.height;
 	loaded = other.loaded;
+	hasAlpha = other.hasAlpha;
 	bitmapFloat = std::move(other.bitmapFloat);
+	bitmapAlpha = std::move(other.bitmapAlpha);
 	bitmapHDR = std::move(other.bitmapHDR);
 	originalFileName = std::move(other.originalFileName);
 	mipmaps = std::move(other.mipmaps);
@@ -221,20 +274,45 @@ void cTexture::FromQByteArray(QByteArray *buffer, enumUseMipmaps mode)
 {
 	QImage qImage(*buffer);
 	qImage.loadFromData(*buffer);
-	qImage = qImage.convertToFormat(QImage::Format_RGB888);
-
 	if (!qImage.isNull())
 	{
+		bool imageHasAlpha = qImage.hasAlphaChannel();
+		if (imageHasAlpha)
+		{
+			qImage = qImage.convertToFormat(QImage::Format_ARGB32);
+		}
+		else
+		{
+			qImage = qImage.convertToFormat(QImage::Format_RGB888);
+		}
 		width = qImage.width();
 		height = qImage.height();
 		bitmapFloat.resize(width * height);
-		for (int y = 0; y < height; y++)
+		if (imageHasAlpha)
 		{
-			sRGB8 *line = reinterpret_cast<sRGB8 *>(qImage.scanLine(y));
-			for (int x = 0; x < width; x++)
+			bitmapAlpha.resize(width * height);
+			hasAlpha = true;
+			for (int y = 0; y < height; y++)
 			{
-				const sRGBFloat pixel(line[x].R / 256.0f, line[x].G / 256.0f, line[x].B / 256.0f);
-				bitmapFloat[x + y * width] = pixel;
+				QRgb *line = reinterpret_cast<QRgb *>(qImage.scanLine(y));
+				for (int x = 0; x < width; x++)
+				{
+					const sRGBFloat pixel(qRed(line[x]) / 255.0f, qGreen(line[x]) / 255.0f, qBlue(line[x]) / 255.0f);
+					bitmapFloat[x + y * width] = pixel;
+					bitmapAlpha[x + y * width] = qAlpha(line[x]) / 255.0f;
+				}
+			}
+		}
+		else
+		{
+			for (int y = 0; y < height; y++)
+			{
+				sRGB8 *line = reinterpret_cast<sRGB8 *>(qImage.scanLine(y));
+				for (int x = 0; x < width; x++)
+				{
+					const sRGBFloat pixel(line[x].R / 256.0f, line[x].G / 256.0f, line[x].B / 256.0f);
+					bitmapFloat[x + y * width] = pixel;
+				}
 			}
 		}
 
@@ -254,8 +332,10 @@ void cTexture::FromQByteArray(QByteArray *buffer, enumUseMipmaps mode)
 		width = defaultSize;
 		height = defaultSize;
 		loaded = false;
+		hasAlpha = false;
 		bitmapFloat.resize(defaultSize * defaultSize);
 		std::fill(bitmapFloat.begin(), bitmapFloat.end(), sRGBFloat(1.0, 1.0, 1.0));
+		bitmapAlpha.clear();
 		bitmapHDR.resize(defaultSize * defaultSize);
 		std::fill(bitmapHDR.begin(), bitmapHDR.end(), sRGBA8(255, 255, 255, 255));
 	}
@@ -266,8 +346,10 @@ cTexture::cTexture()
 	width = defaultSize;
 	height = defaultSize;
 	loaded = false;
+	hasAlpha = false;
 	bitmapFloat.resize(defaultSize * defaultSize);
 	std::fill(bitmapFloat.begin(), bitmapFloat.end(), sRGBFloat(1.0, 1.0, 1.0));
+	bitmapAlpha.clear();
 	bitmapHDR.resize(defaultSize * defaultSize);
 	std::fill(bitmapHDR.begin(), bitmapHDR.end(), sRGBA8(255, 255, 255, 255));
 }
@@ -300,6 +382,42 @@ sRGBFloat cTexture::Pixel(CVector2<float> point, float pixelSize) const
 	point.x *= float(width);
 	point.y *= float(height);
 	return MipMap(point.x, point.y, pixelSize);
+}
+
+float cTexture::PixelAlpha(float x, float y) const
+{
+	if (!hasAlpha || bitmapAlpha.empty()) return 1.0f;
+	if (x >= 0 && x < width && y >= 0 && y < height - 1.0)
+	{
+		const int ix = int(x);
+		const int iy = int(y);
+		const float rx = x - ix;
+		const float ry = y - iy;
+		const float k1 = bitmapAlpha[iy * width + ix];
+		const float k2 = bitmapAlpha[iy * width + ix + 1];
+		const float k3 = bitmapAlpha[(iy + 1) * width + ix];
+		const float k4 = bitmapAlpha[(iy + 1) * width + ix + 1];
+		return k1 * (1.0f - rx) * (1.0f - ry) + k2 * rx * (1.0f - ry)
+				 + k3 * (1.0f - rx) * ry + k4 * (rx * ry);
+	}
+	return 0.0f;
+}
+
+float cTexture::PixelAlpha(CVector2<float> point) const
+{
+	if (point.x > 0)
+		point.x = fmod(point.x, 1.0);
+	else
+		point.x = 1.0 + fmod(point.x, 1.0);
+
+	if (point.y > 0)
+		point.y = fmod(point.y, 1.0);
+	else
+		point.y = 1.0 + fmod(point.y, 1.0);
+
+	point.x *= float(width);
+	point.y *= float(height);
+	return PixelAlpha(point.x, point.y);
 }
 
 sRGBFloat cTexture::LinearInterpolation(float x, float y) const
@@ -520,24 +638,36 @@ void cTexture::ComputeHDRBItmap()
 		sRGBA8 pixel8;
 
 		sRGBFloat pixel = bitmapFloat[i];
-		// hdre color compression
-		float v = pixel.R; // max rgb value
-		if (v < pixel.G) v = pixel.G;
-		if (v < pixel.B) v = pixel.B;
-		if (v < 1e-32f)
+		if (hasAlpha && i < bitmapAlpha.size())
 		{
-			pixel8 = sRGBA8(0, 0, 0, 0);
+			// store alpha in A channel instead of HDR exponent (for LDR images with alpha)
+			uchar r = uchar(clamp(pixel.R * 255.0f, 0.0f, 255.0f));
+			uchar g = uchar(clamp(pixel.G * 255.0f, 0.0f, 255.0f));
+			uchar b = uchar(clamp(pixel.B * 255.0f, 0.0f, 255.0f));
+			uchar a = uchar(clamp(bitmapAlpha[i] * 255.0f, 0.0f, 255.0f));
+			pixel8 = sRGBA8(r, g, b, a);
 		}
 		else
 		{
-			int exponent;
-			int value = frexpf(v, &exponent) * 256.0f / v;
-			uchar r = uchar(value * pixel.R);
-			uchar g = uchar(value * pixel.G);
-			uchar b = uchar(value * pixel.B);
-			uchar e = uchar(exponent + 128);
+			// hdre color compression
+			float v = pixel.R; // max rgb value
+			if (v < pixel.G) v = pixel.G;
+			if (v < pixel.B) v = pixel.B;
+			if (v < 1e-32f)
+			{
+				pixel8 = sRGBA8(0, 0, 0, 0);
+			}
+			else
+			{
+				int exponent;
+				int value = frexpf(v, &exponent) * 256.0f / v;
+				uchar r = uchar(value * pixel.R);
+				uchar g = uchar(value * pixel.G);
+				uchar b = uchar(value * pixel.B);
+				uchar e = uchar(exponent + 128);
 
-			pixel8 = sRGBA8(r, g, b, e);
+				pixel8 = sRGBA8(r, g, b, e);
+			}
 		}
 		bitmapHDR[i] = pixel8;
 	}

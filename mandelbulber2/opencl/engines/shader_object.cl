@@ -64,9 +64,15 @@ float3 ObjectShader(__constant sClInConstants *consts, sRenderData *renderData,
 
 			float3 gradientColor = GetColorFromGradient(colorPosition,
 				input->material->surfaceGradientMode, input->paletteSurfaceLength,
-				input->palette + input->paletteSurfaceOffset);
+				input->palette + input->paletteSurfaceOffset, NULL, 0);
+			float alpha = GetAlphaFromGradient(colorPosition, input->opacitySurfaceLength,
+				input->palette + input->opacitySurfaceOffset);
 
 			surfaceColor *= gradientColor * perlinColInt + perlinIntN;
+			if (input->material->surfaceGradientMaskEnable)
+			{
+				surfaceColor *= alpha;
+			}
 		}
 		else
 #endif // USE_SURFACE_GRADIENT
@@ -183,9 +189,15 @@ float3 ObjectShader(__constant sClInConstants *consts, sRenderData *renderData,
 
 			float3 gradientColor = GetColorFromGradient(colorPosition,
 				input->material->luminosityGradientMode, input->paletteLuminosityLength,
-				input->palette + input->paletteLuminosityOffset);
+				input->palette + input->paletteLuminosityOffset, NULL, 0);
+			float alpha = GetAlphaFromGradient(colorPosition, input->opacityLuminosityLength,
+				input->palette + input->opacityLuminosityOffset);
 
 			luminosity += gradientColor * perlinLumInt;
+			if (input->material->luminosityGradientMaskEnable)
+			{
+				luminosity *= alpha;
+			}
 		}
 		else
 #endif // USE_LUMINOSITY_GRADIENT

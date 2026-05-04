@@ -73,8 +73,11 @@ public:
 	int Width() const { return width; }
 	sRGBFloat Pixel(float x, float y, float pixelSize = 0.0) const;
 	sRGBFloat Pixel(CVector2<float> point, float pixelSize = 0.0) const;
+	float PixelAlpha(float x, float y) const;
+	float PixelAlpha(CVector2<float> point) const;
 	inline sRGBFloat FastPixel(int x, int y) const { return bitmapFloat[x + y * width]; }
 	bool IsLoaded() const { return loaded; }
+	bool HasAlpha() const { return hasAlpha; }
 	QString GetFileName() const { return originalFileName; }
 	void FromQByteArray(QByteArray *buffer, enumUseMipmaps mode);
 	CVector3 NormalMapFromBumpMap(CVector2<float> point, float bump, float pixelSize = 0.0) const;
@@ -91,10 +94,12 @@ private:
 	static int WrapInt(int a, int size) { return (a + size) % size; }
 	void ComputeHDRBItmap();
 	std::vector<sRGBFloat> bitmapFloat;
+	std::vector<float> bitmapAlpha;
 	std::vector<sRGBA8> bitmapHDR;
 	int width;
 	int height;
 	bool loaded;
+	bool hasAlpha;
 	QString originalFileName;
 	QList<QVector<sRGBFloat>> mipmaps;
 	QList<CVector2<int>> mipmapSizes;

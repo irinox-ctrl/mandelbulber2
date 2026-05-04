@@ -65,30 +65,58 @@ typedef struct
 #ifdef USE_SURFACE_GRADIENT
 	int paletteSurfaceOffset;
 	int paletteSurfaceLength;
+	int opacitySurfaceOffset;
+	int opacitySurfaceLength;
+	int midpointSurfaceOffset;
+	int midpointSurfaceLength;
 #endif
 #ifdef USE_SPECULAR_GRADIENT
 	int paletteSpecularOffset;
 	int paletteSpecularLength;
+	int opacitySpecularOffset;
+	int opacitySpecularLength;
+	int midpointSpecularOffset;
+	int midpointSpecularLength;
 #endif
 #ifdef USE_DIFFUSE_GRADIENT
 	int paletteDiffuseOffset;
 	int paletteDiffuseLength;
+	int opacityDiffuseOffset;
+	int opacityDiffuseLength;
+	int midpointDiffuseOffset;
+	int midpointDiffuseLength;
 #endif
 #ifdef USE_LUMINOSITY_GRADIENT
 	int paletteLuminosityOffset;
 	int paletteLuminosityLength;
+	int opacityLuminosityOffset;
+	int opacityLuminosityLength;
+	int midpointLuminosityOffset;
+	int midpointLuminosityLength;
 #endif
 #ifdef USE_ROUGHNESS_GRADIENT
 	int paletteRoughnessOffset;
 	int paletteRoughnessLength;
+	int opacityRoughnessOffset;
+	int opacityRoughnessLength;
+	int midpointRoughnessOffset;
+	int midpointRoughnessLength;
 #endif
 #ifdef USE_REFLECTANCE_GRADIENT
 	int paletteReflectanceOffset;
 	int paletteReflectanceLength;
+	int opacityReflectanceOffset;
+	int opacityReflectanceLength;
+	int midpointReflectanceOffset;
+	int midpointReflectanceLength;
 #endif
 #ifdef USE_TRANSPARENCY_GRADIENT
 	int paletteTransparencyOffset;
 	int paletteTransparencyLength;
+	int opacityTransparencyOffset;
+	int opacityTransparencyLength;
+	int midpointTransparencyOffset;
+	int midpointTransparencyLength;
 #endif
 } sShaderInputDataCl;
 

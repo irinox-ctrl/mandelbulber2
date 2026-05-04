@@ -328,8 +328,9 @@ QStringList SaveImage(QString filename, ImageFileSave::enumImageFileType fileTyp
 	return listOfSavedFiles;
 }
 
-std::vector<sRGBA16> LoadPNG(QString filename, int &outWidth, int &outHeight)
+std::vector<sRGBA16> LoadPNG(QString filename, int &outWidth, int &outHeight, bool *outHasAlpha)
 {
+	bool localHasAlpha = false;
 	png_structp png_ptr;
 	png_infop info_ptr;
 	unsigned int sig_read = 8;
@@ -415,6 +416,7 @@ std::vector<sRGBA16> LoadPNG(QString filename, int &outWidth, int &outHeight)
 		}
 		else if (color_type == PNG_COLOR_TYPE_RGB_ALPHA)
 		{
+			localHasAlpha = true;
 			for (int y = 0; y < outHeight; y++)
 			{
 				for (int x = 0; x < outWidth; x++)
@@ -482,6 +484,7 @@ std::vector<sRGBA16> LoadPNG(QString filename, int &outWidth, int &outHeight)
 
 	fclose(fp);
 
+	if (outHasAlpha) *outHasAlpha = localHasAlpha;
 	return image;
 }
 

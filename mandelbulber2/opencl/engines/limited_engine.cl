@@ -77,30 +77,58 @@ kernel void fractal3D(__global sClPixel *out, __global char *inBuff,
 #ifdef USE_SURFACE_GRADIENT
 	int paletteSurfaceOffset;
 	int paletteSurfaceLength;
+	int opacitySurfaceOffset;
+	int opacitySurfaceLength;
+	int midpointSurfaceOffset;
+	int midpointSurfaceLength;
 #endif
 #ifdef USE_SPECULAR_GRADIENT
 	int paletteSpecularOffset;
 	int paletteSpecularLength;
+	int opacitySpecularOffset;
+	int opacitySpecularLength;
+	int midpointSpecularOffset;
+	int midpointSpecularLength;
 #endif
 #ifdef USE_DIFFUSE_GRADIENT
 	int paletteDiffuseOffset;
 	int paletteDiffuseLength;
+	int opacityDiffuseOffset;
+	int opacityDiffuseLength;
+	int midpointDiffuseOffset;
+	int midpointDiffuseLength;
 #endif
 #ifdef USE_LUMINOSITY_GRADIENT
 	int paletteLuminosityOffset;
 	int paletteLuminosityLength;
+	int opacityLuminosityOffset;
+	int opacityLuminosityLength;
+	int midpointLuminosityOffset;
+	int midpointLuminosityLength;
 #endif
 #ifdef USE_ROUGHNESS_GRADIENT
 	int paletteRoughnessOffset;
 	int paletteRoughnessLength;
+	int opacityRoughnessOffset;
+	int opacityRoughnessLength;
+	int midpointRoughnessOffset;
+	int midpointRoughnessLength;
 #endif
 #ifdef USE_REFLECTANCE_GRADIENT
 	int paletteReflectanceOffset;
 	int paletteReflectanceLength;
+	int opacityReflectanceOffset;
+	int opacityReflectanceLength;
+	int midpointReflectanceOffset;
+	int midpointReflectanceLength;
 #endif
 #ifdef USE_TRANSPARENCY_GRADIENT
 	int paletteTransparencyOffset;
 	int paletteTransparencyLength;
+	int opacityTransparencyOffset;
+	int opacityTransparencyLength;
+	int midpointTransparencyOffset;
+	int midpointTransparencyLength;
 #endif
 
 	// number of materials
@@ -117,30 +145,58 @@ kernel void fractal3D(__global sClPixel *out, __global char *inBuff,
 #ifdef USE_SURFACE_GRADIENT
 	paletteSurfaceOffset = GetInteger(material0Offset + sizeof(int) * 2, inBuff);
 	paletteSurfaceLength = GetInteger(material0Offset + sizeof(int) * 3, inBuff);
+	opacitySurfaceOffset = GetInteger(material0Offset + sizeof(int) * 16, inBuff);
+	opacitySurfaceLength = GetInteger(material0Offset + sizeof(int) * 17, inBuff);
+	midpointSurfaceOffset = GetInteger(material0Offset + sizeof(int) * 30, inBuff);
+	midpointSurfaceLength = GetInteger(material0Offset + sizeof(int) * 31, inBuff);
 #endif
 #ifdef USE_SPECULAR_GRADIENT
 	paletteSpecularOffset = GetInteger(material0Offset + sizeof(int) * 4, inBuff);
 	paletteSpecularLength = GetInteger(material0Offset + sizeof(int) * 5, inBuff);
+	opacitySpecularOffset = GetInteger(material0Offset + sizeof(int) * 18, inBuff);
+	opacitySpecularLength = GetInteger(material0Offset + sizeof(int) * 19, inBuff);
+	midpointSpecularOffset = GetInteger(material0Offset + sizeof(int) * 32, inBuff);
+	midpointSpecularLength = GetInteger(material0Offset + sizeof(int) * 33, inBuff);
 #endif
 #ifdef USE_DIFFUSE_GRADIENT
 	paletteDiffuseOffset = GetInteger(material0Offset + sizeof(int) * 6, inBuff);
 	paletteDiffuseLength = GetInteger(material0Offset + sizeof(int) * 7, inBuff);
+	opacityDiffuseOffset = GetInteger(material0Offset + sizeof(int) * 20, inBuff);
+	opacityDiffuseLength = GetInteger(material0Offset + sizeof(int) * 21, inBuff);
+	midpointDiffuseOffset = GetInteger(material0Offset + sizeof(int) * 34, inBuff);
+	midpointDiffuseLength = GetInteger(material0Offset + sizeof(int) * 35, inBuff);
 #endif
 #ifdef USE_LUMINOSITY_GRADIENT
 	paletteLuminosityOffset = GetInteger(material0Offset + sizeof(int) * 8, inBuff);
 	paletteLuminosityLength = GetInteger(material0Offset + sizeof(int) * 9, inBuff);
+	opacityLuminosityOffset = GetInteger(material0Offset + sizeof(int) * 22, inBuff);
+	opacityLuminosityLength = GetInteger(material0Offset + sizeof(int) * 23, inBuff);
+	midpointLuminosityOffset = GetInteger(material0Offset + sizeof(int) * 36, inBuff);
+	midpointLuminosityLength = GetInteger(material0Offset + sizeof(int) * 37, inBuff);
 #endif
 #ifdef USE_ROUGHNESS_GRADIENT
 	paletteRoughnessOffset = GetInteger(material0Offset + sizeof(int) * 10, inBuff);
 	paletteRoughnessLength = GetInteger(material0Offset + sizeof(int) * 11, inBuff);
+	opacityRoughnessOffset = GetInteger(material0Offset + sizeof(int) * 24, inBuff);
+	opacityRoughnessLength = GetInteger(material0Offset + sizeof(int) * 25, inBuff);
+	midpointRoughnessOffset = GetInteger(material0Offset + sizeof(int) * 38, inBuff);
+	midpointRoughnessLength = GetInteger(material0Offset + sizeof(int) * 39, inBuff);
 #endif
 #ifdef USE_REFLECTANCE_GRADIENT
 	paletteReflectanceOffset = GetInteger(material0Offset + sizeof(int) * 12, inBuff);
 	paletteReflectanceLength = GetInteger(material0Offset + sizeof(int) * 13, inBuff);
+	opacityReflectanceOffset = GetInteger(material0Offset + sizeof(int) * 26, inBuff);
+	opacityReflectanceLength = GetInteger(material0Offset + sizeof(int) * 27, inBuff);
+	midpointReflectanceOffset = GetInteger(material0Offset + sizeof(int) * 40, inBuff);
+	midpointReflectanceLength = GetInteger(material0Offset + sizeof(int) * 41, inBuff);
 #endif
 #ifdef USE_TRANSPARENCY_GRADIENT
 	paletteTransparencyOffset = GetInteger(material0Offset + sizeof(int) * 14, inBuff);
 	paletteTransparencyLength = GetInteger(material0Offset + sizeof(int) * 15, inBuff);
+	opacityTransparencyOffset = GetInteger(material0Offset + sizeof(int) * 28, inBuff);
+	opacityTransparencyLength = GetInteger(material0Offset + sizeof(int) * 29, inBuff);
+	midpointTransparencyOffset = GetInteger(material0Offset + sizeof(int) * 42, inBuff);
+	midpointTransparencyLength = GetInteger(material0Offset + sizeof(int) * 43, inBuff);
 #endif
 
 	// material data
@@ -332,30 +388,58 @@ kernel void fractal3D(__global sClPixel *out, __global char *inBuff,
 #ifdef USE_SURFACE_GRADIENT
 			renderData.paletteSurfaceOffset = paletteSurfaceOffset;
 			renderData.paletteSurfaceLength = paletteSurfaceLength;
+			renderData.opacitySurfaceOffset = opacitySurfaceOffset;
+			renderData.opacitySurfaceLength = opacitySurfaceLength;
+			renderData.midpointSurfaceOffset = midpointSurfaceOffset;
+			renderData.midpointSurfaceLength = midpointSurfaceLength;
 #endif
 #ifdef USE_SPECULAR_GRADIENT
 			renderData.paletteSpecularOffset = paletteSpecularOffset;
 			renderData.paletteSpecularLength = paletteSpecularLength;
+			renderData.opacitySpecularOffset = opacitySpecularOffset;
+			renderData.opacitySpecularLength = opacitySpecularLength;
+			renderData.midpointSpecularOffset = midpointSpecularOffset;
+			renderData.midpointSpecularLength = midpointSpecularLength;
 #endif
 #ifdef USE_DIFFUSE_GRADIENT
 			renderData.paletteDiffuseOffset = paletteDiffuseOffset;
 			renderData.paletteDiffuseLength = paletteDiffuseLength;
+			renderData.opacityDiffuseOffset = opacityDiffuseOffset;
+			renderData.opacityDiffuseLength = opacityDiffuseLength;
+			renderData.midpointDiffuseOffset = midpointDiffuseOffset;
+			renderData.midpointDiffuseLength = midpointDiffuseLength;
 #endif
 #ifdef USE_LUMINOSITY_GRADIENT
 			renderData.paletteLuminosityOffset = paletteLuminosityOffset;
 			renderData.paletteLuminosityLength = paletteLuminosityLength;
+			renderData.opacityLuminosityOffset = opacityLuminosityOffset;
+			renderData.opacityLuminosityLength = opacityLuminosityLength;
+			renderData.midpointLuminosityOffset = midpointLuminosityOffset;
+			renderData.midpointLuminosityLength = midpointLuminosityLength;
 #endif
 #ifdef USE_ROUGHNESS_GRADIENT
 			renderData.paletteRoughnessOffset = paletteRoughnessOffset;
 			renderData.paletteRoughnessLength = paletteRoughnessLength;
+			renderData.opacityRoughnessOffset = opacityRoughnessOffset;
+			renderData.opacityRoughnessLength = opacityRoughnessLength;
+			renderData.midpointRoughnessOffset = midpointRoughnessOffset;
+			renderData.midpointRoughnessLength = midpointRoughnessLength;
 #endif
 #ifdef USE_REFLECTANCE_GRADIENT
 			renderData.paletteReflectanceOffset = paletteReflectanceOffset;
 			renderData.paletteReflectanceLength = paletteReflectanceLength;
+			renderData.opacityReflectanceOffset = opacityReflectanceOffset;
+			renderData.opacityReflectanceLength = opacityReflectanceLength;
+			renderData.midpointReflectanceOffset = midpointReflectanceOffset;
+			renderData.midpointReflectanceLength = midpointReflectanceLength;
 #endif
 #ifdef USE_TRANSPARENCY_GRADIENT
 			renderData.paletteTransparencyOffset = paletteTransparencyOffset;
 			renderData.paletteTransparencyLength = paletteTransparencyLength;
+			renderData.opacityTransparencyOffset = opacityTransparencyOffset;
+			renderData.opacityTransparencyLength = opacityTransparencyLength;
+			renderData.midpointTransparencyOffset = midpointTransparencyOffset;
+			renderData.midpointTransparencyLength = midpointTransparencyLength;
 #endif
 			renderData.AOVectorsCount = AOVectorsCount;
 			renderData.reflectionsMax = 0;
@@ -457,30 +541,58 @@ kernel void fractal3D(__global sClPixel *out, __global char *inBuff,
 #ifdef USE_SURFACE_GRADIENT
 			shaderInputData.paletteSurfaceOffset = renderData.paletteSurfaceOffset;
 			shaderInputData.paletteSurfaceLength = renderData.paletteSurfaceLength;
+			shaderInputData.opacitySurfaceOffset = renderData.opacitySurfaceOffset;
+			shaderInputData.opacitySurfaceLength = renderData.opacitySurfaceLength;
+			shaderInputData.midpointSurfaceOffset = renderData.midpointSurfaceOffset;
+			shaderInputData.midpointSurfaceLength = renderData.midpointSurfaceLength;
 #endif
 #ifdef USE_SPECULAR_GRADIENT
 			shaderInputData.paletteSpecularOffset = renderData.paletteSpecularOffset;
 			shaderInputData.paletteSpecularLength = renderData.paletteSpecularLength;
+			shaderInputData.opacitySpecularOffset = renderData.opacitySpecularOffset;
+			shaderInputData.opacitySpecularLength = renderData.opacitySpecularLength;
+			shaderInputData.midpointSpecularOffset = renderData.midpointSpecularOffset;
+			shaderInputData.midpointSpecularLength = renderData.midpointSpecularLength;
 #endif
 #ifdef USE_DIFFUSE_GRADIENT
 			shaderInputData.paletteDiffuseOffset = renderData.paletteDiffuseOffset;
 			shaderInputData.paletteDiffuseLength = renderData.paletteDiffuseLength;
+			shaderInputData.opacityDiffuseOffset = renderData.opacityDiffuseOffset;
+			shaderInputData.opacityDiffuseLength = renderData.opacityDiffuseLength;
+			shaderInputData.midpointDiffuseOffset = renderData.midpointDiffuseOffset;
+			shaderInputData.midpointDiffuseLength = renderData.midpointDiffuseLength;
 #endif
 #ifdef USE_LUMINOSITY_GRADIENT
 			shaderInputData.paletteLuminosityOffset = renderData.paletteLuminosityOffset;
 			shaderInputData.paletteLuminosityLength = renderData.paletteLuminosityLength;
+			shaderInputData.opacityLuminosityOffset = renderData.opacityLuminosityOffset;
+			shaderInputData.opacityLuminosityLength = renderData.opacityLuminosityLength;
+			shaderInputData.midpointLuminosityOffset = renderData.midpointLuminosityOffset;
+			shaderInputData.midpointLuminosityLength = renderData.midpointLuminosityLength;
 #endif
 #ifdef USE_ROUGHNESS_GRADIENT
 			shaderInputData.paletteRoughnessOffset = renderData.paletteRoughnessOffset;
 			shaderInputData.paletteRoughnessLength = renderData.paletteRoughnessLength;
+			shaderInputData.opacityRoughnessOffset = renderData.opacityRoughnessOffset;
+			shaderInputData.opacityRoughnessLength = renderData.opacityRoughnessLength;
+			shaderInputData.midpointRoughnessOffset = renderData.midpointRoughnessOffset;
+			shaderInputData.midpointRoughnessLength = renderData.midpointRoughnessLength;
 #endif
 #ifdef USE_REFLECTANCE_GRADIENT
 			shaderInputData.paletteReflectanceOffset = renderData.paletteReflectanceOffset;
 			shaderInputData.paletteReflectanceLength = renderData.paletteReflectanceLength;
+			shaderInputData.opacityReflectanceOffset = renderData.opacityReflectanceOffset;
+			shaderInputData.opacityReflectanceLength = renderData.opacityReflectanceLength;
+			shaderInputData.midpointReflectanceOffset = renderData.midpointReflectanceOffset;
+			shaderInputData.midpointReflectanceLength = renderData.midpointReflectanceLength;
 #endif
 #ifdef USE_TRANSPARENCY_GRADIENT
 			shaderInputData.paletteTransparencyOffset = renderData.paletteTransparencyOffset;
 			shaderInputData.paletteTransparencyLength = renderData.paletteTransparencyLength;
+			shaderInputData.opacityTransparencyOffset = renderData.opacityTransparencyOffset;
+			shaderInputData.opacityTransparencyLength = renderData.opacityTransparencyLength;
+			shaderInputData.midpointTransparencyOffset = renderData.midpointTransparencyOffset;
+			shaderInputData.midpointTransparencyLength = renderData.midpointTransparencyLength;
 #endif
 			shaderInputData.stepCount = count;
 			shaderInputData.randomSeed = randomSeed;

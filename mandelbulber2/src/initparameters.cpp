@@ -2482,6 +2482,7 @@ void InitLightParams(int lightId, std::shared_ptr<cParameterContainer> par)
 		QDir::toNativeSeparators(
 			systemDirectories.sharedDir + "textures" + QDir::separator() + "water_caustics.jpg"),
 		morphLinear, paramStandard);
+	par->addParam(cLight::Name("file_texture_alpha", lightId), QString(""), morphLinear, paramStandard);
 
 	par->addParam(cLight::Name("repeat_texture", lightId), false, morphNone, paramStandard);
 	par->addParam(cLight::Name("projection_horizonal_angle", lightId), 60.0, 0.0, 179.9, morphLinear,
@@ -2495,13 +2496,30 @@ void InitLightParams(int lightId, std::shared_ptr<cParameterContainer> par)
 		paramStandard);
 	par->addParam(cLight::Name("projection_texture_offset_y", lightId), 0.0, -10.0, 10.0, morphLinear,
 		paramStandard);
+	par->addParam(cLight::Name("projection_texture_offset_z", lightId), 0.0, -10.0, 10.0, morphLinear,
+		paramStandard);
 	par->addParam(cLight::Name("projection_texture_scale_x", lightId), 1.0, 0.01, 10.0, morphLinear,
 		paramStandard);
 	par->addParam(cLight::Name("projection_texture_scale_y", lightId), 1.0, 0.01, 10.0, morphLinear,
 		paramStandard);
-	par->addParam(cLight::Name("projection_texture_rotation", lightId), 0.0, -180.0, 180.0, morphLinear,
+	par->addParam(cLight::Name("projection_texture_scale_z", lightId), 1.0, 0.01, 10.0, morphLinear,
+		paramStandard);
+	par->addParam(cLight::Name("projection_texture_rotation_x", lightId), 0.0, -180.0, 180.0, morphLinear,
+		paramStandard);
+	par->addParam(cLight::Name("projection_texture_rotation_y", lightId), 0.0, -180.0, 180.0, morphLinear,
+		paramStandard);
+	par->addParam(cLight::Name("projection_texture_rotation_z", lightId), 0.0, -180.0, 180.0, morphLinear,
 		paramStandard);
 	par->addParam(cLight::Name("projection_repeat_mode", lightId), int(0), morphLinear, paramStandard,
+		QStringList({"Clamp", "Repeat", "Mirror"}));
+	par->addParam(cLight::Name("projection_use_alpha_as_mask", lightId), false, morphNone, paramStandard);
+	par->addParam(cLight::Name("projection_use_texture_alpha_as_mask", lightId), false, morphNone, paramStandard);
+	par->addParam(cLight::Name("alpha_texture_offset_x", lightId), 0.0, -10.0, 10.0, morphLinear, paramStandard);
+	par->addParam(cLight::Name("alpha_texture_offset_y", lightId), 0.0, -10.0, 10.0, morphLinear, paramStandard);
+	par->addParam(cLight::Name("alpha_texture_scale_x", lightId), 1.0, 0.01, 10.0, morphLinear, paramStandard);
+	par->addParam(cLight::Name("alpha_texture_scale_y", lightId), 1.0, 0.01, 10.0, morphLinear, paramStandard);
+	par->addParam(cLight::Name("alpha_texture_rotation_z", lightId), 0.0, -180.0, 180.0, morphLinear, paramStandard);
+	par->addParam(cLight::Name("alpha_texture_repeat_mode", lightId), int(0), morphLinear, paramStandard,
 		QStringList({"Clamp", "Repeat", "Mirror"}));
 
 	par->addParam(cLight::Name("orbit_distance", lightId), 5.0, 0.0, 1e10, morphLinear, paramStandard);

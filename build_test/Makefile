@@ -216,6 +216,7 @@ SOURCES       = ../mandelbulber2/src/algebra.cpp \
 		../mandelbulber2/qt/detached_window.cpp \
 		../mandelbulber2/qt/dock_animation.cpp \
 		../mandelbulber2/qt/dock_effects.cpp \
+		../mandelbulber2/qt/dock_fake_lights.cpp \
 		../mandelbulber2/qt/dock_fractal.cpp \
 		../mandelbulber2/qt/dock_gamepad.cpp \
 		../mandelbulber2/qt/dock_image_adjustments.cpp \
@@ -800,6 +801,7 @@ SOURCES       = ../mandelbulber2/src/algebra.cpp \
 		moc_detached_window.cpp \
 		moc_dock_animation.cpp \
 		moc_dock_effects.cpp \
+		moc_dock_fake_lights.cpp \
 		moc_dock_fractal.cpp \
 		moc_dock_gamepad.cpp \
 		moc_dock_image_adjustments.cpp \
@@ -1019,6 +1021,7 @@ OBJECTS       = algebra.o \
 		detached_window.o \
 		dock_animation.o \
 		dock_effects.o \
+		dock_fake_lights.o \
 		dock_fractal.o \
 		dock_gamepad.o \
 		dock_image_adjustments.o \
@@ -1604,6 +1607,7 @@ OBJECTS       = algebra.o \
 		moc_detached_window.o \
 		moc_dock_animation.o \
 		moc_dock_effects.o \
+		moc_dock_fake_lights.o \
 		moc_dock_fractal.o \
 		moc_dock_gamepad.o \
 		moc_dock_image_adjustments.o \
@@ -1916,6 +1920,7 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		../mandelbulber2/qt/detached_window.h \
 		../mandelbulber2/qt/dock_animation.h \
 		../mandelbulber2/qt/dock_effects.h \
+		../mandelbulber2/qt/dock_fake_lights.h \
 		../mandelbulber2/qt/dock_fractal.h \
 		../mandelbulber2/qt/dock_gamepad.h \
 		../mandelbulber2/qt/dock_image_adjustments.h \
@@ -1970,7 +1975,39 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		../mandelbulber2/qt/tab_fractal.h \
 		../mandelbulber2/qt/thumbnail_widget.h \
 		../mandelbulber2/qt/time_ruler.h \
+		../mandelbulber2/qt/ui_audio_selector.h \
+		../mandelbulber2/qt/ui_custom_formula_editor.h \
+		../mandelbulber2/qt/ui_detached_window.h \
+		../mandelbulber2/qt/ui_dock_animation.h \
+		../mandelbulber2/qt/ui_dock_effects.h \
+		../mandelbulber2/qt/ui_dock_fake_lights.h \
+		../mandelbulber2/qt/ui_dock_fractal.h \
+		../mandelbulber2/qt/ui_dock_gamepad.h \
+		../mandelbulber2/qt/ui_dock_image_adjustments.h \
+		../mandelbulber2/qt/ui_dock_measurements.h \
+		../mandelbulber2/qt/ui_dock_navigation.h \
 		../mandelbulber2/qt/ui_dock_pattern_lines.h \
+		../mandelbulber2/qt/ui_dock_queue.h \
+		../mandelbulber2/qt/ui_dock_rendering_engine.h \
+		../mandelbulber2/qt/ui_dock_statistics.h \
+		../mandelbulber2/qt/ui_image_save_dialog.h \
+		../mandelbulber2/qt/ui_light_editor.h \
+		../mandelbulber2/qt/ui_light_sources_manager.h \
+		../mandelbulber2/qt/ui_material_editor.h \
+		../mandelbulber2/qt/ui_material_manager_view.h \
+		../mandelbulber2/qt/ui_mesh_export_dialog.h \
+		../mandelbulber2/qt/ui_navigator_window.h \
+		../mandelbulber2/qt/ui_objects_tree_widget.h \
+		../mandelbulber2/qt/ui_preferences_dialog.h \
+		../mandelbulber2/qt/ui_primitives_manager.h \
+		../mandelbulber2/qt/ui_randomizer_dialog.h \
+		../mandelbulber2/qt/ui_render_window.h \
+		../mandelbulber2/qt/ui_script_dialog.h \
+		../mandelbulber2/qt/ui_settings_browser.h \
+		../mandelbulber2/qt/ui_settings_cleaner.h \
+		../mandelbulber2/qt/ui_slider_popup.h \
+		../mandelbulber2/qt/ui_tab_fractal.h \
+		../mandelbulber2/qt/ui_voxel_export_dialog.h \
 		../mandelbulber2/qt/voxel_export_dialog.h \
 		../mandelbulber2/qt/wave_form_view.h \
 		../mandelbulber2/formula/definition/abstract_fractal.h \
@@ -2144,6 +2181,7 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		../mandelbulber2/qt/detached_window.cpp \
 		../mandelbulber2/qt/dock_animation.cpp \
 		../mandelbulber2/qt/dock_effects.cpp \
+		../mandelbulber2/qt/dock_fake_lights.cpp \
 		../mandelbulber2/qt/dock_fractal.cpp \
 		../mandelbulber2/qt/dock_gamepad.cpp \
 		../mandelbulber2/qt/dock_image_adjustments.cpp \
@@ -2673,7 +2711,7 @@ TARGET        = mandelbulber2
 first: all
 ####### Build rules
 
-mandelbulber2: /usr/lib/x86_64-linux-gnu/libQt5UiTools.a ../mandelbulber2/qt/ui_audio_selector.h ../mandelbulber2/qt/ui_custom_formula_editor.h ../mandelbulber2/qt/ui_detached_window.h ../mandelbulber2/qt/ui_dock_animation.h ../mandelbulber2/qt/ui_dock_effects.h ../mandelbulber2/qt/ui_dock_fractal.h ../mandelbulber2/qt/ui_dock_gamepad.h ../mandelbulber2/qt/ui_dock_image_adjustments.h ../mandelbulber2/qt/ui_dock_measurements.h ../mandelbulber2/qt/ui_dock_navigation.h ../mandelbulber2/qt/ui_dock_pattern_lines.h ../mandelbulber2/qt/ui_dock_queue.h ../mandelbulber2/qt/ui_dock_rendering_engine.h ../mandelbulber2/qt/ui_dock_statistics.h ../mandelbulber2/qt/ui_image_save_dialog.h ../mandelbulber2/qt/ui_light_editor.h ../mandelbulber2/qt/ui_light_sources_manager.h ../mandelbulber2/qt/ui_material_editor.h ../mandelbulber2/qt/ui_material_manager_view.h ../mandelbulber2/qt/ui_mesh_export_dialog.h ../mandelbulber2/qt/ui_navigator_window.h ../mandelbulber2/qt/ui_objects_tree_widget.h ../mandelbulber2/qt/ui_preferences_dialog.h ../mandelbulber2/qt/ui_primitives_manager.h ../mandelbulber2/qt/ui_randomizer_dialog.h ../mandelbulber2/qt/ui_render_window.h ../mandelbulber2/qt/ui_script_dialog.h ../mandelbulber2/qt/ui_settings_browser.h ../mandelbulber2/qt/ui_settings_cleaner.h ../mandelbulber2/qt/ui_slider_popup.h ../mandelbulber2/qt/ui_tab_fractal.h ../mandelbulber2/qt/ui_voxel_export_dialog.h $(OBJECTS)  
+mandelbulber2: /usr/lib/x86_64-linux-gnu/libQt5UiTools.a ../mandelbulber2/qt/ui_audio_selector.h ../mandelbulber2/qt/ui_custom_formula_editor.h ../mandelbulber2/qt/ui_detached_window.h ../mandelbulber2/qt/ui_dock_animation.h ../mandelbulber2/qt/ui_dock_effects.h ../mandelbulber2/qt/ui_dock_fake_lights.h ../mandelbulber2/qt/ui_dock_fractal.h ../mandelbulber2/qt/ui_dock_gamepad.h ../mandelbulber2/qt/ui_dock_image_adjustments.h ../mandelbulber2/qt/ui_dock_measurements.h ../mandelbulber2/qt/ui_dock_navigation.h ../mandelbulber2/qt/ui_dock_pattern_lines.h ../mandelbulber2/qt/ui_dock_queue.h ../mandelbulber2/qt/ui_dock_rendering_engine.h ../mandelbulber2/qt/ui_dock_statistics.h ../mandelbulber2/qt/ui_image_save_dialog.h ../mandelbulber2/qt/ui_light_editor.h ../mandelbulber2/qt/ui_light_sources_manager.h ../mandelbulber2/qt/ui_material_editor.h ../mandelbulber2/qt/ui_material_manager_view.h ../mandelbulber2/qt/ui_mesh_export_dialog.h ../mandelbulber2/qt/ui_navigator_window.h ../mandelbulber2/qt/ui_objects_tree_widget.h ../mandelbulber2/qt/ui_preferences_dialog.h ../mandelbulber2/qt/ui_primitives_manager.h ../mandelbulber2/qt/ui_randomizer_dialog.h ../mandelbulber2/qt/ui_render_window.h ../mandelbulber2/qt/ui_script_dialog.h ../mandelbulber2/qt/ui_settings_browser.h ../mandelbulber2/qt/ui_settings_cleaner.h ../mandelbulber2/qt/ui_slider_popup.h ../mandelbulber2/qt/ui_tab_fractal.h ../mandelbulber2/qt/ui_voxel_export_dialog.h $(OBJECTS)  
 	$(LINK) $(LFLAGS) -o $(TARGET) $(OBJECTS) $(OBJCOMP) $(LIBS)
 
 Makefile: ../mandelbulber2/qmake/mandelbulber-opencl.pro /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
@@ -2887,9 +2925,9 @@ distdir: FORCE
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents ../mandelbulber2/qt/icons.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../mandelbulber2/src/algebra.hpp ../mandelbulber2/src/animation_flight.hpp ../mandelbulber2/src/animation_frames.hpp ../mandelbulber2/src/animation_keyframes.hpp ../mandelbulber2/src/animation_path_data.hpp ../mandelbulber2/src/automated_widgets.hpp ../mandelbulber2/src/calculate_distance.hpp ../mandelbulber2/src/camera_target.hpp ../mandelbulber2/src/cast.hpp ../mandelbulber2/src/cimage.hpp ../mandelbulber2/src/color_structures.hpp ../mandelbulber2/src/command_line_interface.hpp ../mandelbulber2/src/common_params.hpp ../mandelbulber2/src/compute_fractal.hpp ../mandelbulber2/src/container_selector.hpp ../mandelbulber2/src/displacement_map.hpp ../mandelbulber2/src/dof.hpp ../mandelbulber2/src/error_message.hpp ../mandelbulber2/src/file_downloader.hpp ../mandelbulber2/src/file_image.hpp ../mandelbulber2/src/file_mesh.hpp ../mandelbulber2/src/fractal_coloring.hpp ../mandelbulber2/src/fractal_container.hpp ../mandelbulber2/src/fractparams.hpp ../mandelbulber2/src/global_data.hpp ../mandelbulber2/src/glow_sphere.hpp ../mandelbulber2/src/histogram.hpp ../mandelbulber2/src/image_scale.hpp ../mandelbulber2/src/include_header_wrapper.hpp ../mandelbulber2/src/initparameters.hpp ../mandelbulber2/src/interface.hpp ../mandelbulber2/src/keyframes.hpp ../mandelbulber2/src/lights.hpp ../mandelbulber2/src/main.hpp ../mandelbulber2/src/mandelbulb3d_settings.hpp ../mandelbulber2/src/mesh_export.hpp ../mandelbulber2/src/morph.hpp ../mandelbulber2/src/multi_val.hpp ../mandelbulber2/src/netrender.hpp ../mandelbulber2/src/netrender_client.hpp ../mandelbulber2/src/netrender_file_receiver.hpp ../mandelbulber2/src/netrender_file_sender.hpp ../mandelbulber2/src/netrender_server.hpp ../mandelbulber2/src/netrender_transport.hpp ../mandelbulber2/src/nine_fractals.hpp ../mandelbulber2/src/object_data.hpp ../mandelbulber2/src/object_types.hpp ../mandelbulber2/src/old_settings.hpp ../mandelbulber2/src/one_parameter.hpp ../mandelbulber2/src/opencl_dynamic_data.hpp ../mandelbulber2/src/orbit_trap_shape.hpp ../mandelbulber2/src/parameters.hpp ../mandelbulber2/src/pattern_line_traps.hpp ../mandelbulber2/src/primitive.hpp ../mandelbulber2/src/progress_text.hpp ../mandelbulber2/src/projection_3d.hpp ../mandelbulber2/src/queue.hpp ../mandelbulber2/src/random.hpp ../mandelbulber2/src/rectangle.hpp ../mandelbulber2/src/region.hpp ../mandelbulber2/src/render_data.hpp ../mandelbulber2/src/render_image.hpp ../mandelbulber2/src/render_job.hpp ../mandelbulber2/src/render_queue.hpp ../mandelbulber2/src/render_window.hpp ../mandelbulber2/src/render_worker.hpp ../mandelbulber2/src/rendered_image_widget.hpp ../mandelbulber2/src/rendered_tile_data.hpp ../mandelbulber2/src/rendering_configuration.hpp ../mandelbulber2/src/resource_http_provider.hpp ../mandelbulber2/src/scheduler.hpp ../mandelbulber2/src/settings.hpp ../mandelbulber2/src/shader_perlin_noise_for_shaders.hpp ../mandelbulber2/src/single_trap_lights.hpp ../mandelbulber2/src/synchronize_interface.hpp ../mandelbulber2/src/system.hpp ../mandelbulber2/src/system_data.hpp ../mandelbulber2/src/system_directories.hpp ../mandelbulber2/src/test.hpp ../mandelbulber2/src/texture.hpp ../mandelbulber2/src/texture_enums.hpp ../mandelbulber2/src/texture_mapping.hpp ../mandelbulber2/src/thumbnail.hpp ../mandelbulber2/src/voxel_export.hpp ../mandelbulber2/src/wait.hpp ../mandelbulber2/src/write_log.hpp ../mandelbulber2/src/ao_modes.h ../mandelbulber2/src/audio_fft_data.h ../mandelbulber2/src/audio_track.h ../mandelbulber2/src/audio_track_collection.h ../mandelbulber2/src/calculation_mode.h ../mandelbulber2/src/camera_movement_modes.h ../mandelbulber2/src/color_gradient.h ../mandelbulber2/src/common_math.h ../mandelbulber2/src/denoiser.h ../mandelbulber2/src/files.h ../mandelbulber2/src/fractal.h ../mandelbulber2/src/fractal_enums.h ../mandelbulber2/src/headless.h ../mandelbulber2/src/hsv2rgb.h ../mandelbulber2/src/hybrid_fractal_sequences.h ../mandelbulber2/src/image_adjustments.h ../mandelbulber2/src/light.h ../mandelbulber2/src/lzo_compression.h ../mandelbulber2/src/manipulations.h ../mandelbulber2/src/marchingcubes.h ../mandelbulber2/src/material.h ../mandelbulber2/src/material_item_model.h ../mandelbulber2/src/material_item_view.h ../mandelbulber2/src/my_ui_loader.h ../mandelbulber2/src/object_node_type.h ../mandelbulber2/src/objects_tree.h ../mandelbulber2/src/opencl_abstract_dynamic_data.h ../mandelbulber2/src/opencl_context.h ../mandelbulber2/src/opencl_device.h ../mandelbulber2/src/opencl_engine.h ../mandelbulber2/src/opencl_engine_render_dof.h ../mandelbulber2/src/opencl_engine_render_dof_phase1.h ../mandelbulber2/src/opencl_engine_render_dof_phase2.h ../mandelbulber2/src/opencl_engine_render_fractal.h ../mandelbulber2/src/opencl_engine_render_nebula.h ../mandelbulber2/src/opencl_engine_render_post_filter.h ../mandelbulber2/src/opencl_engine_render_ssao.h ../mandelbulber2/src/opencl_global.h ../mandelbulber2/src/opencl_hardware.h ../mandelbulber2/src/opencl_input_output_buffer.h ../mandelbulber2/src/opencl_kernel.h ../mandelbulber2/src/opencl_queue.h ../mandelbulber2/src/opencl_scheduler.h ../mandelbulber2/src/opencl_textures_data.h ../mandelbulber2/src/opencl_worker_output_queue.h ../mandelbulber2/src/opencl_worker_thread.h ../mandelbulber2/src/perlin_noise_octaves.h ../mandelbulber2/src/post_effect_hdr_blur.h ../mandelbulber2/src/primitive_item.h ../mandelbulber2/src/primitives.h ../mandelbulber2/src/radiance_hdr.h ../mandelbulber2/src/render_ssao.h ../mandelbulber2/src/scripts.h ../mandelbulber2/src/shortcuts.h ../mandelbulber2/src/ssao_worker.h ../mandelbulber2/src/statistics.h ../mandelbulber2/src/stereo.h ../mandelbulber2/src/texture_cache.h ../mandelbulber2/src/trace_behind.h ../mandelbulber2/src/tree_string_list.h ../mandelbulber2/src/undo.h ../mandelbulber2/qt/my_table_widget_anim.hpp ../mandelbulber2/qt/my_table_widget_keyframes.hpp ../mandelbulber2/qt/player_widget.hpp ../mandelbulber2/qt/system_tray.hpp ../mandelbulber2/qt/anim_audio_view.h ../mandelbulber2/qt/animation_value_chart_widget.h ../mandelbulber2/qt/audio_selector.h ../mandelbulber2/qt/buton_load_settings_from_widget.h ../mandelbulber2/qt/buton_random_settings_from_widget.h ../mandelbulber2/qt/buton_reset_settings_from_widget.h ../mandelbulber2/qt/buton_save_settings_from_widget.h ../mandelbulber2/qt/common_my_widget_wrapper.h ../mandelbulber2/qt/custom_formula_editor.h ../mandelbulber2/qt/detached_window.h ../mandelbulber2/qt/dock_animation.h ../mandelbulber2/qt/dock_effects.h ../mandelbulber2/qt/dock_fractal.h ../mandelbulber2/qt/dock_gamepad.h ../mandelbulber2/qt/dock_image_adjustments.h ../mandelbulber2/qt/dock_measurements.h ../mandelbulber2/qt/dock_navigation.h ../mandelbulber2/qt/dock_pattern_lines.h ../mandelbulber2/qt/dock_queue.h ../mandelbulber2/qt/dock_rendering_engine.h ../mandelbulber2/qt/dock_statistics.h ../mandelbulber2/qt/fft_view.h ../mandelbulber2/qt/file_select_widget.h ../mandelbulber2/qt/formula_combo_box.h ../mandelbulber2/qt/frame_slider_popup.h ../mandelbulber2/qt/gradient_edit_widget.h ../mandelbulber2/qt/highlighter.h ../mandelbulber2/qt/image_save_dialog.h ../mandelbulber2/qt/light_editor.h ../mandelbulber2/qt/light_sources_manager.h ../mandelbulber2/qt/light_widget.h ../mandelbulber2/qt/material_editor.h ../mandelbulber2/qt/material_manager_view.h ../mandelbulber2/qt/material_selector.h ../mandelbulber2/qt/material_widget.h ../mandelbulber2/qt/mesh_export_dialog.h ../mandelbulber2/qt/my_check_box.h ../mandelbulber2/qt/my_color_button.h ../mandelbulber2/qt/my_combo_box.h ../mandelbulber2/qt/my_double_spin_box.h ../mandelbulber2/qt/my_group_box.h ../mandelbulber2/qt/my_histogram_label.h ../mandelbulber2/qt/my_line_edit.h ../mandelbulber2/qt/my_log_widget.h ../mandelbulber2/qt/my_progress_bar.h ../mandelbulber2/qt/my_scrolled_area.h ../mandelbulber2/qt/my_spin_box.h ../mandelbulber2/qt/my_tab_bar.h ../mandelbulber2/qt/my_tab_bar_with_checkbox.h ../mandelbulber2/qt/my_tab_widget.h ../mandelbulber2/qt/my_tab_widget_with_checkboxes.h ../mandelbulber2/qt/my_text_edit.h ../mandelbulber2/qt/my_widget_with_params.h ../mandelbulber2/qt/navigator_window.h ../mandelbulber2/qt/objects_tree_widget.h ../mandelbulber2/qt/preferences_dialog.h ../mandelbulber2/qt/preview_file_dialog.h ../mandelbulber2/qt/primitives_manager.h ../mandelbulber2/qt/pushbutton_anim_sound.h ../mandelbulber2/qt/randomizer_dialog.h ../mandelbulber2/qt/script_dialog.h ../mandelbulber2/qt/settings_browser.h ../mandelbulber2/qt/settings_cleaner.h ../mandelbulber2/qt/tab_fractal.h ../mandelbulber2/qt/thumbnail_widget.h ../mandelbulber2/qt/time_ruler.h ../mandelbulber2/qt/ui_dock_pattern_lines.h ../mandelbulber2/qt/voxel_export_dialog.h ../mandelbulber2/qt/wave_form_view.h ../mandelbulber2/formula/definition/abstract_fractal.h ../mandelbulber2/formula/definition/all_fractal_definitions.h ../mandelbulber2/formula/definition/fractal_transf_demo_scale_v2.h ../mandelbulber2/formula/definition/fractal_transf_wizard_demo.h ../mandelbulber2/formula/definition/all_fractal_list.hpp ../mandelbulber2/formula/definition/all_fractal_list_enums.hpp ../mandelbulber2/formula/definition/legacy_fractal_transforms.hpp ../mandelbulber2/third-party/stb/stb_image.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../mandelbulber2/src/algebra.cpp ../mandelbulber2/src/animation_flight.cpp ../mandelbulber2/src/animation_frames.cpp ../mandelbulber2/src/animation_keyframes.cpp ../mandelbulber2/src/audio_fft_data.cpp ../mandelbulber2/src/audio_track.cpp ../mandelbulber2/src/audio_track_collection.cpp ../mandelbulber2/src/automated_widgets.cpp ../mandelbulber2/src/calculate_distance.cpp ../mandelbulber2/src/camera_target.cpp ../mandelbulber2/src/cimage.cpp ../mandelbulber2/src/color_gradient.cpp ../mandelbulber2/src/command_line_interface.cpp ../mandelbulber2/src/common_math.cpp ../mandelbulber2/src/compute_fractal.cpp ../mandelbulber2/src/container_selector.cpp ../mandelbulber2/src/denoiser.cpp ../mandelbulber2/src/displacement_map.cpp ../mandelbulber2/src/dof.cpp ../mandelbulber2/src/error_message.cpp ../mandelbulber2/src/file_downloader.cpp ../mandelbulber2/src/file_image.cpp ../mandelbulber2/src/file_mesh.cpp ../mandelbulber2/src/files.cpp ../mandelbulber2/src/fractal.cpp ../mandelbulber2/src/fractal_coloring.cpp ../mandelbulber2/src/fractal_container.cpp ../mandelbulber2/src/fractparams.cpp ../mandelbulber2/src/global_data.cpp ../mandelbulber2/src/headless.cpp ../mandelbulber2/src/histogram.cpp ../mandelbulber2/src/hsv2rgb.cpp ../mandelbulber2/src/hybrid_fractal_sequences.cpp ../mandelbulber2/src/image_scale.cpp ../mandelbulber2/src/initparameters.cpp ../mandelbulber2/src/interface.cpp ../mandelbulber2/src/keyframes.cpp ../mandelbulber2/src/light.cpp ../mandelbulber2/src/lights.cpp ../mandelbulber2/src/lzo_compression.cpp ../mandelbulber2/src/main.cpp ../mandelbulber2/src/mandelbulb3d_settings.cpp ../mandelbulber2/src/manipulations.cpp ../mandelbulber2/src/marchingcubes.cpp ../mandelbulber2/src/material.cpp ../mandelbulber2/src/material_item_model.cpp ../mandelbulber2/src/material_item_view.cpp ../mandelbulber2/src/mesh_export.cpp ../mandelbulber2/src/morph.cpp ../mandelbulber2/src/multi_val.cpp ../mandelbulber2/src/my_ui_loader.cpp ../mandelbulber2/src/netrender.cpp ../mandelbulber2/src/netrender_client.cpp ../mandelbulber2/src/netrender_file_receiver.cpp ../mandelbulber2/src/netrender_file_sender.cpp ../mandelbulber2/src/netrender_server.cpp ../mandelbulber2/src/netrender_transport.cpp ../mandelbulber2/src/nine_fractals.cpp ../mandelbulber2/src/objects_tree.cpp ../mandelbulber2/src/old_settings.cpp ../mandelbulber2/src/one_parameter.cpp ../mandelbulber2/src/opencl_abstract_dynamic_data.cpp ../mandelbulber2/src/opencl_context.cpp ../mandelbulber2/src/opencl_device.cpp ../mandelbulber2/src/opencl_dynamic_data.cpp ../mandelbulber2/src/opencl_engine.cpp ../mandelbulber2/src/opencl_engine_render_dof.cpp ../mandelbulber2/src/opencl_engine_render_dof_phase1.cpp ../mandelbulber2/src/opencl_engine_render_dof_phase2.cpp ../mandelbulber2/src/opencl_engine_render_fractal.cpp ../mandelbulber2/src/opencl_engine_render_nebula.cpp ../mandelbulber2/src/opencl_engine_render_post_filter.cpp ../mandelbulber2/src/opencl_engine_render_ssao.cpp ../mandelbulber2/src/opencl_global.cpp ../mandelbulber2/src/opencl_hardware.cpp ../mandelbulber2/src/opencl_kernel.cpp ../mandelbulber2/src/opencl_queue.cpp ../mandelbulber2/src/opencl_scheduler.cpp ../mandelbulber2/src/opencl_textures_data.cpp ../mandelbulber2/src/opencl_worker_output_queue.cpp ../mandelbulber2/src/opencl_worker_thread.cpp ../mandelbulber2/src/orbit_trap_shape.cpp ../mandelbulber2/src/parameters.cpp ../mandelbulber2/src/perlin_noise_octaves.cpp ../mandelbulber2/src/post_effect_hdr_blur.cpp ../mandelbulber2/src/primitive.cpp ../mandelbulber2/src/primitives.cpp ../mandelbulber2/src/progress_text.cpp ../mandelbulber2/src/projection_3d.cpp ../mandelbulber2/src/queue.cpp ../mandelbulber2/src/radiance_hdr.cpp ../mandelbulber2/src/random.cpp ../mandelbulber2/src/render_image.cpp ../mandelbulber2/src/render_job.cpp ../mandelbulber2/src/render_queue.cpp ../mandelbulber2/src/render_ssao.cpp ../mandelbulber2/src/render_window.cpp ../mandelbulber2/src/render_window_buttons.cpp ../mandelbulber2/src/render_window_menu.cpp ../mandelbulber2/src/render_window_slots.cpp ../mandelbulber2/src/render_worker.cpp ../mandelbulber2/src/rendered_image_widget.cpp ../mandelbulber2/src/rendering_configuration.cpp ../mandelbulber2/src/resource_http_provider.cpp ../mandelbulber2/src/scheduler.cpp ../mandelbulber2/src/scripts.cpp ../mandelbulber2/src/settings.cpp ../mandelbulber2/src/shader_ambient_occlusion.cpp ../mandelbulber2/src/shader_aux_light.cpp ../mandelbulber2/src/shader_aux_shadow.cpp ../mandelbulber2/src/shader_background.cpp ../mandelbulber2/src/shader_calculate_normals.cpp ../mandelbulber2/src/shader_cloud_opacity.cpp ../mandelbulber2/src/shader_distance_fog_opacity.cpp ../mandelbulber2/src/shader_env_mapping.cpp ../mandelbulber2/src/shader_fake_lights.cpp ../mandelbulber2/src/shader_fast_ambient_occlusion.cpp ../mandelbulber2/src/shader_global_illumination.cpp ../mandelbulber2/src/shader_iridescence.cpp ../mandelbulber2/src/shader_iter_opacity.cpp ../mandelbulber2/src/shader_light_shading.cpp ../mandelbulber2/src/shader_normal_map_shader.cpp ../mandelbulber2/src/shader_object.cpp ../mandelbulber2/src/shader_pattern_line_traps.cpp ../mandelbulber2/src/shader_perlin_noise_for_shaders.cpp ../mandelbulber2/src/shader_roughess_texture.cpp ../mandelbulber2/src/shader_single_trap_lights.cpp ../mandelbulber2/src/shader_specular_highlight.cpp ../mandelbulber2/src/shader_specular_highlight_combined.cpp ../mandelbulber2/src/shader_surface_color.cpp ../mandelbulber2/src/shader_texture.cpp ../mandelbulber2/src/shader_volumetric.cpp ../mandelbulber2/src/shortcuts.cpp ../mandelbulber2/src/single_trap_lights.cpp ../mandelbulber2/src/ssao_worker.cpp ../mandelbulber2/src/statistics.cpp ../mandelbulber2/src/stereo.cpp ../mandelbulber2/src/synchronize_interface.cpp ../mandelbulber2/src/system.cpp ../mandelbulber2/src/system_data.cpp ../mandelbulber2/src/system_directories.cpp ../mandelbulber2/src/test.cpp ../mandelbulber2/src/texture.cpp ../mandelbulber2/src/texture_cache.cpp ../mandelbulber2/src/texture_mapping.cpp ../mandelbulber2/src/thumbnail.cpp ../mandelbulber2/src/trace_behind.cpp ../mandelbulber2/src/tree_string_list.cpp ../mandelbulber2/src/undo.cpp ../mandelbulber2/src/voxel_export.cpp ../mandelbulber2/src/wait.cpp ../mandelbulber2/src/write_log.cpp ../mandelbulber2/qt/anim_audio_view.cpp ../mandelbulber2/qt/animation_value_chart_widget.cpp ../mandelbulber2/qt/audio_selector.cpp ../mandelbulber2/qt/buton_load_settings_from_widget.cpp ../mandelbulber2/qt/buton_random_settings_from_widget.cpp ../mandelbulber2/qt/buton_reset_settings_from_widget.cpp ../mandelbulber2/qt/buton_save_settings_from_widget.cpp ../mandelbulber2/qt/common_my_widget_wrapper.cpp ../mandelbulber2/qt/custom_formula_editor.cpp ../mandelbulber2/qt/detached_window.cpp ../mandelbulber2/qt/dock_animation.cpp ../mandelbulber2/qt/dock_effects.cpp ../mandelbulber2/qt/dock_fractal.cpp ../mandelbulber2/qt/dock_gamepad.cpp ../mandelbulber2/qt/dock_image_adjustments.cpp ../mandelbulber2/qt/dock_measurements.cpp ../mandelbulber2/qt/dock_navigation.cpp ../mandelbulber2/qt/dock_pattern_lines.cpp ../mandelbulber2/qt/dock_queue.cpp ../mandelbulber2/qt/dock_rendering_engine.cpp ../mandelbulber2/qt/dock_statistics.cpp ../mandelbulber2/qt/fft_view.cpp ../mandelbulber2/qt/file_select_widget.cpp ../mandelbulber2/qt/formula_combo_box.cpp ../mandelbulber2/qt/frame_slider_popup.cpp ../mandelbulber2/qt/gradient_edit_widget.cpp ../mandelbulber2/qt/highlighter.cpp ../mandelbulber2/qt/image_save_dialog.cpp ../mandelbulber2/qt/light_editor.cpp ../mandelbulber2/qt/light_sources_manager.cpp ../mandelbulber2/qt/light_widget.cpp ../mandelbulber2/qt/material_editor.cpp ../mandelbulber2/qt/material_manager_view.cpp ../mandelbulber2/qt/material_selector.cpp ../mandelbulber2/qt/material_widget.cpp ../mandelbulber2/qt/mesh_export_dialog.cpp ../mandelbulber2/qt/my_check_box.cpp ../mandelbulber2/qt/my_color_button.cpp ../mandelbulber2/qt/my_combo_box.cpp ../mandelbulber2/qt/my_double_spin_box.cpp ../mandelbulber2/qt/my_group_box.cpp ../mandelbulber2/qt/my_histogram_label.cpp ../mandelbulber2/qt/my_line_edit.cpp ../mandelbulber2/qt/my_log_widget.cpp ../mandelbulber2/qt/my_progress_bar.cpp ../mandelbulber2/qt/my_spin_box.cpp ../mandelbulber2/qt/my_tab_bar.cpp ../mandelbulber2/qt/my_tab_bar_with_checkbox.cpp ../mandelbulber2/qt/my_tab_widget.cpp ../mandelbulber2/qt/my_tab_widget_with_checkboxes.cpp ../mandelbulber2/qt/my_table_widget_anim.cpp ../mandelbulber2/qt/my_table_widget_keyframes.cpp ../mandelbulber2/qt/my_text_edit.cpp ../mandelbulber2/qt/my_widget_with_params.cpp ../mandelbulber2/qt/navigator_window.cpp ../mandelbulber2/qt/objects_tree_widget.cpp ../mandelbulber2/qt/player_widget.cpp ../mandelbulber2/qt/preferences_dialog.cpp ../mandelbulber2/qt/preview_file_dialog.cpp ../mandelbulber2/qt/primitives_manager.cpp ../mandelbulber2/qt/pushbutton_anim_sound.cpp ../mandelbulber2/qt/randomizer_dialog.cpp ../mandelbulber2/qt/script_dialog.cpp ../mandelbulber2/qt/settings_browser.cpp ../mandelbulber2/qt/settings_cleaner.cpp ../mandelbulber2/qt/system_tray.cpp ../mandelbulber2/qt/tab_fractal.cpp ../mandelbulber2/qt/thumbnail_widget.cpp ../mandelbulber2/qt/time_ruler.cpp ../mandelbulber2/qt/voxel_export_dialog.cpp ../mandelbulber2/qt/wave_form_view.cpp ../mandelbulber2/formula/definition/abstract_fractal.cpp ../mandelbulber2/formula/definition/all_fractal_list.cpp ../mandelbulber2/formula/definition/fractal_abox4d.cpp ../mandelbulber2/formula/definition/fractal_abox_donut4d.cpp ../mandelbulber2/formula/definition/fractal_abox_donut4d_v2.cpp ../mandelbulber2/formula/definition/fractal_abox_klein.cpp ../mandelbulber2/formula/definition/fractal_abox_mod1.cpp ../mandelbulber2/formula/definition/fractal_abox_mod11.cpp ../mandelbulber2/formula/definition/fractal_abox_mod12.cpp ../mandelbulber2/formula/definition/fractal_abox_mod13.cpp ../mandelbulber2/formula/definition/fractal_abox_mod14.cpp ../mandelbulber2/formula/definition/fractal_abox_mod15.cpp ../mandelbulber2/formula/definition/fractal_abox_mod2.cpp ../mandelbulber2/formula/definition/fractal_abox_mod_kali.cpp ../mandelbulber2/formula/definition/fractal_abox_mod_kali_eiffie.cpp ../mandelbulber2/formula/definition/fractal_abox_mod_kali_v2.cpp ../mandelbulber2/formula/definition/fractal_abox_mod_kali_v3.cpp ../mandelbulber2/formula/definition/fractal_abox_smooth.cpp ../mandelbulber2/formula/definition/fractal_abox_sphere4d.cpp ../mandelbulber2/formula/definition/fractal_abox_surf_box.cpp ../mandelbulber2/formula/definition/fractal_abox_tetra.cpp ../mandelbulber2/formula/definition/fractal_abox_tetra4d.cpp ../mandelbulber2/formula/definition/fractal_abox_vs_icen1.cpp ../mandelbulber2/formula/definition/fractal_aexion.cpp ../mandelbulber2/formula/definition/fractal_aexion4d_v2.cpp ../mandelbulber2/formula/definition/fractal_aexion_octopus_mod.cpp ../mandelbulber2/formula/definition/fractal_amazing_ifs.cpp ../mandelbulber2/formula/definition/fractal_amazing_surf.cpp ../mandelbulber2/formula/definition/fractal_amazing_surf_klein.cpp ../mandelbulber2/formula/definition/fractal_amazing_surf_klein_v2.cpp ../mandelbulber2/formula/definition/fractal_amazing_surf_m3d.cpp ../mandelbulber2/formula/definition/fractal_amazing_surf_mod1.cpp ../mandelbulber2/formula/definition/fractal_amazing_surf_mod2.cpp ../mandelbulber2/formula/definition/fractal_amazing_surf_mod3.cpp ../mandelbulber2/formula/definition/fractal_amazing_surf_mod4.cpp ../mandelbulber2/formula/definition/fractal_amazing_surf_multi.cpp ../mandelbulber2/formula/definition/fractal_benesi.cpp ../mandelbulber2/formula/definition/fractal_benesi_mag_transforms.cpp ../mandelbulber2/formula/definition/fractal_benesi_pine_tree.cpp ../mandelbulber2/formula/definition/fractal_benesi_pwr2_mandelbulb.cpp ../mandelbulber2/formula/definition/fractal_benesi_t1_pine_tree.cpp ../mandelbulber2/formula/definition/fractal_box_fold4d_bulb_pow2.cpp ../mandelbulber2/formula/definition/fractal_box_fold_bulb_menger.cpp ../mandelbulber2/formula/definition/fractal_box_fold_bulb_pow2.cpp ../mandelbulber2/formula/definition/fractal_box_fold_bulb_pow2_v2.cpp ../mandelbulber2/formula/definition/fractal_box_fold_bulb_pow2_v3.cpp ../mandelbulber2/formula/definition/fractal_box_fold_bulb_v4.cpp ../mandelbulber2/formula/definition/fractal_box_fold_quat.cpp ../mandelbulber2/formula/definition/fractal_bristorbrot.cpp ../mandelbulber2/formula/definition/fractal_bristorbrot2.cpp ../mandelbulber2/formula/definition/fractal_bristorbrot4d.cpp ../mandelbulber2/formula/definition/fractal_buffalo.cpp ../mandelbulber2/formula/definition/fractal_coastalbrot.cpp ../mandelbulber2/formula/definition/fractal_collatz.cpp ../mandelbulber2/formula/definition/fractal_collatz_mod.cpp ../mandelbulber2/formula/definition/fractal_custom.cpp ../mandelbulber2/formula/definition/fractal_difs_amazing_ifs.cpp ../mandelbulber2/formula/definition/fractal_difs_box_diagonal_v1.cpp ../mandelbulber2/formula/definition/fractal_difs_box_diagonal_v3.cpp ../mandelbulber2/formula/definition/fractal_difs_box_v1.cpp ../mandelbulber2/formula/definition/fractal_difs_cylinder.cpp ../mandelbulber2/formula/definition/fractal_difs_ellipsoid.cpp ../mandelbulber2/formula/definition/fractal_difs_greek_ifs.cpp ../mandelbulber2/formula/definition/fractal_difs_hextgrid2.cpp ../mandelbulber2/formula/definition/fractal_difs_menger.cpp ../mandelbulber2/formula/definition/fractal_difs_msltoe_donut.cpp ../mandelbulber2/formula/definition/fractal_difs_multi_v1.cpp ../mandelbulber2/formula/definition/fractal_difs_prism.cpp ../mandelbulber2/formula/definition/fractal_difs_sphere.cpp ../mandelbulber2/formula/definition/fractal_difs_torus.cpp ../mandelbulber2/formula/definition/fractal_eiffie_car.cpp ../mandelbulber2/formula/definition/fractal_eiffie_msltoe.cpp ../mandelbulber2/formula/definition/fractal_fold_box_mod1.cpp ../mandelbulber2/formula/definition/fractal_fold_cut_cube.cpp ../mandelbulber2/formula/definition/fractal_generalized_fold_box.cpp ../mandelbulber2/formula/definition/fractal_hypercomplex.cpp ../mandelbulber2/formula/definition/fractal_hypercomplex_v2.cpp ../mandelbulber2/formula/definition/fractal_ides.cpp ../mandelbulber2/formula/definition/fractal_ides2.cpp ../mandelbulber2/formula/definition/fractal_ifs_gen.cpp ../mandelbulber2/formula/definition/fractal_ifs_xy.cpp ../mandelbulber2/formula/definition/fractal_iq_bulb.cpp ../mandelbulber2/formula/definition/fractal_jos_kleinian.cpp ../mandelbulber2/formula/definition/fractal_jos_kleinian_v2.cpp ../mandelbulber2/formula/definition/fractal_jos_kleinian_v3.cpp ../mandelbulber2/formula/definition/fractal_jos_kleinian_v4.cpp ../mandelbulber2/formula/definition/fractal_kaleidoscopic_ifs.cpp ../mandelbulber2/formula/definition/fractal_kalisets1.cpp ../mandelbulber2/formula/definition/fractal_knot_v1.cpp ../mandelbulber2/formula/definition/fractal_knot_v2.cpp ../mandelbulber2/formula/definition/fractal_koch.cpp ../mandelbulber2/formula/definition/fractal_koch_ifs.cpp ../mandelbulber2/formula/definition/fractal_koch_v2.cpp ../mandelbulber2/formula/definition/fractal_koch_v3.cpp ../mandelbulber2/formula/definition/fractal_koch_v4.cpp ../mandelbulber2/formula/definition/fractal_koch_v5.cpp ../mandelbulber2/formula/definition/fractal_lkmitch.cpp ../mandelbulber2/formula/definition/fractal_makin3d2.cpp ../mandelbulber2/formula/definition/fractal_mandalay_box_v1.cpp ../mandelbulber2/formula/definition/fractal_mandalay_box_v2.cpp ../mandelbulber2/formula/definition/fractal_mandalay_kifs.cpp ../mandelbulber2/formula/definition/fractal_mandelbar.cpp ../mandelbulber2/formula/definition/fractal_mandelbar_v2.cpp ../mandelbulber2/formula/definition/fractal_mandelbar_v3.cpp ../mandelbulber2/formula/definition/fractal_mandelbox.cpp ../mandelbulber2/formula/definition/fractal_mandelbox_fast.cpp ../mandelbulber2/formula/definition/fractal_mandelbox_menger.cpp ../mandelbulber2/formula/definition/fractal_mandelbox_smooth.cpp ../mandelbulber2/formula/definition/fractal_mandelbox_variable.cpp ../mandelbulber2/formula/definition/fractal_mandelbox_vary_scale4d.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb2.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb3.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb4.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_abs.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_abs_power2.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_atan2_power2.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_bermarte.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_eye.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_iq_pow8.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_iq_v2.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_juliabulb.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_kali.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_kali_multi.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_kosalos.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_kosalos_v2.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_lambda.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_multi.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_multi2.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_plus_z.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_pow2_v1.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_pow2_v2.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_pow2_v3.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_pow2_v4.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_power1234.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_power2.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_pupuku.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_quadrat.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_quat.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_sin_cos.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_sin_cos_v2.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_sin_cos_v3.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_sin_cos_v4.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_tails.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_tails_v2.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_vary_power_v1.cpp ../mandelbulber2/formula/definition/fractal_mandelcup.cpp ../mandelbulber2/formula/definition/fractal_mandelnest.cpp ../mandelbulber2/formula/definition/fractal_mandelnest4d.cpp ../mandelbulber2/formula/definition/fractal_mandelnest_full.cpp ../mandelbulber2/formula/definition/fractal_mandelnest_v2.cpp ../mandelbulber2/formula/definition/fractal_mandeltorus.cpp ../mandelbulber2/formula/definition/fractal_mandeltorus_v2.cpp ../mandelbulber2/formula/definition/fractal_menger3.cpp ../mandelbulber2/formula/definition/fractal_menger3_m3d.cpp ../mandelbulber2/formula/definition/fractal_menger4d.cpp ../mandelbulber2/formula/definition/fractal_menger4d_mod1.cpp ../mandelbulber2/formula/definition/fractal_menger4d_mod2.cpp ../mandelbulber2/formula/definition/fractal_menger_chebyshev.cpp ../mandelbulber2/formula/definition/fractal_menger_cross_kifs.cpp ../mandelbulber2/formula/definition/fractal_menger_cross_mod1.cpp ../mandelbulber2/formula/definition/fractal_menger_middle_mod.cpp ../mandelbulber2/formula/definition/fractal_menger_mod1.cpp ../mandelbulber2/formula/definition/fractal_menger_octo.cpp ../mandelbulber2/formula/definition/fractal_menger_poly_fold.cpp ../mandelbulber2/formula/definition/fractal_menger_prism_shape.cpp ../mandelbulber2/formula/definition/fractal_menger_prism_shape2.cpp ../mandelbulber2/formula/definition/fractal_menger_pwr2_poly.cpp ../mandelbulber2/formula/definition/fractal_menger_pyramid.cpp ../mandelbulber2/formula/definition/fractal_menger_smooth.cpp ../mandelbulber2/formula/definition/fractal_menger_smooth_chebyshev.cpp ../mandelbulber2/formula/definition/fractal_menger_smooth_mod1.cpp ../mandelbulber2/formula/definition/fractal_menger_sponge.cpp ../mandelbulber2/formula/definition/fractal_menger_v2.cpp ../mandelbulber2/formula/definition/fractal_menger_v3.cpp ../mandelbulber2/formula/definition/fractal_menger_v4.cpp ../mandelbulber2/formula/definition/fractal_menger_v5.cpp ../mandelbulber2/formula/definition/fractal_menger_v6.cpp ../mandelbulber2/formula/definition/fractal_menger_v7.cpp ../mandelbulber2/formula/definition/fractal_mix_pinski4d.cpp ../mandelbulber2/formula/definition/fractal_modulus_mandelbulb.cpp ../mandelbulber2/formula/definition/fractal_modulus_menger_sponge.cpp ../mandelbulber2/formula/definition/fractal_msltoe_donut.cpp ../mandelbulber2/formula/definition/fractal_msltoe_sym2_mod.cpp ../mandelbulber2/formula/definition/fractal_msltoe_sym3_mod.cpp ../mandelbulber2/formula/definition/fractal_msltoe_sym3_mod2.cpp ../mandelbulber2/formula/definition/fractal_msltoe_sym3_mod3.cpp ../mandelbulber2/formula/definition/fractal_msltoe_sym3_mod4.cpp ../mandelbulber2/formula/definition/fractal_msltoe_sym3_mod5.cpp ../mandelbulber2/formula/definition/fractal_msltoe_sym3_mod6.cpp ../mandelbulber2/formula/definition/fractal_msltoe_sym4_mod.cpp ../mandelbulber2/formula/definition/fractal_msltoe_sym4_mod1.cpp ../mandelbulber2/formula/definition/fractal_msltoe_toroidal.cpp ../mandelbulber2/formula/definition/fractal_msltoe_toroidal_multi.cpp ../mandelbulber2/formula/definition/fractal_msltoe_toroidal_v2.cpp ../mandelbulber2/formula/definition/fractal_msltoe_toroidal_v3.cpp ../mandelbulber2/formula/definition/fractal_newton_pow3.cpp ../mandelbulber2/formula/definition/fractal_none.cpp ../mandelbulber2/formula/definition/fractal_octahedron.cpp ../mandelbulber2/formula/definition/fractal_pseudo_kleinian.cpp ../mandelbulber2/formula/definition/fractal_pseudo_kleinian4d.cpp ../mandelbulber2/formula/definition/fractal_pseudo_kleinian_mod1.cpp ../mandelbulber2/formula/definition/fractal_pseudo_kleinian_mod2.cpp ../mandelbulber2/formula/definition/fractal_pseudo_kleinian_mod3.cpp ../mandelbulber2/formula/definition/fractal_pseudo_kleinian_mod4.cpp ../mandelbulber2/formula/definition/fractal_pseudo_kleinian_mod5.cpp ../mandelbulber2/formula/definition/fractal_pseudo_kleinian_mod6.cpp ../mandelbulber2/formula/definition/fractal_pseudo_kleinian_mod7.cpp ../mandelbulber2/formula/definition/fractal_pseudo_kleinian_std_de.cpp ../mandelbulber2/formula/definition/fractal_quaternion.cpp ../mandelbulber2/formula/definition/fractal_quaternion3d.cpp ../mandelbulber2/formula/definition/fractal_quaternion4d.cpp ../mandelbulber2/formula/definition/fractal_quaternion_cubic4d.cpp ../mandelbulber2/formula/definition/fractal_quick_dudley.cpp ../mandelbulber2/formula/definition/fractal_quick_dudley_mod.cpp ../mandelbulber2/formula/definition/fractal_riemann_bulb_msltoe_mod2.cpp ../mandelbulber2/formula/definition/fractal_riemann_sphere_hobold_multi.cpp ../mandelbulber2/formula/definition/fractal_riemann_sphere_hobold_pow4.cpp ../mandelbulber2/formula/definition/fractal_riemann_sphere_hobold_pow8.cpp ../mandelbulber2/formula/definition/fractal_riemann_sphere_msltoe.cpp ../mandelbulber2/formula/definition/fractal_riemann_sphere_msltoe_m3d.cpp ../mandelbulber2/formula/definition/fractal_riemann_sphere_msltoe_v1.cpp ../mandelbulber2/formula/definition/fractal_riemann_sphere_msltoe_v2.cpp ../mandelbulber2/formula/definition/fractal_scator_power2.cpp ../mandelbulber2/formula/definition/fractal_scator_power2_imaginary.cpp ../mandelbulber2/formula/definition/fractal_scator_power2_real.cpp ../mandelbulber2/formula/definition/fractal_scator_power2_std_r.cpp ../mandelbulber2/formula/definition/fractal_scator_test.cpp ../mandelbulber2/formula/definition/fractal_sierpinski3d.cpp ../mandelbulber2/formula/definition/fractal_sierpinski3d_v2.cpp ../mandelbulber2/formula/definition/fractal_sierpinski3d_v3.cpp ../mandelbulber2/formula/definition/fractal_sierpinski3d_v4.cpp ../mandelbulber2/formula/definition/fractal_sierpinski4d.cpp ../mandelbulber2/formula/definition/fractal_sphere_cluster.cpp ../mandelbulber2/formula/definition/fractal_sphere_cluster_v2.cpp ../mandelbulber2/formula/definition/fractal_sphere_cluster_v3.cpp ../mandelbulber2/formula/definition/fractal_spheretree.cpp ../mandelbulber2/formula/definition/fractal_spheretree_v2.cpp ../mandelbulber2/formula/definition/fractal_spheretree_v4.cpp ../mandelbulber2/formula/definition/fractal_spheretree_v5.cpp ../mandelbulber2/formula/definition/fractal_testing.cpp ../mandelbulber2/formula/definition/fractal_testing4d.cpp ../mandelbulber2/formula/definition/fractal_testing_log.cpp ../mandelbulber2/formula/definition/fractal_testing_transform.cpp ../mandelbulber2/formula/definition/fractal_testing_transform2.cpp ../mandelbulber2/formula/definition/fractal_tinker_towers.cpp ../mandelbulber2/formula/definition/fractal_transf_abs_add_conditional.cpp ../mandelbulber2/formula/definition/fractal_transf_abs_add_conditional2.cpp ../mandelbulber2/formula/definition/fractal_transf_abs_add_conditional4d.cpp ../mandelbulber2/formula/definition/fractal_transf_abs_add_constant.cpp ../mandelbulber2/formula/definition/fractal_transf_abs_add_constant4d.cpp ../mandelbulber2/formula/definition/fractal_transf_abs_add_constant_v2.cpp ../mandelbulber2/formula/definition/fractal_transf_abs_add_multi.cpp ../mandelbulber2/formula/definition/fractal_transf_abs_add_multi4d.cpp ../mandelbulber2/formula/definition/fractal_transf_abs_add_tglad_fold.cpp ../mandelbulber2/formula/definition/fractal_transf_abs_add_tglad_fold4d.cpp ../mandelbulber2/formula/definition/fractal_transf_abs_rec_fold_xy.cpp ../mandelbulber2/formula/definition/fractal_transf_abs_sym3.cpp ../mandelbulber2/formula/definition/fractal_transf_add_constant.cpp ../mandelbulber2/formula/definition/fractal_transf_add_constant4d.cpp ../mandelbulber2/formula/definition/fractal_transf_add_constant_mod1.cpp ../mandelbulber2/formula/definition/fractal_transf_add_constant_mod2.cpp ../mandelbulber2/formula/definition/fractal_transf_add_constant_mod3.cpp ../mandelbulber2/formula/definition/fractal_transf_add_constant_rot_v1.cpp ../mandelbulber2/formula/definition/fractal_transf_add_constant_vary_v1.cpp ../mandelbulber2/formula/definition/fractal_transf_add_cpixel.cpp ../mandelbulber2/formula/definition/fractal_transf_add_cpixel4d.cpp ../mandelbulber2/formula/definition/fractal_transf_add_cpixel_axis_swap.cpp ../mandelbulber2/formula/definition/fractal_transf_add_cpixel_cx_cy_axis_swap.cpp ../mandelbulber2/formula/definition/fractal_transf_add_cpixel_invert.cpp ../mandelbulber2/formula/definition/fractal_transf_add_cpixel_rotated.cpp ../mandelbulber2/formula/definition/fractal_transf_add_cpixel_scator.cpp ../mandelbulber2/formula/definition/fractal_transf_add_cpixel_sin_or_cos.cpp ../mandelbulber2/formula/definition/fractal_transf_add_cpixel_sphere_fold.cpp ../mandelbulber2/formula/definition/fractal_transf_add_cpixel_symmetrical.cpp ../mandelbulber2/formula/definition/fractal_transf_add_cpixel_tile.cpp ../mandelbulber2/formula/definition/fractal_transf_add_cpixel_vary_v1.cpp ../mandelbulber2/formula/definition/fractal_transf_add_exp2_z.cpp ../mandelbulber2/formula/definition/fractal_transf_add_norm.cpp ../mandelbulber2/formula/definition/fractal_transf_add_scale_rotate.cpp ../mandelbulber2/formula/definition/fractal_transf_add_spherical_invert.cpp ../mandelbulber2/formula/definition/fractal_transf_benesi_cube_sphere.cpp ../mandelbulber2/formula/definition/fractal_transf_benesi_mag_backward.cpp ../mandelbulber2/formula/definition/fractal_transf_benesi_mag_forward.cpp ../mandelbulber2/formula/definition/fractal_transf_benesi_sphere_cube.cpp ../mandelbulber2/formula/definition/fractal_transf_benesi_t1.cpp ../mandelbulber2/formula/definition/fractal_transf_benesi_t1_mod.cpp ../mandelbulber2/formula/definition/fractal_transf_benesi_t2.cpp ../mandelbulber2/formula/definition/fractal_transf_benesi_t3.cpp ../mandelbulber2/formula/definition/fractal_transf_benesi_t4.cpp ../mandelbulber2/formula/definition/fractal_transf_benesi_t5b.cpp ../mandelbulber2/formula/definition/fractal_transf_blockify.cpp ../mandelbulber2/formula/definition/fractal_transf_blockify_v2.cpp ../mandelbulber2/formula/definition/fractal_transf_box_fold.cpp ../mandelbulber2/formula/definition/fractal_transf_box_fold4d.cpp ../mandelbulber2/formula/definition/fractal_transf_box_fold4d_infy.cpp ../mandelbulber2/formula/definition/fractal_transf_box_fold4d_tglad.cpp ../mandelbulber2/formula/definition/fractal_transf_box_fold_vary_v1.cpp ../mandelbulber2/formula/definition/fractal_transf_box_fold_xyz.cpp ../mandelbulber2/formula/definition/fractal_transf_box_offset.cpp ../mandelbulber2/formula/definition/fractal_transf_box_tiling4d.cpp ../mandelbulber2/formula/definition/fractal_transf_box_tiling_v2.cpp ../mandelbulber2/formula/definition/fractal_transf_box_tiling_v3.cpp ../mandelbulber2/formula/definition/fractal_transf_box_wrap4d.cpp ../mandelbulber2/formula/definition/fractal_transf_cayley2_v1.cpp ../mandelbulber2/formula/definition/fractal_transf_clamp4d.cpp ../mandelbulber2/formula/definition/fractal_transf_de_controls.cpp ../mandelbulber2/formula/definition/fractal_transf_de_linear_cube.cpp ../mandelbulber2/formula/definition/fractal_transf_demo_scale_v2.cpp ../mandelbulber2/formula/definition/fractal_transf_diagonal_fold.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_amazing_ifs.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_box.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_box_frame.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_box_v2.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_box_v3.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_cayley2.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_chessboard.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_clip_custom.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_clip_plane.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_cylinder.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_cylinder_v2.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_diamond.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_ellipsoid.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_gear_v1.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_grid.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_grid_v2.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_grid_v3.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_heart.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_helix.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_helix_menger.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_helix_v2.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_hexprism.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_hexprism_v2.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_hextgrid2.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_hybrid_color.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_octahedron.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_octahedron_v2.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_piriform.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_polyhedra.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_polyhedra_v2.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_prism.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_prism_v2.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_sphere.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_sphere_grid.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_sphere_grid_v2.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_sphere_grid_v3.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_spring.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_supershape.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_supershape_v2.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_torus.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_torus_grid.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_torus_menger.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_torus_twist.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_torus_v2.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_torus_v3.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_torus_v4.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_tri_grid.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_tube.cpp ../mandelbulber2/formula/definition/fractal_transf_dot_fold.cpp ../mandelbulber2/formula/definition/fractal_transf_folding_tetra3d.cpp ../mandelbulber2/formula/definition/fractal_transf_gnarl.cpp ../mandelbulber2/formula/definition/fractal_transf_hybrid_color.cpp ../mandelbulber2/formula/definition/fractal_transf_hybrid_color2.cpp ../mandelbulber2/formula/definition/fractal_transf_initial4d.cpp ../mandelbulber2/formula/definition/fractal_transf_inv_cylindrical.cpp ../mandelbulber2/formula/definition/fractal_transf_iteration_weight.cpp ../mandelbulber2/formula/definition/fractal_transf_iteration_weight4d.cpp ../mandelbulber2/formula/definition/fractal_transf_juliabox.cpp ../mandelbulber2/formula/definition/fractal_transf_juliabox_v2.cpp ../mandelbulber2/formula/definition/fractal_transf_lin_combine_cxyz.cpp ../mandelbulber2/formula/definition/fractal_transf_low_res_mode.cpp ../mandelbulber2/formula/definition/fractal_transf_mandalay_fold4d.cpp ../mandelbulber2/formula/definition/fractal_transf_mandalay_fold_v1.cpp ../mandelbulber2/formula/definition/fractal_transf_mandalay_fold_v2.cpp ../mandelbulber2/formula/definition/fractal_transf_menger_fold.cpp ../mandelbulber2/formula/definition/fractal_transf_menger_fold_v2.cpp ../mandelbulber2/formula/definition/fractal_transf_multiple_angle.cpp ../mandelbulber2/formula/definition/fractal_transf_neg_abs_add_constant.cpp ../mandelbulber2/formula/definition/fractal_transf_octo_fold.cpp ../mandelbulber2/formula/definition/fractal_transf_offset_s_curve4d.cpp ../mandelbulber2/formula/definition/fractal_transf_parab_fold.cpp ../mandelbulber2/formula/definition/fractal_transf_platonic_solid.cpp ../mandelbulber2/formula/definition/fractal_transf_poly_fold_atan.cpp ../mandelbulber2/formula/definition/fractal_transf_poly_fold_atan2.cpp ../mandelbulber2/formula/definition/fractal_transf_poly_fold_atan2_iter.cpp ../mandelbulber2/formula/definition/fractal_transf_poly_fold_sym_multi.cpp ../mandelbulber2/formula/definition/fractal_transf_poly_fold_sym_xy.cpp ../mandelbulber2/formula/definition/fractal_transf_poly_xy_fold_v1.cpp ../mandelbulber2/formula/definition/fractal_transf_pwr2_polynomial.cpp ../mandelbulber2/formula/definition/fractal_transf_quadratic_fold4d.cpp ../mandelbulber2/formula/definition/fractal_transf_quaternion_fold.cpp ../mandelbulber2/formula/definition/fractal_transf_r_power.cpp ../mandelbulber2/formula/definition/fractal_transf_reciprocal3.cpp ../mandelbulber2/formula/definition/fractal_transf_reciprocal4d.cpp ../mandelbulber2/formula/definition/fractal_transf_rotate_about_vec3.cpp ../mandelbulber2/formula/definition/fractal_transf_rotation.cpp ../mandelbulber2/formula/definition/fractal_transf_rotation4d.cpp ../mandelbulber2/formula/definition/fractal_transf_rotation_chebyshev.cpp ../mandelbulber2/formula/definition/fractal_transf_rotation_folding.cpp ../mandelbulber2/formula/definition/fractal_transf_rotation_folding_plane.cpp ../mandelbulber2/formula/definition/fractal_transf_rotation_iter_controls.cpp ../mandelbulber2/formula/definition/fractal_transf_rotation_m3d.cpp ../mandelbulber2/formula/definition/fractal_transf_rotation_vary_v1.cpp ../mandelbulber2/formula/definition/fractal_transf_rpow3.cpp ../mandelbulber2/formula/definition/fractal_transf_scale.cpp ../mandelbulber2/formula/definition/fractal_transf_scale3d.cpp ../mandelbulber2/formula/definition/fractal_transf_scale4d.cpp ../mandelbulber2/formula/definition/fractal_transf_scale_offset.cpp ../mandelbulber2/formula/definition/fractal_transf_scale_offset_v2.cpp ../mandelbulber2/formula/definition/fractal_transf_scale_vary_multi.cpp ../mandelbulber2/formula/definition/fractal_transf_scale_vary_v1.cpp ../mandelbulber2/formula/definition/fractal_transf_scale_vary_v212.cpp ../mandelbulber2/formula/definition/fractal_transf_scale_vary_vcl.cpp ../mandelbulber2/formula/definition/fractal_transf_sin_add.cpp ../mandelbulber2/formula/definition/fractal_transf_sin_and_cos.cpp ../mandelbulber2/formula/definition/fractal_transf_sin_and_cos_max.cpp ../mandelbulber2/formula/definition/fractal_transf_sin_or_cos.cpp ../mandelbulber2/formula/definition/fractal_transf_sin_tan.cpp ../mandelbulber2/formula/definition/fractal_transf_sin_y_m3d.cpp ../mandelbulber2/formula/definition/fractal_transf_sincos.cpp ../mandelbulber2/formula/definition/fractal_transf_sincos_helix.cpp ../mandelbulber2/formula/definition/fractal_transf_sincos_v2.cpp ../mandelbulber2/formula/definition/fractal_transf_smooth.cpp ../mandelbulber2/formula/definition/fractal_transf_smooth_v2.cpp ../mandelbulber2/formula/definition/fractal_transf_spherical_coord_invs.cpp ../mandelbulber2/formula/definition/fractal_transf_spherical_fold.cpp ../mandelbulber2/formula/definition/fractal_transf_spherical_fold4d.cpp ../mandelbulber2/formula/definition/fractal_transf_spherical_fold4d_v2.cpp ../mandelbulber2/formula/definition/fractal_transf_spherical_fold_abox.cpp ../mandelbulber2/formula/definition/fractal_transf_spherical_fold_chs.cpp ../mandelbulber2/formula/definition/fractal_transf_spherical_fold_cuboid.cpp ../mandelbulber2/formula/definition/fractal_transf_spherical_fold_parab.cpp ../mandelbulber2/formula/definition/fractal_transf_spherical_fold_pnorm.cpp ../mandelbulber2/formula/definition/fractal_transf_spherical_fold_smooth.cpp ../mandelbulber2/formula/definition/fractal_transf_spherical_fold_v1.cpp ../mandelbulber2/formula/definition/fractal_transf_spherical_fold_v2.cpp ../mandelbulber2/formula/definition/fractal_transf_spherical_fold_v3.cpp ../mandelbulber2/formula/definition/fractal_transf_spherical_fold_vary_v1.cpp ../mandelbulber2/formula/definition/fractal_transf_spherical_fold_vary_vcl.cpp ../mandelbulber2/formula/definition/fractal_transf_spherical_fold_xyz_bias.cpp ../mandelbulber2/formula/definition/fractal_transf_spherical_inv.cpp ../mandelbulber2/formula/definition/fractal_transf_spherical_inv_c.cpp ../mandelbulber2/formula/definition/fractal_transf_spherical_inv_pnorm.cpp ../mandelbulber2/formula/definition/fractal_transf_spherical_inv_v2.cpp ../mandelbulber2/formula/definition/fractal_transf_spherical_inv_v3.cpp ../mandelbulber2/formula/definition/fractal_transf_spherical_inv_v4.cpp ../mandelbulber2/formula/definition/fractal_transf_spherical_offset.cpp ../mandelbulber2/formula/definition/fractal_transf_spherical_offset_vcl.cpp ../mandelbulber2/formula/definition/fractal_transf_spherical_pwr_fold.cpp ../mandelbulber2/formula/definition/fractal_transf_step_xy.cpp ../mandelbulber2/formula/definition/fractal_transf_supershape.cpp ../mandelbulber2/formula/definition/fractal_transf_surf_box_fold.cpp ../mandelbulber2/formula/definition/fractal_transf_surf_box_fold_v2.cpp ../mandelbulber2/formula/definition/fractal_transf_surf_box_fold_v24d.cpp ../mandelbulber2/formula/definition/fractal_transf_surf_fold_multi.cpp ../mandelbulber2/formula/definition/fractal_transf_wizard_demo.cpp ../mandelbulber2/formula/definition/fractal_transf_zvector_axis_swap.cpp ../mandelbulber2/formula/definition/fractal_vicsek.cpp ../mandelbulber2/formula/definition/fractal_xenodreambuie.cpp ../mandelbulber2/formula/definition/fractal_xenodreambuie_v2.cpp ../mandelbulber2/formula/definition/fractal_xenodreambuie_v3.cpp ../mandelbulber2/formula/definition/legacy_fractal_transforrms.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../mandelbulber2/qt/audio_selector.ui ../mandelbulber2/qt/custom_formula_editor.ui ../mandelbulber2/qt/detached_window.ui ../mandelbulber2/qt/dock_animation.ui ../mandelbulber2/qt/dock_effects.ui ../mandelbulber2/qt/dock_fractal.ui ../mandelbulber2/qt/dock_gamepad.ui ../mandelbulber2/qt/dock_image_adjustments.ui ../mandelbulber2/qt/dock_measurements.ui ../mandelbulber2/qt/dock_navigation.ui ../mandelbulber2/qt/dock_pattern_lines.ui ../mandelbulber2/qt/dock_queue.ui ../mandelbulber2/qt/dock_rendering_engine.ui ../mandelbulber2/qt/dock_statistics.ui ../mandelbulber2/qt/image_save_dialog.ui ../mandelbulber2/qt/light_editor.ui ../mandelbulber2/qt/light_sources_manager.ui ../mandelbulber2/qt/material_editor.ui ../mandelbulber2/qt/material_manager_view.ui ../mandelbulber2/qt/mesh_export_dialog.ui ../mandelbulber2/qt/navigator_window.ui ../mandelbulber2/qt/objects_tree_widget.ui ../mandelbulber2/qt/preferences_dialog.ui ../mandelbulber2/qt/primitives_manager.ui ../mandelbulber2/qt/randomizer_dialog.ui ../mandelbulber2/qt/render_window.ui ../mandelbulber2/qt/script_dialog.ui ../mandelbulber2/qt/settings_browser.ui ../mandelbulber2/qt/settings_cleaner.ui ../mandelbulber2/qt/slider_popup.ui ../mandelbulber2/qt/tab_fractal.ui ../mandelbulber2/qt/voxel_export_dialog.ui $(DISTDIR)/
+	$(COPY_FILE) --parents ../mandelbulber2/src/algebra.hpp ../mandelbulber2/src/animation_flight.hpp ../mandelbulber2/src/animation_frames.hpp ../mandelbulber2/src/animation_keyframes.hpp ../mandelbulber2/src/animation_path_data.hpp ../mandelbulber2/src/automated_widgets.hpp ../mandelbulber2/src/calculate_distance.hpp ../mandelbulber2/src/camera_target.hpp ../mandelbulber2/src/cast.hpp ../mandelbulber2/src/cimage.hpp ../mandelbulber2/src/color_structures.hpp ../mandelbulber2/src/command_line_interface.hpp ../mandelbulber2/src/common_params.hpp ../mandelbulber2/src/compute_fractal.hpp ../mandelbulber2/src/container_selector.hpp ../mandelbulber2/src/displacement_map.hpp ../mandelbulber2/src/dof.hpp ../mandelbulber2/src/error_message.hpp ../mandelbulber2/src/file_downloader.hpp ../mandelbulber2/src/file_image.hpp ../mandelbulber2/src/file_mesh.hpp ../mandelbulber2/src/fractal_coloring.hpp ../mandelbulber2/src/fractal_container.hpp ../mandelbulber2/src/fractparams.hpp ../mandelbulber2/src/global_data.hpp ../mandelbulber2/src/glow_sphere.hpp ../mandelbulber2/src/histogram.hpp ../mandelbulber2/src/image_scale.hpp ../mandelbulber2/src/include_header_wrapper.hpp ../mandelbulber2/src/initparameters.hpp ../mandelbulber2/src/interface.hpp ../mandelbulber2/src/keyframes.hpp ../mandelbulber2/src/lights.hpp ../mandelbulber2/src/main.hpp ../mandelbulber2/src/mandelbulb3d_settings.hpp ../mandelbulber2/src/mesh_export.hpp ../mandelbulber2/src/morph.hpp ../mandelbulber2/src/multi_val.hpp ../mandelbulber2/src/netrender.hpp ../mandelbulber2/src/netrender_client.hpp ../mandelbulber2/src/netrender_file_receiver.hpp ../mandelbulber2/src/netrender_file_sender.hpp ../mandelbulber2/src/netrender_server.hpp ../mandelbulber2/src/netrender_transport.hpp ../mandelbulber2/src/nine_fractals.hpp ../mandelbulber2/src/object_data.hpp ../mandelbulber2/src/object_types.hpp ../mandelbulber2/src/old_settings.hpp ../mandelbulber2/src/one_parameter.hpp ../mandelbulber2/src/opencl_dynamic_data.hpp ../mandelbulber2/src/orbit_trap_shape.hpp ../mandelbulber2/src/parameters.hpp ../mandelbulber2/src/pattern_line_traps.hpp ../mandelbulber2/src/primitive.hpp ../mandelbulber2/src/progress_text.hpp ../mandelbulber2/src/projection_3d.hpp ../mandelbulber2/src/queue.hpp ../mandelbulber2/src/random.hpp ../mandelbulber2/src/rectangle.hpp ../mandelbulber2/src/region.hpp ../mandelbulber2/src/render_data.hpp ../mandelbulber2/src/render_image.hpp ../mandelbulber2/src/render_job.hpp ../mandelbulber2/src/render_queue.hpp ../mandelbulber2/src/render_window.hpp ../mandelbulber2/src/render_worker.hpp ../mandelbulber2/src/rendered_image_widget.hpp ../mandelbulber2/src/rendered_tile_data.hpp ../mandelbulber2/src/rendering_configuration.hpp ../mandelbulber2/src/resource_http_provider.hpp ../mandelbulber2/src/scheduler.hpp ../mandelbulber2/src/settings.hpp ../mandelbulber2/src/shader_perlin_noise_for_shaders.hpp ../mandelbulber2/src/single_trap_lights.hpp ../mandelbulber2/src/synchronize_interface.hpp ../mandelbulber2/src/system.hpp ../mandelbulber2/src/system_data.hpp ../mandelbulber2/src/system_directories.hpp ../mandelbulber2/src/test.hpp ../mandelbulber2/src/texture.hpp ../mandelbulber2/src/texture_enums.hpp ../mandelbulber2/src/texture_mapping.hpp ../mandelbulber2/src/thumbnail.hpp ../mandelbulber2/src/voxel_export.hpp ../mandelbulber2/src/wait.hpp ../mandelbulber2/src/write_log.hpp ../mandelbulber2/src/ao_modes.h ../mandelbulber2/src/audio_fft_data.h ../mandelbulber2/src/audio_track.h ../mandelbulber2/src/audio_track_collection.h ../mandelbulber2/src/calculation_mode.h ../mandelbulber2/src/camera_movement_modes.h ../mandelbulber2/src/color_gradient.h ../mandelbulber2/src/common_math.h ../mandelbulber2/src/denoiser.h ../mandelbulber2/src/files.h ../mandelbulber2/src/fractal.h ../mandelbulber2/src/fractal_enums.h ../mandelbulber2/src/headless.h ../mandelbulber2/src/hsv2rgb.h ../mandelbulber2/src/hybrid_fractal_sequences.h ../mandelbulber2/src/image_adjustments.h ../mandelbulber2/src/light.h ../mandelbulber2/src/lzo_compression.h ../mandelbulber2/src/manipulations.h ../mandelbulber2/src/marchingcubes.h ../mandelbulber2/src/material.h ../mandelbulber2/src/material_item_model.h ../mandelbulber2/src/material_item_view.h ../mandelbulber2/src/my_ui_loader.h ../mandelbulber2/src/object_node_type.h ../mandelbulber2/src/objects_tree.h ../mandelbulber2/src/opencl_abstract_dynamic_data.h ../mandelbulber2/src/opencl_context.h ../mandelbulber2/src/opencl_device.h ../mandelbulber2/src/opencl_engine.h ../mandelbulber2/src/opencl_engine_render_dof.h ../mandelbulber2/src/opencl_engine_render_dof_phase1.h ../mandelbulber2/src/opencl_engine_render_dof_phase2.h ../mandelbulber2/src/opencl_engine_render_fractal.h ../mandelbulber2/src/opencl_engine_render_nebula.h ../mandelbulber2/src/opencl_engine_render_post_filter.h ../mandelbulber2/src/opencl_engine_render_ssao.h ../mandelbulber2/src/opencl_global.h ../mandelbulber2/src/opencl_hardware.h ../mandelbulber2/src/opencl_input_output_buffer.h ../mandelbulber2/src/opencl_kernel.h ../mandelbulber2/src/opencl_queue.h ../mandelbulber2/src/opencl_scheduler.h ../mandelbulber2/src/opencl_textures_data.h ../mandelbulber2/src/opencl_worker_output_queue.h ../mandelbulber2/src/opencl_worker_thread.h ../mandelbulber2/src/perlin_noise_octaves.h ../mandelbulber2/src/post_effect_hdr_blur.h ../mandelbulber2/src/primitive_item.h ../mandelbulber2/src/primitives.h ../mandelbulber2/src/radiance_hdr.h ../mandelbulber2/src/render_ssao.h ../mandelbulber2/src/scripts.h ../mandelbulber2/src/shortcuts.h ../mandelbulber2/src/ssao_worker.h ../mandelbulber2/src/statistics.h ../mandelbulber2/src/stereo.h ../mandelbulber2/src/texture_cache.h ../mandelbulber2/src/trace_behind.h ../mandelbulber2/src/tree_string_list.h ../mandelbulber2/src/undo.h ../mandelbulber2/qt/my_table_widget_anim.hpp ../mandelbulber2/qt/my_table_widget_keyframes.hpp ../mandelbulber2/qt/player_widget.hpp ../mandelbulber2/qt/system_tray.hpp ../mandelbulber2/qt/anim_audio_view.h ../mandelbulber2/qt/animation_value_chart_widget.h ../mandelbulber2/qt/audio_selector.h ../mandelbulber2/qt/buton_load_settings_from_widget.h ../mandelbulber2/qt/buton_random_settings_from_widget.h ../mandelbulber2/qt/buton_reset_settings_from_widget.h ../mandelbulber2/qt/buton_save_settings_from_widget.h ../mandelbulber2/qt/common_my_widget_wrapper.h ../mandelbulber2/qt/custom_formula_editor.h ../mandelbulber2/qt/detached_window.h ../mandelbulber2/qt/dock_animation.h ../mandelbulber2/qt/dock_effects.h ../mandelbulber2/qt/dock_fake_lights.h ../mandelbulber2/qt/dock_fractal.h ../mandelbulber2/qt/dock_gamepad.h ../mandelbulber2/qt/dock_image_adjustments.h ../mandelbulber2/qt/dock_measurements.h ../mandelbulber2/qt/dock_navigation.h ../mandelbulber2/qt/dock_pattern_lines.h ../mandelbulber2/qt/dock_queue.h ../mandelbulber2/qt/dock_rendering_engine.h ../mandelbulber2/qt/dock_statistics.h ../mandelbulber2/qt/fft_view.h ../mandelbulber2/qt/file_select_widget.h ../mandelbulber2/qt/formula_combo_box.h ../mandelbulber2/qt/frame_slider_popup.h ../mandelbulber2/qt/gradient_edit_widget.h ../mandelbulber2/qt/highlighter.h ../mandelbulber2/qt/image_save_dialog.h ../mandelbulber2/qt/light_editor.h ../mandelbulber2/qt/light_sources_manager.h ../mandelbulber2/qt/light_widget.h ../mandelbulber2/qt/material_editor.h ../mandelbulber2/qt/material_manager_view.h ../mandelbulber2/qt/material_selector.h ../mandelbulber2/qt/material_widget.h ../mandelbulber2/qt/mesh_export_dialog.h ../mandelbulber2/qt/my_check_box.h ../mandelbulber2/qt/my_color_button.h ../mandelbulber2/qt/my_combo_box.h ../mandelbulber2/qt/my_double_spin_box.h ../mandelbulber2/qt/my_group_box.h ../mandelbulber2/qt/my_histogram_label.h ../mandelbulber2/qt/my_line_edit.h ../mandelbulber2/qt/my_log_widget.h ../mandelbulber2/qt/my_progress_bar.h ../mandelbulber2/qt/my_scrolled_area.h ../mandelbulber2/qt/my_spin_box.h ../mandelbulber2/qt/my_tab_bar.h ../mandelbulber2/qt/my_tab_bar_with_checkbox.h ../mandelbulber2/qt/my_tab_widget.h ../mandelbulber2/qt/my_tab_widget_with_checkboxes.h ../mandelbulber2/qt/my_text_edit.h ../mandelbulber2/qt/my_widget_with_params.h ../mandelbulber2/qt/navigator_window.h ../mandelbulber2/qt/objects_tree_widget.h ../mandelbulber2/qt/preferences_dialog.h ../mandelbulber2/qt/preview_file_dialog.h ../mandelbulber2/qt/primitives_manager.h ../mandelbulber2/qt/pushbutton_anim_sound.h ../mandelbulber2/qt/randomizer_dialog.h ../mandelbulber2/qt/script_dialog.h ../mandelbulber2/qt/settings_browser.h ../mandelbulber2/qt/settings_cleaner.h ../mandelbulber2/qt/tab_fractal.h ../mandelbulber2/qt/thumbnail_widget.h ../mandelbulber2/qt/time_ruler.h ../mandelbulber2/qt/ui_audio_selector.h ../mandelbulber2/qt/ui_custom_formula_editor.h ../mandelbulber2/qt/ui_detached_window.h ../mandelbulber2/qt/ui_dock_animation.h ../mandelbulber2/qt/ui_dock_effects.h ../mandelbulber2/qt/ui_dock_fake_lights.h ../mandelbulber2/qt/ui_dock_fractal.h ../mandelbulber2/qt/ui_dock_gamepad.h ../mandelbulber2/qt/ui_dock_image_adjustments.h ../mandelbulber2/qt/ui_dock_measurements.h ../mandelbulber2/qt/ui_dock_navigation.h ../mandelbulber2/qt/ui_dock_pattern_lines.h ../mandelbulber2/qt/ui_dock_queue.h ../mandelbulber2/qt/ui_dock_rendering_engine.h ../mandelbulber2/qt/ui_dock_statistics.h ../mandelbulber2/qt/ui_image_save_dialog.h ../mandelbulber2/qt/ui_light_editor.h ../mandelbulber2/qt/ui_light_sources_manager.h ../mandelbulber2/qt/ui_material_editor.h ../mandelbulber2/qt/ui_material_manager_view.h ../mandelbulber2/qt/ui_mesh_export_dialog.h ../mandelbulber2/qt/ui_navigator_window.h ../mandelbulber2/qt/ui_objects_tree_widget.h ../mandelbulber2/qt/ui_preferences_dialog.h ../mandelbulber2/qt/ui_primitives_manager.h ../mandelbulber2/qt/ui_randomizer_dialog.h ../mandelbulber2/qt/ui_render_window.h ../mandelbulber2/qt/ui_script_dialog.h ../mandelbulber2/qt/ui_settings_browser.h ../mandelbulber2/qt/ui_settings_cleaner.h ../mandelbulber2/qt/ui_slider_popup.h ../mandelbulber2/qt/ui_tab_fractal.h ../mandelbulber2/qt/ui_voxel_export_dialog.h ../mandelbulber2/qt/voxel_export_dialog.h ../mandelbulber2/qt/wave_form_view.h ../mandelbulber2/formula/definition/abstract_fractal.h ../mandelbulber2/formula/definition/all_fractal_definitions.h ../mandelbulber2/formula/definition/fractal_transf_demo_scale_v2.h ../mandelbulber2/formula/definition/fractal_transf_wizard_demo.h ../mandelbulber2/formula/definition/all_fractal_list.hpp ../mandelbulber2/formula/definition/all_fractal_list_enums.hpp ../mandelbulber2/formula/definition/legacy_fractal_transforms.hpp ../mandelbulber2/third-party/stb/stb_image.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../mandelbulber2/src/algebra.cpp ../mandelbulber2/src/animation_flight.cpp ../mandelbulber2/src/animation_frames.cpp ../mandelbulber2/src/animation_keyframes.cpp ../mandelbulber2/src/audio_fft_data.cpp ../mandelbulber2/src/audio_track.cpp ../mandelbulber2/src/audio_track_collection.cpp ../mandelbulber2/src/automated_widgets.cpp ../mandelbulber2/src/calculate_distance.cpp ../mandelbulber2/src/camera_target.cpp ../mandelbulber2/src/cimage.cpp ../mandelbulber2/src/color_gradient.cpp ../mandelbulber2/src/command_line_interface.cpp ../mandelbulber2/src/common_math.cpp ../mandelbulber2/src/compute_fractal.cpp ../mandelbulber2/src/container_selector.cpp ../mandelbulber2/src/denoiser.cpp ../mandelbulber2/src/displacement_map.cpp ../mandelbulber2/src/dof.cpp ../mandelbulber2/src/error_message.cpp ../mandelbulber2/src/file_downloader.cpp ../mandelbulber2/src/file_image.cpp ../mandelbulber2/src/file_mesh.cpp ../mandelbulber2/src/files.cpp ../mandelbulber2/src/fractal.cpp ../mandelbulber2/src/fractal_coloring.cpp ../mandelbulber2/src/fractal_container.cpp ../mandelbulber2/src/fractparams.cpp ../mandelbulber2/src/global_data.cpp ../mandelbulber2/src/headless.cpp ../mandelbulber2/src/histogram.cpp ../mandelbulber2/src/hsv2rgb.cpp ../mandelbulber2/src/hybrid_fractal_sequences.cpp ../mandelbulber2/src/image_scale.cpp ../mandelbulber2/src/initparameters.cpp ../mandelbulber2/src/interface.cpp ../mandelbulber2/src/keyframes.cpp ../mandelbulber2/src/light.cpp ../mandelbulber2/src/lights.cpp ../mandelbulber2/src/lzo_compression.cpp ../mandelbulber2/src/main.cpp ../mandelbulber2/src/mandelbulb3d_settings.cpp ../mandelbulber2/src/manipulations.cpp ../mandelbulber2/src/marchingcubes.cpp ../mandelbulber2/src/material.cpp ../mandelbulber2/src/material_item_model.cpp ../mandelbulber2/src/material_item_view.cpp ../mandelbulber2/src/mesh_export.cpp ../mandelbulber2/src/morph.cpp ../mandelbulber2/src/multi_val.cpp ../mandelbulber2/src/my_ui_loader.cpp ../mandelbulber2/src/netrender.cpp ../mandelbulber2/src/netrender_client.cpp ../mandelbulber2/src/netrender_file_receiver.cpp ../mandelbulber2/src/netrender_file_sender.cpp ../mandelbulber2/src/netrender_server.cpp ../mandelbulber2/src/netrender_transport.cpp ../mandelbulber2/src/nine_fractals.cpp ../mandelbulber2/src/objects_tree.cpp ../mandelbulber2/src/old_settings.cpp ../mandelbulber2/src/one_parameter.cpp ../mandelbulber2/src/opencl_abstract_dynamic_data.cpp ../mandelbulber2/src/opencl_context.cpp ../mandelbulber2/src/opencl_device.cpp ../mandelbulber2/src/opencl_dynamic_data.cpp ../mandelbulber2/src/opencl_engine.cpp ../mandelbulber2/src/opencl_engine_render_dof.cpp ../mandelbulber2/src/opencl_engine_render_dof_phase1.cpp ../mandelbulber2/src/opencl_engine_render_dof_phase2.cpp ../mandelbulber2/src/opencl_engine_render_fractal.cpp ../mandelbulber2/src/opencl_engine_render_nebula.cpp ../mandelbulber2/src/opencl_engine_render_post_filter.cpp ../mandelbulber2/src/opencl_engine_render_ssao.cpp ../mandelbulber2/src/opencl_global.cpp ../mandelbulber2/src/opencl_hardware.cpp ../mandelbulber2/src/opencl_kernel.cpp ../mandelbulber2/src/opencl_queue.cpp ../mandelbulber2/src/opencl_scheduler.cpp ../mandelbulber2/src/opencl_textures_data.cpp ../mandelbulber2/src/opencl_worker_output_queue.cpp ../mandelbulber2/src/opencl_worker_thread.cpp ../mandelbulber2/src/orbit_trap_shape.cpp ../mandelbulber2/src/parameters.cpp ../mandelbulber2/src/perlin_noise_octaves.cpp ../mandelbulber2/src/post_effect_hdr_blur.cpp ../mandelbulber2/src/primitive.cpp ../mandelbulber2/src/primitives.cpp ../mandelbulber2/src/progress_text.cpp ../mandelbulber2/src/projection_3d.cpp ../mandelbulber2/src/queue.cpp ../mandelbulber2/src/radiance_hdr.cpp ../mandelbulber2/src/random.cpp ../mandelbulber2/src/render_image.cpp ../mandelbulber2/src/render_job.cpp ../mandelbulber2/src/render_queue.cpp ../mandelbulber2/src/render_ssao.cpp ../mandelbulber2/src/render_window.cpp ../mandelbulber2/src/render_window_buttons.cpp ../mandelbulber2/src/render_window_menu.cpp ../mandelbulber2/src/render_window_slots.cpp ../mandelbulber2/src/render_worker.cpp ../mandelbulber2/src/rendered_image_widget.cpp ../mandelbulber2/src/rendering_configuration.cpp ../mandelbulber2/src/resource_http_provider.cpp ../mandelbulber2/src/scheduler.cpp ../mandelbulber2/src/scripts.cpp ../mandelbulber2/src/settings.cpp ../mandelbulber2/src/shader_ambient_occlusion.cpp ../mandelbulber2/src/shader_aux_light.cpp ../mandelbulber2/src/shader_aux_shadow.cpp ../mandelbulber2/src/shader_background.cpp ../mandelbulber2/src/shader_calculate_normals.cpp ../mandelbulber2/src/shader_cloud_opacity.cpp ../mandelbulber2/src/shader_distance_fog_opacity.cpp ../mandelbulber2/src/shader_env_mapping.cpp ../mandelbulber2/src/shader_fake_lights.cpp ../mandelbulber2/src/shader_fast_ambient_occlusion.cpp ../mandelbulber2/src/shader_global_illumination.cpp ../mandelbulber2/src/shader_iridescence.cpp ../mandelbulber2/src/shader_iter_opacity.cpp ../mandelbulber2/src/shader_light_shading.cpp ../mandelbulber2/src/shader_normal_map_shader.cpp ../mandelbulber2/src/shader_object.cpp ../mandelbulber2/src/shader_pattern_line_traps.cpp ../mandelbulber2/src/shader_perlin_noise_for_shaders.cpp ../mandelbulber2/src/shader_roughess_texture.cpp ../mandelbulber2/src/shader_single_trap_lights.cpp ../mandelbulber2/src/shader_specular_highlight.cpp ../mandelbulber2/src/shader_specular_highlight_combined.cpp ../mandelbulber2/src/shader_surface_color.cpp ../mandelbulber2/src/shader_texture.cpp ../mandelbulber2/src/shader_volumetric.cpp ../mandelbulber2/src/shortcuts.cpp ../mandelbulber2/src/single_trap_lights.cpp ../mandelbulber2/src/ssao_worker.cpp ../mandelbulber2/src/statistics.cpp ../mandelbulber2/src/stereo.cpp ../mandelbulber2/src/synchronize_interface.cpp ../mandelbulber2/src/system.cpp ../mandelbulber2/src/system_data.cpp ../mandelbulber2/src/system_directories.cpp ../mandelbulber2/src/test.cpp ../mandelbulber2/src/texture.cpp ../mandelbulber2/src/texture_cache.cpp ../mandelbulber2/src/texture_mapping.cpp ../mandelbulber2/src/thumbnail.cpp ../mandelbulber2/src/trace_behind.cpp ../mandelbulber2/src/tree_string_list.cpp ../mandelbulber2/src/undo.cpp ../mandelbulber2/src/voxel_export.cpp ../mandelbulber2/src/wait.cpp ../mandelbulber2/src/write_log.cpp ../mandelbulber2/qt/anim_audio_view.cpp ../mandelbulber2/qt/animation_value_chart_widget.cpp ../mandelbulber2/qt/audio_selector.cpp ../mandelbulber2/qt/buton_load_settings_from_widget.cpp ../mandelbulber2/qt/buton_random_settings_from_widget.cpp ../mandelbulber2/qt/buton_reset_settings_from_widget.cpp ../mandelbulber2/qt/buton_save_settings_from_widget.cpp ../mandelbulber2/qt/common_my_widget_wrapper.cpp ../mandelbulber2/qt/custom_formula_editor.cpp ../mandelbulber2/qt/detached_window.cpp ../mandelbulber2/qt/dock_animation.cpp ../mandelbulber2/qt/dock_effects.cpp ../mandelbulber2/qt/dock_fake_lights.cpp ../mandelbulber2/qt/dock_fractal.cpp ../mandelbulber2/qt/dock_gamepad.cpp ../mandelbulber2/qt/dock_image_adjustments.cpp ../mandelbulber2/qt/dock_measurements.cpp ../mandelbulber2/qt/dock_navigation.cpp ../mandelbulber2/qt/dock_pattern_lines.cpp ../mandelbulber2/qt/dock_queue.cpp ../mandelbulber2/qt/dock_rendering_engine.cpp ../mandelbulber2/qt/dock_statistics.cpp ../mandelbulber2/qt/fft_view.cpp ../mandelbulber2/qt/file_select_widget.cpp ../mandelbulber2/qt/formula_combo_box.cpp ../mandelbulber2/qt/frame_slider_popup.cpp ../mandelbulber2/qt/gradient_edit_widget.cpp ../mandelbulber2/qt/highlighter.cpp ../mandelbulber2/qt/image_save_dialog.cpp ../mandelbulber2/qt/light_editor.cpp ../mandelbulber2/qt/light_sources_manager.cpp ../mandelbulber2/qt/light_widget.cpp ../mandelbulber2/qt/material_editor.cpp ../mandelbulber2/qt/material_manager_view.cpp ../mandelbulber2/qt/material_selector.cpp ../mandelbulber2/qt/material_widget.cpp ../mandelbulber2/qt/mesh_export_dialog.cpp ../mandelbulber2/qt/my_check_box.cpp ../mandelbulber2/qt/my_color_button.cpp ../mandelbulber2/qt/my_combo_box.cpp ../mandelbulber2/qt/my_double_spin_box.cpp ../mandelbulber2/qt/my_group_box.cpp ../mandelbulber2/qt/my_histogram_label.cpp ../mandelbulber2/qt/my_line_edit.cpp ../mandelbulber2/qt/my_log_widget.cpp ../mandelbulber2/qt/my_progress_bar.cpp ../mandelbulber2/qt/my_spin_box.cpp ../mandelbulber2/qt/my_tab_bar.cpp ../mandelbulber2/qt/my_tab_bar_with_checkbox.cpp ../mandelbulber2/qt/my_tab_widget.cpp ../mandelbulber2/qt/my_tab_widget_with_checkboxes.cpp ../mandelbulber2/qt/my_table_widget_anim.cpp ../mandelbulber2/qt/my_table_widget_keyframes.cpp ../mandelbulber2/qt/my_text_edit.cpp ../mandelbulber2/qt/my_widget_with_params.cpp ../mandelbulber2/qt/navigator_window.cpp ../mandelbulber2/qt/objects_tree_widget.cpp ../mandelbulber2/qt/player_widget.cpp ../mandelbulber2/qt/preferences_dialog.cpp ../mandelbulber2/qt/preview_file_dialog.cpp ../mandelbulber2/qt/primitives_manager.cpp ../mandelbulber2/qt/pushbutton_anim_sound.cpp ../mandelbulber2/qt/randomizer_dialog.cpp ../mandelbulber2/qt/script_dialog.cpp ../mandelbulber2/qt/settings_browser.cpp ../mandelbulber2/qt/settings_cleaner.cpp ../mandelbulber2/qt/system_tray.cpp ../mandelbulber2/qt/tab_fractal.cpp ../mandelbulber2/qt/thumbnail_widget.cpp ../mandelbulber2/qt/time_ruler.cpp ../mandelbulber2/qt/voxel_export_dialog.cpp ../mandelbulber2/qt/wave_form_view.cpp ../mandelbulber2/formula/definition/abstract_fractal.cpp ../mandelbulber2/formula/definition/all_fractal_list.cpp ../mandelbulber2/formula/definition/fractal_abox4d.cpp ../mandelbulber2/formula/definition/fractal_abox_donut4d.cpp ../mandelbulber2/formula/definition/fractal_abox_donut4d_v2.cpp ../mandelbulber2/formula/definition/fractal_abox_klein.cpp ../mandelbulber2/formula/definition/fractal_abox_mod1.cpp ../mandelbulber2/formula/definition/fractal_abox_mod11.cpp ../mandelbulber2/formula/definition/fractal_abox_mod12.cpp ../mandelbulber2/formula/definition/fractal_abox_mod13.cpp ../mandelbulber2/formula/definition/fractal_abox_mod14.cpp ../mandelbulber2/formula/definition/fractal_abox_mod15.cpp ../mandelbulber2/formula/definition/fractal_abox_mod2.cpp ../mandelbulber2/formula/definition/fractal_abox_mod_kali.cpp ../mandelbulber2/formula/definition/fractal_abox_mod_kali_eiffie.cpp ../mandelbulber2/formula/definition/fractal_abox_mod_kali_v2.cpp ../mandelbulber2/formula/definition/fractal_abox_mod_kali_v3.cpp ../mandelbulber2/formula/definition/fractal_abox_smooth.cpp ../mandelbulber2/formula/definition/fractal_abox_sphere4d.cpp ../mandelbulber2/formula/definition/fractal_abox_surf_box.cpp ../mandelbulber2/formula/definition/fractal_abox_tetra.cpp ../mandelbulber2/formula/definition/fractal_abox_tetra4d.cpp ../mandelbulber2/formula/definition/fractal_abox_vs_icen1.cpp ../mandelbulber2/formula/definition/fractal_aexion.cpp ../mandelbulber2/formula/definition/fractal_aexion4d_v2.cpp ../mandelbulber2/formula/definition/fractal_aexion_octopus_mod.cpp ../mandelbulber2/formula/definition/fractal_amazing_ifs.cpp ../mandelbulber2/formula/definition/fractal_amazing_surf.cpp ../mandelbulber2/formula/definition/fractal_amazing_surf_klein.cpp ../mandelbulber2/formula/definition/fractal_amazing_surf_klein_v2.cpp ../mandelbulber2/formula/definition/fractal_amazing_surf_m3d.cpp ../mandelbulber2/formula/definition/fractal_amazing_surf_mod1.cpp ../mandelbulber2/formula/definition/fractal_amazing_surf_mod2.cpp ../mandelbulber2/formula/definition/fractal_amazing_surf_mod3.cpp ../mandelbulber2/formula/definition/fractal_amazing_surf_mod4.cpp ../mandelbulber2/formula/definition/fractal_amazing_surf_multi.cpp ../mandelbulber2/formula/definition/fractal_benesi.cpp ../mandelbulber2/formula/definition/fractal_benesi_mag_transforms.cpp ../mandelbulber2/formula/definition/fractal_benesi_pine_tree.cpp ../mandelbulber2/formula/definition/fractal_benesi_pwr2_mandelbulb.cpp ../mandelbulber2/formula/definition/fractal_benesi_t1_pine_tree.cpp ../mandelbulber2/formula/definition/fractal_box_fold4d_bulb_pow2.cpp ../mandelbulber2/formula/definition/fractal_box_fold_bulb_menger.cpp ../mandelbulber2/formula/definition/fractal_box_fold_bulb_pow2.cpp ../mandelbulber2/formula/definition/fractal_box_fold_bulb_pow2_v2.cpp ../mandelbulber2/formula/definition/fractal_box_fold_bulb_pow2_v3.cpp ../mandelbulber2/formula/definition/fractal_box_fold_bulb_v4.cpp ../mandelbulber2/formula/definition/fractal_box_fold_quat.cpp ../mandelbulber2/formula/definition/fractal_bristorbrot.cpp ../mandelbulber2/formula/definition/fractal_bristorbrot2.cpp ../mandelbulber2/formula/definition/fractal_bristorbrot4d.cpp ../mandelbulber2/formula/definition/fractal_buffalo.cpp ../mandelbulber2/formula/definition/fractal_coastalbrot.cpp ../mandelbulber2/formula/definition/fractal_collatz.cpp ../mandelbulber2/formula/definition/fractal_collatz_mod.cpp ../mandelbulber2/formula/definition/fractal_custom.cpp ../mandelbulber2/formula/definition/fractal_difs_amazing_ifs.cpp ../mandelbulber2/formula/definition/fractal_difs_box_diagonal_v1.cpp ../mandelbulber2/formula/definition/fractal_difs_box_diagonal_v3.cpp ../mandelbulber2/formula/definition/fractal_difs_box_v1.cpp ../mandelbulber2/formula/definition/fractal_difs_cylinder.cpp ../mandelbulber2/formula/definition/fractal_difs_ellipsoid.cpp ../mandelbulber2/formula/definition/fractal_difs_greek_ifs.cpp ../mandelbulber2/formula/definition/fractal_difs_hextgrid2.cpp ../mandelbulber2/formula/definition/fractal_difs_menger.cpp ../mandelbulber2/formula/definition/fractal_difs_msltoe_donut.cpp ../mandelbulber2/formula/definition/fractal_difs_multi_v1.cpp ../mandelbulber2/formula/definition/fractal_difs_prism.cpp ../mandelbulber2/formula/definition/fractal_difs_sphere.cpp ../mandelbulber2/formula/definition/fractal_difs_torus.cpp ../mandelbulber2/formula/definition/fractal_eiffie_car.cpp ../mandelbulber2/formula/definition/fractal_eiffie_msltoe.cpp ../mandelbulber2/formula/definition/fractal_fold_box_mod1.cpp ../mandelbulber2/formula/definition/fractal_fold_cut_cube.cpp ../mandelbulber2/formula/definition/fractal_generalized_fold_box.cpp ../mandelbulber2/formula/definition/fractal_hypercomplex.cpp ../mandelbulber2/formula/definition/fractal_hypercomplex_v2.cpp ../mandelbulber2/formula/definition/fractal_ides.cpp ../mandelbulber2/formula/definition/fractal_ides2.cpp ../mandelbulber2/formula/definition/fractal_ifs_gen.cpp ../mandelbulber2/formula/definition/fractal_ifs_xy.cpp ../mandelbulber2/formula/definition/fractal_iq_bulb.cpp ../mandelbulber2/formula/definition/fractal_jos_kleinian.cpp ../mandelbulber2/formula/definition/fractal_jos_kleinian_v2.cpp ../mandelbulber2/formula/definition/fractal_jos_kleinian_v3.cpp ../mandelbulber2/formula/definition/fractal_jos_kleinian_v4.cpp ../mandelbulber2/formula/definition/fractal_kaleidoscopic_ifs.cpp ../mandelbulber2/formula/definition/fractal_kalisets1.cpp ../mandelbulber2/formula/definition/fractal_knot_v1.cpp ../mandelbulber2/formula/definition/fractal_knot_v2.cpp ../mandelbulber2/formula/definition/fractal_koch.cpp ../mandelbulber2/formula/definition/fractal_koch_ifs.cpp ../mandelbulber2/formula/definition/fractal_koch_v2.cpp ../mandelbulber2/formula/definition/fractal_koch_v3.cpp ../mandelbulber2/formula/definition/fractal_koch_v4.cpp ../mandelbulber2/formula/definition/fractal_koch_v5.cpp ../mandelbulber2/formula/definition/fractal_lkmitch.cpp ../mandelbulber2/formula/definition/fractal_makin3d2.cpp ../mandelbulber2/formula/definition/fractal_mandalay_box_v1.cpp ../mandelbulber2/formula/definition/fractal_mandalay_box_v2.cpp ../mandelbulber2/formula/definition/fractal_mandalay_kifs.cpp ../mandelbulber2/formula/definition/fractal_mandelbar.cpp ../mandelbulber2/formula/definition/fractal_mandelbar_v2.cpp ../mandelbulber2/formula/definition/fractal_mandelbar_v3.cpp ../mandelbulber2/formula/definition/fractal_mandelbox.cpp ../mandelbulber2/formula/definition/fractal_mandelbox_fast.cpp ../mandelbulber2/formula/definition/fractal_mandelbox_menger.cpp ../mandelbulber2/formula/definition/fractal_mandelbox_smooth.cpp ../mandelbulber2/formula/definition/fractal_mandelbox_variable.cpp ../mandelbulber2/formula/definition/fractal_mandelbox_vary_scale4d.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb2.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb3.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb4.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_abs.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_abs_power2.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_atan2_power2.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_bermarte.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_eye.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_iq_pow8.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_iq_v2.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_juliabulb.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_kali.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_kali_multi.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_kosalos.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_kosalos_v2.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_lambda.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_multi.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_multi2.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_plus_z.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_pow2_v1.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_pow2_v2.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_pow2_v3.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_pow2_v4.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_power1234.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_power2.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_pupuku.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_quadrat.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_quat.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_sin_cos.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_sin_cos_v2.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_sin_cos_v3.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_sin_cos_v4.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_tails.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_tails_v2.cpp ../mandelbulber2/formula/definition/fractal_mandelbulb_vary_power_v1.cpp ../mandelbulber2/formula/definition/fractal_mandelcup.cpp ../mandelbulber2/formula/definition/fractal_mandelnest.cpp ../mandelbulber2/formula/definition/fractal_mandelnest4d.cpp ../mandelbulber2/formula/definition/fractal_mandelnest_full.cpp ../mandelbulber2/formula/definition/fractal_mandelnest_v2.cpp ../mandelbulber2/formula/definition/fractal_mandeltorus.cpp ../mandelbulber2/formula/definition/fractal_mandeltorus_v2.cpp ../mandelbulber2/formula/definition/fractal_menger3.cpp ../mandelbulber2/formula/definition/fractal_menger3_m3d.cpp ../mandelbulber2/formula/definition/fractal_menger4d.cpp ../mandelbulber2/formula/definition/fractal_menger4d_mod1.cpp ../mandelbulber2/formula/definition/fractal_menger4d_mod2.cpp ../mandelbulber2/formula/definition/fractal_menger_chebyshev.cpp ../mandelbulber2/formula/definition/fractal_menger_cross_kifs.cpp ../mandelbulber2/formula/definition/fractal_menger_cross_mod1.cpp ../mandelbulber2/formula/definition/fractal_menger_middle_mod.cpp ../mandelbulber2/formula/definition/fractal_menger_mod1.cpp ../mandelbulber2/formula/definition/fractal_menger_octo.cpp ../mandelbulber2/formula/definition/fractal_menger_poly_fold.cpp ../mandelbulber2/formula/definition/fractal_menger_prism_shape.cpp ../mandelbulber2/formula/definition/fractal_menger_prism_shape2.cpp ../mandelbulber2/formula/definition/fractal_menger_pwr2_poly.cpp ../mandelbulber2/formula/definition/fractal_menger_pyramid.cpp ../mandelbulber2/formula/definition/fractal_menger_smooth.cpp ../mandelbulber2/formula/definition/fractal_menger_smooth_chebyshev.cpp ../mandelbulber2/formula/definition/fractal_menger_smooth_mod1.cpp ../mandelbulber2/formula/definition/fractal_menger_sponge.cpp ../mandelbulber2/formula/definition/fractal_menger_v2.cpp ../mandelbulber2/formula/definition/fractal_menger_v3.cpp ../mandelbulber2/formula/definition/fractal_menger_v4.cpp ../mandelbulber2/formula/definition/fractal_menger_v5.cpp ../mandelbulber2/formula/definition/fractal_menger_v6.cpp ../mandelbulber2/formula/definition/fractal_menger_v7.cpp ../mandelbulber2/formula/definition/fractal_mix_pinski4d.cpp ../mandelbulber2/formula/definition/fractal_modulus_mandelbulb.cpp ../mandelbulber2/formula/definition/fractal_modulus_menger_sponge.cpp ../mandelbulber2/formula/definition/fractal_msltoe_donut.cpp ../mandelbulber2/formula/definition/fractal_msltoe_sym2_mod.cpp ../mandelbulber2/formula/definition/fractal_msltoe_sym3_mod.cpp ../mandelbulber2/formula/definition/fractal_msltoe_sym3_mod2.cpp ../mandelbulber2/formula/definition/fractal_msltoe_sym3_mod3.cpp ../mandelbulber2/formula/definition/fractal_msltoe_sym3_mod4.cpp ../mandelbulber2/formula/definition/fractal_msltoe_sym3_mod5.cpp ../mandelbulber2/formula/definition/fractal_msltoe_sym3_mod6.cpp ../mandelbulber2/formula/definition/fractal_msltoe_sym4_mod.cpp ../mandelbulber2/formula/definition/fractal_msltoe_sym4_mod1.cpp ../mandelbulber2/formula/definition/fractal_msltoe_toroidal.cpp ../mandelbulber2/formula/definition/fractal_msltoe_toroidal_multi.cpp ../mandelbulber2/formula/definition/fractal_msltoe_toroidal_v2.cpp ../mandelbulber2/formula/definition/fractal_msltoe_toroidal_v3.cpp ../mandelbulber2/formula/definition/fractal_newton_pow3.cpp ../mandelbulber2/formula/definition/fractal_none.cpp ../mandelbulber2/formula/definition/fractal_octahedron.cpp ../mandelbulber2/formula/definition/fractal_pseudo_kleinian.cpp ../mandelbulber2/formula/definition/fractal_pseudo_kleinian4d.cpp ../mandelbulber2/formula/definition/fractal_pseudo_kleinian_mod1.cpp ../mandelbulber2/formula/definition/fractal_pseudo_kleinian_mod2.cpp ../mandelbulber2/formula/definition/fractal_pseudo_kleinian_mod3.cpp ../mandelbulber2/formula/definition/fractal_pseudo_kleinian_mod4.cpp ../mandelbulber2/formula/definition/fractal_pseudo_kleinian_mod5.cpp ../mandelbulber2/formula/definition/fractal_pseudo_kleinian_mod6.cpp ../mandelbulber2/formula/definition/fractal_pseudo_kleinian_mod7.cpp ../mandelbulber2/formula/definition/fractal_pseudo_kleinian_std_de.cpp ../mandelbulber2/formula/definition/fractal_quaternion.cpp ../mandelbulber2/formula/definition/fractal_quaternion3d.cpp ../mandelbulber2/formula/definition/fractal_quaternion4d.cpp ../mandelbulber2/formula/definition/fractal_quaternion_cubic4d.cpp ../mandelbulber2/formula/definition/fractal_quick_dudley.cpp ../mandelbulber2/formula/definition/fractal_quick_dudley_mod.cpp ../mandelbulber2/formula/definition/fractal_riemann_bulb_msltoe_mod2.cpp ../mandelbulber2/formula/definition/fractal_riemann_sphere_hobold_multi.cpp ../mandelbulber2/formula/definition/fractal_riemann_sphere_hobold_pow4.cpp ../mandelbulber2/formula/definition/fractal_riemann_sphere_hobold_pow8.cpp ../mandelbulber2/formula/definition/fractal_riemann_sphere_msltoe.cpp ../mandelbulber2/formula/definition/fractal_riemann_sphere_msltoe_m3d.cpp ../mandelbulber2/formula/definition/fractal_riemann_sphere_msltoe_v1.cpp ../mandelbulber2/formula/definition/fractal_riemann_sphere_msltoe_v2.cpp ../mandelbulber2/formula/definition/fractal_scator_power2.cpp ../mandelbulber2/formula/definition/fractal_scator_power2_imaginary.cpp ../mandelbulber2/formula/definition/fractal_scator_power2_real.cpp ../mandelbulber2/formula/definition/fractal_scator_power2_std_r.cpp ../mandelbulber2/formula/definition/fractal_scator_test.cpp ../mandelbulber2/formula/definition/fractal_sierpinski3d.cpp ../mandelbulber2/formula/definition/fractal_sierpinski3d_v2.cpp ../mandelbulber2/formula/definition/fractal_sierpinski3d_v3.cpp ../mandelbulber2/formula/definition/fractal_sierpinski3d_v4.cpp ../mandelbulber2/formula/definition/fractal_sierpinski4d.cpp ../mandelbulber2/formula/definition/fractal_sphere_cluster.cpp ../mandelbulber2/formula/definition/fractal_sphere_cluster_v2.cpp ../mandelbulber2/formula/definition/fractal_sphere_cluster_v3.cpp ../mandelbulber2/formula/definition/fractal_spheretree.cpp ../mandelbulber2/formula/definition/fractal_spheretree_v2.cpp ../mandelbulber2/formula/definition/fractal_spheretree_v4.cpp ../mandelbulber2/formula/definition/fractal_spheretree_v5.cpp ../mandelbulber2/formula/definition/fractal_testing.cpp ../mandelbulber2/formula/definition/fractal_testing4d.cpp ../mandelbulber2/formula/definition/fractal_testing_log.cpp ../mandelbulber2/formula/definition/fractal_testing_transform.cpp ../mandelbulber2/formula/definition/fractal_testing_transform2.cpp ../mandelbulber2/formula/definition/fractal_tinker_towers.cpp ../mandelbulber2/formula/definition/fractal_transf_abs_add_conditional.cpp ../mandelbulber2/formula/definition/fractal_transf_abs_add_conditional2.cpp ../mandelbulber2/formula/definition/fractal_transf_abs_add_conditional4d.cpp ../mandelbulber2/formula/definition/fractal_transf_abs_add_constant.cpp ../mandelbulber2/formula/definition/fractal_transf_abs_add_constant4d.cpp ../mandelbulber2/formula/definition/fractal_transf_abs_add_constant_v2.cpp ../mandelbulber2/formula/definition/fractal_transf_abs_add_multi.cpp ../mandelbulber2/formula/definition/fractal_transf_abs_add_multi4d.cpp ../mandelbulber2/formula/definition/fractal_transf_abs_add_tglad_fold.cpp ../mandelbulber2/formula/definition/fractal_transf_abs_add_tglad_fold4d.cpp ../mandelbulber2/formula/definition/fractal_transf_abs_rec_fold_xy.cpp ../mandelbulber2/formula/definition/fractal_transf_abs_sym3.cpp ../mandelbulber2/formula/definition/fractal_transf_add_constant.cpp ../mandelbulber2/formula/definition/fractal_transf_add_constant4d.cpp ../mandelbulber2/formula/definition/fractal_transf_add_constant_mod1.cpp ../mandelbulber2/formula/definition/fractal_transf_add_constant_mod2.cpp ../mandelbulber2/formula/definition/fractal_transf_add_constant_mod3.cpp ../mandelbulber2/formula/definition/fractal_transf_add_constant_rot_v1.cpp ../mandelbulber2/formula/definition/fractal_transf_add_constant_vary_v1.cpp ../mandelbulber2/formula/definition/fractal_transf_add_cpixel.cpp ../mandelbulber2/formula/definition/fractal_transf_add_cpixel4d.cpp ../mandelbulber2/formula/definition/fractal_transf_add_cpixel_axis_swap.cpp ../mandelbulber2/formula/definition/fractal_transf_add_cpixel_cx_cy_axis_swap.cpp ../mandelbulber2/formula/definition/fractal_transf_add_cpixel_invert.cpp ../mandelbulber2/formula/definition/fractal_transf_add_cpixel_rotated.cpp ../mandelbulber2/formula/definition/fractal_transf_add_cpixel_scator.cpp ../mandelbulber2/formula/definition/fractal_transf_add_cpixel_sin_or_cos.cpp ../mandelbulber2/formula/definition/fractal_transf_add_cpixel_sphere_fold.cpp ../mandelbulber2/formula/definition/fractal_transf_add_cpixel_symmetrical.cpp ../mandelbulber2/formula/definition/fractal_transf_add_cpixel_tile.cpp ../mandelbulber2/formula/definition/fractal_transf_add_cpixel_vary_v1.cpp ../mandelbulber2/formula/definition/fractal_transf_add_exp2_z.cpp ../mandelbulber2/formula/definition/fractal_transf_add_norm.cpp ../mandelbulber2/formula/definition/fractal_transf_add_scale_rotate.cpp ../mandelbulber2/formula/definition/fractal_transf_add_spherical_invert.cpp ../mandelbulber2/formula/definition/fractal_transf_benesi_cube_sphere.cpp ../mandelbulber2/formula/definition/fractal_transf_benesi_mag_backward.cpp ../mandelbulber2/formula/definition/fractal_transf_benesi_mag_forward.cpp ../mandelbulber2/formula/definition/fractal_transf_benesi_sphere_cube.cpp ../mandelbulber2/formula/definition/fractal_transf_benesi_t1.cpp ../mandelbulber2/formula/definition/fractal_transf_benesi_t1_mod.cpp ../mandelbulber2/formula/definition/fractal_transf_benesi_t2.cpp ../mandelbulber2/formula/definition/fractal_transf_benesi_t3.cpp ../mandelbulber2/formula/definition/fractal_transf_benesi_t4.cpp ../mandelbulber2/formula/definition/fractal_transf_benesi_t5b.cpp ../mandelbulber2/formula/definition/fractal_transf_blockify.cpp ../mandelbulber2/formula/definition/fractal_transf_blockify_v2.cpp ../mandelbulber2/formula/definition/fractal_transf_box_fold.cpp ../mandelbulber2/formula/definition/fractal_transf_box_fold4d.cpp ../mandelbulber2/formula/definition/fractal_transf_box_fold4d_infy.cpp ../mandelbulber2/formula/definition/fractal_transf_box_fold4d_tglad.cpp ../mandelbulber2/formula/definition/fractal_transf_box_fold_vary_v1.cpp ../mandelbulber2/formula/definition/fractal_transf_box_fold_xyz.cpp ../mandelbulber2/formula/definition/fractal_transf_box_offset.cpp ../mandelbulber2/formula/definition/fractal_transf_box_tiling4d.cpp ../mandelbulber2/formula/definition/fractal_transf_box_tiling_v2.cpp ../mandelbulber2/formula/definition/fractal_transf_box_tiling_v3.cpp ../mandelbulber2/formula/definition/fractal_transf_box_wrap4d.cpp ../mandelbulber2/formula/definition/fractal_transf_cayley2_v1.cpp ../mandelbulber2/formula/definition/fractal_transf_clamp4d.cpp ../mandelbulber2/formula/definition/fractal_transf_de_controls.cpp ../mandelbulber2/formula/definition/fractal_transf_de_linear_cube.cpp ../mandelbulber2/formula/definition/fractal_transf_demo_scale_v2.cpp ../mandelbulber2/formula/definition/fractal_transf_diagonal_fold.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_amazing_ifs.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_box.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_box_frame.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_box_v2.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_box_v3.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_cayley2.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_chessboard.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_clip_custom.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_clip_plane.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_cylinder.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_cylinder_v2.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_diamond.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_ellipsoid.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_gear_v1.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_grid.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_grid_v2.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_grid_v3.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_heart.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_helix.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_helix_menger.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_helix_v2.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_hexprism.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_hexprism_v2.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_hextgrid2.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_hybrid_color.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_octahedron.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_octahedron_v2.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_piriform.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_polyhedra.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_polyhedra_v2.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_prism.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_prism_v2.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_sphere.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_sphere_grid.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_sphere_grid_v2.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_sphere_grid_v3.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_spring.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_supershape.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_supershape_v2.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_torus.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_torus_grid.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_torus_menger.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_torus_twist.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_torus_v2.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_torus_v3.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_torus_v4.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_tri_grid.cpp ../mandelbulber2/formula/definition/fractal_transf_difs_tube.cpp ../mandelbulber2/formula/definition/fractal_transf_dot_fold.cpp ../mandelbulber2/formula/definition/fractal_transf_folding_tetra3d.cpp ../mandelbulber2/formula/definition/fractal_transf_gnarl.cpp ../mandelbulber2/formula/definition/fractal_transf_hybrid_color.cpp ../mandelbulber2/formula/definition/fractal_transf_hybrid_color2.cpp ../mandelbulber2/formula/definition/fractal_transf_initial4d.cpp ../mandelbulber2/formula/definition/fractal_transf_inv_cylindrical.cpp ../mandelbulber2/formula/definition/fractal_transf_iteration_weight.cpp ../mandelbulber2/formula/definition/fractal_transf_iteration_weight4d.cpp ../mandelbulber2/formula/definition/fractal_transf_juliabox.cpp ../mandelbulber2/formula/definition/fractal_transf_juliabox_v2.cpp ../mandelbulber2/formula/definition/fractal_transf_lin_combine_cxyz.cpp ../mandelbulber2/formula/definition/fractal_transf_low_res_mode.cpp ../mandelbulber2/formula/definition/fractal_transf_mandalay_fold4d.cpp ../mandelbulber2/formula/definition/fractal_transf_mandalay_fold_v1.cpp ../mandelbulber2/formula/definition/fractal_transf_mandalay_fold_v2.cpp ../mandelbulber2/formula/definition/fractal_transf_menger_fold.cpp ../mandelbulber2/formula/definition/fractal_transf_menger_fold_v2.cpp ../mandelbulber2/formula/definition/fractal_transf_multiple_angle.cpp ../mandelbulber2/formula/definition/fractal_transf_neg_abs_add_constant.cpp ../mandelbulber2/formula/definition/fractal_transf_octo_fold.cpp ../mandelbulber2/formula/definition/fractal_transf_offset_s_curve4d.cpp ../mandelbulber2/formula/definition/fractal_transf_parab_fold.cpp ../mandelbulber2/formula/definition/fractal_transf_platonic_solid.cpp ../mandelbulber2/formula/definition/fractal_transf_poly_fold_atan.cpp ../mandelbulber2/formula/definition/fractal_transf_poly_fold_atan2.cpp ../mandelbulber2/formula/definition/fractal_transf_poly_fold_atan2_iter.cpp ../mandelbulber2/formula/definition/fractal_transf_poly_fold_sym_multi.cpp ../mandelbulber2/formula/definition/fractal_transf_poly_fold_sym_xy.cpp ../mandelbulber2/formula/definition/fractal_transf_poly_xy_fold_v1.cpp ../mandelbulber2/formula/definition/fractal_transf_pwr2_polynomial.cpp ../mandelbulber2/formula/definition/fractal_transf_quadratic_fold4d.cpp ../mandelbulber2/formula/definition/fractal_transf_quaternion_fold.cpp ../mandelbulber2/formula/definition/fractal_transf_r_power.cpp ../mandelbulber2/formula/definition/fractal_transf_reciprocal3.cpp ../mandelbulber2/formula/definition/fractal_transf_reciprocal4d.cpp ../mandelbulber2/formula/definition/fractal_transf_rotate_about_vec3.cpp ../mandelbulber2/formula/definition/fractal_transf_rotation.cpp ../mandelbulber2/formula/definition/fractal_transf_rotation4d.cpp ../mandelbulber2/formula/definition/fractal_transf_rotation_chebyshev.cpp ../mandelbulber2/formula/definition/fractal_transf_rotation_folding.cpp ../mandelbulber2/formula/definition/fractal_transf_rotation_folding_plane.cpp ../mandelbulber2/formula/definition/fractal_transf_rotation_iter_controls.cpp ../mandelbulber2/formula/definition/fractal_transf_rotation_m3d.cpp ../mandelbulber2/formula/definition/fractal_transf_rotation_vary_v1.cpp ../mandelbulber2/formula/definition/fractal_transf_rpow3.cpp ../mandelbulber2/formula/definition/fractal_transf_scale.cpp ../mandelbulber2/formula/definition/fractal_transf_scale3d.cpp ../mandelbulber2/formula/definition/fractal_transf_scale4d.cpp ../mandelbulber2/formula/definition/fractal_transf_scale_offset.cpp ../mandelbulber2/formula/definition/fractal_transf_scale_offset_v2.cpp ../mandelbulber2/formula/definition/fractal_transf_scale_vary_multi.cpp ../mandelbulber2/formula/definition/fractal_transf_scale_vary_v1.cpp ../mandelbulber2/formula/definition/fractal_transf_scale_vary_v212.cpp ../mandelbulber2/formula/definition/fractal_transf_scale_vary_vcl.cpp ../mandelbulber2/formula/definition/fractal_transf_sin_add.cpp ../mandelbulber2/formula/definition/fractal_transf_sin_and_cos.cpp ../mandelbulber2/formula/definition/fractal_transf_sin_and_cos_max.cpp ../mandelbulber2/formula/definition/fractal_transf_sin_or_cos.cpp ../mandelbulber2/formula/definition/fractal_transf_sin_tan.cpp ../mandelbulber2/formula/definition/fractal_transf_sin_y_m3d.cpp ../mandelbulber2/formula/definition/fractal_transf_sincos.cpp ../mandelbulber2/formula/definition/fractal_transf_sincos_helix.cpp ../mandelbulber2/formula/definition/fractal_transf_sincos_v2.cpp ../mandelbulber2/formula/definition/fractal_transf_smooth.cpp ../mandelbulber2/formula/definition/fractal_transf_smooth_v2.cpp ../mandelbulber2/formula/definition/fractal_transf_spherical_coord_invs.cpp ../mandelbulber2/formula/definition/fractal_transf_spherical_fold.cpp ../mandelbulber2/formula/definition/fractal_transf_spherical_fold4d.cpp ../mandelbulber2/formula/definition/fractal_transf_spherical_fold4d_v2.cpp ../mandelbulber2/formula/definition/fractal_transf_spherical_fold_abox.cpp ../mandelbulber2/formula/definition/fractal_transf_spherical_fold_chs.cpp ../mandelbulber2/formula/definition/fractal_transf_spherical_fold_cuboid.cpp ../mandelbulber2/formula/definition/fractal_transf_spherical_fold_parab.cpp ../mandelbulber2/formula/definition/fractal_transf_spherical_fold_pnorm.cpp ../mandelbulber2/formula/definition/fractal_transf_spherical_fold_smooth.cpp ../mandelbulber2/formula/definition/fractal_transf_spherical_fold_v1.cpp ../mandelbulber2/formula/definition/fractal_transf_spherical_fold_v2.cpp ../mandelbulber2/formula/definition/fractal_transf_spherical_fold_v3.cpp ../mandelbulber2/formula/definition/fractal_transf_spherical_fold_vary_v1.cpp ../mandelbulber2/formula/definition/fractal_transf_spherical_fold_vary_vcl.cpp ../mandelbulber2/formula/definition/fractal_transf_spherical_fold_xyz_bias.cpp ../mandelbulber2/formula/definition/fractal_transf_spherical_inv.cpp ../mandelbulber2/formula/definition/fractal_transf_spherical_inv_c.cpp ../mandelbulber2/formula/definition/fractal_transf_spherical_inv_pnorm.cpp ../mandelbulber2/formula/definition/fractal_transf_spherical_inv_v2.cpp ../mandelbulber2/formula/definition/fractal_transf_spherical_inv_v3.cpp ../mandelbulber2/formula/definition/fractal_transf_spherical_inv_v4.cpp ../mandelbulber2/formula/definition/fractal_transf_spherical_offset.cpp ../mandelbulber2/formula/definition/fractal_transf_spherical_offset_vcl.cpp ../mandelbulber2/formula/definition/fractal_transf_spherical_pwr_fold.cpp ../mandelbulber2/formula/definition/fractal_transf_step_xy.cpp ../mandelbulber2/formula/definition/fractal_transf_supershape.cpp ../mandelbulber2/formula/definition/fractal_transf_surf_box_fold.cpp ../mandelbulber2/formula/definition/fractal_transf_surf_box_fold_v2.cpp ../mandelbulber2/formula/definition/fractal_transf_surf_box_fold_v24d.cpp ../mandelbulber2/formula/definition/fractal_transf_surf_fold_multi.cpp ../mandelbulber2/formula/definition/fractal_transf_wizard_demo.cpp ../mandelbulber2/formula/definition/fractal_transf_zvector_axis_swap.cpp ../mandelbulber2/formula/definition/fractal_vicsek.cpp ../mandelbulber2/formula/definition/fractal_xenodreambuie.cpp ../mandelbulber2/formula/definition/fractal_xenodreambuie_v2.cpp ../mandelbulber2/formula/definition/fractal_xenodreambuie_v3.cpp ../mandelbulber2/formula/definition/legacy_fractal_transforrms.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../mandelbulber2/qt/audio_selector.ui ../mandelbulber2/qt/custom_formula_editor.ui ../mandelbulber2/qt/detached_window.ui ../mandelbulber2/qt/dock_animation.ui ../mandelbulber2/qt/dock_effects.ui ../mandelbulber2/qt/dock_fake_lights.ui ../mandelbulber2/qt/dock_fractal.ui ../mandelbulber2/qt/dock_gamepad.ui ../mandelbulber2/qt/dock_image_adjustments.ui ../mandelbulber2/qt/dock_measurements.ui ../mandelbulber2/qt/dock_navigation.ui ../mandelbulber2/qt/dock_pattern_lines.ui ../mandelbulber2/qt/dock_queue.ui ../mandelbulber2/qt/dock_rendering_engine.ui ../mandelbulber2/qt/dock_statistics.ui ../mandelbulber2/qt/image_save_dialog.ui ../mandelbulber2/qt/light_editor.ui ../mandelbulber2/qt/light_sources_manager.ui ../mandelbulber2/qt/material_editor.ui ../mandelbulber2/qt/material_manager_view.ui ../mandelbulber2/qt/mesh_export_dialog.ui ../mandelbulber2/qt/navigator_window.ui ../mandelbulber2/qt/objects_tree_widget.ui ../mandelbulber2/qt/preferences_dialog.ui ../mandelbulber2/qt/primitives_manager.ui ../mandelbulber2/qt/randomizer_dialog.ui ../mandelbulber2/qt/render_window.ui ../mandelbulber2/qt/script_dialog.ui ../mandelbulber2/qt/settings_browser.ui ../mandelbulber2/qt/settings_cleaner.ui ../mandelbulber2/qt/slider_popup.ui ../mandelbulber2/qt/tab_fractal.ui ../mandelbulber2/qt/voxel_export_dialog.ui $(DISTDIR)/
 	$(COPY_FILE) --parents /home/joeri/mandelbulber2_v2_experiment/mandelbulber2/language/en.ts /home/joeri/mandelbulber2_v2_experiment/mandelbulber2/language/de.ts /home/joeri/mandelbulber2_v2_experiment/mandelbulber2/language/pl.ts /home/joeri/mandelbulber2_v2_experiment/mandelbulber2/language/it.ts /home/joeri/mandelbulber2_v2_experiment/mandelbulber2/language/nl.ts /home/joeri/mandelbulber2_v2_experiment/mandelbulber2/language/es.ts $(DISTDIR)/
 
 
@@ -3091,10 +3129,10 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 	g++ -pipe -ffast-math -fopenmp -O3 -std=gnu++1y -D_REENTRANT -dM -E -o moc_predefs.h /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_animation_flight.cpp moc_animation_keyframes.cpp moc_automated_widgets.cpp moc_dof.cpp moc_error_message.cpp moc_file_downloader.cpp moc_file_image.cpp moc_file_mesh.cpp moc_interface.cpp moc_lights.cpp moc_mesh_export.cpp moc_netrender.cpp moc_netrender_client.cpp moc_netrender_file_receiver.cpp moc_netrender_file_sender.cpp moc_netrender_server.cpp moc_queue.cpp moc_render_image.cpp moc_render_job.cpp moc_render_queue.cpp moc_render_window.cpp moc_render_worker.cpp moc_rendered_image_widget.cpp moc_resource_http_provider.cpp moc_test.cpp moc_voxel_export.cpp moc_audio_track.cpp moc_headless.cpp moc_manipulations.cpp moc_marchingcubes.cpp moc_material_item_model.cpp moc_material_item_view.cpp moc_my_ui_loader.cpp moc_opencl_engine.cpp moc_opencl_engine_render_dof.cpp moc_opencl_engine_render_dof_phase1.cpp moc_opencl_engine_render_dof_phase2.cpp moc_opencl_engine_render_fractal.cpp moc_opencl_engine_render_nebula.cpp moc_opencl_engine_render_post_filter.cpp moc_opencl_engine_render_ssao.cpp moc_opencl_global.cpp moc_opencl_hardware.cpp moc_opencl_worker_thread.cpp moc_post_effect_hdr_blur.cpp moc_render_ssao.cpp moc_ssao_worker.cpp moc_undo.cpp moc_my_table_widget_anim.cpp moc_my_table_widget_keyframes.cpp moc_player_widget.cpp moc_system_tray.cpp moc_anim_audio_view.cpp moc_animation_value_chart_widget.cpp moc_audio_selector.cpp moc_buton_load_settings_from_widget.cpp moc_buton_random_settings_from_widget.cpp moc_buton_reset_settings_from_widget.cpp moc_buton_save_settings_from_widget.cpp moc_custom_formula_editor.cpp moc_detached_window.cpp moc_dock_animation.cpp moc_dock_effects.cpp moc_dock_fractal.cpp moc_dock_gamepad.cpp moc_dock_image_adjustments.cpp moc_dock_measurements.cpp moc_dock_navigation.cpp moc_dock_pattern_lines.cpp moc_dock_queue.cpp moc_dock_rendering_engine.cpp moc_dock_statistics.cpp moc_fft_view.cpp moc_file_select_widget.cpp moc_formula_combo_box.cpp moc_frame_slider_popup.cpp moc_gradient_edit_widget.cpp moc_highlighter.cpp moc_image_save_dialog.cpp moc_light_editor.cpp moc_light_sources_manager.cpp moc_light_widget.cpp moc_material_editor.cpp moc_material_manager_view.cpp moc_material_selector.cpp moc_material_widget.cpp moc_mesh_export_dialog.cpp moc_my_check_box.cpp moc_my_color_button.cpp moc_my_combo_box.cpp moc_my_double_spin_box.cpp moc_my_group_box.cpp moc_my_histogram_label.cpp moc_my_line_edit.cpp moc_my_log_widget.cpp moc_my_progress_bar.cpp moc_my_scrolled_area.cpp moc_my_spin_box.cpp moc_my_tab_bar.cpp moc_my_tab_bar_with_checkbox.cpp moc_my_tab_widget.cpp moc_my_tab_widget_with_checkboxes.cpp moc_my_text_edit.cpp moc_navigator_window.cpp moc_objects_tree_widget.cpp moc_preferences_dialog.cpp moc_preview_file_dialog.cpp moc_primitives_manager.cpp moc_pushbutton_anim_sound.cpp moc_randomizer_dialog.cpp moc_script_dialog.cpp moc_settings_browser.cpp moc_settings_cleaner.cpp moc_tab_fractal.cpp moc_thumbnail_widget.cpp moc_time_ruler.cpp moc_voxel_export_dialog.cpp moc_wave_form_view.cpp
+compiler_moc_header_make_all: moc_animation_flight.cpp moc_animation_keyframes.cpp moc_automated_widgets.cpp moc_dof.cpp moc_error_message.cpp moc_file_downloader.cpp moc_file_image.cpp moc_file_mesh.cpp moc_interface.cpp moc_lights.cpp moc_mesh_export.cpp moc_netrender.cpp moc_netrender_client.cpp moc_netrender_file_receiver.cpp moc_netrender_file_sender.cpp moc_netrender_server.cpp moc_queue.cpp moc_render_image.cpp moc_render_job.cpp moc_render_queue.cpp moc_render_window.cpp moc_render_worker.cpp moc_rendered_image_widget.cpp moc_resource_http_provider.cpp moc_test.cpp moc_voxel_export.cpp moc_audio_track.cpp moc_headless.cpp moc_manipulations.cpp moc_marchingcubes.cpp moc_material_item_model.cpp moc_material_item_view.cpp moc_my_ui_loader.cpp moc_opencl_engine.cpp moc_opencl_engine_render_dof.cpp moc_opencl_engine_render_dof_phase1.cpp moc_opencl_engine_render_dof_phase2.cpp moc_opencl_engine_render_fractal.cpp moc_opencl_engine_render_nebula.cpp moc_opencl_engine_render_post_filter.cpp moc_opencl_engine_render_ssao.cpp moc_opencl_global.cpp moc_opencl_hardware.cpp moc_opencl_worker_thread.cpp moc_post_effect_hdr_blur.cpp moc_render_ssao.cpp moc_ssao_worker.cpp moc_undo.cpp moc_my_table_widget_anim.cpp moc_my_table_widget_keyframes.cpp moc_player_widget.cpp moc_system_tray.cpp moc_anim_audio_view.cpp moc_animation_value_chart_widget.cpp moc_audio_selector.cpp moc_buton_load_settings_from_widget.cpp moc_buton_random_settings_from_widget.cpp moc_buton_reset_settings_from_widget.cpp moc_buton_save_settings_from_widget.cpp moc_custom_formula_editor.cpp moc_detached_window.cpp moc_dock_animation.cpp moc_dock_effects.cpp moc_dock_fake_lights.cpp moc_dock_fractal.cpp moc_dock_gamepad.cpp moc_dock_image_adjustments.cpp moc_dock_measurements.cpp moc_dock_navigation.cpp moc_dock_pattern_lines.cpp moc_dock_queue.cpp moc_dock_rendering_engine.cpp moc_dock_statistics.cpp moc_fft_view.cpp moc_file_select_widget.cpp moc_formula_combo_box.cpp moc_frame_slider_popup.cpp moc_gradient_edit_widget.cpp moc_highlighter.cpp moc_image_save_dialog.cpp moc_light_editor.cpp moc_light_sources_manager.cpp moc_light_widget.cpp moc_material_editor.cpp moc_material_manager_view.cpp moc_material_selector.cpp moc_material_widget.cpp moc_mesh_export_dialog.cpp moc_my_check_box.cpp moc_my_color_button.cpp moc_my_combo_box.cpp moc_my_double_spin_box.cpp moc_my_group_box.cpp moc_my_histogram_label.cpp moc_my_line_edit.cpp moc_my_log_widget.cpp moc_my_progress_bar.cpp moc_my_scrolled_area.cpp moc_my_spin_box.cpp moc_my_tab_bar.cpp moc_my_tab_bar_with_checkbox.cpp moc_my_tab_widget.cpp moc_my_tab_widget_with_checkboxes.cpp moc_my_text_edit.cpp moc_navigator_window.cpp moc_objects_tree_widget.cpp moc_preferences_dialog.cpp moc_preview_file_dialog.cpp moc_primitives_manager.cpp moc_pushbutton_anim_sound.cpp moc_randomizer_dialog.cpp moc_script_dialog.cpp moc_settings_browser.cpp moc_settings_cleaner.cpp moc_tab_fractal.cpp moc_thumbnail_widget.cpp moc_time_ruler.cpp moc_voxel_export_dialog.cpp moc_wave_form_view.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_animation_flight.cpp moc_animation_keyframes.cpp moc_automated_widgets.cpp moc_dof.cpp moc_error_message.cpp moc_file_downloader.cpp moc_file_image.cpp moc_file_mesh.cpp moc_interface.cpp moc_lights.cpp moc_mesh_export.cpp moc_netrender.cpp moc_netrender_client.cpp moc_netrender_file_receiver.cpp moc_netrender_file_sender.cpp moc_netrender_server.cpp moc_queue.cpp moc_render_image.cpp moc_render_job.cpp moc_render_queue.cpp moc_render_window.cpp moc_render_worker.cpp moc_rendered_image_widget.cpp moc_resource_http_provider.cpp moc_test.cpp moc_voxel_export.cpp moc_audio_track.cpp moc_headless.cpp moc_manipulations.cpp moc_marchingcubes.cpp moc_material_item_model.cpp moc_material_item_view.cpp moc_my_ui_loader.cpp moc_opencl_engine.cpp moc_opencl_engine_render_dof.cpp moc_opencl_engine_render_dof_phase1.cpp moc_opencl_engine_render_dof_phase2.cpp moc_opencl_engine_render_fractal.cpp moc_opencl_engine_render_nebula.cpp moc_opencl_engine_render_post_filter.cpp moc_opencl_engine_render_ssao.cpp moc_opencl_global.cpp moc_opencl_hardware.cpp moc_opencl_worker_thread.cpp moc_post_effect_hdr_blur.cpp moc_render_ssao.cpp moc_ssao_worker.cpp moc_undo.cpp moc_my_table_widget_anim.cpp moc_my_table_widget_keyframes.cpp moc_player_widget.cpp moc_system_tray.cpp moc_anim_audio_view.cpp moc_animation_value_chart_widget.cpp moc_audio_selector.cpp moc_buton_load_settings_from_widget.cpp moc_buton_random_settings_from_widget.cpp moc_buton_reset_settings_from_widget.cpp moc_buton_save_settings_from_widget.cpp moc_custom_formula_editor.cpp moc_detached_window.cpp moc_dock_animation.cpp moc_dock_effects.cpp moc_dock_fractal.cpp moc_dock_gamepad.cpp moc_dock_image_adjustments.cpp moc_dock_measurements.cpp moc_dock_navigation.cpp moc_dock_pattern_lines.cpp moc_dock_queue.cpp moc_dock_rendering_engine.cpp moc_dock_statistics.cpp moc_fft_view.cpp moc_file_select_widget.cpp moc_formula_combo_box.cpp moc_frame_slider_popup.cpp moc_gradient_edit_widget.cpp moc_highlighter.cpp moc_image_save_dialog.cpp moc_light_editor.cpp
-	-$(DEL_FILE) moc_light_sources_manager.cpp moc_light_widget.cpp moc_material_editor.cpp moc_material_manager_view.cpp moc_material_selector.cpp moc_material_widget.cpp moc_mesh_export_dialog.cpp moc_my_check_box.cpp moc_my_color_button.cpp moc_my_combo_box.cpp moc_my_double_spin_box.cpp moc_my_group_box.cpp moc_my_histogram_label.cpp moc_my_line_edit.cpp moc_my_log_widget.cpp moc_my_progress_bar.cpp moc_my_scrolled_area.cpp moc_my_spin_box.cpp moc_my_tab_bar.cpp moc_my_tab_bar_with_checkbox.cpp moc_my_tab_widget.cpp moc_my_tab_widget_with_checkboxes.cpp moc_my_text_edit.cpp moc_navigator_window.cpp moc_objects_tree_widget.cpp moc_preferences_dialog.cpp moc_preview_file_dialog.cpp moc_primitives_manager.cpp moc_pushbutton_anim_sound.cpp moc_randomizer_dialog.cpp moc_script_dialog.cpp moc_settings_browser.cpp moc_settings_cleaner.cpp moc_tab_fractal.cpp moc_thumbnail_widget.cpp moc_time_ruler.cpp moc_voxel_export_dialog.cpp moc_wave_form_view.cpp
+	-$(DEL_FILE) moc_animation_flight.cpp moc_animation_keyframes.cpp moc_automated_widgets.cpp moc_dof.cpp moc_error_message.cpp moc_file_downloader.cpp moc_file_image.cpp moc_file_mesh.cpp moc_interface.cpp moc_lights.cpp moc_mesh_export.cpp moc_netrender.cpp moc_netrender_client.cpp moc_netrender_file_receiver.cpp moc_netrender_file_sender.cpp moc_netrender_server.cpp moc_queue.cpp moc_render_image.cpp moc_render_job.cpp moc_render_queue.cpp moc_render_window.cpp moc_render_worker.cpp moc_rendered_image_widget.cpp moc_resource_http_provider.cpp moc_test.cpp moc_voxel_export.cpp moc_audio_track.cpp moc_headless.cpp moc_manipulations.cpp moc_marchingcubes.cpp moc_material_item_model.cpp moc_material_item_view.cpp moc_my_ui_loader.cpp moc_opencl_engine.cpp moc_opencl_engine_render_dof.cpp moc_opencl_engine_render_dof_phase1.cpp moc_opencl_engine_render_dof_phase2.cpp moc_opencl_engine_render_fractal.cpp moc_opencl_engine_render_nebula.cpp moc_opencl_engine_render_post_filter.cpp moc_opencl_engine_render_ssao.cpp moc_opencl_global.cpp moc_opencl_hardware.cpp moc_opencl_worker_thread.cpp moc_post_effect_hdr_blur.cpp moc_render_ssao.cpp moc_ssao_worker.cpp moc_undo.cpp moc_my_table_widget_anim.cpp moc_my_table_widget_keyframes.cpp moc_player_widget.cpp moc_system_tray.cpp moc_anim_audio_view.cpp moc_animation_value_chart_widget.cpp moc_audio_selector.cpp moc_buton_load_settings_from_widget.cpp moc_buton_random_settings_from_widget.cpp moc_buton_reset_settings_from_widget.cpp moc_buton_save_settings_from_widget.cpp moc_custom_formula_editor.cpp moc_detached_window.cpp moc_dock_animation.cpp moc_dock_effects.cpp moc_dock_fake_lights.cpp moc_dock_fractal.cpp moc_dock_gamepad.cpp moc_dock_image_adjustments.cpp moc_dock_measurements.cpp moc_dock_navigation.cpp moc_dock_pattern_lines.cpp moc_dock_queue.cpp moc_dock_rendering_engine.cpp moc_dock_statistics.cpp moc_fft_view.cpp moc_file_select_widget.cpp moc_formula_combo_box.cpp moc_frame_slider_popup.cpp moc_gradient_edit_widget.cpp moc_highlighter.cpp
+	-$(DEL_FILE) moc_image_save_dialog.cpp moc_light_editor.cpp moc_light_sources_manager.cpp moc_light_widget.cpp moc_material_editor.cpp moc_material_manager_view.cpp moc_material_selector.cpp moc_material_widget.cpp moc_mesh_export_dialog.cpp moc_my_check_box.cpp moc_my_color_button.cpp moc_my_combo_box.cpp moc_my_double_spin_box.cpp moc_my_group_box.cpp moc_my_histogram_label.cpp moc_my_line_edit.cpp moc_my_log_widget.cpp moc_my_progress_bar.cpp moc_my_scrolled_area.cpp moc_my_spin_box.cpp moc_my_tab_bar.cpp moc_my_tab_bar_with_checkbox.cpp moc_my_tab_widget.cpp moc_my_tab_widget_with_checkboxes.cpp moc_my_text_edit.cpp moc_navigator_window.cpp moc_objects_tree_widget.cpp moc_preferences_dialog.cpp moc_preview_file_dialog.cpp moc_primitives_manager.cpp moc_pushbutton_anim_sound.cpp moc_randomizer_dialog.cpp moc_script_dialog.cpp moc_settings_browser.cpp moc_settings_cleaner.cpp moc_tab_fractal.cpp moc_thumbnail_widget.cpp moc_time_ruler.cpp moc_voxel_export_dialog.cpp moc_wave_form_view.cpp
 moc_animation_flight.cpp: ../mandelbulber2/src/animation_flight.hpp \
 		../mandelbulber2/src/algebra.hpp \
 		../mandelbulber2/src/animation_frames.hpp \
@@ -3704,6 +3742,17 @@ moc_dock_effects.cpp: ../mandelbulber2/qt/dock_effects.h \
 		/usr/lib/qt5/bin/moc
 	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/joeri/mandelbulber2_v2_experiment/build_test/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/joeri/mandelbulber2_v2_experiment/mandelbulber2/qmake -I/home/joeri/mandelbulber2_v2_experiment/mandelbulber2 -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtUiTools -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtMultimedia -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtQml -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtTest -I/usr/include/x86_64-linux-gnu/qt5/QtConcurrent -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/13 -I/usr/include/x86_64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/x86_64-linux-gnu/13/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../mandelbulber2/qt/dock_effects.h -o moc_dock_effects.cpp
 
+moc_dock_fake_lights.cpp: ../mandelbulber2/qt/dock_fake_lights.h \
+		../mandelbulber2/qt/my_widget_with_params.h \
+		../mandelbulber2/src/parameters.hpp \
+		../mandelbulber2/src/one_parameter.hpp \
+		../mandelbulber2/src/multi_val.hpp \
+		../mandelbulber2/src/algebra.hpp \
+		../mandelbulber2/src/color_structures.hpp \
+		moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/joeri/mandelbulber2_v2_experiment/build_test/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/joeri/mandelbulber2_v2_experiment/mandelbulber2/qmake -I/home/joeri/mandelbulber2_v2_experiment/mandelbulber2 -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtUiTools -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtMultimedia -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtQml -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtTest -I/usr/include/x86_64-linux-gnu/qt5/QtConcurrent -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/13 -I/usr/include/x86_64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/x86_64-linux-gnu/13/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../mandelbulber2/qt/dock_fake_lights.h -o moc_dock_fake_lights.cpp
+
 moc_dock_fractal.cpp: ../mandelbulber2/qt/dock_fractal.h \
 		../mandelbulber2/qt/tab_fractal.h \
 		../mandelbulber2/qt/my_widget_with_params.h \
@@ -4083,9 +4132,9 @@ compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
-compiler_uic_make_all: ../mandelbulber2/qt/ui_audio_selector.h ../mandelbulber2/qt/ui_custom_formula_editor.h ../mandelbulber2/qt/ui_detached_window.h ../mandelbulber2/qt/ui_dock_animation.h ../mandelbulber2/qt/ui_dock_effects.h ../mandelbulber2/qt/ui_dock_fractal.h ../mandelbulber2/qt/ui_dock_gamepad.h ../mandelbulber2/qt/ui_dock_image_adjustments.h ../mandelbulber2/qt/ui_dock_measurements.h ../mandelbulber2/qt/ui_dock_navigation.h ../mandelbulber2/qt/ui_dock_pattern_lines.h ../mandelbulber2/qt/ui_dock_queue.h ../mandelbulber2/qt/ui_dock_rendering_engine.h ../mandelbulber2/qt/ui_dock_statistics.h ../mandelbulber2/qt/ui_image_save_dialog.h ../mandelbulber2/qt/ui_light_editor.h ../mandelbulber2/qt/ui_light_sources_manager.h ../mandelbulber2/qt/ui_material_editor.h ../mandelbulber2/qt/ui_material_manager_view.h ../mandelbulber2/qt/ui_mesh_export_dialog.h ../mandelbulber2/qt/ui_navigator_window.h ../mandelbulber2/qt/ui_objects_tree_widget.h ../mandelbulber2/qt/ui_preferences_dialog.h ../mandelbulber2/qt/ui_primitives_manager.h ../mandelbulber2/qt/ui_randomizer_dialog.h ../mandelbulber2/qt/ui_render_window.h ../mandelbulber2/qt/ui_script_dialog.h ../mandelbulber2/qt/ui_settings_browser.h ../mandelbulber2/qt/ui_settings_cleaner.h ../mandelbulber2/qt/ui_slider_popup.h ../mandelbulber2/qt/ui_tab_fractal.h ../mandelbulber2/qt/ui_voxel_export_dialog.h
+compiler_uic_make_all: ../mandelbulber2/qt/ui_audio_selector.h ../mandelbulber2/qt/ui_custom_formula_editor.h ../mandelbulber2/qt/ui_detached_window.h ../mandelbulber2/qt/ui_dock_animation.h ../mandelbulber2/qt/ui_dock_effects.h ../mandelbulber2/qt/ui_dock_fake_lights.h ../mandelbulber2/qt/ui_dock_fractal.h ../mandelbulber2/qt/ui_dock_gamepad.h ../mandelbulber2/qt/ui_dock_image_adjustments.h ../mandelbulber2/qt/ui_dock_measurements.h ../mandelbulber2/qt/ui_dock_navigation.h ../mandelbulber2/qt/ui_dock_pattern_lines.h ../mandelbulber2/qt/ui_dock_queue.h ../mandelbulber2/qt/ui_dock_rendering_engine.h ../mandelbulber2/qt/ui_dock_statistics.h ../mandelbulber2/qt/ui_image_save_dialog.h ../mandelbulber2/qt/ui_light_editor.h ../mandelbulber2/qt/ui_light_sources_manager.h ../mandelbulber2/qt/ui_material_editor.h ../mandelbulber2/qt/ui_material_manager_view.h ../mandelbulber2/qt/ui_mesh_export_dialog.h ../mandelbulber2/qt/ui_navigator_window.h ../mandelbulber2/qt/ui_objects_tree_widget.h ../mandelbulber2/qt/ui_preferences_dialog.h ../mandelbulber2/qt/ui_primitives_manager.h ../mandelbulber2/qt/ui_randomizer_dialog.h ../mandelbulber2/qt/ui_render_window.h ../mandelbulber2/qt/ui_script_dialog.h ../mandelbulber2/qt/ui_settings_browser.h ../mandelbulber2/qt/ui_settings_cleaner.h ../mandelbulber2/qt/ui_slider_popup.h ../mandelbulber2/qt/ui_tab_fractal.h ../mandelbulber2/qt/ui_voxel_export_dialog.h
 compiler_uic_clean:
-	-$(DEL_FILE) ../mandelbulber2/qt/ui_audio_selector.h ../mandelbulber2/qt/ui_custom_formula_editor.h ../mandelbulber2/qt/ui_detached_window.h ../mandelbulber2/qt/ui_dock_animation.h ../mandelbulber2/qt/ui_dock_effects.h ../mandelbulber2/qt/ui_dock_fractal.h ../mandelbulber2/qt/ui_dock_gamepad.h ../mandelbulber2/qt/ui_dock_image_adjustments.h ../mandelbulber2/qt/ui_dock_measurements.h ../mandelbulber2/qt/ui_dock_navigation.h ../mandelbulber2/qt/ui_dock_pattern_lines.h ../mandelbulber2/qt/ui_dock_queue.h ../mandelbulber2/qt/ui_dock_rendering_engine.h ../mandelbulber2/qt/ui_dock_statistics.h ../mandelbulber2/qt/ui_image_save_dialog.h ../mandelbulber2/qt/ui_light_editor.h ../mandelbulber2/qt/ui_light_sources_manager.h ../mandelbulber2/qt/ui_material_editor.h ../mandelbulber2/qt/ui_material_manager_view.h ../mandelbulber2/qt/ui_mesh_export_dialog.h ../mandelbulber2/qt/ui_navigator_window.h ../mandelbulber2/qt/ui_objects_tree_widget.h ../mandelbulber2/qt/ui_preferences_dialog.h ../mandelbulber2/qt/ui_primitives_manager.h ../mandelbulber2/qt/ui_randomizer_dialog.h ../mandelbulber2/qt/ui_render_window.h ../mandelbulber2/qt/ui_script_dialog.h ../mandelbulber2/qt/ui_settings_browser.h ../mandelbulber2/qt/ui_settings_cleaner.h ../mandelbulber2/qt/ui_slider_popup.h ../mandelbulber2/qt/ui_tab_fractal.h ../mandelbulber2/qt/ui_voxel_export_dialog.h
+	-$(DEL_FILE) ../mandelbulber2/qt/ui_audio_selector.h ../mandelbulber2/qt/ui_custom_formula_editor.h ../mandelbulber2/qt/ui_detached_window.h ../mandelbulber2/qt/ui_dock_animation.h ../mandelbulber2/qt/ui_dock_effects.h ../mandelbulber2/qt/ui_dock_fake_lights.h ../mandelbulber2/qt/ui_dock_fractal.h ../mandelbulber2/qt/ui_dock_gamepad.h ../mandelbulber2/qt/ui_dock_image_adjustments.h ../mandelbulber2/qt/ui_dock_measurements.h ../mandelbulber2/qt/ui_dock_navigation.h ../mandelbulber2/qt/ui_dock_pattern_lines.h ../mandelbulber2/qt/ui_dock_queue.h ../mandelbulber2/qt/ui_dock_rendering_engine.h ../mandelbulber2/qt/ui_dock_statistics.h ../mandelbulber2/qt/ui_image_save_dialog.h ../mandelbulber2/qt/ui_light_editor.h ../mandelbulber2/qt/ui_light_sources_manager.h ../mandelbulber2/qt/ui_material_editor.h ../mandelbulber2/qt/ui_material_manager_view.h ../mandelbulber2/qt/ui_mesh_export_dialog.h ../mandelbulber2/qt/ui_navigator_window.h ../mandelbulber2/qt/ui_objects_tree_widget.h ../mandelbulber2/qt/ui_preferences_dialog.h ../mandelbulber2/qt/ui_primitives_manager.h ../mandelbulber2/qt/ui_randomizer_dialog.h ../mandelbulber2/qt/ui_render_window.h ../mandelbulber2/qt/ui_script_dialog.h ../mandelbulber2/qt/ui_settings_browser.h ../mandelbulber2/qt/ui_settings_cleaner.h ../mandelbulber2/qt/ui_slider_popup.h ../mandelbulber2/qt/ui_tab_fractal.h ../mandelbulber2/qt/ui_voxel_export_dialog.h
 ../mandelbulber2/qt/ui_audio_selector.h: ../mandelbulber2/qt/audio_selector.ui \
 		/usr/lib/qt5/bin/uic \
 		../mandelbulber2/qt/my_double_spin_box.h \
@@ -4156,6 +4205,25 @@ compiler_uic_clean:
 		../mandelbulber2/qt/common_my_widget_wrapper.h \
 		../mandelbulber2/qt/my_widget_with_params.h
 	/usr/lib/qt5/bin/uic ../mandelbulber2/qt/dock_effects.ui -o ../mandelbulber2/qt/ui_dock_effects.h
+
+../mandelbulber2/qt/ui_dock_fake_lights.h: ../mandelbulber2/qt/dock_fake_lights.ui \
+		/usr/lib/qt5/bin/uic \
+		../mandelbulber2/qt/my_check_box.h \
+		../mandelbulber2/qt/my_combo_box.h \
+		../mandelbulber2/qt/my_double_spin_box.h \
+		../mandelbulber2/qt/my_group_box.h \
+		../mandelbulber2/qt/my_line_edit.h \
+		../mandelbulber2/qt/my_spin_box.h \
+		../mandelbulber2/qt/my_color_button.h \
+		../mandelbulber2/qt/common_my_widget_wrapper.h \
+		../mandelbulber2/qt/common_my_widget_wrapper.h \
+		../mandelbulber2/qt/common_my_widget_wrapper.h \
+		../mandelbulber2/qt/common_my_widget_wrapper.h \
+		../mandelbulber2/qt/common_my_widget_wrapper.h \
+		../mandelbulber2/qt/common_my_widget_wrapper.h \
+		../mandelbulber2/qt/common_my_widget_wrapper.h \
+		../mandelbulber2/src/color_structures.hpp
+	/usr/lib/qt5/bin/uic ../mandelbulber2/qt/dock_fake_lights.ui -o ../mandelbulber2/qt/ui_dock_fake_lights.h
 
 ../mandelbulber2/qt/ui_dock_fractal.h: ../mandelbulber2/qt/dock_fractal.ui \
 		/usr/lib/qt5/bin/uic \
@@ -4454,6 +4522,7 @@ compiler_uic_clean:
 		../mandelbulber2/qt/material_manager_view.h \
 		../mandelbulber2/qt/dock_image_adjustments.h \
 		../mandelbulber2/qt/dock_effects.h \
+		../mandelbulber2/qt/dock_fake_lights.h \
 		../mandelbulber2/qt/dock_pattern_lines.h \
 		../mandelbulber2/qt/dock_rendering_engine.h \
 		../mandelbulber2/qt/dock_animation.h \
@@ -4465,6 +4534,12 @@ compiler_uic_clean:
 		../mandelbulber2/qt/dock_gamepad.h \
 		../mandelbulber2/qt/common_my_widget_wrapper.h \
 		../mandelbulber2/qt/common_my_widget_wrapper.h \
+		../mandelbulber2/qt/my_widget_with_params.h \
+		../mandelbulber2/src/parameters.hpp \
+		../mandelbulber2/src/one_parameter.hpp \
+		../mandelbulber2/src/multi_val.hpp \
+		../mandelbulber2/src/algebra.hpp \
+		../mandelbulber2/src/color_structures.hpp \
 		../mandelbulber2/qt/my_widget_with_params.h \
 		../mandelbulber2/src/parameters.hpp \
 		../mandelbulber2/src/one_parameter.hpp \
@@ -4595,6 +4670,15 @@ animation_flight.o: ../mandelbulber2/src/animation_flight.cpp ../mandelbulber2/s
 		../mandelbulber2/src/statistics.h \
 		../mandelbulber2/src/histogram.hpp \
 		../mandelbulber2/qt/ui_dock_animation.h \
+		../mandelbulber2/qt/animation_value_chart_widget.h \
+		../mandelbulber2/qt/my_check_box.h \
+		../mandelbulber2/qt/common_my_widget_wrapper.h \
+		../mandelbulber2/qt/my_combo_box.h \
+		../mandelbulber2/qt/my_double_spin_box.h \
+		../mandelbulber2/qt/my_line_edit.h \
+		../mandelbulber2/qt/my_spin_box.h \
+		../mandelbulber2/qt/my_table_widget_anim.hpp \
+		../mandelbulber2/qt/my_table_widget_keyframes.hpp \
 		../mandelbulber2/src/cimage.hpp \
 		../mandelbulber2/src/image_adjustments.h \
 		../mandelbulber2/src/common_math.h \
@@ -4667,7 +4751,6 @@ animation_flight.o: ../mandelbulber2/src/animation_flight.cpp ../mandelbulber2/s
 		../mandelbulber2/qt/dock_navigation.h \
 		../mandelbulber2/qt/dock_statistics.h \
 		../mandelbulber2/qt/my_progress_bar.h \
-		../mandelbulber2/qt/my_table_widget_anim.hpp \
 		../mandelbulber2/qt/player_widget.hpp \
 		../mandelbulber2/qt/system_tray.hpp \
 		../mandelbulber2/qt/thumbnail_widget.h
@@ -4706,6 +4789,15 @@ animation_keyframes.o: ../mandelbulber2/src/animation_keyframes.cpp ../mandelbul
 		../mandelbulber2/src/statistics.h \
 		../mandelbulber2/src/histogram.hpp \
 		../mandelbulber2/qt/ui_dock_animation.h \
+		../mandelbulber2/qt/animation_value_chart_widget.h \
+		../mandelbulber2/qt/my_check_box.h \
+		../mandelbulber2/qt/common_my_widget_wrapper.h \
+		../mandelbulber2/qt/my_combo_box.h \
+		../mandelbulber2/qt/my_double_spin_box.h \
+		../mandelbulber2/qt/my_line_edit.h \
+		../mandelbulber2/qt/my_spin_box.h \
+		../mandelbulber2/qt/my_table_widget_anim.hpp \
+		../mandelbulber2/qt/my_table_widget_keyframes.hpp \
 		../mandelbulber2/src/animation_path_data.hpp \
 		../mandelbulber2/src/cimage.hpp \
 		../mandelbulber2/src/image_adjustments.h \
@@ -4751,7 +4843,6 @@ animation_keyframes.o: ../mandelbulber2/src/animation_keyframes.cpp ../mandelbul
 		../mandelbulber2/qt/dock_navigation.h \
 		../mandelbulber2/qt/dock_statistics.h \
 		../mandelbulber2/qt/my_progress_bar.h \
-		../mandelbulber2/qt/my_table_widget_keyframes.hpp \
 		../mandelbulber2/qt/player_widget.hpp \
 		../mandelbulber2/qt/pushbutton_anim_sound.h \
 		../mandelbulber2/qt/randomizer_dialog.h \
@@ -5326,6 +5417,7 @@ interface.o: ../mandelbulber2/src/interface.cpp ../mandelbulber2/src/interface.h
 		../mandelbulber2/qt/dock_animation.h \
 		../mandelbulber2/qt/dock_effects.h \
 		../mandelbulber2/qt/my_widget_with_params.h \
+		../mandelbulber2/qt/dock_fake_lights.h \
 		../mandelbulber2/qt/dock_fractal.h \
 		../mandelbulber2/qt/tab_fractal.h \
 		../mandelbulber2/src/fractal_container.hpp \
@@ -6851,6 +6943,9 @@ projection_3d.o: ../mandelbulber2/src/projection_3d.cpp ../mandelbulber2/src/pro
 
 queue.o: ../mandelbulber2/src/queue.cpp ../mandelbulber2/src/queue.hpp \
 		../mandelbulber2/qt/ui_dock_queue.h \
+		../mandelbulber2/qt/my_check_box.h \
+		../mandelbulber2/qt/common_my_widget_wrapper.h \
+		../mandelbulber2/qt/my_combo_box.h \
 		../mandelbulber2/src/animation_frames.hpp \
 		../mandelbulber2/src/audio_track_collection.h \
 		../mandelbulber2/src/parameters.hpp \
@@ -7182,6 +7277,7 @@ render_window.o: ../mandelbulber2/src/render_window.cpp ../mandelbulber2/src/ren
 		../mandelbulber2/src/one_parameter.hpp \
 		../mandelbulber2/src/multi_val.hpp \
 		../mandelbulber2/src/algebra.hpp \
+		../mandelbulber2/qt/dock_fake_lights.h \
 		../mandelbulber2/qt/dock_fractal.h \
 		../mandelbulber2/qt/tab_fractal.h \
 		../mandelbulber2/src/synchronize_interface.hpp \
@@ -7232,6 +7328,7 @@ render_window_buttons.o: ../mandelbulber2/src/render_window_buttons.cpp ../mande
 		../mandelbulber2/src/multi_val.hpp \
 		../mandelbulber2/src/algebra.hpp \
 		../mandelbulber2/src/color_structures.hpp \
+		../mandelbulber2/qt/dock_fake_lights.h \
 		../mandelbulber2/qt/dock_fractal.h \
 		../mandelbulber2/qt/tab_fractal.h \
 		../mandelbulber2/src/synchronize_interface.hpp \
@@ -7274,6 +7371,7 @@ render_window_menu.o: ../mandelbulber2/src/render_window_menu.cpp ../mandelbulbe
 		../mandelbulber2/src/multi_val.hpp \
 		../mandelbulber2/src/algebra.hpp \
 		../mandelbulber2/src/color_structures.hpp \
+		../mandelbulber2/qt/dock_fake_lights.h \
 		../mandelbulber2/qt/dock_fractal.h \
 		../mandelbulber2/qt/tab_fractal.h \
 		../mandelbulber2/src/synchronize_interface.hpp \
@@ -7346,6 +7444,7 @@ render_window_slots.o: ../mandelbulber2/src/render_window_slots.cpp ../mandelbul
 		../mandelbulber2/src/multi_val.hpp \
 		../mandelbulber2/src/algebra.hpp \
 		../mandelbulber2/src/color_structures.hpp \
+		../mandelbulber2/qt/dock_fake_lights.h \
 		../mandelbulber2/qt/dock_fractal.h \
 		../mandelbulber2/qt/tab_fractal.h \
 		../mandelbulber2/src/synchronize_interface.hpp \
@@ -8186,8 +8285,11 @@ shader_pattern_line_traps.o: ../mandelbulber2/src/shader_pattern_line_traps.cpp 
 		../mandelbulber2/src/glow_sphere.hpp \
 		../mandelbulber2/src/pattern_line_traps.hpp \
 		../mandelbulber2/src/single_trap_lights.hpp \
-		../mandelbulber2/src/render_worker.hpp \
-		../mandelbulber2/src/texture_enums.hpp
+		../mandelbulber2/src/material.h \
+		../mandelbulber2/src/fractal_coloring.hpp \
+		../mandelbulber2/src/texture.hpp \
+		../mandelbulber2/src/texture_enums.hpp \
+		../mandelbulber2/src/render_worker.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o shader_pattern_line_traps.o ../mandelbulber2/src/shader_pattern_line_traps.cpp
 
 shader_perlin_noise_for_shaders.o: ../mandelbulber2/src/shader_perlin_noise_for_shaders.cpp ../mandelbulber2/src/shader_perlin_noise_for_shaders.hpp \
@@ -8943,6 +9045,16 @@ animation_value_chart_widget.o: ../mandelbulber2/qt/animation_value_chart_widget
 
 audio_selector.o: ../mandelbulber2/qt/audio_selector.cpp ../mandelbulber2/qt/audio_selector.h \
 		../mandelbulber2/qt/ui_audio_selector.h \
+		../mandelbulber2/qt/anim_audio_view.h \
+		../mandelbulber2/qt/fft_view.h \
+		../mandelbulber2/qt/my_check_box.h \
+		../mandelbulber2/qt/common_my_widget_wrapper.h \
+		../mandelbulber2/qt/my_double_spin_box.h \
+		../mandelbulber2/qt/my_group_box.h \
+		../mandelbulber2/qt/my_line_edit.h \
+		../mandelbulber2/qt/my_spin_box.h \
+		../mandelbulber2/qt/time_ruler.h \
+		../mandelbulber2/qt/wave_form_view.h \
 		../mandelbulber2/src/animation_frames.hpp \
 		../mandelbulber2/src/audio_track_collection.h \
 		../mandelbulber2/src/parameters.hpp \
@@ -9067,12 +9179,12 @@ custom_formula_editor.o: ../mandelbulber2/qt/custom_formula_editor.cpp ../mandel
 		../mandelbulber2/src/algebra.hpp \
 		../mandelbulber2/src/color_structures.hpp \
 		../mandelbulber2/qt/ui_custom_formula_editor.h \
+		../mandelbulber2/qt/my_text_edit.h \
 		../mandelbulber2/qt/my_check_box.h \
 		../mandelbulber2/qt/common_my_widget_wrapper.h \
 		../mandelbulber2/qt/my_double_spin_box.h \
 		../mandelbulber2/qt/my_line_edit.h \
 		../mandelbulber2/qt/my_spin_box.h \
-		../mandelbulber2/qt/my_text_edit.h \
 		../mandelbulber2/src/error_message.hpp \
 		../mandelbulber2/src/fractal_container.hpp \
 		../mandelbulber2/src/fractal_enums.h \
@@ -9146,6 +9258,15 @@ detached_window.o: ../mandelbulber2/qt/detached_window.cpp ../mandelbulber2/qt/d
 
 dock_animation.o: ../mandelbulber2/qt/dock_animation.cpp ../mandelbulber2/qt/dock_animation.h \
 		../mandelbulber2/qt/ui_dock_animation.h \
+		../mandelbulber2/qt/animation_value_chart_widget.h \
+		../mandelbulber2/qt/my_check_box.h \
+		../mandelbulber2/qt/common_my_widget_wrapper.h \
+		../mandelbulber2/qt/my_combo_box.h \
+		../mandelbulber2/qt/my_double_spin_box.h \
+		../mandelbulber2/qt/my_line_edit.h \
+		../mandelbulber2/qt/my_spin_box.h \
+		../mandelbulber2/qt/my_table_widget_anim.hpp \
+		../mandelbulber2/qt/my_table_widget_keyframes.hpp \
 		../mandelbulber2/qt/audio_selector.h \
 		../mandelbulber2/src/automated_widgets.hpp \
 		../mandelbulber2/src/file_image.hpp \
@@ -9160,13 +9281,30 @@ dock_effects.o: ../mandelbulber2/qt/dock_effects.cpp ../mandelbulber2/qt/dock_ef
 		../mandelbulber2/src/algebra.hpp \
 		../mandelbulber2/src/color_structures.hpp \
 		../mandelbulber2/qt/ui_dock_effects.h \
+		../mandelbulber2/qt/buton_load_settings_from_widget.h \
+		../mandelbulber2/qt/buton_random_settings_from_widget.h \
+		../mandelbulber2/qt/buton_reset_settings_from_widget.h \
+		../mandelbulber2/qt/buton_save_settings_from_widget.h \
+		../mandelbulber2/qt/file_select_widget.h \
+		../mandelbulber2/qt/common_my_widget_wrapper.h \
+		../mandelbulber2/qt/light_sources_manager.h \
+		../mandelbulber2/qt/my_check_box.h \
+		../mandelbulber2/qt/my_color_button.h \
+		../mandelbulber2/qt/my_combo_box.h \
+		../mandelbulber2/qt/my_double_spin_box.h \
+		../mandelbulber2/qt/my_group_box.h \
+		../mandelbulber2/qt/my_line_edit.h \
+		../mandelbulber2/qt/my_spin_box.h \
 		../mandelbulber2/qt/dock_image_adjustments.h \
 		../mandelbulber2/qt/navigator_window.h \
 		../mandelbulber2/src/synchronize_interface.hpp \
+		../mandelbulber2/src/animation_frames.hpp \
+		../mandelbulber2/src/audio_track_collection.h \
 		../mandelbulber2/src/ao_modes.h \
 		../mandelbulber2/src/automated_widgets.hpp \
 		../mandelbulber2/src/fractal_container.hpp \
 		../mandelbulber2/src/fractal_enums.h \
+		../mandelbulber2/src/global_data.hpp \
 		../mandelbulber2/src/initparameters.hpp \
 		../mandelbulber2/src/object_types.hpp \
 		../mandelbulber2/src/primitive_item.h \
@@ -9178,6 +9316,8 @@ dock_effects.o: ../mandelbulber2/qt/dock_effects.cpp ../mandelbulber2/qt/dock_ef
 		../mandelbulber2/src/object_node_type.h \
 		../mandelbulber2/src/primitive.hpp \
 		../mandelbulber2/src/projection_3d.hpp \
+		../mandelbulber2/src/keyframes.hpp \
+		../mandelbulber2/src/morph.hpp \
 		../mandelbulber2/src/random.hpp \
 		../mandelbulber2/src/render_window.hpp \
 		../mandelbulber2/src/files.h \
@@ -9188,8 +9328,45 @@ dock_effects.o: ../mandelbulber2/qt/dock_effects.cpp ../mandelbulber2/qt/dock_ef
 		../mandelbulber2/src/rendered_tile_data.hpp \
 		../mandelbulber2/src/stereo.h \
 		../mandelbulber2/src/region.hpp \
-		../mandelbulber2/src/system_data.hpp
+		../mandelbulber2/src/settings.hpp \
+		../mandelbulber2/src/single_trap_lights.hpp \
+		../mandelbulber2/src/system_data.hpp \
+		../mandelbulber2/src/system_directories.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o dock_effects.o ../mandelbulber2/qt/dock_effects.cpp
+
+dock_fake_lights.o: ../mandelbulber2/qt/dock_fake_lights.cpp ../mandelbulber2/qt/dock_fake_lights.h \
+		../mandelbulber2/qt/my_widget_with_params.h \
+		../mandelbulber2/src/parameters.hpp \
+		../mandelbulber2/src/one_parameter.hpp \
+		../mandelbulber2/src/multi_val.hpp \
+		../mandelbulber2/src/algebra.hpp \
+		../mandelbulber2/src/color_structures.hpp \
+		../mandelbulber2/qt/ui_dock_fake_lights.h \
+		../mandelbulber2/qt/my_check_box.h \
+		../mandelbulber2/qt/common_my_widget_wrapper.h \
+		../mandelbulber2/qt/my_color_button.h \
+		../mandelbulber2/qt/my_combo_box.h \
+		../mandelbulber2/qt/my_double_spin_box.h \
+		../mandelbulber2/qt/my_group_box.h \
+		../mandelbulber2/qt/my_line_edit.h \
+		../mandelbulber2/qt/my_spin_box.h \
+		../mandelbulber2/src/automated_widgets.hpp \
+		../mandelbulber2/src/fractal_container.hpp \
+		../mandelbulber2/src/fractal_enums.h \
+		../mandelbulber2/src/global_data.hpp \
+		../mandelbulber2/src/interface.hpp \
+		../mandelbulber2/src/camera_target.hpp \
+		../mandelbulber2/src/primitives.h \
+		../mandelbulber2/src/object_data.hpp \
+		../mandelbulber2/src/object_types.hpp \
+		../mandelbulber2/src/objects_tree.h \
+		../mandelbulber2/src/object_node_type.h \
+		../mandelbulber2/src/primitive.hpp \
+		../mandelbulber2/src/primitive_item.h \
+		../mandelbulber2/src/projection_3d.hpp \
+		../mandelbulber2/src/synchronize_interface.hpp \
+		../mandelbulber2/src/initparameters.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o dock_fake_lights.o ../mandelbulber2/qt/dock_fake_lights.cpp
 
 dock_fractal.o: ../mandelbulber2/qt/dock_fractal.cpp ../mandelbulber2/qt/dock_fractal.h \
 		../mandelbulber2/qt/tab_fractal.h \
@@ -9203,6 +9380,27 @@ dock_fractal.o: ../mandelbulber2/qt/dock_fractal.cpp ../mandelbulber2/qt/dock_fr
 		../mandelbulber2/src/algebra.hpp \
 		../mandelbulber2/src/color_structures.hpp \
 		../mandelbulber2/qt/ui_dock_fractal.h \
+		../mandelbulber2/qt/buton_load_settings_from_widget.h \
+		../mandelbulber2/qt/buton_random_settings_from_widget.h \
+		../mandelbulber2/qt/buton_reset_settings_from_widget.h \
+		../mandelbulber2/qt/buton_save_settings_from_widget.h \
+		../mandelbulber2/qt/material_selector.h \
+		../mandelbulber2/qt/common_my_widget_wrapper.h \
+		../mandelbulber2/qt/my_check_box.h \
+		../mandelbulber2/qt/my_combo_box.h \
+		../mandelbulber2/qt/my_double_spin_box.h \
+		../mandelbulber2/qt/my_group_box.h \
+		../mandelbulber2/qt/my_line_edit.h \
+		../mandelbulber2/qt/my_spin_box.h \
+		../mandelbulber2/qt/my_tab_widget.h \
+		../mandelbulber2/qt/objects_tree_widget.h \
+		../mandelbulber2/src/object_node_type.h \
+		../mandelbulber2/qt/primitives_manager.h \
+		../mandelbulber2/src/primitive.hpp \
+		../mandelbulber2/src/object_data.hpp \
+		../mandelbulber2/src/object_types.hpp \
+		../mandelbulber2/src/primitive_item.h \
+		../mandelbulber2/qt/thumbnail_widget.h \
 		../mandelbulber2/qt/dock_rendering_engine.h \
 		../mandelbulber2/qt/my_tab_bar.h \
 		../mandelbulber2/src/ao_modes.h \
@@ -9210,15 +9408,10 @@ dock_fractal.o: ../mandelbulber2/qt/dock_fractal.cpp ../mandelbulber2/qt/dock_fr
 		../mandelbulber2/src/error_message.hpp \
 		../mandelbulber2/src/global_data.hpp \
 		../mandelbulber2/src/initparameters.hpp \
-		../mandelbulber2/src/object_types.hpp \
-		../mandelbulber2/src/primitive_item.h \
 		../mandelbulber2/src/interface.hpp \
 		../mandelbulber2/src/camera_target.hpp \
 		../mandelbulber2/src/primitives.h \
-		../mandelbulber2/src/object_data.hpp \
 		../mandelbulber2/src/objects_tree.h \
-		../mandelbulber2/src/object_node_type.h \
-		../mandelbulber2/src/primitive.hpp \
 		../mandelbulber2/src/projection_3d.hpp \
 		../mandelbulber2/src/render_window.hpp \
 		../mandelbulber2/src/files.h \
@@ -9269,6 +9462,16 @@ dock_gamepad.o: ../mandelbulber2/qt/dock_gamepad.cpp ../mandelbulber2/qt/dock_ga
 
 dock_image_adjustments.o: ../mandelbulber2/qt/dock_image_adjustments.cpp ../mandelbulber2/qt/dock_image_adjustments.h \
 		../mandelbulber2/qt/ui_dock_image_adjustments.h \
+		../mandelbulber2/qt/buton_load_settings_from_widget.h \
+		../mandelbulber2/qt/buton_reset_settings_from_widget.h \
+		../mandelbulber2/qt/buton_save_settings_from_widget.h \
+		../mandelbulber2/qt/my_check_box.h \
+		../mandelbulber2/qt/common_my_widget_wrapper.h \
+		../mandelbulber2/qt/my_combo_box.h \
+		../mandelbulber2/qt/my_double_spin_box.h \
+		../mandelbulber2/qt/my_group_box.h \
+		../mandelbulber2/qt/my_line_edit.h \
+		../mandelbulber2/qt/my_spin_box.h \
 		../mandelbulber2/qt/dock_rendering_engine.h \
 		../mandelbulber2/src/parameters.hpp \
 		../mandelbulber2/src/one_parameter.hpp \
@@ -9310,6 +9513,8 @@ dock_image_adjustments.o: ../mandelbulber2/qt/dock_image_adjustments.cpp ../mand
 
 dock_measurements.o: ../mandelbulber2/qt/dock_measurements.cpp ../mandelbulber2/qt/dock_measurements.h \
 		../mandelbulber2/qt/ui_dock_measurements.h \
+		../mandelbulber2/qt/my_line_edit.h \
+		../mandelbulber2/qt/common_my_widget_wrapper.h \
 		../mandelbulber2/src/automated_widgets.hpp \
 		../mandelbulber2/src/interface.hpp \
 		../mandelbulber2/src/algebra.hpp \
@@ -9340,6 +9545,14 @@ dock_measurements.o: ../mandelbulber2/qt/dock_measurements.cpp ../mandelbulber2/
 
 dock_navigation.o: ../mandelbulber2/qt/dock_navigation.cpp ../mandelbulber2/qt/dock_navigation.h \
 		../mandelbulber2/qt/ui_dock_navigation.h \
+		../mandelbulber2/qt/buton_load_settings_from_widget.h \
+		../mandelbulber2/qt/buton_reset_settings_from_widget.h \
+		../mandelbulber2/qt/buton_save_settings_from_widget.h \
+		../mandelbulber2/qt/my_check_box.h \
+		../mandelbulber2/qt/common_my_widget_wrapper.h \
+		../mandelbulber2/qt/my_combo_box.h \
+		../mandelbulber2/qt/my_double_spin_box.h \
+		../mandelbulber2/qt/my_line_edit.h \
 		../mandelbulber2/qt/dock_image_adjustments.h \
 		../mandelbulber2/qt/navigator_window.h \
 		../mandelbulber2/src/synchronize_interface.hpp \
@@ -9396,6 +9609,7 @@ dock_pattern_lines.o: ../mandelbulber2/qt/dock_pattern_lines.cpp ../mandelbulber
 		../mandelbulber2/src/synchronize_interface.hpp \
 		../mandelbulber2/src/animation_frames.hpp \
 		../mandelbulber2/src/audio_track_collection.h \
+		../mandelbulber2/src/write_log.hpp \
 		../mandelbulber2/src/automated_widgets.hpp \
 		../mandelbulber2/src/fractal_container.hpp \
 		../mandelbulber2/src/fractal_enums.h \
@@ -9444,6 +9658,9 @@ dock_queue.o: ../mandelbulber2/qt/dock_queue.cpp ../mandelbulber2/qt/dock_queue.
 		../mandelbulber2/src/projection_3d.hpp \
 		../mandelbulber2/src/region.hpp \
 		../mandelbulber2/qt/ui_dock_queue.h \
+		../mandelbulber2/qt/my_check_box.h \
+		../mandelbulber2/qt/common_my_widget_wrapper.h \
+		../mandelbulber2/qt/my_combo_box.h \
 		../mandelbulber2/src/automated_widgets.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o dock_queue.o ../mandelbulber2/qt/dock_queue.cpp
 
@@ -9454,6 +9671,17 @@ dock_rendering_engine.o: ../mandelbulber2/qt/dock_rendering_engine.cpp ../mandel
 		../mandelbulber2/src/algebra.hpp \
 		../mandelbulber2/src/color_structures.hpp \
 		../mandelbulber2/qt/ui_dock_rendering_engine.h \
+		../mandelbulber2/qt/buton_load_settings_from_widget.h \
+		../mandelbulber2/qt/buton_reset_settings_from_widget.h \
+		../mandelbulber2/qt/buton_save_settings_from_widget.h \
+		../mandelbulber2/qt/gradient_edit_widget.h \
+		../mandelbulber2/qt/common_my_widget_wrapper.h \
+		../mandelbulber2/src/color_gradient.h \
+		../mandelbulber2/qt/my_check_box.h \
+		../mandelbulber2/qt/my_combo_box.h \
+		../mandelbulber2/qt/my_group_box.h \
+		../mandelbulber2/qt/my_line_edit.h \
+		../mandelbulber2/qt/my_spin_box.h \
 		../mandelbulber2/qt/dock_fractal.h \
 		../mandelbulber2/qt/tab_fractal.h \
 		../mandelbulber2/qt/my_widget_with_params.h \
@@ -9491,6 +9719,7 @@ dock_statistics.o: ../mandelbulber2/qt/dock_statistics.cpp ../mandelbulber2/qt/d
 		../mandelbulber2/src/statistics.h \
 		../mandelbulber2/src/histogram.hpp \
 		../mandelbulber2/qt/ui_dock_statistics.h \
+		../mandelbulber2/qt/my_histogram_label.h \
 		../mandelbulber2/qt/dock_effects.h \
 		../mandelbulber2/qt/my_widget_with_params.h \
 		../mandelbulber2/src/parameters.hpp \
@@ -9597,6 +9826,12 @@ highlighter.o: ../mandelbulber2/qt/highlighter.cpp ../mandelbulber2/qt/highlight
 
 image_save_dialog.o: ../mandelbulber2/qt/image_save_dialog.cpp ../mandelbulber2/qt/image_save_dialog.h \
 		../mandelbulber2/qt/ui_image_save_dialog.h \
+		../mandelbulber2/qt/my_check_box.h \
+		../mandelbulber2/qt/common_my_widget_wrapper.h \
+		../mandelbulber2/qt/my_combo_box.h \
+		../mandelbulber2/qt/my_group_box.h \
+		../mandelbulber2/qt/my_line_edit.h \
+		../mandelbulber2/qt/my_spin_box.h \
 		../mandelbulber2/src/automated_widgets.hpp \
 		../mandelbulber2/src/initparameters.hpp \
 		../mandelbulber2/src/object_types.hpp \
@@ -9621,18 +9856,29 @@ image_save_dialog.o: ../mandelbulber2/qt/image_save_dialog.cpp ../mandelbulber2/
 
 light_editor.o: ../mandelbulber2/qt/light_editor.cpp ../mandelbulber2/qt/light_editor.h \
 		../mandelbulber2/qt/ui_light_editor.h \
-		../mandelbulber2/qt/my_combo_box.h \
+		../mandelbulber2/qt/file_select_widget.h \
 		../mandelbulber2/qt/common_my_widget_wrapper.h \
+		../mandelbulber2/qt/light_widget.h \
+		../mandelbulber2/src/algebra.hpp \
+		../mandelbulber2/src/camera_target.hpp \
+		../mandelbulber2/src/color_structures.hpp \
+		../mandelbulber2/qt/my_check_box.h \
+		../mandelbulber2/qt/my_color_button.h \
+		../mandelbulber2/qt/my_combo_box.h \
+		../mandelbulber2/qt/my_double_spin_box.h \
+		../mandelbulber2/qt/my_group_box.h \
+		../mandelbulber2/qt/my_line_edit.h \
 		../mandelbulber2/src/automated_widgets.hpp \
 		../mandelbulber2/src/light.h \
-		../mandelbulber2/src/algebra.hpp \
-		../mandelbulber2/src/color_structures.hpp \
 		../mandelbulber2/src/texture.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o light_editor.o ../mandelbulber2/qt/light_editor.cpp
 
 light_sources_manager.o: ../mandelbulber2/qt/light_sources_manager.cpp ../mandelbulber2/qt/light_sources_manager.h \
 		../mandelbulber2/qt/my_widget_with_params.h \
 		../mandelbulber2/qt/ui_light_sources_manager.h \
+		../mandelbulber2/qt/my_check_box.h \
+		../mandelbulber2/qt/common_my_widget_wrapper.h \
+		../mandelbulber2/qt/my_tab_widget_with_checkboxes.h \
 		../mandelbulber2/qt/light_editor.h \
 		../mandelbulber2/qt/my_tab_bar_with_checkbox.h \
 		../mandelbulber2/src/initparameters.hpp \
@@ -9677,19 +9923,34 @@ light_widget.o: ../mandelbulber2/qt/light_widget.cpp ../mandelbulber2/qt/light_w
 
 material_editor.o: ../mandelbulber2/qt/material_editor.cpp ../mandelbulber2/qt/material_editor.h \
 		../mandelbulber2/qt/ui_material_editor.h \
+		../mandelbulber2/qt/buton_random_settings_from_widget.h \
+		../mandelbulber2/qt/buton_reset_settings_from_widget.h \
+		../mandelbulber2/qt/file_select_widget.h \
+		../mandelbulber2/qt/common_my_widget_wrapper.h \
+		../mandelbulber2/qt/gradient_edit_widget.h \
+		../mandelbulber2/src/color_gradient.h \
+		../mandelbulber2/src/color_structures.hpp \
+		../mandelbulber2/qt/material_widget.h \
+		../mandelbulber2/qt/thumbnail_widget.h \
+		../mandelbulber2/src/parameters.hpp \
+		../mandelbulber2/src/one_parameter.hpp \
+		../mandelbulber2/src/multi_val.hpp \
+		../mandelbulber2/src/algebra.hpp \
+		../mandelbulber2/qt/my_check_box.h \
+		../mandelbulber2/qt/my_color_button.h \
+		../mandelbulber2/qt/my_combo_box.h \
+		../mandelbulber2/qt/my_double_spin_box.h \
+		../mandelbulber2/qt/my_group_box.h \
+		../mandelbulber2/qt/my_line_edit.h \
+		../mandelbulber2/qt/my_spin_box.h \
 		../mandelbulber2/qt/navigator_window.h \
 		../mandelbulber2/src/synchronize_interface.hpp \
 		../mandelbulber2/qt/preview_file_dialog.h \
 		../mandelbulber2/src/automated_widgets.hpp \
 		../mandelbulber2/src/common_math.h \
-		../mandelbulber2/src/algebra.hpp \
 		../mandelbulber2/src/fractal_coloring.hpp \
 		../mandelbulber2/src/fractal_enums.h \
 		../mandelbulber2/src/fractal_container.hpp \
-		../mandelbulber2/src/parameters.hpp \
-		../mandelbulber2/src/one_parameter.hpp \
-		../mandelbulber2/src/multi_val.hpp \
-		../mandelbulber2/src/color_structures.hpp \
 		../mandelbulber2/src/interface.hpp \
 		../mandelbulber2/src/camera_target.hpp \
 		../mandelbulber2/src/primitives.h \
@@ -9701,7 +9962,6 @@ material_editor.o: ../mandelbulber2/qt/material_editor.cpp ../mandelbulber2/qt/m
 		../mandelbulber2/src/primitive_item.h \
 		../mandelbulber2/src/projection_3d.hpp \
 		../mandelbulber2/src/material.h \
-		../mandelbulber2/src/color_gradient.h \
 		../mandelbulber2/src/texture.hpp \
 		../mandelbulber2/src/texture_enums.hpp \
 		../mandelbulber2/src/system.hpp
@@ -9803,6 +10063,13 @@ material_widget.o: ../mandelbulber2/qt/material_widget.cpp ../mandelbulber2/qt/m
 
 mesh_export_dialog.o: ../mandelbulber2/qt/mesh_export_dialog.cpp ../mandelbulber2/qt/mesh_export_dialog.h \
 		../mandelbulber2/qt/ui_mesh_export_dialog.h \
+		../mandelbulber2/qt/my_check_box.h \
+		../mandelbulber2/qt/common_my_widget_wrapper.h \
+		../mandelbulber2/qt/my_combo_box.h \
+		../mandelbulber2/qt/my_group_box.h \
+		../mandelbulber2/qt/my_line_edit.h \
+		../mandelbulber2/qt/my_progress_bar.h \
+		../mandelbulber2/qt/my_spin_box.h \
 		../mandelbulber2/qt/player_widget.hpp \
 		../mandelbulber2/src/automated_widgets.hpp \
 		../mandelbulber2/src/error_message.hpp \
@@ -10013,17 +10280,29 @@ my_widget_with_params.o: ../mandelbulber2/qt/my_widget_with_params.cpp ../mandel
 navigator_window.o: ../mandelbulber2/qt/navigator_window.cpp ../mandelbulber2/qt/navigator_window.h \
 		../mandelbulber2/src/synchronize_interface.hpp \
 		../mandelbulber2/qt/ui_navigator_window.h \
+		../mandelbulber2/qt/dock_navigation.h \
+		../mandelbulber2/qt/my_combo_box.h \
+		../mandelbulber2/qt/common_my_widget_wrapper.h \
+		../mandelbulber2/src/rendered_image_widget.hpp \
+		../mandelbulber2/src/algebra.hpp \
+		../mandelbulber2/src/animation_path_data.hpp \
+		../mandelbulber2/src/color_structures.hpp \
+		../mandelbulber2/src/primitive_item.h \
+		../mandelbulber2/src/object_types.hpp \
+		../mandelbulber2/src/rendered_tile_data.hpp \
+		../mandelbulber2/src/stereo.h \
+		../mandelbulber2/src/projection_3d.hpp \
+		../mandelbulber2/src/region.hpp \
 		../mandelbulber2/qt/dock_effects.h \
 		../mandelbulber2/qt/my_widget_with_params.h \
 		../mandelbulber2/src/parameters.hpp \
 		../mandelbulber2/src/one_parameter.hpp \
 		../mandelbulber2/src/multi_val.hpp \
-		../mandelbulber2/src/algebra.hpp \
-		../mandelbulber2/src/color_structures.hpp \
 		../mandelbulber2/qt/dock_fractal.h \
 		../mandelbulber2/qt/tab_fractal.h \
 		../mandelbulber2/src/fractal_container.hpp \
 		../mandelbulber2/src/fractal_enums.h \
+		../mandelbulber2/qt/dock_pattern_lines.h \
 		../mandelbulber2/src/ao_modes.h \
 		../mandelbulber2/src/cimage.hpp \
 		../mandelbulber2/src/image_adjustments.h \
@@ -10032,8 +10311,6 @@ navigator_window.o: ../mandelbulber2/qt/navigator_window.cpp ../mandelbulber2/qt
 		../mandelbulber2/src/global_data.hpp \
 		../mandelbulber2/src/image_scale.hpp \
 		../mandelbulber2/src/initparameters.hpp \
-		../mandelbulber2/src/object_types.hpp \
-		../mandelbulber2/src/primitive_item.h \
 		../mandelbulber2/src/interface.hpp \
 		../mandelbulber2/src/camera_target.hpp \
 		../mandelbulber2/src/primitives.h \
@@ -10041,14 +10318,11 @@ navigator_window.o: ../mandelbulber2/qt/navigator_window.cpp ../mandelbulber2/qt
 		../mandelbulber2/src/objects_tree.h \
 		../mandelbulber2/src/object_node_type.h \
 		../mandelbulber2/src/primitive.hpp \
-		../mandelbulber2/src/projection_3d.hpp \
 		../mandelbulber2/src/light.h \
 		../mandelbulber2/src/texture.hpp \
 		../mandelbulber2/src/lights.hpp \
 		../mandelbulber2/src/manipulations.h \
 		../mandelbulber2/src/render_job.hpp \
-		../mandelbulber2/src/region.hpp \
-		../mandelbulber2/src/rendered_tile_data.hpp \
 		../mandelbulber2/src/statistics.h \
 		../mandelbulber2/src/histogram.hpp \
 		../mandelbulber2/src/render_window.hpp \
@@ -10093,6 +10367,13 @@ player_widget.o: ../mandelbulber2/qt/player_widget.cpp ../mandelbulber2/qt/playe
 
 preferences_dialog.o: ../mandelbulber2/qt/preferences_dialog.cpp ../mandelbulber2/qt/preferences_dialog.h \
 		../mandelbulber2/qt/ui_preferences_dialog.h \
+		../mandelbulber2/qt/my_check_box.h \
+		../mandelbulber2/qt/common_my_widget_wrapper.h \
+		../mandelbulber2/qt/my_combo_box.h \
+		../mandelbulber2/qt/my_double_spin_box.h \
+		../mandelbulber2/qt/my_group_box.h \
+		../mandelbulber2/qt/my_line_edit.h \
+		../mandelbulber2/qt/my_spin_box.h \
 		../mandelbulber2/qt/dock_navigation.h \
 		../mandelbulber2/qt/thumbnail_widget.h \
 		../mandelbulber2/src/automated_widgets.hpp \
@@ -10214,7 +10495,7 @@ primitives_manager.o: ../mandelbulber2/qt/primitives_manager.cpp ../mandelbulber
 		../mandelbulber2/src/primitive_item.h \
 		../mandelbulber2/src/error_message.hpp \
 		../mandelbulber2/src/my_ui_loader.h \
-		../mandelbulber2/qmake/ui_primitives_manager.h \
+		../mandelbulber2/qt/ui_primitives_manager.h \
 		../mandelbulber2/qt/my_check_box.h \
 		../mandelbulber2/qt/common_my_widget_wrapper.h \
 		../mandelbulber2/qt/my_tab_widget_with_checkboxes.h \
@@ -10268,9 +10549,9 @@ randomizer_dialog.o: ../mandelbulber2/qt/randomizer_dialog.cpp ../mandelbulber2/
 		../mandelbulber2/src/random.hpp \
 		../mandelbulber2/src/tree_string_list.h \
 		../mandelbulber2/qt/ui_randomizer_dialog.h \
+		../mandelbulber2/qt/thumbnail_widget.h \
 		../mandelbulber2/qt/common_my_widget_wrapper.h \
 		../mandelbulber2/qt/my_group_box.h \
-		../mandelbulber2/qt/thumbnail_widget.h \
 		../mandelbulber2/src/animation_keyframes.hpp \
 		../mandelbulber2/src/error_message.hpp \
 		../mandelbulber2/src/file_image.hpp \
@@ -10415,14 +10696,33 @@ tab_fractal.o: ../mandelbulber2/qt/tab_fractal.cpp ../mandelbulber2/qt/tab_fract
 		../mandelbulber2/qt/my_widget_with_params.h \
 		../mandelbulber2/src/synchronize_interface.hpp \
 		../mandelbulber2/qt/ui_tab_fractal.h \
+		../mandelbulber2/qt/buton_load_settings_from_widget.h \
+		../mandelbulber2/qt/buton_random_settings_from_widget.h \
+		../mandelbulber2/qt/buton_reset_settings_from_widget.h \
+		../mandelbulber2/qt/buton_save_settings_from_widget.h \
+		../mandelbulber2/qt/formula_combo_box.h \
+		../mandelbulber2/qt/common_my_widget_wrapper.h \
+		../mandelbulber2/formula/definition/all_fractal_list.hpp \
+		../mandelbulber2/formula/definition/all_fractal_definitions.h \
+		../mandelbulber2/formula/definition/abstract_fractal.h \
+		../mandelbulber2/formula/definition/all_fractal_list_enums.hpp \
+		../mandelbulber2/src/algebra.hpp \
+		../mandelbulber2/src/fractal.h \
+		../mandelbulber2/src/fractal_enums.h \
+		../mandelbulber2/src/common_math.h \
+		../mandelbulber2/src/system_directories.hpp \
+		../mandelbulber2/qt/material_selector.h \
+		../mandelbulber2/qt/my_check_box.h \
+		../mandelbulber2/qt/my_double_spin_box.h \
+		../mandelbulber2/qt/my_group_box.h \
+		../mandelbulber2/qt/my_line_edit.h \
+		../mandelbulber2/qt/my_spin_box.h \
 		../mandelbulber2/qt/custom_formula_editor.h \
 		../mandelbulber2/src/one_parameter.hpp \
 		../mandelbulber2/src/multi_val.hpp \
-		../mandelbulber2/src/algebra.hpp \
 		../mandelbulber2/src/color_structures.hpp \
 		../mandelbulber2/qt/dock_fractal.h \
 		../mandelbulber2/src/fractal_container.hpp \
-		../mandelbulber2/src/fractal_enums.h \
 		../mandelbulber2/src/parameters.hpp \
 		../mandelbulber2/qt/navigator_window.h \
 		../mandelbulber2/src/automated_widgets.hpp \
@@ -10443,14 +10743,7 @@ tab_fractal.o: ../mandelbulber2/qt/tab_fractal.cpp ../mandelbulber2/qt/tab_fract
 		../mandelbulber2/src/files.h \
 		../mandelbulber2/src/file_image.hpp \
 		../mandelbulber2/src/progress_text.hpp \
-		../mandelbulber2/src/write_log.hpp \
-		../mandelbulber2/formula/definition/all_fractal_list.hpp \
-		../mandelbulber2/formula/definition/all_fractal_definitions.h \
-		../mandelbulber2/formula/definition/abstract_fractal.h \
-		../mandelbulber2/formula/definition/all_fractal_list_enums.hpp \
-		../mandelbulber2/src/fractal.h \
-		../mandelbulber2/src/common_math.h \
-		../mandelbulber2/src/system_directories.hpp
+		../mandelbulber2/src/write_log.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o tab_fractal.o ../mandelbulber2/qt/tab_fractal.cpp
 
 thumbnail_widget.o: ../mandelbulber2/qt/thumbnail_widget.cpp ../mandelbulber2/qt/thumbnail_widget.h \
@@ -10533,6 +10826,12 @@ time_ruler.o: ../mandelbulber2/qt/time_ruler.cpp ../mandelbulber2/qt/time_ruler.
 
 voxel_export_dialog.o: ../mandelbulber2/qt/voxel_export_dialog.cpp ../mandelbulber2/qt/voxel_export_dialog.h \
 		../mandelbulber2/qt/ui_voxel_export_dialog.h \
+		../mandelbulber2/qt/my_check_box.h \
+		../mandelbulber2/qt/common_my_widget_wrapper.h \
+		../mandelbulber2/qt/my_group_box.h \
+		../mandelbulber2/qt/my_line_edit.h \
+		../mandelbulber2/qt/my_progress_bar.h \
+		../mandelbulber2/qt/my_spin_box.h \
 		../mandelbulber2/qt/player_widget.hpp \
 		../mandelbulber2/src/automated_widgets.hpp \
 		../mandelbulber2/src/error_message.hpp \
@@ -15375,6 +15674,9 @@ moc_dock_animation.o: moc_dock_animation.cpp
 
 moc_dock_effects.o: moc_dock_effects.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_dock_effects.o moc_dock_effects.cpp
+
+moc_dock_fake_lights.o: moc_dock_fake_lights.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_dock_fake_lights.o moc_dock_fake_lights.cpp
 
 moc_dock_fractal.o: moc_dock_fractal.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_dock_fractal.o moc_dock_fractal.cpp

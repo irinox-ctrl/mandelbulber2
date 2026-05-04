@@ -172,4 +172,42 @@ float BicubicInterpolationGrey16(float x, float y, __global uchar4 *texture, int
 }
 #endif
 
+#ifdef USE_LIGHT_TEXTURE
+inline float SampleTextureAlpha(
+	float x, float y, __global uchar4 *texture, int w, int h)
+{
+	if (x > 0.0f)
+		x = fmod(x, 1.0f);
+	else
+		x = 1.0f + fmod(x, 1.0f);
+
+	if (y > 0.0f)
+		y = fmod(y, 1.0f);
+	else
+		y = 1.0f + fmod(y, 1.0f);
+
+	float textureCordX = x * w;
+	float textureCordY = y * h;
+
+	int ix = (int)textureCordX;
+	int iy = (int)textureCordY;
+	float rx = textureCordX - ix;
+	float ry = textureCordY - iy;
+
+	int addr00 = TexturePixelAddressInt((int2){ix, iy}, (int2){w, h}, (int2){0, 0});
+	int addr01 = TexturePixelAddressInt((int2){ix, iy}, (int2){w, h}, (int2){1, 0});
+	int addr10 = TexturePixelAddressInt((int2){ix, iy}, (int2){w, h}, (int2){0, 1});
+	int addr11 = TexturePixelAddressInt((int2){ix, iy}, (int2){w, h}, (int2){1, 1});
+
+	float a00 = texture[addr00].s3 / 255.0f;
+	float a01 = texture[addr01].s3 / 255.0f;
+	float a10 = texture[addr10].s3 / 255.0f;
+	float a11 = texture[addr11].s3 / 255.0f;
+
+	float a0 = a00 * (1.0f - rx) + a01 * rx;
+	float a1 = a10 * (1.0f - rx) + a11 * rx;
+	return a0 * (1.0f - ry) + a1 * ry;
+}
+#endif
+
 #endif

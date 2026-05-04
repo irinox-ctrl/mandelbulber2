@@ -33,7 +33,8 @@
  */
 
 float3 GradientInterpolate(
-	int paletteIndex, float pos, int mode, int gradientSize, __global float4 *palette)
+	int paletteIndex, float pos, int mode, int gradientSize, __global float4 *palette,
+	__global float4 *midpoints, int numMidpoints)
 {
 	float3 color = 0.0f;
 	// if last element then just copy color value (no interpolation)
@@ -54,21 +55,47 @@ float3 GradientInterpolate(
 		{
 			float delta = (pos - pos1) / (pos2 - pos1);
 
+			// apply midpoint curve if available
+			if (numMidpoints > 0 && paletteIndex < numMidpoints)
+			{
+				float m = midpoints[paletteIndex].x;
+				if (m > 0.0f && m < 1.0f)
+				{
+					if (delta < m)
+						delta = 0.5f * delta / m;
+					else
+						delta = 0.5f + 0.5f * (delta - m) / (1.0f - m);
+				}
+			}
+
 			// mode: 0=Linear, 1=Smooth, 2=Spline
 			if (mode == 1) // Smooth (cosine)
 			{
 				delta = 0.5f * (1.0f - cos(delta * M_PI_F));
 			}
-			// TODO: mode == 2 (Spline) - fallback to smooth for now
-			if (mode == 2)
+			else if (mode == 2) // Spline (Catmull-Rom)
 			{
-				delta = 0.5f * (1.0f - cos(delta * M_PI_F));
-			}
+				float3 p0 = (paletteIndex > 0) ? palette[paletteIndex - 1].xyz : color1;
+				float3 p1 = color1;
+				float3 p2 = color2;
+				float3 p3 = (paletteIndex + 2 < gradientSize) ? palette[paletteIndex + 2].xyz : color2;
 
-			float nDelta = 1.0f - delta;
-			color.s0 = color1.s0 * nDelta + color2.s0 * delta;
-			color.s1 = color1.s1 * nDelta + color2.s1 * delta;
-			color.s2 = color1.s2 * nDelta + color2.s2 * delta;
+				float t2 = delta * delta;
+				float t3 = t2 * delta;
+
+				color = 0.5f * ((2.0f * p1) + (-p0 + p2) * delta
+								+ (2.0f * p0 - 5.0f * p1 + 4.0f * p2 - p3) * t2
+								+ (-p0 + 3.0f * p1 - 3.0f * p2 + p3) * t3);
+			}
+			// else mode == 0, keep linear delta
+
+			if (mode != 2)
+			{
+				float nDelta = 1.0f - delta;
+				color.s0 = color1.s0 * nDelta + color2.s0 * delta;
+				color.s1 = color1.s1 * nDelta + color2.s1 * delta;
+				color.s2 = color1.s2 * nDelta + color2.s2 * delta;
+			}
 		}
 		else
 		{
@@ -89,10 +116,33 @@ int GradientIterator(
 	return newIndex;
 }
 
-float3 GetColorFromGradient(float position, int mode, int gradientSize, __global float4 *palette)
+float3 GetColorFromGradient(float position, int mode, int gradientSize,
+	__global float4 *palette, __global float4 *midpoints, int numMidpoints)
 {
 	int paletteIndex = GradientIterator(0, position, gradientSize, palette);
-	return GradientInterpolate(paletteIndex, position, mode, gradientSize, palette);
+	return GradientInterpolate(
+		paletteIndex, position, mode, gradientSize, palette, midpoints, numMidpoints);
+}
+
+float GetAlphaFromGradient(float position, int gradientSize, __global float4 *palette)
+{
+	if (gradientSize < 2) return 1.0f;
+	int paletteIndex = GradientIterator(0, position, gradientSize, palette);
+	// if last element then just copy alpha value
+	if (paletteIndex == gradientSize - 1)
+	{
+		return palette[paletteIndex - 1].x;
+	}
+	float alpha1 = palette[paletteIndex].x;
+	float pos1 = palette[paletteIndex].w;
+	float alpha2 = palette[paletteIndex + 1].x;
+	float pos2 = palette[paletteIndex + 1].w;
+	if (pos2 - pos1 > 0.0f)
+	{
+		float delta = (position - pos1) / (pos2 - pos1);
+		return alpha1 * (1.0f - delta) + alpha2 * delta;
+	}
+	return alpha1;
 }
 
 float3 SurfaceColor(__constant sClInConstants *consts, sRenderData *renderData,
@@ -170,7 +220,14 @@ float3 SurfaceColor(__constant sClInConstants *consts, sRenderData *renderData,
 				if (input->material->surfaceGradientEnable)
 				{
 					color = GetColorFromGradient(colorPosition, input->material->surfaceGradientMode,
-						input->paletteSurfaceLength, input->palette + input->paletteSurfaceOffset);
+						input->paletteSurfaceLength, input->palette + input->paletteSurfaceOffset,
+						input->palette + input->midpointSurfaceOffset, input->midpointSurfaceLength);
+					float alpha = GetAlphaFromGradient(colorPosition, input->opacitySurfaceLength,
+						input->palette + input->opacitySurfaceOffset);
+					if (input->material->surfaceGradientMaskEnable)
+					{
+						color *= alpha;
+					}
 					gradients->surface = color;
 				}
 				else
@@ -184,7 +241,14 @@ float3 SurfaceColor(__constant sClInConstants *consts, sRenderData *renderData,
 				{
 					gradients->specular = GetColorFromGradient(colorPosition,
 						input->material->specularGradientMode, input->paletteSpecularLength,
-						input->palette + input->paletteSpecularOffset);
+						input->palette + input->paletteSpecularOffset,
+						input->palette + input->midpointSpecularOffset, input->midpointSpecularLength);
+					float alpha = GetAlphaFromGradient(colorPosition, input->opacitySpecularLength,
+						input->palette + input->opacitySpecularOffset);
+					if (input->material->specularGradientMaskEnable)
+					{
+						gradients->specular *= alpha;
+					}
 				}
 #endif
 #ifdef USE_DIFFUSE_GRADIENT
@@ -192,7 +256,14 @@ float3 SurfaceColor(__constant sClInConstants *consts, sRenderData *renderData,
 				{
 					gradients->diffuse = GetColorFromGradient(colorPosition,
 						input->material->diffuseGradientMode, input->paletteDiffuseLength,
-						input->palette + input->paletteDiffuseOffset);
+						input->palette + input->paletteDiffuseOffset,
+						input->palette + input->midpointDiffuseOffset, input->midpointDiffuseLength);
+					float alpha = GetAlphaFromGradient(colorPosition, input->opacityDiffuseLength,
+						input->palette + input->opacityDiffuseOffset);
+					if (input->material->diffuseGradientMaskEnable)
+					{
+						gradients->diffuse *= alpha;
+					}
 				}
 #endif
 #ifdef USE_LUMINOSITY_GRADIENT
@@ -200,7 +271,14 @@ float3 SurfaceColor(__constant sClInConstants *consts, sRenderData *renderData,
 				{
 					gradients->luminosity = GetColorFromGradient(colorPosition,
 						input->material->luminosityGradientMode, input->paletteLuminosityLength,
-						input->palette + input->paletteLuminosityOffset);
+						input->palette + input->paletteLuminosityOffset,
+						input->palette + input->midpointLuminosityOffset, input->midpointLuminosityLength);
+					float alpha = GetAlphaFromGradient(colorPosition, input->opacityLuminosityLength,
+						input->palette + input->opacityLuminosityOffset);
+					if (input->material->luminosityGradientMaskEnable)
+					{
+						gradients->luminosity *= alpha;
+					}
 				}
 #endif
 #ifdef USE_ROUGHNESS_GRADIENT
@@ -208,7 +286,14 @@ float3 SurfaceColor(__constant sClInConstants *consts, sRenderData *renderData,
 				{
 					gradients->roughness = GetColorFromGradient(colorPosition,
 						input->material->roughnessGradientMode, input->paletteRoughnessLength,
-						input->palette + input->paletteRoughnessOffset);
+						input->palette + input->paletteRoughnessOffset,
+						input->palette + input->midpointRoughnessOffset, input->midpointRoughnessLength);
+					float alpha = GetAlphaFromGradient(colorPosition, input->opacityRoughnessLength,
+						input->palette + input->opacityRoughnessOffset);
+					if (input->material->roughnessGradientMaskEnable)
+					{
+						gradients->roughness *= alpha;
+					}
 				}
 #endif
 #ifdef USE_REFLECTANCE_GRADIENT
@@ -216,7 +301,14 @@ float3 SurfaceColor(__constant sClInConstants *consts, sRenderData *renderData,
 				{
 					gradients->reflectance = GetColorFromGradient(colorPosition,
 						input->material->reflectanceGradientMode, input->paletteReflectanceLength,
-						input->palette + input->paletteReflectanceOffset);
+						input->palette + input->paletteReflectanceOffset,
+						input->palette + input->midpointReflectanceOffset, input->midpointReflectanceLength);
+					float alpha = GetAlphaFromGradient(colorPosition, input->opacityReflectanceLength,
+						input->palette + input->opacityReflectanceOffset);
+					if (input->material->reflectanceGradientMaskEnable)
+					{
+						gradients->reflectance *= alpha;
+					}
 				}
 #endif
 #ifdef USE_TRANSPARENCY_GRADIENT
@@ -224,7 +316,14 @@ float3 SurfaceColor(__constant sClInConstants *consts, sRenderData *renderData,
 				{
 					gradients->transparency = GetColorFromGradient(colorPosition,
 						input->material->transparencyGradientMode, input->paletteTransparencyLength,
-						input->palette + input->paletteTransparencyOffset);
+						input->palette + input->paletteTransparencyOffset,
+						input->palette + input->midpointTransparencyOffset, input->midpointTransparencyLength);
+					float alpha = GetAlphaFromGradient(colorPosition, input->opacityTransparencyLength,
+						input->palette + input->opacityTransparencyOffset);
+					if (input->material->transparencyGradientMaskEnable)
+					{
+						gradients->transparency *= alpha;
+					}
 				}
 #endif
 			}

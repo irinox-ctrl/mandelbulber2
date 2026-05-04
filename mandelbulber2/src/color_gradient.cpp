@@ -298,7 +298,12 @@ sRGBAFloat cColorGradient::GetColorRGBA(float position)
 	// Calculate local t
 	float pos1 = sortedColorStops[seg].position;
 	float pos2 = sortedColorStops[seg + 1].position;
-	float t = (position - pos1) / (pos2 - pos1);
+	float t = 0.0f;
+	float denom = pos2 - pos1;
+	if (denom > 0.0f)
+	{
+		t = (position - pos1) / denom;
+	}
 
 	// Apply midpoint
 	if (seg < midpoints.size())
@@ -333,7 +338,12 @@ sRGBAFloat cColorGradient::GetColorRGBA(float position)
 		{
 			float alphaPos1 = sortedOpacityStops[alphaSeg].position;
 			float alphaPos2 = sortedOpacityStops[alphaSeg + 1].position;
-			float alphaT = (position - alphaPos1) / (alphaPos2 - alphaPos1);
+			float alphaDenom = alphaPos2 - alphaPos1;
+			float alphaT = 0.0f;
+			if (alphaDenom > 0.0f)
+			{
+				alphaT = (position - alphaPos1) / alphaDenom;
+			}
 			alpha = InterpolateAlphaSegment(alphaSeg, alphaT);
 		}
 	}
@@ -361,7 +371,12 @@ float cColorGradient::GetAlpha(float position)
 		return 1.0f;
 	float pos1 = sortedOpacityStops[seg].position;
 	float pos2 = sortedOpacityStops[seg + 1].position;
-	float t = (position - pos1) / (pos2 - pos1);
+	float denom = pos2 - pos1;
+	float t = 0.0f;
+	if (denom > 0.0f)
+	{
+		t = (position - pos1) / denom;
+	}
 	return InterpolateAlphaSegment(seg, t);
 }
 
@@ -375,14 +390,19 @@ sRGBFloat cColorGradient::GetColorFloat(float position, bool smooth)
 	// Otherwise use the configured interpolation mode
 	if (smooth)
 	{
-		if (sortedColorStops.isEmpty())
+		if (sortedColorStops.size() < 2)
 			return sRGBFloat(1.0f, 1.0f, 1.0f);
 
 		position = qBound(0.0f, position, 1.0f);
 		int seg = FindColorSegment(position);
 		float pos1 = sortedColorStops[seg].position;
 		float pos2 = sortedColorStops[seg + 1].position;
-		float t = (position - pos1) / (pos2 - pos1);
+		float denom = pos2 - pos1;
+		float t = 0.0f;
+		if (denom > 0.0f)
+		{
+			t = (position - pos1) / denom;
+		}
 
 		if (seg < midpoints.size())
 			t = ApplyMidpoint(t, midpoints[seg].position);
