@@ -907,6 +907,7 @@ void cOpenClDynamicData::BuildLightsData(
 		lightCl.projectionIntensity = light->projectionIntensity;
 		lightCl.projectionUseAsMask = light->projectionUseAsMask;
 		lightCl.projectionInvertAlphaMask = light->projectionInvertAlphaMask;
+		lightCl.projectionBlendMode = light->projectionBlendMode;
 
 		lightCl.position = toClFloat3(light->position);
 		lightCl.rotation = toClFloat3(light->rotation);

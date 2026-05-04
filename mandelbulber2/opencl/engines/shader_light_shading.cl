@@ -375,6 +375,32 @@ float3 LightShading(__constant sClInConstants *consts, sRenderData *renderData,
 	float3 textureColor;
 	intensity *= CalculateLightCone(light, renderData, input->point, lightVector, &textureColor);
 
+	// Apply blend mode between light color and projection texture color
+	float3 blendedColor;
+	switch (light->projectionBlendMode)
+	{
+		case 1: // Add
+			blendedColor = light->color + textureColor;
+			break;
+		case 2: // Screen
+			blendedColor = light->color + textureColor - light->color * textureColor;
+			break;
+		case 3: // Overlay
+			blendedColor.s0 = (light->color.s0 < 0.5f)
+										? 2.0f * light->color.s0 * textureColor.s0
+										: 1.0f - 2.0f * (1.0f - light->color.s0) * (1.0f - textureColor.s0);
+			blendedColor.s1 = (light->color.s1 < 0.5f)
+										? 2.0f * light->color.s1 * textureColor.s1
+										: 1.0f - 2.0f * (1.0f - light->color.s1) * (1.0f - textureColor.s1);
+			blendedColor.s2 = (light->color.s2 < 0.5f)
+										? 2.0f * light->color.s2 * textureColor.s2
+										: 1.0f - 2.0f * (1.0f - light->color.s2) * (1.0f - textureColor.s2);
+			break;
+		default: // Multiply (case 0)
+			blendedColor = light->color * textureColor;
+			break;
+	}
+
 	float shade = dot(input->normal, lightVector);
 	if (shade < 0.0f) shade = 0.0f;
 	shade = 1.0f - input->material->shading + shade * input->material->shading;
@@ -415,8 +441,8 @@ float3 LightShading(__constant sClInConstants *consts, sRenderData *renderData,
 	}
 #endif // SHADOWS
 
-	shading = shade * light->color * auxShadow * textureColor;
-	*outSpecular = specular * light->color * textureColor;
+	shading = shade * auxShadow * blendedColor;
+	*outSpecular = specular * blendedColor;
 
 	*outShadow = auxShadow;
 

@@ -114,6 +114,7 @@ public:
 	float projectionVerticalRatio = 0.0;
 	float projectionSoftEdge = 0.0;
 	float projectionIntensity = 1.0f;
+	int projectionBlendMode = 0;
 	bool projectionUseAsMask = false;
 	float projectionTextureOffsetX = 0.0f;
 	float projectionTextureOffsetY = 0.0f;

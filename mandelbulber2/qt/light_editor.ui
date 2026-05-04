@@ -1398,6 +1398,40 @@
           </property>
          </widget>
         </item>
+        <item row="18" column="0">
+         <widget class="QLabel" name="label_projection_blend_mode">
+          <property name="text">
+           <string>Blend mode</string>
+          </property>
+         </widget>
+        </item>
+        <item row="18" column="1">
+         <widget class="MyComboBox" name="comboBox_projection_blend_mode">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Blend mode for projection texture with light color. Multiply = texture tints the light (default). Add = texture adds to light. Screen = soft addition. Overlay = contrast boosting.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <item>
+           <property name="text">
+            <string>Multiply</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Add</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Screen</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Overlay</string>
+           </property>
+          </item>
+         </widget>
+        </item>
        </layout>
       </item>
       <item>

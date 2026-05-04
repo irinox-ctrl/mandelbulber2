@@ -63,6 +63,7 @@ const QStringList cLight::paramsList = {"is_defined", "enabled", "cast_shadows",
 	"projection_texture_rotation_x", "projection_texture_rotation_y", "projection_texture_rotation_z",
 	"projection_repeat_mode", "projection_use_alpha_as_mask", "projection_use_texture_alpha_as_mask",
 	"projection_invert_alpha_mask",
+	"projection_blend_mode",
 	"alpha_texture_offset_x", "alpha_texture_offset_y", "alpha_texture_scale_x", "alpha_texture_scale_y",
 	"alpha_texture_rotation_z", "alpha_texture_repeat_mode", "alpha_texture_soft_edge",
 	"snap_to_surface", "surface_offset", "name", "orbit_distance", "orbit_yaw", "orbit_pitch",
@@ -226,6 +227,7 @@ void cLight::setParameters(int _id, const std::shared_ptr<cParameterContainer> l
 	projectionUseAlphaAsMask = lightParam->Get<bool>(Name("projection_use_alpha_as_mask", id));
 	projectionUseTextureAlphaAsMask = lightParam->Get<bool>(Name("projection_use_texture_alpha_as_mask", id));
 	projectionInvertAlphaMask = lightParam->Get<bool>(Name("projection_invert_alpha_mask", id));
+	projectionBlendMode = lightParam->Get<int>(Name("projection_blend_mode", id));
 	alphaTextureOffsetX = lightParam->Get<double>(Name("alpha_texture_offset_x", id));
 	alphaTextureOffsetY = lightParam->Get<double>(Name("alpha_texture_offset_y", id));
 	alphaTextureScaleX = lightParam->Get<double>(Name("alpha_texture_scale_x", id));

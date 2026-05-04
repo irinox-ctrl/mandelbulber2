@@ -108,13 +108,47 @@ sRGBAFloat cRenderWorker::LightShading(sShaderInputData &input, sRGBAFloat surfa
 		}
 	}
 
-	shading.R = shade * light->color.R * auxShadow.R * textureColor.R;
-	shading.G = shade * light->color.G * auxShadow.G * textureColor.G;
-	shading.B = shade * light->color.B * auxShadow.B * textureColor.B;
+	// Apply blend mode between light color and projection texture color
+	sRGBFloat blendedColor;
+	switch (light->projectionBlendMode)
+	{
+		case 1: // Add
+			blendedColor.R = light->color.R + textureColor.R;
+			blendedColor.G = light->color.G + textureColor.G;
+			blendedColor.B = light->color.B + textureColor.B;
+			break;
+		case 2: // Screen
+			blendedColor.R = light->color.R + textureColor.R - light->color.R * textureColor.R;
+			blendedColor.G = light->color.G + textureColor.G - light->color.G * textureColor.G;
+			blendedColor.B = light->color.B + textureColor.B - light->color.B * textureColor.B;
+			break;
+		case 3: // Overlay
+		{
+			auto overlay = [](float base, float blend) -> float {
+				if (base < 0.5f)
+					return 2.0f * base * blend;
+				else
+					return 1.0f - 2.0f * (1.0f - base) * (1.0f - blend);
+			};
+			blendedColor.R = overlay(light->color.R, textureColor.R);
+			blendedColor.G = overlay(light->color.G, textureColor.G);
+			blendedColor.B = overlay(light->color.B, textureColor.B);
+			break;
+		}
+		default: // Multiply (case 0)
+			blendedColor.R = light->color.R * textureColor.R;
+			blendedColor.G = light->color.G * textureColor.G;
+			blendedColor.B = light->color.B * textureColor.B;
+			break;
+	}
 
-	outSpecular->R = specular.R * light->color.R * textureColor.R;
-	outSpecular->G = specular.G * light->color.G * textureColor.G;
-	outSpecular->B = specular.B * light->color.B * textureColor.B;
+	shading.R = shade * auxShadow.R * blendedColor.R;
+	shading.G = shade * auxShadow.G * blendedColor.G;
+	shading.B = shade * auxShadow.B * blendedColor.B;
+
+	outSpecular->R = specular.R * blendedColor.R;
+	outSpecular->G = specular.G * blendedColor.G;
+	outSpecular->B = specular.B * blendedColor.B;
 
 	*outShadow = auxShadow;
 

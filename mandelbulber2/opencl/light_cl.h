@@ -91,6 +91,7 @@ typedef struct
 
 	cl_int projectionUseAsMask;
 	cl_int projectionInvertAlphaMask;
+	cl_int projectionBlendMode;
 
 	cl_float3 color;
 
