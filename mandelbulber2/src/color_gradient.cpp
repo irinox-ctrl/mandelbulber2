@@ -60,6 +60,8 @@ cColorGradient::cColorGradient()
 	sColor positionedColor2 = {sRGB(255, 255, 255), 1.0};
 	colors.append(positionedColor2);
 
+	midpoints.append(0.5f);
+
 	grayscale = false;
 	sorted = false;
 }
@@ -73,6 +75,7 @@ int cColorGradient::AddColor(sRGB color, float position)
 	color = MakeGrayscaleIfNeeded(color);
 	sColor positionedColor = {color, position};
 	colors.append(positionedColor);
+	midpoints.append(0.5f);
 	return colors.size();
 }
 
@@ -113,6 +116,10 @@ void cColorGradient::RemoveColor(int index)
 		{
 			sorted = false;
 			colors.removeAt(index);
+			if (index > 0)
+				midpoints.removeAt(index - 1);
+			else if (!midpoints.isEmpty())
+				midpoints.removeFirst();
 		}
 		else
 		{
@@ -162,6 +169,9 @@ sRGB cColorGradient::Interpolate(int paletteIndex, float pos, bool smooth) const
 			float delta = (pos - pos1) / (pos2 - pos1);
 
 			if (smooth) delta = 0.5f * (1.0f - cosf(delta * float(M_PI)));
+
+			if (paletteIndex < midpoints.size())
+				delta = ApplyMidpoint(delta, midpoints[paletteIndex]);
 
 			float nDelta = 1.0f - delta;
 			color.R = int(color1.R * nDelta + color2.R * delta);
@@ -214,6 +224,9 @@ sRGBFloat cColorGradient::InterpolateFloat(int paletteIndex, float pos, bool smo
 			float delta = (pos - pos1) / (pos2 - pos1);
 
 			if (smooth) delta = 0.5f * (1.0f - cosf(delta * float(M_PI)));
+
+			if (paletteIndex < midpoints.size())
+				delta = ApplyMidpoint(delta, midpoints[paletteIndex]);
 
 			float nDelta = 1.0f - delta;
 			color.R = float((color1.R * nDelta + color2.R * delta) / 256.0f);
@@ -299,6 +312,25 @@ QString cColorGradient::GetColorsAsString()
 		string += oneColor;
 	}
 
+	// Append midpoints if any are non-default (not 0.5)
+	bool hasNonDefaultMidpoints = false;
+	for (float mp : midpoints)
+	{
+		if (fabsf(mp - 0.5f) > 0.001f)
+		{
+			hasNonDefaultMidpoints = true;
+			break;
+		}
+	}
+	
+	if (hasNonDefaultMidpoints)
+	{
+		for (float mp : midpoints)
+		{
+			string += " " + QString::number(int(mp * 10000.0f));
+		}
+	}
+	
 	return string;
 }
 
@@ -352,6 +384,24 @@ void cColorGradient::SetColorsFromString(const QString &string)
 			}
 		}
 	}
+	
+	// Parse remaining values as midpoints (backwards compatibility: none = 0.5)
+	int numSegments = qMax(0, colors.size() - 1);
+	midpoints.resize(numSegments);
+	for (int j = 0; j < numSegments; j++)
+		 midpoints[j] = 0.5f;
+	
+	int colorPairCount = (colors.size() - 1) * 2; // each color is position + hex
+	int mpIdx = 0;
+	for (int j = colorPairCount; j < split.size() && mpIdx < numSegments; j++)
+	{
+		if (split[j].size() > 0)
+		{
+			float mp = split[j].toInt() / 10000.0f;
+			midpoints[mpIdx] = qBound(0.01f, mp, 0.99f);
+			mpIdx++;
+		}
+	}
 	SortGradient();
 }
 
@@ -359,6 +409,7 @@ void cColorGradient::DeleteAll()
 {
 	colors.clear();
 	sortedColors.clear();
+	midpoints.clear();
 	sorted = false;
 }
 
@@ -370,6 +421,8 @@ void cColorGradient::DeleteAndKeepTwo()
 	{
 		colors.removeLast();
 	}
+	midpoints.resize(1);
+	midpoints[0] = 0.5f;
 }
 
 float cColorGradient::CorrectPosition(float position, int ignoreIndex)
@@ -426,4 +479,46 @@ sRGB cColorGradient::MakeGrayscaleIfNeeded(sRGB color)
 		color.R = color.G = color.B = avg;
 	}
 	return color;
+}
+
+// ===================================================================
+// MIDPOINT METHODS
+// ===================================================================
+
+void cColorGradient::SetMidpoint(int segmentIndex, float midpoint)
+{
+	if (segmentIndex >= 0 && segmentIndex < midpoints.size())
+	{
+		midpoints[segmentIndex] = qBound(0.01f, midpoint, 0.99f);
+	}
+}
+
+float cColorGradient::GetMidpoint(int segmentIndex) const
+{
+	if (segmentIndex >= 0 && segmentIndex < midpoints.size())
+	{
+		return midpoints[segmentIndex];
+	}
+	return 0.5f;
+}
+
+void cColorGradient::ResetMidpoints()
+{
+	for (int i = 0; i < midpoints.size(); i++)
+	{
+		midpoints[i] = 0.5f;
+	}
+}
+
+float cColorGradient::ApplyMidpoint(float t, float midpoint) const
+{
+	midpoint = qBound(0.01f, midpoint, 0.99f);
+	if (t < midpoint)
+	{
+		return 0.5f * t / midpoint;
+	}
+	else
+	{
+		return 0.5f + 0.5f * (t - midpoint) / (1.0f - midpoint);
+	}
 }

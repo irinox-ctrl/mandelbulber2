@@ -35,6 +35,7 @@
 #ifndef MANDELBULBER2_SRC_COLOR_GRADIENT_H_
 #define MANDELBULBER2_SRC_COLOR_GRADIENT_H_
 #include <QList>
+#include <QVector>
 
 #include "color_structures.hpp"
 
@@ -69,8 +70,14 @@ public:
 	void SetColorsFromString(const QString &string);
 	void SortGradient();
 	int GetNumberOfColors() { return colors.size(); }
+	int GetNumberOfSegments() { return qMax(0, colors.size() - 1); }
 	void DeleteAll();
 	void DeleteAndKeepTwo();
+
+	// Midpoint control (Photoshop-style curve per segment)
+	void SetMidpoint(int segmentIndex, float midpoint);
+	float GetMidpoint(int segmentIndex) const;
+	void ResetMidpoints();
 
 private:
 	int PaletteIterator(int paletteIndex, float position) const;
@@ -81,8 +88,11 @@ private:
 
 	QList<sColor> colors;
 	QList<sColor> sortedColors;
+	QVector<float> midpoints; // one per segment, default 0.5
 	bool grayscale;
 	bool sorted;
+
+	float ApplyMidpoint(float t, float midpoint) const;
 };
 
 #endif /* MANDELBULBER2_SRC_COLOR_GRADIENT_H_ */
