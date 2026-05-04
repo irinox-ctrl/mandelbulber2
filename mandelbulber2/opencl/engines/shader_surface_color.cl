@@ -175,9 +175,16 @@ float3 SurfaceColor(__constant sClInConstants *consts, sRenderData *renderData,
 #ifdef USE_SURFACE_GRADIENT
 				if (input->material->surfaceGradientEnable)
 				{
-					color = GetColorFromGradient(colorPosition, false, input->paletteSurfaceLength,
+					float3 gradientColor = GetColorFromGradient(colorPosition, false, input->paletteSurfaceLength,
 						input->palette + input->paletteSurfaceOffset,
 						input->palette + input->midpointSurfaceOffset, input->midpointSurfaceLength);
+					float opacity = 1.0f;
+					if (input->material->surfaceGradientMaskEnable)
+					{
+						opacity = GetColorFromGradient(colorPosition, false, input->opacitySurfaceLength,
+							input->palette + input->opacitySurfaceOffset, NULL, 0).x;
+					}
+					color = mix(input->material->color, gradientColor, opacity);
 					gradients->surface = color;
 				}
 				else

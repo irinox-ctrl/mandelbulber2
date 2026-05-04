@@ -162,6 +162,8 @@ typedef struct
 	cl_int reflectanceGradientEnable;
 	cl_int transparencyGradientEnable;
 
+	cl_int surfaceGradientMaskEnable;
+
 	sFractalColoringCl fractalColoring;
 } sMaterialCl;
 
@@ -274,6 +276,8 @@ sMaterialCl clCopySMaterialCl(const cMaterial &source)
 	target.roughnessGradientEnable = source.roughnessGradientEnable;
 	target.reflectanceGradientEnable = source.reflectanceGradientEnable;
 	target.transparencyGradientEnable = source.transparencyGradientEnable;
+
+	target.surfaceGradientMaskEnable = source.surfaceGradientMaskEnable;
 
 	// these are initialized in cOpenClDynamicData::BuildMaterialsData()
 	target.colorTextureIndex = 0;

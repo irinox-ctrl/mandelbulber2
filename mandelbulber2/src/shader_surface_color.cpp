@@ -77,8 +77,15 @@ sRGBAFloat cRenderWorker::SurfaceColour(
 
 				if (input.material->surfaceGradientEnable)
 				{
-					colour = input.material->gradientSurface.GetColorFloat(colorPosition, false);
-					// TODO - smooth mode for gradient
+					sRGBFloat gradientColor = input.material->gradientSurface.GetColorFloat(colorPosition, false);
+					float opacity = 1.0f;
+					if (input.material->surfaceGradientMaskEnable)
+					{
+						opacity = input.material->gradientSurface.GetOpacity(colorPosition, false);
+					}
+					colour.R = input.material->color.R * (1.0f - opacity) + gradientColor.R * opacity;
+					colour.G = input.material->color.G * (1.0f - opacity) + gradientColor.G * opacity;
+					colour.B = input.material->color.B * (1.0f - opacity) + gradientColor.B * opacity;
 					gradients->surface = colour;
 				}
 				else

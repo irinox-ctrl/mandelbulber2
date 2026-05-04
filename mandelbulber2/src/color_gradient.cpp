@@ -54,10 +54,10 @@ cColorGradient::cColorGradient()
 {
 	// first two colors are always positioned at 0.0 and 1.0;
 
-	sColor positionedColor = {sRGB(255, 255, 255), 0.0};
+	sColor positionedColor = {sRGB(255, 255, 255), 0.0, 1.0f};
 	colors.append(positionedColor);
 
-	sColor positionedColor2 = {sRGB(255, 255, 255), 1.0};
+	sColor positionedColor2 = {sRGB(255, 255, 255), 1.0, 1.0f};
 	colors.append(positionedColor2);
 
 	midpoints.append(0.5f);
@@ -68,12 +68,12 @@ cColorGradient::cColorGradient()
 
 cColorGradient::~cColorGradient() = default;
 
-int cColorGradient::AddColor(sRGB color, float position)
+int cColorGradient::AddColor(sRGB color, float position, float opacity)
 {
 	sorted = false;
 	position = CorrectPosition(position, -1);
 	color = MakeGrayscaleIfNeeded(color);
-	sColor positionedColor = {color, position};
+	sColor positionedColor = {color, position, opacity};
 	colors.append(positionedColor);
 	midpoints.append(0.5f);
 	return colors.size();
@@ -86,6 +86,18 @@ void cColorGradient::ModifyColor(int index, sRGB color)
 		sorted = false;
 		color = MakeGrayscaleIfNeeded(color);
 		colors[index].color = color;
+	}
+	else
+	{
+		qCritical() << "color index is too high";
+	}
+}
+
+void cColorGradient::ModifyOpacity(int index, float opacity)
+{
+	if (index < colors.size())
+	{
+		colors[index].opacity = qBound(0.0f, opacity, 1.0f);
 	}
 	else
 	{
@@ -242,9 +254,50 @@ sRGBFloat cColorGradient::InterpolateFloat(int paletteIndex, float pos, bool smo
 	return color;
 }
 
-QVector<sRGB> cColorGradient::GetGradient(int length, bool smooth)
+float cColorGradient::GetOpacity(float position, bool smooth) const
 {
-	QVector<sRGB> gradient;
+	int paletteIndex = PaletteIterator(0, position);
+	return InterpolateOpacity(paletteIndex, position, smooth);
+}
+
+float cColorGradient::InterpolateOpacity(int paletteIndex, float pos, bool smooth) const
+{
+	// if last element then just copy opacity value (no interpolation)
+	if (paletteIndex == sortedColors.size() - 1)
+	{
+		return sortedColors[paletteIndex - 1].opacity;
+	}
+	else
+	{
+		float opacity1 = sortedColors[paletteIndex].opacity;
+		float opacity2 = sortedColors[paletteIndex + 1].opacity;
+
+		float pos1 = sortedColors[paletteIndex].position;
+		float pos2 = sortedColors[paletteIndex + 1].position;
+		// relative delta
+		if (pos2 - pos1 > 0.0f)
+		{
+			float delta = (pos - pos1) / (pos2 - pos1);
+
+			if (smooth) delta = 0.5f * (1.0f - cosf(delta * float(M_PI)));
+
+			if (paletteIndex < midpoints.size())
+				delta = ApplyMidpoint(delta, midpoints[paletteIndex]);
+
+			float nDelta = 1.0f - delta;
+			return opacity1 * nDelta + opacity2 * delta;
+		}
+		else
+		{
+			qCritical() << "Wrong sequence of colors";
+			return opacity1;
+		}
+	}
+}
+
+QVector<sRGBA8> cColorGradient::GetGradient(int length, bool smooth)
+{
+	QVector<sRGBA8> gradient;
 	if (length >= 2)
 	{
 		SortGradient();
@@ -259,7 +312,8 @@ QVector<sRGB> cColorGradient::GetGradient(int length, bool smooth)
 			float pos = i * step;
 			paletteIndex = PaletteIterator(paletteIndex, pos);
 			sRGB color = Interpolate(paletteIndex, pos, smooth);
-			gradient.append(color);
+			float opacity = InterpolateOpacity(paletteIndex, pos, smooth);
+			gradient.append(sRGBA8(color.R / 256, color.G / 256, color.B / 256, int(opacity * 255)));
 		}
 	}
 	else
@@ -299,20 +353,18 @@ QString cColorGradient::GetColorsAsString()
 	SortGradient();
 	QString string;
 
-	// last color is not converted bcause is the same like first
+	// Check if any opacity is non-default (< 1.0)
+	bool hasNonDefaultOpacity = false;
 	for (int i = 0; i < sortedColors.size() - 1; i++)
 	{
-		QString oneColor = QString("%1 %2%3%4")
-												 .arg(int(sortedColors[i].position * 10000))
-												 .arg(sortedColors[i].color.R, 2, 16, QChar('0'))
-												 .arg(sortedColors[i].color.G, 2, 16, QChar('0'))
-												 .arg(sortedColors[i].color.B, 2, 16, QChar('0'));
-
-		if (i > 0) string += " ";
-		string += oneColor;
+		if (sortedColors[i].opacity < 0.999f)
+		{
+			hasNonDefaultOpacity = true;
+			break;
+		}
 	}
 
-	// Append midpoints if any are non-default (not 0.5)
+	// Use v2 format if opacity or midpoints are customized
 	bool hasNonDefaultMidpoints = false;
 	for (float mp : midpoints)
 	{
@@ -322,7 +374,39 @@ QString cColorGradient::GetColorsAsString()
 			break;
 		}
 	}
-	
+
+	if (hasNonDefaultOpacity)
+	{
+		string = "v2:";
+		// last color is not converted because is the same like first
+		for (int i = 0; i < sortedColors.size() - 1; i++)
+		{
+			QString oneColor = QString("%1 %2%3%4 %5")
+													 .arg(int(sortedColors[i].position * 10000))
+													 .arg(sortedColors[i].color.R, 2, 16, QChar('0'))
+													 .arg(sortedColors[i].color.G, 2, 16, QChar('0'))
+													 .arg(sortedColors[i].color.B, 2, 16, QChar('0'))
+													 .arg(int(sortedColors[i].opacity * 10000));
+			if (i > 0) string += " ";
+			string += oneColor;
+		}
+	}
+	else
+	{
+		// Legacy format (no v2: prefix, 2 tokens per stop)
+		for (int i = 0; i < sortedColors.size() - 1; i++)
+		{
+			QString oneColor = QString("%1 %2%3%4")
+													 .arg(int(sortedColors[i].position * 10000))
+													 .arg(sortedColors[i].color.R, 2, 16, QChar('0'))
+													 .arg(sortedColors[i].color.G, 2, 16, QChar('0'))
+													 .arg(sortedColors[i].color.B, 2, 16, QChar('0'));
+			if (i > 0) string += " ";
+			string += oneColor;
+		}
+	}
+
+	// Append midpoints if any are non-default (not 0.5)
 	if (hasNonDefaultMidpoints)
 	{
 		for (float mp : midpoints)
@@ -340,12 +424,20 @@ void cColorGradient::SetColorsFromString(const QString &string)
 	colors.clear();
 	sorted = false;
 
-	if (split.size() < 2)
+	bool isV2Format = false;
+	int tokenStart = 0;
+	if (split.size() > 0 && split[0] == "v2:")
 	{
-		sColor positionedColor = {sRGB(255, 255, 255), 0.0};
+		isV2Format = true;
+		tokenStart = 1; // skip the "v2:" marker
+	}
+
+	if (split.size() - tokenStart < 2)
+	{
+		sColor positionedColor = {sRGB(255, 255, 255), 0.0, 1.0f};
 		colors.append(positionedColor);
 
-		sColor positionedColor2 = {sRGB(255, 255, 255), 1.0};
+		sColor positionedColor2 = {sRGB(255, 255, 255), 1.0, 1.0f};
 		colors.append(positionedColor2);
 
 		qCritical() << "Error! In gradient string shoud be at least one color";
@@ -354,27 +446,53 @@ void cColorGradient::SetColorsFromString(const QString &string)
 	{
 		float position = 0.0f;
 		sRGB color;
+		float opacity = 1.0f;
 
-		for (int i = 0; i < split.size(); i++)
+		int tokensPerStop = isV2Format ? 3 : 2;
+
+		for (int i = tokenStart; i < split.size(); i++)
 		{
 			if (split[i].size() > 0)
 			{
-				if (i % 2 == 0)
+				int tokenInStop = (i - tokenStart) % tokensPerStop;
+				if (tokenInStop == 0)
 				{
 					position = split[i].toInt() / 10000.0f;
 				}
-				else
+				else if (tokenInStop == 1)
 				{
 					int colorHex = split[i].toInt(nullptr, 16);
 					color.R = colorHex / 65536;
 					color.G = (colorHex / 256) % 256;
 					color.B = colorHex % 256;
 					color = MakeGrayscaleIfNeeded(color);
-					sColor colorPos = {color, position};
+					if (isV2Format)
+					{
+						// In v2, opacity comes next; wait for third token
+					}
+					else
+					{
+						// Legacy: no opacity, default to 1.0
+						sColor colorPos = {color, position, 1.0f};
+						position = CorrectPosition(position, -1);
+						colors.append(colorPos);
+
+						if (i == tokenStart + 1)
+						{
+							sColor lastColor = colors.first();
+							lastColor.position = 1.0;
+							colors.append(lastColor);
+						}
+					}
+				}
+				else if (tokenInStop == 2 && isV2Format)
+				{
+					opacity = split[i].toInt() / 10000.0f;
+					sColor colorPos = {color, position, opacity};
 					position = CorrectPosition(position, -1);
 					colors.append(colorPos);
 
-					if (i == 1)
+					if (i == tokenStart + 2)
 					{
 						sColor lastColor = colors.first();
 						lastColor.position = 1.0;
@@ -391,9 +509,10 @@ void cColorGradient::SetColorsFromString(const QString &string)
 	for (int j = 0; j < numSegments; j++)
 		 midpoints[j] = 0.5f;
 	
-	int colorPairCount = (colors.size() - 1) * 2; // each color is position + hex
+	int tokensPerStop = isV2Format ? 3 : 2;
+	int colorPairCount = (colors.size() - 1) * tokensPerStop;
 	int mpIdx = 0;
-	for (int j = colorPairCount; j < split.size() && mpIdx < numSegments; j++)
+	for (int j = colorPairCount + tokenStart; j < split.size() && mpIdx < numSegments; j++)
 	{
 		if (split[j].size() > 0)
 		{
@@ -463,6 +582,12 @@ sRGB cColorGradient::GetColorByIndex(int index)
 {
 	if (index > colors.size() - 1) index = 1; // if index is too high then get most right color
 	return colors.at(index).color;
+}
+
+float cColorGradient::GetOpacityByIndex(int index)
+{
+	if (index > colors.size() - 1) index = 1;
+	return colors.at(index).opacity;
 }
 
 float cColorGradient::GetPositionByIndex(int index)

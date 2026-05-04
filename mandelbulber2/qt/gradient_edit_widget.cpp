@@ -153,11 +153,22 @@ void cGradientEditWidget::paintEvent(QPaintEvent *event)
 	int gradientHeight = (viewMode) ? height() : (height() - toolbarHeight) / 2;
 
 	QPainter painter(this);
-	QVector<sRGB> grad = gradient.GetGradient(gradientWidth, false);
+	QVector<sRGBA8> grad = gradient.GetGradient(gradientWidth, false);
+
+	// Draw checkerboard background for opacity visualization
+	int checkSize = 4;
+	for (int y = toolbarHeight; y < toolbarHeight + gradientHeight; y += checkSize)
+	{
+		for (int x = 0; x < gradientWidth; x += checkSize)
+		{
+			bool white = ((x / checkSize) + (y / checkSize)) % 2 == 0;
+			painter.fillRect(x + margins, y, checkSize, checkSize, white ? QColor(220, 220, 220) : QColor(180, 180, 180));
+		}
+	}
 
 	for (int x = 0; x < grad.size(); x++)
 	{
-		QColor color(QColor(grad[x].R, grad[x].G, grad[x].B));
+		QColor color(grad[x].R, grad[x].G, grad[x].B, grad[x].A);
 		painter.setPen(color);
 		painter.drawLine(x + margins, toolbarHeight, x + margins, toolbarHeight + gradientHeight);
 	}
@@ -215,6 +226,15 @@ void cGradientEditWidget::PaintButton(const cColorGradient::sColor &posColor, QP
 	QPainterPath pathTriangle;
 	pathTriangle.addPolygon(pTriangle);
 	painter.fillPath(pathTriangle, brush);
+
+	// Opacity indicator: small square inside the triangle
+	int opacityIndicatorSize = buttonWidth / 3;
+	if (opacityIndicatorSize < 3) opacityIndicatorSize = 3;
+	int opacityGray = int(posColor.opacity * 255);
+	QRect opacityRect(buttonPosition - opacityIndicatorSize / 2,
+		buttonTop - buttonWidth / 2 + (buttonWidth / 2 - opacityIndicatorSize) / 2,
+		opacityIndicatorSize, opacityIndicatorSize);
+	painter.fillRect(opacityRect, QColor(opacityGray, opacityGray, opacityGray));
 
 	int avgColor = (posColor.color.R + posColor.color.G + posColor.color.B) / 3;
 	if (avgColor > 100)
@@ -409,6 +429,24 @@ void cGradientEditWidget::RemoveColor(QContextMenuEvent *event)
 		gradient.RemoveColor(index);
 	}
 	emit update();
+}
+
+void cGradientEditWidget::SetOpacity(QContextMenuEvent *event)
+{
+	int xClick = event->x();
+	int index = FindButtonAtPosition(xClick);
+	if (index >= 0)
+	{
+		float currentOpacity = gradient.GetOpacityByIndex(index);
+		bool ok;
+		int opacityPercent = QInputDialog::getInt(this, tr("Set opacity"), tr("Opacity (0-100%):"),
+			int(currentOpacity * 100), 0, 100, 1, &ok);
+		if (ok)
+		{
+			gradient.ModifyOpacity(index, opacityPercent / 100.0f);
+			emit update();
+		}
+	}
 }
 
 void cGradientEditWidget::Clear()
@@ -648,6 +686,7 @@ void cGradientEditWidget::contextMenuEvent(QContextMenuEvent *event)
 	QMenu *menu = new QMenu(); // menu is deleted in contextMenuEvent()
 	QAction *actionAddColor = menu->addAction(tr("Add color"));
 	QAction *actionRemoveColor = menu->addAction(tr("Remove color"));
+	QAction *actionSetOpacity = menu->addAction(tr("Set opacity ..."));
 	menu->addSeparator();
 	QAction *actionClear = menu->addAction(tr("Delete all colors"));
 	QAction *actionChangeNumberOfColors = menu->addAction(tr("Change number of colors ..."));
@@ -663,6 +702,7 @@ void cGradientEditWidget::contextMenuEvent(QContextMenuEvent *event)
 	{
 		if (selectedItem == actionAddColor) AddColor(event);
 		if (selectedItem == actionRemoveColor) RemoveColor(event);
+		if (selectedItem == actionSetOpacity) SetOpacity(event);
 		if (selectedItem == actionClear) Clear();
 		if (selectedItem == actionChangeNumberOfColors) ChangeNumberOfColors();
 		if (selectedItem == actionGrabColors) GrabColors();

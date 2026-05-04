@@ -50,22 +50,26 @@ public:
 	{
 		sRGB color;
 		float position; // from 0 to 1.0
+		float opacity;  // from 0.0 to 1.0, default 1.0
 
 		static bool lessCompare(sColor a, sColor b) { return a.position < b.position; }
 	};
 	void SetGrayscale() { grayscale = true; }
 	bool isGrayscale() { return grayscale; }
-	int AddColor(sRGB color, float position); // returns new color index
+	int AddColor(sRGB color, float position, float opacity = 1.0f); // returns new color index
 	void ModifyColor(int index, sRGB color);
+	void ModifyOpacity(int index, float opacity);
 	void ModifyPosition(int index, float position);
 	void RemoveColor(int index);
 	sRGB GetColor(float position, bool smooth) const;
 	sRGBFloat GetColorFloat(float position, bool smooth) const;
+	float GetOpacity(float position, bool smooth) const;
 	sRGB GetColorByIndex(int index);
+	float GetOpacityByIndex(int index);
 	float GetPositionByIndex(int index);
 	QList<sColor> GetListOfColors() const;
 	QList<sColor> GetListOfSortedColors() const;
-	QVector<sRGB> GetGradient(int length, bool smooth);
+	QVector<sRGBA8> GetGradient(int length, bool smooth);
 	QString GetColorsAsString();
 	void SetColorsFromString(const QString &string);
 	void SortGradient();
@@ -83,6 +87,7 @@ private:
 	int PaletteIterator(int paletteIndex, float position) const;
 	sRGB Interpolate(int paletteIndex, float pos, bool smooth) const;
 	sRGBFloat InterpolateFloat(int paletteIndex, float pos, bool smooth) const;
+	float InterpolateOpacity(int paletteIndex, float pos, bool smooth) const;
 	float CorrectPosition(float position, int ignoreIndex);
 	sRGB MakeGrayscaleIfNeeded(sRGB color);
 

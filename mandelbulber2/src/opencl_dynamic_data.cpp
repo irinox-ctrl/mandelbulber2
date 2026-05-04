@@ -362,6 +362,28 @@ int cOpenClDynamicData::BuildMaterialsData(
 			for (int i = 0; i < midpointSizeTransparency; i++)
 				paletteCl[midpointOffsetTransparency + i] = toClFloat4(
 					CVector4(material.gradientTransparency.GetMidpoint(i), 0.0, 0.0, 0.0));
+
+			// Opacity data (stored as float4(opacity, opacity, opacity, position))
+			opacityOffsetSurface = totalSizeOfGradients;
+			opacitySizeSurface = gradientSurface.size();
+			totalSizeOfGradients += opacitySizeSurface;
+
+			// For now, only surface gradient has real opacity data; others remain dummy
+			opacityOffsetSpecular = -1; opacitySizeSpecular = 0;
+			opacityOffsetDiffuse = -1; opacitySizeDiffuse = 0;
+			opacityOffsetLuminosity = -1; opacitySizeLuminosity = 0;
+			opacityOffsetRoughness = -1; opacitySizeRoughness = 0;
+			opacityOffsetReflectance = -1; opacitySizeReflectance = 0;
+			opacityOffsetTransparency = -1; opacitySizeTransparency = 0;
+
+			paletteCl.resize(totalSizeOfGradients);
+
+			for (int i = 0; i < opacitySizeSurface; i++)
+			{
+				paletteCl[opacityOffsetSurface + i] = toClFloat4(
+					CVector4(gradientSurface[i].opacity, gradientSurface[i].opacity,
+						gradientSurface[i].opacity, gradientSurface[i].position));
+			}
 		}
 		else
 		{

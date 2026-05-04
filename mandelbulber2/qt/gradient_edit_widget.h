@@ -74,6 +74,7 @@ private:
 	int FindMidpointAtPosition(int x);
 	void AddColor(QContextMenuEvent *event);
 	void RemoveColor(QContextMenuEvent *event);
+	void SetOpacity(QContextMenuEvent *event);
 	void Clear();
 	void ChangeNumberOfColors();
 	void GrabColors();
