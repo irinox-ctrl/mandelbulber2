@@ -80,7 +80,6 @@ typedef struct
 	cl_float iridescenceIntensity;
 	cl_float iridescenceSubsurfaceThickness;
 	cl_float textureFractalizeCubeSize;
-	cl_float textureFractalizeSizeMultiplier;
 	cl_float perlinNoiseValueOffset;
 	cl_float perlinNoiseColorIntensity;
 	cl_float perlinNoiseLuminosityIntensity;
@@ -102,7 +101,6 @@ typedef struct
 	cl_float3 textureScale;
 	cl_float3 perlinNoisePeriod;
 	cl_float3 perlinNoisePositionOffset;
-	cl_float3 textureFractalizeOrbitTrapPosition;
 
 	matrix33 rotMatrixTexture;
 	matrix33 rotMatrixPerlinNoise;
@@ -142,8 +140,6 @@ typedef struct
 	cl_int useRoughnessTexture;
 	cl_int iridescenceEnabled;
 	cl_int textureFractalize;
-	cl_int textureFractalizeShape;
-	cl_int textureFractalizeIterationBlend;
 
 	cl_int insideColoringEnable;
 	cl_int subsurfaceScattering;
@@ -167,56 +163,6 @@ typedef struct
 	cl_int transparencyGradientEnable;
 
 	sFractalColoringCl fractalColoring;
-
-	// Advanced gradient: mask enable flags (NEW — added at end to preserve alignment)
-	cl_int surfaceGradientMaskEnable;
-	cl_int specularGradientMaskEnable;
-	cl_int diffuseGradientMaskEnable;
-	cl_int luminosityGradientMaskEnable;
-	cl_int roughnessGradientMaskEnable;
-	cl_int reflectanceGradientMaskEnable;
-	cl_int transparencyGradientMaskEnable;
-
-	// Advanced gradient: interpolation mode per gradient (0=Linear, 1=Smooth, 2=Spline)
-	cl_int surfaceGradientMode;
-	cl_int specularGradientMode;
-	cl_int diffuseGradientMode;
-	cl_int luminosityGradientMode;
-	cl_int roughnessGradientMode;
-	cl_int reflectanceGradientMode;
-	cl_int transparencyGradientMode;
-
-	// Advanced gradient: midpoint offsets and sizes in global midpoint buffer
-	cl_int midpointSurfaceOffset;
-	cl_int midpointSurfaceSize;
-	cl_int midpointSpecularOffset;
-	cl_int midpointSpecularSize;
-	cl_int midpointDiffuseOffset;
-	cl_int midpointDiffuseSize;
-	cl_int midpointLuminosityOffset;
-	cl_int midpointLuminositySize;
-	cl_int midpointRoughnessOffset;
-	cl_int midpointRoughnessSize;
-	cl_int midpointReflectanceOffset;
-	cl_int midpointReflectanceSize;
-	cl_int midpointTransparencyOffset;
-	cl_int midpointTransparencySize;
-
-	// Advanced gradient: opacity stop offsets and sizes in global opacity buffer
-	cl_int opacitySurfaceOffset;
-	cl_int opacitySurfaceSize;
-	cl_int opacitySpecularOffset;
-	cl_int opacitySpecularSize;
-	cl_int opacityDiffuseOffset;
-	cl_int opacityDiffuseSize;
-	cl_int opacityLuminosityOffset;
-	cl_int opacityLuminositySize;
-	cl_int opacityRoughnessOffset;
-	cl_int opacityRoughnessSize;
-	cl_int opacityReflectanceOffset;
-	cl_int opacityReflectanceSize;
-	cl_int opacityTransparencyOffset;
-	cl_int opacityTransparencySize;
 } sMaterialCl;
 
 #ifndef OPENCL_KERNEL_CODE
@@ -257,7 +203,6 @@ sMaterialCl clCopySMaterialCl(const cMaterial &source)
 	target.iridescenceIntensity = source.iridescenceIntensity;
 	target.iridescenceSubsurfaceThickness = source.iridescenceSubsurfaceThickness;
 	target.textureFractalizeCubeSize = source.textureFractalizeCubeSize;
-	target.textureFractalizeSizeMultiplier = source.textureFractalizeSizeMultiplier;
 	target.perlinNoiseValueOffset = source.perlinNoiseValueOffset;
 	target.perlinNoiseColorIntensity = source.perlinNoiseColorIntensity;
 	target.perlinNoiseLuminosityIntensity = source.perlinNoiseLuminosityIntensity;
@@ -279,7 +224,6 @@ sMaterialCl clCopySMaterialCl(const cMaterial &source)
 	target.textureScale = toClFloat3(source.textureScale);
 	target.perlinNoisePeriod = toClFloat3(source.perlinNoisePeriod);
 	target.perlinNoisePositionOffset = toClFloat3(source.perlinNoisePositionOffset);
-	target.textureFractalizeOrbitTrapPosition = toClFloat3(source.textureFractalizeOrbitTrapPosition);
 
 	target.rotMatrixTexture = toClMatrix33(source.rotMatrixTexture);
 	target.rotMatrixPerlinNoise = toClMatrix33(source.rotMatrixPerlinNoise);
@@ -319,8 +263,6 @@ sMaterialCl clCopySMaterialCl(const cMaterial &source)
 	target.useRoughnessTexture = source.useRoughnessTexture;
 	target.iridescenceEnabled = source.iridescenceEnabled;
 	target.textureFractalize = source.textureFractalize;
-	target.textureFractalizeShape = source.textureFractalizeShape;
-	target.textureFractalizeIterationBlend = source.textureFractalizeIterationBlend;
 
 	target.insideColoringEnable = source.insideColoringEnable;
 	target.subsurfaceScattering = source.subsurfaceScattering;
@@ -344,24 +286,6 @@ sMaterialCl clCopySMaterialCl(const cMaterial &source)
 	target.roughnessTextureIndex = 0;
 
 	target.fractalColoring = clCopySFractalColoringCl(source.fractalColoring);
-
-	// Advanced gradient mask enable flags (NEW — at end of struct)
-	target.surfaceGradientMaskEnable = source.surfaceGradientMaskEnable;
-	target.specularGradientMaskEnable = source.specularGradientMaskEnable;
-	target.diffuseGradientMaskEnable = source.diffuseGradientMaskEnable;
-	target.luminosityGradientMaskEnable = source.luminosityGradientMaskEnable;
-	target.roughnessGradientMaskEnable = source.roughnessGradientMaskEnable;
-	target.reflectanceGradientMaskEnable = source.reflectanceGradientMaskEnable;
-	target.transparencyGradientMaskEnable = source.transparencyGradientMaskEnable;
-
-	// Advanced gradient interpolation modes (NEW)
-	target.surfaceGradientMode = static_cast<cl_int>(source.gradientSurface.GetInterpolationMode());
-	target.specularGradientMode = static_cast<cl_int>(source.gradientSpecular.GetInterpolationMode());
-	target.diffuseGradientMode = static_cast<cl_int>(source.gradientDiffuse.GetInterpolationMode());
-	target.luminosityGradientMode = static_cast<cl_int>(source.gradientLuminosity.GetInterpolationMode());
-	target.roughnessGradientMode = static_cast<cl_int>(source.gradientRoughness.GetInterpolationMode());
-	target.reflectanceGradientMode = static_cast<cl_int>(source.gradientReflectance.GetInterpolationMode());
-	target.transparencyGradientMode = static_cast<cl_int>(source.gradientTransparency.GetInterpolationMode());
 
 	return target;
 }

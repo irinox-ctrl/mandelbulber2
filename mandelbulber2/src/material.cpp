@@ -104,13 +104,6 @@ cMaterial::cMaterial()
 	roughnessGradientEnable = false;
 	reflectanceGradientEnable = false;
 	transparencyGradientEnable = false;
-	surfaceGradientMaskEnable = false;
-	specularGradientMaskEnable = false;
-	diffuseGradientMaskEnable = false;
-	luminosityGradientMaskEnable = false;
-	roughnessGradientMaskEnable = false;
-	reflectanceGradientMaskEnable = false;
-	transparencyGradientMaskEnable = false;
 	perlinNoiseEnable = false;
 	perlinNoiseIterations = 0;
 	perlinNoiseValueOffset = 0.0f;
@@ -315,13 +308,6 @@ QStringList cMaterial::paramsList = {
 	"roughness_gradient_enable",
 	"reflectance_gradient_enable",
 	"transparency_gradient_enable",
-	"surface_gradient_mask_enable",
-	"specular_gradient_mask_enable",
-	"diffuse_gradient_mask_enable",
-	"luminosity_gradient_mask_enable",
-	"roughness_gradient_mask_enable",
-	"reflectance_gradient_mask_enable",
-	"transparency_gradient_mask_enable",
 	"surface_color_gradient",
 	"specular_gradient",
 	"diffuse_gradient",
@@ -390,13 +376,6 @@ void cMaterial::setParameters(int _id, const std::shared_ptr<cParameterContainer
 	roughnessGradientEnable = materialParam->Get<bool>(Name("roughness_gradient_enable", id));
 	reflectanceGradientEnable = materialParam->Get<bool>(Name("reflectance_gradient_enable", id));
 	transparencyGradientEnable = materialParam->Get<bool>(Name("transparency_gradient_enable", id));
-	surfaceGradientMaskEnable = materialParam->Get<bool>(Name("surface_gradient_mask_enable", id));
-	specularGradientMaskEnable = materialParam->Get<bool>(Name("specular_gradient_mask_enable", id));
-	diffuseGradientMaskEnable = materialParam->Get<bool>(Name("diffuse_gradient_mask_enable", id));
-	luminosityGradientMaskEnable = materialParam->Get<bool>(Name("luminosity_gradient_mask_enable", id));
-	roughnessGradientMaskEnable = materialParam->Get<bool>(Name("roughness_gradient_mask_enable", id));
-	reflectanceGradientMaskEnable = materialParam->Get<bool>(Name("reflectance_gradient_mask_enable", id));
-	transparencyGradientMaskEnable = materialParam->Get<bool>(Name("transparency_gradient_mask_enable", id));
 
 	textureCenter = materialParam->Get<CVector3>(Name("texture_center", id));
 	textureScale = materialParam->Get<CVector3>(Name("texture_scale", id));

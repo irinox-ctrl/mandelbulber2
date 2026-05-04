@@ -77,14 +77,8 @@ sRGBAFloat cRenderWorker::SurfaceColour(
 
 				if (input.material->surfaceGradientEnable)
 				{
-					sRGBAFloat rgba = input.material->gradientSurface.GetColorRGBA(colorPosition);
-					colour = sRGBFloat(rgba.R, rgba.G, rgba.B);
-					if (input.material->surfaceGradientMaskEnable)
-					{
-						colour.R *= rgba.A;
-						colour.G *= rgba.A;
-						colour.B *= rgba.A;
-					}
+					colour = input.material->gradientSurface.GetColorFloat(colorPosition, false);
+					// TODO - smooth mode for gradient
 					gradients->surface = colour;
 				}
 				else
@@ -96,74 +90,37 @@ sRGBAFloat cRenderWorker::SurfaceColour(
 
 				if (input.material->specularGradientEnable)
 				{
-					sRGBAFloat rgba = input.material->gradientSpecular.GetColorRGBA(colorPosition);
-					gradients->specular = sRGBFloat(rgba.R, rgba.G, rgba.B);
-					if (input.material->specularGradientMaskEnable)
-					{
-						gradients->specular.R *= rgba.A;
-						gradients->specular.G *= rgba.A;
-						gradients->specular.B *= rgba.A;
-					}
+					gradients->specular =
+						input.material->gradientSpecular.GetColorFloat(colorPosition, false);
 				}
 
 				if (input.material->diffuseGradientEnable)
 				{
-					sRGBAFloat rgba = input.material->gradientDiffuse.GetColorRGBA(colorPosition);
-					gradients->diffuse = sRGBFloat(rgba.R, rgba.G, rgba.B);
-					if (input.material->diffuseGradientMaskEnable)
-					{
-						gradients->diffuse.R *= rgba.A;
-						gradients->diffuse.G *= rgba.A;
-						gradients->diffuse.B *= rgba.A;
-					}
+					gradients->diffuse = input.material->gradientDiffuse.GetColorFloat(colorPosition, false);
 				}
 
 				if (input.material->luminosityGradientEnable)
 				{
-					sRGBAFloat rgba = input.material->gradientLuminosity.GetColorRGBA(colorPosition);
-					gradients->luminosity = sRGBFloat(rgba.R, rgba.G, rgba.B);
-					if (input.material->luminosityGradientMaskEnable)
-					{
-						gradients->luminosity.R *= rgba.A;
-						gradients->luminosity.G *= rgba.A;
-						gradients->luminosity.B *= rgba.A;
-					}
+					gradients->luminosity =
+						input.material->gradientLuminosity.GetColorFloat(colorPosition, false);
 				}
 
 				if (input.material->roughnessGradientEnable)
 				{
-					sRGBAFloat rgba = input.material->gradientRoughness.GetColorRGBA(colorPosition);
-					gradients->roughness = sRGBFloat(rgba.R, rgba.G, rgba.B);
-					if (input.material->roughnessGradientMaskEnable)
-					{
-						gradients->roughness.R *= rgba.A;
-						gradients->roughness.G *= rgba.A;
-						gradients->roughness.B *= rgba.A;
-					}
+					gradients->roughness =
+						input.material->gradientRoughness.GetColorFloat(colorPosition, false);
 				}
 
 				if (input.material->reflectanceGradientEnable)
 				{
-					sRGBAFloat rgba = input.material->gradientReflectance.GetColorRGBA(colorPosition);
-					gradients->reflectance = sRGBFloat(rgba.R, rgba.G, rgba.B);
-					if (input.material->reflectanceGradientMaskEnable)
-					{
-						gradients->reflectance.R *= rgba.A;
-						gradients->reflectance.G *= rgba.A;
-						gradients->reflectance.B *= rgba.A;
-					}
+					gradients->reflectance =
+						input.material->gradientReflectance.GetColorFloat(colorPosition, false);
 				}
 
 				if (input.material->transparencyGradientEnable)
 				{
-					sRGBAFloat rgba = input.material->gradientTransparency.GetColorRGBA(colorPosition);
-					gradients->trasparency = sRGBFloat(rgba.R, rgba.G, rgba.B);
-					if (input.material->transparencyGradientMaskEnable)
-					{
-						gradients->trasparency.R *= rgba.A;
-						gradients->trasparency.G *= rgba.A;
-						gradients->trasparency.B *= rgba.A;
-					}
+					gradients->trasparency =
+						input.material->gradientTransparency.GetColorFloat(colorPosition, false);
 				}
 			}
 			else

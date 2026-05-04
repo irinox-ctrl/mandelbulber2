@@ -140,34 +140,6 @@ QString cOpenClEngineRenderFractal::GetKernelName()
 	return QString("fractal3D");
 }
 
-// Helper function to strip GPL header comment from shader files to prevent nested comments in OpenCL
-static QByteArray LoadShaderFileWithoutHeader(const QString &filePath)
-{
-	QByteArray content = LoadUtf8TextFromFile(filePath);
-
-	// Find the first /** comment block (GPL header)
-	int commentStart = content.indexOf("/**");
-	if (commentStart == -1)
-		return content; // No header comment found, return as-is
-
-	// Find the matching */
-	int commentEnd = content.indexOf("*/", commentStart);
-	if (commentEnd == -1)
-		return content; // Unclosed comment, return as-is (will cause compile error)
-
-	// Skip past the */ and any trailing whitespace/newlines
-	commentEnd += 2; // Skip the */
-	while (commentEnd < content.length() &&
-	       (content.at(commentEnd) == '\n' || content.at(commentEnd) == '\r' ||
-	        content.at(commentEnd) == ' ' || content.at(commentEnd) == '\t'))
-	{
-		commentEnd++;
-	}
-
-	// Return everything after the header comment, prefixed with newline to preserve structure
-	return "\n" + content.mid(commentEnd);
-}
-
 // create list of header files to be included in opencl program
 void cOpenClEngineRenderFractal::CreateListOfHeaderFiles(QStringList &clHeaderFiles)
 {
@@ -256,7 +228,6 @@ void cOpenClEngineRenderFractal::CreateListOfIncludes(const QStringList &clHeade
 	}
 	// compute fractal
 	AddInclude(programEngine, openclEnginePath + "primitives.cl");
-	AddInclude(programEngine, openclEnginePath + "shader_glow_sphere.cl");
 	// calculate distance
 	AddInclude(programEngine, openclEnginePath + "calculate_distance.cl");
 	if (!distanceMode)
@@ -291,6 +262,7 @@ void cOpenClEngineRenderFractal::CreateListOfIncludes(const QStringList &clHeade
 			AddInclude(programEngine, openclEnginePath + "shader_roughness_texture.cl");
 			AddInclude(programEngine, openclEnginePath + "shader_fresnel.cl");
 			AddInclude(programEngine, openclEnginePath + "shader_env_mapping.cl");
+			AddInclude(programEngine, openclEnginePath + "shader_glow_sphere.cl");
 			AddInclude(programEngine, openclEnginePath + "shader_single_trap_lights.cl");
 			AddInclude(programEngine, openclEnginePath + "shader_pattern_line_traps.cl");
 			AddInclude(programEngine, openclEnginePath + "shader_object.cl");
@@ -396,6 +368,9 @@ bool cOpenClEngineRenderFractal::LoadSourcesAndCompile(
 
 		// main engine
 		LoadSourceWithMainEngine(openclEnginePath, programEngine);
+
+		QFile f("/tmp/opencl_program_debug.cl");
+		if (f.open(QIODevice::WriteOnly)) f.write(programEngine);
 
 		// qDebug() << programEngine.toStdString().c_str();
 	}

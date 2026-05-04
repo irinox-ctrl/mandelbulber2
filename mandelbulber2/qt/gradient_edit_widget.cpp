@@ -56,8 +56,6 @@ cGradientEditWidget::cGradientEditWidget(QWidget *parent)
 	viewMode = false;
 	mouseDragStarted = false;
 	pressedColorIndex = 0;
-	pressedOpacityIndex = -1;
-	pressedMidpointSegment = -1;
 	dragStartX = 0;
 	grayscale = false;
 
@@ -91,16 +89,6 @@ cGradientEditWidget::cGradientEditWidget(QWidget *parent)
 	AddToolButton(buttonSaturationDec, margins + (toolbarHeight + 2) * 6,
 		":gradient/icons/gradient-low-saturation.svg");
 
-	// Settings button (advanced gradient options)
-	buttonSettings = new QToolButton(this);
-	buttonSettings->setObjectName("button");
-	buttonSettings->setFixedSize(toolbarHeight, toolbarHeight);
-	buttonSettings->setText("⚙");
-	buttonSettings->setToolTip(tr("Advanced gradient settings (interpolation mode, mask)"));
-	buttonSettings->move(margins + (toolbarHeight + 2) * 7, 0);
-	buttonSettings->show();
-	connect(buttonSettings, SIGNAL(clicked()), this, SLOT(pressedButtonSettings()));
-
 	connect(buttonRandomColors, SIGNAL(clicked()), this, SLOT(pressedButtonRandomColors()));
 	connect(buttonRandomColorsAndPositions, SIGNAL(clicked()), this,
 		SLOT(pressedButtonRandomColorsAndPositions()));
@@ -119,64 +107,6 @@ cGradientEditWidget::cGradientEditWidget(QWidget *parent)
 	buttonPaletteInvert->setToolTip(tr("Invert palette"));
 	buttonSaturationInc->setToolTip(tr("Increase saturation of colors in gradient"));
 	buttonSaturationDec->setToolTip(tr("Decrease saturation of colors in gradient"));
-}
-
-void cGradientEditWidget::pressedButtonSettings()
-{
-	QMenu menu(this);
-
-	// Interpolation mode submenu
-	QMenu *modeMenu = menu.addMenu(tr("Interpolation Mode"));
-	QActionGroup *modeGroup = new QActionGroup(&menu);
-
-	QAction *actionLinear = new QAction(tr("Linear"), modeGroup);
-	actionLinear->setCheckable(true);
-	actionLinear->setChecked(gradient.GetInterpolationMode() == cColorGradient::InterpolationMode::Linear);
-	modeMenu->addAction(actionLinear);
-
-	QAction *actionSmooth = new QAction(tr("Smooth"), modeGroup);
-	actionSmooth->setCheckable(true);
-	actionSmooth->setChecked(gradient.GetInterpolationMode() == cColorGradient::InterpolationMode::Smooth);
-	modeMenu->addAction(actionSmooth);
-
-	QAction *actionSpline = new QAction(tr("Spline"), modeGroup);
-	actionSpline->setCheckable(true);
-	actionSpline->setChecked(gradient.GetInterpolationMode() == cColorGradient::InterpolationMode::Spline);
-	modeMenu->addAction(actionSpline);
-
-	connect(actionLinear, &QAction::triggered, [this]() {
-		gradient.SetInterpolationMode(cColorGradient::InterpolationMode::Linear);
-		update();
-	});
-	connect(actionSmooth, &QAction::triggered, [this]() {
-		gradient.SetInterpolationMode(cColorGradient::InterpolationMode::Smooth);
-		update();
-	});
-	connect(actionSpline, &QAction::triggered, [this]() {
-		gradient.SetInterpolationMode(cColorGradient::InterpolationMode::Spline);
-		update();
-	});
-
-	// Mask checkbox
-	QAction *actionMask = new QAction(tr("Use as Mask"), &menu);
-	actionMask->setCheckable(true);
-	actionMask->setChecked(gradient.IsMaskEnabled());
-	menu.addAction(actionMask);
-	connect(actionMask, &QAction::toggled, [this](bool checked) {
-		gradient.SetMaskEnable(checked);
-		// Sync to parameter container so shader sees the change
-		if (parameterContainer && !parameterName.isEmpty())
-		{
-			// Derive mask parameter name from gradient parameter name:
-			// e.g. "mat1_surface_color_gradient" -> "mat1_surface_gradient_mask_enable"
-			QString maskParamName = parameterName;
-			maskParamName.replace("_color_gradient", "_gradient_mask_enable");
-			parameterContainer->Set(maskParamName, checked);
-		}
-		update();
-	});
-
-	menu.exec(buttonSettings->mapToGlobal(QPoint(0, buttonSettings->height())));
 }
 
 cGradientEditWidget::~cGradientEditWidget()
@@ -218,90 +148,20 @@ void cGradientEditWidget::paintEvent(QPaintEvent *event)
 
 	int gradientWidth = width() - 2 * margins;
 	if (gradientWidth < 2) gradientWidth = 2;
+	int gradientHeight = (viewMode) ? height() : (height() - toolbarHeight) / 2;
 
 	QPainter painter(this);
+	QVector<sRGB> grad = gradient.GetGradient(gradientWidth, false);
 
-	if (viewMode)
+	for (int x = 0; x < grad.size(); x++)
 	{
-		// View mode: single color bar only
-		int gradientHeight = height();
-		QVector<sRGBAFloat> grad = gradient.GetGradientRGBA(gradientWidth);
-		for (int x = 0; x < grad.size(); x++)
-		{
-			int r = qBound(0, int(grad[x].R * 255.0f), 255);
-			int g = qBound(0, int(grad[x].G * 255.0f), 255);
-			int b = qBound(0, int(grad[x].B * 255.0f), 255);
-			painter.setPen(QColor(r, g, b));
-			painter.drawLine(x + margins, 0, x + margins, gradientHeight);
-		}
+		QColor color(QColor(grad[x].R, grad[x].G, grad[x].B));
+		painter.setPen(color);
+		painter.drawLine(x + margins, toolbarHeight, x + margins, toolbarHeight + gradientHeight);
 	}
-	else
+
+	if (!viewMode)
 	{
-		// Edit mode: opacity bar (top) + color bar (bottom)
-		int availableHeight = height() - toolbarHeight;
-		int opacityBarHeight = availableHeight / 4;
-		int colorBarHeight = availableHeight / 2;
-		int opacityBarY = toolbarHeight;
-		int colorBarY = opacityBarY + opacityBarHeight;
-
-		// --- Opacity bar (top) ---
-		// Draw checkerboard pattern as background
-		int checkSize = 4;
-		for (int x = 0; x < gradientWidth; x++)
-		{
-			for (int y = 0; y < opacityBarHeight; y++)
-			{
-				bool isWhite = ((x / checkSize) + (y / checkSize)) % 2 == 0;
-				painter.setPen(isWhite ? QColor(192, 192, 192) : QColor(128, 128, 128));
-				painter.drawPoint(x + margins, opacityBarY + y);
-			}
-		}
-
-		// Draw alpha gradient over checkerboard
-		QVector<sRGBAFloat> grad = gradient.GetGradientRGBA(gradientWidth);
-		for (int x = 0; x < grad.size(); x++)
-		{
-			int alpha = qBound(0, int(grad[x].A * 255.0f), 255);
-			// Black = transparent, White = opaque (Photoshop convention)
-			QColor alphaColor(alpha, alpha, alpha);
-			painter.setPen(alphaColor);
-			painter.drawLine(x + margins, opacityBarY, x + margins, opacityBarY + opacityBarHeight - 1);
-		}
-
-		// --- Opacity stop markers ---
-		QList<cColorGradient::sOpacityStop> listOfOpacityStops = gradient.GetListOfOpacityStops();
-		for (cColorGradient::sOpacityStop stop : listOfOpacityStops)
-		{
-			PaintOpacityMarker(stop, painter, opacityBarY);
-		}
-
-		// --- Color bar (bottom) ---
-		for (int x = 0; x < grad.size(); x++)
-		{
-			int r = qBound(0, int(grad[x].R * 255.0f), 255);
-			int g = qBound(0, int(grad[x].G * 255.0f), 255);
-			int b = qBound(0, int(grad[x].B * 255.0f), 255);
-			painter.setPen(QColor(r, g, b));
-			painter.drawLine(x + margins, colorBarY, x + margins, colorBarY + colorBarHeight - 1);
-		}
-
-		// --- Midpoint diamonds ---
-		QList<cColorGradient::sColorStop> sortedStops = gradient.GetListOfSortedColorStops();
-		int numSegments = sortedStops.size() - 1;
-		int diamondY = colorBarY + colorBarHeight / 2;
-		int diamondSize = buttonWidth * 2 / 3;
-		if (diamondSize % 2 == 0) diamondSize += 1; // keep odd
-		for (int seg = 0; seg < numSegments; seg++)
-		{
-			float pos1 = sortedStops[seg].position;
-			float pos2 = sortedStops[seg + 1].position;
-			float midpoint = gradient.GetMidpoint(seg);
-			float diamondPos = pos1 + midpoint * (pos2 - pos1);
-			int xDiamond = CalcButtonPosition(diamondPos);
-			PaintMidpointDiamond(xDiamond, diamondY, diamondSize, painter);
-		}
-
-		// --- Color stop buttons ---
 		QList<cColorGradient::sColor> listOfColors = gradient.GetListOfColors();
 		for (cColorGradient::sColor posColor : listOfColors)
 		{
@@ -319,12 +179,7 @@ void cGradientEditWidget::PaintButton(const cColorGradient::sColor &posColor, QP
 {
 	int buttonPosition = CalcButtonPosition(posColor.position);
 
-	// Buttons sit below the color bar
-	int availableHeight = height() - toolbarHeight;
-	int opacityBarHeight = availableHeight / 4;
-	int colorBarHeight = availableHeight / 2;
-	int colorBarY = toolbarHeight + opacityBarHeight;
-	int buttonTop = colorBarY + colorBarHeight + buttonWidth / 2;
+	int buttonTop = (height() - toolbarHeight) / 2 + toolbarHeight + buttonWidth / 2;
 
 	QRect rect(QPoint(buttonPosition - buttonWidth / 2, buttonTop),
 		QPoint(buttonPosition + buttonWidth / 2, height() - 2));
@@ -366,115 +221,6 @@ int cGradientEditWidget::FindButtonAtPosition(int x)
 	return -1; //-1 means nothing found
 }
 
-void cGradientEditWidget::PaintOpacityMarker(
-	const cColorGradient::sOpacityStop &stop, QPainter &painter, int opacityBarY)
-{
-	int markerPosition = CalcButtonPosition(stop.position);
-
-	// Marker sits above the opacity bar
-	int markerSize = buttonWidth;
-	int markerBottom = opacityBarY;
-	int markerTop = markerBottom - markerSize;
-
-	QRect rect(QPoint(markerPosition - markerSize / 2, markerTop),
-		QPoint(markerPosition + markerSize / 2, markerBottom));
-
-	int gray = qBound(0, int(stop.alpha * 255.0f), 255);
-	QColor color(gray, gray, gray);
-
-	QBrush brush(color, Qt::SolidPattern);
-	painter.fillRect(rect, brush);
-
-	// Triangle pointing down into the opacity bar
-	QVector<QPoint> triangle = {QPoint(markerPosition, markerBottom + markerSize / 2),
-		QPoint(markerPosition - markerSize / 2, markerBottom),
-		QPoint(markerPosition + markerSize / 2, markerBottom)};
-	QPolygon pTriangle(triangle);
-	QPainterPath pathTriangle;
-	pathTriangle.addPolygon(pTriangle);
-	painter.fillPath(pathTriangle, brush);
-
-	// Border color based on brightness
-	if (gray > 128)
-		painter.setPen(Qt::black);
-	else
-		painter.setPen(Qt::white);
-
-	painter.drawRect(rect);
-}
-
-int cGradientEditWidget::FindOpacityMarkerAtPosition(
-	int x, int y, int opacityBarY)
-{
-	QList<cColorGradient::sOpacityStop> listOfStops = gradient.GetListOfOpacityStops();
-
-	int markerSize = buttonWidth;
-	int markerBottom = opacityBarY;
-	int markerTop = markerBottom - markerSize;
-
-	for (int i = listOfStops.size() - 1; i >= 0; i--)
-	{
-		int xMarker = CalcButtonPosition(listOfStops[i].position);
-		if ((x > xMarker - markerSize / 2) && (x <= xMarker + markerSize / 2))
-		{
-			if (y >= markerTop && y <= markerBottom + markerSize / 2)
-			{
-				return i;
-			}
-		}
-	}
-	return -1; // nothing found
-}
-
-void cGradientEditWidget::PaintMidpointDiamond(int x, int y, int size, QPainter &painter)
-{
-	// Draw a diamond (rotated square) centered at (x, y)
-	int half = size / 2;
-	QVector<QPoint> diamond = {
-		QPoint(x, y - half),
-		QPoint(x + half, y),
-		QPoint(x, y + half),
-		QPoint(x - half, y)
-	};
-	QPolygon pDiamond(diamond);
-	QPainterPath pathDiamond;
-	pathDiamond.addPolygon(pDiamond);
-
-	// Fill with a neutral color that stands out on any gradient
-	painter.fillPath(pathDiamond, QColor(220, 220, 220));
-
-	// Dark border for visibility
-	painter.setPen(QColor(40, 40, 40));
-	painter.drawPolygon(pDiamond);
-}
-
-int cGradientEditWidget::FindMidpointDiamondAtPosition(
-	int x, int y, int colorBarY, int colorBarHeight)
-{
-	QList<cColorGradient::sColorStop> sortedStops = gradient.GetListOfSortedColorStops();
-	int numSegments = sortedStops.size() - 1;
-	if (numSegments < 1) return -1;
-
-	int diamondSize = buttonWidth;
-	int diamondY = colorBarY + colorBarHeight / 2;
-	int hitRadius = diamondSize; // generous hit area
-
-	for (int seg = 0; seg < numSegments; seg++)
-	{
-		float pos1 = sortedStops[seg].position;
-		float pos2 = sortedStops[seg + 1].position;
-		float midpoint = gradient.GetMidpoint(seg);
-		float diamondPos = pos1 + midpoint * (pos2 - pos1);
-		int xDiamond = CalcButtonPosition(diamondPos);
-
-		if (qAbs(x - xDiamond) <= hitRadius && qAbs(y - diamondY) <= hitRadius)
-		{
-			return seg;
-		}
-	}
-	return -1; // nothing found
-}
-
 void cGradientEditWidget::mouseMoveEvent(QMouseEvent *event)
 {
 	if (pressedColorIndex >= 2)
@@ -489,47 +235,6 @@ void cGradientEditWidget::mouseMoveEvent(QMouseEvent *event)
 			float pos = float(event->x() - margins) / (width() - 2 * margins - 1);
 			gradient.ModifyPosition(pressedColorIndex, pos);
 			emit update();
-		}
-	}
-	else if (pressedOpacityIndex >= 2)
-	{
-		if (event->x() != dragStartX)
-		{
-			mouseDragStarted = true;
-		}
-
-		if (mouseDragStarted)
-		{
-			float pos = float(event->x() - margins) / (width() - 2 * margins - 1);
-			gradient.ModifyOpacityStopPosition(pressedOpacityIndex, pos);
-			emit update();
-		}
-	}
-	else if (pressedMidpointSegment >= 0)
-	{
-		if (event->x() != dragStartX)
-		{
-			mouseDragStarted = true;
-		}
-
-		if (mouseDragStarted)
-		{
-			QList<cColorGradient::sColorStop> sortedStops = gradient.GetListOfSortedColorStops();
-			if (pressedMidpointSegment < sortedStops.size() - 1)
-			{
-				float pos1 = sortedStops[pressedMidpointSegment].position;
-				float pos2 = sortedStops[pressedMidpointSegment + 1].position;
-				float mousePos = float(event->x() - margins) / (width() - 2 * margins - 1);
-				float segWidth = pos2 - pos1;
-				float midpoint = 0.5f;
-				if (segWidth > 0.0f)
-				{
-					midpoint = (mousePos - pos1) / segWidth;
-				}
-				midpoint = qBound(0.01f, midpoint, 0.99f);
-				gradient.SetMidpoint(pressedMidpointSegment, midpoint);
-				emit update();
-			}
 		}
 	}
 }
@@ -547,40 +252,7 @@ void cGradientEditWidget::mousePressEvent(QMouseEvent *event)
 			int mouseX = event->x();
 			int mouseY = event->y();
 
-			int availableHeight = height() - toolbarHeight;
-			int opacityBarHeight = availableHeight / 4;
-			int colorBarHeight = availableHeight / 2;
-			int opacityBarY = toolbarHeight;
-			int colorBarY = opacityBarY + opacityBarHeight;
-			int colorBarBottom = colorBarY + colorBarHeight;
-
-			// Reset all indices before checking
-			pressedColorIndex = -1;
-			pressedOpacityIndex = -1;
-			pressedMidpointSegment = -1;
-
-			// Check opacity markers first (top area)
-			if (mouseY <= opacityBarY + opacityBarHeight + buttonWidth / 2)
-			{
-				int index = FindOpacityMarkerAtPosition(mouseX, mouseY, opacityBarY);
-				if (index >= 0)
-				{
-					dragStartX = mouseX;
-					pressedOpacityIndex = index;
-				}
-			}
-			// Check midpoint diamonds on the color bar
-			else if (mouseY >= colorBarY && mouseY <= colorBarBottom)
-			{
-				int seg = FindMidpointDiamondAtPosition(mouseX, mouseY, colorBarY, colorBarHeight);
-				if (seg >= 0)
-				{
-					dragStartX = mouseX;
-					pressedMidpointSegment = seg;
-				}
-			}
-			// Then check color buttons (bottom area)
-			else if (mouseY > colorBarBottom)
+			if (mouseY > height() / 2)
 			{
 				int index = FindButtonAtPosition(mouseX);
 
@@ -621,25 +293,8 @@ void cGradientEditWidget::mouseReleaseEvent(QMouseEvent *event)
 					emit update();
 				}
 			}
-			else if (pressedOpacityIndex >= 0 && !mouseDragStarted)
-			{
-				QList<cColorGradient::sOpacityStop> listOfStops = gradient.GetListOfOpacityStops();
-				float currentAlpha = listOfStops[pressedOpacityIndex].alpha;
-				int currentPercent = int(currentAlpha * 100.0f);
-
-				bool ok;
-				int newPercent = QInputDialog::getInt(this, tr("Edit Opacity"),
-					tr("Opacity (0-100%):"), currentPercent, 0, 100, 1, &ok);
-				if (ok)
-				{
-					gradient.ModifyOpacityStop(pressedOpacityIndex, newPercent / 100.0f);
-					emit update();
-				}
-			}
 
 			pressedColorIndex = -1;
-			pressedOpacityIndex = -1;
-			pressedMidpointSegment = -1;
 			mouseDragStarted = false;
 		}
 	}
@@ -669,32 +324,6 @@ void cGradientEditWidget::RemoveColor(QContextMenuEvent *event)
 	if (index >= 2)
 	{
 		gradient.RemoveColor(index);
-	}
-	emit update();
-}
-
-void cGradientEditWidget::AddOpacityStop(QContextMenuEvent *event)
-{
-	int xClick = event->x();
-	int gradientWidth = width() - 2 * margins;
-	float pos = float(xClick - margins) / gradientWidth;
-	gradient.SortGradient();
-	float alpha = gradient.GetAlpha(pos);
-	gradient.AddOpacityStop(alpha, pos);
-	emit update();
-}
-
-void cGradientEditWidget::RemoveOpacityStop(QContextMenuEvent *event)
-{
-	int xClick = event->x();
-	int yClick = event->y();
-
-	int opacityBarY = toolbarHeight;
-
-	int index = FindOpacityMarkerAtPosition(xClick, yClick, opacityBarY);
-	if (index >= 2)
-	{
-		gradient.RemoveOpacityStop(index);
 	}
 	emit update();
 }
@@ -936,8 +565,6 @@ void cGradientEditWidget::contextMenuEvent(QContextMenuEvent *event)
 	QMenu *menu = new QMenu(); // menu is deleted in contextMenuEvent()
 	QAction *actionAddColor = menu->addAction(tr("Add color"));
 	QAction *actionRemoveColor = menu->addAction(tr("Remove color"));
-	QAction *actionAddOpacity = menu->addAction(tr("Add opacity stop"));
-	QAction *actionRemoveOpacity = menu->addAction(tr("Remove opacity stop"));
 	menu->addSeparator();
 	QAction *actionClear = menu->addAction(tr("Delete all colors"));
 	QAction *actionChangeNumberOfColors = menu->addAction(tr("Change number of colors ..."));
@@ -953,8 +580,6 @@ void cGradientEditWidget::contextMenuEvent(QContextMenuEvent *event)
 	{
 		if (selectedItem == actionAddColor) AddColor(event);
 		if (selectedItem == actionRemoveColor) RemoveColor(event);
-		if (selectedItem == actionAddOpacity) AddOpacityStop(event);
-		if (selectedItem == actionRemoveOpacity) RemoveOpacityStop(event);
 		if (selectedItem == actionClear) Clear();
 		if (selectedItem == actionChangeNumberOfColors) ChangeNumberOfColors();
 		if (selectedItem == actionGrabColors) GrabColors();
