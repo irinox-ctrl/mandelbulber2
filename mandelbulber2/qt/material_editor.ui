@@ -213,6 +213,37 @@
                </property>
               </widget>
              </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_surface_blend">
+               <item>
+                <widget class="QLabel" name="label_surface_blend_mode">
+                 <property name="text">
+                  <string>Blend mode:</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="MyComboBox" name="comboBox_surface_gradient_blend_mode">
+                 <property name="toolTip">
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Blend mode for surface gradient with base material color.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                 <item><property name="text"><string>Normal</string></property></item>
+                 <item><property name="text"><string>Multiply</string></property></item>
+                 <item><property name="text"><string>Screen</string></property></item>
+                 <item><property name="text"><string>Overlay</string></property></item>
+                 <item><property name="text"><string>Soft Light</string></property></item>
+                 <item><property name="text"><string>Hard Light</string></property></item>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_surface_blend">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                </spacer>
+               </item>
+              </layout>
+             </item>
             </layout>
            </widget>
           </item>
