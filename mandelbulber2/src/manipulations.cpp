@@ -37,6 +37,7 @@
 #include <algorithm>
 #include <cmath>
 #include <memory>
+#include <vector>
 
 #include "camera_movement_modes.h"
 #include "camera_target.hpp"
@@ -597,7 +598,64 @@ void cManipulations::SetByMouse(
 				case RenderedImage::clickDOFFocus:
 				{
 					emit signalDisablePeriodicRefresh();
-					double DOF = depth;
+
+					// IMPROVED AUTO-FOCUS: Multi-sample area analysis
+					// Sample 9x9 area around click point for robust depth detection
+					// Verified against DOF_NUCLEAR_ANALYSIS_NIVEAU_5_EDGE_CASES.md (Edge Case 4: infinity z-values)
+					WriteLog("DOF Auto-Focus: Starting 9x9 multi-sample analysis...", 2);
+					std::vector<double> depthSamples;
+					depthSamples.reserve(81); // 9x9 = 81 samples max
+
+					const int sampleRadius = 4; // 9x9 area (4 pixels in each direction + center)
+					const int centerX = int(imagePoint.x);
+					const int centerY = int(imagePoint.y);
+
+					for (int dy = -sampleRadius; dy <= sampleRadius; ++dy)
+					{
+						for (int dx = -sampleRadius; dx <= sampleRadius; ++dx)
+						{
+							int sampleX = centerX + dx;
+							int sampleY = centerY + dy;
+
+							// Bounds check
+							if (sampleX >= 0 && sampleX < width && sampleY >= 0 && sampleY < height)
+							{
+								double sampleDepth = image->GetPixelZBuffer(quint64(sampleX), quint64(sampleY));
+								// Filter out infinity/invalid values (see NIVEAU_5 Edge Case 4)
+								if (sampleDepth < 1e10 && sampleDepth > 0.0)
+								{
+									depthSamples.push_back(sampleDepth);
+								}
+							}
+						}
+					}
+
+					double DOF;
+					if (!depthSamples.empty())
+					{
+						// Use median for robustness against outliers
+						std::sort(depthSamples.begin(), depthSamples.end());
+						size_t medianIndex = depthSamples.size() / 2;
+						if (depthSamples.size() % 2 == 0 && depthSamples.size() > 1)
+						{
+							// Even number: average of two middle values
+							DOF = (depthSamples[medianIndex - 1] + depthSamples[medianIndex]) / 2.0;
+						}
+						else
+						{
+							// Odd number: middle value
+							DOF = depthSamples[medianIndex];
+						}
+						WriteLog(QString("DOF Auto-Focus: Calculated median from %1 samples, focus distance = %2")
+							.arg(depthSamples.size()).arg(DOF), 2);
+					}
+					else
+					{
+						// Fallback: use single-pixel depth if no valid samples found
+						DOF = depth;
+						WriteLog(QString("DOF Auto-Focus: No valid samples, using single pixel depth = %1").arg(DOF), 2);
+					}
+
 					par->Set("DOF_focus", DOF);
 					emit signalWriteInterfaceDOF(par);
 					emit signalRefreshPostEffects();

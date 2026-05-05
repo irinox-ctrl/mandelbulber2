@@ -76,6 +76,19 @@ public:
 	int GetNumberOfColors() { return colors.size(); }
 	int GetNumberOfSegments() { return qMax(0, colors.size() - 1); }
 	void DeleteAll();
+
+	// Interpolation modes (Photoshop-style)
+	enum class InterpolationMode
+	{
+		Linear,   // Standard RGB linear
+		Smooth,   // Cosine ease-in-out
+		HSLShort, // Hue via shortest path (<=180 deg)
+		HSLLong,  // Hue via longest path (>180 deg)
+		Cubic,    // Catmull-Rom spline
+		Constant  // Hard transition, no blend
+	};
+	void SetInterpolationMode(InterpolationMode mode) { interpolationMode = mode; }
+	InterpolationMode GetInterpolationMode() const { return interpolationMode; }
 	void DeleteAndKeepTwo();
 
 	// Midpoint control (Photoshop-style curve per segment)
@@ -91,11 +104,22 @@ private:
 	float CorrectPosition(float position, int ignoreIndex);
 	sRGB MakeGrayscaleIfNeeded(sRGB color);
 
+	// HSL color space helpers
+	static void RGBtoHSL(float r, float g, float b, float &h, float &s, float &l);
+	static sRGBFloat HSLtoRGB(float h, float s, float l);
+	static float InterpolateHue(float h1, float h2, float delta, bool shortestPath);
+	static float CubicInterpolate(float y0, float y1, float y2, float y3, float mu);
+
+	// Mode-aware interpolation helpers
+	sRGB InterpolateMode(int paletteIndex, float pos, bool smooth) const;
+	sRGBFloat InterpolateFloatMode(int paletteIndex, float pos, bool smooth) const;
+
 	QList<sColor> colors;
 	QList<sColor> sortedColors;
 	QVector<float> midpoints; // one per segment, default 0.5
 	bool grayscale;
 	bool sorted;
+	InterpolationMode interpolationMode;
 
 	float ApplyMidpoint(float t, float midpoint) const;
 };

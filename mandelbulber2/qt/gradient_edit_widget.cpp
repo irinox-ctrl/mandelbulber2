@@ -36,6 +36,9 @@
 
 #include <QColorDialog>
 #include <QInputDialog>
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <QMenu>
 #include <QMouseEvent>
 #include <QPainter>
@@ -90,6 +93,20 @@ cGradientEditWidget::cGradientEditWidget(QWidget *parent)
 	buttonSaturationDec = new QToolButton(this);
 	AddToolButton(buttonSaturationDec, margins + (toolbarHeight + 2) * 6,
 		":gradient/icons/gradient-low-saturation.svg");
+
+	// Interpolation mode dropdown
+	comboInterpolationMode = new QComboBox(this);
+	comboInterpolationMode->addItem("Linear");
+	comboInterpolationMode->addItem("Smooth");
+	comboInterpolationMode->addItem("HSL Short");
+	comboInterpolationMode->addItem("HSL Long");
+	comboInterpolationMode->addItem("Cubic");
+	comboInterpolationMode->addItem("Constant");
+	comboInterpolationMode->setFixedHeight(toolbarHeight);
+	comboInterpolationMode->move(margins + (toolbarHeight + 2) * 7 + 10, 0);
+	comboInterpolationMode->show();
+	connect(comboInterpolationMode, SIGNAL(currentIndexChanged(int)), this,
+		SLOT(interpolationModeChanged(int)));
 
 	connect(buttonRandomColors, SIGNAL(clicked()), this, SLOT(pressedButtonRandomColors()));
 	connect(buttonRandomColorsAndPositions, SIGNAL(clicked()), this,
@@ -406,6 +423,10 @@ void cGradientEditWidget::mouseReleaseEvent(QMouseEvent *event)
 void cGradientEditWidget::SetColors(const QString &colorsString)
 {
 	gradient.SetColorsFromString(colorsString);
+	if (comboInterpolationMode)
+	{
+		comboInterpolationMode->setCurrentIndex(static_cast<int>(gradient.GetInterpolationMode()));
+	}
 	emit update();
 }
 
@@ -695,6 +716,8 @@ void cGradientEditWidget::contextMenuEvent(QContextMenuEvent *event)
 	QAction *actionSave = menu->addAction(tr("Save colors to file ..."));
 	QAction *actionCopy = menu->addAction(tr("Copy"));
 	QAction *actionPaste = menu->addAction(tr("Paste"));
+	menu->addSeparator();
+	LoadPresetsMenu(menu);
 
 	const QAction *selectedItem = CommonMyWidgetWrapper::contextMenuEvent(event, menu);
 
@@ -710,6 +733,79 @@ void cGradientEditWidget::contextMenuEvent(QContextMenuEvent *event)
 		if (selectedItem == actionSave) SaveColors();
 		if (selectedItem == actionCopy) SaveToClipboard();
 		if (selectedItem == actionPaste) LoadFromClipboard();
+	}
+}
+
+void cGradientEditWidget::LoadPreset(QString presetGradient)
+{
+	if (!presetGradient.isEmpty())
+	{
+		gradient.SetColorsFromString(presetGradient);
+		// Update the interpolation mode dropdown
+		comboInterpolationMode->blockSignals(true);
+		comboInterpolationMode->setCurrentIndex(static_cast<int>(gradient.GetInterpolationMode()));
+		comboInterpolationMode->blockSignals(false);
+		emit update();
+	}
+}
+
+void cGradientEditWidget::LoadPresetsMenu(QMenu *menu)
+{
+	QString presetsPath = QDir::toNativeSeparators(
+		systemDirectories.GetDataDirectoryPublic() + QDir::separator() + "gradients" + QDir::separator() + "presets.json");
+	
+	QFile file(presetsPath);
+	if (!file.open(QIODevice::ReadOnly))
+	{
+		// Try alternative location in user's home
+		presetsPath = QDir::homePath() + QDir::separator() + ".mandelbulber" + QDir::separator() 
+			+ "gradients" + QDir::separator() + "presets.json";
+		file.setFileName(presetsPath);
+		if (!file.open(QIODevice::ReadOnly))
+		{
+			QAction *actionNoPresets = menu->addAction(tr("No presets found"));
+			actionNoPresets->setEnabled(false);
+			return;
+		}
+	}
+	
+	QByteArray data = file.readAll();
+	file.close();
+	
+	QJsonDocument doc = QJsonDocument::fromJson(data);
+	if (doc.isNull() || !doc.isObject())
+	{
+		QAction *actionInvalid = menu->addAction(tr("Invalid presets file"));
+		actionInvalid->setEnabled(false);
+		return;
+	}
+	
+	QJsonObject root = doc.object();
+	QJsonArray presets = root.value("presets").toArray();
+	
+	if (presets.isEmpty())
+	{
+		QAction *actionEmpty = menu->addAction(tr("No presets available"));
+		actionEmpty->setEnabled(false);
+		return;
+	}
+	
+	QMenu *presetsMenu = menu->addMenu(tr("Load preset"));
+	for (int i = 0; i < presets.size(); i++)
+	{
+		QJsonObject preset = presets.at(i).toObject();
+		QString name = preset.value("name").toString();
+		QString description = preset.value("description").toString();
+		QString gradientStr = preset.value("gradient").toString();
+		
+		if (!name.isEmpty() && !gradientStr.isEmpty())
+		{
+			QAction *action = presetsMenu->addAction(name);
+			if (!description.isEmpty()) action->setToolTip(description);
+			connect(action, &QAction::triggered, this, [this, gradientStr]() {
+				LoadPreset(gradientStr);
+			});
+		}
 	}
 }
 
@@ -849,6 +945,12 @@ QString cGradientEditWidget::getDefaultAsString()
 QString cGradientEditWidget::getFullParameterName()
 {
 	return parameterName;
+}
+
+void cGradientEditWidget::interpolationModeChanged(int index)
+{
+	gradient.SetInterpolationMode(static_cast<cColorGradient::InterpolationMode>(index));
+	emit update();
 }
 
 void cGradientEditWidget::UpdateScriptAppearance(bool hasScript) {}

@@ -163,6 +163,15 @@ typedef struct
 	cl_int transparencyGradientEnable;
 
 	cl_int surfaceGradientMaskEnable;
+	cl_int specularGradientMaskEnable;
+	cl_int diffuseGradientMaskEnable;
+	cl_int luminosityGradientMaskEnable;
+	cl_int roughnessGradientMaskEnable;
+	cl_int reflectanceGradientMaskEnable;
+	cl_int transparencyGradientMaskEnable;
+
+	cl_int surfaceGradientInterpolationMode;
+	cl_int surfaceGradientBlendMode;
 
 	sFractalColoringCl fractalColoring;
 } sMaterialCl;
@@ -278,6 +287,15 @@ sMaterialCl clCopySMaterialCl(const cMaterial &source)
 	target.transparencyGradientEnable = source.transparencyGradientEnable;
 
 	target.surfaceGradientMaskEnable = source.surfaceGradientMaskEnable;
+	target.specularGradientMaskEnable = source.specularGradientMaskEnable;
+	target.diffuseGradientMaskEnable = source.diffuseGradientMaskEnable;
+	target.luminosityGradientMaskEnable = source.luminosityGradientMaskEnable;
+	target.roughnessGradientMaskEnable = source.roughnessGradientMaskEnable;
+	target.reflectanceGradientMaskEnable = source.reflectanceGradientMaskEnable;
+	target.transparencyGradientMaskEnable = source.transparencyGradientMaskEnable;
+
+	target.surfaceGradientInterpolationMode = source.surfaceGradientInterpolationMode;
+	target.surfaceGradientBlendMode = source.surfaceGradientBlendMode;
 
 	// these are initialized in cOpenClDynamicData::BuildMaterialsData()
 	target.colorTextureIndex = 0;

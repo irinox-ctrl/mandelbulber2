@@ -194,6 +194,10 @@ public:
 	bool reflectanceGradientEnable;
 	bool transparencyGradientEnable;
 
+	// Photoshop-style gradient modes
+	int surfaceGradientInterpolationMode; // 0=Linear, 1=Smooth, 2=HSLShort, 3=HSLLong, 4=Cubic, 5=Constant
+	int surfaceGradientBlendMode;         // 0=Normal, 1=Multiply, 2=Screen, 3=Overlay, 4=SoftLight, 5=HardLight
+
 	// Advanced gradient: mask enable flags (per-gradient masking)
 	bool surfaceGradientMaskEnable;
 	bool specularGradientMaskEnable;

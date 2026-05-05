@@ -446,14 +446,74 @@ void InitParams(std::shared_ptr<cParameterContainer> par)
 	par->addParam("fake_lights_multi_center_2", CVector3(0.0, 1.0, 0.0), morphLinear, paramStandard);
 	par->addParam("fake_lights_multi_center_3", CVector3(0.0, 0.0, 1.0), morphLinear, paramStandard);
 	par->addParam("fake_lights_multi_center_4", CVector3(-1.0, 0.0, 0.0), morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_5", CVector3(0.0, 0.0, 0.0), morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_6", CVector3(0.0, 0.0, 0.0), morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_7", CVector3(0.0, 0.0, 0.0), morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_8", CVector3(0.0, 0.0, 0.0), morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_9", CVector3(0.0, 0.0, 0.0), morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_10", CVector3(0.0, 0.0, 0.0), morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_11", CVector3(0.0, 0.0, 0.0), morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_12", CVector3(0.0, 0.0, 0.0), morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_13", CVector3(0.0, 0.0, 0.0), morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_14", CVector3(0.0, 0.0, 0.0), morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_15", CVector3(0.0, 0.0, 0.0), morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_16", CVector3(0.0, 0.0, 0.0), morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_17", CVector3(0.0, 0.0, 0.0), morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_18", CVector3(0.0, 0.0, 0.0), morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_19", CVector3(0.0, 0.0, 0.0), morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_20", CVector3(0.0, 0.0, 0.0), morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_21", CVector3(0.0, 0.0, 0.0), morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_22", CVector3(0.0, 0.0, 0.0), morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_23", CVector3(0.0, 0.0, 0.0), morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_24", CVector3(0.0, 0.0, 0.0), morphLinear, paramStandard);
 	par->addParam("fake_lights_multi_center_weight_1", 1.0, 0.0, 100.0, morphLinear, paramStandard);
 	par->addParam("fake_lights_multi_center_weight_2", 1.0, 0.0, 100.0, morphLinear, paramStandard);
 	par->addParam("fake_lights_multi_center_weight_3", 1.0, 0.0, 100.0, morphLinear, paramStandard);
 	par->addParam("fake_lights_multi_center_weight_4", 1.0, 0.0, 100.0, morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_weight_5", 1.0, 0.0, 100.0, morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_weight_6", 1.0, 0.0, 100.0, morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_weight_7", 1.0, 0.0, 100.0, morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_weight_8", 1.0, 0.0, 100.0, morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_weight_9", 1.0, 0.0, 100.0, morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_weight_10", 1.0, 0.0, 100.0, morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_weight_11", 1.0, 0.0, 100.0, morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_weight_12", 1.0, 0.0, 100.0, morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_weight_13", 1.0, 0.0, 100.0, morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_weight_14", 1.0, 0.0, 100.0, morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_weight_15", 1.0, 0.0, 100.0, morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_weight_16", 1.0, 0.0, 100.0, morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_weight_17", 1.0, 0.0, 100.0, morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_weight_18", 1.0, 0.0, 100.0, morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_weight_19", 1.0, 0.0, 100.0, morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_weight_20", 1.0, 0.0, 100.0, morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_weight_21", 1.0, 0.0, 100.0, morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_weight_22", 1.0, 0.0, 100.0, morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_weight_23", 1.0, 0.0, 100.0, morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_weight_24", 1.0, 0.0, 100.0, morphLinear, paramStandard);
 	par->addParam("fake_lights_multi_center_color_1", sRGB(65535, 0, 0), morphLinear, paramStandard);
 	par->addParam("fake_lights_multi_center_color_2", sRGB(0, 65535, 0), morphLinear, paramStandard);
 	par->addParam("fake_lights_multi_center_color_3", sRGB(0, 0, 65535), morphLinear, paramStandard);
 	par->addParam("fake_lights_multi_center_color_4", sRGB(65535, 65535, 0), morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_color_5", sRGB(65535, 65535, 65535), morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_color_6", sRGB(65535, 65535, 65535), morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_color_7", sRGB(65535, 65535, 65535), morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_color_8", sRGB(65535, 65535, 65535), morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_color_9", sRGB(65535, 65535, 65535), morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_color_10", sRGB(65535, 65535, 65535), morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_color_11", sRGB(65535, 65535, 65535), morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_color_12", sRGB(65535, 65535, 65535), morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_color_13", sRGB(65535, 65535, 65535), morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_color_14", sRGB(65535, 65535, 65535), morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_color_15", sRGB(65535, 65535, 65535), morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_color_16", sRGB(65535, 65535, 65535), morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_color_17", sRGB(65535, 65535, 65535), morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_color_18", sRGB(65535, 65535, 65535), morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_color_19", sRGB(65535, 65535, 65535), morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_color_20", sRGB(65535, 65535, 65535), morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_color_21", sRGB(65535, 65535, 65535), morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_color_22", sRGB(65535, 65535, 65535), morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_color_23", sRGB(65535, 65535, 65535), morphLinear, paramStandard);
+	par->addParam("fake_lights_multi_center_color_24", sRGB(65535, 65535, 65535), morphLinear, paramStandard);
 	par->addParam("fake_lights_min_iter", 1, 0, 250, morphLinear, paramStandard);
 	par->addParam("fake_lights_max_iter", 2, 0, 250, morphLinear, paramStandard);
 	par->addParam("fake_lights_center_iteration", 0, 0, 250, morphLinear, paramStandard);
@@ -555,6 +615,46 @@ void InitParams(std::shared_ptr<cParameterContainer> par)
 	par->addParam("glow_sphere_1_radius", 0.5, 0.01, 100.0, morphLinear, paramStandard);
 	par->addParam("glow_sphere_1_color", sRGB(65535, 65535, 65535), morphLinear, paramStandard);
 	par->addParam("glow_sphere_1_intensity", 2.0, 0.0, 1000.0, morphLinear, paramStandard);
+	par->addParam("glow_sphere_1_falloff_radius", 5.0, 0.01, 1000.0, morphLinear, paramStandard);
+	par->addParam("glow_sphere_1_outer_color", sRGB(65535, 0, 0), morphLinear, paramStandard);
+	par->addParam("glow_sphere_1_pulse_speed", 0.0, 0.0, 10.0, morphLinear, paramStandard);
+	par->addParam("glow_sphere_1_pulse_amount", 0.3, 0.0, 1.0, morphLinear, paramStandard);
+
+	// Glow Sphere 2
+	par->addParam("glow_sphere_2_enabled", false, morphLinear, paramStandard);
+	par->addParam("glow_sphere_2_position", CVector3(-2.0, 0.0, 0.0), morphLinear, paramStandard);
+	par->addParam("glow_sphere_2_rotation", CVector3(0.0, 0.0, 0.0), morphAkimaAngle, paramStandard);
+	par->addParam("glow_sphere_2_radius", 0.5, 0.01, 100.0, morphLinear, paramStandard);
+	par->addParam("glow_sphere_2_color", sRGB(65535, 65535, 65535), morphLinear, paramStandard);
+	par->addParam("glow_sphere_2_intensity", 2.0, 0.0, 1000.0, morphLinear, paramStandard);
+	par->addParam("glow_sphere_2_falloff_radius", 5.0, 0.01, 1000.0, morphLinear, paramStandard);
+	par->addParam("glow_sphere_2_outer_color", sRGB(0, 65535, 0), morphLinear, paramStandard);
+	par->addParam("glow_sphere_2_pulse_speed", 0.0, 0.0, 10.0, morphLinear, paramStandard);
+	par->addParam("glow_sphere_2_pulse_amount", 0.3, 0.0, 1.0, morphLinear, paramStandard);
+
+	// Glow Sphere 3
+	par->addParam("glow_sphere_3_enabled", false, morphLinear, paramStandard);
+	par->addParam("glow_sphere_3_position", CVector3(0.0, 2.0, 0.0), morphLinear, paramStandard);
+	par->addParam("glow_sphere_3_rotation", CVector3(0.0, 0.0, 0.0), morphAkimaAngle, paramStandard);
+	par->addParam("glow_sphere_3_radius", 0.5, 0.01, 100.0, morphLinear, paramStandard);
+	par->addParam("glow_sphere_3_color", sRGB(65535, 65535, 65535), morphLinear, paramStandard);
+	par->addParam("glow_sphere_3_intensity", 2.0, 0.0, 1000.0, morphLinear, paramStandard);
+	par->addParam("glow_sphere_3_falloff_radius", 5.0, 0.01, 1000.0, morphLinear, paramStandard);
+	par->addParam("glow_sphere_3_outer_color", sRGB(0, 0, 65535), morphLinear, paramStandard);
+	par->addParam("glow_sphere_3_pulse_speed", 0.0, 0.0, 10.0, morphLinear, paramStandard);
+	par->addParam("glow_sphere_3_pulse_amount", 0.3, 0.0, 1.0, morphLinear, paramStandard);
+
+	// Glow Sphere 4
+	par->addParam("glow_sphere_4_enabled", false, morphLinear, paramStandard);
+	par->addParam("glow_sphere_4_position", CVector3(0.0, -2.0, 0.0), morphLinear, paramStandard);
+	par->addParam("glow_sphere_4_rotation", CVector3(0.0, 0.0, 0.0), morphAkimaAngle, paramStandard);
+	par->addParam("glow_sphere_4_radius", 0.5, 0.01, 100.0, morphLinear, paramStandard);
+	par->addParam("glow_sphere_4_color", sRGB(65535, 65535, 65535), morphLinear, paramStandard);
+	par->addParam("glow_sphere_4_intensity", 2.0, 0.0, 1000.0, morphLinear, paramStandard);
+	par->addParam("glow_sphere_4_falloff_radius", 5.0, 0.01, 1000.0, morphLinear, paramStandard);
+	par->addParam("glow_sphere_4_outer_color", sRGB(65535, 65535, 0), morphLinear, paramStandard);
+	par->addParam("glow_sphere_4_pulse_speed", 0.0, 0.0, 10.0, morphLinear, paramStandard);
+	par->addParam("glow_sphere_4_pulse_amount", 0.3, 0.0, 1.0, morphLinear, paramStandard);
 
 	// Single Trap Lights — multi-layer spatial light system
 	par->addParam("single_trap_lights_enabled", false, morphLinear, paramStandard);
@@ -2311,6 +2411,10 @@ void InitMaterialParams(int materialId, std::shared_ptr<cParameterContainer> par
 	par->addParam(
 		cMaterial::Name("transparency_gradient_enable", materialId), false, morphLinear, paramStandard);
 	par->addParam(cMaterial::Name("surface_gradient_mask_enable", materialId), false, morphLinear,
+		paramStandard);
+	par->addParam(cMaterial::Name("surface_gradient_interpolation_mode", materialId), 0, morphLinear,
+		paramStandard);
+	par->addParam(cMaterial::Name("surface_gradient_blend_mode", materialId), 0, morphLinear,
 		paramStandard);
 	par->addParam(cMaterial::Name("specular_gradient_mask_enable", materialId), false, morphLinear,
 		paramStandard);

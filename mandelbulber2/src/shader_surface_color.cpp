@@ -83,9 +83,58 @@ sRGBAFloat cRenderWorker::SurfaceColour(
 					{
 						opacity = input.material->gradientSurface.GetOpacity(colorPosition, false);
 					}
-					colour.R = input.material->color.R * (1.0f - opacity) + gradientColor.R * opacity;
-					colour.G = input.material->color.G * (1.0f - opacity) + gradientColor.G * opacity;
-					colour.B = input.material->color.B * (1.0f - opacity) + gradientColor.B * opacity;
+					float baseR = input.material->color.R;
+					float baseG = input.material->color.G;
+					float baseB = input.material->color.B;
+					float blendR = gradientColor.R;
+					float blendG = gradientColor.G;
+					float blendB = gradientColor.B;
+					float outR, outG, outB;
+					switch (input.material->surfaceGradientBlendMode)
+					{
+						case 1: // Multiply
+							outR = baseR * blendR;
+							outG = baseG * blendG;
+							outB = baseB * blendB;
+							break;
+						case 2: // Screen
+							outR = 1.0f - (1.0f - baseR) * (1.0f - blendR);
+							outG = 1.0f - (1.0f - baseG) * (1.0f - blendG);
+							outB = 1.0f - (1.0f - baseB) * (1.0f - blendB);
+							break;
+						case 3: // Overlay
+							outR = baseR < 0.5f ? 2.0f * baseR * blendR : 1.0f - 2.0f * (1.0f - baseR) * (1.0f - blendR);
+							outG = baseG < 0.5f ? 2.0f * baseG * blendG : 1.0f - 2.0f * (1.0f - baseG) * (1.0f - blendG);
+							outB = baseB < 0.5f ? 2.0f * baseB * blendB : 1.0f - 2.0f * (1.0f - baseB) * (1.0f - blendB);
+							break;
+						case 4: // Soft Light
+							outR = blendR < 0.5f
+									 ? 2.0f * baseR * blendR + baseR * baseR * (1.0f - 2.0f * blendR)
+									 : 2.0f * baseR * (1.0f - blendR) + sqrtf(baseR) * (2.0f * blendR - 1.0f);
+							outG = blendG < 0.5f
+									 ? 2.0f * baseG * blendG + baseG * baseG * (1.0f - 2.0f * blendG)
+									 : 2.0f * baseG * (1.0f - blendG) + sqrtf(baseG) * (2.0f * blendG - 1.0f);
+							outB = blendB < 0.5f
+									 ? 2.0f * baseB * blendB + baseB * baseB * (1.0f - 2.0f * blendB)
+									 : 2.0f * baseB * (1.0f - blendB) + sqrtf(baseB) * (2.0f * blendB - 1.0f);
+							break;
+						case 5: // Hard Light
+							outR = blendR < 0.5f ? 2.0f * baseR * blendR
+												 : 1.0f - 2.0f * (1.0f - baseR) * (1.0f - blendR);
+							outG = blendG < 0.5f ? 2.0f * baseG * blendG
+												 : 1.0f - 2.0f * (1.0f - baseG) * (1.0f - blendG);
+							outB = blendB < 0.5f ? 2.0f * baseB * blendB
+												 : 1.0f - 2.0f * (1.0f - baseB) * (1.0f - blendB);
+							break;
+						default: // Normal
+							outR = blendR;
+							outG = blendG;
+							outB = blendB;
+							break;
+					}
+					colour.R = baseR * (1.0f - opacity) + outR * opacity;
+					colour.G = baseG * (1.0f - opacity) + outG * opacity;
+					colour.B = baseB * (1.0f - opacity) + outB * opacity;
 					gradients->surface = colour;
 				}
 				else

@@ -41,12 +41,17 @@
 
 typedef struct
 {
-	cl_int enabled;
-	cl_float3 position;
-	cl_float3 rotation;
+	cl_float4 position;     // float4 for predictable alignment
+	cl_float4 rotation;     // currently unused but reserved
+	cl_float4 color;        // inner color at sphere surface, normalized RGB (0.0-1.0)
+	cl_float4 outerColor;   // outer color at falloff edge, normalized RGB (0.0-1.0)
 	cl_float radius;
-	cl_float3 color;  // normalized RGB (0.0-1.0)
 	cl_float intensity;
+	cl_float falloffRadius; // light falloff distance
+	cl_float pulseSpeed;    // pulsation speed (rad/frame, 0 = no pulse)
+	cl_float pulseAmount;   // pulsation strength (0-1, 0 = no pulse)
+	cl_int enabled;
+	cl_int _pad[2];         // explicit padding to align struct to 16 bytes
 } sGlowSphereCl;
 
 #ifndef OPENCL_KERNEL_CODE
@@ -58,7 +63,11 @@ inline sGlowSphereCl clCopySGlowSphere(const sGlowSphere &source)
 	target.rotation = toClFloat3(source.rotation);
 	target.radius = static_cast<cl_float>(source.radius);
 	target.color = toClFloat3(sRGBFloat(source.color.R / 65535.0f, source.color.G / 65535.0f, source.color.B / 65535.0f));
+	target.outerColor = toClFloat3(sRGBFloat(source.outerColor.R / 65535.0f, source.outerColor.G / 65535.0f, source.outerColor.B / 65535.0f));
 	target.intensity = static_cast<cl_float>(source.intensity);
+	target.falloffRadius = static_cast<cl_float>(source.falloffRadius);
+	target.pulseSpeed = static_cast<cl_float>(source.pulseSpeed);
+	target.pulseAmount = static_cast<cl_float>(source.pulseAmount);
 	return target;
 }
 #endif

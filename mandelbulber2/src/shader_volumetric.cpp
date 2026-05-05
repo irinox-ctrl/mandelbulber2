@@ -46,6 +46,7 @@
 #include "nine_fractals.hpp"
 #include "render_data.hpp"
 #include "render_worker.hpp"
+#include "glow_sphere.hpp"
 
 void cRenderWorker::RayleighScattering(const CVector3 &lightVectorTemp,
 	const sShaderInputData &input, sRGBFloat &raleighScatteringRGB, sRGBFloat &mieScatteringRGB) const
@@ -738,7 +739,7 @@ sRGBAFloat cRenderWorker::VolumetricShader(
 
 				sRGBFloat color;
 				if (fakeLightLoop == 0 && commonWithPosition.fakeLightsMultiCenterEnabled
-					&& fractOut.orbitTrapCenterIndex >= 0 && fractOut.orbitTrapCenterIndex < 4)
+					&& fractOut.orbitTrapCenterIndex >= 0 && fractOut.orbitTrapCenterIndex < 24)
 				{
 					color = params->fakeLightsMultiCenterColor[fractOut.orbitTrapCenterIndex];
 				}
@@ -1007,6 +1008,17 @@ sRGBAFloat cRenderWorker::VolumetricShader(
 					output.B = std::max(output.B, float(intens * double(grad.B) * step));
 				}
 			}
+		}
+
+		// Glow spheres volumetric contribution
+		sRGBFloat glowSphereColor = glow_sphere::GlowSphereShaderMulti(point, params->frameNo,
+			&params->glowSphere1, &params->glowSphere2, &params->glowSphere3, &params->glowSphere4);
+		if (glowSphereColor.R > 0.0f || glowSphereColor.G > 0.0f || glowSphereColor.B > 0.0f)
+		{
+			output.R += glowSphereColor.R * float(step);
+			output.G += glowSphereColor.G * float(step);
+			output.B += glowSphereColor.B * float(step);
+			output.A += (glowSphereColor.R + glowSphereColor.G + glowSphereColor.B) / 3.0f * float(step);
 		}
 
 		if (totalOpacity > 1.0f) totalOpacity = 1.0f;

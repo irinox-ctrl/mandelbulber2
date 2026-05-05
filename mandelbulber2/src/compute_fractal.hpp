@@ -85,7 +85,7 @@ struct sFractalOut
 	int iters;
 	bool maxiter;
 	int orbitTrapMinIter;  // iteration at which orbit trap distance was smallest
-	int orbitTrapCenterIndex;  // multi-center index (0-3) that had minimum distance
+	int orbitTrapCenterIndex;  // multi-center index (0-23) that had minimum distance
 	// Orbit sample buffer for multi-depth texture blending
 	static const int maxOrbitSamples = 4;
 	CVector3 orbitSamples[4];   // z-snapshots at 4 iteration depths

@@ -46,6 +46,7 @@
 #include "fractal_enums.h"
 #include "fractparams.hpp"
 #include "global_data.hpp"
+#include "glow_sphere.hpp"
 #include "nine_fractals.hpp"
 #include "object_node_type.h"
 #include "perlin_noise_octaves.h"
@@ -217,6 +218,15 @@ double CalculateDistance(const sParamRender &params, const cNineFractals &fracta
 
 	distance = params.primitives.TotalDistance(
 		in.point, distance, in.detailSize, in.normalCalculationMode, &out->objectId, data, -1);
+
+	// Glow Spheres - add as solid objects to ray-marching (CPU)
+	double glowSphereDist = glow_sphere::GlowSphereDistanceMulti(in.point,
+		&params.glowSphere1, &params.glowSphere2, &params.glowSphere3, &params.glowSphere4);
+	if (glowSphereDist < distance)
+	{
+		distance = glowSphereDist;
+		out->objectId = -2; // special ID for glow sphere (any sphere hit)
+	}
 
 	//****************************************************
 

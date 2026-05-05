@@ -719,7 +719,7 @@ float4 VolumetricShader(__constant sClInConstants *consts, sRenderData *renderDa
 
 				float3 color;
 				if (fakeLightLoop == 0 && consts->params.common.fakeLightsMultiCenterEnabled
-					&& centerIndex >= 0 && centerIndex < 4)
+					&& centerIndex >= 0 && centerIndex < 24)
 				{
 					color = consts->params.fakeLightsMultiCenterColor[centerIndex];
 				}
@@ -902,6 +902,15 @@ float4 VolumetricShader(__constant sClInConstants *consts, sRenderData *renderDa
 		if (consts->params.patternLineTraps.enabled)
 		{
 			output += PatternLineTrapsShader(consts, point, NULL, NULL) * step;
+		}
+
+		// Glow sphere volumetric contribution
+		float3 glowSphereColor = GlowSphereShaderGPU(consts, point);
+		float glowSphereLenSq = dot(glowSphereColor, glowSphereColor);
+		if (glowSphereLenSq > 0.0f)
+		{
+			output += glowSphereColor * step;
+			out4.s3 += sqrt(glowSphereLenSq) * step;
 		}
 
 		if (totalOpacity > 1.0f) totalOpacity = 1.0f;

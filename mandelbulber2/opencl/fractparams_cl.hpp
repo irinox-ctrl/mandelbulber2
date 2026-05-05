@@ -176,7 +176,7 @@ typedef struct
 	cl_float3 fakeLightsColor;
 	cl_float3 fakeLightsColor2;
 	cl_float3 fakeLightsColor3;
-	cl_float3 fakeLightsMultiCenterColor[4];
+	cl_float3 fakeLightsMultiCenterColor[24];
 	cl_float3 fillLightColor;
 	cl_float3 fogColor;
 	cl_float3 glowColor1;
@@ -294,8 +294,11 @@ typedef struct
 
 	sCommonParamsCl common;
 
-	// Glow Sphere - simple placeable light
+	// Glow Spheres - simple placeable lights
 	sGlowSphereCl glowSphere1;
+	sGlowSphereCl glowSphere2;
+	sGlowSphereCl glowSphere3;
+	sGlowSphereCl glowSphere4;
 
 	// Single Trap Lights — multi-layer spatial light system
 	sSingleTrapLightsCl singleTrapLights;
@@ -411,7 +414,7 @@ inline sParamRenderCl clCopySParamRenderCl(const sParamRender &source)
 	target.fakeLightsColor = toClFloat3(source.fakeLightsColor);
 	target.fakeLightsColor2 = toClFloat3(source.fakeLightsColor2);
 	target.fakeLightsColor3 = toClFloat3(source.fakeLightsColor3);
-	for (int mc = 0; mc < 4; mc++)
+	for (int mc = 0; mc < 24; mc++)
 	{
 		target.fakeLightsMultiCenterColor[mc] = toClFloat3(source.fakeLightsMultiCenterColor[mc]);
 	}
@@ -546,8 +549,11 @@ inline sParamRenderCl clCopySParamRenderCl(const sParamRender &source)
 		toClMatrix33(source.mRotAmbientOcclusionLightMapRotation);
 	target.common = clCopySCommonParamsCl(source.common);
 
-	// Glow Sphere
+	// Glow Spheres
 	target.glowSphere1 = clCopySGlowSphere(source.glowSphere1);
+	target.glowSphere2 = clCopySGlowSphere(source.glowSphere2);
+	target.glowSphere3 = clCopySGlowSphere(source.glowSphere3);
+	target.glowSphere4 = clCopySGlowSphere(source.glowSphere4);
 
 	// Single Trap Lights
 	target.singleTrapLights.enabled = source.singleTrapLights.enabled ? 1 : 0;

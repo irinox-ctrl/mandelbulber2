@@ -35,6 +35,7 @@
 #ifndef MANDELBULBER2_QT_GRADIENT_EDIT_WIDGET_H_
 #define MANDELBULBER2_QT_GRADIENT_EDIT_WIDGET_H_
 
+#include <QComboBox>
 #include <QToolButton>
 #include <QWidget>
 
@@ -80,6 +81,8 @@ private:
 	void GrabColors();
 	void LoadColors();
 	void SaveColors();
+	void LoadPreset(QString presetGradient);
+	void LoadPresetsMenu(QMenu *menu);
 	bool DecodeGradientFromFile(QString string);
 	void LoadFromClipboard();
 	void SaveToClipboard();
@@ -94,6 +97,7 @@ private slots:
 	void pressedButtonSaturationInc();
 	void pressedButtonSaturationDec();
 	void pressedButtonInvert();
+	void interpolationModeChanged(int index);
 
 private:
 	cColorGradient gradient;
@@ -118,6 +122,7 @@ private:
 	QToolButton *buttonSaturationInc;
 	QToolButton *buttonSaturationDec;
 	QToolButton *buttonPaletteInvert;
+	QComboBox *comboInterpolationMode;
 
 signals:
 	void openEditor();

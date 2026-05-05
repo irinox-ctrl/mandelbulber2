@@ -440,9 +440,9 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 				int minCenterIndex = 0;
 				if (in.common->fakeLightsMultiCenterEnabled)
 				{
-					// Multi-center: evaluate distance to all 4 trap positions, take weighted minimum
+					// Multi-center: evaluate distance to all 24 trap positions, take weighted minimum
 					distance = 1e30;
-					for (int mc = 0; mc < 4; mc++)
+					for (int mc = 0; mc < 24; mc++)
 					{
 						if (in.common->fakeLightsMultiCenterWeight[mc] <= 0.0) continue;
 

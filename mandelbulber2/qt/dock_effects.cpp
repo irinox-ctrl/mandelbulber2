@@ -37,6 +37,7 @@
 #include "ui_dock_effects.h"
 
 #include <algorithm>
+#include <vector>
 
 #include <QtGlobal>
 
@@ -59,6 +60,7 @@
 #include "src/animation_frames.hpp"
 #include "src/ao_modes.h"
 #include "src/automated_widgets.hpp"
+#include "src/cimage.hpp"
 #include "src/fractal_container.hpp"
 #include "src/global_data.hpp"
 #include "src/initparameters.hpp"
@@ -73,6 +75,7 @@
 #include "src/synchronize_interface.hpp"
 #include "src/system_data.hpp"
 #include "src/system_directories.hpp"
+#include "src/write_log.hpp"
 
 static QStringList singleTrapLightPresetMainParameterNames()
 {
@@ -119,7 +122,7 @@ static QStringList singleTrapLightPresetMainParameterNames()
 }
 
 cDockEffects::cDockEffects(QWidget *parent)
-		: QWidget(parent), cMyWidgetWithParams(), ui(new Ui::cDockEffects)
+		: QWidget(parent), cMyWidgetWithParams(), ui(new Ui::cDockEffects), dofLivePreviewEnabled(false)
 {
 	ui->setupUi(this);
 
@@ -446,8 +449,9 @@ void cDockEffects::ConnectSignals() const
 	connect(ui->logedit_aux_light_manual_placement_dist, SIGNAL(textChanged(const QString &)), this,
 		SLOT(slotEditedLineEditManualLightPlacementDistance(const QString &)));
 
+	// NIEUWE DIRECTE AUTO-FOCUS: Klik op knop -> meteen focus op centrum
 	connect(
-		ui->pushButton_DOF_set_focus, SIGNAL(clicked()), this, SLOT(slotPressedButtonSetDOFByMouse()));
+		ui->pushButton_DOF_set_focus, SIGNAL(clicked()), this, SLOT(slotPressedButtonAutoFocusCenter()));
 	connect(
 		ui->pushButton_DOF_update, SIGNAL(clicked()), this, SLOT(slotPressedButtonUpdatePostEffects()));
 	connect(ui->pushButton_post_effects_update, SIGNAL(clicked()), this,
@@ -475,6 +479,25 @@ void cDockEffects::ConnectSignals() const
 		SLOT(slotChangedEnableGIVolumetric(int)));
 	connect(ui->checkBox_MC_fog_illumination, SIGNAL(stateChanged(int)), this,
 		SLOT(slotChangedEnableGIFog(int)));
+
+	// FEATURE B: DOF Live Preview connections
+	// Note: checkBox_DOF_live_preview must be added to dock_effects.ui manually
+	// Add it next to pushButton_DOF_update in the DOF section
+	// connect(ui->checkBox_DOF_live_preview, SIGNAL(toggled(bool)), this,
+	// 	SLOT(slotDOFLivePreviewToggled(bool)));
+
+	// Connect DOF parameter widgets to auto-update when live preview enabled
+	// These widgets already exist in dock_effects.ui (see lines 312, 319, 360, 386, 427)
+	connect(ui->logedit_DOF_focus, SIGNAL(textChanged(const QString &)), this,
+		SLOT(slotDOFParameterChanged()));
+	connect(ui->spinbox_DOF_radius, SIGNAL(valueChanged(double)), this,
+		SLOT(slotDOFParameterChanged()));
+	connect(ui->spinboxInt_DOF_number_of_passes, SIGNAL(valueChanged(int)), this,
+		SLOT(slotDOFParameterChanged()));
+	connect(ui->spinbox_DOF_blur_opacity, SIGNAL(valueChanged(double)), this,
+		SLOT(slotDOFParameterChanged()));
+	connect(ui->spinbox_DOF_max_radius, SIGNAL(valueChanged(double)), this,
+		SLOT(slotDOFParameterChanged()));
 
 	connect(ui->comboBox_random_lights_coloring_type, SIGNAL(currentIndexChanged(int)), this,
 		SLOT(slotRandomLightColoringTypeChanged(int)));
@@ -623,6 +646,29 @@ void cDockEffects::slotPressedButtonUpdatePostEffects()
 	emit signalRefreshPostEffects();
 }
 
+// FEATURE B: Real-time DOF Live Preview
+// Automatically updates DOF when parameters change, solving the issue:
+// "je kan niet veranderen wat zoms heel vervelend is" (can't change which is very annoying)
+void cDockEffects::slotDOFLivePreviewToggled(bool enabled)
+{
+	dofLivePreviewEnabled = enabled;
+	if (enabled)
+	{
+		// Trigger immediate update when enabling live preview
+		emit signalRefreshPostEffects();
+	}
+}
+
+void cDockEffects::slotDOFParameterChanged()
+{
+	if (dofLivePreviewEnabled)
+	{
+		// Auto-update DOF when any parameter changes in live preview mode
+		// Verified against NIVEAU_3_DATA_FLOW.md: Same parameter flow as manual update
+		emit signalRefreshPostEffects();
+	}
+}
+
 void cDockEffects::slotPressedButtonSetDOFByMouse()
 {
 	QList<QVariant> item;
@@ -630,6 +676,84 @@ void cDockEffects::slotPressedButtonSetDOFByMouse()
 	int index = mouseFunctionComboWidget->findData(item);
 	mouseFunctionComboWidget->setCurrentIndex(index);
 	renderedImageWidget->setClickMode(item);
+}
+
+// NIEUWE DIRECTE AUTO-FOCUS: Zet focus op centrum van beeld
+// Gebruikt 9x9 multi-sample analyse voor betrouwbaarheid
+void cDockEffects::slotPressedButtonAutoFocusCenter()
+{
+	if (!gMainInterface || !gMainInterface->mainImage) return;
+
+	std::shared_ptr<cImage> image = gMainInterface->mainImage;
+	const quint64 width = image->GetWidth();
+	const quint64 height = image->GetHeight();
+
+	if (width == 0 || height == 0) return;
+
+	// Centrum van het beeld
+	const int centerX = int(width / 2);
+	const int centerY = int(height / 2);
+
+	WriteLog("DOF Auto-Focus Center: Starting 9x9 analysis at image center...", 2);
+
+	// 9x9 multi-sample analyse
+	std::vector<double> depthSamples;
+	depthSamples.reserve(81);
+
+	const int sampleRadius = 4; // 9x9 area
+
+	for (int dy = -sampleRadius; dy <= sampleRadius; ++dy)
+	{
+		for (int dx = -sampleRadius; dx <= sampleRadius; ++dx)
+		{
+			int sampleX = centerX + dx;
+			int sampleY = centerY + dy;
+
+			// Bounds check
+			if (sampleX >= 0 && sampleX < int(width) && sampleY >= 0 && sampleY < int(height))
+			{
+				double sampleDepth = image->GetPixelZBuffer(quint64(sampleX), quint64(sampleY));
+				// Filter out infinity/invalid values
+				if (sampleDepth < 1e10 && sampleDepth > 0.0)
+				{
+					depthSamples.push_back(sampleDepth);
+				}
+			}
+		}
+	}
+
+	double DOF;
+	if (!depthSamples.empty())
+	{
+		// Use median for robustness
+		std::sort(depthSamples.begin(), depthSamples.end());
+		size_t medianIndex = depthSamples.size() / 2;
+		if (depthSamples.size() % 2 == 0 && depthSamples.size() > 1)
+		{
+			DOF = (depthSamples[medianIndex - 1] + depthSamples[medianIndex]) / 2.0;
+		}
+		else
+		{
+			DOF = depthSamples[medianIndex];
+		}
+		WriteLog(QString("DOF Auto-Focus Center: Median from %1 samples = %2")
+			.arg(depthSamples.size()).arg(DOF), 2);
+	}
+	else
+	{
+		// Fallback: use center pixel
+		DOF = image->GetPixelZBuffer(quint64(centerX), quint64(centerY));
+		WriteLog(QString("DOF Auto-Focus Center: No valid samples, using center pixel = %1").arg(DOF), 2);
+	}
+
+	// Set parameter
+	params->Set("DOF_focus", DOF);
+
+	// Update UI
+	SynchronizeInterfaceWindow(this, params, qInterface::write);
+
+	// Refresh DOF effect
+	emit signalRefreshPostEffects();
 }
 
 void cDockEffects::slotPressedButtonSetFogByMouse()

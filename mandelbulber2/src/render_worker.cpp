@@ -878,7 +878,8 @@ cRenderWorker::sRayRecursionOut cRenderWorker::RayRecursion(
 			shaderInputData.stepBuff = inOut.rayMarchingInOut.stepBuff;
 			shaderInputData.invertMode = rayStack[rayIndex].in.calcInside;
 			shaderInputData.objectId = rayMarchingOut.objectId;
-			cObjectData objectData = data->objectData[shaderInputData.objectId];
+			int safeObjectId = (shaderInputData.objectId < 0) ? 0 : shaderInputData.objectId;
+			cObjectData objectData = data->objectData[safeObjectId];
 			shaderInputData.material = &data->materials[objectData.materialId];
 
 			float reflect = shaderInputData.material->reflectance;
@@ -1109,7 +1110,8 @@ cRenderWorker::sRayRecursionOut cRenderWorker::RayRecursion(
 			shaderInputData.stepBuff = inOut.rayMarchingInOut.stepBuff;
 			shaderInputData.invertMode = rayStack[rayIndex].in.calcInside;
 			shaderInputData.objectId = rayMarchingOut.objectId;
-			cObjectData objectData = data->objectData[shaderInputData.objectId];
+			int safeObjectId = (shaderInputData.objectId < 0) ? 0 : shaderInputData.objectId;
+			cObjectData objectData = data->objectData[safeObjectId];
 			shaderInputData.material = &data->materials[objectData.materialId];
 
 			shaderInputData.normal = recursionOut.normal;

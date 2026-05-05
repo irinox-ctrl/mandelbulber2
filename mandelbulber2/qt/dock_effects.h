@@ -84,9 +84,12 @@ private slots:
 	void slotChangedComboAmbientOcclusionMode(int index) const;
 	void slotEditedLineEditManualLightPlacementDistance(const QString &text);
 	void slotPressedButtonSetDOFByMouse();
+	void slotPressedButtonAutoFocusCenter();
 	void slotPressedButtonSetFogByMouse();
 	void slotPressedButtonUpdatePostEffects();
 	void slotPressedButtonPlaceRandomLightsByMouse();
+	void slotDOFLivePreviewToggled(bool enabled);
+	void slotDOFParameterChanged();
 	void slotChangedPlaceLightBehindObjects(int state);
 	void slotChangedEnableMCDOF(bool state);
 	void slotChangedEnableGI(int state);
@@ -137,6 +140,7 @@ private:
 	Ui::cDockEffects *ui;
 
 	cAutomatedWidgets *automatedWidgets;
+	bool dofLivePreviewEnabled;
 };
 
 #endif /* MANDELBULBER2_QT_DOCK_EFFECTS_H_ */

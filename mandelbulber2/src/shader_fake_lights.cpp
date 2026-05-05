@@ -113,7 +113,7 @@ sRGBAFloat cRenderWorker::FakeLights(
 
 		sRGBFloat color;
 		if (fakeLightLoop == 0 && commonWithPosition.fakeLightsMultiCenterEnabled
-			&& fractOut.orbitTrapCenterIndex >= 0 && fractOut.orbitTrapCenterIndex < 4)
+			&& fractOut.orbitTrapCenterIndex >= 0 && fractOut.orbitTrapCenterIndex < 24)
 		{
 			color = params->fakeLightsMultiCenterColor[fractOut.orbitTrapCenterIndex];
 		}

@@ -63,10 +63,10 @@ float3 ObjectShader(__constant sClInConstants *consts, sRenderData *renderData,
 				fmod(perlin * input->material->coloring_speed + input->material->paletteOffset, 1.0f);
 
 			float3 gradientColor = GetColorFromGradient(colorPosition,
-				input->material->surfaceGradientMode, input->paletteSurfaceLength,
-				input->palette + input->paletteSurfaceOffset, NULL, 0);
-			float alpha = GetAlphaFromGradient(colorPosition, input->opacitySurfaceLength,
-				input->palette + input->opacitySurfaceOffset);
+				false, input->paletteSurfaceLength,
+				input->palette + input->paletteSurfaceOffset, NULL, 0, 0);
+			float alpha = GetColorFromGradient(colorPosition, false, input->opacitySurfaceLength,
+				input->palette + input->opacitySurfaceOffset, NULL, 0, 0).x;
 
 			surfaceColor *= gradientColor * perlinColInt + perlinIntN;
 			if (input->material->surfaceGradientMaskEnable)
@@ -149,8 +149,60 @@ float3 ObjectShader(__constant sClInConstants *consts, sRenderData *renderData,
 	}
 #endif
 
-	// Glow Sphere - visible light source
+	// Glow Spheres - visible light source + surface lighting (diffuse + specular)
 	float3 glowSphere = GlowSphereShaderGPU(consts, input->point);
+	float3 glowSphereSurface = GlowSphereSurfaceLightGPU(consts, input->point, input->normal,
+		input->material->shading);
+	float3 glowSphereSpecular = (float3)(0.0f, 0.0f, 0.0f);
+	// Specular from each sphere (unrolled loop for safety)
+	if (consts->params.glowSphere1.enabled)
+	{
+		float3 toSphere = consts->params.glowSphere1.position.xyz - input->point;
+		float distToSphere = length(toSphere);
+		if (distToSphere > 1e-20f)
+		{
+			float3 lightDir = toSphere / distToSphere;
+			float3 spec = SpecularHighlightCombined(input, calcParam, lightDir, surfaceColor, gradients);
+			float3 glowColor = _GlowSphereShaderSingle(&consts->params.glowSphere1, consts->params.frameNo, input->point);
+			glowSphereSpecular += spec * glowColor;
+		}
+	}
+	if (consts->params.glowSphere2.enabled)
+	{
+		float3 toSphere = consts->params.glowSphere2.position.xyz - input->point;
+		float distToSphere = length(toSphere);
+		if (distToSphere > 1e-20f)
+		{
+			float3 lightDir = toSphere / distToSphere;
+			float3 spec = SpecularHighlightCombined(input, calcParam, lightDir, surfaceColor, gradients);
+			float3 glowColor = _GlowSphereShaderSingle(&consts->params.glowSphere2, consts->params.frameNo, input->point);
+			glowSphereSpecular += spec * glowColor;
+		}
+	}
+	if (consts->params.glowSphere3.enabled)
+	{
+		float3 toSphere = consts->params.glowSphere3.position.xyz - input->point;
+		float distToSphere = length(toSphere);
+		if (distToSphere > 1e-20f)
+		{
+			float3 lightDir = toSphere / distToSphere;
+			float3 spec = SpecularHighlightCombined(input, calcParam, lightDir, surfaceColor, gradients);
+			float3 glowColor = _GlowSphereShaderSingle(&consts->params.glowSphere3, consts->params.frameNo, input->point);
+			glowSphereSpecular += spec * glowColor;
+		}
+	}
+	if (consts->params.glowSphere4.enabled)
+	{
+		float3 toSphere = consts->params.glowSphere4.position.xyz - input->point;
+		float distToSphere = length(toSphere);
+		if (distToSphere > 1e-20f)
+		{
+			float3 lightDir = toSphere / distToSphere;
+			float3 spec = SpecularHighlightCombined(input, calcParam, lightDir, surfaceColor, gradients);
+			float3 glowColor = _GlowSphereShaderSingle(&consts->params.glowSphere4, consts->params.frameNo, input->point);
+			glowSphereSpecular += spec * glowColor;
+		}
+	}
 
 	float3 iridescence = 1.0f;
 #ifdef USE_IRIDESCENCE
@@ -161,7 +213,7 @@ float3 ObjectShader(__constant sClInConstants *consts, sRenderData *renderData,
 #endif
 	*iridescenceOut = iridescence;
 
-	float3 totalSpecular = (fakeLightsSpecular + auxSpecular) * iridescence;
+	float3 totalSpecular = (fakeLightsSpecular + auxSpecular + glowSphereSpecular) * iridescence;
 
 	float3 luminosity;
 #ifdef USE_LUMINOSITY_GRADIENT
@@ -188,10 +240,10 @@ float3 ObjectShader(__constant sClInConstants *consts, sRenderData *renderData,
 				fmod(perlin * input->material->coloring_speed + input->material->paletteOffset, 1.0f);
 
 			float3 gradientColor = GetColorFromGradient(colorPosition,
-				input->material->luminosityGradientMode, input->paletteLuminosityLength,
-				input->palette + input->paletteLuminosityOffset, NULL, 0);
-			float alpha = GetAlphaFromGradient(colorPosition, input->opacityLuminosityLength,
-				input->palette + input->opacityLuminosityOffset);
+				false, input->paletteLuminosityLength,
+				input->palette + input->paletteLuminosityOffset, NULL, 0, 0);
+			float alpha = GetColorFromGradient(colorPosition, false, input->opacityLuminosityLength,
+				input->palette + input->opacityLuminosityOffset, NULL, 0, 0).x;
 
 			luminosity += gradientColor * perlinLumInt;
 			if (input->material->luminosityGradientMaskEnable)
@@ -216,7 +268,7 @@ float3 ObjectShader(__constant sClInConstants *consts, sRenderData *renderData,
 
 	*outLuminosityEmissive = luminosity * input->material->luminosityEmissive;
 
-	color = surfaceColor * (fillLight + auxLights + fakeLights + AO) + envMapping + totalSpecular
+	color = surfaceColor * (fillLight + auxLights + fakeLights + AO + glowSphereSurface) + envMapping + totalSpecular
 					+ luminosity + singleTrapLights + patternLineTraps + glowSphere;
 	*outSpecular = totalSpecular;
 

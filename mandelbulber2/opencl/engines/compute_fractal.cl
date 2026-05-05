@@ -469,9 +469,9 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 						int minCenterIndex = 0;
 				if (consts->params.common.fakeLightsMultiCenterEnabled)
 				{
-					// Multi-center: evaluate distance to all 4 trap positions, take weighted minimum
+					// Multi-center: evaluate distance to all 24 trap positions, take weighted minimum
 					distance = 1e30f;
-					for (int mc = 0; mc < 4; mc++)
+					for (int mc = 0; mc < 24; mc++)
 					{
 						if (consts->params.common.fakeLightsMultiCenterWeight[mc] <= 0.0f) continue;
 

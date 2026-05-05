@@ -209,8 +209,8 @@ struct sCommonParams
 	CVector3 fakeLightsRotation;
 	CVector3 fractalPosition;
 	bool fakeLightsMultiCenterEnabled = false;
-	CVector3 fakeLightsMultiCenter[4];
-	double fakeLightsMultiCenterWeight[4] = {1.0, 1.0, 1.0, 1.0};
+	CVector3 fakeLightsMultiCenter[24];
+	double fakeLightsMultiCenterWeight[24];
 	params::enumFakeLightsDecay fakeLightsDecayFunction = params::fakeLightsDecay1R2;
 	CVector3 fractalRotation;
 	CVector3 repeat;

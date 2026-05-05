@@ -285,7 +285,8 @@ sRayRecursionOut RayRecursion(sRayRecursionIn in, sRenderData *renderData,
 #else
 			shaderInputData.objectId = 0;
 #endif
-			__global sObjectDataCl *objectData = &renderData->objectsData[shaderInputData.objectId];
+			int safeObjectId = (shaderInputData.objectId < 0) ? 0 : shaderInputData.objectId;
+			__global sObjectDataCl *objectData = &renderData->objectsData[safeObjectId];
 			shaderInputData.material = renderData->materials[objectData->materialId];
 			shaderInputData.palette = renderData->palettes[objectData->materialId];
 #ifdef USE_SURFACE_GRADIENT
@@ -640,7 +641,8 @@ sRayRecursionOut RayRecursion(sRayRecursionIn in, sRenderData *renderData,
 #else
 			shaderInputData.objectId = 0;
 #endif
-			__global sObjectDataCl *objectData = &renderData->objectsData[shaderInputData.objectId];
+			int safeObjectId = (shaderInputData.objectId < 0) ? 0 : shaderInputData.objectId;
+			__global sObjectDataCl *objectData = &renderData->objectsData[safeObjectId];
 			shaderInputData.material = renderData->materials[objectData->materialId];
 			shaderInputData.palette = renderData->palettes[objectData->materialId];
 #ifdef USE_SURFACE_GRADIENT

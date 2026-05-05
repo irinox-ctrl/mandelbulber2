@@ -240,8 +240,8 @@ typedef struct
 
 	cl_int fakeLightsMultiCenterEnabled;
 	cl_float pad_mc[3];
-	cl_float3 fakeLightsMultiCenter[4];
-	cl_float fakeLightsMultiCenterWeight[4];
+	cl_float3 fakeLightsMultiCenter[24];
+	cl_float fakeLightsMultiCenterWeight[24];
 	cl_int fakeLightsDecayFunction;
 
 	cl_int fakeLightsPositionMode;
@@ -332,7 +332,7 @@ inline sCommonParamsCl clCopySCommonParamsCl(const sCommonParams &source)
 	target.foldings = clCopySFractalFoldingsCl(source.foldings);
 
 	target.fakeLightsMultiCenterEnabled = source.fakeLightsMultiCenterEnabled;
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 24; i++)
 	{
 		target.fakeLightsMultiCenter[i] = toClFloat3(source.fakeLightsMultiCenter[i]);
 		target.fakeLightsMultiCenterWeight[i] = source.fakeLightsMultiCenterWeight[i];

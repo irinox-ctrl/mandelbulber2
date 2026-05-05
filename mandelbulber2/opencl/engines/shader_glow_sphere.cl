@@ -4,7 +4,7 @@
  * Copyright (C) 2017-26 Mandelbulber Team     §R-==%w["'~5]m%=L.=~5N
  *                                        ,=mm=§M ]=4 yJKA"/-Nsaj  "Bw,==,,
  * This file is part of Mandelbulber.    §R.r= jw",M  Km .mM  FW ",§=ß., ,TN
- *                                     ,4R =%["w[N=7]J '"5=],""]]M,w,-; T=]M
+ *                                     ,4R =%["w[N=7]J '"5=],"""]M,w,-; T=]M
  * Mandelbulber is free software:     §R.ß~-Q/M=,=5"v"]=Qf,'§"M= =,M.§ Rz]M"Kw
  * you can redistribute it and/or     §w "xDY.J ' -"m=====WeC=\ ""%""y=%"]"" §
  * modify it under the terms of the    "§M=M =D=4"N #"%==A%p M§ M6  R' #"=~.4M
@@ -30,9 +30,8 @@
  * Authors: Krzysztof Marczak (buddhi1980@gmail.com)
  *
  * Glow Sphere - OpenCL shader (renders visible sphere + emits light)
+ * Multi-sphere support: up to 4 glow spheres
  */
-
-#define GLOW_SPHERE_FALLOFF_RADIUS 5.0f
 
 /* Sphere SDF */
 static inline float GlowSphereDistance(float3 point, float3 position, float radius)
@@ -50,28 +49,91 @@ static inline float GlowSphereFalloff(float distance, float falloff_radius)
 	return t * t * (3.0f - 2.0f * t);
 }
 
-/* Returns RGB glow contribution */
-float3 GlowSphereShaderGPU(__constant sClInConstants *consts, float3 point)
+/* Single sphere: returns RGB glow contribution */
+static inline float3 _GlowSphereShaderSingle(__constant sGlowSphereCl *sphere, int frameNo, float3 point)
 {
-	__constant sGlowSphereCl *sphere = &consts->params.glowSphere1;
-
 	if (sphere->enabled == 0) return (float3)(0.0f, 0.0f, 0.0f);
 
-	float dist = GlowSphereDistance(point, sphere->position, sphere->radius);
-	if (dist >= GLOW_SPHERE_FALLOFF_RADIUS) return (float3)(0.0f, 0.0f, 0.0f);
+	float dist = GlowSphereDistance(point, sphere->position.xyz, sphere->radius);
+	if (dist >= sphere->falloffRadius) return (float3)(0.0f, 0.0f, 0.0f);
 
-	float falloff = GlowSphereFalloff(dist, GLOW_SPHERE_FALLOFF_RADIUS);
-	float weight = sphere->intensity * falloff;
+	float falloff = GlowSphereFalloff(dist, sphere->falloffRadius);
 
-	return sphere->color * weight;
+	// Color gradient: innerColor at surface → outerColor at falloff edge
+	float t = clamp(dist / sphere->falloffRadius, 0.0f, 1.0f);
+	float3 color = mix(sphere->color.xyz, sphere->outerColor.xyz, t);
+
+	// Pulse animation
+	float pulse = 1.0f;
+	if (sphere->pulseSpeed > 0.0f || sphere->pulseAmount > 0.0f)
+	{
+		float angle = (float)frameNo * sphere->pulseSpeed;
+		pulse = 1.0f + sphere->pulseAmount * sin(angle);
+	}
+
+	float weight = sphere->intensity * falloff * pulse;
+
+	float3 result = color * weight;
+	return clamp(result, 0.0f, 1e6f);
 }
 
-/* Returns distance to sphere surface (for ray-marching - makes sphere solid/visible) */
+/* Multi-sphere: returns summed RGB glow contribution */
+float3 GlowSphereShaderGPU(__constant sClInConstants *consts, float3 point)
+{
+	int frameNo = consts->params.frameNo;
+	float3 result = (float3)(0.0f, 0.0f, 0.0f);
+	result += _GlowSphereShaderSingle(&consts->params.glowSphere1, frameNo, point);
+	result += _GlowSphereShaderSingle(&consts->params.glowSphere2, frameNo, point);
+	result += _GlowSphereShaderSingle(&consts->params.glowSphere3, frameNo, point);
+	result += _GlowSphereShaderSingle(&consts->params.glowSphere4, frameNo, point);
+	return result;
+}
+
+/* Single sphere: returns RGB diffuse lighting at a surface point */
+static inline float3 _GlowSphereSurfaceLightSingle(__constant sGlowSphereCl *sphere, int frameNo,
+	float3 surfacePoint, float3 normal, float shading)
+{
+	if (sphere->enabled == 0) return (float3)(0.0f);
+
+	float3 toSphere = sphere->position.xyz - surfacePoint;
+	float dist = length(toSphere);
+	if (dist < 1e-20f) return (float3)(0.0f);
+
+	float3 lightDir = toSphere / dist;
+	float diffuse = dot(normal, lightDir);
+	if (diffuse < 0.0f) diffuse = 0.0f;
+	diffuse = 1.0f - shading + diffuse * shading;
+
+	float3 glowColor = _GlowSphereShaderSingle(sphere, frameNo, surfacePoint);
+	return glowColor * diffuse;
+}
+
+/* Multi-sphere: returns summed RGB diffuse lighting */
+float3 GlowSphereSurfaceLightGPU(__constant sClInConstants *consts, float3 surfacePoint, float3 normal,
+	float shading)
+{
+	int frameNo = consts->params.frameNo;
+	float3 result = (float3)(0.0f, 0.0f, 0.0f);
+	result += _GlowSphereSurfaceLightSingle(&consts->params.glowSphere1, frameNo, surfacePoint, normal, shading);
+	result += _GlowSphereSurfaceLightSingle(&consts->params.glowSphere2, frameNo, surfacePoint, normal, shading);
+	result += _GlowSphereSurfaceLightSingle(&consts->params.glowSphere3, frameNo, surfacePoint, normal, shading);
+	result += _GlowSphereSurfaceLightSingle(&consts->params.glowSphere4, frameNo, surfacePoint, normal, shading);
+	return result;
+}
+
+/* Single sphere: returns distance to sphere surface */
+static inline float _GlowSphereDistanceSingle(__constant sGlowSphereCl *sphere, float3 point)
+{
+	if (sphere->enabled == 0) return 1e30f;
+	return GlowSphereDistance(point, sphere->position.xyz, sphere->radius);
+}
+
+/* Multi-sphere: returns minimum distance to any enabled sphere */
 float GlowSphereDistanceGPU(__constant sClInConstants *consts, float3 point)
 {
-	__constant sGlowSphereCl *sphere = &consts->params.glowSphere1;
-
-	if (sphere->enabled == 0) return 1e20f;  // infinite distance if disabled
-
-	return GlowSphereDistance(point, sphere->position, sphere->radius);
+	float d1 = _GlowSphereDistanceSingle(&consts->params.glowSphere1, point);
+	float d2 = _GlowSphereDistanceSingle(&consts->params.glowSphere2, point);
+	float d3 = _GlowSphereDistanceSingle(&consts->params.glowSphere3, point);
+	float d4 = _GlowSphereDistanceSingle(&consts->params.glowSphere4, point);
+	return min(min(min(d1, d2), d3), d4);
 }

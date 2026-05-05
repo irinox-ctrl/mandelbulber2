@@ -93,11 +93,11 @@ float3 PerlinNoiseForReflectance(sShaderInputDataCl *shaderInputData, float3 ref
 			1.0f);
 
 		float3 gradientColor =
-			GetColorFromGradient(colorPosition, shaderInputData->material->reflectanceGradientMode,
+			GetColorFromGradient(colorPosition, false,
 				shaderInputData->paletteReflectanceLength,
-				shaderInputData->palette + shaderInputData->paletteReflectanceOffset, NULL, 0);
-		float alpha = GetAlphaFromGradient(colorPosition, shaderInputData->opacityReflectanceLength,
-			shaderInputData->palette + shaderInputData->opacityReflectanceOffset);
+				shaderInputData->palette + shaderInputData->paletteReflectanceOffset, NULL, 0, 0);
+		float alpha = GetColorFromGradient(colorPosition, false, shaderInputData->opacityReflectanceLength,
+			shaderInputData->palette + shaderInputData->opacityReflectanceOffset, NULL, 0, 0).x;
 
 		reflectancePerlin = gradientColor;
 		if (shaderInputData->material->reflectanceGradientMaskEnable)
@@ -138,11 +138,11 @@ float3 PerlinNoiseForTransparency(
 			1.0f);
 
 		float3 gradientColor =
-			GetColorFromGradient(colorPosition, shaderInputData->material->transparencyGradientMode,
+			GetColorFromGradient(colorPosition, false,
 				shaderInputData->paletteTransparencyLength,
-				shaderInputData->palette + shaderInputData->paletteTransparencyOffset, NULL, 0);
-		float alpha = GetAlphaFromGradient(colorPosition, shaderInputData->opacityTransparencyLength,
-			shaderInputData->palette + shaderInputData->opacityTransparencyOffset);
+				shaderInputData->palette + shaderInputData->paletteTransparencyOffset, NULL, 0, 0);
+		float alpha = GetColorFromGradient(colorPosition, false, shaderInputData->opacityTransparencyLength,
+			shaderInputData->palette + shaderInputData->opacityTransparencyOffset, NULL, 0, 0).x;
 
 		transparencyPerlin = gradientColor;
 		if (shaderInputData->material->transparencyGradientMaskEnable)

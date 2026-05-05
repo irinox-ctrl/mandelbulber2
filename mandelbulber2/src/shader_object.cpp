@@ -35,6 +35,7 @@
 #include <iostream>
 
 #include "fractparams.hpp"
+#include "glow_sphere.hpp"
 #include "material.h"
 #include "render_worker.hpp"
 
@@ -162,6 +163,34 @@ sRGBAFloat cRenderWorker::ObjectShader(const sShaderInputData &_input, sRGBAFloa
 		fakeLights = FakeLights(input, colour, &fakeLightsSpecular);
 	}
 
+	// Glow Spheres - visible light source + surface lighting (diffuse + specular)
+	sRGBFloat glowSphere = glow_sphere::GlowSphereShaderMulti(input.point, params->frameNo,
+		&params->glowSphere1, &params->glowSphere2, &params->glowSphere3, &params->glowSphere4);
+	sRGBFloat glowSphereSurface = glow_sphere::GlowSphereSurfaceLightMulti(
+		input.point, input.normal, mat->shading, params->frameNo,
+		&params->glowSphere1, &params->glowSphere2, &params->glowSphere3, &params->glowSphere4);
+
+	// Specular highlight from all glow spheres
+	sRGBFloat glowSphereSpecular(0.0f, 0.0f, 0.0f);
+	const sGlowSphere *glowSpheres[4] = {
+		&params->glowSphere1, &params->glowSphere2, &params->glowSphere3, &params->glowSphere4};
+	for (int gi = 0; gi < 4; gi++)
+	{
+		if (!glowSpheres[gi]->enabled) continue;
+		CVector3 toSphere = glowSpheres[gi]->position - input.point;
+		double distToSphere = toSphere.Length();
+		if (distToSphere > 1e-20)
+		{
+			CVector3 lightDir = toSphere / distToSphere;
+			sRGBAFloat spec = SpecularHighlightCombined(input, lightDir, colour, gradients->diffuse);
+			sRGBFloat glowColor = glow_sphere::GlowSphereShader(
+				input.point, *glowSpheres[gi], params->frameNo);
+			glowSphereSpecular.R += spec.R * glowColor.R;
+			glowSphereSpecular.G += spec.G * glowColor.G;
+			glowSphereSpecular.B += spec.B * glowColor.B;
+		}
+	}
+
 	// luminosity
 	sRGBAFloat luminosity;
 	if (mat->useColorsFromPalette && mat->luminosityGradientEnable)
@@ -225,9 +254,9 @@ sRGBAFloat cRenderWorker::ObjectShader(const sShaderInputData &_input, sRGBAFloa
 	output.G = envMapping.G + (fillLight.G + ambient2.G) * colour.G;
 	output.B = envMapping.B + (fillLight.B + ambient2.B) * colour.B;
 
-	output.R += (auxLights.R + fakeLights.R) * colour.R + singleTrapLights.R + patternLineTraps.R;
-	output.G += (auxLights.G + fakeLights.G) * colour.G + singleTrapLights.G + patternLineTraps.G;
-	output.B += (auxLights.B + fakeLights.B) * colour.B + singleTrapLights.B + patternLineTraps.B;
+	output.R += (auxLights.R + fakeLights.R + glowSphereSurface.R) * colour.R + singleTrapLights.R + patternLineTraps.R + glowSphere.R;
+	output.G += (auxLights.G + fakeLights.G + glowSphereSurface.G) * colour.G + singleTrapLights.G + patternLineTraps.G + glowSphere.G;
+	output.B += (auxLights.B + fakeLights.B + glowSphereSurface.B) * colour.B + singleTrapLights.B + patternLineTraps.B + glowSphere.B;
 
 	output.R += luminosity.R;
 	output.G += luminosity.G;
@@ -235,9 +264,9 @@ sRGBAFloat cRenderWorker::ObjectShader(const sShaderInputData &_input, sRGBAFloa
 
 	output.A = alpha;
 
-	specularOut->R = (auxLightsSpecular.R + fakeLightsSpecular.R) * iridescence.R;
-	specularOut->G = (auxLightsSpecular.G + fakeLightsSpecular.G) * iridescence.G;
-	specularOut->B = (auxLightsSpecular.B + fakeLightsSpecular.B) * iridescence.B;
+	specularOut->R = (auxLightsSpecular.R + fakeLightsSpecular.R + glowSphereSpecular.R) * iridescence.R;
+	specularOut->G = (auxLightsSpecular.G + fakeLightsSpecular.G + glowSphereSpecular.G) * iridescence.G;
+	specularOut->B = (auxLightsSpecular.B + fakeLightsSpecular.B + glowSphereSpecular.B) * iridescence.B;
 	specularOut->A = output.A;
 
 	return output;

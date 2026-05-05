@@ -140,10 +140,10 @@ int GradientIterator(
 }
 
 float3 GetColorFromGradient(float position, bool smooth, int gradientSize,
-	__global float4 *palette, __global float4 *midpoints, int midpointSize)
+	__global float4 *palette, __global float4 *midpoints, int midpointSize, int mode)
 {
 	int paletteIndex = GradientIterator(0, position, gradientSize, palette);
-	return GradientInterpolate(paletteIndex, position, smooth, gradientSize, palette, midpoints, midpointSize);
+	return GradientInterpolate(paletteIndex, position, smooth, gradientSize, palette, midpoints, midpointSize, mode);
 }
 
 //------------------ MAIN RENDER FUNCTION --------------------
@@ -488,7 +488,7 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 							? clamp((point.x - limitMin.x) / (limitMax.x - limitMin.x), 0.0f, 1.0f)
 							: 0.5f;
 					float3 gradientColorX = GetColorFromGradient(
-						colorPosX, false, paletteLengthXAxis, gradients + paletteOffsetXAxis, NULL, 0);
+						colorPosX, false, paletteLengthXAxis, gradients + paletteOffsetXAxis, NULL, 0, 0);
 #else
 #ifdef NEBULA_COLOR_MIXING_LIGHTEN
 					float3 gradientColorX = (float3){0.0f, 0.0f, 0.0f};
@@ -503,7 +503,7 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 							? clamp((point.y - limitMin.y) / (limitMax.y - limitMin.y), 0.0f, 1.0f)
 							: 0.5f;
 					float3 gradientColorY = GetColorFromGradient(
-						colorPosY, false, paletteLengthYAxis, gradients + paletteOffsetYAxis, NULL, 0);
+						colorPosY, false, paletteLengthYAxis, gradients + paletteOffsetYAxis, NULL, 0, 0);
 #else
 #ifdef NEBULA_COLOR_MIXING_LIGHTEN
 					float3 gradientColorY = (float3){0.0f, 0.0f, 0.0f};
@@ -518,7 +518,7 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 							? clamp((point.z - limitMin.z) / (limitMax.z - limitMin.z), 0.0f, 1.0f)
 							: 0.5f;
 					float3 gradientColorZ = GetColorFromGradient(
-						colorPosZ, false, paletteLengthZAxis, gradients + paletteOffsetZAxis, NULL, 0);
+						colorPosZ, false, paletteLengthZAxis, gradients + paletteOffsetZAxis, NULL, 0, 0);
 #else
 #ifdef NEBULA_COLOR_MIXING_LIGHTEN
 					float3 gradientColorZ = (float3){0.0f, 0.0f, 0.0f};
@@ -531,7 +531,7 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					float colorIterations = (float)(i - consts->params.nebulaMinIteration)
 																	/ (float)(MAX_ITERATIONS - consts->params.nebulaMinIteration);
 					float3 gradientColorIterations = GetColorFromGradient(
-						colorIterations, false, paletteLengthIterations, gradients + paletteOffsetIterations, NULL, 0);
+						colorIterations, false, paletteLengthIterations, gradients + paletteOffsetIterations, NULL, 0, 0);
 #else
 #ifdef NEBULA_COLOR_MIXING_LIGHTEN
 					float3 gradientColorIterations = (float3){0.0f, 0.0f, 0.0f};

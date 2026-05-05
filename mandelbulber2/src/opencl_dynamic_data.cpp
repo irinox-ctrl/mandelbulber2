@@ -175,6 +175,8 @@ int cOpenClDynamicData::BuildMaterialsData(
 		{
 			const cMaterial &material = materials.at(materialIndex);
 			materialCl = clCopySMaterialCl(material);
+			materialCl.surfaceGradientInterpolationMode = static_cast<cl_int>(material.gradientSurface.GetInterpolationMode());
+			materialCl.surfaceGradientBlendMode = material.surfaceGradientBlendMode;
 
 			QString textureName;
 

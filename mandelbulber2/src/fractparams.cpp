@@ -130,7 +130,7 @@ sParamRender::sParamRender(const std::shared_ptr<cParameterContainer> container,
 	fakeLightsColor = toRGBFloat(container->Get<sRGB>("fake_lights_color"));
 	fakeLightsColor2 = toRGBFloat(container->Get<sRGB>("fake_lights_color_2"));
 	fakeLightsColor3 = toRGBFloat(container->Get<sRGB>("fake_lights_color_3"));
-	for (int mc = 0; mc < 4; mc++)
+	for (int mc = 0; mc < 24; mc++)
 	{
 		fakeLightsMultiCenterColor[mc] =
 			toRGBFloat(container->Get<sRGB>(QString("fake_lights_multi_center_color_%1").arg(mc + 1)));
@@ -324,7 +324,7 @@ sParamRender::sParamRender(const std::shared_ptr<cParameterContainer> container,
 	common.fakeLightsCenterIteration = container->Get<int>("fake_lights_center_iteration");
 	common.fakeLightsOrbitTrap = container->Get<CVector3>("fake_lights_orbit_trap");
 	common.fakeLightsMultiCenterEnabled = container->Get<bool>("fake_lights_multi_center_enabled");
-	for (int mc = 0; mc < 4; mc++)
+	for (int mc = 0; mc < 24; mc++)
 	{
 		common.fakeLightsMultiCenter[mc] =
 			container->Get<CVector3>(QString("fake_lights_multi_center_%1").arg(mc + 1));
@@ -518,6 +518,46 @@ sParamRender::sParamRender(const std::shared_ptr<cParameterContainer> container,
 	glowSphere1.radius = container->Get<double>("glow_sphere_1_radius");
 	glowSphere1.color = container->Get<sRGB>("glow_sphere_1_color");
 	glowSphere1.intensity = container->Get<double>("glow_sphere_1_intensity");
+	glowSphere1.falloffRadius = container->Get<double>("glow_sphere_1_falloff_radius");
+	glowSphere1.outerColor = container->Get<sRGB>("glow_sphere_1_outer_color");
+	glowSphere1.pulseSpeed = container->Get<double>("glow_sphere_1_pulse_speed");
+	glowSphere1.pulseAmount = container->Get<double>("glow_sphere_1_pulse_amount");
+
+	// Glow Sphere 2
+	glowSphere2.enabled = container->Get<bool>("glow_sphere_2_enabled");
+	glowSphere2.position = container->Get<CVector3>("glow_sphere_2_position");
+	glowSphere2.rotation = container->Get<CVector3>("glow_sphere_2_rotation");
+	glowSphere2.radius = container->Get<double>("glow_sphere_2_radius");
+	glowSphere2.color = container->Get<sRGB>("glow_sphere_2_color");
+	glowSphere2.intensity = container->Get<double>("glow_sphere_2_intensity");
+	glowSphere2.falloffRadius = container->Get<double>("glow_sphere_2_falloff_radius");
+	glowSphere2.outerColor = container->Get<sRGB>("glow_sphere_2_outer_color");
+	glowSphere2.pulseSpeed = container->Get<double>("glow_sphere_2_pulse_speed");
+	glowSphere2.pulseAmount = container->Get<double>("glow_sphere_2_pulse_amount");
+
+	// Glow Sphere 3
+	glowSphere3.enabled = container->Get<bool>("glow_sphere_3_enabled");
+	glowSphere3.position = container->Get<CVector3>("glow_sphere_3_position");
+	glowSphere3.rotation = container->Get<CVector3>("glow_sphere_3_rotation");
+	glowSphere3.radius = container->Get<double>("glow_sphere_3_radius");
+	glowSphere3.color = container->Get<sRGB>("glow_sphere_3_color");
+	glowSphere3.intensity = container->Get<double>("glow_sphere_3_intensity");
+	glowSphere3.falloffRadius = container->Get<double>("glow_sphere_3_falloff_radius");
+	glowSphere3.outerColor = container->Get<sRGB>("glow_sphere_3_outer_color");
+	glowSphere3.pulseSpeed = container->Get<double>("glow_sphere_3_pulse_speed");
+	glowSphere3.pulseAmount = container->Get<double>("glow_sphere_3_pulse_amount");
+
+	// Glow Sphere 4
+	glowSphere4.enabled = container->Get<bool>("glow_sphere_4_enabled");
+	glowSphere4.position = container->Get<CVector3>("glow_sphere_4_position");
+	glowSphere4.rotation = container->Get<CVector3>("glow_sphere_4_rotation");
+	glowSphere4.radius = container->Get<double>("glow_sphere_4_radius");
+	glowSphere4.color = container->Get<sRGB>("glow_sphere_4_color");
+	glowSphere4.intensity = container->Get<double>("glow_sphere_4_intensity");
+	glowSphere4.falloffRadius = container->Get<double>("glow_sphere_4_falloff_radius");
+	glowSphere4.outerColor = container->Get<sRGB>("glow_sphere_4_outer_color");
+	glowSphere4.pulseSpeed = container->Get<double>("glow_sphere_4_pulse_speed");
+	glowSphere4.pulseAmount = container->Get<double>("glow_sphere_4_pulse_amount");
 
 	// Single Trap Lights
 	singleTrapLights.enabled = container->Get<bool>("single_trap_lights_enabled");

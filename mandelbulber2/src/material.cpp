@@ -104,6 +104,9 @@ cMaterial::cMaterial()
 	roughnessGradientEnable = false;
 	reflectanceGradientEnable = false;
 	transparencyGradientEnable = false;
+
+	surfaceGradientInterpolationMode = 0; // Linear
+	surfaceGradientBlendMode = 0;         // Normal
 	perlinNoiseEnable = false;
 	perlinNoiseIterations = 0;
 	perlinNoiseValueOffset = 0.0f;
@@ -376,6 +379,9 @@ void cMaterial::setParameters(int _id, const std::shared_ptr<cParameterContainer
 	roughnessGradientEnable = materialParam->Get<bool>(Name("roughness_gradient_enable", id));
 	reflectanceGradientEnable = materialParam->Get<bool>(Name("reflectance_gradient_enable", id));
 	transparencyGradientEnable = materialParam->Get<bool>(Name("transparency_gradient_enable", id));
+
+	surfaceGradientInterpolationMode = static_cast<int>(gradientSurface.GetInterpolationMode());
+	surfaceGradientBlendMode = materialParam->Get<int>(Name("surface_gradient_blend_mode", id));
 
 	textureCenter = materialParam->Get<CVector3>(Name("texture_center", id));
 	textureScale = materialParam->Get<CVector3>(Name("texture_scale", id));

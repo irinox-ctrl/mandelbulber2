@@ -157,7 +157,7 @@ float3 FakeLightsShader(__constant sClInConstants *consts, sShaderInputDataCl *i
 		if (fakeLight2 < 0.0f) fakeLight2 = 0.0f;
 
 		float3 color;
-		if (fakeLightLoop == 0 && consts->params.common.fakeLightsMultiCenterEnabled && centerIndex >= 0 && centerIndex < 4)
+		if (fakeLightLoop == 0 && consts->params.common.fakeLightsMultiCenterEnabled && centerIndex >= 0 && centerIndex < 24)
 		{
 			color = consts->params.fakeLightsMultiCenterColor[centerIndex];
 		}

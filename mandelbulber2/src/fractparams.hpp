@@ -177,7 +177,7 @@ struct sParamRender
 	sRGBFloat fakeLightsColor;
 	sRGBFloat fakeLightsColor2;
 	sRGBFloat fakeLightsColor3;
-	sRGBFloat fakeLightsMultiCenterColor[4];
+	sRGBFloat fakeLightsMultiCenterColor[24];
 	sRGBFloat fillLightColor;
 	sRGBFloat fogColor;
 	sRGBFloat glowColor1;
@@ -303,8 +303,11 @@ struct sParamRender
 
 	sCommonParams common;
 
-	// Glow Sphere - simple placeable light
+	// Glow Spheres - simple placeable lights
 	sGlowSphere glowSphere1;
+	sGlowSphere glowSphere2;
+	sGlowSphere glowSphere3;
+	sGlowSphere glowSphere4;
 
 	// Single Trap Lights — multi-layer spatial light system
 	sSingleTrapLights singleTrapLights;
