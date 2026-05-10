@@ -457,6 +457,110 @@
                   </property>
                  </widget>
                 </item>
+                <item row="5" column="0">
+                 <widget class="QLabel" name="label_dof_autofocus">
+                  <property name="text">
+                   <string>Auto focus:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="5" column="1">
+                 <widget class="MyCheckBox" name="checkBox_DOF_auto_focus">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string>Enable auto focus</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="6" column="0">
+                 <widget class="QLabel" name="label_dof_autofocus_mode">
+                  <property name="text">
+                   <string>Auto focus mode:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="6" column="1">
+                 <widget class="MyComboBox" name="comboBox_DOF_auto_focus_mode">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <item>
+                   <property name="text">
+                    <string>Mediaan depth</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Gemiddelde depth</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Histogram piek</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Dichtste object</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+                <item row="7" column="0">
+                 <widget class="QLabel" name="label_dof_blur_kernel">
+                  <property name="text">
+                   <string>Blur type:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="7" column="1">
+                 <widget class="MyComboBox" name="comboBox_DOF_blur_kernel">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <item>
+                   <property name="text">
+                    <string>Lens</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Verticaal</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Horizontaal</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Motion</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Gauss</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Radiaal</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
                </layout>
               </item>
               <item>
@@ -2275,6 +2379,211 @@ Set 100 to keep compatibility with version &lt;=2.12</string>
                     <string>None</string>
                    </property>
                   </item>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <widget class="QPushButton" name="pushButton_autoFog_iteration">
+                <property name="toolTip">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Automatically detects the fractal type and calculates optimal iteration fog parameters (trim, opacity, color thresholds, brightness boost).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
+                <property name="text">
+                 <string>Auto Detect Iteration Fog</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_autoFogScale">
+                <item>
+                 <widget class="QLabel" name="label_autoFogOpacityScale">
+                  <property name="text">
+                   <string>Auto-fog opacity scale:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="MyDoubleSpinBox" name="spinbox_auto_fog_opacity_scale">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="toolTip">
+                   <string>Multiplier for auto-calculated fog opacity. Default 1.0 = use calculated value. Increase if fog is too faint, decrease if too dense.</string>
+                  </property>
+                  <property name="decimals">
+                   <number>2</number>
+                  </property>
+                  <property name="minimum">
+                   <double>0.01</double>
+                  </property>
+                  <property name="maximum">
+                   <double>1000.0</double>
+                  </property>
+                  <property name="singleStep">
+                   <double>0.1</double>
+                  </property>
+                  <property name="value">
+                   <double>1.0</double>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_autoFogTrimBias">
+                <item>
+                 <widget class="QLabel" name="label_autoFogTrimBias">
+                  <property name="text">
+                   <string>Trim bias:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="MyDoubleSpinBox" name="spinbox_auto_fog_trim_bias">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="toolTip">
+                   <string>Offset for auto-calculated trim. Negative = show more low-iteration fog. Positive = cut off more low iterations. Default 0.</string>
+                  </property>
+                  <property name="decimals">
+                   <number>1</number>
+                  </property>
+                  <property name="minimum">
+                   <double>-500.0</double>
+                  </property>
+                  <property name="maximum">
+                   <double>500.0</double>
+                  </property>
+                  <property name="singleStep">
+                   <double>0.5</double>
+                  </property>
+                  <property name="value">
+                   <double>0.0</double>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_autoFogTrimHighBias">
+                <item>
+                 <widget class="QLabel" name="label_autoFogTrimHighBias">
+                  <property name="text">
+                   <string>Trim high bias:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="MyDoubleSpinBox" name="spinbox_auto_fog_trim_high_bias">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="toolTip">
+                   <string>Offset for auto-calculated trim high. Negative = softer fall-off. Positive = harder fall-off at high iterations. Default 0.</string>
+                  </property>
+                  <property name="decimals">
+                   <number>1</number>
+                  </property>
+                  <property name="minimum">
+                   <double>-2000.0</double>
+                  </property>
+                  <property name="maximum">
+                   <double>2000.0</double>
+                  </property>
+                  <property name="singleStep">
+                   <double>1.0</double>
+                  </property>
+                  <property name="value">
+                   <double>0.0</double>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_autoFogColorSpread">
+                <item>
+                 <widget class="QLabel" name="label_autoFogColorSpread">
+                  <property name="text">
+                   <string>Color spread:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="MyDoubleSpinBox" name="spinbox_auto_fog_color_spread">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="toolTip">
+                   <string>Multiplier for color maxiter spread. &lt;1 = colors closer together, &gt;1 = colors more spread out. Default 1.0.</string>
+                  </property>
+                  <property name="decimals">
+                   <number>2</number>
+                  </property>
+                  <property name="minimum">
+                   <double>0.1</double>
+                  </property>
+                  <property name="maximum">
+                   <double>2.0</double>
+                  </property>
+                  <property name="singleStep">
+                   <double>0.1</double>
+                  </property>
+                  <property name="value">
+                   <double>1.0</double>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_autoFogBoostScale">
+                <item>
+                 <widget class="QLabel" name="label_autoFogBoostScale">
+                  <property name="text">
+                   <string>Boost scale:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="MyDoubleSpinBox" name="spinbox_auto_fog_boost_scale">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="toolTip">
+                   <string>Multiplier for auto-calculated brightness boost. Default 1.0 = use calculated value. Increase for brighter fog, decrease for subtler fog.</string>
+                  </property>
+                  <property name="decimals">
+                   <number>2</number>
+                  </property>
+                  <property name="minimum">
+                   <double>0.0</double>
+                  </property>
+                  <property name="maximum">
+                   <double>3.0</double>
+                  </property>
+                  <property name="singleStep">
+                   <double>0.1</double>
+                  </property>
+                  <property name="value">
+                   <double>1.0</double>
+                  </property>
                  </widget>
                 </item>
                </layout>
@@ -4553,476 +4862,6 @@ of lights:</string>
                 </item>
                 <item row="5" column="1" colspan="2">
                  <widget class="MyDoubleSpinBox" name="spinboxd_glow_sphere_1_intensity"></widget>
-                </item>
-                <item row="6" column="0">
-                 <widget class="QLabel" name="label_glow_falloff_radius">
-                  <property name="text">
-                   <string>Falloff:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="6" column="1" colspan="2">
-                 <widget class="MyDoubleSpinBox" name="spinboxd_glow_sphere_1_falloff_radius"></widget>
-                </item>
-                <item row="7" column="0">
-                 <widget class="QLabel" name="label_glow_outer_color">
-                  <property name="text">
-                   <string>Outer color:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="7" column="1" colspan="2">
-                 <widget class="MyColorButton" name="colorButton_glow_sphere_1_outer_color">
-                  <property name="text">
-                   <string></string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="8" column="0">
-                 <widget class="QLabel" name="label_glow_pulse_speed">
-                  <property name="text">
-                   <string>Pulse speed:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="8" column="1" colspan="2">
-                 <widget class="MyDoubleSpinBox" name="spinboxd_glow_sphere_1_pulse_speed"></widget>
-                </item>
-                <item row="9" column="0">
-                 <widget class="QLabel" name="label_glow_pulse_amount">
-                  <property name="text">
-                   <string>Pulse amount:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="9" column="1" colspan="2">
-                 <widget class="MyDoubleSpinBox" name="spinboxd_glow_sphere_1_pulse_amount"></widget>
-                </item>
-               </layout>
-              </item>
-             </layout>
-            </widget>
-           </item>
-           <item>
-            <widget class="MyGroupBox" name="groupCheck_glow_sphere_2_enabled">
-             <property name="title">
-              <string>Glow Sphere 2</string>
-             </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <layout class="QVBoxLayout" name="verticalLayout_glow_sphere_2">
-              <property name="spacing">
-               <number>2</number>
-              </property>
-              <property name="leftMargin">
-               <number>2</number>
-              </property>
-              <property name="topMargin">
-               <number>2</number>
-              </property>
-              <property name="rightMargin">
-               <number>2</number>
-              </property>
-              <property name="bottomMargin">
-               <number>2</number>
-              </property>
-              <item>
-               <layout class="QGridLayout" name="gridLayout_glow_sphere_2" columnstretch="0,0,0">
-                <property name="spacing">
-                 <number>2</number>
-                </property>
-                <item row="0" column="0">
-                 <widget class="QLabel" name="label_glow2_position_x">
-                  <property name="text">
-                   <string>Position X</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="1" colspan="2">
-                 <widget class="MyLineEdit" name="vect3_glow_sphere_2_position_x"></widget>
-                </item>
-                <item row="1" column="0">
-                 <widget class="QLabel" name="label_glow2_position_y">
-                  <property name="text">
-                   <string>Position Y</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="1" colspan="2">
-                 <widget class="MyLineEdit" name="vect3_glow_sphere_2_position_y"></widget>
-                </item>
-                <item row="2" column="0">
-                 <widget class="QLabel" name="label_glow2_position_z">
-                  <property name="text">
-                   <string>Position Z</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="2" column="1" colspan="2">
-                 <widget class="MyLineEdit" name="vect3_glow_sphere_2_position_z"></widget>
-                </item>
-                <item row="3" column="0">
-                 <widget class="QLabel" name="label_glow2_radius">
-                  <property name="text">
-                   <string>Radius:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="3" column="1" colspan="2">
-                 <widget class="MyDoubleSpinBox" name="spinboxd_glow_sphere_2_radius"></widget>
-                </item>
-                <item row="4" column="0">
-                 <widget class="QLabel" name="label_glow2_color">
-                  <property name="text">
-                   <string>Color:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="4" column="1" colspan="2">
-                 <widget class="MyColorButton" name="colorButton_glow_sphere_2_color">
-                  <property name="text">
-                   <string></string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="5" column="0">
-                 <widget class="QLabel" name="label_glow2_intensity">
-                  <property name="text">
-                   <string>Intensity:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="5" column="1" colspan="2">
-                 <widget class="MyDoubleSpinBox" name="spinboxd_glow_sphere_2_intensity"></widget>
-                </item>
-                <item row="6" column="0">
-                 <widget class="QLabel" name="label_glow2_falloff_radius">
-                  <property name="text">
-                   <string>Falloff:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="6" column="1" colspan="2">
-                 <widget class="MyDoubleSpinBox" name="spinboxd_glow_sphere_2_falloff_radius"></widget>
-                </item>
-                <item row="7" column="0">
-                 <widget class="QLabel" name="label_glow2_outer_color">
-                  <property name="text">
-                   <string>Outer color:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="7" column="1" colspan="2">
-                 <widget class="MyColorButton" name="colorButton_glow_sphere_2_outer_color">
-                  <property name="text">
-                   <string></string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="8" column="0">
-                 <widget class="QLabel" name="label_glow2_pulse_speed">
-                  <property name="text">
-                   <string>Pulse speed:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="8" column="1" colspan="2">
-                 <widget class="MyDoubleSpinBox" name="spinboxd_glow_sphere_2_pulse_speed"></widget>
-                </item>
-                <item row="9" column="0">
-                 <widget class="QLabel" name="label_glow2_pulse_amount">
-                  <property name="text">
-                   <string>Pulse amount:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="9" column="1" colspan="2">
-                 <widget class="MyDoubleSpinBox" name="spinboxd_glow_sphere_2_pulse_amount"></widget>
-                </item>
-               </layout>
-              </item>
-             </layout>
-            </widget>
-           </item>
-           <item>
-            <widget class="MyGroupBox" name="groupCheck_glow_sphere_3_enabled">
-             <property name="title">
-              <string>Glow Sphere 3</string>
-             </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <layout class="QVBoxLayout" name="verticalLayout_glow_sphere_3">
-              <property name="spacing">
-               <number>2</number>
-              </property>
-              <property name="leftMargin">
-               <number>2</number>
-              </property>
-              <property name="topMargin">
-               <number>2</number>
-              </property>
-              <property name="rightMargin">
-               <number>2</number>
-              </property>
-              <property name="bottomMargin">
-               <number>2</number>
-              </property>
-              <item>
-               <layout class="QGridLayout" name="gridLayout_glow_sphere_3" columnstretch="0,0,0">
-                <property name="spacing">
-                 <number>2</number>
-                </property>
-                <item row="0" column="0">
-                 <widget class="QLabel" name="label_glow3_position_x">
-                  <property name="text">
-                   <string>Position X</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="1" colspan="2">
-                 <widget class="MyLineEdit" name="vect3_glow_sphere_3_position_x"></widget>
-                </item>
-                <item row="1" column="0">
-                 <widget class="QLabel" name="label_glow3_position_y">
-                  <property name="text">
-                   <string>Position Y</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="1" colspan="2">
-                 <widget class="MyLineEdit" name="vect3_glow_sphere_3_position_y"></widget>
-                </item>
-                <item row="2" column="0">
-                 <widget class="QLabel" name="label_glow3_position_z">
-                  <property name="text">
-                   <string>Position Z</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="2" column="1" colspan="2">
-                 <widget class="MyLineEdit" name="vect3_glow_sphere_3_position_z"></widget>
-                </item>
-                <item row="3" column="0">
-                 <widget class="QLabel" name="label_glow3_radius">
-                  <property name="text">
-                   <string>Radius:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="3" column="1" colspan="2">
-                 <widget class="MyDoubleSpinBox" name="spinboxd_glow_sphere_3_radius"></widget>
-                </item>
-                <item row="4" column="0">
-                 <widget class="QLabel" name="label_glow3_color">
-                  <property name="text">
-                   <string>Color:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="4" column="1" colspan="2">
-                 <widget class="MyColorButton" name="colorButton_glow_sphere_3_color">
-                  <property name="text">
-                   <string></string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="5" column="0">
-                 <widget class="QLabel" name="label_glow3_intensity">
-                  <property name="text">
-                   <string>Intensity:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="5" column="1" colspan="2">
-                 <widget class="MyDoubleSpinBox" name="spinboxd_glow_sphere_3_intensity"></widget>
-                </item>
-                <item row="6" column="0">
-                 <widget class="QLabel" name="label_glow3_falloff_radius">
-                  <property name="text">
-                   <string>Falloff:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="6" column="1" colspan="2">
-                 <widget class="MyDoubleSpinBox" name="spinboxd_glow_sphere_3_falloff_radius"></widget>
-                </item>
-                <item row="7" column="0">
-                 <widget class="QLabel" name="label_glow3_outer_color">
-                  <property name="text">
-                   <string>Outer color:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="7" column="1" colspan="2">
-                 <widget class="MyColorButton" name="colorButton_glow_sphere_3_outer_color">
-                  <property name="text">
-                   <string></string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="8" column="0">
-                 <widget class="QLabel" name="label_glow3_pulse_speed">
-                  <property name="text">
-                   <string>Pulse speed:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="8" column="1" colspan="2">
-                 <widget class="MyDoubleSpinBox" name="spinboxd_glow_sphere_3_pulse_speed"></widget>
-                </item>
-                <item row="9" column="0">
-                 <widget class="QLabel" name="label_glow3_pulse_amount">
-                  <property name="text">
-                   <string>Pulse amount:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="9" column="1" colspan="2">
-                 <widget class="MyDoubleSpinBox" name="spinboxd_glow_sphere_3_pulse_amount"></widget>
-                </item>
-               </layout>
-              </item>
-             </layout>
-            </widget>
-           </item>
-           <item>
-            <widget class="MyGroupBox" name="groupCheck_glow_sphere_4_enabled">
-             <property name="title">
-              <string>Glow Sphere 4</string>
-             </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <layout class="QVBoxLayout" name="verticalLayout_glow_sphere_4">
-              <property name="spacing">
-               <number>2</number>
-              </property>
-              <property name="leftMargin">
-               <number>2</number>
-              </property>
-              <property name="topMargin">
-               <number>2</number>
-              </property>
-              <property name="rightMargin">
-               <number>2</number>
-              </property>
-              <property name="bottomMargin">
-               <number>2</number>
-              </property>
-              <item>
-               <layout class="QGridLayout" name="gridLayout_glow_sphere_4" columnstretch="0,0,0">
-                <property name="spacing">
-                 <number>2</number>
-                </property>
-                <item row="0" column="0">
-                 <widget class="QLabel" name="label_glow4_position_x">
-                  <property name="text">
-                   <string>Position X</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="1" colspan="2">
-                 <widget class="MyLineEdit" name="vect3_glow_sphere_4_position_x"></widget>
-                </item>
-                <item row="1" column="0">
-                 <widget class="QLabel" name="label_glow4_position_y">
-                  <property name="text">
-                   <string>Position Y</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="1" colspan="2">
-                 <widget class="MyLineEdit" name="vect3_glow_sphere_4_position_y"></widget>
-                </item>
-                <item row="2" column="0">
-                 <widget class="QLabel" name="label_glow4_position_z">
-                  <property name="text">
-                   <string>Position Z</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="2" column="1" colspan="2">
-                 <widget class="MyLineEdit" name="vect3_glow_sphere_4_position_z"></widget>
-                </item>
-                <item row="3" column="0">
-                 <widget class="QLabel" name="label_glow4_radius">
-                  <property name="text">
-                   <string>Radius:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="3" column="1" colspan="2">
-                 <widget class="MyDoubleSpinBox" name="spinboxd_glow_sphere_4_radius"></widget>
-                </item>
-                <item row="4" column="0">
-                 <widget class="QLabel" name="label_glow4_color">
-                  <property name="text">
-                   <string>Color:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="4" column="1" colspan="2">
-                 <widget class="MyColorButton" name="colorButton_glow_sphere_4_color">
-                  <property name="text">
-                   <string></string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="5" column="0">
-                 <widget class="QLabel" name="label_glow4_intensity">
-                  <property name="text">
-                   <string>Intensity:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="5" column="1" colspan="2">
-                 <widget class="MyDoubleSpinBox" name="spinboxd_glow_sphere_4_intensity"></widget>
-                </item>
-                <item row="6" column="0">
-                 <widget class="QLabel" name="label_glow4_falloff_radius">
-                  <property name="text">
-                   <string>Falloff:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="6" column="1" colspan="2">
-                 <widget class="MyDoubleSpinBox" name="spinboxd_glow_sphere_4_falloff_radius"></widget>
-                </item>
-                <item row="7" column="0">
-                 <widget class="QLabel" name="label_glow4_outer_color">
-                  <property name="text">
-                   <string>Outer color:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="7" column="1" colspan="2">
-                 <widget class="MyColorButton" name="colorButton_glow_sphere_4_outer_color">
-                  <property name="text">
-                   <string></string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="8" column="0">
-                 <widget class="QLabel" name="label_glow4_pulse_speed">
-                  <property name="text">
-                   <string>Pulse speed:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="8" column="1" colspan="2">
-                 <widget class="MyDoubleSpinBox" name="spinboxd_glow_sphere_4_pulse_speed"></widget>
-                </item>
-                <item row="9" column="0">
-                 <widget class="QLabel" name="label_glow4_pulse_amount">
-                  <property name="text">
-                   <string>Pulse amount:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="9" column="1" colspan="2">
-                 <widget class="MyDoubleSpinBox" name="spinboxd_glow_sphere_4_pulse_amount"></widget>
                 </item>
                </layout>
               </item>
@@ -14600,6 +14439,9 @@ of lights:</string>
   <tabstop>spinbox_DOF_radius</tabstop>
   <tabstop>spinboxInt_DOF_number_of_passes</tabstop>
   <tabstop>spinbox_DOF_blur_opacity</tabstop>
+  <tabstop>checkBox_DOF_auto_focus</tabstop>
+  <tabstop>comboBox_DOF_auto_focus_mode</tabstop>
+  <tabstop>comboBox_DOF_blur_kernel</tabstop>
   <tabstop>spinboxInt_DOF_samples</tabstop>
   <tabstop>pushButton_DOF_update</tabstop>
   <tabstop>pushButton_DOF_set_focus</tabstop>

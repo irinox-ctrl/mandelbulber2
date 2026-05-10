@@ -76,6 +76,9 @@
 #include "src/system_data.hpp"
 #include "src/system_directories.hpp"
 #include "src/write_log.hpp"
+#include "src/auto_fog.hpp"
+#include "src/fractparams.hpp"
+#include "src/nine_fractals.hpp"
 
 static QStringList singleTrapLightPresetMainParameterNames()
 {
@@ -442,6 +445,8 @@ cDockEffects::~cDockEffects()
 void cDockEffects::ConnectSignals() const
 {
 	connect(ui->button_calculateFog, SIGNAL(clicked()), this, SLOT(slotPressedButtonAutoFog()));
+	connect(ui->pushButton_autoFog_iteration, SIGNAL(clicked()), this,
+		SLOT(slotPressedButtonAutoFogIteration()));
 
 	connect(ui->comboBox_ambient_occlusion_mode, SIGNAL(currentIndexChanged(int)), this,
 		SLOT(slotChangedComboAmbientOcclusionMode(int)));
@@ -638,6 +643,62 @@ void cDockEffects::slotPressedButtonAutoFog()
 {
 	SynchronizeInterfaceWindow(this, params, qInterface::read);
 	gMainInterface->AutoFog(params, fractalParams);
+	SynchronizeInterfaceWindow(this, params, qInterface::write);
+}
+
+void cDockEffects::slotPressedButtonAutoFogIteration()
+{
+	SynchronizeInterfaceWindow(this, params, qInterface::read);
+
+	std::shared_ptr<sParamRender> renderParams(new sParamRender(params));
+	std::shared_ptr<cNineFractals> fractals(new cNineFractals(fractalParams, params));
+
+	// Force-enable fog types temporarily so AutoTuneAll always calculates values
+	// regardless of current checkbox state. The user wants to SEE the numbers.
+	bool wasIterFogEnabled = renderParams->iterFogEnabled;
+	bool wasVolFogEnabled = renderParams->volFogEnabled;
+	bool wasFogEnabled = renderParams->fogEnabled;
+	renderParams->iterFogEnabled = true;
+	renderParams->volFogEnabled = true;
+	renderParams->fogEnabled = true;
+
+	autoFog::cAutoFog autoFog;
+	bool ok = autoFog.AutoTuneAll(renderParams.get(), fractals.get(), nullptr);
+
+	// Restore original enabled flags
+	renderParams->iterFogEnabled = wasIterFogEnabled;
+	renderParams->volFogEnabled = wasVolFogEnabled;
+	renderParams->fogEnabled = wasFogEnabled;
+
+	if (ok)
+	{
+		// Write raw scene-derived values (biases and scale are applied live in sParamRender constructor)
+		params->Set("iteration_fog_opacity_trim", double(renderParams->iterFogOpacityTrim));
+		params->Set("iteration_fog_opacity_trim_high", double(renderParams->iterFogOpacityTrimHigh));
+		params->Set("iteration_fog_color_1_maxiter", double(renderParams->iterFogColor1Maxiter));
+		params->Set("iteration_fog_color_2_maxiter", double(renderParams->iterFogColor2Maxiter));
+		params->Set("iteration_fog_opacity", renderParams->iterFogOpacity);
+		params->Set("iteration_fog_brightness_boost", double(renderParams->iterFogBrightnessBoost));
+
+		// Write tuned distance fog parameters back
+		params->Set("volumetric_fog_distance_factor", renderParams->volFogDistanceFactor);
+		params->Set("volumetric_fog_distance_from_surface", renderParams->volFogDistanceFromSurface);
+		params->Set("volumetric_fog_density", double(renderParams->volFogDensity));
+
+		// Write tuned basic fog parameters back
+		params->Set("basic_fog_visibility", renderParams->fogVisibility);
+
+		// Also enable the iteration fog group so the user sees the effect immediately
+		params->Set("iteration_fog_enable", true);
+	}
+	else
+	{
+		qWarning() << "AutoFog: Scene probing failed — no fractal surface found from camera";
+		QMessageBox::warning(this, tr("Auto Fog Detection"),
+			tr("Could not detect fractal surface from current camera position.\n"
+				"Try moving the camera closer to the fractal and try again."));
+	}
+
 	SynchronizeInterfaceWindow(this, params, qInterface::write);
 }
 

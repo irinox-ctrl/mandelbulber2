@@ -81,6 +81,7 @@ public slots:
 
 private slots:
 	void slotPressedButtonAutoFog();
+	void slotPressedButtonAutoFogIteration();
 	void slotChangedComboAmbientOcclusionMode(int index) const;
 	void slotEditedLineEditManualLightPlacementDistance(const QString &text);
 	void slotPressedButtonSetDOFByMouse();

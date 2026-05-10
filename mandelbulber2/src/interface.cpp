@@ -83,6 +83,15 @@
 #include "wait.hpp"
 #include "write_log.hpp"
 
+#include "auto_fog.hpp"
+#include "dof_log.hpp"
+#include "nine_fractals.hpp"
+#include "projection_3d.hpp"
+#include "render_data.hpp"
+
+#include <algorithm>
+#include <cmath>
+
 #include "qt/detached_window.h"
 #include "qt/dock_effects.h"
 #include "qt/dock_fake_lights.h"
@@ -920,17 +929,281 @@ void cInterface::IFSDefaultsReset(std::shared_ptr<cParameterContainer> parFracta
 void cInterface::AutoFog(std::shared_ptr<cParameterContainer> _params,
 	std::shared_ptr<cFractalContainer> _fractalParams) const
 {
+	// Try the full empirical auto-fog engine first
+	bool autoFogOk = false;
+	try
+	{
+		autoFog::cAutoFog autoFog;
+		sParamRender paramRender(_params);
+		cNineFractals fractals(_fractalParams, _params);
+		sRenderData renderData;
 
-	double distance = GetDistanceForPoint(_params->Get<CVector3>("camera"), _params, _fractalParams);
-	double fogDensity = 0.5;
-	double fogDistanceFactor = distance;
-	double fogColour1Distance = distance * 0.5;
-	double fogColour2Distance = distance;
-	gPar->Set("volumetric_fog_distance_factor", fogDistanceFactor);
-	gPar->Set("volumetric_fog_colour_1_distance", fogColour1Distance);
-	gPar->Set("volumetric_fog_colour_2_distance", fogColour2Distance);
-	gPar->Set("volumetric_fog_density", fogDensity);
+		// Only use full probing if critical ray-marching params look sane
+		if (paramRender.maxRaymarchingSteps > 0 && paramRender.viewDistanceMax > 1e-10
+			&& paramRender.fov > 1e-10 && paramRender.imageHeight > 0)
+		{
+			autoFogOk = autoFog.AutoTuneAll(&paramRender, &fractals, &renderData);
+			if (autoFogOk)
+			{
+				_params->Set("iteration_fog_opacity_trim", double(paramRender.iterFogOpacityTrim));
+				_params->Set("iteration_fog_opacity_trim_high", double(paramRender.iterFogOpacityTrimHigh));
+				_params->Set("iteration_fog_color_1_maxiter", double(paramRender.iterFogColor1Maxiter));
+				_params->Set("iteration_fog_color_2_maxiter", double(paramRender.iterFogColor2Maxiter));
+				_params->Set("iteration_fog_opacity", paramRender.iterFogOpacity);
+				_params->Set("iteration_fog_brightness_boost", double(paramRender.iterFogBrightnessBoost));
+				_params->Set("volumetric_fog_distance_factor", paramRender.volFogDistanceFactor);
+				_params->Set("volumetric_fog_colour_1_distance", paramRender.volFogColour1Distance);
+				_params->Set("volumetric_fog_colour_2_distance", paramRender.volFogColour2Distance);
+				_params->Set("volumetric_fog_density", double(paramRender.volFogDensity));
+				_params->Set("basic_fog_visibility", paramRender.fogVisibility);
+			}
+		}
+	}
+	catch (...)
+	{
+		autoFogOk = false;
+	}
+
+	// Fallback: simple distance-based calculation for all fog types
+	if (!autoFogOk)
+	{
+		double distance = GetDistanceForPoint(
+			_params->Get<CVector3>("camera"), _params, _fractalParams);
+		if (distance < 1e-10) distance = 1.0;
+
+		// Iteration fog safe defaults
+		_params->Set("iteration_fog_opacity", 1000.0);
+		_params->Set("iteration_fog_opacity_trim", 4.0);
+		_params->Set("iteration_fog_opacity_trim_high", 250.0);
+		_params->Set("iteration_fog_brightness_boost", 1.0);
+
+		// Distance fog
+		_params->Set("volumetric_fog_distance_factor", distance);
+		_params->Set("volumetric_fog_colour_1_distance", distance * 0.5);
+		_params->Set("volumetric_fog_colour_2_distance", distance);
+		_params->Set("volumetric_fog_density", 0.5);
+
+		// Basic fog
+		_params->Set("basic_fog_visibility", distance * 2.0);
+	}
+
 	SynchronizeInterface(gPar, gParFractal, qInterface::write);
+	if (mainWindow)
+	{
+		mainWindow->ui->statusbar->showMessage(
+			autoFogOk ? "Auto Fog: empirical tuning applied" : "Auto Fog: safe defaults applied",
+			3000);
+	}
+}
+
+// --- AutoDOFFocus ---
+static inline double ClampDouble(double value, double minVal, double maxVal)
+{
+    if (value < minVal) return minVal;
+    if (value > maxVal) return maxVal;
+    return value;
+}
+
+static std::vector<double> ProbeSceneDepth(std::shared_ptr<cParameterContainer> par,
+    std::shared_ptr<cFractalContainer> parFractal, int gridRes)
+{
+    std::vector<double> hitDistances;
+    std::shared_ptr<sParamRender> params(new sParamRender(par));
+    std::shared_ptr<cNineFractals> fractals(new cNineFractals(parFractal, par));
+    cCameraTarget cameraTarget(params->camera, params->target, params->topVector);
+    CVector3 viewAngle = cameraTarget.GetRotation();
+    CRotationMatrix mRot;
+    mRot.RotateZ(viewAngle.x);
+    mRot.RotateX(viewAngle.y);
+    mRot.RotateY(viewAngle.z);
+    mRot.RotateZ(-params->sweetSpotHAngle);
+    mRot.RotateX(params->sweetSpotVAngle);
+    double aspectRatio = 1.0;
+    if (params->imageHeight > 0)
+        aspectRatio = double(params->imageWidth) / double(params->imageHeight);
+    if (params->perspectiveType == params::perspEquirectangular) aspectRatio = 2.0;
+    for (int gy = 0; gy < gridRes; gy++)
+    {
+        for (int gx = 0; gx < gridRes; gx++)
+        {
+            double nx = (double(gx) + 0.5) / double(gridRes) * 2.0 - 1.0;
+            double ny = (double(gy) + 0.5) / double(gridRes) * 2.0 - 1.0;
+            ny /= aspectRatio;
+            CVector2<double> normalizedPoint(nx, ny);
+            CVector3 direction = CalculateViewVector(
+                normalizedPoint, params->fov, params->perspectiveType, mRot);
+            double scan = 0.0;
+            double step = 0.0;
+            for (int i = 0; i < params->maxRaymarchingSteps && scan < params->viewDistanceMax; i++)
+            {
+                CVector3 point = params->camera + direction * scan;
+                double resolution = params->resolution;
+                if (resolution <= 0.0 && params->imageHeight > 0)
+                    resolution = 1.0 / double(params->imageHeight);
+                double distThresh = 0.0;
+                if (params->iterThreshMode)
+                {
+                    distThresh = (params->camera - point).Length() * resolution * params->fov;
+                }
+                else
+                {
+                    if (params->constantDEThreshold)
+                        distThresh = params->DEThresh;
+                    else
+                        distThresh = (params->camera - point).Length() * resolution * params->fov
+                            / params->detailLevel;
+                }
+                if (params->perspectiveType == params::perspEquirectangular) distThresh *= 0.5;
+                sDistanceIn distanceIn(point, distThresh, false);
+                sDistanceOut distanceOut;
+                double dist = CalculateDistance(*params, *fractals, distanceIn, &distanceOut);
+                if (dist < distThresh)
+                {
+                    hitDistances.push_back(scan);
+                    break;
+                }
+                if (params->interiorMode)
+                    step = (dist - 0.8 * distThresh) * params->DEFactor;
+                else
+                    step = (dist - 0.5 * distThresh) * params->DEFactor;
+                if (params->advancedQuality)
+                {
+                    if (step > params->absMaxMarchingStep) step = params->absMaxMarchingStep;
+                    if (step < params->absMinMarchingStep) step = params->absMinMarchingStep;
+                }
+                else
+                {
+                    if (step > 3.0) step = 3.0;
+                }
+                scan += step;
+            }
+        }
+    }
+    return hitDistances;
+}
+
+void cInterface::AutoDOFFocus(std::shared_ptr<cParameterContainer> _params,
+    std::shared_ptr<cFractalContainer> _fractalParams) const
+{
+    LOG_INFO("AutoDOFFocus started");
+    if (mainWindow)
+    {
+        mainWindow->ui->statusbar->showMessage("Auto DOF: analyzing scene depth...", 5000);
+        QApplication::processEvents();
+    }
+    bool usedZBuffer = false;
+    std::vector<double> depths;
+    if (mainImage && mainImage->IsAllocated() && !mainImage->IsUsed())
+    {
+        const quint64 w = mainImage->GetWidth();
+        const quint64 h = mainImage->GetHeight();
+        const quint64 total = w * h;
+        LOG_DEBUG("z-buffer dimensions: " + QString::number(int(w)) + "x"
+            + QString::number(int(h)) + " (" + QString::number(static_cast<unsigned long long>(total)) + " pixels)");
+        depths.reserve(total);
+        for (quint64 y = 0; y < h; y++)
+        {
+            for (quint64 x = 0; x < w; x++)
+            {
+                float z = mainImage->GetPixelZBuffer(x, y);
+                if (z > 1e-10f && z < 1e10f)
+                {
+                    depths.push_back(double(z));
+                }
+            }
+        }
+        if (!depths.empty())
+        {
+            usedZBuffer = true;
+            LOG_INFO("z-buffer path: " + QString::number(static_cast<unsigned long long>(depths.size())) + " valid samples");
+        }
+        else
+        {
+            LOG_WARN("z-buffer allocated but contains no valid depth samples");
+        }
+    }
+    else
+    {
+        if (!mainImage)
+            LOG_WARN("mainImage is null");
+        else if (!mainImage->IsAllocated())
+            LOG_WARN("mainImage not allocated");
+        else if (mainImage->IsUsed())
+            LOG_WARN("mainImage is in use (rendering)");
+    }
+    if (!usedZBuffer)
+    {
+        LOG_INFO("probe path: starting 16x16 grid ray-marching fallback");
+        depths = ProbeSceneDepth(_params, _fractalParams, 16);
+        LOG_INFO("probe path: " + QString::number(static_cast<unsigned long long>(depths.size())) + " hits out of 256 rays");
+    }
+    if (depths.empty())
+    {
+        LOG_WARN("No depth samples from any source — using camera distance fallback");
+        double fallbackDist = GetDistanceForPoint(
+            _params->Get<CVector3>("camera"), _params, _fractalParams);
+        if (fallbackDist < 1e-10) fallbackDist = 6.0;
+        depths.push_back(fallbackDist * 0.5);
+        depths.push_back(fallbackDist);
+        depths.push_back(fallbackDist * 1.5);
+    }
+    std::sort(depths.begin(), depths.end());
+    const size_t n = depths.size();
+    const double minDepth = depths.front();
+    const double maxDepth = depths.back();
+    const double medianDepth = (n % 2 == 1) ? depths[n / 2] : (depths[n / 2 - 1] + depths[n / 2]) * 0.5;
+    size_t p10idx = n * 10 / 100;
+    size_t p90idx = n * 90 / 100;
+    if (p10idx >= n) p10idx = n - 1;
+    if (p90idx >= n) p90idx = n - 1;
+    const double p10 = depths[p10idx];
+    const double p90 = depths[p90idx];
+    const double sceneRange = p90 - p10;
+    LOG_DEBUG("depth stats: n=" + QString::number(static_cast<unsigned long long>(n))
+        + " min=" + QString::number(minDepth, 'g', 6)
+        + " max=" + QString::number(maxDepth, 'g', 6)
+        + " median=" + QString::number(medianDepth, 'g', 6)
+        + " p10=" + QString::number(p10, 'g', 6)
+        + " p90=" + QString::number(p90, 'g', 6)
+        + " range=" + QString::number(sceneRange, 'g', 6));
+    double centerPixelDepth = medianDepth;
+    if (usedZBuffer && mainImage && mainImage->IsAllocated())
+    {
+        quint64 cx = mainImage->GetWidth() / 2;
+        quint64 cy = mainImage->GetHeight() / 2;
+        float cz = mainImage->GetPixelZBuffer(cx, cy);
+        if (cz > 1e-10f && cz < 1e10f)
+        {
+            centerPixelDepth = double(cz);
+            LOG_DEBUG("center pixel depth = " + QString::number(centerPixelDepth));
+        }
+    }
+    double focus = 0.7 * medianDepth + 0.3 * centerPixelDepth;
+    double scaleFactor = (focus > 1e-10) ? sceneRange / (focus * 2.0) : 1.0;
+    scaleFactor = ClampDouble(scaleFactor, 0.5, 3.0);
+    double radius = 10.0 * scaleFactor;
+    double maxRadius = ClampDouble(radius * 3.0, 50.0, 250.0);
+    double blurOpacity = ClampDouble(40.0 / radius, 1.0, 8.0);
+    LOG_INFO("calculated: focus=" + QString::number(focus)
+        + " radius=" + QString::number(radius)
+        + " maxRadius=" + QString::number(maxRadius)
+        + " blurOpacity=" + QString::number(blurOpacity)
+        + " (source=" + QString(usedZBuffer ? "z-buffer" : "probe") + ")");
+    _params->Set("DOF_focus", focus);
+    _params->Set("DOF_radius", radius);
+    _params->Set("DOF_max_radius", maxRadius);
+    _params->Set("DOF_blur_opacity", blurOpacity);
+    LOG_INFO("AutoDOFFocus finished");
+    if (mainWindow)
+    {
+        mainWindow->ui->statusbar->showMessage(
+            QString("Auto DOF: focus=%1 radius=%2 maxRadius=%3 blur=%4")
+                .arg(focus, 0, 'g', 3)
+                .arg(radius, 0, 'g', 3)
+                .arg(maxRadius, 0, 'g', 3)
+                .arg(blurOpacity, 0, 'g', 3),
+            5000);
+    }
 }
 
 double cInterface::GetDistanceForPoint(CVector3 point, std::shared_ptr<cParameterContainer> par,

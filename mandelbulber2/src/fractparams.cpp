@@ -184,6 +184,11 @@ sParamRender::sParamRender(const std::shared_ptr<cParameterContainer> container,
 	iterFogOpacity = container->Get<double>("iteration_fog_opacity");
 	iterFogOpacityTrim = container->Get<float>("iteration_fog_opacity_trim");
 	iterFogOpacityTrimHigh = container->Get<float>("iteration_fog_opacity_trim_high");
+	autoFogTrimBias = container->Get<float>("auto_fog_trim_bias");
+	autoFogTrimHighBias = container->Get<float>("auto_fog_trim_high_bias");
+	autoFogColorSpread = container->Get<float>("auto_fog_color_spread");
+	autoFogBoostScale = container->Get<float>("auto_fog_boost_scale");
+	autoFogOpacityScale = container->Get<float>("auto_fog_opacity_scale");
 	iterFogShadows = container->Get<bool>("iteration_fog_shadows");
 	legacyCoordinateSystem = container->Get<bool>("legacy_coordinate_system");
 	limitMax = container->Get<CVector3>("limit_max");
@@ -672,6 +677,16 @@ sParamRender::sParamRender(const std::shared_ptr<cParameterContainer> container,
 		patternLineTraps.layers[i].color2 = toRGBFloat(container->Get<sRGB>(p + "_color_2"));
 		patternLineTraps.layers[i].color3 = toRGBFloat(container->Get<sRGB>(p + "_color_3"));
 	}
+
+	// Apply auto-fog fine-tune biases live during every render.
+	// AutoDetect writes raw scene-derived values to the parameter container;
+	// here we apply the user's fine-tune offsets so sliders work on-the-fly.
+	iterFogOpacityTrim += autoFogTrimBias;
+	iterFogOpacityTrimHigh += autoFogTrimHighBias;
+	iterFogColor1Maxiter *= autoFogColorSpread;
+	iterFogColor2Maxiter *= autoFogColorSpread;
+	iterFogBrightnessBoost *= autoFogBoostScale;
+	iterFogOpacity *= autoFogOpacityScale;
 
 	// formula = Get<int>("tile_number");
 }

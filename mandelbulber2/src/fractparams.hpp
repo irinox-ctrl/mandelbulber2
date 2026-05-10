@@ -244,6 +244,11 @@ struct sParamRender
 	float iterFogOpacityTrim;
 	float iterFogOpacityTrimHigh;
 	float iterFogBrightnessBoost;
+	float autoFogTrimBias;
+	float autoFogTrimHighBias;
+	float autoFogColorSpread;
+	float autoFogBoostScale;
+	float autoFogOpacityScale;
 	float monteCarloGIRadianceLimit;
 	float nebulaBrighness;
 	float nebulaXGridSize;

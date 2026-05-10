@@ -377,6 +377,12 @@ void InitParams(std::shared_ptr<cParameterContainer> par)
 	par->addParam("basic_fog_primitive", 0, morphLinear, paramStandard);
 	par->addParam("basic_fog_cast_shadows", false, morphLinear, paramStandard);
 
+	par->addParam("auto_fog_opacity_scale", 1.0, 0.01, 1000.0, morphLinear, paramStandard);
+	par->addParam("auto_fog_trim_bias", 0.0, -500.0, 500.0, morphLinear, paramStandard);
+	par->addParam("auto_fog_trim_high_bias", 0.0, -2000.0, 2000.0, morphLinear, paramStandard);
+	par->addParam("auto_fog_color_spread", 1.0, 0.1, 2.0, morphLinear, paramStandard);
+	par->addParam("auto_fog_boost_scale", 1.0, 0.0, 3.0, morphLinear, paramStandard);
+
 	// DOF
 	par->addParam("DOF_enabled", false, morphLinear, paramStandard);
 	par->addParam("DOF_focus", 6.0, 0.0, 10000.0, morphLinear, paramStandard);
@@ -521,8 +527,22 @@ void InitParams(std::shared_ptr<cParameterContainer> par)
 	par->addParam("fake_lights_color_2", sRGB(65535, 65535, 65535), morphLinear, paramStandard);
 	par->addParam("fake_lights_color_3", sRGB(65535, 65535, 65535), morphLinear, paramStandard);
 	par->addParam("fake_lights_orbit_trap_shape", 0, morphNone, paramStandard,
-		QStringList({"point", "line", "circle", "square", "sphere", "cube",
-		             "cylinder", "torus", "cone", "capsule", "ellipsoid", "helix", "cross", "spiral"}));
+		QStringList({"point", "line", "circle", "square", "sphere", "cube", "triangle", "hexagon",
+		             "torus", "cylinder", "cone", "pyramid", "octahedron", "ellipse", "rectangle",
+		             "cross", "star", "diamond", "ring", "capsule", "prism", "torus_knot", "box_frame",
+		             "cone_infinite", "cylinder_cap", "superellipsoid", "plane", "disc", "gear",
+		             "spiral", "heart", "crescent", "arrow", "rounded_box", "stadium", "polygon5",
+		             "polygon8", "trefoil_knot", "figure_eight", "mobius_strip", "torus_sector",
+		             "helix", "cone_rounded", "cylinder_hollow", "sphere_hollow", "torus_twist",
+		             "grid", "lattice", "sponge", "tree", "knot34", "spiral3d", "noise", "voronoi",
+		             "mandelbrot2d", "julia2d", "sierpinski", "koch", "dragon", "hilbert", "gyroid",
+		             "schwarz_p", "schwarz_d", "neovius", "labyrinth", "fiber", "astroid", "deltoid",
+		             "lemniscate", "limacon", "spherical_harmonics", "superformula", "fern", "shell",
+		             "coral", "crystal", "honeycomb", "chain", "woven", "net", "coil", "vortex",
+		             "ripple", "shockwave", "orbital", "nebula", "julia3d", "mandelbrot3d",
+		             "burning_ship", "tricorn", "multibrot", "phoenix", "newton", "nova", "spider",
+		             "dendrite", "lorenz", "rossler", "polyfold", "apollonian", "kleinian",
+		             "fibonacci", "celtic", "crown", "cactus", "siegel_disk"}));
 	par->addParam(
 		"fake_lights_orbit_rotation", CVector3(0.0, 0.0, 0.0), morphAkimaAngle, paramStandard);
 	par->addParam("fake_lights_orbit_trap_size", 1.0, 0.0, 1e15, morphAkimaAngle, paramStandard);
@@ -607,6 +627,15 @@ void InitParams(std::shared_ptr<cParameterContainer> par)
 	par->addParam("fake_lights_mask_enabled", false, morphLinear, paramStandard);
 	par->addParam("fake_lights_mask_threshold", 0.1, 0.0, 100.0, morphLinear, paramStandard);
 	par->addParam("fake_lights_mask_sharpness", 1.0, 0.0, 100.0, morphLinear, paramStandard);
+	par->addParam("fake_lights_onion_thickness", 0.1, 0.0, 1e15, morphLinear, paramStandard);
+	par->addParam("fake_lights_shape_param1", 0.0, -1e15, 1e15, morphLinear, paramStandard);
+	par->addParam("fake_lights_shape_param2", 0.0, -1e15, 1e15, morphLinear, paramStandard);
+	par->addParam("fake_lights_radial_repeat_radius", 1.0, 0.0, 1e15, morphLinear, paramStandard);
+	par->addParam("fake_lights_radial_repeat_count", 1, 0, 64, morphLinear, paramStandard);
+	par->addParam("fake_lights_blend_amount", 0.5, 0.0, 1.0, morphLinear, paramStandard);
+	par->addParam("fake_lights_blend_shape", 0, morphNone, paramStandard,
+		QStringList({"point", "line", "circle", "square", "sphere", "cube",
+		             "cylinder", "torus", "cone", "capsule", "ellipsoid", "helix", "cross", "spiral"}));
 
 	// Glow Sphere - simple placeable light source
 	par->addParam("glow_sphere_1_enabled", false, morphLinear, paramStandard);
@@ -2143,6 +2172,8 @@ void InitMaterialParams(int materialId, std::shared_ptr<cParameterContainer> par
 		paramStandard);
 	par->addParam(cMaterial::Name("fractal_coloring_orbit_trap_weight", materialId), 1.0, -1e20, 1e20,
 		morphAkima, paramStandard);
+	par->addParam(cMaterial::Name("fractal_coloring_temp_limit_false", materialId), false,
+		morphNone, paramStandard);
 	par->addParam(cMaterial::Name("fractal_coloring_parab_enabled_false", materialId), false,
 		morphNone, paramStandard);
 	par->addParam(cMaterial::Name("fractal_coloring_parab_scale", materialId), 1.0, -1e20, 1e20,

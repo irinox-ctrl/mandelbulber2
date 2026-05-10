@@ -98,6 +98,8 @@ public:
 	static void IFSDefaultsReset(std::shared_ptr<cParameterContainer> parFractal);
 	void AutoFog(std::shared_ptr<cParameterContainer> _params,
 		std::shared_ptr<cFractalContainer> _fractalParams) const;
+	void AutoDOFFocus(std::shared_ptr<cParameterContainer> _params,
+		std::shared_ptr<cFractalContainer> _fractalParams) const;
 	double GetDistanceForPoint(CVector3 point) const;
 	static double GetDistanceForPoint(CVector3 point, std::shared_ptr<cParameterContainer> par,
 		std::shared_ptr<cFractalContainer> parFractal);
