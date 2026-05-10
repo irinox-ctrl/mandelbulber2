@@ -65,18 +65,28 @@ private:
 	void mouseMoveEvent(QMouseEvent *event) override;
 	void mousePressEvent(QMouseEvent *event) override;
 	void mouseReleaseEvent(QMouseEvent *event) override;
+	void mouseDoubleClickEvent(QMouseEvent *event) override;
 	void contextMenuEvent(QContextMenuEvent *event) override;
+	void keyPressEvent(QKeyEvent *event) override;
 
 	void PaintButton(const cColorGradient::sColor &posColor, QPainter &painter);
 	void PaintMidpointHandle(int segmentIndex, QPainter &painter);
+	void PaintOpacityStop(const cColorGradient::sOpacityStop &stop, int index, QPainter &painter);
+	void PaintOpacityCurve(QPainter &painter);
 	int CalcButtonPosition(float colorPosition);
 	int CalcMidpointPosition(int segmentIndex);
 	int FindButtonAtPosition(int x);
 	int FindMidpointAtPosition(int x);
+	int FindOpacityStopAtPosition(int x);
 	void AddColor(QContextMenuEvent *event);
 	void RemoveColor(QContextMenuEvent *event);
 	void SetOpacity(QContextMenuEvent *event);
+	void AddOpacityStopAt(int x);
+	void RemoveOpacityStop(int index);
 	void Clear();
+	void PushUndoState();
+	void Undo();
+	void Redo();
 	void ChangeNumberOfColors();
 	void GrabColors();
 	void LoadColors();
@@ -105,8 +115,10 @@ private:
 	int margins;
 	bool mouseDragStarted;
 	bool isDraggingMidpoint;
+	bool isDraggingOpacityStop;
 	int pressedColorIndex;
 	int pressedMidpointIndex;
+	int pressedOpacityIndex;
 	int dragStartX;
 	int toolbarHeight;
 	bool viewMode;
@@ -114,6 +126,8 @@ private:
 	bool grayscale;
 
 	QString defaultValue;
+	QVector<QString> undoStack;
+	int undoIndex;
 
 	QToolButton *buttonRandomColors;
 	QToolButton *buttonRandomColorsAndPositions;

@@ -147,6 +147,13 @@ float3 GradientInterpolate(int paletteIndex, float pos, bool smooth, int gradien
 		{
 			float delta = (pos - pos1) / (pos2 - pos1);
 
+			// Apply per-segment mode override BEFORE computing useSmooth
+			if (midpoints && paletteIndex < midpointSize)
+			{
+				// Per-segment interpolation mode override (stored in y component)
+				mode = clamp((int)midpoints[paletteIndex].s1, 0, 6);
+			}
+
 			bool useSmooth = (mode == 1) || (mode == 0 && smooth);
 			if (useSmooth) delta = 0.5f * (1.0f - cos(delta * M_PI_F));
 
@@ -157,6 +164,14 @@ float3 GradientInterpolate(int paletteIndex, float pos, bool smooth, int gradien
 					delta = 0.5f * delta / m;
 				else
 					delta = 0.5f + 0.5f * (delta - m) / (1.0f - m);
+			}
+
+			// Quadratic Bezier uses midpoint as control point
+			if (mode == 6)
+			{
+				float mp = (midpoints && paletteIndex < midpointSize) 
+					? clamp(midpoints[paletteIndex].s0, 0.01f, 0.99f) : 0.5f;
+				delta = 2.0f * (1.0f - delta) * delta * mp + delta * delta;
 			}
 
 			switch (mode)
@@ -195,6 +210,7 @@ float3 GradientInterpolate(int paletteIndex, float pos, bool smooth, int gradien
 				}
 				case 0: // Linear
 				case 1: // Smooth
+				case 6: // QuadraticBezier
 				default:
 				{
 					float nDelta = 1.0f - delta;

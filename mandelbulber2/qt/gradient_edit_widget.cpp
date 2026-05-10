@@ -59,10 +59,13 @@ cGradientEditWidget::cGradientEditWidget(QWidget *parent)
 	viewMode = false;
 	mouseDragStarted = false;
 	isDraggingMidpoint = false;
+	isDraggingOpacityStop = false;
 	pressedColorIndex = 0;
 	pressedMidpointIndex = -1;
+	pressedOpacityIndex = -1;
 	dragStartX = 0;
 	grayscale = false;
+	undoIndex = -1;
 
 	fixHeight = int(systemData.GetPreferredThumbnailSize() / 1.4);
 	setFixedHeight(fixHeight);
@@ -102,11 +105,15 @@ cGradientEditWidget::cGradientEditWidget(QWidget *parent)
 	comboInterpolationMode->addItem("HSL Long");
 	comboInterpolationMode->addItem("Cubic");
 	comboInterpolationMode->addItem("Constant");
+	comboInterpolationMode->addItem("Quadratic Bezier");
 	comboInterpolationMode->setFixedHeight(toolbarHeight);
 	comboInterpolationMode->move(margins + (toolbarHeight + 2) * 7 + 10, 0);
 	comboInterpolationMode->show();
 	connect(comboInterpolationMode, SIGNAL(currentIndexChanged(int)), this,
 		SLOT(interpolationModeChanged(int)));
+
+	// Initialize undo stack with default gradient
+	PushUndoState();
 
 	connect(buttonRandomColors, SIGNAL(clicked()), this, SLOT(pressedButtonRandomColors()));
 	connect(buttonRandomColorsAndPositions, SIGNAL(clicked()), this,
@@ -192,16 +199,26 @@ void cGradientEditWidget::paintEvent(QPaintEvent *event)
 
 	if (!viewMode)
 	{
+		// Paint opacity curve at the top
+		PaintOpacityCurve(painter);
+
+		// Paint opacity stop handles
+		QList<cColorGradient::sOpacityStop> opacityStops = gradient.GetListOfOpacityStops();
+		for (int i = 0; i < opacityStops.size(); i++)
+		{
+			PaintOpacityStop(opacityStops[i], i, painter);
+		}
+
 		QList<cColorGradient::sColor> listOfColors = gradient.GetListOfColors();
 		for (cColorGradient::sColor posColor : listOfColors)
 		{
 			PaintButton(posColor, painter);
-			// Draw midpoint handles
-			QList<cColorGradient::sColor> sortedColors = gradient.GetListOfSortedColors();
-			for (int i = 0; i < sortedColors.size() - 1; i++)
-			{
-				PaintMidpointHandle(i, painter);
-			}
+		}
+		// Draw midpoint handles
+		QList<cColorGradient::sColor> sortedColors = gradient.GetListOfSortedColors();
+		for (int i = 0; i < sortedColors.size() - 1; i++)
+		{
+			PaintMidpointHandle(i, painter);
 		}
 	}
 }
@@ -287,6 +304,64 @@ void cGradientEditWidget::PaintMidpointHandle(int segmentIndex, QPainter &painte
 	painter.drawPolygon(pDiamond);
 }
 
+void cGradientEditWidget::PaintOpacityStop(const cColorGradient::sOpacityStop &stop, int index, QPainter &painter)
+{
+	int stopPosition = CalcButtonPosition(stop.position);
+	int handleTop = toolbarHeight + 2;
+	int handleSize = buttonWidth / 2;
+	if (handleSize < 4) handleSize = 4;
+
+	// Grayscale color based on opacity
+	int gray = int(stop.opacity * 255);
+	QColor handleColor(gray, gray, gray);
+	if (pressedOpacityIndex == index)
+		handleColor = QColor(255, 255, 0); // yellow when selected
+
+	QRect rect(stopPosition - handleSize, handleTop, handleSize * 2, handleSize * 2);
+	painter.fillRect(rect, handleColor);
+	painter.setPen(Qt::black);
+	painter.drawRect(rect);
+}
+
+void cGradientEditWidget::PaintOpacityCurve(QPainter &painter)
+{
+	int gradientWidth = width() - 2 * margins;
+	if (gradientWidth < 2) return;
+
+	int curveY = toolbarHeight + buttonWidth / 2 + 2;
+	int prevX = margins;
+	float prevOpacity = gradient.GetOpacity(0.0f, false);
+	int prevY = curveY + int((1.0f - prevOpacity) * buttonWidth);
+
+	painter.setPen(QPen(QColor(255, 255, 255, 180), 1));
+	for (int x = 1; x < gradientWidth; x++)
+	{
+		float pos = float(x) / gradientWidth;
+		float opacity = gradient.GetOpacity(pos, false);
+		int y = curveY + int((1.0f - opacity) * buttonWidth);
+		painter.drawLine(prevX, prevY, margins + x, y);
+		prevX = margins + x;
+		prevY = y;
+	}
+}
+
+int cGradientEditWidget::FindOpacityStopAtPosition(int x)
+{
+	QList<cColorGradient::sOpacityStop> opacityStops = gradient.GetListOfOpacityStops();
+	int handleSize = buttonWidth / 2 + 2;
+	if (handleSize < 5) handleSize = 5;
+
+	for (int i = 0; i < opacityStops.size(); i++)
+	{
+		int xStop = CalcButtonPosition(opacityStops[i].position);
+		if ((x > xStop - handleSize) && (x <= xStop + handleSize))
+		{
+			return i;
+		}
+	}
+	return -1;
+}
+
 int cGradientEditWidget::FindButtonAtPosition(int x)
 {
 	QList<cColorGradient::sColor> listOfColors = gradient.GetListOfColors();
@@ -321,7 +396,21 @@ int cGradientEditWidget::FindMidpointAtPosition(int x)
 
 void cGradientEditWidget::mouseMoveEvent(QMouseEvent *event)
 {
-	if (isDraggingMidpoint && pressedMidpointIndex >= 0)
+	if (pressedOpacityIndex >= 0)
+	{
+		if (event->x() != dragStartX)
+		{
+			isDraggingOpacityStop = true;
+		}
+		if (isDraggingOpacityStop)
+		{
+			float pos = float(event->x() - margins) / (width() - 2 * margins - 1);
+			pos = qBound(0.0f, pos, 1.0f);
+			gradient.ModifyOpacityStopPosition(pressedOpacityIndex, pos);
+			emit update();
+		}
+	}
+	else if (isDraggingMidpoint && pressedMidpointIndex >= 0)
 	{
 		float pos = float(event->x() - margins) / (width() - 2 * margins - 1);
 		QList<cColorGradient::sColor> sortedColors = gradient.GetListOfSortedColors();
@@ -367,13 +456,24 @@ void cGradientEditWidget::mousePressEvent(QMouseEvent *event)
 				dragStartX = mouseX;
 				pressedColorIndex = index;
 			}
-			else
+			else if (mouseY > toolbarHeight + buttonWidth)
 			{
+				// Midpoint area
 				int mpIndex = FindMidpointAtPosition(mouseX);
 				if (mpIndex >= 0)
 				{
 					isDraggingMidpoint = true;
 					pressedMidpointIndex = mpIndex;
+					dragStartX = mouseX;
+				}
+			}
+			else
+			{
+				// Opacity stop area (top of gradient bar)
+				int opIndex = FindOpacityStopAtPosition(mouseX);
+				if (opIndex >= 0)
+				{
+					pressedOpacityIndex = opIndex;
 					dragStartX = mouseX;
 				}
 			}
@@ -387,7 +487,16 @@ void cGradientEditWidget::mouseReleaseEvent(QMouseEvent *event)
 	{
 		if (!viewMode)
 		{
-			if (pressedColorIndex >= 0 && !mouseDragStarted)
+			if (!isDraggingOpacityStop && pressedOpacityIndex < 0 && pressedColorIndex < 0 && pressedMidpointIndex < 0 && !mouseDragStarted)
+			{
+				// Click on empty area in opacity region — add new opacity stop
+				int mouseY = event->y();
+				if (mouseY < toolbarHeight + buttonWidth && mouseY > toolbarHeight)
+				{
+					AddOpacityStopAt(event->x());
+				}
+			}
+			else if (pressedColorIndex >= 0 && !mouseDragStarted)
 			{
 				QList<cColorGradient::sColor> listOfColors = gradient.GetListOfColors();
 
@@ -408,14 +517,51 @@ void cGradientEditWidget::mouseReleaseEvent(QMouseEvent *event)
 
 					if (pressedColorIndex == 1) gradient.ModifyColor(0, colorRGB);
 
+					PushUndoState();
 					emit update();
 				}
+			}
+
+			// Push undo for drag operations
+			if (isDraggingMidpoint || isDraggingOpacityStop || mouseDragStarted)
+			{
+				PushUndoState();
 			}
 
 			pressedColorIndex = -1;
 				pressedMidpointIndex = -1;
 				isDraggingMidpoint = false;
+				pressedOpacityIndex = -1;
+				isDraggingOpacityStop = false;
 			mouseDragStarted = false;
+		}
+	}
+}
+
+void cGradientEditWidget::mouseDoubleClickEvent(QMouseEvent *event)
+{
+	if (viewMode) return;
+
+	int mouseX = event->x();
+	int mouseY = event->y();
+
+	// Check opacity stop area first
+	if (mouseY <= toolbarHeight + buttonWidth && mouseY > toolbarHeight)
+	{
+		int opIndex = FindOpacityStopAtPosition(mouseX);
+		if (opIndex >= 0)
+		{
+			float currentOpacity = gradient.GetOpacityStopOpacityByIndex(opIndex);
+			bool ok;
+			int opacityPercent = QInputDialog::getInt(this, tr("Set opacity"),
+				tr("Opacity (0-100%):"), int(currentOpacity * 100), 0, 100, 1, &ok);
+			if (ok)
+			{
+				gradient.ModifyOpacityStopOpacity(opIndex, opacityPercent / 100.0f);
+				PushUndoState();
+				emit update();
+			}
+			return;
 		}
 	}
 }
@@ -430,6 +576,78 @@ void cGradientEditWidget::SetColors(const QString &colorsString)
 	emit update();
 }
 
+void cGradientEditWidget::PushUndoState()
+{
+	// Truncate redo history if we're not at the top of the stack
+	while (undoStack.size() > undoIndex + 1)
+	{
+		undoStack.removeLast();
+	}
+	
+	undoStack.append(gradient.GetColorsAsString());
+	undoIndex++;
+	
+	// Limit stack size to 30
+	if (undoStack.size() > 30)
+	{
+		undoStack.removeFirst();
+		undoIndex--;
+	}
+}
+
+void cGradientEditWidget::Undo()
+{
+	if (undoIndex > 0)
+	{
+		undoIndex--;
+		gradient.SetColorsFromString(undoStack[undoIndex]);
+		if (comboInterpolationMode)
+		{
+			comboInterpolationMode->setCurrentIndex(static_cast<int>(gradient.GetInterpolationMode()));
+		}
+		emit update();
+	}
+}
+
+void cGradientEditWidget::Redo()
+{
+	if (undoIndex < undoStack.size() - 1)
+	{
+		undoIndex++;
+		gradient.SetColorsFromString(undoStack[undoIndex]);
+		if (comboInterpolationMode)
+		{
+			comboInterpolationMode->setCurrentIndex(static_cast<int>(gradient.GetInterpolationMode()));
+		}
+		emit update();
+	}
+}
+
+void cGradientEditWidget::keyPressEvent(QKeyEvent *event)
+{
+	if (event->modifiers() & Qt::ControlModifier)
+	{
+		if (event->key() == Qt::Key_Z)
+		{
+			if (event->modifiers() & Qt::ShiftModifier)
+			{
+				Redo();
+			}
+			else
+			{
+				Undo();
+			}
+			return;
+		}
+		else if (event->key() == Qt::Key_Y)
+		{
+			Redo();
+			return;
+		}
+	}
+	QWidget::keyPressEvent(event);
+}
+
 void cGradientEditWidget::AddColor(QContextMenuEvent *event)
 {
 	int xClick = event->x();
@@ -438,6 +656,7 @@ void cGradientEditWidget::AddColor(QContextMenuEvent *event)
 	gradient.SortGradient();
 	sRGB color = gradient.GetColor(pos, false);
 	gradient.AddColor(color, pos);
+	PushUndoState();
 	emit update();
 }
 
@@ -449,12 +668,31 @@ void cGradientEditWidget::RemoveColor(QContextMenuEvent *event)
 	{
 		gradient.RemoveColor(index);
 	}
+	PushUndoState();
 	emit update();
 }
 
 void cGradientEditWidget::SetOpacity(QContextMenuEvent *event)
 {
 	int xClick = event->x();
+
+	// First check if clicking on an opacity stop
+	int opIndex = FindOpacityStopAtPosition(xClick);
+	if (opIndex >= 0)
+	{
+		float currentOpacity = gradient.GetOpacityStopOpacityByIndex(opIndex);
+		bool ok;
+		int opacityPercent = QInputDialog::getInt(this, tr("Set opacity"), tr("Opacity (0-100%):"),
+			int(currentOpacity * 100), 0, 100, 1, &ok);
+		if (ok)
+		{
+			gradient.ModifyOpacityStopOpacity(opIndex, opacityPercent / 100.0f);
+			emit update();
+		}
+		return;
+	}
+
+	// Fallback: color stop opacity (legacy)
 	int index = FindButtonAtPosition(xClick);
 	if (index >= 0)
 	{
@@ -470,9 +708,30 @@ void cGradientEditWidget::SetOpacity(QContextMenuEvent *event)
 	}
 }
 
+void cGradientEditWidget::AddOpacityStopAt(int x)
+{
+	float pos = float(x - margins) / (width() - 2 * margins - 1);
+	pos = qBound(0.0f, pos, 1.0f);
+	float currentOpacity = gradient.GetOpacity(pos, false);
+	gradient.AddOpacityStop(pos, currentOpacity);
+	PushUndoState();
+	emit update();
+}
+
+void cGradientEditWidget::RemoveOpacityStop(int index)
+{
+	if (index >= 0)
+	{
+		gradient.RemoveOpacityStop(index);
+		PushUndoState();
+		emit update();
+	}
+}
+
 void cGradientEditWidget::Clear()
 {
 	gradient.DeleteAndKeepTwo();
+	PushUndoState();
 	emit update();
 }
 
@@ -504,6 +763,7 @@ void cGradientEditWidget::ChangeNumberOfColors()
 			}
 		}
 		gradient = newGradient;
+		PushUndoState();
 	}
 	emit update();
 }
@@ -557,6 +817,7 @@ void cGradientEditWidget::GrabColors()
 		}
 
 		systemData.lastImagePaletteFile = filename;
+		PushUndoState();
 	}
 
 	emit update();
@@ -599,6 +860,7 @@ void cGradientEditWidget::LoadColors()
 			}
 
 			file.close();
+			PushUndoState();
 		}
 	}
 }
@@ -693,6 +955,7 @@ void cGradientEditWidget::LoadFromClipboard()
 			cErrorMessage::errorMessage);
 		return;
 	}
+	PushUndoState();
 }
 
 void cGradientEditWidget::SaveToClipboard()
@@ -705,9 +968,64 @@ void cGradientEditWidget::SaveToClipboard()
 void cGradientEditWidget::contextMenuEvent(QContextMenuEvent *event)
 {
 	QMenu *menu = new QMenu(); // menu is deleted in contextMenuEvent()
-	QAction *actionAddColor = menu->addAction(tr("Add color"));
-	QAction *actionRemoveColor = menu->addAction(tr("Remove color"));
-	QAction *actionSetOpacity = menu->addAction(tr("Set opacity ..."));
+
+	// Check if right-clicking on an opacity stop
+	int opacityIndexUnderCursor = FindOpacityStopAtPosition(event->x());
+
+	QAction *actionAddColor = nullptr;
+	QAction *actionRemoveColor = nullptr;
+	QAction *actionSetOpacity = nullptr;
+	QAction *actionAddOpacityStop = nullptr;
+	QAction *actionRemoveOpacityStop = nullptr;
+
+	if (opacityIndexUnderCursor >= 0)
+	{
+		// Context menu for opacity stop
+		actionRemoveOpacityStop = menu->addAction(tr("Remove opacity stop"));
+	}
+	else
+	{
+		// Context menu for color area
+		actionAddColor = menu->addAction(tr("Add color"));
+		actionRemoveColor = menu->addAction(tr("Remove color"));
+		actionSetOpacity = menu->addAction(tr("Set color stop opacity ..."));
+		actionAddOpacityStop = menu->addAction(tr("Add opacity stop"));
+	}
+	
+	// Per-segment interpolation mode submenu
+	QMenu *segmentModeMenu = nullptr;
+	int segmentIndexUnderCursor = -1;
+	QList<QAction *> segmentModeActions;
+	{
+		float pos = float(event->x() - margins) / (width() - 2 * margins);
+		gradient.SortGradient();
+		QList<cColorGradient::sColor> sorted = gradient.GetListOfSortedColors();
+		for (int i = 0; i < sorted.size() - 1; i++)
+		{
+			if (pos >= sorted[i].position && pos <= sorted[i + 1].position)
+			{
+				segmentIndexUnderCursor = i;
+				break;
+			}
+		}
+		if (segmentIndexUnderCursor >= 0)
+		{
+			segmentModeMenu = menu->addMenu(tr("Segment interpolation mode"));
+			QStringList modeNames = {"Linear", "Smooth", "HSL Short", "HSL Long", "Cubic", "Constant", "Quadratic Bezier"};
+			for (int m = 0; m < modeNames.size(); m++)
+			{
+				QAction *modeAction = segmentModeMenu->addAction(modeNames[m]);
+				modeAction->setData(m);
+				segmentModeActions.append(modeAction);
+				if (gradient.GetSegmentMode(segmentIndexUnderCursor) == static_cast<cColorGradient::InterpolationMode>(m))
+				{
+					modeAction->setCheckable(true);
+					modeAction->setChecked(true);
+				}
+			}
+		}
+	}
+	
 	menu->addSeparator();
 	QAction *actionClear = menu->addAction(tr("Delete all colors"));
 	QAction *actionChangeNumberOfColors = menu->addAction(tr("Change number of colors ..."));
@@ -726,6 +1044,8 @@ void cGradientEditWidget::contextMenuEvent(QContextMenuEvent *event)
 		if (selectedItem == actionAddColor) AddColor(event);
 		if (selectedItem == actionRemoveColor) RemoveColor(event);
 		if (selectedItem == actionSetOpacity) SetOpacity(event);
+		if (selectedItem == actionAddOpacityStop) AddOpacityStopAt(event->x());
+		if (selectedItem == actionRemoveOpacityStop) RemoveOpacityStop(opacityIndexUnderCursor);
 		if (selectedItem == actionClear) Clear();
 		if (selectedItem == actionChangeNumberOfColors) ChangeNumberOfColors();
 		if (selectedItem == actionGrabColors) GrabColors();
@@ -733,6 +1053,16 @@ void cGradientEditWidget::contextMenuEvent(QContextMenuEvent *event)
 		if (selectedItem == actionSave) SaveColors();
 		if (selectedItem == actionCopy) SaveToClipboard();
 		if (selectedItem == actionPaste) LoadFromClipboard();
+		if (selectedItem && segmentModeActions.contains(const_cast<QAction *>(selectedItem)))
+		{
+			int mode = selectedItem->data().toInt();
+			if (segmentIndexUnderCursor >= 0)
+			{
+				gradient.SetSegmentMode(segmentIndexUnderCursor, static_cast<cColorGradient::InterpolationMode>(mode));
+				PushUndoState();
+				emit update();
+			}
+		}
 	}
 }
 
@@ -745,6 +1075,7 @@ void cGradientEditWidget::LoadPreset(QString presetGradient)
 		comboInterpolationMode->blockSignals(true);
 		comboInterpolationMode->setCurrentIndex(static_cast<int>(gradient.GetInterpolationMode()));
 		comboInterpolationMode->blockSignals(false);
+		PushUndoState();
 		emit update();
 	}
 }
@@ -817,6 +1148,7 @@ void cGradientEditWidget::pressedButtonRandomColors()
 		gradient.ModifyColor(i, color);
 		if (i == 1) gradient.ModifyColor(0, color);
 	}
+	PushUndoState();
 	update();
 }
 
@@ -841,6 +1173,7 @@ void cGradientEditWidget::pressedButtonRandomColorsAndPositions()
 			gradient.AddColor(color, position);
 		}
 	}
+	PushUndoState();
 	update();
 }
 
@@ -855,6 +1188,7 @@ void cGradientEditWidget::pressedButtonBrightnessInc()
 		gradient.ModifyColor(i, color);
 		if (i == 1) gradient.ModifyColor(0, color);
 	}
+	PushUndoState();
 	update();
 }
 
@@ -870,6 +1204,7 @@ void cGradientEditWidget::pressedButtonBrightnessDec()
 		gradient.ModifyColor(i, color);
 		if (i == 1) gradient.ModifyColor(0, color);
 	}
+	PushUndoState();
 	update();
 }
 
@@ -886,6 +1221,7 @@ void cGradientEditWidget::pressedButtonSaturationInc()
 		gradient.ModifyColor(i, color);
 		if (i == 1) gradient.ModifyColor(0, color);
 	}
+	PushUndoState();
 	update();
 }
 
@@ -902,6 +1238,7 @@ void cGradientEditWidget::pressedButtonSaturationDec()
 		gradient.ModifyColor(i, color);
 		if (i == 1) gradient.ModifyColor(0, color);
 	}
+	PushUndoState();
 	update();
 }
 
@@ -917,6 +1254,7 @@ void cGradientEditWidget::pressedButtonInvert()
 		gradient.ModifyColor(i, color);
 		if (i == 1) gradient.ModifyColor(0, color);
 	}
+	PushUndoState();
 	update();
 }
 
@@ -950,6 +1288,7 @@ QString cGradientEditWidget::getFullParameterName()
 void cGradientEditWidget::interpolationModeChanged(int index)
 {
 	gradient.SetInterpolationMode(static_cast<cColorGradient::InterpolationMode>(index));
+	PushUndoState();
 	emit update();
 }
 

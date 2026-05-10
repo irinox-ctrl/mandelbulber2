@@ -342,33 +342,49 @@ int cOpenClDynamicData::BuildMaterialsData(
 
 			paletteCl.resize(totalSizeOfGradients);
 
-			// Write midpoint values
+			// Write midpoint values (x=midpoint, y=segmentMode, z=0, w=0)
 			for (int i = 0; i < midpointSizeSurface; i++)
 				paletteCl[midpointOffsetSurface + i] = toClFloat4(
-					CVector4(material.gradientSurface.GetMidpoint(i), 0.0, 0.0, 0.0));
+					CVector4(material.gradientSurface.GetMidpoint(i),
+						static_cast<float>(material.gradientSurface.GetSegmentMode(i)), 0.0, 0.0));
 			for (int i = 0; i < midpointSizeSpecular; i++)
 				paletteCl[midpointOffsetSpecular + i] = toClFloat4(
-					CVector4(material.gradientSpecular.GetMidpoint(i), 0.0, 0.0, 0.0));
+					CVector4(material.gradientSpecular.GetMidpoint(i),
+						static_cast<float>(material.gradientSpecular.GetSegmentMode(i)), 0.0, 0.0));
 			for (int i = 0; i < midpointSizeDiffuse; i++)
 				paletteCl[midpointOffsetDiffuse + i] = toClFloat4(
-					CVector4(material.gradientDiffuse.GetMidpoint(i), 0.0, 0.0, 0.0));
+					CVector4(material.gradientDiffuse.GetMidpoint(i),
+						static_cast<float>(material.gradientDiffuse.GetSegmentMode(i)), 0.0, 0.0));
 			for (int i = 0; i < midpointSizeLuminosity; i++)
 				paletteCl[midpointOffsetLuminosity + i] = toClFloat4(
-					CVector4(material.gradientLuminosity.GetMidpoint(i), 0.0, 0.0, 0.0));
+					CVector4(material.gradientLuminosity.GetMidpoint(i),
+						static_cast<float>(material.gradientLuminosity.GetSegmentMode(i)), 0.0, 0.0));
 			for (int i = 0; i < midpointSizeRoughness; i++)
 				paletteCl[midpointOffsetRoughness + i] = toClFloat4(
-					CVector4(material.gradientRoughness.GetMidpoint(i), 0.0, 0.0, 0.0));
+					CVector4(material.gradientRoughness.GetMidpoint(i),
+						static_cast<float>(material.gradientRoughness.GetSegmentMode(i)), 0.0, 0.0));
 			for (int i = 0; i < midpointSizeReflectance; i++)
 				paletteCl[midpointOffsetReflectance + i] = toClFloat4(
-					CVector4(material.gradientReflectance.GetMidpoint(i), 0.0, 0.0, 0.0));
+					CVector4(material.gradientReflectance.GetMidpoint(i),
+						static_cast<float>(material.gradientReflectance.GetSegmentMode(i)), 0.0, 0.0));
 			for (int i = 0; i < midpointSizeTransparency; i++)
 				paletteCl[midpointOffsetTransparency + i] = toClFloat4(
-					CVector4(material.gradientTransparency.GetMidpoint(i), 0.0, 0.0, 0.0));
+					CVector4(material.gradientTransparency.GetMidpoint(i),
+						static_cast<float>(material.gradientTransparency.GetSegmentMode(i)), 0.0, 0.0));
 
 			// Opacity data (stored as float4(opacity, opacity, opacity, position))
 			opacityOffsetSurface = totalSizeOfGradients;
-			opacitySizeSurface = gradientSurface.size();
-			totalSizeOfGradients += opacitySizeSurface;
+			if (material.gradientSurface.HasSeparateOpacityStops())
+			{
+				auto opacityStops = material.gradientSurface.GetListOfSortedOpacityStops();
+				opacitySizeSurface = opacityStops.size();
+				totalSizeOfGradients += opacitySizeSurface;
+			}
+			else
+			{
+				opacitySizeSurface = gradientSurface.size();
+				totalSizeOfGradients += opacitySizeSurface;
+			}
 
 			// For now, only surface gradient has real opacity data; others remain dummy
 			opacityOffsetSpecular = -1; opacitySizeSpecular = 0;
@@ -380,11 +396,24 @@ int cOpenClDynamicData::BuildMaterialsData(
 
 			paletteCl.resize(totalSizeOfGradients);
 
-			for (int i = 0; i < opacitySizeSurface; i++)
+			if (material.gradientSurface.HasSeparateOpacityStops())
 			{
-				paletteCl[opacityOffsetSurface + i] = toClFloat4(
-					CVector4(gradientSurface[i].opacity, gradientSurface[i].opacity,
-						gradientSurface[i].opacity, gradientSurface[i].position));
+				auto opacityStops = material.gradientSurface.GetListOfSortedOpacityStops();
+				for (int i = 0; i < opacitySizeSurface; i++)
+				{
+					paletteCl[opacityOffsetSurface + i] = toClFloat4(
+						CVector4(opacityStops[i].opacity, opacityStops[i].opacity,
+							opacityStops[i].opacity, opacityStops[i].position));
+				}
+			}
+			else
+			{
+				for (int i = 0; i < opacitySizeSurface; i++)
+				{
+					paletteCl[opacityOffsetSurface + i] = toClFloat4(
+						CVector4(gradientSurface[i].opacity, gradientSurface[i].opacity,
+							gradientSurface[i].opacity, gradientSurface[i].position));
+				}
 			}
 		}
 		else

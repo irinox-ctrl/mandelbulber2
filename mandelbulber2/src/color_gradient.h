@@ -54,6 +54,15 @@ public:
 
 		static bool lessCompare(sColor a, sColor b) { return a.position < b.position; }
 	};
+
+	struct sOpacityStop
+	{
+		float position; // from 0 to 1.0
+		float opacity;  // from 0.0 to 1.0, default 1.0
+		float midpoint; // from 0.01 to 0.99, default 0.5
+
+		static bool lessCompare(sOpacityStop a, sOpacityStop b) { return a.position < b.position; }
+	};
 	void SetGrayscale() { grayscale = true; }
 	bool isGrayscale() { return grayscale; }
 	int AddColor(sRGB color, float position, float opacity = 1.0f); // returns new color index
@@ -77,18 +86,35 @@ public:
 	int GetNumberOfSegments() { return qMax(0, colors.size() - 1); }
 	void DeleteAll();
 
+	// Separate opacity stops (Photoshop-style, independent from color stops)
+	int AddOpacityStop(float position, float opacity);
+	void RemoveOpacityStop(int index);
+	void ModifyOpacityStopPosition(int index, float position);
+	void ModifyOpacityStopOpacity(int index, float opacity);
+	QList<sOpacityStop> GetListOfOpacityStops() const;
+	QList<sOpacityStop> GetListOfSortedOpacityStops() const;
+	int GetNumberOfOpacityStops() const { return opacityStops.size(); }
+	bool HasSeparateOpacityStops() const;
+	float GetOpacityStopOpacityByIndex(int index) const;
+	float GetOpacityStopPositionByIndex(int index) const;
+	void SetOpacityMidpoint(int segmentIndex, float midpoint);
+	float GetOpacityMidpoint(int segmentIndex) const;
+
 	// Interpolation modes (Photoshop-style)
 	enum class InterpolationMode
 	{
-		Linear,   // Standard RGB linear
-		Smooth,   // Cosine ease-in-out
-		HSLShort, // Hue via shortest path (<=180 deg)
-		HSLLong,  // Hue via longest path (>180 deg)
-		Cubic,    // Catmull-Rom spline
-		Constant  // Hard transition, no blend
+		Linear,           // Standard RGB linear
+		Smooth,           // Cosine ease-in-out
+		HSLShort,         // Hue via shortest path (<=180 deg)
+		HSLLong,          // Hue via longest path (>180 deg)
+		Cubic,            // Catmull-Rom spline
+		Constant,         // Hard transition, no blend
+		QuadraticBezier   // Bezier curve with midpoint as control point
 	};
-	void SetInterpolationMode(InterpolationMode mode) { interpolationMode = mode; }
-	InterpolationMode GetInterpolationMode() const { return interpolationMode; }
+	void SetInterpolationMode(InterpolationMode mode); // Sets default + all segments
+	InterpolationMode GetInterpolationMode() const { return defaultInterpolationMode; }
+	void SetSegmentMode(int segmentIndex, InterpolationMode mode);
+	InterpolationMode GetSegmentMode(int segmentIndex) const;
 	void DeleteAndKeepTwo();
 
 	// Midpoint control (Photoshop-style curve per segment)
@@ -100,7 +126,8 @@ private:
 	int PaletteIterator(int paletteIndex, float position) const;
 	sRGB Interpolate(int paletteIndex, float pos, bool smooth) const;
 	sRGBFloat InterpolateFloat(int paletteIndex, float pos, bool smooth) const;
-	float InterpolateOpacity(int paletteIndex, float pos, bool smooth) const;
+	float InterpolateOpacityFromColors(int paletteIndex, float pos, bool smooth) const;
+	float InterpolateOpacityFromStops(float pos) const;
 	float CorrectPosition(float position, int ignoreIndex);
 	sRGB MakeGrayscaleIfNeeded(sRGB color);
 
@@ -110,16 +137,18 @@ private:
 	static float InterpolateHue(float h1, float h2, float delta, bool shortestPath);
 	static float CubicInterpolate(float y0, float y1, float y2, float y3, float mu);
 
-	// Mode-aware interpolation helpers
-	sRGB InterpolateMode(int paletteIndex, float pos, bool smooth) const;
-	sRGBFloat InterpolateFloatMode(int paletteIndex, float pos, bool smooth) const;
+	// Mode-aware interpolation helpers (dead code removed)
 
 	QList<sColor> colors;
 	QList<sColor> sortedColors;
+	QList<sOpacityStop> opacityStops;
+	QList<sOpacityStop> sortedOpacityStops;
+	QVector<float> opacityMidpoints; // one per opacity-stop segment, default 0.5
 	QVector<float> midpoints; // one per segment, default 0.5
+	QVector<InterpolationMode> segmentModes; // one per segment, default = defaultInterpolationMode
 	bool grayscale;
 	bool sorted;
-	InterpolationMode interpolationMode;
+	InterpolationMode defaultInterpolationMode;
 
 	float ApplyMidpoint(float t, float midpoint) const;
 };
