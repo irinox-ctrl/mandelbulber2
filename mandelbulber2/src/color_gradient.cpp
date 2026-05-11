@@ -1032,7 +1032,7 @@ void cColorGradient::SetColorsFromString(const QString &string)
 				{
 					float stopPos = stopParts[0].toInt() / 10000.0f;
 					float stopOpacity = stopParts[1].toInt() / 10000.0f;
-					sOpacityStop stop = {stopPos, stopOpacity};
+					sOpacityStop stop = {stopPos, stopOpacity, 0.5f};
 					opacityStops.append(stop);
 				}
 			}
