@@ -36,6 +36,7 @@
 #define MANDELBULBER2_QT_GRADIENT_EDIT_WIDGET_H_
 
 #include <QComboBox>
+#include <QElapsedTimer>
 #include <QToolButton>
 #include <QWidget>
 
@@ -163,6 +164,7 @@ private:
 	DisplayMode displayMode;
 	bool popupMode;
 	bool initialized;
+	QElapsedTimer dragUpdateTimer;
 };
 
 #endif /* MANDELBULBER2_QT_GRADIENT_EDIT_WIDGET_H_ */

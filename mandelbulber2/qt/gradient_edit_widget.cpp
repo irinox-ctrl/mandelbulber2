@@ -65,6 +65,7 @@ cGradientEditWidget::cGradientEditWidget(QWidget *parent)
 	displayMode = DisplayMode::BothPanels;
 	popupMode = false;
 	initialized = false;
+	dragUpdateTimer.start();
 	mouseDragStarted = false;
 	isDraggingMidpoint = false;
 	isDraggingOpacityStop = false;
@@ -666,6 +667,11 @@ void cGradientEditWidget::mouseMoveEvent(QMouseEvent *event)
 		mp = qBound(0.01f, mp, 0.99f);
 		gradient.SetOpacityMidpoint(pressedOpacityMidpointIndex, mp);
 		emit update();
+		if (dragUpdateTimer.elapsed() > 200)
+		{
+			NotifyGradientChanged();
+			dragUpdateTimer.restart();
+		}
 	}
 	else if (isDraggingMidpoint && pressedMidpointIndex >= 0)
 	{
@@ -677,6 +683,11 @@ void cGradientEditWidget::mouseMoveEvent(QMouseEvent *event)
 		mp = qBound(0.01f, mp, 0.99f);
 		gradient.SetMidpoint(pressedMidpointIndex, mp);
 		emit update();
+		if (dragUpdateTimer.elapsed() > 200)
+		{
+			NotifyGradientChanged();
+			dragUpdateTimer.restart();
+		}
 	}
 	else if (pressedColorIndex >= 2)
 	{
@@ -690,6 +701,11 @@ void cGradientEditWidget::mouseMoveEvent(QMouseEvent *event)
 			float pos = float(event->x() - margins) / (width() - 2 * margins - 1);
 			gradient.ModifyPosition(pressedColorIndex, pos);
 			emit update();
+			if (dragUpdateTimer.elapsed() > 200)
+			{
+				NotifyGradientChanged();
+				dragUpdateTimer.restart();
+			}
 		}
 	}
 }
