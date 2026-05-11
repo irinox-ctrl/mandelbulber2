@@ -906,10 +906,9 @@ void cGradientEditWidget::NotifyGradientChanged()
 		parameterContainer->Set(parameterName, gradient.GetColorsAsString());
 	}
 
-	// Synchronize UI to gPar and start render so fractal sees changes immediately
+	// Start render directly — gPar already updated above, no need to re-sync all widgets
 	if (initialized && gMainInterface)
 	{
-		gMainInterface->SynchronizeInterface(gPar, gParFractal, qInterface::read);
 		gMainInterface->StartRenderFromCurrentParams(false);
 	}
 }
@@ -940,10 +939,9 @@ void cGradientEditWidget::PushUndoState()
 		parameterContainer->Set(parameterName, gradient.GetColorsAsString());
 	}
 
-	// Synchronize UI to gPar and start render so fractal sees changes immediately
+	// Start render directly — gPar already updated above, no need to re-sync all widgets
 	if (initialized && gMainInterface)
 	{
-		gMainInterface->SynchronizeInterface(gPar, gParFractal, qInterface::read);
 		gMainInterface->StartRenderFromCurrentParams(false);
 	}
 }
