@@ -135,3 +135,10 @@ mandelbulber2/cmake/CMakeFiles/*
 mandelbulber2/cmake/Makefile
 mandelbulber2/cmake/cmake_install.cmake
 mandelbulber2/cmake/compile_commands.json
+
+# Backup archives
+MASTER_BACKUP_*.tar.gz
+
+# Build artifacts in source tree
+mandelbulber2/Makefile
+mandelbulber2/mandelbulber2
