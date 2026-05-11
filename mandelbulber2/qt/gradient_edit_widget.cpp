@@ -49,7 +49,9 @@
 
 #include "src/common_math.h"
 #include "src/error_message.hpp"
+#include "src/fractal_container.hpp"
 #include "src/global_data.hpp"
+#include "src/initparameters.hpp"
 #include "src/interface.hpp"
 #include "src/parameters.hpp"
 #include "src/random.hpp"
@@ -877,9 +879,11 @@ void cGradientEditWidget::NotifyGradientChanged()
 		parameterContainer->Set(parameterName, gradient.GetColorsAsString());
 	}
 
+	// Synchronize UI to gPar and start render so fractal sees changes immediately
 	if (gMainInterface)
 	{
-		gMainInterface->SyncAutoRefreshHashWithGpar();
+		gMainInterface->SynchronizeInterface(gPar, gParFractal, qInterface::read);
+		gMainInterface->StartRenderFromCurrentParams(false);
 	}
 }
 
@@ -909,10 +913,11 @@ void cGradientEditWidget::PushUndoState()
 		parameterContainer->Set(parameterName, gradient.GetColorsAsString());
 	}
 
-	// Trigger render refresh if main interface is available
+	// Synchronize UI to gPar and start render so fractal sees changes immediately
 	if (gMainInterface)
 	{
-		gMainInterface->SyncAutoRefreshHashWithGpar();
+		gMainInterface->SynchronizeInterface(gPar, gParFractal, qInterface::read);
+		gMainInterface->StartRenderFromCurrentParams(false);
 	}
 }
 
