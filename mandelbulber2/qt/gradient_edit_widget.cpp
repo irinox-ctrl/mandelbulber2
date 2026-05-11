@@ -904,13 +904,14 @@ void cGradientEditWidget::NotifyGradientChanged()
 	if (parameterContainer && !parameterName.isEmpty())
 	{
 		parameterContainer->Set(parameterName, gradient.GetColorsAsString());
+		// Start render directly — gPar already updated above, no need to re-sync all widgets
+		if (initialized && gMainInterface)
+		{
+			gMainInterface->StartRenderFromCurrentParams(false);
+		}
 	}
-
-	// Start render directly — gPar already updated above, no need to re-sync all widgets
-	if (initialized && gMainInterface)
-	{
-		gMainInterface->StartRenderFromCurrentParams(false);
-	}
+	// If no parameterContainer (e.g. popup widget), just emit the signal.
+	// The dialog or parent will catch it and trigger the render via the proper widget.
 }
 
 void cGradientEditWidget::PushUndoState()
@@ -937,12 +938,11 @@ void cGradientEditWidget::PushUndoState()
 	if (parameterContainer && !parameterName.isEmpty())
 	{
 		parameterContainer->Set(parameterName, gradient.GetColorsAsString());
-	}
-
-	// Start render directly — gPar already updated above, no need to re-sync all widgets
-	if (initialized && gMainInterface)
-	{
-		gMainInterface->StartRenderFromCurrentParams(false);
+		// Start render directly — gPar already updated above, no need to re-sync all widgets
+		if (initialized && gMainInterface)
+		{
+			gMainInterface->StartRenderFromCurrentParams(false);
+		}
 	}
 }
 
