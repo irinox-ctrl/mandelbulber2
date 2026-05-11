@@ -44,10 +44,13 @@
 #include <QPainter>
 #include <QtWidgets>
 
+#include "gradient_edit_dialog.h"
 #include "preview_file_dialog.h"
 
 #include "src/common_math.h"
 #include "src/error_message.hpp"
+#include "src/global_data.hpp"
+#include "src/interface.hpp"
 #include "src/parameters.hpp"
 #include "src/random.hpp"
 #include "src/system_data.hpp"
@@ -57,6 +60,8 @@ cGradientEditWidget::cGradientEditWidget(QWidget *parent)
 		: QWidget(parent), CommonMyWidgetWrapper(this)
 {
 	viewMode = false;
+	displayMode = DisplayMode::BothPanels;
+	popupMode = false;
 	mouseDragStarted = false;
 	isDraggingMidpoint = false;
 	isDraggingOpacityStop = false;
@@ -169,6 +174,28 @@ void cGradientEditWidget::SetViewModeOnly()
 	margins = 0;
 }
 
+void cGradientEditWidget::SetDisplayMode(DisplayMode mode)
+{
+	displayMode = mode;
+	popupMode = (mode != DisplayMode::BothPanels);
+	if (popupMode)
+	{
+		// Larger size for popup mode (easier to see for vision impaired)
+		setMinimumSize(600, 200);
+		setMaximumSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX);
+		setFixedHeight(250);
+		buttonWidth = 24; // Much larger handles
+		if (buttonWidth % 2 == 0) buttonWidth += 1;
+		margins = buttonWidth / 2 + 4;
+		toolbarHeight = 32; // Larger toolbar
+		if (comboInterpolationMode)
+		{
+			comboInterpolationMode->setFixedHeight(toolbarHeight);
+			comboInterpolationMode->setMinimumWidth(180);
+		}
+	}
+}
+
 void cGradientEditWidget::paintEvent(QPaintEvent *event)
 {
 	GetDefault();
@@ -192,106 +219,121 @@ void cGradientEditWidget::paintEvent(QPaintEvent *event)
 		return;
 	}
 
+	bool showOpacity = (displayMode == DisplayMode::BothPanels || displayMode == DisplayMode::OpacityOnly);
+	bool showColor = (displayMode == DisplayMode::BothPanels || displayMode == DisplayMode::ColorOnly);
+
 	int availableHeight = height() - toolbarHeight;
-	int panelHeight = availableHeight / 2;
+	int panelHeight = (displayMode == DisplayMode::BothPanels) ? availableHeight / 2 : availableHeight;
 	int opacityPanelTop = toolbarHeight;
-	int colorPanelTop = toolbarHeight + panelHeight;
-	int titleHeight = 14;
+	int colorPanelTop = toolbarHeight;
+	if (displayMode == DisplayMode::BothPanels)
+		colorPanelTop = toolbarHeight + panelHeight;
 
-	int opacityContentTop = opacityPanelTop + titleHeight;
-	int colorContentTop = colorPanelTop + titleHeight;
+	int titleHeight = popupMode ? 20 : 14;
 
-	// --- OPACITY PANEL ---
-	// Background
-	painter.fillRect(margins, opacityPanelTop, gradientWidth, panelHeight, QColor(45, 45, 60));
-	// Border
-	painter.setPen(QColor(100, 100, 120));
-	painter.drawRect(margins, opacityPanelTop, gradientWidth, panelHeight);
-	// Title
 	QFont titleFont = painter.font();
 	titleFont.setBold(true);
-	titleFont.setPointSize(8);
+	titleFont.setPointSize(popupMode ? 12 : 8);
 	painter.setFont(titleFont);
-	painter.setPen(Qt::white);
-	painter.drawText(margins + 4, opacityPanelTop + 2, gradientWidth, titleHeight,
-		Qt::AlignLeft | Qt::AlignVCenter, tr("OPACITY"));
-	painter.setFont(QFont());
 
-	// Checkerboard in opacity content area
-	int checkSize = 4;
-	for (int y = opacityContentTop; y < opacityPanelTop + panelHeight; y += checkSize)
+	// --- OPACITY PANEL ---
+	if (showOpacity)
 	{
-		for (int x = 0; x < gradientWidth; x += checkSize)
+		int opacityContentTop = opacityPanelTop + titleHeight;
+		int opacityContentHeight = panelHeight - titleHeight;
+
+		// Background
+		painter.fillRect(margins, opacityPanelTop, gradientWidth, panelHeight, QColor(45, 45, 60));
+		// Border
+		painter.setPen(QColor(100, 100, 120));
+		painter.drawRect(margins, opacityPanelTop, gradientWidth, panelHeight);
+		// Title
+		painter.setFont(titleFont);
+		painter.setPen(Qt::white);
+		painter.drawText(margins + 4, opacityPanelTop + 2, gradientWidth, titleHeight,
+			Qt::AlignLeft | Qt::AlignVCenter, tr("OPACITY"));
+		painter.setFont(QFont());
+
+		// Checkerboard in opacity content area
+		int checkSize = popupMode ? 8 : 4;
+		for (int y = opacityContentTop; y < opacityPanelTop + panelHeight; y += checkSize)
 		{
-			bool white = ((x / checkSize) + (y / checkSize)) % 2 == 0;
-			painter.fillRect(x + margins, y, checkSize, checkSize,
-				white ? QColor(220, 220, 220) : QColor(180, 180, 180));
+			for (int x = 0; x < gradientWidth; x += checkSize)
+			{
+				bool white = ((x / checkSize) + (y / checkSize)) % 2 == 0;
+				painter.fillRect(x + margins, y, checkSize, checkSize,
+					white ? QColor(220, 220, 220) : QColor(180, 180, 180));
+			}
+		}
+
+		// Draw opacity fill under the curve area
+		for (int x = 0; x < gradientWidth; x++)
+		{
+			float pos = float(x) / gradientWidth;
+			float opacity = gradient.GetOpacity(pos, false);
+			int fillTop = opacityContentTop + int((1.0f - opacity) * opacityContentHeight);
+			QColor fillColor(0, 0, 0, int(opacity * 200));
+			painter.fillRect(x + margins, fillTop, 1, opacityPanelTop + panelHeight - fillTop, fillColor);
+		}
+
+		// Paint opacity curve
+		PaintOpacityCurve(painter, opacityPanelTop, panelHeight);
+
+		// Paint opacity stop handles
+		QList<cColorGradient::sOpacityStop> opacityStops = gradient.GetListOfOpacityStops();
+		for (int i = 0; i < opacityStops.size(); i++)
+		{
+			PaintOpacityStop(opacityStops[i], i, painter, opacityPanelTop, panelHeight);
+		}
+
+		// Paint opacity midpoint handles
+		QList<cColorGradient::sOpacityStop> sortedOpacityStops = gradient.GetListOfSortedOpacityStops();
+		for (int i = 0; i < sortedOpacityStops.size() - 1; i++)
+		{
+			PaintOpacityMidpointHandle(i, painter, opacityPanelTop);
 		}
 	}
 
-	// Draw opacity fill under the curve area
-	int opacityContentHeight = panelHeight - titleHeight;
-	for (int x = 0; x < gradientWidth; x++)
-	{
-		float pos = float(x) / gradientWidth;
-		float opacity = gradient.GetOpacity(pos, false);
-		int fillTop = opacityContentTop + int((1.0f - opacity) * opacityContentHeight);
-		QColor fillColor(0, 0, 0, int(opacity * 200));
-		painter.fillRect(x + margins, fillTop, 1, opacityPanelTop + panelHeight - fillTop, fillColor);
-	}
-
-	// Paint opacity curve
-	PaintOpacityCurve(painter, opacityPanelTop, panelHeight);
-
-	// Paint opacity stop handles
-	QList<cColorGradient::sOpacityStop> opacityStops = gradient.GetListOfOpacityStops();
-	for (int i = 0; i < opacityStops.size(); i++)
-	{
-		PaintOpacityStop(opacityStops[i], i, painter, opacityPanelTop, panelHeight);
-	}
-
-	// Paint opacity midpoint handles
-	QList<cColorGradient::sOpacityStop> sortedOpacityStops = gradient.GetListOfSortedOpacityStops();
-	for (int i = 0; i < sortedOpacityStops.size() - 1; i++)
-	{
-		PaintOpacityMidpointHandle(i, painter, opacityPanelTop);
-	}
-
 	// --- COLOR PANEL ---
-	// Background
-	painter.fillRect(margins, colorPanelTop, gradientWidth, panelHeight, QColor(35, 35, 50));
-	// Border
-	painter.setPen(QColor(100, 100, 120));
-	painter.drawRect(margins, colorPanelTop, gradientWidth, panelHeight);
-	// Title
-	painter.setFont(titleFont);
-	painter.setPen(Qt::white);
-	painter.drawText(margins + 4, colorPanelTop + 2, gradientWidth, titleHeight,
-		Qt::AlignLeft | Qt::AlignVCenter, tr("COLOR"));
-	painter.setFont(QFont());
-
-	// Color gradient bar (full opacity)
-	QVector<sRGBA8> grad = gradient.GetGradient(gradientWidth, false);
-	int colorGradientBottom = colorPanelTop + panelHeight - buttonWidth / 2;
-	for (int x = 0; x < grad.size(); x++)
+	if (showColor)
 	{
-		QColor color(grad[x].R, grad[x].G, grad[x].B);
-		painter.setPen(color);
-		painter.drawLine(x + margins, colorContentTop, x + margins, colorGradientBottom);
-	}
+		int colorContentTop = colorPanelTop + titleHeight;
 
-	// Paint color stop handles
-	QList<cColorGradient::sColor> listOfColors = gradient.GetListOfColors();
-	for (cColorGradient::sColor posColor : listOfColors)
-	{
-		PaintButton(posColor, painter, colorPanelTop);
-	}
+		// Background
+		painter.fillRect(margins, colorPanelTop, gradientWidth, panelHeight, QColor(35, 35, 50));
+		// Border
+		painter.setPen(QColor(100, 100, 120));
+		painter.drawRect(margins, colorPanelTop, gradientWidth, panelHeight);
+		// Title
+		painter.setFont(titleFont);
+		painter.setPen(Qt::white);
+		painter.drawText(margins + 4, colorPanelTop + 2, gradientWidth, titleHeight,
+			Qt::AlignLeft | Qt::AlignVCenter, tr("COLOR"));
+		painter.setFont(QFont());
 
-	// Paint color midpoint handles
-	QList<cColorGradient::sColor> sortedColors = gradient.GetListOfSortedColors();
-	for (int i = 0; i < sortedColors.size() - 1; i++)
-	{
-		PaintMidpointHandle(i, painter, colorPanelTop);
+		// Color gradient bar (full opacity)
+		QVector<sRGBA8> grad = gradient.GetGradient(gradientWidth, false);
+		int colorGradientBottom = colorPanelTop + panelHeight - buttonWidth / 2;
+		for (int x = 0; x < grad.size(); x++)
+		{
+			QColor color(grad[x].R, grad[x].G, grad[x].B);
+			painter.setPen(color);
+			painter.drawLine(x + margins, colorContentTop, x + margins, colorGradientBottom);
+		}
+
+		// Paint color stop handles
+		QList<cColorGradient::sColor> listOfColors = gradient.GetListOfColors();
+		for (cColorGradient::sColor posColor : listOfColors)
+		{
+			PaintButton(posColor, painter, colorPanelTop);
+		}
+
+		// Paint color midpoint handles
+		QList<cColorGradient::sColor> sortedColors = gradient.GetListOfSortedColors();
+		for (int i = 0; i < sortedColors.size() - 1; i++)
+		{
+			PaintMidpointHandle(i, painter, colorPanelTop);
+		}
 	}
 }
 
@@ -790,35 +832,30 @@ void cGradientEditWidget::mouseReleaseEvent(QMouseEvent *event)
 
 void cGradientEditWidget::mouseDoubleClickEvent(QMouseEvent *event)
 {
-	if (viewMode) return;
+	if (viewMode || popupMode) return;
 
-	int mouseX = event->x();
 	int mouseY = event->y();
 
 	int availableHeight = height() - toolbarHeight;
 	int panelHeight = availableHeight / 2;
 	int opacityPanelTop = toolbarHeight;
+	int colorPanelTop = toolbarHeight + panelHeight;
 	int titleHeight = 14;
 
-	// Check opacity stop area first
-	if (mouseY >= opacityPanelTop + titleHeight && mouseY < opacityPanelTop + panelHeight)
-	{
-		int opIndex = FindOpacityStopAtPosition(mouseX, mouseY);
-		if (opIndex >= 0)
-		{
-			float currentOpacity = gradient.GetOpacityStopOpacityByIndex(opIndex);
-			bool ok;
-			int opacityPercent = QInputDialog::getInt(this, tr("Set opacity"),
-				tr("Opacity (0-100%):"), int(currentOpacity * 100), 0, 100, 1, &ok);
-			if (ok)
-			{
-				gradient.ModifyOpacityStopOpacity(opIndex, opacityPercent / 100.0f);
-				PushUndoState();
-				emit update();
-			}
-			return;
-		}
-	}
+	// Check which panel was double-clicked
+	bool clickedOpacity = (mouseY >= opacityPanelTop + titleHeight && mouseY < opacityPanelTop + panelHeight);
+	bool clickedColor = (mouseY >= colorPanelTop);
+
+	DisplayMode popupMode = DisplayMode::BothPanels;
+	if (clickedOpacity)
+		popupMode = DisplayMode::OpacityOnly;
+	else if (clickedColor)
+		popupMode = DisplayMode::ColorOnly;
+	else
+		return;
+
+	cGradientEditDialog dialog(this, popupMode, this->parentWidget() ? this->parentWidget()->window() : nullptr);
+	dialog.exec();
 }
 
 void cGradientEditWidget::SetColors(const QString &colorsString)
@@ -829,6 +866,21 @@ void cGradientEditWidget::SetColors(const QString &colorsString)
 		comboInterpolationMode->setCurrentIndex(static_cast<int>(gradient.GetInterpolationMode()));
 	}
 	emit update();
+}
+
+void cGradientEditWidget::NotifyGradientChanged()
+{
+	emit gradientModified();
+
+	if (parameterContainer && !parameterName.isEmpty())
+	{
+		parameterContainer->Set(parameterName, gradient.GetColorsAsString());
+	}
+
+	if (gMainInterface)
+	{
+		gMainInterface->SyncAutoRefreshHashWithGpar();
+	}
 }
 
 void cGradientEditWidget::PushUndoState()
@@ -847,6 +899,20 @@ void cGradientEditWidget::PushUndoState()
 	{
 		undoStack.removeFirst();
 		undoIndex--;
+	}
+
+	emit gradientModified();
+
+	// Update parameter container directly so fractal sees changes immediately
+	if (parameterContainer && !parameterName.isEmpty())
+	{
+		parameterContainer->Set(parameterName, gradient.GetColorsAsString());
+	}
+
+	// Trigger render refresh if main interface is available
+	if (gMainInterface)
+	{
+		gMainInterface->SyncAutoRefreshHashWithGpar();
 	}
 }
 

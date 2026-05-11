@@ -47,12 +47,22 @@ class cGradientEditWidget : public QWidget, public CommonMyWidgetWrapper
 {
 	Q_OBJECT
 public:
+	enum class DisplayMode
+	{
+		BothPanels,
+		OpacityOnly,
+		ColorOnly
+	};
+
 	cGradientEditWidget(QWidget *parent = nullptr);
 	~cGradientEditWidget() override;
 	void SetGrayscale();
 	void SetViewModeOnly();
+	void SetDisplayMode(DisplayMode mode);
 	QString GetColors() { return gradient.GetColorsAsString(); }
 	void SetColors(const QString &colorsString);
+	cColorGradient &GetGradient() { return gradient; }
+	void NotifyGradientChanged();
 
 	// methods to define from CommonMyWidgetWrapper
 	void resetToDefault() override;
@@ -146,6 +156,12 @@ private:
 
 signals:
 	void openEditor();
+	void openEditorForMode(int mode);
+	void gradientModified();
+
+private:
+	DisplayMode displayMode;
+	bool popupMode;
 };
 
 #endif /* MANDELBULBER2_QT_GRADIENT_EDIT_WIDGET_H_ */
