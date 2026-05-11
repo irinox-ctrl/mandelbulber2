@@ -40,6 +40,7 @@
 #include <QWidget>
 
 #include "common_my_widget_wrapper.h"
+#include "opacity_edit_widget.h"
 
 #include "src/color_gradient.h"
 
@@ -62,6 +63,8 @@ public:
 
 private:
 	void paintEvent(QPaintEvent *event) override;
+	void resizeEvent(QResizeEvent *event) override;
+	void showEvent(QShowEvent *event) override;
 	void mouseMoveEvent(QMouseEvent *event) override;
 	void mousePressEvent(QMouseEvent *event) override;
 	void mouseReleaseEvent(QMouseEvent *event) override;
@@ -69,20 +72,16 @@ private:
 	void contextMenuEvent(QContextMenuEvent *event) override;
 	void keyPressEvent(QKeyEvent *event) override;
 
+	void SetupOpacityWidget();
 	void PaintButton(const cColorGradient::sColor &posColor, QPainter &painter);
 	void PaintMidpointHandle(int segmentIndex, QPainter &painter);
-	void PaintOpacityStop(const cColorGradient::sOpacityStop &stop, int index, QPainter &painter);
-	void PaintOpacityCurve(QPainter &painter);
 	int CalcButtonPosition(float colorPosition);
 	int CalcMidpointPosition(int segmentIndex);
 	int FindButtonAtPosition(int x);
 	int FindMidpointAtPosition(int x);
-	int FindOpacityStopAtPosition(int x);
 	void AddColor(QContextMenuEvent *event);
 	void RemoveColor(QContextMenuEvent *event);
 	void SetOpacity(QContextMenuEvent *event);
-	void AddOpacityStopAt(int x);
-	void RemoveOpacityStop(int index);
 	void Clear();
 	void PushUndoState();
 	void Undo();
@@ -100,6 +99,7 @@ private:
 	QString GetDefault();
 
 private slots:
+	void slotOpacityChanged();
 	void pressedButtonRandomColors();
 	void pressedButtonRandomColorsAndPositions();
 	void pressedButtonBrightnessInc();
@@ -115,12 +115,12 @@ private:
 	int margins;
 	bool mouseDragStarted;
 	bool isDraggingMidpoint;
-	bool isDraggingOpacityStop;
 	int pressedColorIndex;
 	int pressedMidpointIndex;
-	int pressedOpacityIndex;
 	int dragStartX;
 	int toolbarHeight;
+	cOpacityEditWidget *opacityWidget;
+	int opacityTrackHeight;
 	bool viewMode;
 	int fixHeight;
 	bool grayscale;

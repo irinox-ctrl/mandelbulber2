@@ -823,6 +823,25 @@ QString cColorGradient::GetColorsAsString()
 		}
 	}
 
+	// Append opacity midpoints if any are non-default
+	bool hasNonDefaultOpacityMidpoints = false;
+	for (float mp : opacityMidpoints)
+	{
+		if (fabsf(mp - 0.5f) > 0.001f)
+		{
+			hasNonDefaultOpacityMidpoints = true;
+			break;
+		}
+	}
+	if (hasNonDefaultOpacityMidpoints)
+	{
+		string += " |m";
+		for (float mp : opacityMidpoints)
+		{
+			string += " " + QString::number(int(mp * 10000.0f));
+		}
+	}
+
 	return string;
 }
 

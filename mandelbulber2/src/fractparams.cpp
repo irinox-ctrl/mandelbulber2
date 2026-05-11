@@ -120,6 +120,13 @@ sParamRender::sParamRender(const std::shared_ptr<cParameterContainer> container,
 	DOFSamples = container->Get<int>("DOF_samples");
 	DOFMinSamples = container->Get<int>("DOF_min_samples");
 	DOFBlurOpacity = container->Get<double>("DOF_blur_opacity");
+	DOFAutoFocus = container->Get<bool>("DOF_auto_focus");
+	DOFAutoFocusMode = container->Get<int>("DOF_auto_focus_mode");
+	DOFBlurKernel = container->Get<int>("DOF_blur_kernel");
+	autoDofFocusBias = container->Get<float>("auto_dof_focus_bias");
+	autoDofRadiusScale = container->Get<float>("auto_dof_radius_scale");
+	autoDofMaxRadiusScale = container->Get<float>("auto_dof_max_radius_scale");
+	autoDofBlurOpacityScale = container->Get<float>("auto_dof_blur_opacity_scale");
 	DOFMaxNoise = container->Get<double>("DOF_max_noise");
 	DOFMonteCarloChromaticAberration = container->Get<bool>("DOF_MC_CA_enable");
 	DOFMonteCarloCADispersionGain = container->Get<float>("DOF_MC_CA_dispersion_gain");

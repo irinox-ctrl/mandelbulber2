@@ -1,0 +1,71 @@
+===============================================================================
+  MANDELBULBER2 — BACKUP & HERSTEL SYSTEEM
+===============================================================================
+
+GEMAAKT: 2026-05-10
+DOEL:    Nooit meer werk verliezen. Altijd terugkeren naar een werkende staat.
+
+───────────────────────────────────────────────────────────────────────────────
+  SNELSTART
+───────────────────────────────────────────────────────────────────────────────
+
+1. WISSELEN TUSSEN STABIEL EN WERK:
+   ./SCHAKELEN.sh stabiel     → veilige auto-fog branch
+   ./SCHAKELEN.sh wip         → huidige werk (gradient, DOF, etc)
+
+2. BACKUP MAKEN (van huidige staat):
+   ./BACKUP_MAKEN.sh
+
+3. HERSTELLEN (van laatste backup):
+   ./HERSTELLEN.sh
+
+4. VOLLEDIGE REPO HERSTELLEN (inclusief .git, branches, alles):
+   ./HERSTELLEN.sh MASTER_BACKUP_20260510_131244.tar.gz
+
+───────────────────────────────────────────────────────────────────────────────
+  BRANCHES
+───────────────────────────────────────────────────────────────────────────────
+
+backup-gradient-system-perfect-skeleton   ← STABIEL
+  - Auto-fog iteratie knop werkt
+  - Berekent fog parameters correct
+  - Compileert zonder fouten
+
+wip-2026-05-10                            ← WERK IN UITVOERING
+  - Alles van STABIEL
+  + Photoshop-style gradient systeem
+  + DOF live preview + auto-focus
+  + Single-trap lichten
+  + Diverse UI verbeteringen
+
+───────────────────────────────────────────────────────────────────────────────
+  BELANGRIJKE REGELS
+───────────────────────────────────────────────────────────────────────────────
+
+1. NA ELKE BRANCH WIJZIGING: make clean + qmake + make
+   De Makefile is branch-afhankelijk!
+
+2. BACKUP MAKEN VOOR GROTE WIJZIGINGEN
+   ./BACKUP_MAKEN.sh "voor-gradient-opsplitsing"
+
+3. COMMIT REGELMATIG OP WIP
+   cd mandelbulber2
+   git add -A
+   git commit -m "WIP: korte omschrijving"
+
+4. STABIEL ALLEEN AANPASSEN VOOR BUGFIXES
+   Geen nieuwe features op de stabiele branch!
+
+───────────────────────────────────────────────────────────────────────────────
+  NOODGEVAL
+───────────────────────────────────────────────────────────────────────────────
+
+Als ALLES kapot is en je wilt helemaal opnieuw beginnen:
+
+   ./HERSTELLEN.sh MASTER_BACKUP_20260510_131244.tar.gz
+   cd mandelbulber2/build
+   make clean && qmake ../qmake/mandelbulber.pro && make -j$(nproc)
+
+Dit geeft je een schone, werkende repo met beide branches.
+
+===============================================================================

@@ -225,6 +225,13 @@ struct sParamRender
 	double DOFMaxRadius;
 	double DOFBlurOpacity;
 	double DOFMaxNoise;
+	bool DOFAutoFocus;
+	int DOFAutoFocusMode;
+	int DOFBlurKernel;
+	float autoDofFocusBias;
+	float autoDofRadiusScale;
+	float autoDofMaxRadiusScale;
+	float autoDofBlurOpacityScale;
 	float DOFMonteCarloCADispersionGain;
 	float DOFMonteCarloCACameraDispersion;
 	double fakeLightsIntensity;
