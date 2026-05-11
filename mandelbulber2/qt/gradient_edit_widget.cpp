@@ -708,12 +708,17 @@ void cGradientEditWidget::mousePressEvent(QMouseEvent *event)
 			int mouseY = event->y();
 
 			int availableHeight = height() - toolbarHeight;
-			int panelHeight = availableHeight / 2;
+			int panelHeight = (displayMode == DisplayMode::BothPanels) ? availableHeight / 2 : availableHeight;
 			int opacityPanelTop = toolbarHeight;
-			int colorPanelTop = toolbarHeight + panelHeight;
-			int titleHeight = 14;
+			int colorPanelTop = (displayMode == DisplayMode::BothPanels) ? toolbarHeight + panelHeight : toolbarHeight;
+			int titleHeight = popupMode ? 20 : 14;
 
-			if (mouseY >= colorPanelTop)
+			bool inColorPanel = (displayMode == DisplayMode::ColorOnly)
+				|| (displayMode == DisplayMode::BothPanels && mouseY >= colorPanelTop);
+			bool inOpacityPanel = (displayMode == DisplayMode::OpacityOnly)
+				|| (displayMode == DisplayMode::BothPanels && mouseY >= opacityPanelTop + titleHeight && mouseY < colorPanelTop);
+
+			if (inColorPanel)
 			{
 				// COLOR PANEL
 				int index = FindButtonAtPosition(mouseX);
@@ -737,7 +742,7 @@ void cGradientEditWidget::mousePressEvent(QMouseEvent *event)
 					}
 				}
 			}
-			else if (mouseY >= opacityPanelTop + titleHeight)
+			else if (inOpacityPanel)
 			{
 				// OPACITY PANEL
 				int opIndex = FindOpacityStopAtPosition(mouseX, mouseY);
@@ -773,18 +778,21 @@ void cGradientEditWidget::mouseReleaseEvent(QMouseEvent *event)
 		if (!viewMode)
 		{
 			int availableHeight = height() - toolbarHeight;
-			int panelHeight = availableHeight / 2;
+			int panelHeight = (displayMode == DisplayMode::BothPanels) ? availableHeight / 2 : availableHeight;
 			int opacityPanelTop = toolbarHeight;
-			int titleHeight = 14;
+			int titleHeight = popupMode ? 20 : 14;
 			int contentTop = opacityPanelTop + titleHeight;
 			int contentHeight = panelHeight - titleHeight;
 			int mouseY = event->y();
+
+			bool inOpacityPanel = (displayMode == DisplayMode::OpacityOnly)
+				|| (displayMode == DisplayMode::BothPanels && mouseY >= opacityPanelTop + titleHeight && mouseY < opacityPanelTop + panelHeight);
 
 			if (!isDraggingOpacityStop && !isDraggingOpacityMidpoint && pressedOpacityIndex < 0
 				&& pressedColorIndex < 0 && pressedMidpointIndex < 0 && !mouseDragStarted)
 			{
 				// Click on empty area in opacity region — add new opacity stop
-				if (mouseY >= opacityPanelTop + titleHeight && mouseY < opacityPanelTop + panelHeight)
+				if (inOpacityPanel)
 				{
 					float opacity = 1.0f - float(mouseY - contentTop) / contentHeight;
 					opacity = qBound(0.0f, opacity, 1.0f);
