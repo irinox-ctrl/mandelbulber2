@@ -64,6 +64,7 @@ cGradientEditWidget::cGradientEditWidget(QWidget *parent)
 	viewMode = false;
 	displayMode = DisplayMode::BothPanels;
 	popupMode = false;
+	initialized = false;
 	mouseDragStarted = false;
 	isDraggingMidpoint = false;
 	isDraggingOpacityStop = false;
@@ -124,6 +125,8 @@ cGradientEditWidget::cGradientEditWidget(QWidget *parent)
 
 	// Initialize undo stack with default gradient
 	PushUndoState();
+
+	initialized = true;
 
 	connect(buttonRandomColors, SIGNAL(clicked()), this, SLOT(pressedButtonRandomColors()));
 	connect(buttonRandomColorsAndPositions, SIGNAL(clicked()), this,
@@ -880,7 +883,7 @@ void cGradientEditWidget::NotifyGradientChanged()
 	}
 
 	// Synchronize UI to gPar and start render so fractal sees changes immediately
-	if (gMainInterface)
+	if (initialized && gMainInterface)
 	{
 		gMainInterface->SynchronizeInterface(gPar, gParFractal, qInterface::read);
 		gMainInterface->StartRenderFromCurrentParams(false);
@@ -914,7 +917,7 @@ void cGradientEditWidget::PushUndoState()
 	}
 
 	// Synchronize UI to gPar and start render so fractal sees changes immediately
-	if (gMainInterface)
+	if (initialized && gMainInterface)
 	{
 		gMainInterface->SynchronizeInterface(gPar, gParFractal, qInterface::read);
 		gMainInterface->StartRenderFromCurrentParams(false);

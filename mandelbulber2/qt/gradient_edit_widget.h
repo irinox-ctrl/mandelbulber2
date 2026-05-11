@@ -162,6 +162,7 @@ signals:
 private:
 	DisplayMode displayMode;
 	bool popupMode;
+	bool initialized;
 };
 
 #endif /* MANDELBULBER2_QT_GRADIENT_EDIT_WIDGET_H_ */
