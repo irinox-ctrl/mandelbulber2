@@ -64,6 +64,8 @@ public:
 	void SetColors(const QString &colorsString);
 	cColorGradient &GetGradient() { return gradient; }
 	void NotifyGradientChanged();
+	std::shared_ptr<cParameterContainer> GetParameterContainer() const { return parameterContainer; }
+	QString GetParameterName() const { return parameterName; }
 
 	// methods to define from CommonMyWidgetWrapper
 	void resetToDefault() override;
@@ -79,6 +81,8 @@ private:
 	void mouseDoubleClickEvent(QMouseEvent *event) override;
 	void contextMenuEvent(QContextMenuEvent *event) override;
 	void keyPressEvent(QKeyEvent *event) override;
+	void leaveEvent(QEvent *event) override;
+	void resizeEvent(QResizeEvent *event) override;
 
 	void PaintButton(const cColorGradient::sColor &posColor, QPainter &painter, int colorPanelTop);
 	void PaintMidpointHandle(int segmentIndex, QPainter &painter, int colorPanelTop);
@@ -135,6 +139,8 @@ private:
 	int pressedMidpointIndex;
 	int pressedOpacityIndex;
 	int pressedOpacityMidpointIndex;
+	int hoveredMidpointIndex;
+	int hoveredOpacityMidpointIndex;
 	int dragStartX;
 	int dragStartY;
 	int toolbarHeight;

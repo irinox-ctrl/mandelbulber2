@@ -74,6 +74,8 @@ cGradientEditWidget::cGradientEditWidget(QWidget *parent)
 	pressedMidpointIndex = -1;
 	pressedOpacityIndex = -1;
 	pressedOpacityMidpointIndex = -1;
+	hoveredMidpointIndex = -1;
+	hoveredOpacityMidpointIndex = -1;
 	dragStartX = 0;
 	dragStartY = 0;
 	grayscale = false;
@@ -424,6 +426,8 @@ void cGradientEditWidget::PaintMidpointHandle(int segmentIndex, QPainter &painte
 	QColor handleColor(200, 200, 200);
 	if (pressedMidpointIndex == segmentIndex)
 		handleColor = QColor(255, 255, 0);
+	else if (hoveredMidpointIndex == segmentIndex)
+		handleColor = QColor(255, 220, 100);
 	QBrush brush(handleColor, Qt::SolidPattern);
 	painter.fillPath(pathDiamond, brush);
 	painter.setPen(Qt::black);
@@ -434,7 +438,7 @@ void cGradientEditWidget::PaintOpacityStop(const cColorGradient::sOpacityStop &s
 	QPainter &painter, int opacityPanelTop, int opacityPanelHeight)
 {
 	int stopPosition = CalcButtonPosition(stop.position);
-	int titleHeight = 14;
+	int titleHeight = popupMode ? 20 : 14;
 	int contentTop = opacityPanelTop + titleHeight;
 	int contentHeight = opacityPanelHeight - titleHeight;
 	int handleSize = buttonWidth / 2;
@@ -461,7 +465,7 @@ void cGradientEditWidget::PaintOpacityCurve(QPainter &painter, int opacityPanelT
 	int gradientWidth = width() - 2 * margins;
 	if (gradientWidth < 2) return;
 
-	int titleHeight = 14;
+	int titleHeight = popupMode ? 20 : 14;
 	int contentTop = opacityPanelTop + titleHeight;
 	int contentHeight = opacityPanelHeight - titleHeight;
 	int curveTop = contentTop + buttonWidth + 4;
@@ -503,9 +507,11 @@ void cGradientEditWidget::PaintOpacityCurve(QPainter &painter, int opacityPanelT
 void cGradientEditWidget::PaintOpacityMidpointHandle(int segmentIndex, QPainter &painter, int opacityPanelTop)
 {
 	int midpointPosition = CalcOpacityMidpointPosition(segmentIndex);
-	int titleHeight = 14;
+	int availableHeight = height() - toolbarHeight;
+	int panelHeight = (displayMode == DisplayMode::BothPanels) ? availableHeight / 2 : availableHeight;
+	int titleHeight = popupMode ? 20 : 14;
 	int contentTop = opacityPanelTop + titleHeight;
-	int contentHeight = opacityPanelTop + (height() - toolbarHeight) / 2 - opacityPanelTop - titleHeight;
+	int contentHeight = panelHeight - titleHeight;
 	float mpPos = float(midpointPosition - margins) / (width() - 2 * margins - 1);
 	float mpOpacity = gradient.GetOpacity(mpPos, false);
 	int handleCenterY = contentTop + int((1.0f - mpOpacity) * contentHeight);
@@ -524,6 +530,8 @@ void cGradientEditWidget::PaintOpacityMidpointHandle(int segmentIndex, QPainter 
 	QColor handleColor(200, 200, 200);
 	if (pressedOpacityMidpointIndex == segmentIndex)
 		handleColor = QColor(255, 255, 0);
+	else if (hoveredOpacityMidpointIndex == segmentIndex)
+		handleColor = QColor(255, 220, 100);
 	QBrush brush(handleColor, Qt::SolidPattern);
 	painter.fillPath(pathDiamond, brush);
 	painter.setPen(Qt::black);
@@ -548,9 +556,9 @@ int cGradientEditWidget::FindOpacityStopAtPosition(int x, int y)
 	if (handleSize < 5) handleSize = 5;
 
 	int availableHeight = height() - toolbarHeight;
-	int panelHeight = availableHeight / 2;
+	int panelHeight = (displayMode == DisplayMode::BothPanels) ? availableHeight / 2 : availableHeight;
 	int opacityPanelTop = toolbarHeight;
-	int titleHeight = 14;
+	int titleHeight = popupMode ? 20 : 14;
 	int contentTop = opacityPanelTop + titleHeight;
 	int contentHeight = panelHeight - titleHeight;
 
@@ -574,9 +582,9 @@ int cGradientEditWidget::FindOpacityMidpointAtPosition(int x, int y)
 	if (handleSize < 5) handleSize = 5;
 
 	int availableHeight = height() - toolbarHeight;
-	int panelHeight = availableHeight / 2;
+	int panelHeight = (displayMode == DisplayMode::BothPanels) ? availableHeight / 2 : availableHeight;
 	int opacityPanelTop = toolbarHeight;
-	int titleHeight = 14;
+	int titleHeight = popupMode ? 20 : 14;
 	int contentTop = opacityPanelTop + titleHeight;
 	int contentHeight = panelHeight - titleHeight;
 
@@ -638,9 +646,9 @@ void cGradientEditWidget::mouseMoveEvent(QMouseEvent *event)
 		if (isDraggingOpacityStop)
 		{
 			int availableHeight = height() - toolbarHeight;
-			int panelHeight = availableHeight / 2;
+			int panelHeight = (displayMode == DisplayMode::BothPanels) ? availableHeight / 2 : availableHeight;
 			int opacityPanelTop = toolbarHeight;
-			int titleHeight = 14;
+			int titleHeight = popupMode ? 20 : 14;
 			int contentTop = opacityPanelTop + titleHeight;
 			int contentHeight = panelHeight - titleHeight;
 
@@ -707,6 +715,39 @@ void cGradientEditWidget::mouseMoveEvent(QMouseEvent *event)
 				dragUpdateTimer.restart();
 			}
 		}
+		else
+		{
+			// Not dragging anything — check for hover over midpoints
+			int availableHeight = height() - toolbarHeight;
+			int panelHeight = (displayMode == DisplayMode::BothPanels) ? availableHeight / 2 : availableHeight;
+			int opacityPanelTop = toolbarHeight;
+			int colorPanelTop = (displayMode == DisplayMode::BothPanels) ? toolbarHeight + panelHeight : toolbarHeight;
+			int mouseY = event->y();
+
+			bool inColorPanel = (displayMode == DisplayMode::ColorOnly)
+				|| (displayMode == DisplayMode::BothPanels && mouseY >= colorPanelTop);
+			bool inOpacityPanel = (displayMode == DisplayMode::OpacityOnly)
+				|| (displayMode == DisplayMode::BothPanels && mouseY >= opacityPanelTop && mouseY < colorPanelTop);
+
+			int newHoveredMidpoint = -1;
+			int newHoveredOpacityMidpoint = -1;
+
+			if (inColorPanel)
+			{
+				newHoveredMidpoint = FindMidpointAtPosition(event->x());
+			}
+			if (inOpacityPanel)
+			{
+				newHoveredOpacityMidpoint = FindOpacityMidpointAtPosition(event->x(), event->y());
+			}
+
+			if (newHoveredMidpoint != hoveredMidpointIndex || newHoveredOpacityMidpoint != hoveredOpacityMidpointIndex)
+			{
+				hoveredMidpointIndex = newHoveredMidpoint;
+				hoveredOpacityMidpointIndex = newHoveredOpacityMidpoint;
+				emit update();
+			}
+		}
 	}
 }
 
@@ -742,6 +783,7 @@ void cGradientEditWidget::mousePressEvent(QMouseEvent *event)
 				{
 					dragStartX = mouseX;
 					pressedColorIndex = index;
+					
 				}
 				else
 				{
@@ -750,11 +792,13 @@ void cGradientEditWidget::mousePressEvent(QMouseEvent *event)
 					{
 						isDraggingMidpoint = true;
 						pressedMidpointIndex = mpIndex;
+						
 						dragStartX = mouseX;
 					}
 					else
 					{
 						pressedColorIndex = -1;
+						
 					}
 				}
 			}
@@ -765,6 +809,7 @@ void cGradientEditWidget::mousePressEvent(QMouseEvent *event)
 				if (opIndex >= 0)
 				{
 					pressedOpacityIndex = opIndex;
+					
 					dragStartX = mouseX;
 					dragStartY = mouseY;
 				}
@@ -775,14 +820,17 @@ void cGradientEditWidget::mousePressEvent(QMouseEvent *event)
 					{
 						isDraggingOpacityMidpoint = true;
 						pressedOpacityMidpointIndex = opMpIndex;
+						
 						dragStartX = mouseX;
 					}
 					else
 					{
 						pressedOpacityIndex = -1;
+						
 					}
 				}
 			}
+			emit update(); // repaint immediately so midpoint shows color on click
 		}
 	}
 }
@@ -866,10 +914,10 @@ void cGradientEditWidget::mouseDoubleClickEvent(QMouseEvent *event)
 	int mouseY = event->y();
 
 	int availableHeight = height() - toolbarHeight;
-	int panelHeight = availableHeight / 2;
+	int panelHeight = (displayMode == DisplayMode::BothPanels) ? availableHeight / 2 : availableHeight;
 	int opacityPanelTop = toolbarHeight;
 	int colorPanelTop = toolbarHeight + panelHeight;
-	int titleHeight = 14;
+	int titleHeight = popupMode ? 20 : 14;
 
 	// Check which panel was double-clicked
 	bool clickedOpacity = (mouseY >= opacityPanelTop + titleHeight && mouseY < opacityPanelTop + panelHeight);
@@ -997,6 +1045,30 @@ void cGradientEditWidget::keyPressEvent(QKeyEvent *event)
 		}
 	}
 	QWidget::keyPressEvent(event);
+}
+
+void cGradientEditWidget::leaveEvent(QEvent *event)
+{
+	Q_UNUSED(event);
+	if (hoveredMidpointIndex >= 0 || hoveredOpacityMidpointIndex >= 0)
+	{
+		hoveredMidpointIndex = -1;
+		hoveredOpacityMidpointIndex = -1;
+		emit update();
+	}
+}
+
+void cGradientEditWidget::resizeEvent(QResizeEvent *event)
+{
+	Q_UNUSED(event);
+	// Recalculate dimensions based on actual widget size (needed for popup where widget is larger)
+	buttonWidth = height() / 8;
+	if (buttonWidth % 2 == 0) buttonWidth += 1; // to always have odd width
+	if (buttonWidth < 5) buttonWidth = 5;
+
+	margins = buttonWidth / 2 + 2;
+	toolbarHeight = int(height() / 3.5);
+	if (toolbarHeight < 20) toolbarHeight = 20;
 }
 
 void cGradientEditWidget::AddColor(QContextMenuEvent *event)

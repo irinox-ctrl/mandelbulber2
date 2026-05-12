@@ -709,6 +709,9 @@ void cColorGradient::SortGradient()
 		}
 		opacityMidpoints = sortedOpacityMidpoints;
 
+		// Keep original list sorted too so indices always match between sorted and original
+		opacityStops = sortedOpacityStops;
+
 		sorted = true;
 		mutex.unlock();
 	}

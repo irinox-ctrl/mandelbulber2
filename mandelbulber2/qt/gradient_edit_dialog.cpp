@@ -54,6 +54,8 @@ cGradientEditDialog::cGradientEditDialog(cGradientEditWidget *parentWidget,
 	editWidget = new cGradientEditWidget(this);
 	editWidget->SetDisplayMode(mode);
 	editWidget->SetColors(parentWidget->GetColors());
+	editWidget->AssignParameterContainer(parentWidget->GetParameterContainer());
+	editWidget->AssignParameterName(parentWidget->GetParameterName());
 	mainLayout->addWidget(editWidget, 1);
 
 	// Close button
