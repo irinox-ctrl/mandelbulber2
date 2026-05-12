@@ -109,7 +109,8 @@ public:
 		HSLLong,          // Hue via longest path (>180 deg)
 		Cubic,            // Catmull-Rom spline
 		Constant,         // Hard transition, no blend
-		QuadraticBezier   // Bezier curve with midpoint as control point
+		QuadraticBezier,  // Bezier curve with midpoint as control point
+		PowerCurve        // Power/gamma curve with midpoint as exponent
 	};
 	void SetInterpolationMode(InterpolationMode mode); // Sets default + all segments
 	InterpolationMode GetInterpolationMode() const { return defaultInterpolationMode; }

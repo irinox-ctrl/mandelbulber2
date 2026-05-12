@@ -151,7 +151,7 @@ float3 GradientInterpolate(int paletteIndex, float pos, bool smooth, int gradien
 			if (midpoints && paletteIndex < midpointSize)
 			{
 				// Per-segment interpolation mode override (stored in y component)
-				mode = clamp((int)midpoints[paletteIndex].s1, 0, 6);
+				mode = clamp((int)midpoints[paletteIndex].s1, 0, 7);
 			}
 
 			bool useSmooth = (mode == 1) || (mode == 0 && smooth);
@@ -172,6 +172,15 @@ float3 GradientInterpolate(int paletteIndex, float pos, bool smooth, int gradien
 				float mp = (midpoints && paletteIndex < midpointSize) 
 					? clamp(midpoints[paletteIndex].s0, 0.01f, 0.99f) : 0.5f;
 				delta = 2.0f * (1.0f - delta) * delta * mp + delta * delta;
+			}
+
+			// PowerCurve uses midpoint as gamma exponent
+			if (mode == 7)
+			{
+				float mp = (midpoints && paletteIndex < midpointSize)
+					? clamp(midpoints[paletteIndex].s0, 0.01f, 0.99f) : 0.5f;
+				float gamma = log(0.5f) / log(mp);
+				delta = pow(delta, gamma);
 			}
 
 			switch (mode)
@@ -211,6 +220,7 @@ float3 GradientInterpolate(int paletteIndex, float pos, bool smooth, int gradien
 				case 0: // Linear
 				case 1: // Smooth
 				case 6: // QuadraticBezier
+				case 7: // PowerCurve
 				default:
 				{
 					float nDelta = 1.0f - delta;

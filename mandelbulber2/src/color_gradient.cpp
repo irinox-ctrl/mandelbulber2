@@ -329,6 +329,15 @@ sRGB cColorGradient::Interpolate(int paletteIndex, float pos, bool smooth) const
 				delta = 2.0f * (1.0f - delta) * delta * mp + delta * delta;
 			}
 
+			// PowerCurve uses midpoint as gamma exponent
+			if (mode == InterpolationMode::PowerCurve)
+			{
+				float mp = (paletteIndex < midpoints.size()) ? midpoints[paletteIndex] : 0.5f;
+				mp = qBound(0.01f, mp, 0.99f);
+				float gamma = logf(0.5f) / logf(mp);
+				delta = powf(delta, gamma);
+			}
+
 			float nDelta = 1.0f - delta;
 
 			switch (mode)
@@ -372,6 +381,7 @@ sRGB cColorGradient::Interpolate(int paletteIndex, float pos, bool smooth) const
 				case InterpolationMode::Linear:
 				case InterpolationMode::Smooth:
 				case InterpolationMode::QuadraticBezier:
+				case InterpolationMode::PowerCurve:
 				default:
 				{
 					color.R = int(color1.R * nDelta + color2.R * delta);
@@ -444,6 +454,15 @@ sRGBFloat cColorGradient::InterpolateFloat(int paletteIndex, float pos, bool smo
 				delta = 2.0f * (1.0f - delta) * delta * mp + delta * delta;
 			}
 
+			// PowerCurve uses midpoint as gamma exponent
+			if (mode == InterpolationMode::PowerCurve)
+			{
+				float mp = (paletteIndex < midpoints.size()) ? midpoints[paletteIndex] : 0.5f;
+				mp = qBound(0.01f, mp, 0.99f);
+				float gamma = logf(0.5f) / logf(mp);
+				delta = powf(delta, gamma);
+			}
+
 			float nDelta = 1.0f - delta;
 
 			switch (mode)
@@ -484,6 +503,7 @@ sRGBFloat cColorGradient::InterpolateFloat(int paletteIndex, float pos, bool smo
 				case InterpolationMode::Linear:
 				case InterpolationMode::Smooth:
 				case InterpolationMode::QuadraticBezier:
+				case InterpolationMode::PowerCurve:
 				default:
 				{
 					color.R = color1.R * nDelta + color2.R * delta;
@@ -878,7 +898,7 @@ void cColorGradient::SetColorsFromString(const QString &string)
 		}
 	}
 
-	defaultInterpolationMode = static_cast<InterpolationMode>(qBound(0, modeInt, 6));
+	defaultInterpolationMode = static_cast<InterpolationMode>(qBound(0, modeInt, 7));
 
 	if (split.size() - tokenStart < 2)
 	{
@@ -1024,7 +1044,7 @@ void cColorGradient::SetColorsFromString(const QString &string)
 			else if (parsingModes && modeIdx < numSegments)
 			{
 				int sm = split[j].toInt();
-				segmentModes[modeIdx] = static_cast<InterpolationMode>(qBound(0, sm, 6));
+				segmentModes[modeIdx] = static_cast<InterpolationMode>(qBound(0, sm, 7));
 				modeIdx++;
 			}
 			else if (parsingOpacityStops)

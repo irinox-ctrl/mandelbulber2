@@ -120,6 +120,7 @@ cGradientEditWidget::cGradientEditWidget(QWidget *parent)
 	comboInterpolationMode->addItem("Cubic");
 	comboInterpolationMode->addItem("Constant");
 	comboInterpolationMode->addItem("Quadratic Bezier");
+	comboInterpolationMode->addItem("Power Curve");
 	comboInterpolationMode->setFixedHeight(toolbarHeight);
 	comboInterpolationMode->move(margins + (toolbarHeight + 2) * 7 + 10, 0);
 	comboInterpolationMode->show();
@@ -1110,6 +1111,7 @@ QString cGradientEditWidget::GetInterpolationModeLabel(cColorGradient::Interpola
 		case cColorGradient::InterpolationMode::Cubic: return "Cu";
 		case cColorGradient::InterpolationMode::Constant: return "Co";
 		case cColorGradient::InterpolationMode::QuadraticBezier: return "QB";
+		case cColorGradient::InterpolationMode::PowerCurve: return "Pw";
 		default: return "?";
 	}
 }
