@@ -160,10 +160,12 @@ float3 GradientInterpolate(int paletteIndex, float pos, bool smooth, int gradien
 			if (midpoints && paletteIndex < midpointSize)
 			{
 				float m = clamp(midpoints[paletteIndex].s0, 0.01f, 0.99f);
-				if (delta < m)
-					delta = 0.5f * delta / m;
-				else
-					delta = 0.5f + 0.5f * (delta - m) / (1.0f - m);
+				float gamma = log(0.5f) / log(m);
+				float deviation = gamma - 1.0f;
+				float intensity = clamp(midpoints[paletteIndex].s2, 0.0f, 5.0f);
+				gamma = 1.0f + deviation * intensity;
+				gamma = clamp(gamma, 0.01f, 10.0f);
+				delta = pow(delta, gamma);
 			}
 
 			// Quadratic Bezier uses midpoint as control point
@@ -375,8 +377,13 @@ float3 SurfaceColor(__constant sClInConstants *consts, sRenderData *renderData,
 					float opacity = 1.0f;
 					if (input->material->surfaceGradientMaskEnable)
 					{
+						int opacityMidpointSurfaceOffset = input->opacitySurfaceOffset + input->opacitySurfaceLength;
+						int opacityMidpointSurfaceLength = max(0, input->opacitySurfaceLength - 1);
 						opacity = GetColorFromGradient(colorPosition, false, input->opacitySurfaceLength,
-							input->palette + input->opacitySurfaceOffset, NULL, 0, 0).x;
+							input->palette + input->opacitySurfaceOffset,
+							(opacityMidpointSurfaceLength > 0) ? input->palette + opacityMidpointSurfaceOffset : NULL,
+							opacityMidpointSurfaceLength,
+							input->material->surfaceGradientInterpolationMode).x;
 					}
 					color = ApplyBlendMode(input->material->color, gradientColor, opacity,
 						input->material->surfaceGradientBlendMode);
