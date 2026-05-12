@@ -116,6 +116,8 @@ public:
 	InterpolationMode GetInterpolationMode() const { return defaultInterpolationMode; }
 	void SetSegmentMode(int segmentIndex, InterpolationMode mode);
 	InterpolationMode GetSegmentMode(int segmentIndex) const;
+	void SetOpacitySegmentMode(int segmentIndex, InterpolationMode mode);
+	InterpolationMode GetOpacitySegmentMode(int segmentIndex) const;
 	void DeleteAndKeepTwo();
 
 	// Midpoint control (Photoshop-style curve per segment)
@@ -145,6 +147,7 @@ private:
 	QList<sOpacityStop> opacityStops;
 	QList<sOpacityStop> sortedOpacityStops;
 	QVector<float> opacityMidpoints; // one per opacity-stop segment, default 0.5
+	QVector<InterpolationMode> opacitySegmentModes; // one per opacity-stop segment, default = defaultInterpolationMode
 	QVector<float> midpoints; // one per segment, default 0.5
 	QVector<InterpolationMode> segmentModes; // one per segment, default = defaultInterpolationMode
 	bool grayscale;

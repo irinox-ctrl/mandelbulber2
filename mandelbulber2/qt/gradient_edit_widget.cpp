@@ -1462,10 +1462,28 @@ void cGradientEditWidget::contextMenuEvent(QContextMenuEvent *event)
 		actionAddOpacityStop = menu->addAction(tr("Add opacity stop"));
 	}
 	
+	// Determine if click is in opacity or color panel
+	int mouseY = event->y();
+	int availableHeight = height() - toolbarHeight;
+	int panelHeight = (displayMode == DisplayMode::BothPanels) ? availableHeight / 2 : availableHeight;
+	int opacityPanelTop = toolbarHeight;
+	int colorPanelTop = (displayMode == DisplayMode::BothPanels) ? toolbarHeight + panelHeight : toolbarHeight;
+	int titleHeight = popupMode ? 20 : 14;
+	bool inOpacityPanel = (displayMode == DisplayMode::OpacityOnly)
+		|| (displayMode == DisplayMode::BothPanels && mouseY >= opacityPanelTop + titleHeight && mouseY < colorPanelTop);
+	bool inColorPanel = (displayMode == DisplayMode::ColorOnly)
+		|| (displayMode == DisplayMode::BothPanels && mouseY >= colorPanelTop);
+
 	// Per-segment interpolation mode submenu
 	QMenu *segmentModeMenu = nullptr;
 	int segmentIndexUnderCursor = -1;
 	QList<QAction *> segmentModeActions;
+	QMenu *opacitySegmentModeMenu = nullptr;
+	int opacitySegmentIndexUnderCursor = -1;
+	QList<QAction *> opacitySegmentModeActions;
+	QStringList modeNames = {"Linear", "Smooth", "HSL Short", "HSL Long", "Cubic", "Constant", "Quadratic Bezier", "Power Curve"};
+
+	if (inColorPanel)
 	{
 		float pos = float(event->x() - margins) / (width() - 2 * margins);
 		gradient.SortGradient();
@@ -1481,13 +1499,42 @@ void cGradientEditWidget::contextMenuEvent(QContextMenuEvent *event)
 		if (segmentIndexUnderCursor >= 0)
 		{
 			segmentModeMenu = menu->addMenu(tr("Segment interpolation mode"));
-			QStringList modeNames = {"Linear", "Smooth", "HSL Short", "HSL Long", "Cubic", "Constant", "Quadratic Bezier"};
 			for (int m = 0; m < modeNames.size(); m++)
 			{
 				QAction *modeAction = segmentModeMenu->addAction(modeNames[m]);
 				modeAction->setData(m);
 				segmentModeActions.append(modeAction);
 				if (gradient.GetSegmentMode(segmentIndexUnderCursor) == static_cast<cColorGradient::InterpolationMode>(m))
+				{
+					modeAction->setCheckable(true);
+					modeAction->setChecked(true);
+				}
+			}
+		}
+	}
+
+	if (inOpacityPanel)
+	{
+		float pos = float(event->x() - margins) / (width() - 2 * margins);
+		gradient.SortGradient();
+		QList<cColorGradient::sOpacityStop> sortedOp = gradient.GetListOfSortedOpacityStops();
+		for (int i = 0; i < sortedOp.size() - 1; i++)
+		{
+			if (pos >= sortedOp[i].position && pos <= sortedOp[i + 1].position)
+			{
+				opacitySegmentIndexUnderCursor = i;
+				break;
+			}
+		}
+		if (opacitySegmentIndexUnderCursor >= 0)
+		{
+			opacitySegmentModeMenu = menu->addMenu(tr("Opacity segment interpolation mode"));
+			for (int m = 0; m < modeNames.size(); m++)
+			{
+				QAction *modeAction = opacitySegmentModeMenu->addAction(modeNames[m]);
+				modeAction->setData(m);
+				opacitySegmentModeActions.append(modeAction);
+				if (gradient.GetOpacitySegmentMode(opacitySegmentIndexUnderCursor) == static_cast<cColorGradient::InterpolationMode>(m))
 				{
 					modeAction->setCheckable(true);
 					modeAction->setChecked(true);
@@ -1529,6 +1576,16 @@ void cGradientEditWidget::contextMenuEvent(QContextMenuEvent *event)
 			if (segmentIndexUnderCursor >= 0)
 			{
 				gradient.SetSegmentMode(segmentIndexUnderCursor, static_cast<cColorGradient::InterpolationMode>(mode));
+				PushUndoState();
+				emit update();
+			}
+		}
+		if (selectedItem && opacitySegmentModeActions.contains(const_cast<QAction *>(selectedItem)))
+		{
+			int mode = selectedItem->data().toInt();
+			if (opacitySegmentIndexUnderCursor >= 0)
+			{
+				gradient.SetOpacitySegmentMode(opacitySegmentIndexUnderCursor, static_cast<cColorGradient::InterpolationMode>(mode));
 				PushUndoState();
 				emit update();
 			}

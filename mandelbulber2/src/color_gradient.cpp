@@ -77,6 +77,10 @@ void cColorGradient::SetInterpolationMode(InterpolationMode mode)
 	{
 		segmentModes[i] = mode;
 	}
+	for (int i = 0; i < opacitySegmentModes.size(); i++)
+	{
+		opacitySegmentModes[i] = mode;
+	}
 }
 
 void cColorGradient::SetSegmentMode(int segmentIndex, InterpolationMode mode)
@@ -193,6 +197,7 @@ int cColorGradient::AddOpacityStop(float position, float opacity)
 	sOpacityStop stop = {position, opacity, 0.5f};
 	opacityStops.append(stop);
 	opacityMidpoints.append(0.5f);
+	opacitySegmentModes.append(defaultInterpolationMode);
 	return opacityStops.size();
 }
 
@@ -203,9 +208,17 @@ void cColorGradient::RemoveOpacityStop(int index)
 		sorted = false;
 		opacityStops.removeAt(index);
 		if (index > 0 && index - 1 < opacityMidpoints.size())
+		{
 			opacityMidpoints.removeAt(index - 1);
+			if (index - 1 < opacitySegmentModes.size())
+				opacitySegmentModes.removeAt(index - 1);
+		}
 		else if (!opacityMidpoints.isEmpty())
+		{
 			opacityMidpoints.removeFirst();
+			if (!opacitySegmentModes.isEmpty())
+				opacitySegmentModes.removeFirst();
+		}
 	}
 }
 
@@ -273,6 +286,24 @@ float cColorGradient::GetOpacityMidpoint(int segmentIndex) const
 		return opacityMidpoints[segmentIndex];
 	}
 	return 0.5f;
+}
+
+void cColorGradient::SetOpacitySegmentMode(int segmentIndex, InterpolationMode mode)
+{
+	SortGradient();
+	if (segmentIndex >= 0 && segmentIndex < opacitySegmentModes.size())
+	{
+		opacitySegmentModes[segmentIndex] = mode;
+	}
+}
+
+cColorGradient::InterpolationMode cColorGradient::GetOpacitySegmentMode(int segmentIndex) const
+{
+	if (segmentIndex >= 0 && segmentIndex < opacitySegmentModes.size())
+	{
+		return opacitySegmentModes[segmentIndex];
+	}
+	return defaultInterpolationMode;
 }
 
 int cColorGradient::PaletteIterator(int paletteIndex, float colorPosition) const
@@ -558,10 +589,58 @@ float cColorGradient::InterpolateOpacityFromStops(float pos) const
 	if (pos2 - pos1 > 0.0f)
 	{
 		float delta = (pos - pos1) / (pos2 - pos1);
+		InterpolationMode mode = (index < opacitySegmentModes.size())
+			? opacitySegmentModes[index] : defaultInterpolationMode;
+
+		bool useSmooth = (mode == InterpolationMode::Smooth)
+									 || (mode == InterpolationMode::Linear && false);
+		if (useSmooth) delta = 0.5f * (1.0f - cosf(delta * float(M_PI)));
+
 		if (index < opacityMidpoints.size())
 			delta = ApplyMidpoint(delta, opacityMidpoints[index]);
+
+		// Quadratic Bezier uses midpoint as control point
+		if (mode == InterpolationMode::QuadraticBezier)
+		{
+			float mp = (index < opacityMidpoints.size()) ? opacityMidpoints[index] : 0.5f;
+			delta = 2.0f * (1.0f - delta) * delta * mp + delta * delta;
+		}
+
+		// PowerCurve uses midpoint as gamma exponent
+		if (mode == InterpolationMode::PowerCurve)
+		{
+			float mp = (index < opacityMidpoints.size()) ? opacityMidpoints[index] : 0.5f;
+			mp = qBound(0.01f, mp, 0.99f);
+			float gamma = logf(0.5f) / logf(mp);
+			delta = powf(delta, gamma);
+		}
+
 		float nDelta = 1.0f - delta;
-		return opacity1 * nDelta + opacity2 * delta;
+
+		switch (mode)
+		{
+			case InterpolationMode::Constant:
+				return (delta < 0.5f) ? opacity1 : opacity2;
+			case InterpolationMode::Cubic:
+			{
+				int n = sortedOpacityStops.size();
+				auto getOp = [n, this](int idx) -> float {
+					if (idx < 0) idx = 0;
+					if (idx >= n) idx = n - 1;
+					return sortedOpacityStops[idx].opacity;
+				};
+				return qBound(0.0f, CubicInterpolate(getOp(index - 1), getOp(index),
+					getOp(index + 1), getOp(index + 2), delta), 1.0f);
+			}
+			case InterpolationMode::Linear:
+			case InterpolationMode::Smooth:
+			case InterpolationMode::QuadraticBezier:
+			case InterpolationMode::PowerCurve:
+			case InterpolationMode::HSLShort:
+			case InterpolationMode::HSLLong:
+			default:
+				return opacity1 * nDelta + opacity2 * delta;
+		}
 	}
 	return opacity1;
 }
@@ -715,6 +794,7 @@ void cColorGradient::SortGradient()
 		// Reorder opacity midpoints to match sorted opacity stop order
 		int numOpacitySegments = qMax(0, numOpacityStops - 1);
 		QVector<float> sortedOpacityMidpoints(numOpacitySegments);
+		QVector<InterpolationMode> sortedOpacitySegmentModes(numOpacitySegments);
 		for (int j = 0; j < numOpacitySegments; j++)
 		{
 			int oldIdx = opIndices[j];
@@ -726,8 +806,17 @@ void cColorGradient::SortGradient()
 			{
 				sortedOpacityMidpoints[j] = 0.5f;
 			}
+			if (oldIdx < opacitySegmentModes.size())
+			{
+				sortedOpacitySegmentModes[j] = opacitySegmentModes[oldIdx];
+			}
+			else
+			{
+				sortedOpacitySegmentModes[j] = defaultInterpolationMode;
+			}
 		}
 		opacityMidpoints = sortedOpacityMidpoints;
+		opacitySegmentModes = sortedOpacitySegmentModes;
 
 		// Keep original list sorted too so indices always match between sorted and original
 		opacityStops = sortedOpacityStops;
@@ -862,6 +951,25 @@ QString cColorGradient::GetColorsAsString()
 		for (float mp : opacityMidpoints)
 		{
 			string += " " + QString::number(int(mp * 10000.0f));
+		}
+	}
+
+	// Append opacity segment modes if any differ from default
+	bool hasNonDefaultOpacitySegmentModes = false;
+	for (InterpolationMode sm : opacitySegmentModes)
+	{
+		if (sm != defaultInterpolationMode)
+		{
+			hasNonDefaultOpacitySegmentModes = true;
+			break;
+		}
+	}
+	if (hasNonDefaultOpacitySegmentModes)
+	{
+		string += " |mo";
+		for (InterpolationMode sm : opacitySegmentModes)
+		{
+			string += " " + QString::number(static_cast<int>(sm));
 		}
 	}
 
@@ -1003,18 +1111,42 @@ void cColorGradient::SetColorsFromString(const QString &string)
 	bool parsingMidpoints = false;
 	bool parsingModes = false;
 	bool parsingOpacityStops = false;
+	bool parsingOpacityMidpoints = false;
+	bool parsingOpacityModes = false;
 	opacityStops.clear();
+	opacityMidpoints.clear();
+	opacitySegmentModes.clear();
 	for (int j = tokenStart; j < split.size(); j++)
 	{
-		if (split[j] == "|" || split[j] == "|:")
+		if (split[j] == "|" || split[j] == "|:" || split[j] == "|m" || split[j] == "|mo")
 		{
 			if (split[j] == "|:")
 			{
-				// Opacity stops section marker (unique to avoid ambiguity)
+				// Opacity stops section marker
 				foundSep = true;
 				parsingMidpoints = false;
 				parsingModes = false;
 				parsingOpacityStops = true;
+				parsingOpacityMidpoints = false;
+				parsingOpacityModes = false;
+			}
+			else if (split[j] == "|m")
+			{
+				foundSep = true;
+				parsingMidpoints = false;
+				parsingModes = false;
+				parsingOpacityStops = false;
+				parsingOpacityMidpoints = true;
+				parsingOpacityModes = false;
+			}
+			else if (split[j] == "|mo")
+			{
+				foundSep = true;
+				parsingMidpoints = false;
+				parsingModes = false;
+				parsingOpacityStops = false;
+				parsingOpacityMidpoints = false;
+				parsingOpacityModes = true;
 			}
 			else if (!foundSep)
 			{
@@ -1059,6 +1191,16 @@ void cColorGradient::SetColorsFromString(const QString &string)
 					opacityStops.append(stop);
 				}
 			}
+			else if (parsingOpacityMidpoints)
+			{
+				float mp = split[j].toInt() / 10000.0f;
+				opacityMidpoints.append(qBound(0.01f, mp, 0.99f));
+			}
+			else if (parsingOpacityModes)
+			{
+				int sm = split[j].toInt();
+				opacitySegmentModes.append(static_cast<InterpolationMode>(qBound(0, sm, 7)));
+			}
 		}
 	}
 	SortGradient();
@@ -1070,6 +1212,8 @@ void cColorGradient::DeleteAll()
 	sortedColors.clear();
 	opacityStops.clear();
 	sortedOpacityStops.clear();
+	opacityMidpoints.clear();
+	opacitySegmentModes.clear();
 	midpoints.clear();
 	segmentModes.clear();
 	sorted = false;
@@ -1084,6 +1228,8 @@ void cColorGradient::DeleteAndKeepTwo()
 		colors.removeLast();
 	}
 	opacityStops.clear();
+	opacityMidpoints.clear();
+	opacitySegmentModes.clear();
 	midpoints.resize(1);
 	midpoints[0] = 0.5f;
 	segmentModes.resize(1);
