@@ -366,7 +366,7 @@ void cGradientEditWidget::PaintButton(const cColorGradient::sColor &posColor, QP
 	int buttonPosition = CalcButtonPosition(posColor.position);
 
 	int availableHeight = height() - toolbarHeight;
-	int panelHeight = availableHeight / 2;
+	int panelHeight = (displayMode == DisplayMode::BothPanels) ? availableHeight / 2 : availableHeight;
 	int colorGradientBottom = colorPanelTop + panelHeight - buttonWidth / 2;
 	int buttonTop = colorGradientBottom;
 
@@ -408,7 +408,7 @@ void cGradientEditWidget::PaintMidpointHandle(int segmentIndex, QPainter &painte
 {
 	int midpointPosition = CalcMidpointPosition(segmentIndex);
 	int availableHeight = height() - toolbarHeight;
-	int panelHeight = availableHeight / 2;
+	int panelHeight = (displayMode == DisplayMode::BothPanels) ? availableHeight / 2 : availableHeight;
 	int colorGradientBottom = colorPanelTop + panelHeight - buttonWidth / 2;
 	int handleTop = colorGradientBottom - buttonWidth / 2;
 	int handleSize = buttonWidth / 2;
