@@ -342,6 +342,34 @@ void cGradientEditWidget::paintEvent(QPaintEvent *event)
 		{
 			PaintMidpointHandle(i, painter, colorPanelTop);
 		}
+
+		// Paint segment mode labels
+		QFont labelFont = painter.font();
+		labelFont.setPointSize(popupMode ? 9 : 7);
+		painter.setFont(labelFont);
+		for (int i = 0; i < sortedColors.size() - 1; i++)
+		{
+			int x1 = CalcButtonPosition(sortedColors[i].position);
+			int x2 = CalcButtonPosition(sortedColors[i + 1].position);
+			int segCenter = (x1 + x2) / 2;
+			int segWidth = x2 - x1;
+			if (segWidth < 20) continue; // too narrow to label
+
+			QString label = GetInterpolationModeLabel(gradient.GetSegmentMode(i));
+			int labelY = colorGradientBottom - 4;
+
+			// Dark semi-transparent background for readability
+			QFontMetrics fm(labelFont);
+			int textWidth = fm.horizontalAdvance(label);
+			int textHeight = fm.height();
+			QRect textRect(segCenter - textWidth / 2 - 2, labelY - textHeight + 2,
+				textWidth + 4, textHeight);
+			painter.fillRect(textRect, QColor(0, 0, 0, 160));
+
+			painter.setPen(Qt::white);
+			painter.drawText(textRect, Qt::AlignCenter, label);
+		}
+		painter.setFont(QFont());
 	}
 }
 
@@ -1069,6 +1097,21 @@ void cGradientEditWidget::resizeEvent(QResizeEvent *event)
 	margins = buttonWidth / 2 + 2;
 	toolbarHeight = int(height() / 3.5);
 	if (toolbarHeight < 20) toolbarHeight = 20;
+}
+
+QString cGradientEditWidget::GetInterpolationModeLabel(cColorGradient::InterpolationMode mode) const
+{
+	switch (mode)
+	{
+		case cColorGradient::InterpolationMode::Linear: return "Li";
+		case cColorGradient::InterpolationMode::Smooth: return "Sm";
+		case cColorGradient::InterpolationMode::HSLShort: return "HS";
+		case cColorGradient::InterpolationMode::HSLLong: return "HL";
+		case cColorGradient::InterpolationMode::Cubic: return "Cu";
+		case cColorGradient::InterpolationMode::Constant: return "Co";
+		case cColorGradient::InterpolationMode::QuadraticBezier: return "QB";
+		default: return "?";
+	}
 }
 
 void cGradientEditWidget::AddColor(QContextMenuEvent *event)

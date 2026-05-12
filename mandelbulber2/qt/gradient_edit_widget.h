@@ -116,6 +116,7 @@ private:
 	void SaveToClipboard();
 	void AddToolButton(QToolButton *button, int position, QString iconName);
 	QString GetDefault();
+	QString GetInterpolationModeLabel(cColorGradient::InterpolationMode mode) const;
 
 private slots:
 	void pressedButtonRandomColors();
