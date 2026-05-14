@@ -342,42 +342,35 @@ int cOpenClDynamicData::BuildMaterialsData(
 
 			paletteCl.resize(totalSizeOfGradients);
 
-			// Write midpoint values (x=midpoint, y=segmentMode, z=intensity, w=0)
+			// Write midpoint values (x=midpoint, y=segmentMode, z=0, w=0)
 			for (int i = 0; i < midpointSizeSurface; i++)
 				paletteCl[midpointOffsetSurface + i] = toClFloat4(
 					CVector4(material.gradientSurface.GetMidpoint(i),
-						static_cast<float>(material.gradientSurface.GetSegmentMode(i)),
-						material.gradientSurface.GetMidpointIntensity(), 0.0));
+						static_cast<float>(material.gradientSurface.GetSegmentMode(i)), 0.0, 0.0));
 			for (int i = 0; i < midpointSizeSpecular; i++)
 				paletteCl[midpointOffsetSpecular + i] = toClFloat4(
 					CVector4(material.gradientSpecular.GetMidpoint(i),
-						static_cast<float>(material.gradientSpecular.GetSegmentMode(i)),
-						material.gradientSpecular.GetMidpointIntensity(), 0.0));
+						static_cast<float>(material.gradientSpecular.GetSegmentMode(i)), 0.0, 0.0));
 			for (int i = 0; i < midpointSizeDiffuse; i++)
 				paletteCl[midpointOffsetDiffuse + i] = toClFloat4(
 					CVector4(material.gradientDiffuse.GetMidpoint(i),
-						static_cast<float>(material.gradientDiffuse.GetSegmentMode(i)),
-						material.gradientDiffuse.GetMidpointIntensity(), 0.0));
+						static_cast<float>(material.gradientDiffuse.GetSegmentMode(i)), 0.0, 0.0));
 			for (int i = 0; i < midpointSizeLuminosity; i++)
 				paletteCl[midpointOffsetLuminosity + i] = toClFloat4(
 					CVector4(material.gradientLuminosity.GetMidpoint(i),
-						static_cast<float>(material.gradientLuminosity.GetSegmentMode(i)),
-						material.gradientLuminosity.GetMidpointIntensity(), 0.0));
+						static_cast<float>(material.gradientLuminosity.GetSegmentMode(i)), 0.0, 0.0));
 			for (int i = 0; i < midpointSizeRoughness; i++)
 				paletteCl[midpointOffsetRoughness + i] = toClFloat4(
 					CVector4(material.gradientRoughness.GetMidpoint(i),
-						static_cast<float>(material.gradientRoughness.GetSegmentMode(i)),
-						material.gradientRoughness.GetMidpointIntensity(), 0.0));
+						static_cast<float>(material.gradientRoughness.GetSegmentMode(i)), 0.0, 0.0));
 			for (int i = 0; i < midpointSizeReflectance; i++)
 				paletteCl[midpointOffsetReflectance + i] = toClFloat4(
 					CVector4(material.gradientReflectance.GetMidpoint(i),
-						static_cast<float>(material.gradientReflectance.GetSegmentMode(i)),
-						material.gradientReflectance.GetMidpointIntensity(), 0.0));
+						static_cast<float>(material.gradientReflectance.GetSegmentMode(i)), 0.0, 0.0));
 			for (int i = 0; i < midpointSizeTransparency; i++)
 				paletteCl[midpointOffsetTransparency + i] = toClFloat4(
 					CVector4(material.gradientTransparency.GetMidpoint(i),
-						static_cast<float>(material.gradientTransparency.GetSegmentMode(i)),
-						material.gradientTransparency.GetMidpointIntensity(), 0.0));
+						static_cast<float>(material.gradientTransparency.GetSegmentMode(i)), 0.0, 0.0));
 
 			// Opacity data (stored as float4(opacity, opacity, opacity, position))
 			opacityOffsetSurface = totalSizeOfGradients;
@@ -420,31 +413,6 @@ int cOpenClDynamicData::BuildMaterialsData(
 					paletteCl[opacityOffsetSurface + i] = toClFloat4(
 						CVector4(gradientSurface[i].opacity, gradientSurface[i].opacity,
 							gradientSurface[i].opacity, gradientSurface[i].position));
-				}
-			}
-
-			// Opacity midpoint data follows opacity stops (shader computes offset as opacityOffset + opacitySize)
-			int opacityMidpointSizeSurface = qMax(0, opacitySizeSurface - 1);
-			if (opacityMidpointSizeSurface > 0)
-			{
-				totalSizeOfGradients += opacityMidpointSizeSurface;
-				paletteCl.resize(totalSizeOfGradients);
-				for (int i = 0; i < opacityMidpointSizeSurface; i++)
-				{
-					float mp;
-					int mode;
-					if (material.gradientSurface.HasSeparateOpacityStops())
-					{
-						mp = material.gradientSurface.GetOpacityMidpoint(i);
-						mode = static_cast<int>(material.gradientSurface.GetOpacitySegmentMode(i));
-					}
-					else
-					{
-						mp = material.gradientSurface.GetMidpoint(i);
-						mode = static_cast<int>(material.gradientSurface.GetSegmentMode(i));
-					}
-					paletteCl[opacityOffsetSurface + opacitySizeSurface + i] = toClFloat4(
-						CVector4(mp, static_cast<float>(mode), 0.0, 0.0));
 				}
 			}
 		}

@@ -54,17 +54,18 @@ cColorGradient::cColorGradient()
 {
 	// first two colors are always positioned at 0.0 and 1.0;
 
-	sColor positionedColor = {sRGB(255, 255, 255), 0.0, 1.0f, 0.5f, InterpolationMode::Linear};
+	sColor positionedColor = {sRGB(255, 255, 255), 0.0, 1.0f};
 	colors.append(positionedColor);
 
-	sColor positionedColor2 = {sRGB(255, 255, 255), 1.0, 1.0f, 0.5f, InterpolationMode::Linear};
+	sColor positionedColor2 = {sRGB(255, 255, 255), 1.0, 1.0f};
 	colors.append(positionedColor2);
 
 	defaultInterpolationMode = InterpolationMode::Linear;
+	midpoints.append(0.5f);
+	segmentModes.append(defaultInterpolationMode);
 
 	grayscale = false;
 	sorted = false;
-	midpointIntensity = 1.0f;
 }
 
 cColorGradient::~cColorGradient() = default;
@@ -72,9 +73,9 @@ cColorGradient::~cColorGradient() = default;
 void cColorGradient::SetInterpolationMode(InterpolationMode mode)
 {
 	defaultInterpolationMode = mode;
-	for (int i = 0; i < colors.size() - 1; i++)
+	for (int i = 0; i < segmentModes.size(); i++)
 	{
-		colors[i].nextSegmentMode = mode;
+		segmentModes[i] = mode;
 	}
 	for (int i = 0; i < opacitySegmentModes.size(); i++)
 	{
@@ -85,17 +86,17 @@ void cColorGradient::SetInterpolationMode(InterpolationMode mode)
 void cColorGradient::SetSegmentMode(int segmentIndex, InterpolationMode mode)
 {
 	SortGradient();
-	if (segmentIndex >= 0 && segmentIndex < colors.size() - 1)
+	if (segmentIndex >= 0 && segmentIndex < segmentModes.size())
 	{
-		colors[segmentIndex].nextSegmentMode = mode;
+		segmentModes[segmentIndex] = mode;
 	}
 }
 
 cColorGradient::InterpolationMode cColorGradient::GetSegmentMode(int segmentIndex) const
 {
-	if (segmentIndex >= 0 && segmentIndex < colors.size() - 1)
+	if (segmentIndex >= 0 && segmentIndex < segmentModes.size())
 	{
-		return colors.at(segmentIndex).nextSegmentMode;
+		return segmentModes[segmentIndex];
 	}
 	return defaultInterpolationMode;
 }
@@ -105,8 +106,10 @@ int cColorGradient::AddColor(sRGB color, float position, float opacity)
 	sorted = false;
 	position = CorrectPosition(position, -1);
 	color = MakeGrayscaleIfNeeded(color);
-	sColor positionedColor = {color, position, opacity, 0.5f, defaultInterpolationMode};
+	sColor positionedColor = {color, position, opacity};
 	colors.append(positionedColor);
+	midpoints.append(0.5f);
+	segmentModes.append(defaultInterpolationMode);
 	return colors.size();
 }
 
@@ -160,6 +163,16 @@ void cColorGradient::RemoveColor(int index)
 		{
 			sorted = false;
 			colors.removeAt(index);
+			if (index > 0)
+			{
+				midpoints.removeAt(index - 1);
+				segmentModes.removeAt(index - 1);
+			}
+			else if (!midpoints.isEmpty())
+			{
+				midpoints.removeFirst();
+				segmentModes.removeFirst();
+			}
 		}
 		else
 		{
@@ -296,7 +309,7 @@ cColorGradient::InterpolationMode cColorGradient::GetOpacitySegmentMode(int segm
 int cColorGradient::PaletteIterator(int paletteIndex, float colorPosition) const
 {
 	int newIndex = paletteIndex;
-	while (newIndex < colors.size() - 1 && colorPosition > colors[newIndex + 1].position)
+	while (newIndex < sortedColors.size() - 1 && colorPosition > sortedColors[newIndex + 1].position)
 	{
 		newIndex++;
 	}
@@ -312,45 +325,45 @@ sRGB cColorGradient::GetColor(float position, bool smooth) const
 sRGB cColorGradient::Interpolate(int paletteIndex, float pos, bool smooth) const
 {
 	sRGB color;
-	if (colors.isEmpty()) return sRGB(255, 255, 255);
+	if (sortedColors.isEmpty()) return sRGB(255, 255, 255);
 	// if last element then just copy color value (no interpolation)
-	if (paletteIndex >= colors.size() - 1)
+	if (paletteIndex >= sortedColors.size() - 1)
 	{
-		color = colors[colors.size() - 1].color;
+		color = sortedColors[sortedColors.size() - 1].color;
 	}
 	else
 	{
 		// interpolation
-		sRGB color1 = colors[paletteIndex].color;
-		sRGB color2 = colors[paletteIndex + 1].color;
-		float pos1 = colors[paletteIndex].position;
-		float pos2 = colors[paletteIndex + 1].position;
+		sRGB color1 = sortedColors[paletteIndex].color;
+		sRGB color2 = sortedColors[paletteIndex + 1].color;
+		float pos1 = sortedColors[paletteIndex].position;
+		float pos2 = sortedColors[paletteIndex + 1].position;
 		// relative delta
 		if (pos2 - pos1 > 0.0f)
 		{
 			float delta = (pos - pos1) / (pos2 - pos1);
-			InterpolationMode mode = (paletteIndex < colors.size() - 1)
-				? colors[paletteIndex].nextSegmentMode : defaultInterpolationMode;
+			InterpolationMode mode = (paletteIndex < segmentModes.size())
+				? segmentModes[paletteIndex] : defaultInterpolationMode;
 
 
 			bool useSmooth = (mode == InterpolationMode::Smooth)
 										 || (mode == InterpolationMode::Linear && smooth);
 			if (useSmooth) delta = 0.5f * (1.0f - cosf(delta * float(M_PI)));
 
-			if (paletteIndex < colors.size() - 1)
-				delta = ApplyMidpoint(delta, colors[paletteIndex].nextMidpoint);
+			if (paletteIndex < midpoints.size())
+				delta = ApplyMidpoint(delta, midpoints[paletteIndex]);
 
 			// Quadratic Bezier uses midpoint as control point instead of ApplyMidpoint
 			if (mode == InterpolationMode::QuadraticBezier)
 			{
-				float mp = (paletteIndex < colors.size() - 1) ? colors[paletteIndex].nextMidpoint : 0.5f;
+				float mp = (paletteIndex < midpoints.size()) ? midpoints[paletteIndex] : 0.5f;
 				delta = 2.0f * (1.0f - delta) * delta * mp + delta * delta;
 			}
 
 			// PowerCurve uses midpoint as gamma exponent
 			if (mode == InterpolationMode::PowerCurve)
 			{
-				float mp = (paletteIndex < colors.size() - 1) ? colors[paletteIndex].nextMidpoint : 0.5f;
+				float mp = (paletteIndex < midpoints.size()) ? midpoints[paletteIndex] : 0.5f;
 				mp = qBound(0.01f, mp, 0.99f);
 				float gamma = logf(0.5f) / logf(mp);
 				delta = powf(delta, gamma);
@@ -382,13 +395,13 @@ sRGB cColorGradient::Interpolate(int paletteIndex, float pos, bool smooth) const
 				}
 				case InterpolationMode::Cubic:
 				{
-					int n = colors.size();
+					int n = sortedColors.size();
 					auto getCh = [n, this](int idx, int ch) -> float {
 						if (idx < 0) idx = 0;
 						if (idx >= n) idx = n - 1;
-						if (ch == 0) return colors[idx].color.R;
-						if (ch == 1) return colors[idx].color.G;
-						return colors[idx].color.B;
+						if (ch == 0) return sortedColors[idx].color.R;
+						if (ch == 1) return sortedColors[idx].color.G;
+						return sortedColors[idx].color.B;
 					};
 					int i = paletteIndex;
 					color.R = qBound(0, int(CubicInterpolate(getCh(i - 1, 0), getCh(i, 0), getCh(i + 1, 0), getCh(i + 2, 0), delta)), 255);
@@ -427,55 +440,55 @@ sRGBFloat cColorGradient::GetColorFloat(float position, bool smooth) const
 sRGBFloat cColorGradient::InterpolateFloat(int paletteIndex, float pos, bool smooth) const
 {
 	sRGBFloat color;
-	if (colors.isEmpty()) return sRGBFloat(1.0f, 1.0f, 1.0f);
+	if (sortedColors.isEmpty()) return sRGBFloat(1.0f, 1.0f, 1.0f);
 	// if last element then just copy color value (no interpolation)
-	if (paletteIndex >= colors.size() - 1)
+	if (paletteIndex >= sortedColors.size() - 1)
 	{
-		color.R = colors[colors.size() - 1].color.R / 255.0f;
-		color.G = colors[colors.size() - 1].color.G / 255.0f;
-		color.B = colors[colors.size() - 1].color.B / 255.0f;
+		color.R = sortedColors[sortedColors.size() - 1].color.R / 255.0f;
+		color.G = sortedColors[sortedColors.size() - 1].color.G / 255.0f;
+		color.B = sortedColors[sortedColors.size() - 1].color.B / 255.0f;
 	}
 	else
 	{
 		// interpolation
 		sRGBFloat color1, color2;
 
-		color1.R = colors[paletteIndex].color.R / 255.0f;
-		color1.G = colors[paletteIndex].color.G / 255.0f;
-		color1.B = colors[paletteIndex].color.B / 255.0f;
+		color1.R = sortedColors[paletteIndex].color.R / 255.0f;
+		color1.G = sortedColors[paletteIndex].color.G / 255.0f;
+		color1.B = sortedColors[paletteIndex].color.B / 255.0f;
 
-		color2.R = colors[paletteIndex + 1].color.R / 255.0f;
-		color2.G = colors[paletteIndex + 1].color.G / 255.0f;
-		color2.B = colors[paletteIndex + 1].color.B / 255.0f;
+		color2.R = sortedColors[paletteIndex + 1].color.R / 255.0f;
+		color2.G = sortedColors[paletteIndex + 1].color.G / 255.0f;
+		color2.B = sortedColors[paletteIndex + 1].color.B / 255.0f;
 
-		float pos1 = colors[paletteIndex].position;
-		float pos2 = colors[paletteIndex + 1].position;
+		float pos1 = sortedColors[paletteIndex].position;
+		float pos2 = sortedColors[paletteIndex + 1].position;
 		// relative delta
 		if (pos2 - pos1 > 0.0f)
 		{
 			float delta = (pos - pos1) / (pos2 - pos1);
-			InterpolationMode mode = (paletteIndex < colors.size() - 1)
-				? colors[paletteIndex].nextSegmentMode : defaultInterpolationMode;
+			InterpolationMode mode = (paletteIndex < segmentModes.size())
+				? segmentModes[paletteIndex] : defaultInterpolationMode;
 
 
 			bool useSmooth = (mode == InterpolationMode::Smooth)
 										 || (mode == InterpolationMode::Linear && smooth);
 			if (useSmooth) delta = 0.5f * (1.0f - cosf(delta * float(M_PI)));
 
-			if (paletteIndex < colors.size() - 1)
-				delta = ApplyMidpoint(delta, colors[paletteIndex].nextMidpoint);
+			if (paletteIndex < midpoints.size())
+				delta = ApplyMidpoint(delta, midpoints[paletteIndex]);
 
 			// Quadratic Bezier uses midpoint as control point instead of ApplyMidpoint
 			if (mode == InterpolationMode::QuadraticBezier)
 			{
-				float mp = (paletteIndex < colors.size() - 1) ? colors[paletteIndex].nextMidpoint : 0.5f;
+				float mp = (paletteIndex < midpoints.size()) ? midpoints[paletteIndex] : 0.5f;
 				delta = 2.0f * (1.0f - delta) * delta * mp + delta * delta;
 			}
 
 			// PowerCurve uses midpoint as gamma exponent
 			if (mode == InterpolationMode::PowerCurve)
 			{
-				float mp = (paletteIndex < colors.size() - 1) ? colors[paletteIndex].nextMidpoint : 0.5f;
+				float mp = (paletteIndex < midpoints.size()) ? midpoints[paletteIndex] : 0.5f;
 				mp = qBound(0.01f, mp, 0.99f);
 				float gamma = logf(0.5f) / logf(mp);
 				delta = powf(delta, gamma);
@@ -504,13 +517,13 @@ sRGBFloat cColorGradient::InterpolateFloat(int paletteIndex, float pos, bool smo
 				}
 				case InterpolationMode::Cubic:
 				{
-					int n = colors.size();
+					int n = sortedColors.size();
 					auto getCh = [n, this](int idx, int ch) -> float {
 						if (idx < 0) idx = 0;
 						if (idx >= n) idx = n - 1;
-						if (ch == 0) return colors[idx].color.R / 255.0f;
-						if (ch == 1) return colors[idx].color.G / 255.0f;
-						return colors[idx].color.B / 255.0f;
+						if (ch == 0) return sortedColors[idx].color.R / 255.0f;
+						if (ch == 1) return sortedColors[idx].color.G / 255.0f;
+						return sortedColors[idx].color.B / 255.0f;
 					};
 					int i = paletteIndex;
 					color.R = qBound(0.0f, CubicInterpolate(getCh(i - 1, 0), getCh(i, 0), getCh(i + 1, 0), getCh(i + 2, 0), delta), 1.0f);
@@ -635,17 +648,17 @@ float cColorGradient::InterpolateOpacityFromStops(float pos) const
 float cColorGradient::InterpolateOpacityFromColors(int paletteIndex, float pos, bool smooth) const
 {
 	// if last element then just copy opacity value (no interpolation)
-	if (paletteIndex >= colors.size() - 1)
+	if (paletteIndex >= sortedColors.size() - 1)
 	{
-		return colors[paletteIndex].opacity;
+		return sortedColors[paletteIndex].opacity;
 	}
 	else
 	{
-		float opacity1 = colors[paletteIndex].opacity;
-		float opacity2 = colors[paletteIndex + 1].opacity;
+		float opacity1 = sortedColors[paletteIndex].opacity;
+		float opacity2 = sortedColors[paletteIndex + 1].opacity;
 
-		float pos1 = colors[paletteIndex].position;
-		float pos2 = colors[paletteIndex + 1].position;
+		float pos1 = sortedColors[paletteIndex].position;
+		float pos2 = sortedColors[paletteIndex + 1].position;
 		// relative delta
 		if (pos2 - pos1 > 0.0f)
 		{
@@ -653,8 +666,8 @@ float cColorGradient::InterpolateOpacityFromColors(int paletteIndex, float pos, 
 
 			if (smooth) delta = 0.5f * (1.0f - cosf(delta * float(M_PI)));
 
-			if (paletteIndex < colors.size() - 1)
-				delta = ApplyMidpoint(delta, colors[paletteIndex].nextMidpoint);
+			if (paletteIndex < midpoints.size())
+				delta = ApplyMidpoint(delta, midpoints[paletteIndex]);
 
 			float nDelta = 1.0f - delta;
 			return opacity1 * nDelta + opacity2 * delta;
@@ -704,7 +717,7 @@ QList<cColorGradient::sColor> cColorGradient::GetListOfColors() const
 QList<cColorGradient::sColor> cColorGradient::GetListOfSortedColors() const
 {
 	if (!sorted) qCritical() << "Colors were not sorted!";
-	return colors;
+	return sortedColors;
 }
 
 void cColorGradient::SortGradient()
@@ -721,15 +734,47 @@ void cColorGradient::SortGradient()
 			return colors[a].position < colors[b].position;
 		});
 
-		// Sort the colors in-place. Midpoints and segment modes are stored in sColor,
-		// so they automatically move with their associated color.
-		QList<sColor> colorsTemp;
+		// Sort the colors
+		sortedColors.clear();
 		for (int idx : indices)
 		{
-			colorsTemp.append(colors[idx]);
+			sortedColors.append(colors[idx]);
 		}
-		colors = colorsTemp;
-		colors = colors;
+
+		// Reorder midpoints to match sorted segment order.
+		// Invariant: midpoints[i] belongs to the segment starting at colors[i].
+		// After sorting, segment j starts at sortedColors[j] = colors[indices[j]].
+		int numSegments = qMax(0, colors.size() - 1);
+		QVector<float> sortedMidpoints(numSegments);
+		for (int j = 0; j < numSegments; j++)
+		{
+			int oldIdx = indices[j];
+			if (oldIdx < midpoints.size())
+			{
+				sortedMidpoints[j] = midpoints[oldIdx];
+			}
+			else
+			{
+				sortedMidpoints[j] = 0.5f;
+			}
+		}
+		midpoints = sortedMidpoints;
+
+		// Reorder segment modes to match sorted segment order (same logic as midpoints)
+		QVector<InterpolationMode> sortedSegmentModes(numSegments);
+		for (int j = 0; j < numSegments; j++)
+		{
+			int oldIdx = indices[j];
+			if (oldIdx < segmentModes.size())
+			{
+				sortedSegmentModes[j] = segmentModes[oldIdx];
+			}
+			else
+			{
+				sortedSegmentModes[j] = defaultInterpolationMode;
+			}
+		}
+		segmentModes = sortedSegmentModes;
 
 		// Sort opacity stops by position
 		// Build index permutation for opacity stops
@@ -790,9 +835,9 @@ QString cColorGradient::GetColorsAsString()
 
 	// Check if any opacity is non-default (< 1.0)
 	bool hasNonDefaultOpacity = false;
-	for (int i = 0; i < colors.size(); i++)
+	for (int i = 0; i < sortedColors.size(); i++)
 	{
-		if (colors[i].opacity < 0.999f)
+		if (sortedColors[i].opacity < 0.999f)
 		{
 			hasNonDefaultOpacity = true;
 			break;
@@ -801,9 +846,9 @@ QString cColorGradient::GetColorsAsString()
 
 	// Check if any midpoints are non-default
 	bool hasNonDefaultMidpoints = false;
-	for (int i = 0; i < colors.size() - 1; i++)
+	for (float mp : midpoints)
 	{
-		if (fabsf(colors[i].nextMidpoint - 0.5f) > 0.001f)
+		if (fabsf(mp - 0.5f) > 0.001f)
 		{
 			hasNonDefaultMidpoints = true;
 			break;
@@ -812,9 +857,9 @@ QString cColorGradient::GetColorsAsString()
 
 	// Check if any segment modes differ from default
 	bool hasNonDefaultSegmentModes = false;
-	for (int i = 0; i < colors.size() - 1; i++)
+	for (InterpolationMode sm : segmentModes)
 	{
-		if (colors[i].nextSegmentMode != defaultInterpolationMode)
+		if (sm != defaultInterpolationMode)
 		{
 			hasNonDefaultSegmentModes = true;
 			break;
@@ -831,14 +876,14 @@ QString cColorGradient::GetColorsAsString()
 	{
 		// New format: v2;mode; pos RRGGBBAA pos RRGGBBAA ... (all colors, no cyclic assumption)
 		string = QString("v2;%1; ").arg(static_cast<int>(defaultInterpolationMode));
-		for (int i = 0; i < colors.size(); i++)
+		for (int i = 0; i < sortedColors.size(); i++)
 		{
-			int alpha = qBound(0, int(colors[i].opacity * 255.0f), 255);
+			int alpha = qBound(0, int(sortedColors[i].opacity * 255.0f), 255);
 			QString oneColor = QString("%1 %2%3%4%5")
-												 .arg(int(colors[i].position * 10000))
-												 .arg(colors[i].color.R, 2, 16, QChar('0'))
-												 .arg(colors[i].color.G, 2, 16, QChar('0'))
-												 .arg(colors[i].color.B, 2, 16, QChar('0'))
+												 .arg(int(sortedColors[i].position * 10000))
+												 .arg(sortedColors[i].color.R, 2, 16, QChar('0'))
+												 .arg(sortedColors[i].color.G, 2, 16, QChar('0'))
+												 .arg(sortedColors[i].color.B, 2, 16, QChar('0'))
 												 .arg(alpha, 2, 16, QChar('0'));
 			if (i > 0) string += " ";
 			string += oneColor;
@@ -847,13 +892,13 @@ QString cColorGradient::GetColorsAsString()
 	else
 	{
 		// Legacy format (no prefix, 2 tokens per stop, cyclic: last == first)
-		for (int i = 0; i < colors.size() - 1; i++)
+		for (int i = 0; i < sortedColors.size() - 1; i++)
 		{
 			QString oneColor = QString("%1 %2%3%4")
-												 .arg(int(colors[i].position * 10000))
-												 .arg(colors[i].color.R, 2, 16, QChar('0'))
-												 .arg(colors[i].color.G, 2, 16, QChar('0'))
-												 .arg(colors[i].color.B, 2, 16, QChar('0'));
+												 .arg(int(sortedColors[i].position * 10000))
+												 .arg(sortedColors[i].color.R, 2, 16, QChar('0'))
+												 .arg(sortedColors[i].color.G, 2, 16, QChar('0'))
+												 .arg(sortedColors[i].color.B, 2, 16, QChar('0'));
 			if (i > 0) string += " ";
 			string += oneColor;
 		}
@@ -863,9 +908,9 @@ QString cColorGradient::GetColorsAsString()
 	if (hasNonDefaultMidpoints)
 	{
 		string += " |";
-		for (int i = 0; i < colors.size() - 1; i++)
+		for (float mp : midpoints)
 		{
-			string += " " + QString::number(int(colors[i].nextMidpoint * 10000.0f));
+			string += " " + QString::number(int(mp * 10000.0f));
 		}
 	}
 
@@ -873,9 +918,9 @@ QString cColorGradient::GetColorsAsString()
 	if (hasNonDefaultSegmentModes)
 	{
 		string += " |";
-		for (int i = 0; i < colors.size() - 1; i++)
+		for (InterpolationMode sm : segmentModes)
 		{
-			string += " " + QString::number(static_cast<int>(colors[i].nextSegmentMode));
+			string += " " + QString::number(static_cast<int>(sm));
 		}
 	}
 
@@ -965,10 +1010,10 @@ void cColorGradient::SetColorsFromString(const QString &string)
 
 	if (split.size() - tokenStart < 2)
 	{
-		sColor positionedColor = {sRGB(255, 255, 255), 0.0, 1.0f, 0.5f, InterpolationMode::Linear};
+		sColor positionedColor = {sRGB(255, 255, 255), 0.0, 1.0f};
 		colors.append(positionedColor);
 
-		sColor positionedColor2 = {sRGB(255, 255, 255), 1.0, 1.0f, 0.5f, InterpolationMode::Linear};
+		sColor positionedColor2 = {sRGB(255, 255, 255), 1.0, 1.0f};
 		colors.append(positionedColor2);
 
 		qCritical() << "Error! In gradient string shoud be at least one color";
@@ -983,7 +1028,7 @@ void cColorGradient::SetColorsFromString(const QString &string)
 
 		for (int i = tokenStart; i < split.size(); i++)
 		{
-			if (split[i] == "|") break; // midpoint separator
+			if (split[i] == "|" || split[i].startsWith("|i")) break; // midpoint separator or intensity section
 			if (split[i].size() > 0)
 			{
 				int tokenInStop = (i - tokenStart) % tokensPerStop;
@@ -1002,7 +1047,7 @@ void cColorGradient::SetColorsFromString(const QString &string)
 						color.B = (hex >> 8) & 0xFF;
 						opacity = (hex & 0xFF) / 255.0f;
 						color = MakeGrayscaleIfNeeded(color);
-						sColor colorPos = {color, position, opacity, 0.5f, defaultInterpolationMode};
+						sColor colorPos = {color, position, opacity};
 						position = CorrectPosition(position, -1);
 						colors.append(colorPos);
 					}
@@ -1021,7 +1066,7 @@ void cColorGradient::SetColorsFromString(const QString &string)
 						else
 						{
 							// Legacy: add immediately
-							sColor colorPos = {color, position, 1.0f, 0.5f, defaultInterpolationMode};
+							sColor colorPos = {color, position, 1.0f};
 							position = CorrectPosition(position, -1);
 							colors.append(colorPos);
 							if (i == tokenStart + 1)
@@ -1037,7 +1082,7 @@ void cColorGradient::SetColorsFromString(const QString &string)
 				{
 					// Old v2 format: opacity as integer
 					opacity = split[i].toInt() / 10000.0f;
-					sColor colorPos = {color, position, opacity, 0.5f, defaultInterpolationMode};
+					sColor colorPos = {color, position, opacity};
 					position = CorrectPosition(position, -1);
 					colors.append(colorPos);
 
@@ -1052,13 +1097,13 @@ void cColorGradient::SetColorsFromString(const QString &string)
 		}
 	}
 
-	// Parse midpoints and segment modes
+	// Parse midpoints
 	int numSegments = qMax(0, colors.size() - 1);
-	for (int j = 0; j < numSegments; j++)
-	{
-		colors[j].nextMidpoint = 0.5f;
-		colors[j].nextSegmentMode = defaultInterpolationMode;
-	}
+	midpoints.resize(numSegments);
+	for (int j = 0; j < numSegments; j++) midpoints[j] = 0.5f;
+
+	segmentModes.resize(numSegments);
+	for (int j = 0; j < numSegments; j++) segmentModes[j] = defaultInterpolationMode;
 
 	bool foundSep = false;
 	int mpIdx = 0;
@@ -1073,7 +1118,7 @@ void cColorGradient::SetColorsFromString(const QString &string)
 	opacitySegmentModes.clear();
 	for (int j = tokenStart; j < split.size(); j++)
 	{
-		if (split[j] == "|" || split[j] == "|:" || split[j] == "|m" || split[j] == "|mo")
+		if (split[j] == "|" || split[j] == "|:" || split[j] == "|m" || split[j] == "|mo" || split[j].startsWith("|i"))
 		{
 			if (split[j] == "|:")
 			{
@@ -1103,6 +1148,16 @@ void cColorGradient::SetColorsFromString(const QString &string)
 				parsingOpacityMidpoints = false;
 				parsingOpacityModes = true;
 			}
+			else if (split[j].startsWith("|i"))
+			{
+				// Intensity section (legacy, ignored by current parser)
+				foundSep = true;
+				parsingMidpoints = false;
+				parsingModes = false;
+				parsingOpacityStops = false;
+				parsingOpacityMidpoints = false;
+				parsingOpacityModes = false;
+			}
 			else if (!foundSep)
 			{
 				foundSep = true;
@@ -1125,13 +1180,13 @@ void cColorGradient::SetColorsFromString(const QString &string)
 			if (parsingMidpoints && mpIdx < numSegments)
 			{
 				float mp = split[j].toInt() / 10000.0f;
-				colors[mpIdx].nextMidpoint = qBound(0.01f, mp, 0.99f);
+				midpoints[mpIdx] = qBound(0.01f, mp, 0.99f);
 				mpIdx++;
 			}
 			else if (parsingModes && modeIdx < numSegments)
 			{
 				int sm = split[j].toInt();
-				colors[modeIdx].nextSegmentMode = static_cast<InterpolationMode>(qBound(0, sm, 7));
+				segmentModes[modeIdx] = static_cast<InterpolationMode>(qBound(0, sm, 7));
 				modeIdx++;
 			}
 			else if (parsingOpacityStops)
@@ -1164,11 +1219,13 @@ void cColorGradient::SetColorsFromString(const QString &string)
 void cColorGradient::DeleteAll()
 {
 	colors.clear();
-	colors.clear();
+	sortedColors.clear();
 	opacityStops.clear();
 	sortedOpacityStops.clear();
 	opacityMidpoints.clear();
 	opacitySegmentModes.clear();
+	midpoints.clear();
+	segmentModes.clear();
 	sorted = false;
 }
 
@@ -1183,8 +1240,10 @@ void cColorGradient::DeleteAndKeepTwo()
 	opacityStops.clear();
 	opacityMidpoints.clear();
 	opacitySegmentModes.clear();
-	colors[0].nextMidpoint = 0.5f;
-	colors[0].nextSegmentMode = defaultInterpolationMode;
+	midpoints.resize(1);
+	midpoints[0] = 0.5f;
+	segmentModes.resize(1);
+	segmentModes[0] = defaultInterpolationMode;
 }
 
 float cColorGradient::CorrectPosition(float position, int ignoreIndex)
@@ -1255,44 +1314,41 @@ sRGB cColorGradient::MakeGrayscaleIfNeeded(sRGB color)
 
 void cColorGradient::SetMidpoint(int segmentIndex, float midpoint)
 {
-	SortGradient();
-	int numSegments = qMax(0, colors.size() - 1);
-	if (segmentIndex >= 0 && segmentIndex < numSegments)
+	SortGradient(); // Ensure midpoints are in sorted segment order before writing
+	if (segmentIndex >= 0 && segmentIndex < midpoints.size())
 	{
-		colors[segmentIndex].nextMidpoint = qBound(0.01f, midpoint, 0.99f);
+		midpoints[segmentIndex] = qBound(0.01f, midpoint, 0.99f);
 	}
 }
 
 float cColorGradient::GetMidpoint(int segmentIndex) const
 {
-	if (segmentIndex >= 0 && segmentIndex < colors.size() - 1)
+	if (segmentIndex >= 0 && segmentIndex < midpoints.size())
 	{
-		return colors.at(segmentIndex).nextMidpoint;
+		return midpoints[segmentIndex];
 	}
 	return 0.5f;
 }
 
 void cColorGradient::ResetMidpoints()
 {
-	for (int i = 0; i < colors.size() - 1; i++)
+	for (int i = 0; i < midpoints.size(); i++)
 	{
-		colors[i].nextMidpoint = 0.5f;
+		midpoints[i] = 0.5f;
 	}
 }
 
 float cColorGradient::ApplyMidpoint(float t, float midpoint) const
 {
-	// Power curve with intensity multiplier.
-	// At midpoint=0.5 this gives linear (gamma=1). Midpoint<0.5 = ease-out,
-	// midpoint>0.5 = ease-in. Intensity multiplies the deviation from linear.
 	midpoint = qBound(0.01f, midpoint, 0.99f);
-	float gamma = logf(0.5f) / logf(midpoint);
-	// Apply intensity: deviation from 1.0 is multiplied
-	float deviation = gamma - 1.0f;
-	gamma = 1.0f + deviation * midpointIntensity;
-	// Clamp to avoid numerical issues
-	gamma = qBound(0.01f, gamma, 10.0f);
-	return powf(t, gamma);
+	if (t < midpoint)
+	{
+		return 0.5f * t / midpoint;
+	}
+	else
+	{
+		return 0.5f + 0.5f * (t - midpoint) / (1.0f - midpoint);
+	}
 }
 
 // ===================================================================

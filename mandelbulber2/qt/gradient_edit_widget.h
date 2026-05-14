@@ -37,7 +37,6 @@
 
 #include <QComboBox>
 #include <QElapsedTimer>
-#include <QSlider>
 #include <QToolButton>
 #include <QWidget>
 
@@ -93,8 +92,8 @@ private:
 	int CalcButtonPosition(float colorPosition);
 	int CalcMidpointPosition(int segmentIndex);
 	int CalcOpacityMidpointPosition(int segmentIndex);
-	int FindButtonAtPosition(int x, int y);
-	int FindMidpointAtPosition(int x, int y);
+	int FindButtonAtPosition(int x);
+	int FindMidpointAtPosition(int x);
 	int FindOpacityStopAtPosition(int x, int y);
 	int FindOpacityMidpointAtPosition(int x, int y);
 	void AddColor(QContextMenuEvent *event);
@@ -128,7 +127,6 @@ private slots:
 	void pressedButtonSaturationDec();
 	void pressedButtonInvert();
 	void interpolationModeChanged(int index);
-	void midpointIntensityChanged(int value);
 
 private:
 	cColorGradient gradient;
@@ -163,7 +161,6 @@ private:
 	QToolButton *buttonSaturationDec;
 	QToolButton *buttonPaletteInvert;
 	QComboBox *comboInterpolationMode;
-	QSlider *sliderMidpointIntensity;
 
 signals:
 	void openEditor();

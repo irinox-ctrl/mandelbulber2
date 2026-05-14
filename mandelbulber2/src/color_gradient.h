@@ -46,26 +46,11 @@ public:
 	~cColorGradient();
 
 public:
-	// Interpolation modes (Photoshop-style)
-	enum class InterpolationMode
-	{
-		Linear,           // Standard RGB linear
-		Smooth,           // Cosine ease-in-out
-		HSLShort,         // Hue via shortest path (<=180 deg)
-		HSLLong,          // Hue via longest path (>180 deg)
-		Cubic,            // Catmull-Rom spline
-		Constant,         // Hard transition, no blend
-		QuadraticBezier,  // Bezier curve with midpoint as control point
-		PowerCurve        // Power/gamma curve with midpoint as exponent
-	};
-
 	struct sColor
 	{
 		sRGB color;
 		float position; // from 0 to 1.0
 		float opacity;  // from 0.0 to 1.0, default 1.0
-		float nextMidpoint; // midpoint for segment to next color, default 0.5
-		InterpolationMode nextSegmentMode; // interpolation mode for segment to next color
 
 		static bool lessCompare(sColor a, sColor b) { return a.position < b.position; }
 	};
@@ -115,6 +100,18 @@ public:
 	void SetOpacityMidpoint(int segmentIndex, float midpoint);
 	float GetOpacityMidpoint(int segmentIndex) const;
 
+	// Interpolation modes (Photoshop-style)
+	enum class InterpolationMode
+	{
+		Linear,           // Standard RGB linear
+		Smooth,           // Cosine ease-in-out
+		HSLShort,         // Hue via shortest path (<=180 deg)
+		HSLLong,          // Hue via longest path (>180 deg)
+		Cubic,            // Catmull-Rom spline
+		Constant,         // Hard transition, no blend
+		QuadraticBezier,  // Bezier curve with midpoint as control point
+		PowerCurve        // Power/gamma curve with midpoint as exponent
+	};
 	void SetInterpolationMode(InterpolationMode mode); // Sets default + all segments
 	InterpolationMode GetInterpolationMode() const { return defaultInterpolationMode; }
 	void SetSegmentMode(int segmentIndex, InterpolationMode mode);
@@ -127,10 +124,6 @@ public:
 	void SetMidpoint(int segmentIndex, float midpoint);
 	float GetMidpoint(int segmentIndex) const;
 	void ResetMidpoints();
-
-	// Midpoint intensity multiplier (1.0 = normal, 2.0 = double effect, etc.)
-	void SetMidpointIntensity(float intensity) { midpointIntensity = qBound(0.0f, intensity, 5.0f); sorted = false; }
-	float GetMidpointIntensity() const { return midpointIntensity; }
 
 private:
 	int PaletteIterator(int paletteIndex, float position) const;
@@ -150,15 +143,16 @@ private:
 	// Mode-aware interpolation helpers (dead code removed)
 
 	QList<sColor> colors;
+	QList<sColor> sortedColors;
 	QList<sOpacityStop> opacityStops;
 	QList<sOpacityStop> sortedOpacityStops;
 	QVector<float> opacityMidpoints; // one per opacity-stop segment, default 0.5
 	QVector<InterpolationMode> opacitySegmentModes; // one per opacity-stop segment, default = defaultInterpolationMode
-
+	QVector<float> midpoints; // one per segment, default 0.5
+	QVector<InterpolationMode> segmentModes; // one per segment, default = defaultInterpolationMode
 	bool grayscale;
 	bool sorted;
 	InterpolationMode defaultInterpolationMode;
-	float midpointIntensity; // global multiplier for midpoint curve strength
 
 	float ApplyMidpoint(float t, float midpoint) const;
 };
