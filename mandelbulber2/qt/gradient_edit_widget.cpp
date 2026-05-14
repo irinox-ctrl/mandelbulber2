@@ -127,6 +127,18 @@ cGradientEditWidget::cGradientEditWidget(QWidget *parent)
 	connect(comboInterpolationMode, SIGNAL(currentIndexChanged(int)), this,
 		SLOT(interpolationModeChanged(int)));
 
+	// Midpoint intensity slider (10 = 1.0x, 100 = 10.0x)
+	sliderMidpointIntensity = new QSlider(Qt::Horizontal, this);
+	sliderMidpointIntensity->setRange(10, 500);
+	sliderMidpointIntensity->setValue(100);
+	sliderMidpointIntensity->setFixedHeight(toolbarHeight);
+	sliderMidpointIntensity->setFixedWidth(120);
+	sliderMidpointIntensity->move(margins + (toolbarHeight + 2) * 7 + 140, 0);
+	sliderMidpointIntensity->show();
+	sliderMidpointIntensity->setToolTip("Midpoint intensity multiplier");
+	connect(sliderMidpointIntensity, SIGNAL(valueChanged(int)), this,
+		SLOT(midpointIntensityChanged(int)));
+
 	// Initialize undo stack with default gradient
 	PushUndoState();
 
@@ -440,8 +452,8 @@ void cGradientEditWidget::PaintMidpointHandle(int segmentIndex, QPainter &painte
 	int panelHeight = (displayMode == DisplayMode::BothPanels) ? availableHeight / 2 : availableHeight;
 	int colorGradientBottom = colorPanelTop + panelHeight - buttonWidth / 2;
 	int handleTop = colorGradientBottom - buttonWidth / 2;
-	int handleSize = buttonWidth / 2;
-	if (handleSize < 3) handleSize = 3;
+	int handleSize = buttonWidth * 2 / 3;
+	if (handleSize < 8) handleSize = 8;
 
 	QVector<QPoint> diamond = {
 		QPoint(midpointPosition, handleTop - handleSize),
@@ -461,6 +473,8 @@ void cGradientEditWidget::PaintMidpointHandle(int segmentIndex, QPainter &painte
 	painter.fillPath(pathDiamond, brush);
 	painter.setPen(Qt::black);
 	painter.drawPolygon(pDiamond);
+
+
 }
 
 void cGradientEditWidget::PaintOpacityStop(const cColorGradient::sOpacityStop &stop, int index,
@@ -544,8 +558,8 @@ void cGradientEditWidget::PaintOpacityMidpointHandle(int segmentIndex, QPainter 
 	float mpPos = float(midpointPosition - margins) / (width() - 2 * margins - 1);
 	float mpOpacity = gradient.GetOpacity(mpPos, false);
 	int handleCenterY = contentTop + int((1.0f - mpOpacity) * contentHeight);
-	int handleSize = buttonWidth / 2;
-	if (handleSize < 3) handleSize = 3;
+	int handleSize = buttonWidth * 2 / 3;
+	if (handleSize < 8) handleSize = 8;
 
 	QVector<QPoint> diamond = {
 		QPoint(midpointPosition, handleCenterY - handleSize),
@@ -581,8 +595,8 @@ int cGradientEditWidget::CalcOpacityMidpointPosition(int segmentIndex)
 int cGradientEditWidget::FindOpacityStopAtPosition(int x, int y)
 {
 	QList<cColorGradient::sOpacityStop> opacityStops = gradient.GetListOfOpacityStops();
-	int handleSize = buttonWidth / 2 + 2;
-	if (handleSize < 5) handleSize = 5;
+	int handleSize = buttonWidth * 2 / 3 + 2;
+	if (handleSize < 10) handleSize = 10;
 
 	int availableHeight = height() - toolbarHeight;
 	int panelHeight = (displayMode == DisplayMode::BothPanels) ? availableHeight / 2 : availableHeight;
@@ -607,8 +621,8 @@ int cGradientEditWidget::FindOpacityStopAtPosition(int x, int y)
 int cGradientEditWidget::FindOpacityMidpointAtPosition(int x, int y)
 {
 	QList<cColorGradient::sOpacityStop> sortedStops = gradient.GetListOfSortedOpacityStops();
-	int handleSize = buttonWidth / 2 + 2;
-	if (handleSize < 5) handleSize = 5;
+	int handleSize = buttonWidth * 2 / 3;
+	if (handleSize < 8) handleSize = 8;
 
 	int availableHeight = height() - toolbarHeight;
 	int panelHeight = (displayMode == DisplayMode::BothPanels) ? availableHeight / 2 : availableHeight;
@@ -617,7 +631,8 @@ int cGradientEditWidget::FindOpacityMidpointAtPosition(int x, int y)
 	int contentTop = opacityPanelTop + titleHeight;
 	int contentHeight = panelHeight - titleHeight;
 
-	for (int i = 0; i < sortedStops.size() - 1; i++)
+	// Loop right-to-left so overlapping opacity midpoints select the rightmost one
+	for (int i = sortedStops.size() - 2; i >= 0; i--)
 	{
 		int xMid = CalcOpacityMidpointPosition(i);
 		float mpPos = float(xMid - margins) / (width() - 2 * margins - 1);
@@ -632,9 +647,18 @@ int cGradientEditWidget::FindOpacityMidpointAtPosition(int x, int y)
 	return -1;
 }
 
-int cGradientEditWidget::FindButtonAtPosition(int x)
+int cGradientEditWidget::FindButtonAtPosition(int x, int y)
 {
 	QList<cColorGradient::sColor> listOfColors = gradient.GetListOfColors();
+
+	int availableHeight = height() - toolbarHeight;
+	int panelHeight = (displayMode == DisplayMode::BothPanels) ? availableHeight / 2 : availableHeight;
+	int colorPanelTop = (displayMode == DisplayMode::BothPanels) ? toolbarHeight + panelHeight : toolbarHeight;
+	int buttonAreaTop = colorPanelTop + panelHeight - buttonWidth;
+	int buttonAreaBottom = colorPanelTop + panelHeight - 2;
+
+	if (y < buttonAreaTop || y > buttonAreaBottom)
+		return -1;
 
 	for (int i = listOfColors.size() - 1; i >= 0; i--)
 	{
@@ -647,16 +671,27 @@ int cGradientEditWidget::FindButtonAtPosition(int x)
 	return -1; //-1 means nothing found
 }
 
-int cGradientEditWidget::FindMidpointAtPosition(int x)
+int cGradientEditWidget::FindMidpointAtPosition(int x, int y)
 {
 	QList<cColorGradient::sColor> sortedColors = gradient.GetListOfSortedColors();
-	int handleSize = buttonWidth / 2 + 2;
-	if (handleSize < 5) handleSize = 5;
+	// Diamond hit box: tight on X, generous on Y
+	int handleSize = buttonWidth * 2 / 3;
+	if (handleSize < 8) handleSize = 8;
 
-	for (int i = 0; i < sortedColors.size() - 1; i++)
+	int availableHeight = height() - toolbarHeight;
+	int panelHeight = (displayMode == DisplayMode::BothPanels) ? availableHeight / 2 : availableHeight;
+	int colorPanelTop = (displayMode == DisplayMode::BothPanels) ? toolbarHeight + panelHeight : toolbarHeight;
+	int colorGradientBottom = colorPanelTop + panelHeight - buttonWidth / 2;
+	int handleTop = colorGradientBottom - buttonWidth / 2;
+
+	// Loop RIGHT-TO-LEFT so when midpoints overlap, the RIGHTMOST one wins.
+	// This matches user intent: clicking near a color stop should target the
+	// segment to its LEFT, not the far-left segment.
+	for (int i = sortedColors.size() - 2; i >= 0; i--)
 	{
 		int xMid = CalcMidpointPosition(i);
-		if ((x > xMid - handleSize) && (x <= xMid + handleSize))
+		if ((x > xMid - handleSize) && (x <= xMid + handleSize) &&
+			(y > handleTop - handleSize) && (y <= handleTop + handleSize))
 		{
 			return i;
 		}
@@ -728,7 +763,7 @@ void cGradientEditWidget::mouseMoveEvent(QMouseEvent *event)
 	}
 	else if (pressedColorIndex >= 2)
 	{
-		if (event->x() != dragStartX)
+		if (event->x() != dragStartX || event->y() != dragStartY)
 		{
 			mouseDragStarted = true;
 		}
@@ -763,7 +798,7 @@ void cGradientEditWidget::mouseMoveEvent(QMouseEvent *event)
 
 			if (inColorPanel)
 			{
-				newHoveredMidpoint = FindMidpointAtPosition(event->x());
+				newHoveredMidpoint = FindMidpointAtPosition(event->x(), event->y());
 			}
 			if (inOpacityPanel)
 			{
@@ -806,56 +841,65 @@ void cGradientEditWidget::mousePressEvent(QMouseEvent *event)
 
 			if (inColorPanel)
 			{
-				// COLOR PANEL
-				int index = FindButtonAtPosition(mouseX);
-				if (index >= 0)
+				// COLOR PANEL: check midpoints FIRST (they overlap with button hit boxes)
+				int mpIndex = FindMidpointAtPosition(mouseX, mouseY);
+				if (mpIndex >= 0)
 				{
+					isDraggingMidpoint = true;
+					pressedMidpointIndex = mpIndex;
+					pressedColorIndex = -1;
+					pressedOpacityIndex = -1;
+					pressedOpacityMidpointIndex = -1;
 					dragStartX = mouseX;
-					pressedColorIndex = index;
-					
 				}
 				else
 				{
-					int mpIndex = FindMidpointAtPosition(mouseX);
-					if (mpIndex >= 0)
+					int index = FindButtonAtPosition(mouseX, mouseY);
+					if (index >= 0)
 					{
-						isDraggingMidpoint = true;
-						pressedMidpointIndex = mpIndex;
-						
 						dragStartX = mouseX;
+						dragStartY = mouseY;
+						pressedColorIndex = index;
+						pressedOpacityIndex = -1;
+						pressedOpacityMidpointIndex = -1;
 					}
 					else
 					{
 						pressedColorIndex = -1;
-						
+						pressedOpacityIndex = -1;
+						pressedOpacityMidpointIndex = -1;
 					}
 				}
 			}
 			else if (inOpacityPanel)
 			{
-				// OPACITY PANEL
-				int opIndex = FindOpacityStopAtPosition(mouseX, mouseY);
-				if (opIndex >= 0)
+				// OPACITY PANEL: check midpoints FIRST
+				int opMpIndex = FindOpacityMidpointAtPosition(mouseX, mouseY);
+				if (opMpIndex >= 0)
 				{
-					pressedOpacityIndex = opIndex;
-					
+					isDraggingOpacityMidpoint = true;
+					pressedOpacityMidpointIndex = opMpIndex;
+					pressedOpacityIndex = -1;
+					pressedMidpointIndex = -1;
+					pressedColorIndex = -1;
 					dragStartX = mouseX;
-					dragStartY = mouseY;
 				}
 				else
 				{
-					int opMpIndex = FindOpacityMidpointAtPosition(mouseX, mouseY);
-					if (opMpIndex >= 0)
+					int opIndex = FindOpacityStopAtPosition(mouseX, mouseY);
+					if (opIndex >= 0)
 					{
-						isDraggingOpacityMidpoint = true;
-						pressedOpacityMidpointIndex = opMpIndex;
-						
+						pressedOpacityIndex = opIndex;
+							pressedMidpointIndex = -1;
+							pressedColorIndex = -1;
 						dragStartX = mouseX;
+						dragStartY = mouseY;
 					}
 					else
 					{
 						pressedOpacityIndex = -1;
-						
+							pressedMidpointIndex = -1;
+							pressedColorIndex = -1;
 					}
 				}
 			}
@@ -892,29 +936,34 @@ void cGradientEditWidget::mouseReleaseEvent(QMouseEvent *event)
 					AddOpacityStopAt(event->x(), opacity);
 				}
 			}
-			else if (pressedColorIndex >= 0 && !mouseDragStarted)
+			else if (pressedColorIndex >= 0 && !mouseDragStarted && pressedMidpointIndex < 0)
 			{
-				QList<cColorGradient::sColor> listOfColors = gradient.GetListOfColors();
-
-				QColorDialog colorDialog(this);
-				colorDialog.setOption(QColorDialog::DontUseNativeDialog);
-				sRGB colorRGB = listOfColors[pressedColorIndex].color;
-				QColor color(colorRGB.R, colorRGB.G, colorRGB.B);
-				colorDialog.setCurrentColor(color);
-				colorDialog.setWindowTitle(
-					tr("Edit color #%1").arg(QString::number(pressedColorIndex + 1)));
-				if (colorDialog.exec() == QDialog::Accepted)
+				// Only open color picker if mouse is still over the same button
+				int buttonUnderMouse = FindButtonAtPosition(event->x(), event->y());
+				if (buttonUnderMouse == pressedColorIndex)
 				{
-					color = colorDialog.currentColor();
-					colorRGB = sRGB(color.red(), color.green(), color.blue());
-					gradient.ModifyColor(pressedColorIndex, colorRGB);
+					QList<cColorGradient::sColor> listOfColors = gradient.GetListOfColors();
 
-					if (pressedColorIndex == 0) gradient.ModifyColor(1, colorRGB);
+					QColorDialog colorDialog(this);
+					colorDialog.setOption(QColorDialog::DontUseNativeDialog);
+					sRGB colorRGB = listOfColors[pressedColorIndex].color;
+					QColor color(colorRGB.R, colorRGB.G, colorRGB.B);
+					colorDialog.setCurrentColor(color);
+					colorDialog.setWindowTitle(
+						tr("Edit color #%1").arg(QString::number(pressedColorIndex + 1)));
+					if (colorDialog.exec() == QDialog::Accepted)
+					{
+						color = colorDialog.currentColor();
+						colorRGB = sRGB(color.red(), color.green(), color.blue());
+						gradient.ModifyColor(pressedColorIndex, colorRGB);
 
-					if (pressedColorIndex == 1) gradient.ModifyColor(0, colorRGB);
+						if (pressedColorIndex == 0) gradient.ModifyColor(1, colorRGB);
 
-					PushUndoState();
-					emit update();
+						if (pressedColorIndex == 1) gradient.ModifyColor(0, colorRGB);
+
+						PushUndoState();
+						emit update();
+					}
 				}
 			}
 
@@ -1131,7 +1180,7 @@ void cGradientEditWidget::AddColor(QContextMenuEvent *event)
 void cGradientEditWidget::RemoveColor(QContextMenuEvent *event)
 {
 	int xClick = event->x();
-	int index = FindButtonAtPosition(xClick);
+	int index = FindButtonAtPosition(xClick, event->y());
 	if (index >= 2)
 	{
 		gradient.RemoveColor(index);
@@ -1162,7 +1211,7 @@ void cGradientEditWidget::SetOpacity(QContextMenuEvent *event)
 	}
 
 	// Fallback: color stop opacity (legacy)
-	int index = FindButtonAtPosition(xClick);
+	int index = FindButtonAtPosition(xClick, yClick);
 	if (index >= 0)
 	{
 		float currentOpacity = gradient.GetOpacityByIndex(index);
@@ -1816,6 +1865,13 @@ void cGradientEditWidget::interpolationModeChanged(int index)
 {
 	gradient.SetInterpolationMode(static_cast<cColorGradient::InterpolationMode>(index));
 	PushUndoState();
+	emit update();
+}
+
+void cGradientEditWidget::midpointIntensityChanged(int value)
+{
+	float intensity = value / 100.0f;
+	gradient.SetMidpointIntensity(intensity);
 	emit update();
 }
 
