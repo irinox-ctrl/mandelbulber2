@@ -150,6 +150,7 @@ private:
 	// Mode-aware interpolation helpers (dead code removed)
 
 	QList<sColor> colors;
+	QList<sColor> sortedColors; // cached sorted copy for const readers
 	QList<sOpacityStop> opacityStops;
 	QList<sOpacityStop> sortedOpacityStops;
 	QVector<float> opacityMidpoints; // one per opacity-stop segment, default 0.5

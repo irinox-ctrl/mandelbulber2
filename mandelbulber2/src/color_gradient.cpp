@@ -296,7 +296,7 @@ cColorGradient::InterpolationMode cColorGradient::GetOpacitySegmentMode(int segm
 int cColorGradient::PaletteIterator(int paletteIndex, float colorPosition) const
 {
 	int newIndex = paletteIndex;
-	while (newIndex < colors.size() - 1 && colorPosition > colors[newIndex + 1].position)
+	while (newIndex < sortedColors.size() - 1 && colorPosition > sortedColors[newIndex + 1].position)
 	{
 		newIndex++;
 	}
@@ -312,45 +312,45 @@ sRGB cColorGradient::GetColor(float position, bool smooth) const
 sRGB cColorGradient::Interpolate(int paletteIndex, float pos, bool smooth) const
 {
 	sRGB color;
-	if (colors.isEmpty()) return sRGB(255, 255, 255);
+	if (sortedColors.isEmpty()) return sRGB(255, 255, 255);
 	// if last element then just copy color value (no interpolation)
-	if (paletteIndex >= colors.size() - 1)
+	if (paletteIndex >= sortedColors.size() - 1)
 	{
-		color = colors[colors.size() - 1].color;
+		color = sortedColors[sortedColors.size() - 1].color;
 	}
 	else
 	{
 		// interpolation
-		sRGB color1 = colors[paletteIndex].color;
-		sRGB color2 = colors[paletteIndex + 1].color;
-		float pos1 = colors[paletteIndex].position;
-		float pos2 = colors[paletteIndex + 1].position;
+		sRGB color1 = sortedColors[paletteIndex].color;
+		sRGB color2 = sortedColors[paletteIndex + 1].color;
+		float pos1 = sortedColors[paletteIndex].position;
+		float pos2 = sortedColors[paletteIndex + 1].position;
 		// relative delta
 		if (pos2 - pos1 > 0.0f)
 		{
 			float delta = (pos - pos1) / (pos2 - pos1);
-			InterpolationMode mode = (paletteIndex < colors.size() - 1)
-				? colors[paletteIndex].nextSegmentMode : defaultInterpolationMode;
+			InterpolationMode mode = (paletteIndex < sortedColors.size() - 1)
+				? sortedColors[paletteIndex].nextSegmentMode : defaultInterpolationMode;
 
 
 			bool useSmooth = (mode == InterpolationMode::Smooth)
 										 || (mode == InterpolationMode::Linear && smooth);
 			if (useSmooth) delta = 0.5f * (1.0f - cosf(delta * float(M_PI)));
 
-			if (paletteIndex < colors.size() - 1)
-				delta = ApplyMidpoint(delta, colors[paletteIndex].nextMidpoint);
+			if (paletteIndex < sortedColors.size() - 1)
+				delta = ApplyMidpoint(delta, sortedColors[paletteIndex].nextMidpoint);
 
 			// Quadratic Bezier uses midpoint as control point instead of ApplyMidpoint
 			if (mode == InterpolationMode::QuadraticBezier)
 			{
-				float mp = (paletteIndex < colors.size() - 1) ? colors[paletteIndex].nextMidpoint : 0.5f;
+				float mp = (paletteIndex < sortedColors.size() - 1) ? sortedColors[paletteIndex].nextMidpoint : 0.5f;
 				delta = 2.0f * (1.0f - delta) * delta * mp + delta * delta;
 			}
 
 			// PowerCurve uses midpoint as gamma exponent
 			if (mode == InterpolationMode::PowerCurve)
 			{
-				float mp = (paletteIndex < colors.size() - 1) ? colors[paletteIndex].nextMidpoint : 0.5f;
+				float mp = (paletteIndex < colors.size() - 1) ? sortedColors[paletteIndex].nextMidpoint : 0.5f;
 				mp = qBound(0.01f, mp, 0.99f);
 				float gamma = logf(0.5f) / logf(mp);
 				delta = powf(delta, gamma);
@@ -386,9 +386,9 @@ sRGB cColorGradient::Interpolate(int paletteIndex, float pos, bool smooth) const
 					auto getCh = [n, this](int idx, int ch) -> float {
 						if (idx < 0) idx = 0;
 						if (idx >= n) idx = n - 1;
-						if (ch == 0) return colors[idx].color.R;
-						if (ch == 1) return colors[idx].color.G;
-						return colors[idx].color.B;
+						if (ch == 0) return sortedColors[idx].color.R;
+						if (ch == 1) return sortedColors[idx].color.G;
+						return sortedColors[idx].color.B;
 					};
 					int i = paletteIndex;
 					color.R = qBound(0, int(CubicInterpolate(getCh(i - 1, 0), getCh(i, 0), getCh(i + 1, 0), getCh(i + 2, 0), delta)), 255);
@@ -427,55 +427,55 @@ sRGBFloat cColorGradient::GetColorFloat(float position, bool smooth) const
 sRGBFloat cColorGradient::InterpolateFloat(int paletteIndex, float pos, bool smooth) const
 {
 	sRGBFloat color;
-	if (colors.isEmpty()) return sRGBFloat(1.0f, 1.0f, 1.0f);
+	if (sortedColors.isEmpty()) return sRGBFloat(1.0f, 1.0f, 1.0f);
 	// if last element then just copy color value (no interpolation)
-	if (paletteIndex >= colors.size() - 1)
+	if (paletteIndex >= sortedColors.size() - 1)
 	{
-		color.R = colors[colors.size() - 1].color.R / 255.0f;
-		color.G = colors[colors.size() - 1].color.G / 255.0f;
-		color.B = colors[colors.size() - 1].color.B / 255.0f;
+		color.R = sortedColors[sortedColors.size() - 1].color.R / 255.0f;
+		color.G = sortedColors[sortedColors.size() - 1].color.G / 255.0f;
+		color.B = sortedColors[sortedColors.size() - 1].color.B / 255.0f;
 	}
 	else
 	{
 		// interpolation
 		sRGBFloat color1, color2;
 
-		color1.R = colors[paletteIndex].color.R / 255.0f;
-		color1.G = colors[paletteIndex].color.G / 255.0f;
-		color1.B = colors[paletteIndex].color.B / 255.0f;
+		color1.R = sortedColors[paletteIndex].color.R / 255.0f;
+		color1.G = sortedColors[paletteIndex].color.G / 255.0f;
+		color1.B = sortedColors[paletteIndex].color.B / 255.0f;
 
-		color2.R = colors[paletteIndex + 1].color.R / 255.0f;
-		color2.G = colors[paletteIndex + 1].color.G / 255.0f;
-		color2.B = colors[paletteIndex + 1].color.B / 255.0f;
+		color2.R = sortedColors[paletteIndex + 1].color.R / 255.0f;
+		color2.G = sortedColors[paletteIndex + 1].color.G / 255.0f;
+		color2.B = sortedColors[paletteIndex + 1].color.B / 255.0f;
 
-		float pos1 = colors[paletteIndex].position;
-		float pos2 = colors[paletteIndex + 1].position;
+		float pos1 = sortedColors[paletteIndex].position;
+		float pos2 = sortedColors[paletteIndex + 1].position;
 		// relative delta
 		if (pos2 - pos1 > 0.0f)
 		{
 			float delta = (pos - pos1) / (pos2 - pos1);
-			InterpolationMode mode = (paletteIndex < colors.size() - 1)
-				? colors[paletteIndex].nextSegmentMode : defaultInterpolationMode;
+			InterpolationMode mode = (paletteIndex < sortedColors.size() - 1)
+				? sortedColors[paletteIndex].nextSegmentMode : defaultInterpolationMode;
 
 
 			bool useSmooth = (mode == InterpolationMode::Smooth)
 										 || (mode == InterpolationMode::Linear && smooth);
 			if (useSmooth) delta = 0.5f * (1.0f - cosf(delta * float(M_PI)));
 
-			if (paletteIndex < colors.size() - 1)
-				delta = ApplyMidpoint(delta, colors[paletteIndex].nextMidpoint);
+			if (paletteIndex < sortedColors.size() - 1)
+				delta = ApplyMidpoint(delta, sortedColors[paletteIndex].nextMidpoint);
 
 			// Quadratic Bezier uses midpoint as control point instead of ApplyMidpoint
 			if (mode == InterpolationMode::QuadraticBezier)
 			{
-				float mp = (paletteIndex < colors.size() - 1) ? colors[paletteIndex].nextMidpoint : 0.5f;
+				float mp = (paletteIndex < sortedColors.size() - 1) ? sortedColors[paletteIndex].nextMidpoint : 0.5f;
 				delta = 2.0f * (1.0f - delta) * delta * mp + delta * delta;
 			}
 
 			// PowerCurve uses midpoint as gamma exponent
 			if (mode == InterpolationMode::PowerCurve)
 			{
-				float mp = (paletteIndex < colors.size() - 1) ? colors[paletteIndex].nextMidpoint : 0.5f;
+				float mp = (paletteIndex < sortedColors.size() - 1) ? sortedColors[paletteIndex].nextMidpoint : 0.5f;
 				mp = qBound(0.01f, mp, 0.99f);
 				float gamma = logf(0.5f) / logf(mp);
 				delta = powf(delta, gamma);
@@ -504,13 +504,13 @@ sRGBFloat cColorGradient::InterpolateFloat(int paletteIndex, float pos, bool smo
 				}
 				case InterpolationMode::Cubic:
 				{
-					int n = colors.size();
+					int n = sortedColors.size();
 					auto getCh = [n, this](int idx, int ch) -> float {
 						if (idx < 0) idx = 0;
 						if (idx >= n) idx = n - 1;
-						if (ch == 0) return colors[idx].color.R / 255.0f;
-						if (ch == 1) return colors[idx].color.G / 255.0f;
-						return colors[idx].color.B / 255.0f;
+						if (ch == 0) return sortedColors[idx].color.R / 255.0f;
+						if (ch == 1) return sortedColors[idx].color.G / 255.0f;
+						return sortedColors[idx].color.B / 255.0f;
 					};
 					int i = paletteIndex;
 					color.R = qBound(0.0f, CubicInterpolate(getCh(i - 1, 0), getCh(i, 0), getCh(i + 1, 0), getCh(i + 2, 0), delta), 1.0f);
@@ -635,17 +635,17 @@ float cColorGradient::InterpolateOpacityFromStops(float pos) const
 float cColorGradient::InterpolateOpacityFromColors(int paletteIndex, float pos, bool smooth) const
 {
 	// if last element then just copy opacity value (no interpolation)
-	if (paletteIndex >= colors.size() - 1)
+	if (paletteIndex >= sortedColors.size() - 1)
 	{
-		return colors[paletteIndex].opacity;
+		return sortedColors[paletteIndex].opacity;
 	}
 	else
 	{
-		float opacity1 = colors[paletteIndex].opacity;
-		float opacity2 = colors[paletteIndex + 1].opacity;
+		float opacity1 = sortedColors[paletteIndex].opacity;
+		float opacity2 = sortedColors[paletteIndex + 1].opacity;
 
-		float pos1 = colors[paletteIndex].position;
-		float pos2 = colors[paletteIndex + 1].position;
+		float pos1 = sortedColors[paletteIndex].position;
+		float pos2 = sortedColors[paletteIndex + 1].position;
 		// relative delta
 		if (pos2 - pos1 > 0.0f)
 		{
@@ -653,8 +653,8 @@ float cColorGradient::InterpolateOpacityFromColors(int paletteIndex, float pos, 
 
 			if (smooth) delta = 0.5f * (1.0f - cosf(delta * float(M_PI)));
 
-			if (paletteIndex < colors.size() - 1)
-				delta = ApplyMidpoint(delta, colors[paletteIndex].nextMidpoint);
+			if (paletteIndex < sortedColors.size() - 1)
+				delta = ApplyMidpoint(delta, sortedColors[paletteIndex].nextMidpoint);
 
 			float nDelta = 1.0f - delta;
 			return opacity1 * nDelta + opacity2 * delta;
@@ -704,7 +704,7 @@ QList<cColorGradient::sColor> cColorGradient::GetListOfColors() const
 QList<cColorGradient::sColor> cColorGradient::GetListOfSortedColors() const
 {
 	if (!sorted) qCritical() << "Colors were not sorted!";
-	return colors;
+	return sortedColors;
 }
 
 void cColorGradient::SortGradient()
@@ -729,7 +729,7 @@ void cColorGradient::SortGradient()
 			colorsTemp.append(colors[idx]);
 		}
 		colors = colorsTemp;
-		colors = colors;
+		sortedColors = colors; // cache for const readers
 
 		// Sort opacity stops by position
 		// Build index permutation for opacity stops
