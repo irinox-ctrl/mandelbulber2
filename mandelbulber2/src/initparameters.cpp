@@ -2708,6 +2708,9 @@ void InitLightParams(int lightId, std::shared_ptr<cParameterContainer> par)
 
 	par->addParam(cLight::Name("auto_intensity", lightId), false, morphLinear, paramStandard);
 	par->addParam(cLight::Name("auto_intensity_factor", lightId), 0.01, 0.0, 1.0, morphLinear, paramStandard);
+
+	par->addParam(cLight::Name("snap_to_surface", lightId), false, morphNone, paramStandard);
+	par->addParam(cLight::Name("surface_offset", lightId), 0.0, -1e10, 1e10, morphLinear, paramStandard);
 }
 
 void DeletePrimitiveParams(fractal::enumObjectType objectType, const QString primitiveName,
