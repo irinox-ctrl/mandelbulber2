@@ -128,8 +128,10 @@ float CubicInterpolate(float y0, float y1, float y2, float y3, float mu)
 	return a0 * mu * mu * mu + a1 * mu * mu + a2 * mu + a3;
 }
 
+float3 InterpolateColorSpace(float3 color1, float3 color2, float delta, int colorSpace);
+
 float3 GradientInterpolate(int paletteIndex, float pos, bool smooth, int gradientSize,
-	__global float4 *palette, __global float4 *midpoints, int midpointSize, int mode)
+	__global float4 *palette, __global float4 *midpoints, int midpointSize, int mode, int colorSpace)
 {
 	float3 color = 0.0f;
 	if (paletteIndex == gradientSize - 1)
@@ -157,15 +159,27 @@ float3 GradientInterpolate(int paletteIndex, float pos, bool smooth, int gradien
 			bool useSmooth = (mode == 1) || (mode == 0 && smooth);
 			if (useSmooth) delta = 0.5f * (1.0f - cos(delta * M_PI_F));
 
-			if (midpoints && paletteIndex < midpointSize)
+			// Apply midpoint gamma curve only for modes that don't have their own formula
+			if (mode != 6 && mode != 7)
 			{
-				float m = clamp(midpoints[paletteIndex].s0, 0.01f, 0.99f);
-				float gamma = log(0.5f) / log(m);
-				float deviation = gamma - 1.0f;
-				float intensity = clamp(midpoints[paletteIndex].s2, 0.0f, 5.0f);
-				gamma = 1.0f + deviation * intensity;
-				gamma = clamp(gamma, 0.01f, 10.0f);
-				delta = pow(delta, gamma);
+				if (midpoints && paletteIndex < midpointSize)
+				{
+					float m = clamp(midpoints[paletteIndex].s0, 0.01f, 0.99f);
+					float reflectedM = 1.0f - m;
+					float gamma = log(0.5f) / log(reflectedM);
+					float deviation = gamma - 1.0f;
+					float intensity = clamp(midpoints[paletteIndex].s2, 0.0f, 5.0f);
+					gamma = 1.0f + deviation * intensity;
+					gamma = clamp(gamma, 0.01f, 10.0f);
+					// Apply asymmetry bias (s3 component)
+					float bias = midpoints[paletteIndex].s3;
+					if (fabs(bias) > 0.001f)
+					{
+						float bexp = (bias < 0.0f) ? (1.0f + fabs(bias)) : (1.0f / (1.0f + bias));
+						delta = pow(delta, bexp);
+					}
+					delta = pow(delta, gamma);
+				}
 			}
 
 			// Quadratic Bezier uses midpoint as control point
@@ -176,12 +190,13 @@ float3 GradientInterpolate(int paletteIndex, float pos, bool smooth, int gradien
 				delta = 2.0f * (1.0f - delta) * delta * mp + delta * delta;
 			}
 
-			// PowerCurve uses midpoint as gamma exponent
+			// PowerCurve uses midpoint as gamma exponent (reflected to match Photoshop direction)
 			if (mode == 7)
 			{
 				float mp = (midpoints && paletteIndex < midpointSize)
 					? clamp(midpoints[paletteIndex].s0, 0.01f, 0.99f) : 0.5f;
-				float gamma = log(0.5f) / log(mp);
+				float reflectedMp = 1.0f - mp;
+				float gamma = log(0.5f) / log(reflectedMp);
 				delta = pow(delta, gamma);
 			}
 
@@ -225,8 +240,7 @@ float3 GradientInterpolate(int paletteIndex, float pos, bool smooth, int gradien
 				case 7: // PowerCurve
 				default:
 				{
-					float nDelta = 1.0f - delta;
-					color = color1 * nDelta + color2 * delta;
+					color = InterpolateColorSpace(color1, color2, delta, colorSpace);
 					break;
 				}
 			}
@@ -251,10 +265,263 @@ int GradientIterator(
 }
 
 float3 GetColorFromGradient(float position, bool smooth, int gradientSize,
-	__global float4 *palette, __global float4 *midpoints, int midpointSize, int mode)
+	__global float4 *palette, __global float4 *midpoints, int midpointSize, int mode, int colorSpace)
 {
 	int paletteIndex = GradientIterator(0, position, gradientSize, palette);
-	return GradientInterpolate(paletteIndex, position, smooth, gradientSize, palette, midpoints, midpointSize, mode);
+	return GradientInterpolate(paletteIndex, position, smooth, gradientSize, palette, midpoints, midpointSize, mode, colorSpace);
+}
+
+// ===================================================================
+// COLOR SPACE CONVERTERS FOR GRADIENT SYSTEM V3
+// ===================================================================
+
+void RGBtoHSV(float r, float g, float b, float *h, float *s, float *v)
+{
+	float maxVal = fmax(r, fmax(g, b));
+	float minVal = fmin(r, fmin(g, b));
+	float d = maxVal - minVal;
+	*v = maxVal;
+	*s = maxVal == 0.0f ? 0.0f : d / maxVal;
+	if (d == 0.0f)
+	{
+		*h = 0.0f;
+	}
+	else if (maxVal == r)
+	{
+		*h = fmod((g - b) / d + 6.0f, 6.0f);
+	}
+	else if (maxVal == g)
+	{
+		*h = (b - r) / d + 2.0f;
+	}
+	else
+	{
+		*h = (r - g) / d + 4.0f;
+	}
+	*h /= 6.0f;
+}
+
+float3 HSVtoRGB(float h, float s, float v)
+{
+	h = fmod(h * 6.0f, 6.0f);
+	if (h < 0.0f) h += 6.0f;
+	int i = (int)h;
+	float f = h - i;
+	float p = v * (1.0f - s);
+	float q = v * (1.0f - f * s);
+	float t = v * (1.0f - (1.0f - f) * s);
+	switch (i)
+	{
+		case 0: return (float3)(v, t, p);
+		case 1: return (float3)(q, v, p);
+		case 2: return (float3)(p, v, t);
+		case 3: return (float3)(p, q, v);
+		case 4: return (float3)(t, p, v);
+		default: return (float3)(v, p, q);
+	}
+}
+
+// CIE LAB color space (D65 white point)
+void RGBtoLAB(float r, float g, float b, float *L, float *a, float *bOut)
+{
+	// sRGB to linear RGB
+	float lr = r > 0.04045f ? pow((r + 0.055f) / 1.055f, 2.4f) : r / 12.92f;
+	float lg = g > 0.04045f ? pow((g + 0.055f) / 1.055f, 2.4f) : g / 12.92f;
+	float lb = b > 0.04045f ? pow((b + 0.055f) / 1.055f, 2.4f) : b / 12.92f;
+	// XYZ (D65)
+	float x = lr * 0.4124564f + lg * 0.3575761f + lb * 0.1804375f;
+	float y = lr * 0.2126729f + lg * 0.7151522f + lb * 0.0721750f;
+	float z = lr * 0.0193339f + lg * 0.1191920f + lb * 0.9503041f;
+	// XYZ to LAB
+	x = x > 0.008856f ? pow(x, 1.0f / 3.0f) : 7.787f * x + 16.0f / 116.0f;
+	y = y > 0.008856f ? pow(y, 1.0f / 3.0f) : 7.787f * y + 16.0f / 116.0f;
+	z = z > 0.008856f ? pow(z, 1.0f / 3.0f) : 7.787f * z + 16.0f / 116.0f;
+	*L = 116.0f * y - 16.0f;
+	*a = 500.0f * (x - y);
+	*bOut = 200.0f * (y - z);
+}
+
+float3 LABtoRGB(float L, float a, float bIn)
+{
+	float y = (L + 16.0f) / 116.0f;
+	float x = a / 500.0f + y;
+	float z = y - bIn / 200.0f;
+	x = x > 0.206897f ? x * x * x : (x - 16.0f / 116.0f) / 7.787f;
+	y = y > 0.206897f ? y * y * y : (y - 16.0f / 116.0f) / 7.787f;
+	z = z > 0.206897f ? z * z * z : (z - 16.0f / 116.0f) / 7.787f;
+	float lr = x *  3.2404542f + y * -1.5371385f + z * -0.4985314f;
+	float lg = x * -0.9692660f + y *  1.8760108f + z *  0.0415560f;
+	float lb = x *  0.0556434f + y * -0.2040259f + z *  1.0572252f;
+	float r = lr > 0.0031308f ? 1.055f * pow(lr, 1.0f / 2.4f) - 0.055f : lr * 12.92f;
+	float g = lg > 0.0031308f ? 1.055f * pow(lg, 1.0f / 2.4f) - 0.055f : lg * 12.92f;
+	float b = lb > 0.0031308f ? 1.055f * pow(lb, 1.0f / 2.4f) - 0.055f : lb * 12.92f;
+	return (float3)(clamp(r, 0.0f, 1.0f), clamp(g, 0.0f, 1.0f), clamp(b, 0.0f, 1.0f));
+}
+
+// OKLab color space (perceptually uniform, modern alternative to LAB)
+void RGBtoOKLab(float r, float g, float b, float *L, float *a, float *bOut)
+{
+	// sRGB to linear
+	float lr = r > 0.04045f ? pow((r + 0.055f) / 1.055f, 2.4f) : r / 12.92f;
+	float lg = g > 0.04045f ? pow((g + 0.055f) / 1.055f, 2.4f) : g / 12.92f;
+	float lb = b > 0.04045f ? pow((b + 0.055f) / 1.055f, 2.4f) : b / 12.92f;
+	// Linear sRGB to LMS
+	float l_ = lr * 0.8189330101f + lg * 0.3618667424f + lb * -0.1288597137f;
+	float m_ = lr * 0.0329845436f + lg * 0.9293118715f + lb * 0.0361456387f;
+	float s_ = lr * 0.0482003018f + lg * 0.2643662691f + lb * 0.6338517070f;
+	// LMS to non-linear LMS
+	l_ = pow(fabs(l_), 1.0f / 3.0f) * (l_ >= 0.0f ? 1.0f : -1.0f);
+	m_ = pow(fabs(m_), 1.0f / 3.0f) * (m_ >= 0.0f ? 1.0f : -1.0f);
+	s_ = pow(fabs(s_), 1.0f / 3.0f) * (s_ >= 0.0f ? 1.0f : -1.0f);
+	// LMS to OKLab
+	*L = l_ * 0.2104542553f + m_ * 0.7936177850f + s_ * -0.0040720468f;
+	*a = l_ * 1.9779984951f + m_ * -2.4285922050f + s_ * 0.4505937099f;
+	*bOut = l_ * 0.0259040371f + m_ * 0.7827717662f + s_ * -0.8086757660f;
+}
+
+float3 OKLabtoRGB(float L, float a, float bIn)
+{
+	// OKLab to LMS
+	float l_ = L * 1.0f + a *  0.3963377774f + bIn * 0.2158037573f;
+	float m_ = L * 1.0f + a * -0.1055613458f + bIn * -0.0638541728f;
+	float s_ = L * 1.0f + a * -0.0894841775f + bIn * -1.2914855480f;
+	// LMS cube
+	l_ = l_ * l_ * l_;
+	m_ = m_ * m_ * m_;
+	s_ = s_ * s_ * s_;
+	// LMS to linear sRGB
+	float lr = l_ *  4.0767416621f + m_ * -3.3077115913f + s_ *  0.2309699292f;
+	float lg = l_ * -1.2684380046f + m_ *  2.6097574011f + s_ * -0.3413193965f;
+	float lb = l_ * -0.0041960863f + m_ * -0.7034186147f + s_ *  1.7076147010f;
+	// Linear to sRGB
+	float r = lr > 0.0031308f ? 1.055f * pow(lr, 1.0f / 2.4f) - 0.055f : lr * 12.92f;
+	float g = lg > 0.0031308f ? 1.055f * pow(lg, 1.0f / 2.4f) - 0.055f : lg * 12.92f;
+	float b = lb > 0.0031308f ? 1.055f * pow(lb, 1.0f / 2.4f) - 0.055f : lb * 12.92f;
+	return (float3)(clamp(r, 0.0f, 1.0f), clamp(g, 0.0f, 1.0f), clamp(b, 0.0f, 1.0f));
+}
+
+// Interpolate two colors in a given color space (0=RGB, 1=HSL, 2=HSV, 3=LAB, 4=OKLab, 5=Linear)
+float3 InterpolateColorSpace(float3 color1, float3 color2, float delta, int colorSpace)
+{
+	if (colorSpace == 0) return color1 * (1.0f - delta) + color2 * delta;
+	if (colorSpace == 2) // HSV
+	{
+		float h1, s1, v1, h2, s2, v2;
+		RGBtoHSV(color1.x, color1.y, color1.z, &h1, &s1, &v1);
+		RGBtoHSV(color2.x, color2.y, color2.z, &h2, &s2, &v2);
+		float h = InterpolateHue(h1, h2, delta, 1);
+		float s = s1 * (1.0f - delta) + s2 * delta;
+		float v = v1 * (1.0f - delta) + v2 * delta;
+		return HSVtoRGB(h, s, v);
+	}
+	if (colorSpace == 3) // LAB
+	{
+		float L1, a1, b1, L2, a2, b2;
+		RGBtoLAB(color1.x, color1.y, color1.z, &L1, &a1, &b1);
+		RGBtoLAB(color2.x, color2.y, color2.z, &L2, &a2, &b2);
+		float L = L1 * (1.0f - delta) + L2 * delta;
+		float a = a1 * (1.0f - delta) + a2 * delta;
+		float b = b1 * (1.0f - delta) + b2 * delta;
+		return LABtoRGB(L, a, b);
+	}
+	if (colorSpace == 4) // OKLab
+	{
+		float L1, a1, b1, L2, a2, b2;
+		RGBtoOKLab(color1.x, color1.y, color1.z, &L1, &a1, &b1);
+		RGBtoOKLab(color2.x, color2.y, color2.z, &L2, &a2, &b2);
+		float L = L1 * (1.0f - delta) + L2 * delta;
+		float a = a1 * (1.0f - delta) + a2 * delta;
+		float b = b1 * (1.0f - delta) + b2 * delta;
+		return OKLabtoRGB(L, a, b);
+	}
+	if (colorSpace == 5) // Linear sRGB
+	{
+		float3 linear1 = (float3)(pow(color1.x, 2.2f), pow(color1.y, 2.2f), pow(color1.z, 2.2f));
+		float3 linear2 = (float3)(pow(color2.x, 2.2f), pow(color2.y, 2.2f), pow(color2.z, 2.2f));
+		float3 linear = linear1 * (1.0f - delta) + linear2 * delta;
+		return (float3)(pow(linear.x, 1.0f / 2.2f), pow(linear.y, 1.0f / 2.2f), pow(linear.z, 1.0f / 2.2f));
+	}
+	return color1 * (1.0f - delta) + color2 * delta;
+}
+
+// Gradient System V3 — helpers
+float ApplyGradientTransform(float pos, float scale, float offset, int repeatMode)
+{
+	float p = pos * scale + offset;
+	switch (repeatMode)
+	{
+		case 1: // Repeat
+		{
+			float f = fmod(p, 1.0f);
+			return f < 0.0f ? f + 1.0f : f;
+		}
+		case 2: // Mirror
+		{
+			float f = fmod(p, 2.0f);
+			if (f < 0.0f) f += 2.0f;
+			return f > 1.0f ? 2.0f - f : f;
+		}
+		case 3: // MirrorOnce
+		{
+			if (p < 0.0f) return 0.0f;
+			if (p > 2.0f) return 1.0f;
+			float f = fmod(p, 2.0f);
+			return f > 1.0f ? 2.0f - f : f;
+		}
+		case 4: // Extend
+			return p < 0.0f ? 0.0f : (p > 1.0f ? 1.0f : p);
+		case 0: // Clamp (default)
+		default:
+			return p < 0.0f ? 0.0f : (p > 1.0f ? 1.0f : p);
+	}
+}
+
+float3 ApplyGradientPostProcess(float3 color, float brightness, float contrast, float saturation, float gamma)
+{
+	// Brightness
+	color *= brightness;
+	// Contrast
+	color = (color - 0.5f) * contrast + 0.5f;
+	// Saturation
+	if (saturation != 1.0f)
+	{
+		float maxVal = fmax(color.x, fmax(color.y, color.z));
+		float minVal = fmin(color.x, fmin(color.y, color.z));
+		float l = (maxVal + minVal) * 0.5f;
+		color = (float3)(l + (color.x - l) * saturation, l + (color.y - l) * saturation, l + (color.z - l) * saturation);
+	}
+	// Gamma
+	if (gamma != 1.0f)
+	{
+		color = (float3)(pow(fmax(0.0f, color.x), gamma), pow(fmax(0.0f, color.y), gamma), pow(fmax(0.0f, color.z), gamma));
+	}
+	return color;
+}
+
+// Deterministic 3D hash for gradient dithering (banding reduction)
+float Hash3D(float x, float y, float z)
+{
+	float h = sin(x * 127.1f + y * 311.7f + z * 74.7f) * 43758.5453f;
+	return h - floor(h);
+}
+
+float3 ApplyGradientNoise(float3 color, float3 worldPos, float amount)
+{
+	if (amount > 0.0f)
+	{
+		float noise = (Hash3D(worldPos.x, worldPos.y, worldPos.z) - 0.5f) * 2.0f * amount;
+		color += noise;
+	}
+	return color;
+}
+
+float ApplyMaskPostProcess(float opacity, int invert, float contrast, float blackPoint, float whitePoint)
+{
+	if (invert) opacity = 1.0f - opacity;
+	if (whitePoint > blackPoint)
+		opacity = (opacity - blackPoint) / (whitePoint - blackPoint);
+	opacity = (opacity - 0.5f) * contrast + 0.5f;
+	return clamp(opacity, 0.0f, 1.0f);
 }
 
 float3 ApplyBlendMode(float3 base, float3 blend, float opacity, int mode)
@@ -363,9 +630,11 @@ float3 SurfaceColor(__constant sClInConstants *consts, sRenderData *renderData,
 				gradients->iters = fout.iters;
 				float nCol = fmod(fabs(fout.colorIndex), 248.0f * 256.0f);
 
-				float colorPosition = fmod(
-					nCol / 256.0f / 10.0f * input->material->coloring_speed + input->material->paletteOffset,
-					1.0f);
+				float rawColorPosition = nCol / 256.0f / 10.0f * input->material->coloring_speed
+																	+ input->material->paletteOffset;
+				float colorPosition = ApplyGradientTransform(rawColorPosition,
+					input->material->gradientScale, input->material->gradientOffset,
+					input->material->gradientRepeatMode);
 
 #ifdef USE_SURFACE_GRADIENT
 				if (input->material->surfaceGradientEnable)
@@ -373,7 +642,12 @@ float3 SurfaceColor(__constant sClInConstants *consts, sRenderData *renderData,
 					float3 gradientColor = GetColorFromGradient(colorPosition, false, input->paletteSurfaceLength,
 						input->palette + input->paletteSurfaceOffset,
 						input->palette + input->midpointSurfaceOffset, input->midpointSurfaceLength,
-						input->material->surfaceGradientInterpolationMode);
+						input->material->surfaceGradientInterpolationMode,
+						input->material->gradientColorSpace);
+					gradientColor = ApplyGradientPostProcess(gradientColor,
+						input->material->gradientBrightness, input->material->gradientContrast,
+						input->material->gradientSaturation, input->material->gradientGamma);
+					gradientColor = ApplyGradientNoise(gradientColor, input->point, input->material->gradientNoiseAmount);
 					float opacity = 1.0f;
 					if (input->material->surfaceGradientMaskEnable)
 					{
@@ -383,7 +657,10 @@ float3 SurfaceColor(__constant sClInConstants *consts, sRenderData *renderData,
 							input->palette + input->opacitySurfaceOffset,
 							(opacityMidpointSurfaceLength > 0) ? input->palette + opacityMidpointSurfaceOffset : NULL,
 							opacityMidpointSurfaceLength,
-							input->material->surfaceGradientInterpolationMode).x;
+							input->material->surfaceGradientInterpolationMode, 0).x;
+						opacity = ApplyMaskPostProcess(opacity, input->material->opacityInvert,
+							input->material->maskContrast, input->material->maskBlackPoint,
+							input->material->maskWhitePoint);
 					}
 					color = ApplyBlendMode(input->material->color, gradientColor, opacity,
 						input->material->surfaceGradientBlendMode);
@@ -400,7 +677,7 @@ float3 SurfaceColor(__constant sClInConstants *consts, sRenderData *renderData,
 				{
 					gradients->specular = GetColorFromGradient(colorPosition, false,
 						input->paletteSpecularLength, input->palette + input->paletteSpecularOffset,
-						input->palette + input->midpointSpecularOffset, input->midpointSpecularLength, 0);
+						input->palette + input->midpointSpecularOffset, input->midpointSpecularLength, 0, 0);
 				}
 #endif
 #ifdef USE_DIFFUSE_GRADIENT
@@ -408,7 +685,7 @@ float3 SurfaceColor(__constant sClInConstants *consts, sRenderData *renderData,
 				{
 					gradients->diffuse = GetColorFromGradient(colorPosition, false,
 						input->paletteDiffuseLength, input->palette + input->paletteDiffuseOffset,
-						input->palette + input->midpointDiffuseOffset, input->midpointDiffuseLength, 0);
+						input->palette + input->midpointDiffuseOffset, input->midpointDiffuseLength, 0, 0);
 				}
 #endif
 #ifdef USE_LUMINOSITY_GRADIENT
@@ -416,7 +693,7 @@ float3 SurfaceColor(__constant sClInConstants *consts, sRenderData *renderData,
 				{
 					gradients->luminosity = GetColorFromGradient(colorPosition, false,
 						input->paletteLuminosityLength, input->palette + input->paletteLuminosityOffset,
-						input->palette + input->midpointLuminosityOffset, input->midpointLuminosityLength, 0);
+						input->palette + input->midpointLuminosityOffset, input->midpointLuminosityLength, 0, 0);
 				}
 #endif
 #ifdef USE_ROUGHNESS_GRADIENT
@@ -424,7 +701,7 @@ float3 SurfaceColor(__constant sClInConstants *consts, sRenderData *renderData,
 				{
 					gradients->roughness = GetColorFromGradient(colorPosition, false,
 						input->paletteRoughnessLength, input->palette + input->paletteRoughnessOffset,
-						input->palette + input->midpointRoughnessOffset, input->midpointRoughnessLength, 0);
+						input->palette + input->midpointRoughnessOffset, input->midpointRoughnessLength, 0, 0);
 				}
 #endif
 #ifdef USE_REFLECTANCE_GRADIENT
@@ -432,7 +709,7 @@ float3 SurfaceColor(__constant sClInConstants *consts, sRenderData *renderData,
 				{
 					gradients->reflectance = GetColorFromGradient(colorPosition, false,
 						input->paletteReflectanceLength, input->palette + input->paletteReflectanceOffset,
-						input->palette + input->midpointReflectanceOffset, input->midpointReflectanceLength, 0);
+						input->palette + input->midpointReflectanceOffset, input->midpointReflectanceLength, 0, 0);
 				}
 #endif
 #ifdef USE_TRANSPARENCY_GRADIENT
@@ -440,7 +717,7 @@ float3 SurfaceColor(__constant sClInConstants *consts, sRenderData *renderData,
 				{
 					gradients->transparency = GetColorFromGradient(colorPosition, false,
 						input->paletteTransparencyLength, input->palette + input->paletteTransparencyOffset,
-						input->palette + input->midpointTransparencyOffset, input->midpointTransparencyLength, 0);
+						input->palette + input->midpointTransparencyOffset, input->midpointTransparencyLength, 0, 0);
 				}
 #endif
 			}

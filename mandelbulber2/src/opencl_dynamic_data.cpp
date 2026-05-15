@@ -347,37 +347,37 @@ int cOpenClDynamicData::BuildMaterialsData(
 				paletteCl[midpointOffsetSurface + i] = toClFloat4(
 					CVector4(material.gradientSurface.GetMidpoint(i),
 						static_cast<float>(material.gradientSurface.GetSegmentMode(i)),
-						material.gradientSurface.GetMidpointIntensity(), 0.0));
+						material.gradientSurface.GetSegmentIntensity(i), material.gradientSurface.GetSegmentBias(i)));
 			for (int i = 0; i < midpointSizeSpecular; i++)
 				paletteCl[midpointOffsetSpecular + i] = toClFloat4(
 					CVector4(material.gradientSpecular.GetMidpoint(i),
 						static_cast<float>(material.gradientSpecular.GetSegmentMode(i)),
-						material.gradientSpecular.GetMidpointIntensity(), 0.0));
+						material.gradientSpecular.GetSegmentIntensity(i), material.gradientSpecular.GetSegmentBias(i)));
 			for (int i = 0; i < midpointSizeDiffuse; i++)
 				paletteCl[midpointOffsetDiffuse + i] = toClFloat4(
 					CVector4(material.gradientDiffuse.GetMidpoint(i),
 						static_cast<float>(material.gradientDiffuse.GetSegmentMode(i)),
-						material.gradientDiffuse.GetMidpointIntensity(), 0.0));
+						material.gradientDiffuse.GetSegmentIntensity(i), material.gradientDiffuse.GetSegmentBias(i)));
 			for (int i = 0; i < midpointSizeLuminosity; i++)
 				paletteCl[midpointOffsetLuminosity + i] = toClFloat4(
 					CVector4(material.gradientLuminosity.GetMidpoint(i),
 						static_cast<float>(material.gradientLuminosity.GetSegmentMode(i)),
-						material.gradientLuminosity.GetMidpointIntensity(), 0.0));
+						material.gradientLuminosity.GetSegmentIntensity(i), material.gradientLuminosity.GetSegmentBias(i)));
 			for (int i = 0; i < midpointSizeRoughness; i++)
 				paletteCl[midpointOffsetRoughness + i] = toClFloat4(
 					CVector4(material.gradientRoughness.GetMidpoint(i),
 						static_cast<float>(material.gradientRoughness.GetSegmentMode(i)),
-						material.gradientRoughness.GetMidpointIntensity(), 0.0));
+						material.gradientRoughness.GetSegmentIntensity(i), material.gradientRoughness.GetSegmentBias(i)));
 			for (int i = 0; i < midpointSizeReflectance; i++)
 				paletteCl[midpointOffsetReflectance + i] = toClFloat4(
 					CVector4(material.gradientReflectance.GetMidpoint(i),
 						static_cast<float>(material.gradientReflectance.GetSegmentMode(i)),
-						material.gradientReflectance.GetMidpointIntensity(), 0.0));
+						material.gradientReflectance.GetSegmentIntensity(i), material.gradientReflectance.GetSegmentBias(i)));
 			for (int i = 0; i < midpointSizeTransparency; i++)
 				paletteCl[midpointOffsetTransparency + i] = toClFloat4(
 					CVector4(material.gradientTransparency.GetMidpoint(i),
 						static_cast<float>(material.gradientTransparency.GetSegmentMode(i)),
-						material.gradientTransparency.GetMidpointIntensity(), 0.0));
+						material.gradientTransparency.GetSegmentIntensity(i), material.gradientTransparency.GetSegmentBias(i)));
 
 			// Opacity data (stored as float4(opacity, opacity, opacity, position))
 			opacityOffsetSurface = totalSizeOfGradients;
@@ -444,7 +444,7 @@ int cOpenClDynamicData::BuildMaterialsData(
 						mode = static_cast<int>(material.gradientSurface.GetSegmentMode(i));
 					}
 					paletteCl[opacityOffsetSurface + opacitySizeSurface + i] = toClFloat4(
-						CVector4(mp, static_cast<float>(mode), 0.0, 0.0));
+						CVector4(mp, static_cast<float>(mode), material.gradientSurface.GetSegmentIntensity(i), material.gradientSurface.GetSegmentBias(i)));
 				}
 			}
 		}
@@ -907,6 +907,7 @@ QString cOpenClDynamicData::BuildPrimitivesData(const cPrimitives *primitivesCon
 		if (i == 0) arrayOffset = totalDataOffset;
 
 		sPrimitiveCl primitiveCl;
+			memset(&primitiveCl, 0, sizeof(primitiveCl));
 		const std::shared_ptr<sPrimitiveBasic> primitive = primitivesContainer->GetPrimitive(i);
 
 		primitiveCl.object.enable = primitive->enable;

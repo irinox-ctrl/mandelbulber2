@@ -122,6 +122,7 @@ cGradientEditWidget::cGradientEditWidget(QWidget *parent)
 	comboInterpolationMode->addItem("Quadratic Bezier");
 	comboInterpolationMode->addItem("Power Curve");
 	comboInterpolationMode->setFixedHeight(toolbarHeight);
+	comboInterpolationMode->setFixedWidth(150);
 	comboInterpolationMode->move(margins + (toolbarHeight + 2) * 7 + 10, 0);
 	comboInterpolationMode->show();
 	connect(comboInterpolationMode, SIGNAL(currentIndexChanged(int)), this,
@@ -133,7 +134,7 @@ cGradientEditWidget::cGradientEditWidget(QWidget *parent)
 	sliderMidpointIntensity->setValue(100);
 	sliderMidpointIntensity->setFixedHeight(toolbarHeight);
 	sliderMidpointIntensity->setFixedWidth(120);
-	sliderMidpointIntensity->move(margins + (toolbarHeight + 2) * 7 + 140, 0);
+	sliderMidpointIntensity->move(margins + (toolbarHeight + 2) * 7 + 170, 0);
 	sliderMidpointIntensity->show();
 	sliderMidpointIntensity->setToolTip("Midpoint intensity multiplier");
 	connect(sliderMidpointIntensity, SIGNAL(valueChanged(int)), this,
@@ -1018,7 +1019,15 @@ void cGradientEditWidget::SetColors(const QString &colorsString)
 	gradient.SetColorsFromString(colorsString);
 	if (comboInterpolationMode)
 	{
+		comboInterpolationMode->blockSignals(true);
 		comboInterpolationMode->setCurrentIndex(static_cast<int>(gradient.GetInterpolationMode()));
+		comboInterpolationMode->blockSignals(false);
+	}
+	if (sliderMidpointIntensity)
+	{
+		sliderMidpointIntensity->blockSignals(true);
+		sliderMidpointIntensity->setValue(int(gradient.GetMidpointIntensity() * 100.0f));
+		sliderMidpointIntensity->blockSignals(false);
 	}
 	emit update();
 }
@@ -1872,6 +1881,7 @@ void cGradientEditWidget::midpointIntensityChanged(int value)
 {
 	float intensity = value / 100.0f;
 	gradient.SetMidpointIntensity(intensity);
+	NotifyGradientChanged();
 	emit update();
 }
 

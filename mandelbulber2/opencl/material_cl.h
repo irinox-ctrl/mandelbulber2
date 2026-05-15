@@ -49,6 +49,7 @@ typedef struct
 {
 	cl_int id;
 	cl_int textureFractalizeStartIteration;
+	cl_int textureFractalizeShape;
 	cl_int perlinNoiseIterations;
 
 	cl_float shading;
@@ -80,6 +81,7 @@ typedef struct
 	cl_float iridescenceIntensity;
 	cl_float iridescenceSubsurfaceThickness;
 	cl_float textureFractalizeCubeSize;
+	cl_float textureFractalizeSizeMultiplier;
 	cl_float perlinNoiseValueOffset;
 	cl_float perlinNoiseColorIntensity;
 	cl_float perlinNoiseLuminosityIntensity;
@@ -101,6 +103,7 @@ typedef struct
 	cl_float3 textureScale;
 	cl_float3 perlinNoisePeriod;
 	cl_float3 perlinNoisePositionOffset;
+	cl_float3 textureFractalizeOrbitTrapPosition;
 
 	matrix33 rotMatrixTexture;
 	matrix33 rotMatrixPerlinNoise;
@@ -140,6 +143,7 @@ typedef struct
 	cl_int useRoughnessTexture;
 	cl_int iridescenceEnabled;
 	cl_int textureFractalize;
+	cl_int textureFractalizeIterationBlend;
 
 	cl_int insideColoringEnable;
 	cl_int subsurfaceScattering;
@@ -173,6 +177,21 @@ typedef struct
 	cl_int surfaceGradientInterpolationMode;
 	cl_int surfaceGradientBlendMode;
 
+	// Gradient System V3
+	cl_float gradientScale;
+	cl_float gradientOffset;
+	cl_int gradientRepeatMode;
+	cl_int opacityInvert;
+	cl_float maskContrast;
+	cl_float maskBlackPoint;
+	cl_float maskWhitePoint;
+	cl_float gradientBrightness;
+	cl_float gradientContrast;
+	cl_float gradientSaturation;
+	cl_float gradientGamma;
+	cl_int gradientColorSpace;
+	cl_float gradientNoiseAmount;
+
 	sFractalColoringCl fractalColoring;
 } sMaterialCl;
 
@@ -183,6 +202,7 @@ sMaterialCl clCopySMaterialCl(const cMaterial &source)
 
 	target.id = source.id;
 	target.textureFractalizeStartIteration = source.textureFractalizeStartIteration;
+	target.textureFractalizeShape = source.textureFractalizeShape;
 	target.perlinNoiseIterations = source.perlinNoiseIterations;
 
 	target.shading = source.shading;
@@ -214,6 +234,7 @@ sMaterialCl clCopySMaterialCl(const cMaterial &source)
 	target.iridescenceIntensity = source.iridescenceIntensity;
 	target.iridescenceSubsurfaceThickness = source.iridescenceSubsurfaceThickness;
 	target.textureFractalizeCubeSize = source.textureFractalizeCubeSize;
+	target.textureFractalizeSizeMultiplier = source.textureFractalizeSizeMultiplier;
 	target.perlinNoiseValueOffset = source.perlinNoiseValueOffset;
 	target.perlinNoiseColorIntensity = source.perlinNoiseColorIntensity;
 	target.perlinNoiseLuminosityIntensity = source.perlinNoiseLuminosityIntensity;
@@ -235,6 +256,7 @@ sMaterialCl clCopySMaterialCl(const cMaterial &source)
 	target.textureScale = toClFloat3(source.textureScale);
 	target.perlinNoisePeriod = toClFloat3(source.perlinNoisePeriod);
 	target.perlinNoisePositionOffset = toClFloat3(source.perlinNoisePositionOffset);
+	target.textureFractalizeOrbitTrapPosition = toClFloat3(source.textureFractalizeOrbitTrapPosition);
 
 	target.rotMatrixTexture = toClMatrix33(source.rotMatrixTexture);
 	target.rotMatrixPerlinNoise = toClMatrix33(source.rotMatrixPerlinNoise);
@@ -274,6 +296,7 @@ sMaterialCl clCopySMaterialCl(const cMaterial &source)
 	target.useRoughnessTexture = source.useRoughnessTexture;
 	target.iridescenceEnabled = source.iridescenceEnabled;
 	target.textureFractalize = source.textureFractalize;
+	target.textureFractalizeIterationBlend = source.textureFractalizeIterationBlend;
 
 	target.insideColoringEnable = source.insideColoringEnable;
 	target.subsurfaceScattering = source.subsurfaceScattering;
@@ -296,6 +319,21 @@ sMaterialCl clCopySMaterialCl(const cMaterial &source)
 
 	target.surfaceGradientInterpolationMode = source.surfaceGradientInterpolationMode;
 	target.surfaceGradientBlendMode = source.surfaceGradientBlendMode;
+
+	// Gradient System V3
+	target.gradientScale = source.gradientScale;
+	target.gradientOffset = source.gradientOffset;
+	target.gradientRepeatMode = source.gradientRepeatMode;
+	target.opacityInvert = source.opacityInvert;
+	target.maskContrast = source.maskContrast;
+	target.maskBlackPoint = source.maskBlackPoint;
+	target.maskWhitePoint = source.maskWhitePoint;
+	target.gradientBrightness = source.gradientBrightness;
+	target.gradientContrast = source.gradientContrast;
+	target.gradientSaturation = source.gradientSaturation;
+	target.gradientGamma = source.gradientGamma;
+	target.gradientColorSpace = source.gradientColorSpace;
+	target.gradientNoiseAmount = source.gradientNoiseAmount;
 
 	// these are initialized in cOpenClDynamicData::BuildMaterialsData()
 	target.colorTextureIndex = 0;

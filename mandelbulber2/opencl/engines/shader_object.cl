@@ -64,14 +64,16 @@ float3 ObjectShader(__constant sClInConstants *consts, sRenderData *renderData,
 
 			float3 gradientColor = GetColorFromGradient(colorPosition,
 				false, input->paletteSurfaceLength,
-				input->palette + input->paletteSurfaceOffset, NULL, 0, 0);
+				input->palette + input->paletteSurfaceOffset, NULL, 0, 0,
+				input->material->gradientColorSpace);
 			int opacityMidpointSurfaceOffset = input->opacitySurfaceOffset + input->opacitySurfaceLength;
 			int opacityMidpointSurfaceLength = max(0, input->opacitySurfaceLength - 1);
 			float alpha = GetColorFromGradient(colorPosition, false, input->opacitySurfaceLength,
 				input->palette + input->opacitySurfaceOffset,
 				(opacityMidpointSurfaceLength > 0) ? input->palette + opacityMidpointSurfaceOffset : NULL,
 				opacityMidpointSurfaceLength,
-				input->material->surfaceGradientInterpolationMode).x;
+				input->material->surfaceGradientInterpolationMode,
+				input->material->gradientColorSpace).x;
 
 			surfaceColor *= gradientColor * perlinColInt + perlinIntN;
 			if (input->material->surfaceGradientMaskEnable)
@@ -246,13 +248,15 @@ float3 ObjectShader(__constant sClInConstants *consts, sRenderData *renderData,
 
 			float3 gradientColor = GetColorFromGradient(colorPosition,
 				false, input->paletteLuminosityLength,
-				input->palette + input->paletteLuminosityOffset, NULL, 0, 0);
+				input->palette + input->paletteLuminosityOffset, NULL, 0, 0,
+				input->material->gradientColorSpace);
 			int opacityMidpointLuminosityOffset = input->opacityLuminosityOffset + input->opacityLuminosityLength;
 			int opacityMidpointLuminosityLength = max(0, input->opacityLuminosityLength - 1);
 			float alpha = GetColorFromGradient(colorPosition, false, input->opacityLuminosityLength,
 				input->palette + input->opacityLuminosityOffset,
 				(opacityMidpointLuminosityLength > 0) ? input->palette + opacityMidpointLuminosityOffset : NULL,
-				opacityMidpointLuminosityLength, 0).x;
+				opacityMidpointLuminosityLength, 0,
+				input->material->gradientColorSpace).x;
 
 			luminosity += gradientColor * perlinLumInt;
 			if (input->material->luminosityGradientMaskEnable)
