@@ -142,3 +142,7 @@ MASTER_BACKUP_*.tar.gz
 # Build artifacts in source tree
 mandelbulber2/Makefile
 mandelbulber2/mandelbulber2
+*.tar.gz
+*.o
+backup_*/
+MASTER_BACKUP_*
