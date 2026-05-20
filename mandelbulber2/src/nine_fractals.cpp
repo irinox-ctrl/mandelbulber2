@@ -36,7 +36,6 @@
 #include "nine_fractals.hpp"
 
 #include <algorithm>
-#include <QDebug>
 
 #include "fractal.h"
 #include "fractal_container.hpp"
@@ -114,16 +113,6 @@ cNineFractals::cNineFractals(std::shared_ptr<const cFractalContainer> par,
 			generalPar->Get<double>("formula_weight_de_component", i + 1);
 		weightParams[i].colorComponentWeight =
 			generalPar->Get<double>("formula_weight_color_component", i + 1);
-
-		// DEBUG: print loaded weight params for active fractals
-		if (IsHybrid() && fractals[i]->formula != fractal::none)
-		{
-			qDebug() << "WEIGHT_LOAD slot:" << (i + 1)
-					 << "mode:" << int(weightParams[i].mode)
-					 << "staticW:" << weightParams[i].staticWeight
-					 << "stdWeight:" << formulaWeight[i]
-					 << "formula:" << int(fractals[i]->formula);
-		}
 
 		DEType[i] = fractal::deltaDEType;
 		DEFunctionType[i] = fractal::logarithmicDEFunction;
