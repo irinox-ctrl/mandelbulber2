@@ -41,6 +41,10 @@
 #include "orbit_trap_shape.hpp"
 
 #include "formula/definition/legacy_fractal_transforms.hpp"
+#include <QDebug>
+
+// This message confirms the NEW compute_fractal.cpp is compiled
+#pragma message("=== DEVIN WEIGHT FIX BUILD - compute_fractal.cpp ===")
 
 using namespace fractal;
 
@@ -48,6 +52,14 @@ template <fractal::enumCalculationMode Mode>
 void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequence *seq,
 	const sFractalIn &in, sFractalOut *out)
 {
+	// DEBUG: confirm this code is actually running
+	static bool oncePrinted = false;
+	if (!oncePrinted && fractals.IsHybrid())
+	{
+		qDebug() << ">>> DEVIN WEIGHT CODE ACTIVE - hybrid mode detected <<<";
+		oncePrinted = true;
+	}
+
 	cAbstractFractal *fractalFormulaFunction;
 
 	// repeat, move and rotate
