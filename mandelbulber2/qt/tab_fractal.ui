@@ -308,6 +308,510 @@
     </widget>
    </item>
    <item>
+    <widget class="QGroupBox" name="groupBox_advanced_weight">
+     <property name="title">
+      <string>Advanced Weight System</string>
+     </property>
+     <property name="checkable">
+      <bool>false</bool>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_advanced_weight">
+      <property name="spacing">
+       <number>3</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_formula_weight_mode">
+        <property name="text">
+         <string>Weight Mode:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="comboBox_formula_weight_mode">
+        <property name="toolTip">
+         <string>Weight calculation mode: Static uses a fixed weight, Iteration varies weight over iterations, DE varies by distance estimation, ZLength by orbit magnitude, Conditional by threshold</string>
+        </property>
+        <item>
+         <property name="text">
+          <string>Static</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Iteration</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>DE</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>ZLength</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Conditional</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_formula_weight_static">
+        <property name="text">
+         <string>Static Weight:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_formula_weight_static">
+        <property name="decimals">
+         <number>4</number>
+        </property>
+        <property name="maximum">
+         <double>1.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.010000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_formula_weight_iter_start">
+        <property name="text">
+         <string>Iter Start:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="MySpinBox" name="spinboxInt_formula_weight_iter_start">
+        <property name="maximum">
+         <number>65536</number>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_formula_weight_iter_end">
+        <property name="text">
+         <string>Iter End:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="MySpinBox" name="spinboxInt_formula_weight_iter_end">
+        <property name="maximum">
+         <number>65536</number>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="label_formula_weight_start">
+        <property name="text">
+         <string>Start Weight:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_formula_weight_start">
+        <property name="decimals">
+         <number>4</number>
+        </property>
+        <property name="maximum">
+         <double>1.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.010000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QLabel" name="label_formula_weight_end">
+        <property name="text">
+         <string>End Weight:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_formula_weight_end">
+        <property name="decimals">
+         <number>4</number>
+        </property>
+        <property name="maximum">
+         <double>1.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.010000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0">
+       <widget class="QLabel" name="label_formula_weight_blend_mode">
+        <property name="text">
+         <string>Blend Mode:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="1">
+       <widget class="QComboBox" name="comboBox_formula_weight_blend_mode">
+        <item>
+         <property name="text">
+          <string>Linear</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Smooth</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Step</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="7" column="0">
+       <widget class="QLabel" name="label_formula_weight_de_base">
+        <property name="text">
+         <string>DE Base Weight:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_formula_weight_de_base">
+        <property name="decimals">
+         <number>4</number>
+        </property>
+        <property name="maximum">
+         <double>1.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.010000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="0">
+       <widget class="QLabel" name="label_formula_weight_de_sensitivity">
+        <property name="text">
+         <string>DE Sensitivity:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_formula_weight_de_sensitivity">
+        <property name="decimals">
+         <number>4</number>
+        </property>
+        <property name="maximum">
+         <double>100.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.100000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="0">
+       <widget class="QLabel" name="label_formula_weight_de_threshold">
+        <property name="text">
+         <string>DE Threshold:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_formula_weight_de_threshold">
+        <property name="decimals">
+         <number>4</number>
+        </property>
+        <property name="maximum">
+         <double>1000.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.010000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="10" column="0">
+       <widget class="QLabel" name="label_formula_weight_de_mod_type">
+        <property name="text">
+         <string>DE Mod Type:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="10" column="1">
+       <widget class="QComboBox" name="comboBox_formula_weight_de_mod_type">
+        <item>
+         <property name="text">
+          <string>Linear</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Smooth</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="11" column="0">
+       <widget class="QLabel" name="label_formula_weight_zlength_base">
+        <property name="text">
+         <string>Z-Length Base:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="11" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_formula_weight_zlength_base">
+        <property name="decimals">
+         <number>4</number>
+        </property>
+        <property name="maximum">
+         <double>1.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.010000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="12" column="0">
+       <widget class="QLabel" name="label_formula_weight_zlength_sens">
+        <property name="text">
+         <string>Z-Length Sens:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="12" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_formula_weight_zlength_sens">
+        <property name="decimals">
+         <number>4</number>
+        </property>
+        <property name="maximum">
+         <double>100.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.100000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="13" column="0">
+       <widget class="QLabel" name="label_formula_weight_zlength_threshold">
+        <property name="text">
+         <string>Z-Length Threshold:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="13" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_formula_weight_zlength_threshold">
+        <property name="decimals">
+         <number>4</number>
+        </property>
+        <property name="maximum">
+         <double>1000.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.100000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="14" column="0">
+       <widget class="QLabel" name="label_formula_weight_zlength_mod_type">
+        <property name="text">
+         <string>Z-Length Mod Type:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="14" column="1">
+       <widget class="QComboBox" name="comboBox_formula_weight_zlength_mod_type">
+        <item>
+         <property name="text">
+          <string>Linear</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Smooth</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="15" column="0">
+       <widget class="QLabel" name="label_formula_weight_condition_type">
+        <property name="text">
+         <string>Condition Type:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="15" column="1">
+       <widget class="QComboBox" name="comboBox_formula_weight_condition_type">
+        <item>
+         <property name="text">
+          <string>DE Threshold</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>ZLength</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="16" column="0">
+       <widget class="QLabel" name="label_formula_weight_condition_threshold">
+        <property name="text">
+         <string>Condition Threshold:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="16" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_formula_weight_condition_threshold">
+        <property name="decimals">
+         <number>4</number>
+        </property>
+        <property name="maximum">
+         <double>1000.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.010000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="17" column="0">
+       <widget class="QLabel" name="label_formula_weight_true">
+        <property name="text">
+         <string>True Weight:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="17" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_formula_weight_true">
+        <property name="decimals">
+         <number>4</number>
+        </property>
+        <property name="maximum">
+         <double>1.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.010000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="18" column="0">
+       <widget class="QLabel" name="label_formula_weight_false">
+        <property name="text">
+         <string>False Weight:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="18" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_formula_weight_false">
+        <property name="decimals">
+         <number>4</number>
+        </property>
+        <property name="maximum">
+         <double>1.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.010000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="19" column="0">
+       <widget class="QLabel" name="label_formula_weight_condition_blend">
+        <property name="text">
+         <string>Condition Blend:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="19" column="1">
+       <widget class="QComboBox" name="comboBox_formula_weight_condition_blend">
+        <item>
+         <property name="text">
+          <string>Step</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Linear</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Smooth</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="20" column="0" colspan="2">
+       <widget class="MyCheckBox" name="checkBox_formula_weight_separate_components">
+        <property name="text">
+         <string>Separate Components</string>
+        </property>
+       </widget>
+      </item>
+      <item row="21" column="0">
+       <widget class="QLabel" name="label_formula_weight_z_vector">
+        <property name="text">
+         <string>Z-Vector Weight:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="21" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_formula_weight_z_vector">
+        <property name="decimals">
+         <number>4</number>
+        </property>
+        <property name="maximum">
+         <double>1.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.010000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="22" column="0">
+       <widget class="QLabel" name="label_formula_weight_de_component">
+        <property name="text">
+         <string>DE Weight:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="22" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_formula_weight_de_component">
+        <property name="decimals">
+         <number>4</number>
+        </property>
+        <property name="maximum">
+         <double>1.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.010000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="23" column="0">
+       <widget class="QLabel" name="label_formula_weight_color_component">
+        <property name="text">
+         <string>Color Weight:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="23" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_formula_weight_color_component">
+        <property name="decimals">
+         <number>4</number>
+        </property>
+        <property name="maximum">
+         <double>1.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.010000000000000</double>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <widget class="QGroupBox" name="groupBox_formula_parameters">
      <property name="title">
       <string>Formula specific parameters</string>

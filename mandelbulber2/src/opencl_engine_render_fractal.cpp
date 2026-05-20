@@ -36,6 +36,7 @@
 #include "opencl_engine_render_fractal.h"
 
 #include <functional>
+#include <iostream>
 #include <map>
 #include <memory>
 

@@ -132,6 +132,10 @@ public:
 	void SetMidpointIntensity(float intensity) { midpointIntensity = qBound(0.0f, intensity, 5.0f); sorted = false; }
 	float GetMidpointIntensity() const { return midpointIntensity; }
 
+	// Per-segment intensity and bias (for GPU data packing)
+	float GetSegmentIntensity(int /*segmentIndex*/) const { return midpointIntensity; }
+	float GetSegmentBias(int /*segmentIndex*/) const { return 0.5f; }
+
 private:
 	int PaletteIterator(int paletteIndex, float position) const;
 	sRGB Interpolate(int paletteIndex, float pos, bool smooth) const;

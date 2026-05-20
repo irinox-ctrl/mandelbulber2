@@ -214,7 +214,14 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 
 		fractalFormulaFunction = fractals.GetFractalFormulaFunction(sequence);
 
-		if (!fractals.IsHybrid() || fractals.GetWeight(sequence) > 0.0)
+		// Calculate effective weight using the advanced weight system
+		double effectiveWeight = 1.0;
+		if (fractals.IsHybrid())
+		{
+			effectiveWeight = fractals.CalculateWeight(sequence, i, aux.DE, aux.r);
+		}
+
+		if (!fractals.IsHybrid() || effectiveWeight > 0.0)
 		{
 			// -------------- call for fractal formulas by function pointers ---------------
 			if (fractalFormulaFunction && formula != none)
@@ -272,11 +279,43 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 			}
 		}
 
-		if (fractals.IsHybrid())
+		// Apply weight blending in hybrid mode
+		if (fractals.IsHybrid() && effectiveWeight < 1.0)
 		{
-			double k = fractals.GetWeight(sequence);
-			if (k < 1.0)
+			const sFormulaWeightParams &wp = fractals.GetWeightParams(sequence);
+
+			if (wp.separateComponents)
 			{
+				// Separate component weights: z, DE, and color can have different blend factors
+				double kz = effectiveWeight * wp.zVectorWeight;
+				double kde = effectiveWeight * wp.deComponentWeight;
+				double kcol = effectiveWeight * wp.colorComponentWeight;
+
+				if (kz < 1.0) z = SmoothCVector(tempZ, z, kz);
+
+				if (kde < 1.0)
+				{
+					double kden = 1.0 - kde;
+					aux.DE = aux.DE * kde + tempAuxDE * kden;
+					aux.DE0 = aux.DE0 * kde + tempAuxDE0 * kden;
+					aux.dist = aux.dist * kde + tempAuxDist * kden;
+					aux.pseudoKleinianDE = aux.pseudoKleinianDE * kde + tempAuxPseudoKleinianDE * kden;
+					aux.actualScale = aux.actualScale * kde + tempAuxActualScale * kden;
+					aux.actualScaleA = aux.actualScaleA * kde + tempAuxActualScaleA * kden;
+				}
+
+				if (kcol < 1.0)
+				{
+					double kcoln = 1.0 - kcol;
+					aux.color = aux.color * kcol + tempAuxColor * kcoln;
+					aux.colorHybrid = aux.colorHybrid * kcol + tempAuxColorHybrid * kcoln;
+					aux.temp1000 = aux.temp1000 * kcol + tempAuxTemp1000 * kcoln;
+				}
+			}
+			else
+			{
+				// Unified weight for all components
+				double k = effectiveWeight;
 				z = SmoothCVector(tempZ, z, k);
 				double kn = 1.0 - k;
 				aux.DE = aux.DE * k + tempAuxDE * kn;

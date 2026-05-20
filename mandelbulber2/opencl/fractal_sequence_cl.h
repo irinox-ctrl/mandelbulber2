@@ -79,11 +79,70 @@ typedef enum
 	clColoringFunctionDonut = 5,
 } enumColoringFunctionCl;
 
+// Advanced weight mode enums for OpenCL
+typedef enum
+{
+	clWeightModeStatic = 0,
+	clWeightModeIteration = 1,
+	clWeightModeDE = 2,
+	clWeightModeZLength = 3,
+	clWeightModeConditional = 4,
+} enumWeightModeCl;
+
+typedef enum
+{
+	clWeightBlendLinear = 0,
+	clWeightBlendSmooth = 1,
+	clWeightBlendStep = 2,
+} enumWeightBlendModeCl;
+
+typedef enum
+{
+	clWeightModLinear = 0,
+	clWeightModSmooth = 1,
+} enumWeightModTypeCl;
+
+typedef enum
+{
+	clWeightCondDE = 0,
+	clWeightCondZLength = 1,
+} enumWeightCondTypeCl;
+
+// Per-formula advanced weight parameters for OpenCL
+typedef struct
+{
+	cl_int mode;
+	cl_float staticWeight;
+	cl_int iterStart;
+	cl_int iterEnd;
+	cl_float startWeight;
+	cl_float endWeight;
+	cl_int blendMode;
+	cl_float deBase;
+	cl_float deSensitivity;
+	cl_float deThreshold;
+	cl_int deModType;
+	cl_float zlengthBase;
+	cl_float zlengthSens;
+	cl_float zlengthThreshold;
+	cl_int zlengthModType;
+	cl_int conditionType;
+	cl_float conditionThreshold;
+	cl_float trueWeight;
+	cl_float falseWeight;
+	cl_int conditionBlend;
+	cl_int separateComponents;
+	cl_float zVectorWeight;
+	cl_float deComponentWeight;
+	cl_float colorComponentWeight;
+} sClFormulaWeightParams;
+
 typedef struct
 {
 	cl_int isHybrid;
 	cl_int hybridSequence[OPENCL_FRACTAL_SEQUENCE_LENGTH];
 	cl_float formulaWeight[NUMBER_OF_FRACTALS];
+	sClFormulaWeightParams weightParams[NUMBER_OF_FRACTALS];
 	enumDEFunctionTypeCl DEFunctionType[NUMBER_OF_FRACTALS];
 	enumDETypeCl DEType[NUMBER_OF_FRACTALS];
 	cl_int counts[NUMBER_OF_FRACTALS];

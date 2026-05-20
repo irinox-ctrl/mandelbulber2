@@ -141,6 +141,46 @@ void InitParams(std::shared_ptr<cParameterContainer> par)
 		par->addParam("formula_weight", i, 1.0, 0.0, 1.0, morphAkima, paramStandard);
 		par->addParam("formula_start_iteration", i, 0, 0, 65536, morphAkima, paramStandard);
 		par->addParam("formula_stop_iteration", i, 250, 0, 65536, morphAkima, paramStandard);
+
+		// Advanced weight system parameters
+		// Weight mode: 0=Static, 1=Iteration, 2=DE, 3=ZLength, 4=Conditional
+		par->addParam("formula_weight_mode", i, 0, 0, 4, morphLinear, paramStandard);
+		par->addParam("formula_weight_static", i, 1.0, 0.0, 1.0, morphAkima, paramStandard);
+		// Iteration-based weight
+		par->addParam("formula_weight_iter_start", i, 0, 0, 65536, morphAkima, paramStandard);
+		par->addParam("formula_weight_iter_end", i, 30, 0, 65536, morphAkima, paramStandard);
+		par->addParam("formula_weight_start", i, 0.0, 0.0, 1.0, morphAkima, paramStandard);
+		par->addParam("formula_weight_end", i, 1.0, 0.0, 1.0, morphAkima, paramStandard);
+		// Blend mode: 0=Linear, 1=Smooth, 2=Step
+		par->addParam("formula_weight_blend_mode", i, 0, 0, 2, morphLinear, paramStandard);
+		// DE-based weight
+		par->addParam("formula_weight_de_base", i, 0.5, 0.0, 1.0, morphAkima, paramStandard);
+		par->addParam("formula_weight_de_sensitivity", i, 1.0, 0.0, 100.0, morphAkima, paramStandard);
+		par->addParam("formula_weight_de_threshold", i, 0.1, 0.0, 1000.0, morphAkima, paramStandard);
+		// DE mod type: 0=Linear, 1=Smooth
+		par->addParam("formula_weight_de_mod_type", i, 0, 0, 1, morphLinear, paramStandard);
+		// Z-Length-based weight
+		par->addParam("formula_weight_zlength_base", i, 0.5, 0.0, 1.0, morphAkima, paramStandard);
+		par->addParam("formula_weight_zlength_sens", i, 1.0, 0.0, 100.0, morphAkima, paramStandard);
+		par->addParam(
+			"formula_weight_zlength_threshold", i, 2.0, 0.0, 1000.0, morphAkima, paramStandard);
+		// Z-Length mod type: 0=Linear, 1=Smooth
+		par->addParam("formula_weight_zlength_mod_type", i, 0, 0, 1, morphLinear, paramStandard);
+		// Conditional weight
+		// Condition type: 0=DE_Threshold, 1=ZLength
+		par->addParam("formula_weight_condition_type", i, 0, 0, 1, morphLinear, paramStandard);
+		par->addParam(
+			"formula_weight_condition_threshold", i, 0.5, 0.0, 1000.0, morphAkima, paramStandard);
+		par->addParam("formula_weight_true", i, 1.0, 0.0, 1.0, morphAkima, paramStandard);
+		par->addParam("formula_weight_false", i, 0.0, 0.0, 1.0, morphAkima, paramStandard);
+		// Condition blend: 0=Step, 1=Linear
+		par->addParam("formula_weight_condition_blend", i, 0, 0, 1, morphLinear, paramStandard);
+		// Separate component weights
+		par->addParam("formula_weight_separate_components", i, false, morphLinear, paramStandard);
+		par->addParam("formula_weight_z_vector", i, 1.0, 0.0, 1.0, morphAkima, paramStandard);
+		par->addParam("formula_weight_de_component", i, 1.0, 0.0, 1.0, morphAkima, paramStandard);
+		par->addParam("formula_weight_color_component", i, 1.0, 0.0, 1.0, morphAkima, paramStandard);
+
 		par->addParam("julia_mode", i, false, morphLinear, paramStandard);
 		par->addParam("julia_c", i, CVector3(0.0, 0.0, 0.0), morphAkima, paramStandard);
 		par->addParam(

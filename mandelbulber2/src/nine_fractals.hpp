@@ -55,6 +55,69 @@ class cFractalContainer;
 struct sFractal;
 class cAbstractFractal;
 
+// Advanced weight system enums
+enum enumWeightMode
+{
+	weightModeStatic = 0,
+	weightModeIteration = 1,
+	weightModeDE = 2,
+	weightModeZLength = 3,
+	weightModeConditional = 4
+};
+
+enum enumWeightBlendMode
+{
+	weightBlendLinear = 0,
+	weightBlendSmooth = 1,
+	weightBlendStep = 2
+};
+
+enum enumWeightModType
+{
+	weightModLinear = 0,
+	weightModSmooth = 1
+};
+
+enum enumWeightConditionType
+{
+	weightCondDE = 0,
+	weightCondZLength = 1
+};
+
+// Per-formula advanced weight parameters
+struct sFormulaWeightParams
+{
+	enumWeightMode mode;
+	double staticWeight;
+	// Iteration-based
+	int iterStart;
+	int iterEnd;
+	double startWeight;
+	double endWeight;
+	enumWeightBlendMode blendMode;
+	// DE-based
+	double deBase;
+	double deSensitivity;
+	double deThreshold;
+	enumWeightModType deModType;
+	// Z-Length-based
+	double zlengthBase;
+	double zlengthSens;
+	double zlengthThreshold;
+	enumWeightModType zlengthModType;
+	// Conditional
+	enumWeightConditionType conditionType;
+	double conditionThreshold;
+	double trueWeight;
+	double falseWeight;
+	enumWeightBlendMode conditionBlend;
+	// Separate components
+	bool separateComponents;
+	double zVectorWeight;
+	double deComponentWeight;
+	double colorComponentWeight;
+};
+
 class cNineFractals
 {
 public:
@@ -66,6 +129,12 @@ public:
 	fractal::enumDEType GetDEType(int formulaIndex) const;
 	fractal::enumDEFunctionType GetDEFunctionType(int formulaIndex) const;
 	inline double GetWeight(int formulaIndex) const { return formulaWeight[formulaIndex]; }
+	inline const sFormulaWeightParams &GetWeightParams(int formulaIndex) const
+	{
+		return weightParams[formulaIndex];
+	}
+	// Calculate effective weight based on mode and current iteration state
+	double CalculateWeight(int formulaIndex, int iteration, double currentDE, double zLength) const;
 	inline int GetMaxFractalIndex() const { return maxFractalIndex; }
 	inline bool IsAddCConstant(int formulaIndex) const { return addCConstant[formulaIndex]; }
 	inline bool IsCheckForBailout(int formulaIndex) const { return checkForBailout[formulaIndex]; }
@@ -117,6 +186,7 @@ private:
 	int hybridSequenceLength;
 
 	double formulaWeight[NUMBER_OF_FRACTALS];
+	sFormulaWeightParams weightParams[NUMBER_OF_FRACTALS];
 	fractal::enumDEFunctionType DEFunctionType[NUMBER_OF_FRACTALS];
 	fractal::enumDEType DEType[NUMBER_OF_FRACTALS];
 	fractal::enumDEAnalyticFunction DEAnalyticFunction[NUMBER_OF_FRACTALS];

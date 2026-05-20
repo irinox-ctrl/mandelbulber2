@@ -326,6 +326,9 @@ void cTabFractal::SynchronizeInterface(
 
 	WriteLog("cTabFractal::SynchronizeInterface: groupBox_material_fractal", 3);
 	SynchronizeInterfaceWindow(ui->groupBox_calculation_parameters, par, mode);
+
+	WriteLog("cTabFractal::SynchronizeInterface: groupBox_advanced_weight", 3);
+	SynchronizeInterfaceWindow(ui->groupBox_advanced_weight, par, mode);
 }
 
 void cTabFractal::FrameIterationFormulaSetWidgetsVisibility(bool visible) const
@@ -339,6 +342,7 @@ void cTabFractal::FrameIterationFormulaSetWidgetsVisibility(bool visible) const
 	ui->spinboxInt_formula_start_iteration->setVisible(visible);
 	ui->spinboxInt_formula_stop_iteration->setVisible(visible);
 	ui->checkBox_check_for_bailout->setVisible(visible);
+	ui->groupBox_advanced_weight->setVisible(visible);
 }
 
 void cTabFractal::ConnectSignals()

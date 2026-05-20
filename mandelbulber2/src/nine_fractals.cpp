@@ -75,6 +75,44 @@ cNineFractals::cNineFractals(std::shared_ptr<const cFractalContainer> par,
 		formulaWeight[i] = generalPar->Get<double>("formula_weight", i + 1);
 		formulaStartIteration[i] = generalPar->Get<int>("formula_start_iteration", i + 1);
 		formulaStopIteration[i] = generalPar->Get<int>("formula_stop_iteration", i + 1);
+
+		// Advanced weight system parameters
+		weightParams[i].mode =
+			enumWeightMode(generalPar->Get<int>("formula_weight_mode", i + 1));
+		weightParams[i].staticWeight = generalPar->Get<double>("formula_weight_static", i + 1);
+		weightParams[i].iterStart = generalPar->Get<int>("formula_weight_iter_start", i + 1);
+		weightParams[i].iterEnd = generalPar->Get<int>("formula_weight_iter_end", i + 1);
+		weightParams[i].startWeight = generalPar->Get<double>("formula_weight_start", i + 1);
+		weightParams[i].endWeight = generalPar->Get<double>("formula_weight_end", i + 1);
+		weightParams[i].blendMode =
+			enumWeightBlendMode(generalPar->Get<int>("formula_weight_blend_mode", i + 1));
+		weightParams[i].deBase = generalPar->Get<double>("formula_weight_de_base", i + 1);
+		weightParams[i].deSensitivity =
+			generalPar->Get<double>("formula_weight_de_sensitivity", i + 1);
+		weightParams[i].deThreshold = generalPar->Get<double>("formula_weight_de_threshold", i + 1);
+		weightParams[i].deModType =
+			enumWeightModType(generalPar->Get<int>("formula_weight_de_mod_type", i + 1));
+		weightParams[i].zlengthBase = generalPar->Get<double>("formula_weight_zlength_base", i + 1);
+		weightParams[i].zlengthSens = generalPar->Get<double>("formula_weight_zlength_sens", i + 1);
+		weightParams[i].zlengthThreshold =
+			generalPar->Get<double>("formula_weight_zlength_threshold", i + 1);
+		weightParams[i].zlengthModType =
+			enumWeightModType(generalPar->Get<int>("formula_weight_zlength_mod_type", i + 1));
+		weightParams[i].conditionType =
+			enumWeightConditionType(generalPar->Get<int>("formula_weight_condition_type", i + 1));
+		weightParams[i].conditionThreshold =
+			generalPar->Get<double>("formula_weight_condition_threshold", i + 1);
+		weightParams[i].trueWeight = generalPar->Get<double>("formula_weight_true", i + 1);
+		weightParams[i].falseWeight = generalPar->Get<double>("formula_weight_false", i + 1);
+		weightParams[i].conditionBlend =
+			enumWeightBlendMode(generalPar->Get<int>("formula_weight_condition_blend", i + 1));
+		weightParams[i].separateComponents =
+			generalPar->Get<bool>("formula_weight_separate_components", i + 1);
+		weightParams[i].zVectorWeight = generalPar->Get<double>("formula_weight_z_vector", i + 1);
+		weightParams[i].deComponentWeight =
+			generalPar->Get<double>("formula_weight_de_component", i + 1);
+		weightParams[i].colorComponentWeight =
+			generalPar->Get<double>("formula_weight_color_component", i + 1);
 		DEType[i] = fractal::deltaDEType;
 		DEFunctionType[i] = fractal::logarithmicDEFunction;
 
@@ -456,6 +494,114 @@ int cNineFractals::GetIndexOnFractalList(fractal::enumFractalFormula formula)
 	return 0;
 }
 
+double cNineFractals::CalculateWeight(
+	int formulaIndex, int iteration, double currentDE, double zLength) const
+{
+	const sFormulaWeightParams &wp = weightParams[formulaIndex];
+
+	double weight = 1.0;
+
+	switch (wp.mode)
+	{
+		case weightModeStatic:
+		{
+			weight = wp.staticWeight;
+			break;
+		}
+		case weightModeIteration:
+		{
+			if (iteration <= wp.iterStart)
+			{
+				weight = wp.startWeight;
+			}
+			else if (iteration >= wp.iterEnd)
+			{
+				weight = wp.endWeight;
+			}
+			else
+			{
+				double t = double(iteration - wp.iterStart) / double(wp.iterEnd - wp.iterStart);
+				switch (wp.blendMode)
+				{
+					case weightBlendLinear: weight = wp.startWeight + t * (wp.endWeight - wp.startWeight); break;
+					case weightBlendSmooth:
+					{
+						double s = t * t * (3.0 - 2.0 * t); // smoothstep
+						weight = wp.startWeight + s * (wp.endWeight - wp.startWeight);
+						break;
+					}
+					case weightBlendStep: weight = (t < 0.5) ? wp.startWeight : wp.endWeight; break;
+				}
+			}
+			break;
+		}
+		case weightModeDE:
+		{
+			double delta = currentDE - wp.deThreshold;
+			double factor = delta * wp.deSensitivity;
+			switch (wp.deModType)
+			{
+				case weightModLinear:
+					weight = wp.deBase + factor;
+					break;
+				case weightModSmooth:
+					weight = wp.deBase + factor * factor * (factor > 0 ? 1.0 : -1.0);
+					break;
+			}
+			weight = qBound(0.0, weight, 1.0);
+			break;
+		}
+		case weightModeZLength:
+		{
+			double delta = zLength - wp.zlengthThreshold;
+			double factor = delta * wp.zlengthSens;
+			switch (wp.zlengthModType)
+			{
+				case weightModLinear:
+					weight = wp.zlengthBase + factor;
+					break;
+				case weightModSmooth:
+					weight = wp.zlengthBase + factor * factor * (factor > 0 ? 1.0 : -1.0);
+					break;
+			}
+			weight = qBound(0.0, weight, 1.0);
+			break;
+		}
+		case weightModeConditional:
+		{
+			double testValue = 0.0;
+			switch (wp.conditionType)
+			{
+				case weightCondDE: testValue = currentDE; break;
+				case weightCondZLength: testValue = zLength; break;
+			}
+			bool conditionMet = (testValue < wp.conditionThreshold);
+			switch (wp.conditionBlend)
+			{
+				case weightBlendStep:
+					weight = conditionMet ? wp.trueWeight : wp.falseWeight;
+					break;
+				case weightBlendLinear:
+				{
+					double blend = qBound(0.0, testValue / wp.conditionThreshold, 1.0);
+					weight = wp.trueWeight * (1.0 - blend) + wp.falseWeight * blend;
+					break;
+				}
+				case weightBlendSmooth:
+				{
+					double blend = qBound(0.0, testValue / wp.conditionThreshold, 1.0);
+					double s = blend * blend * (3.0 - 2.0 * blend);
+					weight = wp.trueWeight * (1.0 - s) + wp.falseWeight * s;
+					break;
+				}
+			}
+			break;
+		}
+	}
+
+	return weight;
+}
+
 #ifdef USE_OPENCL
 void cNineFractals::CopyToOpenclData(sClFractalSequence *sequence) const
 {
@@ -476,6 +622,33 @@ void cNineFractals::CopyToOpenclData(sClFractalSequence *sequence) const
 	for (int i = 0; i < NUMBER_OF_FRACTALS; i++)
 	{
 		sequence->formulaWeight[i] = formulaWeight[i];
+
+		// Copy advanced weight parameters
+		sequence->weightParams[i].mode = static_cast<cl_int>(weightParams[i].mode);
+		sequence->weightParams[i].staticWeight = weightParams[i].staticWeight;
+		sequence->weightParams[i].iterStart = weightParams[i].iterStart;
+		sequence->weightParams[i].iterEnd = weightParams[i].iterEnd;
+		sequence->weightParams[i].startWeight = weightParams[i].startWeight;
+		sequence->weightParams[i].endWeight = weightParams[i].endWeight;
+		sequence->weightParams[i].blendMode = static_cast<cl_int>(weightParams[i].blendMode);
+		sequence->weightParams[i].deBase = weightParams[i].deBase;
+		sequence->weightParams[i].deSensitivity = weightParams[i].deSensitivity;
+		sequence->weightParams[i].deThreshold = weightParams[i].deThreshold;
+		sequence->weightParams[i].deModType = static_cast<cl_int>(weightParams[i].deModType);
+		sequence->weightParams[i].zlengthBase = weightParams[i].zlengthBase;
+		sequence->weightParams[i].zlengthSens = weightParams[i].zlengthSens;
+		sequence->weightParams[i].zlengthThreshold = weightParams[i].zlengthThreshold;
+		sequence->weightParams[i].zlengthModType = static_cast<cl_int>(weightParams[i].zlengthModType);
+		sequence->weightParams[i].conditionType = static_cast<cl_int>(weightParams[i].conditionType);
+		sequence->weightParams[i].conditionThreshold = weightParams[i].conditionThreshold;
+		sequence->weightParams[i].trueWeight = weightParams[i].trueWeight;
+		sequence->weightParams[i].falseWeight = weightParams[i].falseWeight;
+		sequence->weightParams[i].conditionBlend = static_cast<cl_int>(weightParams[i].conditionBlend);
+		sequence->weightParams[i].separateComponents = weightParams[i].separateComponents ? 1 : 0;
+		sequence->weightParams[i].zVectorWeight = weightParams[i].zVectorWeight;
+		sequence->weightParams[i].deComponentWeight = weightParams[i].deComponentWeight;
+		sequence->weightParams[i].colorComponentWeight = weightParams[i].colorComponentWeight;
+
 		sequence->DEFunctionType[i] = static_cast<enumDEFunctionTypeCl>(DEFunctionType[i]);
 		sequence->DEType[i] = static_cast<enumDETypeCl>(DEType[i]);
 		sequence->counts[i] = counts[i];

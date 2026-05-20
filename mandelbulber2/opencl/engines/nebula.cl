@@ -337,7 +337,80 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 		float tempAuxTemp1000 = aux.temp1000;
 
 #ifdef ITERATION_WEIGHT
-		if (consts->sequence.formulaWeight[sequence] > 0)
+		// Calculate effective weight using advanced weight system
+		float effectiveWeight = 1.0f;
+		if (consts->sequence.isHybrid)
+		{
+			__constant sClFormulaWeightParams *wp = &consts->sequence.weightParams[sequence];
+			int weightMode = wp->mode;
+			if (weightMode == 0) // Static
+			{
+				effectiveWeight = wp->staticWeight;
+			}
+			else if (weightMode == 1) // Iteration
+			{
+				if (i <= wp->iterStart)
+					effectiveWeight = wp->startWeight;
+				else if (i >= wp->iterEnd)
+					effectiveWeight = wp->endWeight;
+				else
+				{
+					float t = (float)(i - wp->iterStart) / (float)(wp->iterEnd - wp->iterStart);
+					int bm = wp->blendMode;
+					if (bm == 0) // Linear
+						effectiveWeight = wp->startWeight + t * (wp->endWeight - wp->startWeight);
+					else if (bm == 1) // Smooth
+					{
+						float s = t * t * (3.0f - 2.0f * t);
+						effectiveWeight = wp->startWeight + s * (wp->endWeight - wp->startWeight);
+					}
+					else // Step
+						effectiveWeight = (t < 0.5f) ? wp->startWeight : wp->endWeight;
+				}
+			}
+			else if (weightMode == 2) // DE
+			{
+				float delta = aux.DE - wp->deThreshold;
+				float factor = delta * wp->deSensitivity;
+				if (wp->deModType == 0)
+					effectiveWeight = wp->deBase + factor;
+				else
+					effectiveWeight = wp->deBase + factor * factor * (factor > 0.0f ? 1.0f : -1.0f);
+				effectiveWeight = clamp(effectiveWeight, 0.0f, 1.0f);
+			}
+			else if (weightMode == 3) // ZLength
+			{
+				float zLen = length(z);
+				float delta = zLen - wp->zlengthThreshold;
+				float factor = delta * wp->zlengthSens;
+				if (wp->zlengthModType == 0)
+					effectiveWeight = wp->zlengthBase + factor;
+				else
+					effectiveWeight = wp->zlengthBase + factor * factor * (factor > 0.0f ? 1.0f : -1.0f);
+				effectiveWeight = clamp(effectiveWeight, 0.0f, 1.0f);
+			}
+			else // Conditional (4)
+			{
+				float testValue = (wp->conditionType == 0) ? aux.DE : length(z);
+				bool condMet = (testValue < wp->conditionThreshold);
+				int cb = wp->conditionBlend;
+				if (cb == 0) // Step
+					effectiveWeight = condMet ? wp->trueWeight : wp->falseWeight;
+				else if (cb == 1) // Linear
+				{
+					float blend = clamp(testValue / wp->conditionThreshold, 0.0f, 1.0f);
+					effectiveWeight = wp->trueWeight * (1.0f - blend) + wp->falseWeight * blend;
+				}
+				else // Smooth
+				{
+					float blend = clamp(testValue / wp->conditionThreshold, 0.0f, 1.0f);
+					float s = blend * blend * (3.0f - 2.0f * blend);
+					effectiveWeight = wp->trueWeight * (1.0f - s) + wp->falseWeight * s;
+				}
+			}
+		}
+
+		if (effectiveWeight > 0.0f)
 		{
 #endif
 
@@ -405,11 +478,40 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 #endif
 
 #ifdef ITERATION_WEIGHT
-		if (consts->sequence.isHybrid)
+		// Apply weight blending in hybrid mode
+		if (consts->sequence.isHybrid && effectiveWeight < 1.0f)
 		{
-			float k = consts->sequence.formulaWeight[sequence];
-			if (k < 1.0f)
+			__constant sClFormulaWeightParams *wp = &consts->sequence.weightParams[sequence];
+			if (wp->separateComponents)
 			{
+				float kz = effectiveWeight * wp->zVectorWeight;
+				float kde = effectiveWeight * wp->deComponentWeight;
+				float kcol = effectiveWeight * wp->colorComponentWeight;
+
+				if (kz < 1.0f) z = SmoothCVector(tempZ, z, kz);
+
+				if (kde < 1.0f)
+				{
+					float kden = 1.0f - kde;
+					aux.DE = aux.DE * kde + tempAuxDE * kden;
+					aux.DE0 = aux.DE0 * kde + tempAuxDE0 * kden;
+					aux.dist = aux.dist * kde + tempAuxDist * kden;
+					aux.pseudoKleinianDE = aux.pseudoKleinianDE * kde + tempAuxPseudoKleinianDE * kden;
+					aux.actualScale = aux.actualScale * kde + tempAuxActualScale * kden;
+					aux.actualScaleA = aux.actualScaleA * kde + tempAuxActualScaleA * kden;
+				}
+
+				if (kcol < 1.0f)
+				{
+					float kcoln = 1.0f - kcol;
+					aux.color = aux.color * kcol + tempAuxColor * kcoln;
+					aux.colorHybrid = aux.colorHybrid * kcol + tempAuxColorHybrid * kcoln;
+					aux.temp1000 = aux.temp1000 * kcol + tempAuxTemp1000 * kcoln;
+				}
+			}
+			else
+			{
+				float k = effectiveWeight;
 				z = SmoothCVector(tempZ, z, k);
 				float kn = 1.0f - k;
 				aux.DE = aux.DE * k + tempAuxDE * kn;
