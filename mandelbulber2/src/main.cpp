@@ -35,6 +35,7 @@
 #include "main.hpp"
 
 #include <qapplication.h>
+#include <QDebug>
 
 #include "animation_flight.hpp"
 #include "animation_keyframes.hpp"
@@ -73,6 +74,9 @@ int main(int argc, char *argv[])
 
 	// Initialization of system functions
 	InitSystem();
+
+	// Advanced Weight System build identifier
+	qDebug() << "Advanced Weight System v2.0 - build 20250520";
 
 	// configure debug output
 	qInstallMessageHandler(myMessageOutput);
