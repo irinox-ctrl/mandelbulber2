@@ -1,5 +1,5 @@
 #!/bin/bash
-# Mandelbulber Advanced Weight System v3.1 - Clean Build Script
+# Mandelbulber Advanced Weight System v3.2 - Clean Build Script
 # Run this from the repository root directory
 set -e
 
@@ -100,7 +100,7 @@ echo "Start the app with:"
 echo "  cd mandelbulber2/qmake && ./mandelbulber2"
 echo ""
 echo "You should see in the terminal:"
-echo "  'Advanced Weight System v3.1 - build ...'"
+echo "  'Advanced Weight System v3.2 - build ...'"
 echo ""
 echo "The system works on BOTH CPU and GPU. No kernel recompilation needed."
 echo ""
