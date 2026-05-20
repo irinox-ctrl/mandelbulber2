@@ -215,10 +215,14 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 		fractalFormulaFunction = fractals.GetFractalFormulaFunction(sequence);
 
 		// Calculate effective weight using the advanced weight system
+		// Combines standard formula_weight with the advanced weight mode
 		double effectiveWeight = 1.0;
 		if (fractals.IsHybrid())
 		{
-			effectiveWeight = fractals.CalculateWeight(sequence, i, aux.DE, aux.r);
+			double standardWeight = fractals.GetWeight(sequence);
+			double advancedWeight = fractals.CalculateWeight(sequence, i, aux.DE, aux.r);
+			effectiveWeight = standardWeight * advancedWeight;
+			if (effectiveWeight > 1.0) effectiveWeight = 1.0;
 		}
 
 		if (!fractals.IsHybrid() || effectiveWeight > 0.0)

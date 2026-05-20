@@ -338,9 +338,11 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 
 #ifdef ITERATION_WEIGHT
 		// Calculate effective weight using advanced weight system
+		// Combines standard formulaWeight with the advanced weight mode
 		float effectiveWeight = 1.0f;
 		if (consts->sequence.isHybrid)
 		{
+			float standardWeight = consts->sequence.formulaWeight[sequence];
 			__constant sClFormulaWeightParams *wp = &consts->sequence.weightParams[sequence];
 			int weightMode = wp->mode;
 			if (weightMode == 0) // Static
@@ -408,6 +410,9 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					effectiveWeight = wp->trueWeight * (1.0f - s) + wp->falseWeight * s;
 				}
 			}
+			// Multiply advanced weight by standard formula weight
+			effectiveWeight *= standardWeight;
+			if (effectiveWeight > 1.0f) effectiveWeight = 1.0f;
 		}
 
 		if (effectiveWeight > 0.0f)

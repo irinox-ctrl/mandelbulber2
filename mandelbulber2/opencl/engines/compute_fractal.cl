@@ -252,9 +252,11 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 
 #ifdef ITERATION_WEIGHT
 		// Calculate effective weight using advanced weight system
+		// Combines standard formulaWeight with the advanced weight mode
 		float effectiveWeight = 1.0f;
 		if (consts->sequence.isHybrid)
 		{
+			float standardWeight = consts->sequence.formulaWeight[sequence];
 			__constant sClFormulaWeightParams *wp = &consts->sequence.weightParams[sequence];
 			int weightMode = wp->mode;
 			if (weightMode == 0) // Static
@@ -322,6 +324,9 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 					effectiveWeight = wp->trueWeight * (1.0f - s) + wp->falseWeight * s;
 				}
 			}
+			// Multiply advanced weight by standard formula weight
+			effectiveWeight *= standardWeight;
+			if (effectiveWeight > 1.0f) effectiveWeight = 1.0f;
 		}
 
 		if (effectiveWeight > 0.0f)

@@ -1044,6 +1044,12 @@ void cOpenClEngineRenderFractal::SetParametersForIterationWeight(cNineFractals *
 		{
 			weightUsed = true;
 		}
+		// Also check advanced weight system — if mode is not Static or staticWeight != 1.0
+		const sFormulaWeightParams &wp = fractals->GetWeightParams(i);
+		if (wp.mode != weightModeStatic || wp.staticWeight != 1.0)
+		{
+			weightUsed = true;
+		}
 	}
 	if (weightUsed) definesCollector += " -DITERATION_WEIGHT";
 }

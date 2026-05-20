@@ -501,7 +501,8 @@ void SynchronizeInterfaceQComboBox(
 				if (mode == qInterface::read)
 				{
 					int selection = comboBox->currentIndex();
-					if (props.paramName.left(7) == QString("formula"))
+					if (props.paramName.left(7) == QString("formula")
+						&& dynamic_cast<cFormulaComboBox *>(comboBox))
 					{
 						selection = newFractalList[comboBox->itemData(selection).toInt()]->getInternalId();
 					}
