@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
 	InitSystem();
 
 	// Advanced Weight System build identifier
-	qDebug() << "Advanced Weight System v2.0 - build 20250520";
+	qDebug() << "Advanced Weight System v3.0 - build 20250520";
 
 	// configure debug output
 	qInstallMessageHandler(myMessageOutput);

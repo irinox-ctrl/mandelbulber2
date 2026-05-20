@@ -78,41 +78,57 @@ cNineFractals::cNineFractals(std::shared_ptr<const cFractalContainer> par,
 
 		// Advanced weight system parameters
 		weightParams[i].mode =
-			enumWeightMode(generalPar->Get<int>("formula_weight_mode", i + 1));
-		weightParams[i].staticWeight = generalPar->Get<double>("formula_weight_static", i + 1);
-		weightParams[i].iterStart = generalPar->Get<int>("formula_weight_iter_start", i + 1);
-		weightParams[i].iterEnd = generalPar->Get<int>("formula_weight_iter_end", i + 1);
-		weightParams[i].startWeight = generalPar->Get<double>("formula_weight_start", i + 1);
-		weightParams[i].endWeight = generalPar->Get<double>("formula_weight_end", i + 1);
+			enumWeightMode(generalPar->Get<int>("weight_mode", i + 1));
+		weightParams[i].staticWeight = generalPar->Get<double>("weight_static", i + 1);
+		weightParams[i].iterStart = generalPar->Get<int>("weight_iter_start", i + 1);
+		weightParams[i].iterEnd = generalPar->Get<int>("weight_iter_end", i + 1);
+		weightParams[i].startWeight = generalPar->Get<double>("weight_start", i + 1);
+		weightParams[i].endWeight = generalPar->Get<double>("weight_end", i + 1);
 		weightParams[i].blendMode =
-			enumWeightBlendMode(generalPar->Get<int>("formula_weight_blend_mode", i + 1));
-		weightParams[i].deBase = generalPar->Get<double>("formula_weight_de_base", i + 1);
+			enumWeightBlendMode(generalPar->Get<int>("weight_blend_mode", i + 1));
+		weightParams[i].deBase = generalPar->Get<double>("weight_de_base", i + 1);
 		weightParams[i].deSensitivity =
-			generalPar->Get<double>("formula_weight_de_sensitivity", i + 1);
-		weightParams[i].deThreshold = generalPar->Get<double>("formula_weight_de_threshold", i + 1);
+			generalPar->Get<double>("weight_de_sensitivity", i + 1);
+		weightParams[i].deThreshold = generalPar->Get<double>("weight_de_threshold", i + 1);
 		weightParams[i].deModType =
-			enumWeightModType(generalPar->Get<int>("formula_weight_de_mod_type", i + 1));
-		weightParams[i].zlengthBase = generalPar->Get<double>("formula_weight_zlength_base", i + 1);
-		weightParams[i].zlengthSens = generalPar->Get<double>("formula_weight_zlength_sens", i + 1);
+			enumWeightModType(generalPar->Get<int>("weight_de_mod_type", i + 1));
+		weightParams[i].zlengthBase = generalPar->Get<double>("weight_zlength_base", i + 1);
+		weightParams[i].zlengthSens = generalPar->Get<double>("weight_zlength_sens", i + 1);
 		weightParams[i].zlengthThreshold =
-			generalPar->Get<double>("formula_weight_zlength_threshold", i + 1);
+			generalPar->Get<double>("weight_zlength_threshold", i + 1);
 		weightParams[i].zlengthModType =
-			enumWeightModType(generalPar->Get<int>("formula_weight_zlength_mod_type", i + 1));
+			enumWeightModType(generalPar->Get<int>("weight_zlength_mod_type", i + 1));
 		weightParams[i].conditionType =
-			enumWeightConditionType(generalPar->Get<int>("formula_weight_condition_type", i + 1));
+			enumWeightConditionType(generalPar->Get<int>("weight_condition_type", i + 1));
 		weightParams[i].conditionThreshold =
-			generalPar->Get<double>("formula_weight_condition_threshold", i + 1);
-		weightParams[i].trueWeight = generalPar->Get<double>("formula_weight_true", i + 1);
-		weightParams[i].falseWeight = generalPar->Get<double>("formula_weight_false", i + 1);
+			generalPar->Get<double>("weight_condition_threshold", i + 1);
+		weightParams[i].trueWeight = generalPar->Get<double>("weight_true", i + 1);
+		weightParams[i].falseWeight = generalPar->Get<double>("weight_false", i + 1);
 		weightParams[i].conditionBlend =
-			enumWeightBlendMode(generalPar->Get<int>("formula_weight_condition_blend", i + 1));
+			enumWeightBlendMode(generalPar->Get<int>("weight_condition_blend", i + 1));
+		// OrbitTrap-based weight (mode 5)
+		weightParams[i].orbitTrapBase =
+			generalPar->Get<double>("weight_orbit_trap_base", i + 1);
+		weightParams[i].orbitTrapSensitivity =
+			generalPar->Get<double>("weight_orbit_trap_sensitivity", i + 1);
+		weightParams[i].orbitTrapThreshold =
+			generalPar->Get<double>("weight_orbit_trap_threshold", i + 1);
+		weightParams[i].orbitTrapModType =
+			enumWeightModType(generalPar->Get<int>("weight_orbit_trap_mod_type", i + 1));
+		// Curve-based weight (mode 6)
+		weightParams[i].curveBase = generalPar->Get<double>("weight_curve_base", i + 1);
+		weightParams[i].curveSensitivity =
+			generalPar->Get<double>("weight_curve_sensitivity", i + 1);
+		weightParams[i].curvePower = generalPar->Get<double>("weight_curve_power", i + 1);
+		weightParams[i].curveModType =
+			enumWeightModType(generalPar->Get<int>("weight_curve_mod_type", i + 1));
 		weightParams[i].separateComponents =
-			generalPar->Get<bool>("formula_weight_separate_components", i + 1);
-		weightParams[i].zVectorWeight = generalPar->Get<double>("formula_weight_z_vector", i + 1);
+			generalPar->Get<bool>("weight_separate_components", i + 1);
+		weightParams[i].zVectorWeight = generalPar->Get<double>("weight_z_vector", i + 1);
 		weightParams[i].deComponentWeight =
-			generalPar->Get<double>("formula_weight_de_component", i + 1);
+			generalPar->Get<double>("weight_de_component", i + 1);
 		weightParams[i].colorComponentWeight =
-			generalPar->Get<double>("formula_weight_color_component", i + 1);
+			generalPar->Get<double>("weight_color_component", i + 1);
 
 		DEType[i] = fractal::deltaDEType;
 		DEFunctionType[i] = fractal::logarithmicDEFunction;
@@ -548,6 +564,16 @@ double cNineFractals::CalculateWeight(
 				case weightModSmooth:
 					weight = wp.deBase + factor * factor * (factor > 0 ? 1.0 : -1.0);
 					break;
+				case weightModExponential:
+					weight = wp.deBase * exp(factor);
+					break;
+				case weightModInverse:
+					weight = (fabs(currentDE) > 1e-15)
+						? wp.deBase * (wp.deThreshold / currentDE) : 1.0;
+					break;
+				case weightModSigmoid:
+					weight = wp.deBase + (1.0 - wp.deBase) / (1.0 + exp(-factor));
+					break;
 			}
 			weight = qBound(0.0, weight, 1.0);
 			break;
@@ -563,6 +589,16 @@ double cNineFractals::CalculateWeight(
 					break;
 				case weightModSmooth:
 					weight = wp.zlengthBase + factor * factor * (factor > 0 ? 1.0 : -1.0);
+					break;
+				case weightModExponential:
+					weight = wp.zlengthBase * exp(factor);
+					break;
+				case weightModInverse:
+					weight = (fabs(zLength) > 1e-15)
+						? wp.zlengthBase * (wp.zlengthThreshold / zLength) : 1.0;
+					break;
+				case weightModSigmoid:
+					weight = wp.zlengthBase + (1.0 - wp.zlengthBase) / (1.0 + exp(-factor));
 					break;
 			}
 			weight = qBound(0.0, weight, 1.0);
@@ -596,6 +632,63 @@ double cNineFractals::CalculateWeight(
 					break;
 				}
 			}
+			break;
+		}
+		case weightModeOrbitTrap:
+		{
+			// Weight based on minimum orbit distance (uses zLength as proxy for orbit magnitude)
+			double orbitDist = zLength;
+			double delta = orbitDist - wp.orbitTrapThreshold;
+			double factor = delta * wp.orbitTrapSensitivity;
+			switch (wp.orbitTrapModType)
+			{
+				case weightModLinear:
+					weight = wp.orbitTrapBase + factor;
+					break;
+				case weightModSmooth:
+					weight = wp.orbitTrapBase + factor * factor * (factor > 0 ? 1.0 : -1.0);
+					break;
+				case weightModExponential:
+					weight = wp.orbitTrapBase * exp(factor);
+					break;
+				case weightModInverse:
+					weight = (fabs(orbitDist) > 1e-15)
+						? wp.orbitTrapBase * (wp.orbitTrapThreshold / orbitDist) : 1.0;
+					break;
+				case weightModSigmoid:
+					weight = wp.orbitTrapBase + (1.0 - wp.orbitTrapBase) / (1.0 + exp(-factor));
+					break;
+			}
+			weight = qBound(0.0, weight, 1.0);
+			break;
+		}
+		case weightModeCurve:
+		{
+			// Custom power curve: weight = base + sens * (DE/threshold)^power
+			double normalized = (wp.curveBase > 1e-15) ? currentDE / wp.curveBase : currentDE;
+			double powered = pow(fabs(normalized * wp.curveSensitivity), wp.curvePower);
+			switch (wp.curveModType)
+			{
+				case weightModLinear:
+					weight = wp.curveBase + powered * (normalized >= 0 ? 1.0 : -1.0);
+					break;
+				case weightModSmooth:
+				{
+					double s = powered * powered * (3.0 - 2.0 * powered);
+					weight = wp.curveBase + s;
+					break;
+				}
+				case weightModExponential:
+					weight = wp.curveBase * exp(powered - 1.0);
+					break;
+				case weightModInverse:
+					weight = (powered > 1e-15) ? wp.curveBase / powered : 1.0;
+					break;
+				case weightModSigmoid:
+					weight = wp.curveBase + (1.0 - wp.curveBase) / (1.0 + exp(-(powered - 0.5) * 6.0));
+					break;
+			}
+			weight = qBound(0.0, weight, 1.0);
 			break;
 		}
 	}
@@ -645,6 +738,16 @@ void cNineFractals::CopyToOpenclData(sClFractalSequence *sequence) const
 		sequence->weightParams[i].trueWeight = weightParams[i].trueWeight;
 		sequence->weightParams[i].falseWeight = weightParams[i].falseWeight;
 		sequence->weightParams[i].conditionBlend = static_cast<cl_int>(weightParams[i].conditionBlend);
+		// OrbitTrap (mode 5)
+		sequence->weightParams[i].orbitTrapBase = weightParams[i].orbitTrapBase;
+		sequence->weightParams[i].orbitTrapSensitivity = weightParams[i].orbitTrapSensitivity;
+		sequence->weightParams[i].orbitTrapThreshold = weightParams[i].orbitTrapThreshold;
+		sequence->weightParams[i].orbitTrapModType = static_cast<cl_int>(weightParams[i].orbitTrapModType);
+		// Curve (mode 6)
+		sequence->weightParams[i].curveBase = weightParams[i].curveBase;
+		sequence->weightParams[i].curveSensitivity = weightParams[i].curveSensitivity;
+		sequence->weightParams[i].curvePower = weightParams[i].curvePower;
+		sequence->weightParams[i].curveModType = static_cast<cl_int>(weightParams[i].curveModType);
 		sequence->weightParams[i].separateComponents = weightParams[i].separateComponents ? 1 : 0;
 		sequence->weightParams[i].zVectorWeight = weightParams[i].zVectorWeight;
 		sequence->weightParams[i].deComponentWeight = weightParams[i].deComponentWeight;

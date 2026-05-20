@@ -100,6 +100,9 @@ typedef enum
 {
 	clWeightModLinear = 0,
 	clWeightModSmooth = 1,
+	clWeightModExponential = 2,
+	clWeightModInverse = 3,
+	clWeightModSigmoid = 4,
 } enumWeightModTypeCl;
 
 typedef enum
@@ -131,6 +134,17 @@ typedef struct
 	cl_float trueWeight;
 	cl_float falseWeight;
 	cl_int conditionBlend;
+	// OrbitTrap (mode 5)
+	cl_float orbitTrapBase;
+	cl_float orbitTrapSensitivity;
+	cl_float orbitTrapThreshold;
+	cl_int orbitTrapModType;
+	// Curve (mode 6)
+	cl_float curveBase;
+	cl_float curveSensitivity;
+	cl_float curvePower;
+	cl_int curveModType;
+	// Separate components
 	cl_int separateComponents;
 	cl_float zVectorWeight;
 	cl_float deComponentWeight;

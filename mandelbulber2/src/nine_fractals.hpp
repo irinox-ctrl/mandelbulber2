@@ -62,7 +62,9 @@ enum enumWeightMode
 	weightModeIteration = 1,
 	weightModeDE = 2,
 	weightModeZLength = 3,
-	weightModeConditional = 4
+	weightModeConditional = 4,
+	weightModeOrbitTrap = 5,
+	weightModeCurve = 6
 };
 
 enum enumWeightBlendMode
@@ -75,7 +77,10 @@ enum enumWeightBlendMode
 enum enumWeightModType
 {
 	weightModLinear = 0,
-	weightModSmooth = 1
+	weightModSmooth = 1,
+	weightModExponential = 2,
+	weightModInverse = 3,
+	weightModSigmoid = 4
 };
 
 enum enumWeightConditionType
@@ -111,6 +116,16 @@ struct sFormulaWeightParams
 	double trueWeight;
 	double falseWeight;
 	enumWeightBlendMode conditionBlend;
+	// OrbitTrap-based (mode 5)
+	double orbitTrapBase;
+	double orbitTrapSensitivity;
+	double orbitTrapThreshold;
+	enumWeightModType orbitTrapModType;
+	// Curve-based (mode 6) — custom curve with power exponent
+	double curveBase;
+	double curveSensitivity;
+	double curvePower;
+	enumWeightModType curveModType;
 	// Separate components
 	bool separateComponents;
 	double zVectorWeight;

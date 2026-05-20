@@ -374,10 +374,17 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 			{
 				float delta = aux.DE - wp->deThreshold;
 				float factor = delta * wp->deSensitivity;
-				if (wp->deModType == 0)
+				if (wp->deModType == 0) // Linear
 					effectiveWeight = wp->deBase + factor;
-				else
+				else if (wp->deModType == 1) // Smooth
 					effectiveWeight = wp->deBase + factor * factor * (factor > 0.0f ? 1.0f : -1.0f);
+				else if (wp->deModType == 2) // Exponential
+					effectiveWeight = wp->deBase * exp(factor);
+				else if (wp->deModType == 3) // Inverse
+					effectiveWeight = (fabs(aux.DE) > 1e-15f)
+						? wp->deBase * (wp->deThreshold / aux.DE) : 1.0f;
+				else // Sigmoid (4)
+					effectiveWeight = wp->deBase + (1.0f - wp->deBase) / (1.0f + exp(-factor));
 				effectiveWeight = clamp(effectiveWeight, 0.0f, 1.0f);
 			}
 			else if (weightMode == 3) // ZLength
@@ -385,13 +392,20 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 				float zLen = length(z);
 				float delta = zLen - wp->zlengthThreshold;
 				float factor = delta * wp->zlengthSens;
-				if (wp->zlengthModType == 0)
+				if (wp->zlengthModType == 0) // Linear
 					effectiveWeight = wp->zlengthBase + factor;
-				else
+				else if (wp->zlengthModType == 1) // Smooth
 					effectiveWeight = wp->zlengthBase + factor * factor * (factor > 0.0f ? 1.0f : -1.0f);
+				else if (wp->zlengthModType == 2) // Exponential
+					effectiveWeight = wp->zlengthBase * exp(factor);
+				else if (wp->zlengthModType == 3) // Inverse
+					effectiveWeight = (fabs(zLen) > 1e-15f)
+						? wp->zlengthBase * (wp->zlengthThreshold / zLen) : 1.0f;
+				else // Sigmoid (4)
+					effectiveWeight = wp->zlengthBase + (1.0f - wp->zlengthBase) / (1.0f + exp(-factor));
 				effectiveWeight = clamp(effectiveWeight, 0.0f, 1.0f);
 			}
-			else // Conditional (4)
+			else if (weightMode == 4) // Conditional
 			{
 				float testValue = (wp->conditionType == 0) ? aux.DE : length(z);
 				bool condMet = (testValue < wp->conditionThreshold);
@@ -409,6 +423,43 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					float s = blend * blend * (3.0f - 2.0f * blend);
 					effectiveWeight = wp->trueWeight * (1.0f - s) + wp->falseWeight * s;
 				}
+			}
+			else if (weightMode == 5) // OrbitTrap
+			{
+				float orbitDist = length(z);
+				float delta = orbitDist - wp->orbitTrapThreshold;
+				float factor = delta * wp->orbitTrapSensitivity;
+				if (wp->orbitTrapModType == 0)
+					effectiveWeight = wp->orbitTrapBase + factor;
+				else if (wp->orbitTrapModType == 1)
+					effectiveWeight = wp->orbitTrapBase + factor * factor * (factor > 0.0f ? 1.0f : -1.0f);
+				else if (wp->orbitTrapModType == 2)
+					effectiveWeight = wp->orbitTrapBase * exp(factor);
+				else if (wp->orbitTrapModType == 3)
+					effectiveWeight = (fabs(orbitDist) > 1e-15f)
+						? wp->orbitTrapBase * (wp->orbitTrapThreshold / orbitDist) : 1.0f;
+				else
+					effectiveWeight = wp->orbitTrapBase + (1.0f - wp->orbitTrapBase) / (1.0f + exp(-factor));
+				effectiveWeight = clamp(effectiveWeight, 0.0f, 1.0f);
+			}
+			else if (weightMode == 6) // Curve
+			{
+				float normalized = (wp->curveBase > 1e-15f) ? aux.DE / wp->curveBase : aux.DE;
+				float powered = pow(fabs(normalized * wp->curveSensitivity), wp->curvePower);
+				if (wp->curveModType == 0)
+					effectiveWeight = wp->curveBase + powered * (normalized >= 0.0f ? 1.0f : -1.0f);
+				else if (wp->curveModType == 1)
+				{
+					float s = powered * powered * (3.0f - 2.0f * powered);
+					effectiveWeight = wp->curveBase + s;
+				}
+				else if (wp->curveModType == 2)
+					effectiveWeight = wp->curveBase * exp(powered - 1.0f);
+				else if (wp->curveModType == 3)
+					effectiveWeight = (powered > 1e-15f) ? wp->curveBase / powered : 1.0f;
+				else
+					effectiveWeight = wp->curveBase + (1.0f - wp->curveBase) / (1.0f + exp(-(powered - 0.5f) * 6.0f));
+				effectiveWeight = clamp(effectiveWeight, 0.0f, 1.0f);
 			}
 			// Multiply advanced weight by standard formula weight
 			effectiveWeight *= standardWeight;
