@@ -198,10 +198,17 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 		const sFractal *fractal = fractals.GetFractal(sequence);
 		formula = fractal->formula;
 
-		// temporary vector for weight function
+		// temporary values for weight function — save ALL modifiable aux fields
 		CVector4 tempZ = z;
 		double tempAuxDE = aux.DE;
+		double tempAuxDE0 = aux.DE0;
+		double tempAuxDist = aux.dist;
+		double tempAuxPseudoKleinianDE = aux.pseudoKleinianDE;
+		double tempAuxActualScale = aux.actualScale;
+		double tempAuxActualScaleA = aux.actualScaleA;
 		double tempAuxColor = aux.color;
+		double tempAuxColorHybrid = aux.colorHybrid;
+		double tempAuxTemp1000 = aux.temp1000;
 
 		aux.i = i;
 
@@ -224,43 +231,43 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 				return;
 			}
 			// -----------------------------------------------------------------------------
-		}
 
-		// addition of constant
-		if (fractals.IsAddCConstant(sequence))
-		{
-			switch (formula)
+			// addition of constant (inside weight guard — skipped when weight=0)
+			if (fractals.IsAddCConstant(sequence))
 			{
-				case aboxMod1:
-				case amazingSurf:
-					// case amazingSurfMod1:
+				switch (formula)
+				{
+					case aboxMod1:
+					case amazingSurf:
+						// case amazingSurfMod1:
+						{
+							if (fractals.IsJuliaEnabled(sequence))
+							{
+								CVector3 juliaC =
+									fractals.GetJuliaConstant(sequence) * fractals.GetConstantMultiplier(sequence);
+								z += CVector4(juliaC.y, juliaC.x, juliaC.z, 0.0);
+							}
+							else
+							{
+								z += CVector4(aux.const_c.y, aux.const_c.x, aux.const_c.z, 0.0)
+										 * fractals.GetConstantMultiplier(sequence);
+							}
+							break;
+						}
+
+					default:
 					{
 						if (fractals.IsJuliaEnabled(sequence))
 						{
-							CVector3 juliaC =
-								fractals.GetJuliaConstant(sequence) * fractals.GetConstantMultiplier(sequence);
-							z += CVector4(juliaC.y, juliaC.x, juliaC.z, 0.0);
+							z += CVector4(
+								fractals.GetJuliaConstant(sequence) * fractals.GetConstantMultiplier(sequence), 0.0);
 						}
 						else
 						{
-							z += CVector4(aux.const_c.y, aux.const_c.x, aux.const_c.z, 0.0)
-									 * fractals.GetConstantMultiplier(sequence);
+							z += aux.const_c * fractals.GetConstantMultiplier(sequence);
 						}
 						break;
 					}
-
-				default:
-				{
-					if (fractals.IsJuliaEnabled(sequence))
-					{
-						z += CVector4(
-							fractals.GetJuliaConstant(sequence) * fractals.GetConstantMultiplier(sequence), 0.0);
-					}
-					else
-					{
-						z += aux.const_c * fractals.GetConstantMultiplier(sequence);
-					}
-					break;
 				}
 			}
 		}
@@ -273,7 +280,14 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 				z = SmoothCVector(tempZ, z, k);
 				double kn = 1.0 - k;
 				aux.DE = aux.DE * k + tempAuxDE * kn;
+				aux.DE0 = aux.DE0 * k + tempAuxDE0 * kn;
+				aux.dist = aux.dist * k + tempAuxDist * kn;
+				aux.pseudoKleinianDE = aux.pseudoKleinianDE * k + tempAuxPseudoKleinianDE * kn;
+				aux.actualScale = aux.actualScale * k + tempAuxActualScale * kn;
+				aux.actualScaleA = aux.actualScaleA * k + tempAuxActualScaleA * kn;
 				aux.color = aux.color * k + tempAuxColor * kn;
+				aux.colorHybrid = aux.colorHybrid * k + tempAuxColorHybrid * kn;
+				aux.temp1000 = aux.temp1000 * k + tempAuxTemp1000 * kn;
 			}
 		}
 

@@ -238,10 +238,17 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 		aux.r = length(z);
 #endif
 
-		// temporary vector for weight function
+		// temporary values for weight function — save ALL modifiable aux fields
 		float4 tempZ = z;
 		float tempAuxDE = aux.DE;
+		float tempAuxDE0 = aux.DE0;
+		float tempAuxDist = aux.dist;
+		float tempAuxPseudoKleinianDE = aux.pseudoKleinianDE;
+		float tempAuxActualScale = aux.actualScale;
+		float tempAuxActualScaleA = aux.actualScaleA;
 		float tempAuxColor = aux.color;
+		float tempAuxColorHybrid = aux.colorHybrid;
+		float tempAuxTemp1000 = aux.temp1000;
 
 #ifdef ITERATION_WEIGHT
 		if (consts->sequence.formulaWeight[sequence] > 0)
@@ -265,10 +272,6 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 		z = FORMULA_ITER_0(z, fractal, &aux);
 #endif // defined(IS_HYBRID) || defined(BOOLEAN_OPERATORS)
 
-#ifdef ITERATION_WEIGHT
-		}
-#endif
-
 		if (aux.r < 0.0f) // if was run DummyIteration
 		{
 			float high = consts->sequence.bailout[sequence] * 10.0f;
@@ -281,6 +284,7 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 			return out;
 		}
 
+		// addition of constant (inside weight guard — skipped when weight=0)
 		if (consts->sequence.addCConstant[sequence])
 		{
 			switch (fractal->formula)
@@ -318,6 +322,10 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 		}
 
 #ifdef ITERATION_WEIGHT
+		}
+#endif
+
+#ifdef ITERATION_WEIGHT
 		if (consts->sequence.isHybrid)
 		{
 			float k = consts->sequence.formulaWeight[sequence];
@@ -326,7 +334,14 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 				z = SmoothCVector(tempZ, z, k);
 				float kn = 1.0f - k;
 				aux.DE = aux.DE * k + tempAuxDE * kn;
+				aux.DE0 = aux.DE0 * k + tempAuxDE0 * kn;
+				aux.dist = aux.dist * k + tempAuxDist * kn;
+				aux.pseudoKleinianDE = aux.pseudoKleinianDE * k + tempAuxPseudoKleinianDE * kn;
+				aux.actualScale = aux.actualScale * k + tempAuxActualScale * kn;
+				aux.actualScaleA = aux.actualScaleA * k + tempAuxActualScaleA * kn;
 				aux.color = aux.color * k + tempAuxColor * kn;
+				aux.colorHybrid = aux.colorHybrid * k + tempAuxColorHybrid * kn;
+				aux.temp1000 = aux.temp1000 * k + tempAuxTemp1000 * kn;
 			}
 		}
 #endif

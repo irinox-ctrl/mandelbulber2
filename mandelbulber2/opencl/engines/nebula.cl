@@ -324,12 +324,17 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 
 		zHistory[i] = z;
 
-#ifdef ITERATION_WEIGHT
-		// temporary copies for iteration weighting (mirrors compute_fractal.cl)
+		// temporary values for weight function — save ALL modifiable aux fields
 		float4 tempZ = z;
 		float tempAuxDE = aux.DE;
+		float tempAuxDE0 = aux.DE0;
+		float tempAuxDist = aux.dist;
+		float tempAuxPseudoKleinianDE = aux.pseudoKleinianDE;
+		float tempAuxActualScale = aux.actualScale;
+		float tempAuxActualScaleA = aux.actualScaleA;
 		float tempAuxColor = aux.color;
-#endif
+		float tempAuxColorHybrid = aux.colorHybrid;
+		float tempAuxTemp1000 = aux.temp1000;
 
 #ifdef ITERATION_WEIGHT
 		if (consts->sequence.formulaWeight[sequence] > 0)
@@ -353,15 +358,12 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 		z = FORMULA_ITER_0(z, fractal, &aux);
 #endif // defined(IS_HYBRID)
 
-#ifdef ITERATION_WEIGHT
-		}
-#endif
-
 		if (aux.r < 0.0f) // if was run DummyIteration
 		{
 			break;
 		}
 
+		// addition of constant (inside weight guard — skipped when weight=0)
 		if (consts->sequence.addCConstant[sequence])
 		{
 			switch (fractal->formula)
@@ -399,6 +401,10 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 		}
 
 #ifdef ITERATION_WEIGHT
+		}
+#endif
+
+#ifdef ITERATION_WEIGHT
 		if (consts->sequence.isHybrid)
 		{
 			float k = consts->sequence.formulaWeight[sequence];
@@ -407,7 +413,14 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 				z = SmoothCVector(tempZ, z, k);
 				float kn = 1.0f - k;
 				aux.DE = aux.DE * k + tempAuxDE * kn;
+				aux.DE0 = aux.DE0 * k + tempAuxDE0 * kn;
+				aux.dist = aux.dist * k + tempAuxDist * kn;
+				aux.pseudoKleinianDE = aux.pseudoKleinianDE * k + tempAuxPseudoKleinianDE * kn;
+				aux.actualScale = aux.actualScale * k + tempAuxActualScale * kn;
+				aux.actualScaleA = aux.actualScaleA * k + tempAuxActualScaleA * kn;
 				aux.color = aux.color * k + tempAuxColor * kn;
+				aux.colorHybrid = aux.colorHybrid * k + tempAuxColorHybrid * kn;
+				aux.temp1000 = aux.temp1000 * k + tempAuxTemp1000 * kn;
 			}
 		}
 #endif
