@@ -224,7 +224,10 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 			effectiveWeight = standardWeight * advancedWeight;
 			if (effectiveWeight > 1.0) effectiveWeight = 1.0;
 
-
+			// TEMPORARY HARD-CODED TEST: force formula slot 0 to weight 0.0
+			// This should make formula 1 completely inactive - only formula 2 should render
+			// REMOVE THIS AFTER TESTING
+			if (sequence == 0) effectiveWeight = 0.0;
 		}
 
 		if (!fractals.IsHybrid() || effectiveWeight > 0.0)
