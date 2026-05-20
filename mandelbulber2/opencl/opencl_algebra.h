@@ -265,7 +265,6 @@ inline float3 modRepeat(float3 vector1, float3 repeat)
 	return vectorMod((vectorMod((vector1 - repeat * 0.5f), repeat) + repeat), repeat) - repeat * 0.5f;
 }
 
-#ifdef ITERATION_WEIGHT
 float4 SmoothCVector(const float4 v1, const float4 v2, float k)
 {
 	float4 result;
@@ -297,7 +296,6 @@ float4 SmoothCVector(const float4 v1, const float4 v2, float k)
 	}
 	return result;
 }
-#endif
 
 inline float LengthPow(float2 vect, float p)
 {

@@ -336,7 +336,6 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 		float tempAuxColorHybrid = aux.colorHybrid;
 		float tempAuxTemp1000 = aux.temp1000;
 
-#ifdef ITERATION_WEIGHT
 		// Calculate effective weight using advanced weight system
 		// Combines standard formulaWeight with the advanced weight mode
 		float effectiveWeight = 1.0f;
@@ -468,7 +467,6 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 
 		if (effectiveWeight > 0.0f)
 		{
-#endif
 
 #if defined(IS_HYBRID)
 			switch (sequence)
@@ -529,11 +527,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 			}
 		}
 
-#ifdef ITERATION_WEIGHT
 		}
-#endif
 
-#ifdef ITERATION_WEIGHT
 		// Apply weight blending in hybrid mode
 		if (consts->sequence.isHybrid && effectiveWeight < 1.0f)
 		{
@@ -581,7 +576,6 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 				aux.temp1000 = aux.temp1000 * k + tempAuxTemp1000 * kn;
 			}
 		}
-#endif
 
 		// calculate r
 

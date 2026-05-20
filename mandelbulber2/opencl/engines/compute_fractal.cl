@@ -250,7 +250,6 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 		float tempAuxColorHybrid = aux.colorHybrid;
 		float tempAuxTemp1000 = aux.temp1000;
 
-#ifdef ITERATION_WEIGHT
 		// Calculate effective weight using advanced weight system
 		// Combines standard formulaWeight with the advanced weight mode
 		float effectiveWeight = 1.0f;
@@ -382,7 +381,6 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 
 		if (effectiveWeight > 0.0f)
 		{
-#endif
 
 #if defined(IS_HYBRID) || defined(BOOLEAN_OPERATORS)
 			switch (sequence)
@@ -450,11 +448,8 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 			}
 		}
 
-#ifdef ITERATION_WEIGHT
 		}
-#endif
 
-#ifdef ITERATION_WEIGHT
 		// Apply weight blending in hybrid mode
 		if (consts->sequence.isHybrid && effectiveWeight < 1.0f)
 		{
@@ -502,7 +497,6 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 				aux.temp1000 = aux.temp1000 * k + tempAuxTemp1000 * kn;
 			}
 		}
-#endif
 
 		// calculate r
 
