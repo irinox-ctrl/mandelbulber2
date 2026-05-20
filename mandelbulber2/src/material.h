@@ -207,6 +207,21 @@ public:
 	bool reflectanceGradientMaskEnable;
 	bool transparencyGradientMaskEnable;
 
+	// Gradient System V3: post-processing, transform, mask
+	float gradientScale;
+	float gradientOffset;
+	int gradientRepeatMode;
+	bool opacityInvert;
+	float maskContrast;
+	float maskBlackPoint;
+	float maskWhitePoint;
+	float gradientBrightness;
+	float gradientContrast;
+	float gradientSaturation;
+	float gradientGamma;
+	int gradientColorSpace;
+	float gradientNoiseAmount;
+
 	sFractalColoring fractalColoring;
 };
 

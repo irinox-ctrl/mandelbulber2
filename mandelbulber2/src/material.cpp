@@ -107,6 +107,29 @@ cMaterial::cMaterial()
 
 	surfaceGradientInterpolationMode = 0; // Linear
 	surfaceGradientBlendMode = 0;         // Normal
+
+	surfaceGradientMaskEnable = false;
+	specularGradientMaskEnable = false;
+	diffuseGradientMaskEnable = false;
+	luminosityGradientMaskEnable = false;
+	roughnessGradientMaskEnable = false;
+	reflectanceGradientMaskEnable = false;
+	transparencyGradientMaskEnable = false;
+
+	gradientScale = 1.0f;
+	gradientOffset = 0.0f;
+	gradientRepeatMode = 0;
+	opacityInvert = false;
+	maskContrast = 1.0f;
+	maskBlackPoint = 0.0f;
+	maskWhitePoint = 1.0f;
+	gradientBrightness = 1.0f;
+	gradientContrast = 1.0f;
+	gradientSaturation = 1.0f;
+	gradientGamma = 1.0f;
+	gradientColorSpace = 0;
+	gradientNoiseAmount = 0.0f;
+
 	perlinNoiseEnable = false;
 	perlinNoiseIterations = 0;
 	perlinNoiseValueOffset = 0.0f;
@@ -382,6 +405,28 @@ void cMaterial::setParameters(int _id, const std::shared_ptr<cParameterContainer
 
 	surfaceGradientInterpolationMode = static_cast<int>(gradientSurface.GetInterpolationMode());
 	surfaceGradientBlendMode = materialParam->Get<int>(Name("surface_gradient_blend_mode", id));
+
+	surfaceGradientMaskEnable = materialParam->Get<bool>(Name("surface_gradient_mask_enable", id));
+	specularGradientMaskEnable = materialParam->Get<bool>(Name("specular_gradient_mask_enable", id));
+	diffuseGradientMaskEnable = materialParam->Get<bool>(Name("diffuse_gradient_mask_enable", id));
+	luminosityGradientMaskEnable = materialParam->Get<bool>(Name("luminosity_gradient_mask_enable", id));
+	roughnessGradientMaskEnable = materialParam->Get<bool>(Name("roughness_gradient_mask_enable", id));
+	reflectanceGradientMaskEnable = materialParam->Get<bool>(Name("reflectance_gradient_mask_enable", id));
+	transparencyGradientMaskEnable = materialParam->Get<bool>(Name("transparency_gradient_mask_enable", id));
+
+	gradientScale = materialParam->Get<double>(Name("gradient_scale", id));
+	gradientOffset = materialParam->Get<double>(Name("gradient_offset", id));
+	gradientRepeatMode = materialParam->Get<int>(Name("gradient_repeat_mode", id));
+	opacityInvert = materialParam->Get<bool>(Name("opacity_invert", id));
+	maskContrast = materialParam->Get<double>(Name("mask_contrast", id));
+	maskBlackPoint = materialParam->Get<double>(Name("mask_black_point", id));
+	maskWhitePoint = materialParam->Get<double>(Name("mask_white_point", id));
+	gradientBrightness = materialParam->Get<double>(Name("gradient_brightness", id));
+	gradientContrast = materialParam->Get<double>(Name("gradient_contrast", id));
+	gradientSaturation = materialParam->Get<double>(Name("gradient_saturation", id));
+	gradientGamma = materialParam->Get<double>(Name("gradient_gamma", id));
+	gradientColorSpace = materialParam->Get<int>(Name("gradient_color_space", id));
+	gradientNoiseAmount = materialParam->Get<double>(Name("gradient_noise_amount", id));
 
 	textureCenter = materialParam->Get<CVector3>(Name("texture_center", id));
 	textureScale = materialParam->Get<CVector3>(Name("texture_scale", id));
