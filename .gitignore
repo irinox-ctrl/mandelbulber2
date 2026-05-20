@@ -142,7 +142,25 @@ MASTER_BACKUP_*.tar.gz
 # Build artifacts in source tree
 mandelbulber2/Makefile
 mandelbulber2/mandelbulber2
+mandelbulber2/mandelbulber2_OLD
 *.tar.gz
 *.o
 backup_*/
 MASTER_BACKUP_*
+
+# Generated Qt files in source tree
+qrc_icons.cpp
+moc_predefs.h
+.qmake.stash
+
+# Analysis/audit documents (keep in external docs, not in repo)
+analyse_notities/
+.kimi_backup/
+
+# Test output directories
+build_test/
+test_fake_lights_v2/
+
+# Patch rejects
+*.rej
+*.orig
