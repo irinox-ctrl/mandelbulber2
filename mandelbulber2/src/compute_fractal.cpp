@@ -223,6 +223,8 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 			double advancedWeight = fractals.CalculateWeight(sequence, i, aux.DE, aux.r);
 			effectiveWeight = standardWeight * advancedWeight;
 			if (effectiveWeight > 1.0) effectiveWeight = 1.0;
+
+
 		}
 
 		if (!fractals.IsHybrid() || effectiveWeight > 0.0)
