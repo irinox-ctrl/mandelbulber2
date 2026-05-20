@@ -87,6 +87,8 @@ private slots:
 	void slotChangedComboFractal(int indexInComboBox);
 	void slotPressedButtonResetFormula() const;
 	void slotPressedButtonNavi();
+	void slotChangedWeightMode(int mode);
+	void slotChangedSeparateComponents(int state);
 
 	// IFS
 	void slotPressedButtonIFSDefaultsDodecahedron() const;
@@ -94,6 +96,9 @@ private slots:
 	void slotPressedButtonIFSDefaultsOctahedron() const;
 	void slotPressedButtonIFSDefaultsMengerSponge() const;
 	void slotPressedButtonIFSDefaultsReset() const;
+
+public:
+	void UpdateWeightWidgetsVisibility(int mode, bool separateComponents) const;
 
 private:
 	void ConnectSignals();

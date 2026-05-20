@@ -329,7 +329,8 @@
       <item row="0" column="1">
        <widget class="QComboBox" name="comboBox_weight_mode">
         <property name="toolTip">
-         <string>Weight calculation mode: Static uses a fixed weight, Iteration varies weight over iterations, DE varies by distance estimation, ZLength by orbit magnitude, Conditional by threshold</string>
+         <string>Weight calculation mode for this formula in hybrid rendering.
+Static: Fixed weight (simple). Iteration: Weight changes over iterations (morphing). DE: Weight modulated by distance estimation (detail-aware). ZLength: Weight modulated by orbit magnitude (spatial). Conditional: Binary weight based on threshold (sharp transitions). OrbitTrap: Weight based on orbit trap distance (artistic). Curve: Custom power curve for weight (non-linear).</string>
         </property>
         <item>
          <property name="text">

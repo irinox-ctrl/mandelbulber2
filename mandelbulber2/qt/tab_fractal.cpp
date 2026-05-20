@@ -349,6 +349,114 @@ void cTabFractal::ConnectSignals()
 {
 	connect(
 		ui->pushButton_local_navi, &QPushButton::clicked, this, &cTabFractal::slotPressedButtonNavi);
+
+	// Connect weight mode combo box to dynamic visibility
+	connect(ui->comboBox_weight_mode, SIGNAL(currentIndexChanged(int)), this,
+		SLOT(slotChangedWeightMode(int)));
+	connect(ui->checkBox_weight_separate_components, SIGNAL(stateChanged(int)), this,
+		SLOT(slotChangedSeparateComponents(int)));
+
+	// Set initial visibility (mode 0 = Static)
+	UpdateWeightWidgetsVisibility(0, false);
+}
+
+void cTabFractal::slotChangedWeightMode(int mode)
+{
+	bool separateComponents = ui->checkBox_weight_separate_components->isChecked();
+	UpdateWeightWidgetsVisibility(mode, separateComponents);
+}
+
+void cTabFractal::slotChangedSeparateComponents(int state)
+{
+	int mode = ui->comboBox_weight_mode->currentIndex();
+	UpdateWeightWidgetsVisibility(mode, state != 0);
+}
+
+void cTabFractal::UpdateWeightWidgetsVisibility(int mode, bool separateComponents) const
+{
+	// Static params (mode 0)
+	bool showStatic = (mode == 0);
+	ui->label_weight_static->setVisible(showStatic);
+	ui->spinbox_weight_static->setVisible(showStatic);
+
+	// Iteration params (mode 1)
+	bool showIter = (mode == 1);
+	ui->label_weight_iter_start->setVisible(showIter);
+	ui->spinboxInt_weight_iter_start->setVisible(showIter);
+	ui->label_weight_iter_end->setVisible(showIter);
+	ui->spinboxInt_weight_iter_end->setVisible(showIter);
+	ui->label_weight_start->setVisible(showIter);
+	ui->spinbox_weight_start->setVisible(showIter);
+	ui->label_weight_end->setVisible(showIter);
+	ui->spinbox_weight_end->setVisible(showIter);
+	ui->label_weight_blend_mode->setVisible(showIter);
+	ui->comboBox_weight_blend_mode->setVisible(showIter);
+
+	// DE params (mode 2)
+	bool showDE = (mode == 2);
+	ui->label_weight_de_base->setVisible(showDE);
+	ui->spinbox_weight_de_base->setVisible(showDE);
+	ui->label_weight_de_sensitivity->setVisible(showDE);
+	ui->spinbox_weight_de_sensitivity->setVisible(showDE);
+	ui->label_weight_de_threshold->setVisible(showDE);
+	ui->spinbox_weight_de_threshold->setVisible(showDE);
+	ui->label_weight_de_mod_type->setVisible(showDE);
+	ui->comboBox_weight_de_mod_type->setVisible(showDE);
+
+	// ZLength params (mode 3)
+	bool showZLen = (mode == 3);
+	ui->label_weight_zlength_base->setVisible(showZLen);
+	ui->spinbox_weight_zlength_base->setVisible(showZLen);
+	ui->label_weight_zlength_sens->setVisible(showZLen);
+	ui->spinbox_weight_zlength_sens->setVisible(showZLen);
+	ui->label_weight_zlength_threshold->setVisible(showZLen);
+	ui->spinbox_weight_zlength_threshold->setVisible(showZLen);
+	ui->label_weight_zlength_mod_type->setVisible(showZLen);
+	ui->comboBox_weight_zlength_mod_type->setVisible(showZLen);
+
+	// Conditional params (mode 4)
+	bool showCond = (mode == 4);
+	ui->label_weight_condition_type->setVisible(showCond);
+	ui->comboBox_weight_condition_type->setVisible(showCond);
+	ui->label_weight_condition_threshold->setVisible(showCond);
+	ui->spinbox_weight_condition_threshold->setVisible(showCond);
+	ui->label_weight_true->setVisible(showCond);
+	ui->spinbox_weight_true->setVisible(showCond);
+	ui->label_weight_false->setVisible(showCond);
+	ui->spinbox_weight_false->setVisible(showCond);
+	ui->label_weight_condition_blend->setVisible(showCond);
+	ui->comboBox_weight_condition_blend->setVisible(showCond);
+
+	// OrbitTrap params (mode 5)
+	bool showOrbit = (mode == 5);
+	ui->label_weight_orbit_trap_base->setVisible(showOrbit);
+	ui->spinbox_weight_orbit_trap_base->setVisible(showOrbit);
+	ui->label_weight_orbit_trap_sensitivity->setVisible(showOrbit);
+	ui->spinbox_weight_orbit_trap_sensitivity->setVisible(showOrbit);
+	ui->label_weight_orbit_trap_threshold->setVisible(showOrbit);
+	ui->spinbox_weight_orbit_trap_threshold->setVisible(showOrbit);
+	ui->label_weight_orbit_trap_mod_type->setVisible(showOrbit);
+	ui->comboBox_weight_orbit_trap_mod_type->setVisible(showOrbit);
+
+	// Curve params (mode 6)
+	bool showCurve = (mode == 6);
+	ui->label_weight_curve_base->setVisible(showCurve);
+	ui->spinbox_weight_curve_base->setVisible(showCurve);
+	ui->label_weight_curve_sensitivity->setVisible(showCurve);
+	ui->spinbox_weight_curve_sensitivity->setVisible(showCurve);
+	ui->label_weight_curve_power->setVisible(showCurve);
+	ui->spinbox_weight_curve_power->setVisible(showCurve);
+	ui->label_weight_curve_mod_type->setVisible(showCurve);
+	ui->comboBox_weight_curve_mod_type->setVisible(showCurve);
+
+	// Separate components — always visible
+	// Sub-params only visible when checkbox is checked
+	ui->label_weight_z_vector->setVisible(separateComponents);
+	ui->spinbox_weight_z_vector->setVisible(separateComponents);
+	ui->label_weight_de_component->setVisible(separateComponents);
+	ui->spinbox_weight_de_component->setVisible(separateComponents);
+	ui->label_weight_color_component->setVisible(separateComponents);
+	ui->spinbox_weight_color_component->setVisible(separateComponents);
 }
 
 void cTabFractal::MaterialSetVisible(bool visible) const
