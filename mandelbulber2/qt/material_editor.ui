@@ -236,16 +236,26 @@
                 </widget>
                </item>
                <item>
+                <widget class="MyCheckBox" name="checkBox_surface_gradient_mask_enable">
+                 <property name="toolTip">
+                  <string>Enable opacity stops from gradient to control per-point transparency</string>
+                 </property>
+                 <property name="text">
+                  <string>Use opacity</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
                 <widget class="QLabel" name="label_surface_gradient_opacity">
                  <property name="text">
-                  <string>Opacity:</string>
+                  <string>Strength:</string>
                  </property>
                 </widget>
                </item>
                <item>
                 <widget class="MyDoubleSpinBox" name="spinbox_surface_gradient_opacity">
                  <property name="toolTip">
-                  <string>Controls the gradient blend strength (0.0 = no effect, 1.0 = full gradient)</string>
+                  <string>Master gradient strength (0.0 = no effect, 1.0 = full gradient). Multiplied by opacity stops when enabled.</string>
                  </property>
                 </widget>
                </item>
@@ -295,16 +305,26 @@
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_specular_opacity">
                <item>
+                <widget class="MyCheckBox" name="checkBox_specular_gradient_mask_enable">
+                 <property name="toolTip">
+                  <string>Enable opacity stops from gradient to control per-point transparency</string>
+                 </property>
+                 <property name="text">
+                  <string>Use opacity</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
                 <widget class="QLabel" name="label_specular_gradient_opacity">
                  <property name="text">
-                  <string>Opacity:</string>
+                  <string>Strength:</string>
                  </property>
                 </widget>
                </item>
                <item>
                 <widget class="MyDoubleSpinBox" name="spinbox_specular_gradient_opacity">
                  <property name="toolTip">
-                  <string>Controls the gradient blend strength (0.0 = no effect, 1.0 = full gradient)</string>
+                  <string>Master gradient strength (0.0 = no effect, 1.0 = full gradient)</string>
                  </property>
                 </widget>
                </item>
@@ -354,16 +374,26 @@
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_diffuse_opacity">
                <item>
+                <widget class="MyCheckBox" name="checkBox_diffuse_gradient_mask_enable">
+                 <property name="toolTip">
+                  <string>Enable opacity stops from gradient to control per-point transparency</string>
+                 </property>
+                 <property name="text">
+                  <string>Use opacity</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
                 <widget class="QLabel" name="label_diffuse_gradient_opacity">
                  <property name="text">
-                  <string>Opacity:</string>
+                  <string>Strength:</string>
                  </property>
                 </widget>
                </item>
                <item>
                 <widget class="MyDoubleSpinBox" name="spinbox_diffuse_gradient_opacity">
                  <property name="toolTip">
-                  <string>Controls the gradient blend strength (0.0 = no effect, 1.0 = full gradient)</string>
+                  <string>Master gradient strength (0.0 = no effect, 1.0 = full gradient)</string>
                  </property>
                 </widget>
                </item>
@@ -413,16 +443,26 @@
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_luminosity_opacity">
                <item>
+                <widget class="MyCheckBox" name="checkBox_luminosity_gradient_mask_enable">
+                 <property name="toolTip">
+                  <string>Enable opacity stops from gradient to control per-point transparency</string>
+                 </property>
+                 <property name="text">
+                  <string>Use opacity</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
                 <widget class="QLabel" name="label_luminosity_gradient_opacity">
                  <property name="text">
-                  <string>Opacity:</string>
+                  <string>Strength:</string>
                  </property>
                 </widget>
                </item>
                <item>
                 <widget class="MyDoubleSpinBox" name="spinbox_luminosity_gradient_opacity">
                  <property name="toolTip">
-                  <string>Controls the gradient blend strength (0.0 = no effect, 1.0 = full gradient)</string>
+                  <string>Master gradient strength (0.0 = no effect, 1.0 = full gradient)</string>
                  </property>
                 </widget>
                </item>
@@ -475,16 +515,26 @@
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_roughness_opacity">
                <item>
+                <widget class="MyCheckBox" name="checkBox_roughness_gradient_mask_enable">
+                 <property name="toolTip">
+                  <string>Enable opacity stops from gradient to control per-point transparency</string>
+                 </property>
+                 <property name="text">
+                  <string>Use opacity</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
                 <widget class="QLabel" name="label_roughness_gradient_opacity">
                  <property name="text">
-                  <string>Opacity:</string>
+                  <string>Strength:</string>
                  </property>
                 </widget>
                </item>
                <item>
                 <widget class="MyDoubleSpinBox" name="spinbox_roughness_gradient_opacity">
                  <property name="toolTip">
-                  <string>Controls the gradient blend strength (0.0 = no effect, 1.0 = full gradient)</string>
+                  <string>Master gradient strength (0.0 = no effect, 1.0 = full gradient)</string>
                  </property>
                 </widget>
                </item>
@@ -537,16 +587,26 @@
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_reflectance_opacity">
                <item>
+                <widget class="MyCheckBox" name="checkBox_reflectance_gradient_mask_enable">
+                 <property name="toolTip">
+                  <string>Enable opacity stops from gradient to control per-point transparency</string>
+                 </property>
+                 <property name="text">
+                  <string>Use opacity</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
                 <widget class="QLabel" name="label_reflectance_gradient_opacity">
                  <property name="text">
-                  <string>Opacity:</string>
+                  <string>Strength:</string>
                  </property>
                 </widget>
                </item>
                <item>
                 <widget class="MyDoubleSpinBox" name="spinbox_reflectance_gradient_opacity">
                  <property name="toolTip">
-                  <string>Controls the gradient blend strength (0.0 = no effect, 1.0 = full gradient)</string>
+                  <string>Master gradient strength (0.0 = no effect, 1.0 = full gradient)</string>
                  </property>
                 </widget>
                </item>
@@ -596,16 +656,26 @@
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_transparency_opacity">
                <item>
+                <widget class="MyCheckBox" name="checkBox_transparency_gradient_mask_enable">
+                 <property name="toolTip">
+                  <string>Enable opacity stops from gradient to control per-point transparency</string>
+                 </property>
+                 <property name="text">
+                  <string>Use opacity</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
                 <widget class="QLabel" name="label_transparency_gradient_opacity">
                  <property name="text">
-                  <string>Opacity:</string>
+                  <string>Strength:</string>
                  </property>
                 </widget>
                </item>
                <item>
                 <widget class="MyDoubleSpinBox" name="spinbox_transparency_gradient_opacity">
                  <property name="toolTip">
-                  <string>Controls the gradient blend strength (0.0 = no effect, 1.0 = full gradient)</string>
+                  <string>Master gradient strength (0.0 = no effect, 1.0 = full gradient)</string>
                  </property>
                 </widget>
                </item>
@@ -778,135 +848,7 @@
             </layout>
            </widget>
           </item>
-          <item>
-           <widget class="QGroupBox" name="groupBox_gradient_masking">
-            <property name="title">
-             <string>Gradient Opacity Masking</string>
-            </property>
-            <layout class="QGridLayout" name="gridLayout_gradient_masking">
-             <property name="spacing">
-              <number>2</number>
-             </property>
-             <property name="leftMargin">
-              <number>2</number>
-             </property>
-             <property name="topMargin">
-              <number>2</number>
-             </property>
-             <property name="rightMargin">
-              <number>2</number>
-             </property>
-             <property name="bottomMargin">
-              <number>2</number>
-             </property>
-             <item row="0" column="0">
-              <widget class="QLabel" name="label_mask_enable_info">
-               <property name="text">
-                <string>Enable opacity masking per gradient:</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="0">
-              <widget class="MyCheckBox" name="checkBox_surface_gradient_mask_enable">
-               <property name="text">
-                <string>Surface</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1">
-              <widget class="MyCheckBox" name="checkBox_specular_gradient_mask_enable">
-               <property name="text">
-                <string>Specular</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="2">
-              <widget class="MyCheckBox" name="checkBox_diffuse_gradient_mask_enable">
-               <property name="text">
-                <string>Diffuse</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="3">
-              <widget class="MyCheckBox" name="checkBox_luminosity_gradient_mask_enable">
-               <property name="text">
-                <string>Luminosity</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="0">
-              <widget class="MyCheckBox" name="checkBox_roughness_gradient_mask_enable">
-               <property name="text">
-                <string>Roughness</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="1">
-              <widget class="MyCheckBox" name="checkBox_reflectance_gradient_mask_enable">
-               <property name="text">
-                <string>Reflectance</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="2">
-              <widget class="MyCheckBox" name="checkBox_transparency_gradient_mask_enable">
-               <property name="text">
-                <string>Transparency</string>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="0">
-              <widget class="MyCheckBox" name="checkBox_opacity_invert">
-               <property name="text">
-                <string>Invert opacity</string>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="1">
-              <widget class="QLabel" name="label_mask_contrast">
-               <property name="text">
-                <string>Mask contrast:</string>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="2">
-              <widget class="MyDoubleSpinBox" name="spinbox_mask_contrast">
-               <property name="toolTip">
-                <string>Contrast of the opacity mask</string>
-               </property>
-              </widget>
-             </item>
-             <item row="4" column="0">
-              <widget class="QLabel" name="label_mask_black_point">
-               <property name="text">
-                <string>Black point:</string>
-               </property>
-              </widget>
-             </item>
-             <item row="4" column="1">
-              <widget class="MyDoubleSpinBox" name="spinbox_mask_black_point">
-               <property name="toolTip">
-                <string>Remap opacity range: values below this become 0</string>
-               </property>
-              </widget>
-             </item>
-             <item row="4" column="2">
-              <widget class="QLabel" name="label_mask_white_point">
-               <property name="text">
-                <string>White point:</string>
-               </property>
-              </widget>
-             </item>
-             <item row="4" column="3">
-              <widget class="MyDoubleSpinBox" name="spinbox_mask_white_point">
-               <property name="toolTip">
-                <string>Remap opacity range: values above this become 1</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-          </item>
+          <!-- Gradient Opacity Masking panel removed: checkboxes moved into each gradient section -->
           <item>
            <layout class="QGridLayout" name="gridLayout_34" rowstretch="0,0,0,0,0,0,0,0,0" columnstretch="0,0,0">
             <property name="spacing">

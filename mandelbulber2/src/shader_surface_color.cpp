@@ -152,11 +152,6 @@ sRGBAFloat cRenderWorker::SurfaceColour(
 					if (input.material->surfaceGradientMaskEnable)
 					{
 						float maskOpacity = input.material->gradientSurface.GetOpacity(colorPosition, false);
-						if (input.material->opacityInvert) maskOpacity = 1.0f - maskOpacity;
-						if (input.material->maskWhitePoint > input.material->maskBlackPoint)
-							maskOpacity = (maskOpacity - input.material->maskBlackPoint)
-								/ (input.material->maskWhitePoint - input.material->maskBlackPoint);
-						maskOpacity = (maskOpacity - 0.5f) * input.material->maskContrast + 0.5f;
 						if (maskOpacity < 0.0f) maskOpacity = 0.0f;
 						if (maskOpacity > 1.0f) maskOpacity = 1.0f;
 						opacity *= maskOpacity;
@@ -256,7 +251,8 @@ sRGBAFloat cRenderWorker::SurfaceColour(
 					if (input.material->specularGradientMaskEnable)
 					{
 						float maskOp = input.material->gradientSpecular.GetOpacity(colorPosition, false);
-						if (input.material->opacityInvert) maskOp = 1.0f - maskOp;
+						if (maskOp < 0.0f) maskOp = 0.0f;
+						if (maskOp > 1.0f) maskOp = 1.0f;
 						op *= maskOp;
 					}
 					gradColor.R = gradColor.R * op + 1.0f * (1.0f - op);
@@ -299,7 +295,8 @@ sRGBAFloat cRenderWorker::SurfaceColour(
 					if (input.material->diffuseGradientMaskEnable)
 					{
 						float maskOp = input.material->gradientDiffuse.GetOpacity(colorPosition, false);
-						if (input.material->opacityInvert) maskOp = 1.0f - maskOp;
+						if (maskOp < 0.0f) maskOp = 0.0f;
+						if (maskOp > 1.0f) maskOp = 1.0f;
 						op *= maskOp;
 					}
 					gradColor.R = gradColor.R * op + 1.0f * (1.0f - op);
@@ -342,7 +339,8 @@ sRGBAFloat cRenderWorker::SurfaceColour(
 					if (input.material->luminosityGradientMaskEnable)
 					{
 						float maskOp = input.material->gradientLuminosity.GetOpacity(colorPosition, false);
-						if (input.material->opacityInvert) maskOp = 1.0f - maskOp;
+						if (maskOp < 0.0f) maskOp = 0.0f;
+						if (maskOp > 1.0f) maskOp = 1.0f;
 						op *= maskOp;
 					}
 					gradColor.R *= op;
@@ -385,7 +383,8 @@ sRGBAFloat cRenderWorker::SurfaceColour(
 					if (input.material->roughnessGradientMaskEnable)
 					{
 						float maskOp = input.material->gradientRoughness.GetOpacity(colorPosition, false);
-						if (input.material->opacityInvert) maskOp = 1.0f - maskOp;
+						if (maskOp < 0.0f) maskOp = 0.0f;
+						if (maskOp > 1.0f) maskOp = 1.0f;
 						op *= maskOp;
 					}
 					gradColor.R = gradColor.R * op + 1.0f * (1.0f - op);
@@ -428,7 +427,8 @@ sRGBAFloat cRenderWorker::SurfaceColour(
 					if (input.material->reflectanceGradientMaskEnable)
 					{
 						float maskOp = input.material->gradientReflectance.GetOpacity(colorPosition, false);
-						if (input.material->opacityInvert) maskOp = 1.0f - maskOp;
+						if (maskOp < 0.0f) maskOp = 0.0f;
+						if (maskOp > 1.0f) maskOp = 1.0f;
 						op *= maskOp;
 					}
 					gradColor.R = gradColor.R * op + 1.0f * (1.0f - op);
@@ -471,7 +471,8 @@ sRGBAFloat cRenderWorker::SurfaceColour(
 					if (input.material->transparencyGradientMaskEnable)
 					{
 						float maskOp = input.material->gradientTransparency.GetOpacity(colorPosition, false);
-						if (input.material->opacityInvert) maskOp = 1.0f - maskOp;
+						if (maskOp < 0.0f) maskOp = 0.0f;
+						if (maskOp > 1.0f) maskOp = 1.0f;
 						op *= maskOp;
 					}
 					gradColor.R = gradColor.R * op + 1.0f * (1.0f - op);
