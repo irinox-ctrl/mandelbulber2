@@ -1131,7 +1131,6 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 						}
 						case mutMathRadialModulation:
 						{
-							// r *= (1 + P1*sin(P2*θ)) — P1=amplitude, P2=frequency
 							double amp = (mut.mathP1 != 0.0) ? mut.mathP1 : 0.1;
 							double freq = (mut.mathP2 != 0.0) ? mut.mathP2 : 10.0;
 							double r = sqrt(z.x*z.x + z.y*z.y + z.z*z.z);
@@ -1143,6 +1142,86 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 								mathZ.y = z.y * mod;
 								mathZ.z = z.z * mod;
 								aux.DE *= fabs(mod);
+							}
+							break;
+						}
+						case mutMathDualQuaternion:
+						{
+							// q1 * z * q2 — P1,P2,P3,P4 = q1(w,i,j,k), P5,P6,P7,P8 = q2
+							double q1w = (mut.mathP1 != 0.0) ? mut.mathP1 : 1.0;
+							double q1i = mut.mathP2; double q1j = mut.mathP3; double q1k = mut.mathP4;
+							double q2w = (mut.mathP5 != 0.0) ? mut.mathP5 : 1.0;
+							double q2i = mut.mathP6; double q2j = mut.mathP7; double q2k = mut.mathP8;
+							// q1 * (0,z) — quaternion multiply: q1 * pure(z)
+							double tw = -q1i*z.x - q1j*z.y - q1k*z.z;
+							double tx = q1w*z.x + q1j*z.z - q1k*z.y;
+							double ty = q1w*z.y + q1k*z.x - q1i*z.z;
+							double tz = q1w*z.z + q1i*z.y - q1j*z.x;
+							// (q1*z) * q2
+							mathZ.x = tw*q2i + tx*q2w + ty*q2k - tz*q2j;
+							mathZ.y = tw*q2j + ty*q2w + tz*q2i - tx*q2k;
+							mathZ.z = tw*q2k + tz*q2w + tx*q2j - ty*q2i;
+							break;
+						}
+						case mutMathOctonionPower:
+						{
+							// Simplified octonion: use z as first 3 components, P1-P4 as next 4
+							double p = (mut.mathP1 != 0.0) ? mut.mathP1 : 2.0;
+							double r = sqrt(z.x*z.x + z.y*z.y + z.z*z.z
+								+ mut.mathP2*mut.mathP2 + mut.mathP3*mut.mathP3);
+							if (r > 1e-21)
+							{
+								double theta = acos(z.z / r);
+								double phi = atan2(z.y, z.x);
+								double rp = pow(r, p);
+								mathZ.x = rp * sin(theta * p) * cos(phi * p);
+								mathZ.y = rp * sin(theta * p) * sin(phi * p);
+								mathZ.z = rp * cos(theta * p);
+								aux.DE = aux.DE * p * pow(r, p - 1.0) + 1.0;
+							}
+							break;
+						}
+						case mutMathQuaternionMobius:
+						{
+							// (az+b)/(cz+d) — P1=a, P2=b, P3=c, P4=d (real coefficients)
+							double a = (mut.mathP1 != 0.0) ? mut.mathP1 : 1.0;
+							double b = mut.mathP2;
+							double c = mut.mathP3;
+							double d = (mut.mathP4 != 0.0) ? mut.mathP4 : 1.0;
+							// Numerator: a*z + b
+							double nx = a * z.x + b;
+							double ny = a * z.y;
+							double nz = a * z.z;
+							// Denominator: c*z + d — treat as scalar |cz+d|²
+							double dr = c * z.x + d;
+							double di = c * z.y;
+							double dk = c * z.z;
+							double denom = dr*dr + di*di + dk*dk;
+							if (denom > 1e-21)
+							{
+								mathZ.x = (nx*dr + ny*di + nz*dk) / denom;
+								mathZ.y = (ny*dr - nx*di) / denom;
+								mathZ.z = (nz*dr - nx*dk) / denom;
+								double adbc = fabs(a*d - b*c);
+								aux.DE *= adbc / denom;
+							}
+							break;
+						}
+						case mutMathSplitQuaternion:
+						{
+							// Split quaternion: i²=+1 — z² in split algebra
+							// P1=power
+							double p = (mut.mathP1 != 0.0) ? mut.mathP1 : 2.0;
+							double r = sqrt(fabs(z.x*z.x + z.y*z.y - z.z*z.z));
+							if (r > 1e-21)
+							{
+								double theta = atanh(z.z / max(sqrt(z.x*z.x + z.y*z.y), 1e-21));
+								double phi = atan2(z.y, z.x);
+								double rp = pow(max(r, 1e-21), p);
+								mathZ.x = rp * cosh(theta * p) * cos(phi * p);
+								mathZ.y = rp * cosh(theta * p) * sin(phi * p);
+								mathZ.z = rp * sinh(theta * p);
+								aux.DE = aux.DE * p * pow(max(r, 1e-21), p - 1.0) + 1.0;
 							}
 							break;
 						}

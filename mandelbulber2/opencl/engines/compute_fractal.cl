@@ -1281,6 +1281,78 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 						}
 						break;
 					}
+					case 30: // DualQuaternion
+					{
+						float q1w = (mut->mathP1 != 0.0f) ? mut->mathP1 : 1.0f;
+						float q1i = mut->mathP2; float q1j = mut->mathP3; float q1k = mut->mathP4;
+						float q2w = (mut->mathP5 != 0.0f) ? mut->mathP5 : 1.0f;
+						float q2i = mut->mathP6; float q2j = mut->mathP7; float q2k = mut->mathP8;
+						float tw = -q1i*z.x - q1j*z.y - q1k*z.z;
+						float tx = q1w*z.x + q1j*z.z - q1k*z.y;
+						float ty = q1w*z.y + q1k*z.x - q1i*z.z;
+						float tz = q1w*z.z + q1i*z.y - q1j*z.x;
+						mathZ.x = tw*q2i + tx*q2w + ty*q2k - tz*q2j;
+						mathZ.y = tw*q2j + ty*q2w + tz*q2i - tx*q2k;
+						mathZ.z = tw*q2k + tz*q2w + tx*q2j - ty*q2i;
+						break;
+					}
+					case 31: // OctonionPower
+					{
+						float p = (mut->mathP1 != 0.0f) ? mut->mathP1 : 2.0f;
+						float r = native_sqrt(z.x*z.x + z.y*z.y + z.z*z.z
+							+ mut->mathP2*mut->mathP2 + mut->mathP3*mut->mathP3);
+						if (r > 1e-21f)
+						{
+							float theta = acos(z.z / r);
+							float phi = atan2(z.y, z.x);
+							float rp = native_powr(r, p);
+							mathZ.x = rp * native_sin(theta * p) * native_cos(phi * p);
+							mathZ.y = rp * native_sin(theta * p) * native_sin(phi * p);
+							mathZ.z = rp * native_cos(theta * p);
+							aux.DE = aux.DE * p * native_powr(r, p - 1.0f) + 1.0f;
+						}
+						break;
+					}
+					case 32: // QuaternionMobius
+					{
+						float a = (mut->mathP1 != 0.0f) ? mut->mathP1 : 1.0f;
+						float b = mut->mathP2;
+						float c = mut->mathP3;
+						float d = (mut->mathP4 != 0.0f) ? mut->mathP4 : 1.0f;
+						float nx = a * z.x + b;
+						float ny = a * z.y;
+						float nz = a * z.z;
+						float dr2 = c * z.x + d;
+						float di = c * z.y;
+						float dk = c * z.z;
+						float denom = dr2*dr2 + di*di + dk*dk;
+						if (denom > 1e-21f)
+						{
+							mathZ.x = (nx*dr2 + ny*di + nz*dk) / denom;
+							mathZ.y = (ny*dr2 - nx*di) / denom;
+							mathZ.z = (nz*dr2 - nx*dk) / denom;
+							float adbc = fabs(a*d - b*c);
+							aux.DE *= adbc / denom;
+						}
+						break;
+					}
+					case 33: // SplitQuaternion
+					{
+						float p = (mut->mathP1 != 0.0f) ? mut->mathP1 : 2.0f;
+						float r = native_sqrt(fabs(z.x*z.x + z.y*z.y - z.z*z.z));
+						if (r > 1e-21f)
+						{
+							float rxy = native_sqrt(z.x*z.x + z.y*z.y);
+							float theta = atanh(z.z / max(rxy, 1e-21f));
+							float phi = atan2(z.y, z.x);
+							float rp = native_powr(max(r, 1e-21f), p);
+							mathZ.x = rp * cosh(theta * p) * native_cos(phi * p);
+							mathZ.y = rp * cosh(theta * p) * native_sin(phi * p);
+							mathZ.z = rp * sinh(theta * p);
+							aux.DE = aux.DE * p * native_powr(max(r, 1e-21f), p - 1.0f) + 1.0f;
+						}
+						break;
+					}
 				}
 				if (mut->mathMix < 1.0f)
 				{

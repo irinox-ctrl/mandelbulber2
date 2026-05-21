@@ -252,7 +252,12 @@ enum enumMutationMathType
 	mutMathHyperbolicTrigPower = 26,// sinh/cosh triplex instead of sin/cos
 	mutMathLogarithmicRadius = 27,  // log(1 + r^p) compression
 	mutMathPolarSwap = 28,          // swap θ↔φ
-	mutMathRadialModulation = 29    // r * (1 + A*sin(B*θ))
+	mutMathRadialModulation = 29,   // r * (1 + A*sin(B*θ))
+	// v7.2 — Familie 5 quaternion/hypercomplex math
+	mutMathDualQuaternion = 30,     // q1 * z * q2 (two quaternion multiplication)
+	mutMathOctonionPower = 31,      // o^p in octonion (8D→3D projection)
+	mutMathQuaternionMobius = 32,   // (az+b)/(cz+d) quaternion Möbius
+	mutMathSplitQuaternion = 33     // split quaternion (i²=+1, hyperbolic)
 };
 
 // Per-formula mutation parameters — universal pre/post processing on ANY formula
