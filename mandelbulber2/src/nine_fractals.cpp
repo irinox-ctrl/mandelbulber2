@@ -198,6 +198,25 @@ cNineFractals::cNineFractals(std::shared_ptr<const cFractalContainer> par,
 		mutationParams[i].iterationStop =
 			generalPar->Get<int>("mutation_iteration_stop", i + 1);
 
+		// Smart defaults: PK/JK formulas get Möbius (Bilinear) math preset
+		fractal::enumFractalFormula f = fractals[i]->formula;
+		bool isPKJK = (f == fractal::pseudoKleinian || f == fractal::pseudoKleinian4d
+			|| f == fractal::pseudoKleinianMod1 || f == fractal::pseudoKleinianMod2
+			|| f == fractal::pseudoKleinianMod3 || f == fractal::pseudoKleinianMod4
+			|| f == fractal::pseudoKleinianMod5 || f == fractal::pseudoKleinianMod6
+			|| f == fractal::pseudoKleinianMod7 || f == fractal::pseudoKleinianStdDE
+			|| f == fractal::josKleinian || f == fractal::josKleinianV2
+			|| f == fractal::josKleinianV3 || f == fractal::josKleinianV4);
+		if (isPKJK && mutationParams[i].mathType == mutMathNone)
+		{
+			mutationParams[i].mathType = mutMathBilinear;
+			mutationParams[i].mathP1 = 1.0;   // a: identity scale
+			mutationParams[i].mathP2 = 0.5;   // b: translation offset
+			mutationParams[i].mathP3 = 0.1;   // c: inversion strength
+			mutationParams[i].mathP4 = 1.0;   // d: denominator base
+			mutationParams[i].mathMix = 0.3;   // subtle blend — not overwhelming
+		}
+
 		// Pre-compute rotation matrices
 		if (mutationParams[i].enabled)
 		{
