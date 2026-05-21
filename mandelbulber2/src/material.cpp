@@ -129,6 +129,13 @@ cMaterial::cMaterial()
 	gradientGamma = 1.0f;
 	gradientColorSpace = 0;
 	gradientNoiseAmount = 0.0f;
+	surfaceGradientOpacity = 1.0f;
+	specularGradientOpacity = 1.0f;
+	diffuseGradientOpacity = 1.0f;
+	luminosityGradientOpacity = 1.0f;
+	roughnessGradientOpacity = 1.0f;
+	reflectanceGradientOpacity = 1.0f;
+	transparencyGradientOpacity = 1.0f;
 
 	perlinNoiseEnable = false;
 	perlinNoiseIterations = 0;
@@ -427,6 +434,13 @@ void cMaterial::setParameters(int _id, const std::shared_ptr<cParameterContainer
 	gradientGamma = materialParam->Get<double>(Name("gradient_gamma", id));
 	gradientColorSpace = materialParam->Get<int>(Name("gradient_color_space", id));
 	gradientNoiseAmount = materialParam->Get<double>(Name("gradient_noise_amount", id));
+	surfaceGradientOpacity = materialParam->Get<double>(Name("surface_gradient_opacity", id));
+	specularGradientOpacity = materialParam->Get<double>(Name("specular_gradient_opacity", id));
+	diffuseGradientOpacity = materialParam->Get<double>(Name("diffuse_gradient_opacity", id));
+	luminosityGradientOpacity = materialParam->Get<double>(Name("luminosity_gradient_opacity", id));
+	roughnessGradientOpacity = materialParam->Get<double>(Name("roughness_gradient_opacity", id));
+	reflectanceGradientOpacity = materialParam->Get<double>(Name("reflectance_gradient_opacity", id));
+	transparencyGradientOpacity = materialParam->Get<double>(Name("transparency_gradient_opacity", id));
 
 	textureCenter = materialParam->Get<CVector3>(Name("texture_center", id));
 	textureScale = materialParam->Get<CVector3>(Name("texture_scale", id));

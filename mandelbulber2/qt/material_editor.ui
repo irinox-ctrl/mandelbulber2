@@ -236,6 +236,20 @@
                 </widget>
                </item>
                <item>
+                <widget class="QLabel" name="label_surface_gradient_opacity">
+                 <property name="text">
+                  <string>Opacity:</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="MyDoubleSpinBox" name="spinbox_surface_gradient_opacity">
+                 <property name="toolTip">
+                  <string>Controls the gradient blend strength (0.0 = no effect, 1.0 = full gradient)</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
                 <spacer name="horizontalSpacer_surface_blend">
                  <property name="orientation">
                   <enum>Qt::Horizontal</enum>
@@ -278,6 +292,31 @@
                </property>
               </widget>
              </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_specular_opacity">
+               <item>
+                <widget class="QLabel" name="label_specular_gradient_opacity">
+                 <property name="text">
+                  <string>Opacity:</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="MyDoubleSpinBox" name="spinbox_specular_gradient_opacity">
+                 <property name="toolTip">
+                  <string>Controls the gradient blend strength (0.0 = no effect, 1.0 = full gradient)</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_specular_opacity">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                </spacer>
+               </item>
+              </layout>
+             </item>
             </layout>
            </widget>
           </item>
@@ -312,6 +351,31 @@
                </property>
               </widget>
              </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_diffuse_opacity">
+               <item>
+                <widget class="QLabel" name="label_diffuse_gradient_opacity">
+                 <property name="text">
+                  <string>Opacity:</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="MyDoubleSpinBox" name="spinbox_diffuse_gradient_opacity">
+                 <property name="toolTip">
+                  <string>Controls the gradient blend strength (0.0 = no effect, 1.0 = full gradient)</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_diffuse_opacity">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                </spacer>
+               </item>
+              </layout>
+             </item>
             </layout>
            </widget>
           </item>
@@ -345,6 +409,31 @@
                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Gradient which defines the luminosity of the fractal.&lt;/p&gt;&lt;p&gt;Higher brighness of gradient colors provides a higher luminosity.&lt;/p&gt;&lt;p&gt;This effect works only when the luminosity value is greater than zero.&lt;/p&gt;&lt;p&gt;To illuminate other objects by this gradient, &lt;span style=&quot; font-style:italic;&quot;&gt;Monte Carlo Algorithm&lt;/span&gt; / &lt;span style=&quot; font-style:italic;&quot;&gt;Calculate MC Global Illumination &lt;/span&gt;must be enabled.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
               </widget>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_luminosity_opacity">
+               <item>
+                <widget class="QLabel" name="label_luminosity_gradient_opacity">
+                 <property name="text">
+                  <string>Opacity:</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="MyDoubleSpinBox" name="spinbox_luminosity_gradient_opacity">
+                 <property name="toolTip">
+                  <string>Controls the gradient blend strength (0.0 = no effect, 1.0 = full gradient)</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_luminosity_opacity">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                </spacer>
+               </item>
+              </layout>
              </item>
             </layout>
            </widget>
@@ -383,6 +472,31 @@
                </property>
               </widget>
              </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_roughness_opacity">
+               <item>
+                <widget class="QLabel" name="label_roughness_gradient_opacity">
+                 <property name="text">
+                  <string>Opacity:</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="MyDoubleSpinBox" name="spinbox_roughness_gradient_opacity">
+                 <property name="toolTip">
+                  <string>Controls the gradient blend strength (0.0 = no effect, 1.0 = full gradient)</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_roughness_opacity">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                </spacer>
+               </item>
+              </layout>
+             </item>
             </layout>
            </widget>
           </item>
@@ -420,6 +534,31 @@
                </property>
               </widget>
              </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_reflectance_opacity">
+               <item>
+                <widget class="QLabel" name="label_reflectance_gradient_opacity">
+                 <property name="text">
+                  <string>Opacity:</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="MyDoubleSpinBox" name="spinbox_reflectance_gradient_opacity">
+                 <property name="toolTip">
+                  <string>Controls the gradient blend strength (0.0 = no effect, 1.0 = full gradient)</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_reflectance_opacity">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                </spacer>
+               </item>
+              </layout>
+             </item>
             </layout>
            </widget>
           </item>
@@ -453,6 +592,31 @@
                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Gradient which defines the transparency colors of the fractal.&lt;/p&gt;&lt;p&gt;Brighter colors increase transparency. A black color creates no transparency.&lt;/p&gt;&lt;p&gt;This gradient works only if &lt;span style=&quot; font-style:italic;&quot;&gt;transparency of surface&lt;/span&gt; is greater than zero.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
               </widget>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_transparency_opacity">
+               <item>
+                <widget class="QLabel" name="label_transparency_gradient_opacity">
+                 <property name="text">
+                  <string>Opacity:</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="MyDoubleSpinBox" name="spinbox_transparency_gradient_opacity">
+                 <property name="toolTip">
+                  <string>Controls the gradient blend strength (0.0 = no effect, 1.0 = full gradient)</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_transparency_opacity">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                </spacer>
+               </item>
+              </layout>
              </item>
             </layout>
            </widget>

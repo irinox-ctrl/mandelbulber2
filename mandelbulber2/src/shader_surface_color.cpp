@@ -148,17 +148,18 @@ sRGBAFloat cRenderWorker::SurfaceColour(
 						gradientColor.B += noise;
 					}
 
-					float opacity = 1.0f;
+					float opacity = input.material->surfaceGradientOpacity;
 					if (input.material->surfaceGradientMaskEnable)
 					{
-						opacity = input.material->gradientSurface.GetOpacity(colorPosition, false);
-						if (input.material->opacityInvert) opacity = 1.0f - opacity;
+						float maskOpacity = input.material->gradientSurface.GetOpacity(colorPosition, false);
+						if (input.material->opacityInvert) maskOpacity = 1.0f - maskOpacity;
 						if (input.material->maskWhitePoint > input.material->maskBlackPoint)
-							opacity = (opacity - input.material->maskBlackPoint)
+							maskOpacity = (maskOpacity - input.material->maskBlackPoint)
 								/ (input.material->maskWhitePoint - input.material->maskBlackPoint);
-						opacity = (opacity - 0.5f) * input.material->maskContrast + 0.5f;
-						if (opacity < 0.0f) opacity = 0.0f;
-						if (opacity > 1.0f) opacity = 1.0f;
+						maskOpacity = (maskOpacity - 0.5f) * input.material->maskContrast + 0.5f;
+						if (maskOpacity < 0.0f) maskOpacity = 0.0f;
+						if (maskOpacity > 1.0f) maskOpacity = 1.0f;
+						opacity *= maskOpacity;
 					}
 					float baseR = input.material->color.R;
 					float baseG = input.material->color.G;
@@ -224,84 +225,96 @@ sRGBAFloat cRenderWorker::SurfaceColour(
 				if (input.material->specularGradientEnable)
 				{
 					sRGBFloat gradColor = input.material->gradientSpecular.GetColorFloat(colorPosition, false);
+					float op = input.material->specularGradientOpacity;
 					if (input.material->specularGradientMaskEnable)
 					{
-						float opacity = input.material->gradientSpecular.GetOpacity(colorPosition, false);
-						if (input.material->opacityInvert) opacity = 1.0f - opacity;
-						gradColor.R = gradColor.R * opacity + 1.0f * (1.0f - opacity);
-						gradColor.G = gradColor.G * opacity + 1.0f * (1.0f - opacity);
-						gradColor.B = gradColor.B * opacity + 1.0f * (1.0f - opacity);
+						float maskOp = input.material->gradientSpecular.GetOpacity(colorPosition, false);
+						if (input.material->opacityInvert) maskOp = 1.0f - maskOp;
+						op *= maskOp;
 					}
+					gradColor.R = gradColor.R * op + 1.0f * (1.0f - op);
+					gradColor.G = gradColor.G * op + 1.0f * (1.0f - op);
+					gradColor.B = gradColor.B * op + 1.0f * (1.0f - op);
 					gradients->specular = gradColor;
 				}
 
 				if (input.material->diffuseGradientEnable)
 				{
 					sRGBFloat gradColor = input.material->gradientDiffuse.GetColorFloat(colorPosition, false);
+					float op = input.material->diffuseGradientOpacity;
 					if (input.material->diffuseGradientMaskEnable)
 					{
-						float opacity = input.material->gradientDiffuse.GetOpacity(colorPosition, false);
-						if (input.material->opacityInvert) opacity = 1.0f - opacity;
-						gradColor.R = gradColor.R * opacity + 1.0f * (1.0f - opacity);
-						gradColor.G = gradColor.G * opacity + 1.0f * (1.0f - opacity);
-						gradColor.B = gradColor.B * opacity + 1.0f * (1.0f - opacity);
+						float maskOp = input.material->gradientDiffuse.GetOpacity(colorPosition, false);
+						if (input.material->opacityInvert) maskOp = 1.0f - maskOp;
+						op *= maskOp;
 					}
+					gradColor.R = gradColor.R * op + 1.0f * (1.0f - op);
+					gradColor.G = gradColor.G * op + 1.0f * (1.0f - op);
+					gradColor.B = gradColor.B * op + 1.0f * (1.0f - op);
 					gradients->diffuse = gradColor;
 				}
 
 				if (input.material->luminosityGradientEnable)
 				{
 					sRGBFloat gradColor = input.material->gradientLuminosity.GetColorFloat(colorPosition, false);
+					float op = input.material->luminosityGradientOpacity;
 					if (input.material->luminosityGradientMaskEnable)
 					{
-						float opacity = input.material->gradientLuminosity.GetOpacity(colorPosition, false);
-						if (input.material->opacityInvert) opacity = 1.0f - opacity;
-						gradColor.R *= opacity;
-						gradColor.G *= opacity;
-						gradColor.B *= opacity;
+						float maskOp = input.material->gradientLuminosity.GetOpacity(colorPosition, false);
+						if (input.material->opacityInvert) maskOp = 1.0f - maskOp;
+						op *= maskOp;
 					}
+					gradColor.R *= op;
+					gradColor.G *= op;
+					gradColor.B *= op;
 					gradients->luminosity = gradColor;
 				}
 
 				if (input.material->roughnessGradientEnable)
 				{
 					sRGBFloat gradColor = input.material->gradientRoughness.GetColorFloat(colorPosition, false);
+					float op = input.material->roughnessGradientOpacity;
 					if (input.material->roughnessGradientMaskEnable)
 					{
-						float opacity = input.material->gradientRoughness.GetOpacity(colorPosition, false);
-						if (input.material->opacityInvert) opacity = 1.0f - opacity;
-						gradColor.R = gradColor.R * opacity + 1.0f * (1.0f - opacity);
-						gradColor.G = gradColor.G * opacity + 1.0f * (1.0f - opacity);
-						gradColor.B = gradColor.B * opacity + 1.0f * (1.0f - opacity);
+						float maskOp = input.material->gradientRoughness.GetOpacity(colorPosition, false);
+						if (input.material->opacityInvert) maskOp = 1.0f - maskOp;
+						op *= maskOp;
 					}
+					gradColor.R = gradColor.R * op + 1.0f * (1.0f - op);
+					gradColor.G = gradColor.G * op + 1.0f * (1.0f - op);
+					gradColor.B = gradColor.B * op + 1.0f * (1.0f - op);
 					gradients->roughness = gradColor;
 				}
 
 				if (input.material->reflectanceGradientEnable)
 				{
 					sRGBFloat gradColor = input.material->gradientReflectance.GetColorFloat(colorPosition, false);
+					float op = input.material->reflectanceGradientOpacity;
 					if (input.material->reflectanceGradientMaskEnable)
 					{
-						float opacity = input.material->gradientReflectance.GetOpacity(colorPosition, false);
-						if (input.material->opacityInvert) opacity = 1.0f - opacity;
-						gradColor.R = gradColor.R * opacity + 1.0f * (1.0f - opacity);
-						gradColor.G = gradColor.G * opacity + 1.0f * (1.0f - opacity);
-						gradColor.B = gradColor.B * opacity + 1.0f * (1.0f - opacity);
+						float maskOp = input.material->gradientReflectance.GetOpacity(colorPosition, false);
+						if (input.material->opacityInvert) maskOp = 1.0f - maskOp;
+						op *= maskOp;
 					}
+					gradColor.R = gradColor.R * op + 1.0f * (1.0f - op);
+					gradColor.G = gradColor.G * op + 1.0f * (1.0f - op);
+					gradColor.B = gradColor.B * op + 1.0f * (1.0f - op);
 					gradients->reflectance = gradColor;
 				}
 
 				if (input.material->transparencyGradientEnable)
 				{
 					sRGBFloat gradColor = input.material->gradientTransparency.GetColorFloat(colorPosition, false);
+					float op = input.material->transparencyGradientOpacity;
 					if (input.material->transparencyGradientMaskEnable)
 					{
-						float opacity = input.material->gradientTransparency.GetOpacity(colorPosition, false);
-						if (input.material->opacityInvert) opacity = 1.0f - opacity;
-						gradColor.R = gradColor.R * opacity + 1.0f * (1.0f - opacity);
-						gradColor.G = gradColor.G * opacity + 1.0f * (1.0f - opacity);
-						gradColor.B = gradColor.B * opacity + 1.0f * (1.0f - opacity);
+						float maskOp = input.material->gradientTransparency.GetOpacity(colorPosition, false);
+						if (input.material->opacityInvert) maskOp = 1.0f - maskOp;
+						op *= maskOp;
 					}
+					gradColor.R = gradColor.R * op + 1.0f * (1.0f - op);
+					gradColor.G = gradColor.G * op + 1.0f * (1.0f - op);
+					gradColor.B = gradColor.B * op + 1.0f * (1.0f - op);
 					gradients->trasparency = gradColor;
 				}
 			}

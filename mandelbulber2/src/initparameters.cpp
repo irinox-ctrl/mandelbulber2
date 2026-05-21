@@ -2534,20 +2534,20 @@ void InitMaterialParams(int materialId, std::shared_ptr<cParameterContainer> par
 	par->addParam(cMaterial::Name("transparency_gradient_mask_enable", materialId), false, morphLinear,
 		paramStandard);
 
-	par->addParam(
-		cMaterial::Name("surface_gradient_opacity", materialId), 1.0, morphLinear, paramStandard);
-	par->addParam(
-		cMaterial::Name("specular_gradient_opacity", materialId), 1.0, morphLinear, paramStandard);
-	par->addParam(
-		cMaterial::Name("diffuse_gradient_opacity", materialId), 1.0, morphLinear, paramStandard);
-	par->addParam(
-		cMaterial::Name("luminosity_gradient_opacity", materialId), 1.0, morphLinear, paramStandard);
-	par->addParam(
-		cMaterial::Name("roughness_gradient_opacity", materialId), 1.0, morphLinear, paramStandard);
-	par->addParam(
-		cMaterial::Name("reflectance_gradient_opacity", materialId), 1.0, morphLinear, paramStandard);
-	par->addParam(
-		cMaterial::Name("transparency_gradient_opacity", materialId), 1.0, morphLinear, paramStandard);
+	par->addParam(cMaterial::Name("surface_gradient_opacity", materialId), 1.0, 0.0, 1.0,
+		morphLinear, paramStandard);
+	par->addParam(cMaterial::Name("specular_gradient_opacity", materialId), 1.0, 0.0, 1.0,
+		morphLinear, paramStandard);
+	par->addParam(cMaterial::Name("diffuse_gradient_opacity", materialId), 1.0, 0.0, 1.0,
+		morphLinear, paramStandard);
+	par->addParam(cMaterial::Name("luminosity_gradient_opacity", materialId), 1.0, 0.0, 1.0,
+		morphLinear, paramStandard);
+	par->addParam(cMaterial::Name("roughness_gradient_opacity", materialId), 1.0, 0.0, 1.0,
+		morphLinear, paramStandard);
+	par->addParam(cMaterial::Name("reflectance_gradient_opacity", materialId), 1.0, 0.0, 1.0,
+		morphLinear, paramStandard);
+	par->addParam(cMaterial::Name("transparency_gradient_opacity", materialId), 1.0, 0.0, 1.0,
+		morphLinear, paramStandard);
 
 	par->addParam(cMaterial::Name("surface_color_gradient", materialId),
 		QString("0 fd6029 1000 698403 2000 fff59b 3000 f5bd22 4000 "

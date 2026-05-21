@@ -222,6 +222,15 @@ public:
 	int gradientColorSpace;
 	float gradientNoiseAmount;
 
+	// Per-gradient opacity (0.0-1.0, controls blend strength)
+	float surfaceGradientOpacity;
+	float specularGradientOpacity;
+	float diffuseGradientOpacity;
+	float luminosityGradientOpacity;
+	float roughnessGradientOpacity;
+	float reflectanceGradientOpacity;
+	float transparencyGradientOpacity;
+
 	sFractalColoring fractalColoring;
 };
 

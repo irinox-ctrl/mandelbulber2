@@ -192,6 +192,16 @@ typedef struct
 	cl_int gradientColorSpace;
 	cl_float gradientNoiseAmount;
 
+	// Per-gradient opacity (0.0-1.0, controls blend strength)
+	cl_float surfaceGradientOpacity;
+	cl_float specularGradientOpacity;
+	cl_float diffuseGradientOpacity;
+	cl_float luminosityGradientOpacity;
+	cl_float roughnessGradientOpacity;
+	cl_float reflectanceGradientOpacity;
+	cl_float transparencyGradientOpacity;
+	cl_int __pad_gradient_opacity; // padding for 8-float alignment
+
 	sFractalColoringCl fractalColoring;
 } sMaterialCl;
 
@@ -334,6 +344,14 @@ sMaterialCl clCopySMaterialCl(const cMaterial &source)
 	target.gradientGamma = source.gradientGamma;
 	target.gradientColorSpace = source.gradientColorSpace;
 	target.gradientNoiseAmount = source.gradientNoiseAmount;
+	target.surfaceGradientOpacity = source.surfaceGradientOpacity;
+	target.specularGradientOpacity = source.specularGradientOpacity;
+	target.diffuseGradientOpacity = source.diffuseGradientOpacity;
+	target.luminosityGradientOpacity = source.luminosityGradientOpacity;
+	target.roughnessGradientOpacity = source.roughnessGradientOpacity;
+	target.reflectanceGradientOpacity = source.reflectanceGradientOpacity;
+	target.transparencyGradientOpacity = source.transparencyGradientOpacity;
+	target.__pad_gradient_opacity = 0;
 
 	// these are initialized in cOpenClDynamicData::BuildMaterialsData()
 	target.colorTextureIndex = 0;

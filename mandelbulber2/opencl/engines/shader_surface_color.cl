@@ -648,19 +648,20 @@ float3 SurfaceColor(__constant sClInConstants *consts, sRenderData *renderData,
 						input->material->gradientBrightness, input->material->gradientContrast,
 						input->material->gradientSaturation, input->material->gradientGamma);
 					gradientColor = ApplyGradientNoise(gradientColor, input->point, input->material->gradientNoiseAmount);
-					float opacity = 1.0f;
+					float opacity = input->material->surfaceGradientOpacity;
 					if (input->material->surfaceGradientMaskEnable)
 					{
 						int opacityMidpointSurfaceOffset = input->opacitySurfaceOffset + input->opacitySurfaceLength;
 						int opacityMidpointSurfaceLength = max(0, input->opacitySurfaceLength - 1);
-						opacity = GetColorFromGradient(colorPosition, false, input->opacitySurfaceLength,
+						float maskOp = GetColorFromGradient(colorPosition, false, input->opacitySurfaceLength,
 							input->palette + input->opacitySurfaceOffset,
 							(opacityMidpointSurfaceLength > 0) ? input->palette + opacityMidpointSurfaceOffset : NULL,
 							opacityMidpointSurfaceLength,
 							input->material->surfaceGradientInterpolationMode, 0).x;
-						opacity = ApplyMaskPostProcess(opacity, input->material->opacityInvert,
+						maskOp = ApplyMaskPostProcess(maskOp, input->material->opacityInvert,
 							input->material->maskContrast, input->material->maskBlackPoint,
 							input->material->maskWhitePoint);
+						opacity *= maskOp;
 					}
 					color = ApplyBlendMode(input->material->color, gradientColor, opacity,
 						input->material->surfaceGradientBlendMode);
@@ -678,18 +679,20 @@ float3 SurfaceColor(__constant sClInConstants *consts, sRenderData *renderData,
 					float3 gradColor = GetColorFromGradient(colorPosition, false,
 						input->paletteSpecularLength, input->palette + input->paletteSpecularOffset,
 						input->palette + input->midpointSpecularOffset, input->midpointSpecularLength, 0, 0);
+					float opS = input->material->specularGradientOpacity;
 					if (input->material->specularGradientMaskEnable && input->opacitySpecularLength > 0)
 					{
 						int opMidOff = input->opacitySpecularOffset + input->opacitySpecularLength;
 						int opMidLen = max(0, input->opacitySpecularLength - 1);
-						float opacity = GetColorFromGradient(colorPosition, false, input->opacitySpecularLength,
+						float maskOp = GetColorFromGradient(colorPosition, false, input->opacitySpecularLength,
 							input->palette + input->opacitySpecularOffset,
 							(opMidLen > 0) ? input->palette + opMidOff : NULL, opMidLen, 0, 0).x;
-						opacity = ApplyMaskPostProcess(opacity, input->material->opacityInvert,
+						maskOp = ApplyMaskPostProcess(maskOp, input->material->opacityInvert,
 							input->material->maskContrast, input->material->maskBlackPoint,
 							input->material->maskWhitePoint);
-						gradColor = gradColor * opacity + (float3)(1.0f, 1.0f, 1.0f) * (1.0f - opacity);
+						opS *= maskOp;
 					}
+					gradColor = gradColor * opS + (float3)(1.0f, 1.0f, 1.0f) * (1.0f - opS);
 					gradients->specular = gradColor;
 				}
 #endif
@@ -699,18 +702,20 @@ float3 SurfaceColor(__constant sClInConstants *consts, sRenderData *renderData,
 					float3 gradColor = GetColorFromGradient(colorPosition, false,
 						input->paletteDiffuseLength, input->palette + input->paletteDiffuseOffset,
 						input->palette + input->midpointDiffuseOffset, input->midpointDiffuseLength, 0, 0);
+					float opD = input->material->diffuseGradientOpacity;
 					if (input->material->diffuseGradientMaskEnable && input->opacityDiffuseLength > 0)
 					{
 						int opMidOff = input->opacityDiffuseOffset + input->opacityDiffuseLength;
 						int opMidLen = max(0, input->opacityDiffuseLength - 1);
-						float opacity = GetColorFromGradient(colorPosition, false, input->opacityDiffuseLength,
+						float maskOp = GetColorFromGradient(colorPosition, false, input->opacityDiffuseLength,
 							input->palette + input->opacityDiffuseOffset,
 							(opMidLen > 0) ? input->palette + opMidOff : NULL, opMidLen, 0, 0).x;
-						opacity = ApplyMaskPostProcess(opacity, input->material->opacityInvert,
+						maskOp = ApplyMaskPostProcess(maskOp, input->material->opacityInvert,
 							input->material->maskContrast, input->material->maskBlackPoint,
 							input->material->maskWhitePoint);
-						gradColor = gradColor * opacity + (float3)(1.0f, 1.0f, 1.0f) * (1.0f - opacity);
+						opD *= maskOp;
 					}
+					gradColor = gradColor * opD + (float3)(1.0f, 1.0f, 1.0f) * (1.0f - opD);
 					gradients->diffuse = gradColor;
 				}
 #endif
@@ -720,18 +725,20 @@ float3 SurfaceColor(__constant sClInConstants *consts, sRenderData *renderData,
 					float3 gradColor = GetColorFromGradient(colorPosition, false,
 						input->paletteLuminosityLength, input->palette + input->paletteLuminosityOffset,
 						input->palette + input->midpointLuminosityOffset, input->midpointLuminosityLength, 0, 0);
+					float opL = input->material->luminosityGradientOpacity;
 					if (input->material->luminosityGradientMaskEnable && input->opacityLuminosityLength > 0)
 					{
 						int opMidOff = input->opacityLuminosityOffset + input->opacityLuminosityLength;
 						int opMidLen = max(0, input->opacityLuminosityLength - 1);
-						float opacity = GetColorFromGradient(colorPosition, false, input->opacityLuminosityLength,
+						float maskOp = GetColorFromGradient(colorPosition, false, input->opacityLuminosityLength,
 							input->palette + input->opacityLuminosityOffset,
 							(opMidLen > 0) ? input->palette + opMidOff : NULL, opMidLen, 0, 0).x;
-						opacity = ApplyMaskPostProcess(opacity, input->material->opacityInvert,
+						maskOp = ApplyMaskPostProcess(maskOp, input->material->opacityInvert,
 							input->material->maskContrast, input->material->maskBlackPoint,
 							input->material->maskWhitePoint);
-						gradColor = gradColor * opacity;
+						opL *= maskOp;
 					}
+					gradColor = gradColor * opL;
 					gradients->luminosity = gradColor;
 				}
 #endif
@@ -741,18 +748,20 @@ float3 SurfaceColor(__constant sClInConstants *consts, sRenderData *renderData,
 					float3 gradColor = GetColorFromGradient(colorPosition, false,
 						input->paletteRoughnessLength, input->palette + input->paletteRoughnessOffset,
 						input->palette + input->midpointRoughnessOffset, input->midpointRoughnessLength, 0, 0);
+					float opRg = input->material->roughnessGradientOpacity;
 					if (input->material->roughnessGradientMaskEnable && input->opacityRoughnessLength > 0)
 					{
 						int opMidOff = input->opacityRoughnessOffset + input->opacityRoughnessLength;
 						int opMidLen = max(0, input->opacityRoughnessLength - 1);
-						float opacity = GetColorFromGradient(colorPosition, false, input->opacityRoughnessLength,
+						float maskOp = GetColorFromGradient(colorPosition, false, input->opacityRoughnessLength,
 							input->palette + input->opacityRoughnessOffset,
 							(opMidLen > 0) ? input->palette + opMidOff : NULL, opMidLen, 0, 0).x;
-						opacity = ApplyMaskPostProcess(opacity, input->material->opacityInvert,
+						maskOp = ApplyMaskPostProcess(maskOp, input->material->opacityInvert,
 							input->material->maskContrast, input->material->maskBlackPoint,
 							input->material->maskWhitePoint);
-						gradColor = gradColor * opacity + (float3)(1.0f, 1.0f, 1.0f) * (1.0f - opacity);
+						opRg *= maskOp;
 					}
+					gradColor = gradColor * opRg + (float3)(1.0f, 1.0f, 1.0f) * (1.0f - opRg);
 					gradients->roughness = gradColor;
 				}
 #endif
@@ -762,18 +771,20 @@ float3 SurfaceColor(__constant sClInConstants *consts, sRenderData *renderData,
 					float3 gradColor = GetColorFromGradient(colorPosition, false,
 						input->paletteReflectanceLength, input->palette + input->paletteReflectanceOffset,
 						input->palette + input->midpointReflectanceOffset, input->midpointReflectanceLength, 0, 0);
+					float opRef = input->material->reflectanceGradientOpacity;
 					if (input->material->reflectanceGradientMaskEnable && input->opacityReflectanceLength > 0)
 					{
 						int opMidOff = input->opacityReflectanceOffset + input->opacityReflectanceLength;
 						int opMidLen = max(0, input->opacityReflectanceLength - 1);
-						float opacity = GetColorFromGradient(colorPosition, false, input->opacityReflectanceLength,
+						float maskOp = GetColorFromGradient(colorPosition, false, input->opacityReflectanceLength,
 							input->palette + input->opacityReflectanceOffset,
 							(opMidLen > 0) ? input->palette + opMidOff : NULL, opMidLen, 0, 0).x;
-						opacity = ApplyMaskPostProcess(opacity, input->material->opacityInvert,
+						maskOp = ApplyMaskPostProcess(maskOp, input->material->opacityInvert,
 							input->material->maskContrast, input->material->maskBlackPoint,
 							input->material->maskWhitePoint);
-						gradColor = gradColor * opacity + (float3)(1.0f, 1.0f, 1.0f) * (1.0f - opacity);
+						opRef *= maskOp;
 					}
+					gradColor = gradColor * opRef + (float3)(1.0f, 1.0f, 1.0f) * (1.0f - opRef);
 					gradients->reflectance = gradColor;
 				}
 #endif
@@ -783,18 +794,20 @@ float3 SurfaceColor(__constant sClInConstants *consts, sRenderData *renderData,
 					float3 gradColor = GetColorFromGradient(colorPosition, false,
 						input->paletteTransparencyLength, input->palette + input->paletteTransparencyOffset,
 						input->palette + input->midpointTransparencyOffset, input->midpointTransparencyLength, 0, 0);
+					float opT = input->material->transparencyGradientOpacity;
 					if (input->material->transparencyGradientMaskEnable && input->opacityTransparencyLength > 0)
 					{
 						int opMidOff = input->opacityTransparencyOffset + input->opacityTransparencyLength;
 						int opMidLen = max(0, input->opacityTransparencyLength - 1);
-						float opacity = GetColorFromGradient(colorPosition, false, input->opacityTransparencyLength,
+						float maskOp = GetColorFromGradient(colorPosition, false, input->opacityTransparencyLength,
 							input->palette + input->opacityTransparencyOffset,
 							(opMidLen > 0) ? input->palette + opMidOff : NULL, opMidLen, 0, 0).x;
-						opacity = ApplyMaskPostProcess(opacity, input->material->opacityInvert,
+						maskOp = ApplyMaskPostProcess(maskOp, input->material->opacityInvert,
 							input->material->maskContrast, input->material->maskBlackPoint,
 							input->material->maskWhitePoint);
-						gradColor = gradColor * opacity + (float3)(1.0f, 1.0f, 1.0f) * (1.0f - opacity);
+						opT *= maskOp;
 					}
+					gradColor = gradColor * opT + (float3)(1.0f, 1.0f, 1.0f) * (1.0f - opT);
 					gradients->transparency = gradColor;
 				}
 #endif
