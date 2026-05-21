@@ -396,6 +396,71 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 							if (z.x - z.z < 0) { double tx = z.z; z.z = z.x; z.x = tx; }
 							break;
 						}
+						case mutFoldSmooth:
+						{
+							double k = (mut.foldLimit > 0.0) ? mut.foldLimit : 1.0;
+							z.x -= tanh(k * z.x);
+							z.y -= tanh(k * z.y);
+							z.z -= tanh(k * z.z);
+							break;
+						}
+						case mutFoldPolynomial:
+						{
+							z.x = z.x * z.x * z.x - 3.0 * z.x;
+							z.y = z.y * z.y * z.y - 3.0 * z.y;
+							z.z = z.z * z.z * z.z - 3.0 * z.z;
+							break;
+						}
+						case mutFoldCircular:
+						{
+							double rad = (mut.foldValue > 0.0) ? mut.foldValue : 1.0;
+							double r = sqrt(z.x * z.x + z.y * z.y + z.z * z.z);
+							if (r > 1e-21) { double s = rad / r; z.x *= s; z.y *= s; z.z *= s; }
+							break;
+						}
+						case mutFoldSpiral:
+						{
+							double r = sqrt(z.x * z.x + z.y * z.y);
+							double angle = r * mut.foldLimit;
+							double ca = cos(angle); double sa = sin(angle);
+							double nx = z.x * ca - z.y * sa;
+							double ny = z.x * sa + z.y * ca;
+							z.x = nx; z.y = ny;
+							break;
+						}
+						case mutFoldSinusoidal:
+						{
+							double a = mut.foldValue;
+							double b = (mut.foldLimit > 0.0) ? mut.foldLimit : 1.0;
+							z.x += a * sin(b * z.x);
+							z.y += a * sin(b * z.y);
+							z.z += a * sin(b * z.z);
+							break;
+						}
+						case mutFoldExponential:
+						{
+							z.x *= exp(-z.x * z.x);
+							z.y *= exp(-z.y * z.y);
+							z.z *= exp(-z.z * z.z);
+							break;
+						}
+						case mutFoldLogarithmic:
+						{
+							double rx = fabs(z.x); double ry = fabs(z.y); double rz = fabs(z.z);
+							z.x *= log(1.0 + rx);
+							z.y *= log(1.0 + ry);
+							z.z *= log(1.0 + rz);
+							break;
+						}
+						case mutFoldPower:
+						{
+							double p = (mut.foldValue > 0.0) ? mut.foldValue : 2.0;
+							double ax = fabs(z.x); double ay = fabs(z.y); double az = fabs(z.z);
+							z.x = (z.x >= 0 ? 1.0 : -1.0) * pow(max(ax, 1e-21), p);
+							z.y = (z.y >= 0 ? 1.0 : -1.0) * pow(max(ay, 1e-21), p);
+							z.z = (z.z >= 0 ? 1.0 : -1.0) * pow(max(az, 1e-21), p);
+							break;
+						}
 						default: break;
 					}
 				}
@@ -1070,6 +1135,71 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 							if (z.y + z.z < 0) { double ty = -z.z; z.z = -z.y; z.y = ty; }
 							if (z.x - z.y < 0) { double tx = z.y; z.y = z.x; z.x = tx; }
 							if (z.x - z.z < 0) { double tx = z.z; z.z = z.x; z.x = tx; }
+							break;
+						}
+						case mutFoldSmooth:
+						{
+							double k = (mut.foldLimit > 0.0) ? mut.foldLimit : 1.0;
+							z.x -= tanh(k * z.x);
+							z.y -= tanh(k * z.y);
+							z.z -= tanh(k * z.z);
+							break;
+						}
+						case mutFoldPolynomial:
+						{
+							z.x = z.x * z.x * z.x - 3.0 * z.x;
+							z.y = z.y * z.y * z.y - 3.0 * z.y;
+							z.z = z.z * z.z * z.z - 3.0 * z.z;
+							break;
+						}
+						case mutFoldCircular:
+						{
+							double rad = (mut.foldValue > 0.0) ? mut.foldValue : 1.0;
+							double r = sqrt(z.x * z.x + z.y * z.y + z.z * z.z);
+							if (r > 1e-21) { double s = rad / r; z.x *= s; z.y *= s; z.z *= s; }
+							break;
+						}
+						case mutFoldSpiral:
+						{
+							double r = sqrt(z.x * z.x + z.y * z.y);
+							double angle = r * mut.foldLimit;
+							double ca = cos(angle); double sa = sin(angle);
+							double nx = z.x * ca - z.y * sa;
+							double ny = z.x * sa + z.y * ca;
+							z.x = nx; z.y = ny;
+							break;
+						}
+						case mutFoldSinusoidal:
+						{
+							double a = mut.foldValue;
+							double b = (mut.foldLimit > 0.0) ? mut.foldLimit : 1.0;
+							z.x += a * sin(b * z.x);
+							z.y += a * sin(b * z.y);
+							z.z += a * sin(b * z.z);
+							break;
+						}
+						case mutFoldExponential:
+						{
+							z.x *= exp(-z.x * z.x);
+							z.y *= exp(-z.y * z.y);
+							z.z *= exp(-z.z * z.z);
+							break;
+						}
+						case mutFoldLogarithmic:
+						{
+							double rx = fabs(z.x); double ry = fabs(z.y); double rz = fabs(z.z);
+							z.x *= log(1.0 + rx);
+							z.y *= log(1.0 + ry);
+							z.z *= log(1.0 + rz);
+							break;
+						}
+						case mutFoldPower:
+						{
+							double p = (mut.foldValue > 0.0) ? mut.foldValue : 2.0;
+							double ax = fabs(z.x); double ay = fabs(z.y); double az = fabs(z.z);
+							z.x = (z.x >= 0 ? 1.0 : -1.0) * pow(max(ax, 1e-21), p);
+							z.y = (z.y >= 0 ? 1.0 : -1.0) * pow(max(ay, 1e-21), p);
+							z.z = (z.z >= 0 ? 1.0 : -1.0) * pow(max(az, 1e-21), p);
 							break;
 						}
 						default: break;

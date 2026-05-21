@@ -178,7 +178,16 @@ enum enumMutationFoldType
 	mutFoldSierpinski = 4,
 	mutFoldAbs = 5,
 	mutFoldKaleidoscope = 6,
-	mutFoldOctahedral = 7
+	mutFoldOctahedral = 7,
+	// v7.1 — Familie 7 advanced folds
+	mutFoldSmooth = 8,        // tanh-based smooth fold
+	mutFoldPolynomial = 9,    // Chebyshev z³-3z
+	mutFoldCircular = 10,     // radial projection to circle
+	mutFoldSpiral = 11,       // z * exp(i*|z|)
+	mutFoldSinusoidal = 12,   // z + A*sin(B*z)
+	mutFoldExponential = 13,  // z * exp(-z²) gaussian
+	mutFoldLogarithmic = 14,  // z * log(1+|z|)
+	mutFoldPower = 15         // sign(z) * |z|^p
 };
 
 enum enumMutationWarpType

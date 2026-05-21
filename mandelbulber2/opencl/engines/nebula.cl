@@ -631,6 +631,71 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						if (z.x - z.z < 0) { float tx = z.z; z.z = z.x; z.x = tx; }
 						break;
 					}
+					case 8:
+					{
+						float k = (mut->foldLimit > 0.0f) ? mut->foldLimit : 1.0f;
+						z.x -= tanh(k * z.x);
+						z.y -= tanh(k * z.y);
+						z.z -= tanh(k * z.z);
+						break;
+					}
+					case 9:
+					{
+						z.x = z.x * z.x * z.x - 3.0f * z.x;
+						z.y = z.y * z.y * z.y - 3.0f * z.y;
+						z.z = z.z * z.z * z.z - 3.0f * z.z;
+						break;
+					}
+					case 10:
+					{
+						float rad = (mut->foldValue > 0.0f) ? mut->foldValue : 1.0f;
+						float r = native_sqrt(z.x*z.x + z.y*z.y + z.z*z.z);
+						if (r > 1e-21f) { float s = rad / r; z.x *= s; z.y *= s; z.z *= s; }
+						break;
+					}
+					case 11:
+					{
+						float r = native_sqrt(z.x*z.x + z.y*z.y);
+						float angle = r * mut->foldLimit;
+						float ca = native_cos(angle); float sa = native_sin(angle);
+						float nx = z.x * ca - z.y * sa;
+						float ny = z.x * sa + z.y * ca;
+						z.x = nx; z.y = ny;
+						break;
+					}
+					case 12:
+					{
+						float a = mut->foldValue;
+						float b = (mut->foldLimit > 0.0f) ? mut->foldLimit : 1.0f;
+						z.x += a * native_sin(b * z.x);
+						z.y += a * native_sin(b * z.y);
+						z.z += a * native_sin(b * z.z);
+						break;
+					}
+					case 13:
+					{
+						z.x *= native_exp(-z.x * z.x);
+						z.y *= native_exp(-z.y * z.y);
+						z.z *= native_exp(-z.z * z.z);
+						break;
+					}
+					case 14:
+					{
+						float rx = fabs(z.x); float ry = fabs(z.y); float rz = fabs(z.z);
+						z.x *= native_log(1.0f + rx);
+						z.y *= native_log(1.0f + ry);
+						z.z *= native_log(1.0f + rz);
+						break;
+					}
+					case 15:
+					{
+						float p = (mut->foldValue > 0.0f) ? mut->foldValue : 2.0f;
+						float ax = fabs(z.x); float ay = fabs(z.y); float az = fabs(z.z);
+						z.x = sign(z.x) * native_powr(max(ax, 1e-21f), p);
+						z.y = sign(z.y) * native_powr(max(ay, 1e-21f), p);
+						z.z = sign(z.z) * native_powr(max(az, 1e-21f), p);
+						break;
+					}
 				}
 			}
 
@@ -1255,6 +1320,71 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						if (z.y + z.z < 0) { float ty = -z.z; z.z = -z.y; z.y = ty; }
 						if (z.x - z.y < 0) { float tx = z.y; z.y = z.x; z.x = tx; }
 						if (z.x - z.z < 0) { float tx = z.z; z.z = z.x; z.x = tx; }
+						break;
+					}
+					case 8:
+					{
+						float k = (mut->foldLimit > 0.0f) ? mut->foldLimit : 1.0f;
+						z.x -= tanh(k * z.x);
+						z.y -= tanh(k * z.y);
+						z.z -= tanh(k * z.z);
+						break;
+					}
+					case 9:
+					{
+						z.x = z.x * z.x * z.x - 3.0f * z.x;
+						z.y = z.y * z.y * z.y - 3.0f * z.y;
+						z.z = z.z * z.z * z.z - 3.0f * z.z;
+						break;
+					}
+					case 10:
+					{
+						float rad = (mut->foldValue > 0.0f) ? mut->foldValue : 1.0f;
+						float r = native_sqrt(z.x*z.x + z.y*z.y + z.z*z.z);
+						if (r > 1e-21f) { float s = rad / r; z.x *= s; z.y *= s; z.z *= s; }
+						break;
+					}
+					case 11:
+					{
+						float r = native_sqrt(z.x*z.x + z.y*z.y);
+						float angle = r * mut->foldLimit;
+						float ca = native_cos(angle); float sa = native_sin(angle);
+						float nx = z.x * ca - z.y * sa;
+						float ny = z.x * sa + z.y * ca;
+						z.x = nx; z.y = ny;
+						break;
+					}
+					case 12:
+					{
+						float a = mut->foldValue;
+						float b = (mut->foldLimit > 0.0f) ? mut->foldLimit : 1.0f;
+						z.x += a * native_sin(b * z.x);
+						z.y += a * native_sin(b * z.y);
+						z.z += a * native_sin(b * z.z);
+						break;
+					}
+					case 13:
+					{
+						z.x *= native_exp(-z.x * z.x);
+						z.y *= native_exp(-z.y * z.y);
+						z.z *= native_exp(-z.z * z.z);
+						break;
+					}
+					case 14:
+					{
+						float rx = fabs(z.x); float ry = fabs(z.y); float rz = fabs(z.z);
+						z.x *= native_log(1.0f + rx);
+						z.y *= native_log(1.0f + ry);
+						z.z *= native_log(1.0f + rz);
+						break;
+					}
+					case 15:
+					{
+						float p = (mut->foldValue > 0.0f) ? mut->foldValue : 2.0f;
+						float ax = fabs(z.x); float ay = fabs(z.y); float az = fabs(z.z);
+						z.x = sign(z.x) * native_powr(max(ax, 1e-21f), p);
+						z.y = sign(z.y) * native_powr(max(ay, 1e-21f), p);
+						z.z = sign(z.z) * native_powr(max(az, 1e-21f), p);
 						break;
 					}
 				}

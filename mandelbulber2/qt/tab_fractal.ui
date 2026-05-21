@@ -1892,6 +1892,46 @@ Static: Fixed weight (simple). Iteration: Weight changes over iterations (morphi
           <string>Octahedral</string>
          </property>
         </item>
+        <item>
+         <property name="text">
+          <string>Smooth (tanh)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Polynomial (Chebyshev)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Circular</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Spiral</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Sinusoidal</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Exponential (Gaussian)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Logarithmic</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Power</string>
+         </property>
+        </item>
        </widget>
       </item>
       <item row="8" column="3">

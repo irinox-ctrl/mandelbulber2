@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
 	InitSystem();
 
 	// Advanced Weight System build identifier
-	qDebug() << "Advanced Weight System v7.0 - build 20250520 - Mandalay Box V2: CylFold, MultiClip, SphereInv, AnisoScale, ZShear, VarClip, QuatRot";
+	qDebug() << "Advanced Weight System v7.1 - build 20250520 - 16 fold types + Mandalay V2";
 
 	// configure debug output
 	qInstallMessageHandler(myMessageOutput);
