@@ -379,74 +379,79 @@ int cOpenClDynamicData::BuildMaterialsData(
 						static_cast<float>(material.gradientTransparency.GetSegmentMode(i)),
 						material.gradientTransparency.GetSegmentIntensity(i), material.gradientTransparency.GetSegmentBias(i)));
 
-			// Opacity data (stored as float4(opacity, opacity, opacity, position))
-			opacityOffsetSurface = totalSizeOfGradients;
-			if (material.gradientSurface.HasSeparateOpacityStops())
+			// Pack opacity data for ALL gradient types
+			// Helper lambda: packs opacity stops + midpoints for a gradient
+			auto packGradientOpacity = [&](const cColorGradient &grad,
+				const QList<cColorGradient::sColor> &colorList,
+				cl_int &opacityOffset, cl_int &opacitySize)
 			{
-				auto opacityStops = material.gradientSurface.GetListOfSortedOpacityStops();
-				opacitySizeSurface = opacityStops.size();
-				totalSizeOfGradients += opacitySizeSurface;
-			}
-			else
-			{
-				opacitySizeSurface = gradientSurface.size();
-				totalSizeOfGradients += opacitySizeSurface;
-			}
-
-			// For now, only surface gradient has real opacity data; others remain dummy
-			opacityOffsetSpecular = -1; opacitySizeSpecular = 0;
-			opacityOffsetDiffuse = -1; opacitySizeDiffuse = 0;
-			opacityOffsetLuminosity = -1; opacitySizeLuminosity = 0;
-			opacityOffsetRoughness = -1; opacitySizeRoughness = 0;
-			opacityOffsetReflectance = -1; opacitySizeReflectance = 0;
-			opacityOffsetTransparency = -1; opacitySizeTransparency = 0;
-
-			paletteCl.resize(totalSizeOfGradients);
-
-			if (material.gradientSurface.HasSeparateOpacityStops())
-			{
-				auto opacityStops = material.gradientSurface.GetListOfSortedOpacityStops();
-				for (int i = 0; i < opacitySizeSurface; i++)
+				opacityOffset = totalSizeOfGradients;
+				if (grad.HasSeparateOpacityStops())
 				{
-					paletteCl[opacityOffsetSurface + i] = toClFloat4(
-						CVector4(opacityStops[i].opacity, opacityStops[i].opacity,
-							opacityStops[i].opacity, opacityStops[i].position));
-				}
-			}
-			else
-			{
-				for (int i = 0; i < opacitySizeSurface; i++)
-				{
-					paletteCl[opacityOffsetSurface + i] = toClFloat4(
-						CVector4(gradientSurface[i].opacity, gradientSurface[i].opacity,
-							gradientSurface[i].opacity, gradientSurface[i].position));
-				}
-			}
-
-			// Opacity midpoint data follows opacity stops (shader computes offset as opacityOffset + opacitySize)
-			int opacityMidpointSizeSurface = qMax(0, opacitySizeSurface - 1);
-			if (opacityMidpointSizeSurface > 0)
-			{
-				totalSizeOfGradients += opacityMidpointSizeSurface;
-				paletteCl.resize(totalSizeOfGradients);
-				for (int i = 0; i < opacityMidpointSizeSurface; i++)
-				{
-					float mp;
-					int mode;
-					if (material.gradientSurface.HasSeparateOpacityStops())
+					auto opacityStops = grad.GetListOfSortedOpacityStops();
+					opacitySize = opacityStops.size();
+					totalSizeOfGradients += opacitySize;
+					paletteCl.resize(totalSizeOfGradients);
+					for (int i = 0; i < opacitySize; i++)
 					{
-						mp = material.gradientSurface.GetOpacityMidpoint(i);
-						mode = static_cast<int>(material.gradientSurface.GetOpacitySegmentMode(i));
+						paletteCl[opacityOffset + i] = toClFloat4(
+							CVector4(opacityStops[i].opacity, opacityStops[i].opacity,
+								opacityStops[i].opacity, opacityStops[i].position));
 					}
-					else
-					{
-						mp = material.gradientSurface.GetMidpoint(i);
-						mode = static_cast<int>(material.gradientSurface.GetSegmentMode(i));
-					}
-					paletteCl[opacityOffsetSurface + opacitySizeSurface + i] = toClFloat4(
-						CVector4(mp, static_cast<float>(mode), material.gradientSurface.GetSegmentIntensity(i), material.gradientSurface.GetSegmentBias(i)));
 				}
-			}
+				else
+				{
+					opacitySize = colorList.size();
+					totalSizeOfGradients += opacitySize;
+					paletteCl.resize(totalSizeOfGradients);
+					for (int i = 0; i < opacitySize; i++)
+					{
+						paletteCl[opacityOffset + i] = toClFloat4(
+							CVector4(colorList[i].opacity, colorList[i].opacity,
+								colorList[i].opacity, colorList[i].position));
+					}
+				}
+				// Midpoint data follows opacity stops
+				int midpointCount = qMax(0, opacitySize - 1);
+				if (midpointCount > 0)
+				{
+					totalSizeOfGradients += midpointCount;
+					paletteCl.resize(totalSizeOfGradients);
+					for (int i = 0; i < midpointCount; i++)
+					{
+						float mp;
+						int modeVal;
+						if (grad.HasSeparateOpacityStops())
+						{
+							mp = grad.GetOpacityMidpoint(i);
+							modeVal = static_cast<int>(grad.GetOpacitySegmentMode(i));
+						}
+						else
+						{
+							mp = grad.GetMidpoint(i);
+							modeVal = static_cast<int>(grad.GetSegmentMode(i));
+						}
+						paletteCl[opacityOffset + opacitySize + i] = toClFloat4(
+							CVector4(mp, static_cast<float>(modeVal),
+								grad.GetSegmentIntensity(i), grad.GetSegmentBias(i)));
+					}
+				}
+			};
+
+			packGradientOpacity(material.gradientSurface, gradientSurface,
+				opacityOffsetSurface, opacitySizeSurface);
+			packGradientOpacity(material.gradientSpecular, gradientSpecular,
+				opacityOffsetSpecular, opacitySizeSpecular);
+			packGradientOpacity(material.gradientDiffuse, gradientDiffuse,
+				opacityOffsetDiffuse, opacitySizeDiffuse);
+			packGradientOpacity(material.gradientLuminosity, gradientLuminosity,
+				opacityOffsetLuminosity, opacitySizeLuminosity);
+			packGradientOpacity(material.gradientRoughness, gradientRoughness,
+				opacityOffsetRoughness, opacitySizeRoughness);
+			packGradientOpacity(material.gradientReflectance, gradientReflectance,
+				opacityOffsetReflectance, opacitySizeReflectance);
+			packGradientOpacity(material.gradientTransparency, gradientTransparency,
+				opacityOffsetTransparency, opacitySizeTransparency);
 		}
 		else
 		{

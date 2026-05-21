@@ -458,6 +458,292 @@
            </widget>
           </item>
           <item>
+           <widget class="QGroupBox" name="groupBox_gradient_processing">
+            <property name="title">
+             <string>Gradient Processing</string>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_gradient_processing">
+             <property name="spacing">
+              <number>2</number>
+             </property>
+             <property name="leftMargin">
+              <number>2</number>
+             </property>
+             <property name="topMargin">
+              <number>2</number>
+             </property>
+             <property name="rightMargin">
+              <number>2</number>
+             </property>
+             <property name="bottomMargin">
+              <number>2</number>
+             </property>
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_gradient_scale">
+               <property name="text">
+                <string>Scale:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="MyDoubleSpinBox" name="spinbox_gradient_scale">
+               <property name="toolTip">
+                <string>Scales the gradient position (1.0 = normal, 2.0 = compressed, 0.5 = stretched)</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="2">
+              <widget class="QLabel" name="label_gradient_offset">
+               <property name="text">
+                <string>Offset:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="3">
+              <widget class="MyDoubleSpinBox" name="spinbox_gradient_offset">
+               <property name="toolTip">
+                <string>Shifts the gradient position</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="4">
+              <widget class="QLabel" name="label_gradient_repeat_mode">
+               <property name="text">
+                <string>Repeat:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="5">
+              <widget class="MyComboBox" name="comboBox_gradient_repeat_mode">
+               <property name="toolTip">
+                <string>How the gradient repeats outside [0,1] range</string>
+               </property>
+               <item><property name="text"><string>Clamp</string></property></item>
+               <item><property name="text"><string>Repeat</string></property></item>
+               <item><property name="text"><string>Mirror</string></property></item>
+               <item><property name="text"><string>Mirror Once</string></property></item>
+               <item><property name="text"><string>Extend</string></property></item>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="label_gradient_brightness">
+               <property name="text">
+                <string>Brightness:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="MyDoubleSpinBox" name="spinbox_gradient_brightness">
+               <property name="toolTip">
+                <string>Multiplies gradient color brightness</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="2">
+              <widget class="QLabel" name="label_gradient_contrast">
+               <property name="text">
+                <string>Contrast:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="3">
+              <widget class="MyDoubleSpinBox" name="spinbox_gradient_contrast">
+               <property name="toolTip">
+                <string>Adjusts gradient color contrast</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="4">
+              <widget class="QLabel" name="label_gradient_saturation">
+               <property name="text">
+                <string>Saturation:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="5">
+              <widget class="MyDoubleSpinBox" name="spinbox_gradient_saturation">
+               <property name="toolTip">
+                <string>Adjusts gradient color saturation (1.0 = normal, 0.0 = grayscale)</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QLabel" name="label_gradient_gamma">
+               <property name="text">
+                <string>Gamma:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="MyDoubleSpinBox" name="spinbox_gradient_gamma">
+               <property name="toolTip">
+                <string>Gamma correction for gradient colors (1.0 = no change)</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="2">
+              <widget class="QLabel" name="label_gradient_color_space">
+               <property name="text">
+                <string>Color space:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="3">
+              <widget class="MyComboBox" name="comboBox_gradient_color_space">
+               <property name="toolTip">
+                <string>Interpolation color space for gradients</string>
+               </property>
+               <item><property name="text"><string>sRGB</string></property></item>
+               <item><property name="text"><string>Linear RGB</string></property></item>
+              </widget>
+             </item>
+             <item row="2" column="4">
+              <widget class="QLabel" name="label_gradient_noise_amount">
+               <property name="text">
+                <string>Noise:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="5">
+              <widget class="MyDoubleSpinBox" name="spinbox_gradient_noise_amount">
+               <property name="toolTip">
+                <string>Adds noise dithering to reduce color banding</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QGroupBox" name="groupBox_gradient_masking">
+            <property name="title">
+             <string>Gradient Opacity Masking</string>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_gradient_masking">
+             <property name="spacing">
+              <number>2</number>
+             </property>
+             <property name="leftMargin">
+              <number>2</number>
+             </property>
+             <property name="topMargin">
+              <number>2</number>
+             </property>
+             <property name="rightMargin">
+              <number>2</number>
+             </property>
+             <property name="bottomMargin">
+              <number>2</number>
+             </property>
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_mask_enable_info">
+               <property name="text">
+                <string>Enable opacity masking per gradient:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="MyCheckBox" name="checkBox_surface_gradient_mask_enable">
+               <property name="text">
+                <string>Surface</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="MyCheckBox" name="checkBox_specular_gradient_mask_enable">
+               <property name="text">
+                <string>Specular</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="2">
+              <widget class="MyCheckBox" name="checkBox_diffuse_gradient_mask_enable">
+               <property name="text">
+                <string>Diffuse</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="3">
+              <widget class="MyCheckBox" name="checkBox_luminosity_gradient_mask_enable">
+               <property name="text">
+                <string>Luminosity</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="MyCheckBox" name="checkBox_roughness_gradient_mask_enable">
+               <property name="text">
+                <string>Roughness</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="MyCheckBox" name="checkBox_reflectance_gradient_mask_enable">
+               <property name="text">
+                <string>Reflectance</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="2">
+              <widget class="MyCheckBox" name="checkBox_transparency_gradient_mask_enable">
+               <property name="text">
+                <string>Transparency</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="0">
+              <widget class="MyCheckBox" name="checkBox_opacity_invert">
+               <property name="text">
+                <string>Invert opacity</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="1">
+              <widget class="QLabel" name="label_mask_contrast">
+               <property name="text">
+                <string>Mask contrast:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="2">
+              <widget class="MyDoubleSpinBox" name="spinbox_mask_contrast">
+               <property name="toolTip">
+                <string>Contrast of the opacity mask</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="0">
+              <widget class="QLabel" name="label_mask_black_point">
+               <property name="text">
+                <string>Black point:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="1">
+              <widget class="MyDoubleSpinBox" name="spinbox_mask_black_point">
+               <property name="toolTip">
+                <string>Remap opacity range: values below this become 0</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="2">
+              <widget class="QLabel" name="label_mask_white_point">
+               <property name="text">
+                <string>White point:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="3">
+              <widget class="MyDoubleSpinBox" name="spinbox_mask_white_point">
+               <property name="toolTip">
+                <string>Remap opacity range: values above this become 1</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
            <layout class="QGridLayout" name="gridLayout_34" rowstretch="0,0,0,0,0,0,0,0,0" columnstretch="0,0,0">
             <property name="spacing">
              <number>2</number>

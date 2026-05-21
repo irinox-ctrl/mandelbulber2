@@ -71,17 +71,94 @@ sRGBAFloat cRenderWorker::SurfaceColour(
 				gradients->iters = fractOut.iters;
 				double nrCol = fmod(fabs(fractOut.colorIndex), 248.0 * 256.0); // kept for compatibility
 
-				double colorPosition = fmod(
-					nrCol / 256.0 / 10.0 * input.material->coloring_speed + input.material->paletteOffset,
-					1.0);
+				double rawColorPosition = nrCol / 256.0 / 10.0 * input.material->coloring_speed
+					+ input.material->paletteOffset;
+
+				// Apply gradient transform (scale, offset, repeat)
+				double colorPosition = rawColorPosition * input.material->gradientScale
+					+ input.material->gradientOffset;
+				switch (input.material->gradientRepeatMode)
+				{
+					case 1: // Repeat
+					{
+						colorPosition = fmod(colorPosition, 1.0);
+						if (colorPosition < 0.0) colorPosition += 1.0;
+						break;
+					}
+					case 2: // Mirror
+					{
+						colorPosition = fmod(colorPosition, 2.0);
+						if (colorPosition < 0.0) colorPosition += 2.0;
+						if (colorPosition > 1.0) colorPosition = 2.0 - colorPosition;
+						break;
+					}
+					case 3: // MirrorOnce
+					{
+						if (colorPosition < 0.0) colorPosition = 0.0;
+						else if (colorPosition > 2.0) colorPosition = 1.0;
+						else
+						{
+							colorPosition = fmod(colorPosition, 2.0);
+							if (colorPosition > 1.0) colorPosition = 2.0 - colorPosition;
+						}
+						break;
+					}
+					case 4: // Extend
+					case 0: // Clamp
+					default:
+						if (colorPosition < 0.0) colorPosition = 0.0;
+						else if (colorPosition > 1.0) colorPosition = 1.0;
+						break;
+				}
 
 				if (input.material->surfaceGradientEnable)
 				{
 					sRGBFloat gradientColor = input.material->gradientSurface.GetColorFloat(colorPosition, false);
+
+					// Apply post-processing (brightness, contrast, saturation, gamma)
+					gradientColor.R *= input.material->gradientBrightness;
+					gradientColor.G *= input.material->gradientBrightness;
+					gradientColor.B *= input.material->gradientBrightness;
+					gradientColor.R = (gradientColor.R - 0.5f) * input.material->gradientContrast + 0.5f;
+					gradientColor.G = (gradientColor.G - 0.5f) * input.material->gradientContrast + 0.5f;
+					gradientColor.B = (gradientColor.B - 0.5f) * input.material->gradientContrast + 0.5f;
+					if (input.material->gradientSaturation != 1.0f)
+					{
+						float maxV = fmaxf(gradientColor.R, fmaxf(gradientColor.G, gradientColor.B));
+						float minV = fminf(gradientColor.R, fminf(gradientColor.G, gradientColor.B));
+						float l = (maxV + minV) * 0.5f;
+						gradientColor.R = l + (gradientColor.R - l) * input.material->gradientSaturation;
+						gradientColor.G = l + (gradientColor.G - l) * input.material->gradientSaturation;
+						gradientColor.B = l + (gradientColor.B - l) * input.material->gradientSaturation;
+					}
+					if (input.material->gradientGamma != 1.0f)
+					{
+						gradientColor.R = powf(fmaxf(0.0f, gradientColor.R), input.material->gradientGamma);
+						gradientColor.G = powf(fmaxf(0.0f, gradientColor.G), input.material->gradientGamma);
+						gradientColor.B = powf(fmaxf(0.0f, gradientColor.B), input.material->gradientGamma);
+					}
+
+					// Apply noise dithering
+					if (input.material->gradientNoiseAmount > 0.0f)
+					{
+						float h = sinf(point.x * 127.1f + point.y * 311.7f + point.z * 74.7f) * 43758.5453f;
+						float noise = (h - floorf(h) - 0.5f) * 2.0f * input.material->gradientNoiseAmount;
+						gradientColor.R += noise;
+						gradientColor.G += noise;
+						gradientColor.B += noise;
+					}
+
 					float opacity = 1.0f;
 					if (input.material->surfaceGradientMaskEnable)
 					{
 						opacity = input.material->gradientSurface.GetOpacity(colorPosition, false);
+						if (input.material->opacityInvert) opacity = 1.0f - opacity;
+						if (input.material->maskWhitePoint > input.material->maskBlackPoint)
+							opacity = (opacity - input.material->maskBlackPoint)
+								/ (input.material->maskWhitePoint - input.material->maskBlackPoint);
+						opacity = (opacity - 0.5f) * input.material->maskContrast + 0.5f;
+						if (opacity < 0.0f) opacity = 0.0f;
+						if (opacity > 1.0f) opacity = 1.0f;
 					}
 					float baseR = input.material->color.R;
 					float baseG = input.material->color.G;
@@ -146,37 +223,86 @@ sRGBAFloat cRenderWorker::SurfaceColour(
 
 				if (input.material->specularGradientEnable)
 				{
-					gradients->specular =
-						input.material->gradientSpecular.GetColorFloat(colorPosition, false);
+					sRGBFloat gradColor = input.material->gradientSpecular.GetColorFloat(colorPosition, false);
+					if (input.material->specularGradientMaskEnable)
+					{
+						float opacity = input.material->gradientSpecular.GetOpacity(colorPosition, false);
+						if (input.material->opacityInvert) opacity = 1.0f - opacity;
+						gradColor.R = gradColor.R * opacity + 1.0f * (1.0f - opacity);
+						gradColor.G = gradColor.G * opacity + 1.0f * (1.0f - opacity);
+						gradColor.B = gradColor.B * opacity + 1.0f * (1.0f - opacity);
+					}
+					gradients->specular = gradColor;
 				}
 
 				if (input.material->diffuseGradientEnable)
 				{
-					gradients->diffuse = input.material->gradientDiffuse.GetColorFloat(colorPosition, false);
+					sRGBFloat gradColor = input.material->gradientDiffuse.GetColorFloat(colorPosition, false);
+					if (input.material->diffuseGradientMaskEnable)
+					{
+						float opacity = input.material->gradientDiffuse.GetOpacity(colorPosition, false);
+						if (input.material->opacityInvert) opacity = 1.0f - opacity;
+						gradColor.R = gradColor.R * opacity + 1.0f * (1.0f - opacity);
+						gradColor.G = gradColor.G * opacity + 1.0f * (1.0f - opacity);
+						gradColor.B = gradColor.B * opacity + 1.0f * (1.0f - opacity);
+					}
+					gradients->diffuse = gradColor;
 				}
 
 				if (input.material->luminosityGradientEnable)
 				{
-					gradients->luminosity =
-						input.material->gradientLuminosity.GetColorFloat(colorPosition, false);
+					sRGBFloat gradColor = input.material->gradientLuminosity.GetColorFloat(colorPosition, false);
+					if (input.material->luminosityGradientMaskEnable)
+					{
+						float opacity = input.material->gradientLuminosity.GetOpacity(colorPosition, false);
+						if (input.material->opacityInvert) opacity = 1.0f - opacity;
+						gradColor.R *= opacity;
+						gradColor.G *= opacity;
+						gradColor.B *= opacity;
+					}
+					gradients->luminosity = gradColor;
 				}
 
 				if (input.material->roughnessGradientEnable)
 				{
-					gradients->roughness =
-						input.material->gradientRoughness.GetColorFloat(colorPosition, false);
+					sRGBFloat gradColor = input.material->gradientRoughness.GetColorFloat(colorPosition, false);
+					if (input.material->roughnessGradientMaskEnable)
+					{
+						float opacity = input.material->gradientRoughness.GetOpacity(colorPosition, false);
+						if (input.material->opacityInvert) opacity = 1.0f - opacity;
+						gradColor.R = gradColor.R * opacity + 1.0f * (1.0f - opacity);
+						gradColor.G = gradColor.G * opacity + 1.0f * (1.0f - opacity);
+						gradColor.B = gradColor.B * opacity + 1.0f * (1.0f - opacity);
+					}
+					gradients->roughness = gradColor;
 				}
 
 				if (input.material->reflectanceGradientEnable)
 				{
-					gradients->reflectance =
-						input.material->gradientReflectance.GetColorFloat(colorPosition, false);
+					sRGBFloat gradColor = input.material->gradientReflectance.GetColorFloat(colorPosition, false);
+					if (input.material->reflectanceGradientMaskEnable)
+					{
+						float opacity = input.material->gradientReflectance.GetOpacity(colorPosition, false);
+						if (input.material->opacityInvert) opacity = 1.0f - opacity;
+						gradColor.R = gradColor.R * opacity + 1.0f * (1.0f - opacity);
+						gradColor.G = gradColor.G * opacity + 1.0f * (1.0f - opacity);
+						gradColor.B = gradColor.B * opacity + 1.0f * (1.0f - opacity);
+					}
+					gradients->reflectance = gradColor;
 				}
 
 				if (input.material->transparencyGradientEnable)
 				{
-					gradients->trasparency =
-						input.material->gradientTransparency.GetColorFloat(colorPosition, false);
+					sRGBFloat gradColor = input.material->gradientTransparency.GetColorFloat(colorPosition, false);
+					if (input.material->transparencyGradientMaskEnable)
+					{
+						float opacity = input.material->gradientTransparency.GetOpacity(colorPosition, false);
+						if (input.material->opacityInvert) opacity = 1.0f - opacity;
+						gradColor.R = gradColor.R * opacity + 1.0f * (1.0f - opacity);
+						gradColor.G = gradColor.G * opacity + 1.0f * (1.0f - opacity);
+						gradColor.B = gradColor.B * opacity + 1.0f * (1.0f - opacity);
+					}
+					gradients->trasparency = gradColor;
 				}
 			}
 			else
