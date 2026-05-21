@@ -40,6 +40,7 @@
 
 #include "texture.hpp"
 
+#include <cmath>
 #include <memory>
 
 #include <QCache>
@@ -369,6 +370,8 @@ sRGBFloat cTexture::Pixel(float x, float y, float pixelSize) const
 
 sRGBFloat cTexture::Pixel(CVector2<float> point, float pixelSize) const
 {
+	if (std::isnan(point.x) || std::isnan(point.y)) return sRGBFloat();
+
 	if (point.x > 0)
 		point.x = fmod(point.x, 1.0);
 	else
@@ -381,6 +384,7 @@ sRGBFloat cTexture::Pixel(CVector2<float> point, float pixelSize) const
 
 	point.x *= float(width);
 	point.y *= float(height);
+	if (std::isnan(pixelSize) || std::isinf(pixelSize)) pixelSize = 0.0f;
 	return MipMap(point.x, point.y, pixelSize);
 }
 
@@ -442,6 +446,9 @@ sRGBFloat cTexture::LinearInterpolation(float x, float y) const
 
 sRGBFloat cTexture::BicubicInterpolation(float x, float y, const sRGBFloat *bitm, int w, int h)
 {
+	if (!bitm || w <= 0 || h <= 0) return sRGBFloat();
+	if (std::isnan(x) || std::isnan(y) || std::isinf(x) || std::isinf(y))
+		return sRGBFloat();
 	const int ix = int(x);
 	const int iy = int(y);
 	const float rx = x - ix;
