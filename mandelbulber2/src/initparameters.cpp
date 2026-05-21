@@ -239,11 +239,15 @@ void InitParams(std::shared_ptr<cParameterContainer> par)
 		par->addParam("mutation_warp_frequency", i, 1.0, 0.001, 100.0, morphAkima, paramStandard);
 		par->addParam("mutation_warp_amplitude", i, 0.0, 0.0, 100.0, morphAkima, paramStandard);
 		// Math injection
-		par->addParam("mutation_math_type", i, 0, 0, 11, morphAkima, paramStandard);
+		par->addParam("mutation_math_type", i, 0, 0, 23, morphAkima, paramStandard);
 		par->addParam("mutation_math_p1", i, 2.0, -100.0, 100.0, morphAkima, paramStandard);
 		par->addParam("mutation_math_p2", i, 0.0, -100.0, 100.0, morphAkima, paramStandard);
 		par->addParam("mutation_math_p3", i, 0.0, -100.0, 100.0, morphAkima, paramStandard);
 		par->addParam("mutation_math_p4", i, 0.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_math_p5", i, 0.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_math_p6", i, 0.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_math_p7", i, 0.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_math_p8", i, 0.0, -100.0, 100.0, morphAkima, paramStandard);
 		par->addParam("mutation_math_mix", i, 1.0, 0.0, 1.0, morphAkima, paramStandard);
 		// Output control
 		par->addParam("mutation_z_mix", i, 1.0, 0.0, 1.0, morphAkima, paramStandard);

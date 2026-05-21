@@ -630,6 +630,293 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 							mathZ.y = z.y;
 							break;
 						}
+						case mutMathSphereInversion3D:
+						{
+							// T(x) = c + r²*(x-c)/|x-c|²
+							double cx = mut.mathP1, cy = mut.mathP2, cz = mut.mathP3;
+							double r = mut.mathP4 != 0.0 ? mut.mathP4 : 1.0;
+							double dx = z.x - cx, dy = z.y - cy, dz = z.z - cz;
+							double d2 = dx*dx + dy*dy + dz*dz;
+							if (d2 > 1e-21)
+							{
+								double factor = r * r / d2;
+								mathZ.x = cx + dx * factor;
+								mathZ.y = cy + dy * factor;
+								mathZ.z = cz + dz * factor;
+								aux.DE *= factor;
+							}
+							break;
+						}
+						case mutMathLoxodromic:
+						{
+							// s * R_axis(θ) * v — spiral rotation + scale
+							double s = mut.mathP1 != 0.0 ? mut.mathP1 : 1.0;
+							double theta = mut.mathP2 * M_PI / 180.0;
+							// rotation axis from P3,P4 (spherical angles for axis)
+							double axPhi = mut.mathP3 * M_PI / 180.0;
+							double axPsi = mut.mathP4 * M_PI / 180.0;
+							double ax = cos(axPhi) * cos(axPsi);
+							double ay = cos(axPhi) * sin(axPsi);
+							double az = sin(axPhi);
+							// Rodrigues rotation
+							double ct = cos(theta), st = sin(theta);
+							double dot = z.x*ax + z.y*ay + z.z*az;
+							double crx = ay*z.z - az*z.y;
+							double cry = az*z.x - ax*z.z;
+							double crz = ax*z.y - ay*z.x;
+							mathZ.x = (z.x * ct + crx * st + ax * dot * (1.0 - ct)) * s;
+							mathZ.y = (z.y * ct + cry * st + ay * dot * (1.0 - ct)) * s;
+							mathZ.z = (z.z * ct + crz * st + az * dot * (1.0 - ct)) * s;
+							aux.DE *= fabs(s);
+							break;
+						}
+						case mutMathParabolic:
+						{
+							// horocycle: (x+a, y+b, z) / (1 + c*z)
+							double a = mut.mathP1, b = mut.mathP2, c = mut.mathP3;
+							double denom = 1.0 + c * z.z;
+							if (fabs(denom) > 1e-21)
+							{
+								mathZ.x = (z.x + a) / denom;
+								mathZ.y = (z.y + b) / denom;
+								mathZ.z = z.z / denom;
+								aux.DE /= fabs(denom);
+							}
+							break;
+						}
+						case mutMathSchottkyDual:
+						{
+							// dual sphere inversions: 2 spheres
+							double c1x = mut.mathP1, c1y = mut.mathP2, c1z = mut.mathP3;
+							double r1 = mut.mathP4 != 0.0 ? mut.mathP4 : 1.0;
+							double c2x = mut.mathP5, c2y = mut.mathP6, c2z = mut.mathP7;
+							double r2 = mut.mathP8 != 0.0 ? mut.mathP8 : 1.0;
+							// sphere 1
+							double dx1 = z.x - c1x, dy1 = z.y - c1y, dz1 = z.z - c1z;
+							double d1sq = dx1*dx1 + dy1*dy1 + dz1*dz1;
+							if (d1sq < r1 * r1 && d1sq > 1e-21)
+							{
+								double f = r1 * r1 / d1sq;
+								mathZ.x = c1x + dx1 * f;
+								mathZ.y = c1y + dy1 * f;
+								mathZ.z = c1z + dz1 * f;
+								aux.DE *= f;
+								break;
+							}
+							// sphere 2
+							double dx2 = z.x - c2x, dy2 = z.y - c2y, dz2 = z.z - c2z;
+							double d2sq = dx2*dx2 + dy2*dy2 + dz2*dz2;
+							if (d2sq < r2 * r2 && d2sq > 1e-21)
+							{
+								double f = r2 * r2 / d2sq;
+								mathZ.x = c2x + dx2 * f;
+								mathZ.y = c2y + dy2 * f;
+								mathZ.z = c2z + dz2 * f;
+								aux.DE *= f;
+							}
+							break;
+						}
+						case mutMathFibonacciWord:
+						{
+							// aperiodic Fibonacci word: selects between T1(scale+rot) and T2(fold)
+							// Fibonacci word: 0,1,0,0,1,0,1,0,0,1,0,0,1,...
+							int n = i % 64;
+							int a_fib = 1, b_fib = 0, temp_fib;
+							for (int fi = 0; fi < n; fi++)
+							{
+								temp_fib = a_fib; a_fib = a_fib + b_fib; b_fib = temp_fib;
+							}
+							bool useT1 = (a_fib % 2 == 0);
+							if (useT1)
+							{
+								// T1: scale + rotation by P1 angle around Z
+								double angle = mut.mathP1 * M_PI / 180.0;
+								double sc = mut.mathP2 != 0.0 ? mut.mathP2 : 1.0;
+								double ca = cos(angle), sa = sin(angle);
+								mathZ.x = (z.x * ca - z.y * sa) * sc;
+								mathZ.y = (z.x * sa + z.y * ca) * sc;
+								mathZ.z = z.z * sc;
+								aux.DE *= fabs(sc);
+							}
+							else
+							{
+								// T2: box fold with limit P3, value P4
+								double lim = mut.mathP3 != 0.0 ? mut.mathP3 : 1.0;
+								double val = mut.mathP4 != 0.0 ? mut.mathP4 : 2.0;
+								if (z.x > lim) mathZ.x = val - z.x;
+								else if (z.x < -lim) mathZ.x = -val - z.x;
+								if (z.y > lim) mathZ.y = val - z.y;
+								else if (z.y < -lim) mathZ.y = -val - z.y;
+								if (z.z > lim) mathZ.z = val - z.z;
+								else if (z.z < -lim) mathZ.z = -val - z.z;
+							}
+							break;
+						}
+						case mutMathMaskitBend:
+						{
+							// Maskit: μ + 1/z generalized to 3D
+							double muRe = mut.mathP1, muIm = mut.mathP2;
+							double bendAngle = mut.mathP3 * M_PI / 180.0;
+							double r2 = z.x*z.x + z.y*z.y + z.z*z.z;
+							if (r2 > 1e-21)
+							{
+								// inversion: 1/z in 3D = z̄/|z|²
+								double invX = z.x / r2, invY = -z.y / r2, invZ = -z.z / r2;
+								mathZ.x = muRe + invX;
+								mathZ.y = muIm + invY;
+								mathZ.z = invZ;
+								// bending: rotate around geodesic
+								if (fabs(bendAngle) > 1e-12)
+								{
+									double cb = cos(bendAngle), sb = sin(bendAngle);
+									double ty = mathZ.y * cb - mathZ.z * sb;
+									double tz = mathZ.y * sb + mathZ.z * cb;
+									mathZ.y = ty; mathZ.z = tz;
+								}
+								aux.DE = aux.DE / r2 + 1.0;
+							}
+							break;
+						}
+						case mutMathEllipsoidInversion:
+						{
+							// T(x) = c + A*(x-c)/|A*(x-c)|²  with A = diag(ax,ay,az)
+							double ax = mut.mathP1 != 0.0 ? mut.mathP1 : 1.0;
+							double ay = mut.mathP2 != 0.0 ? mut.mathP2 : 1.0;
+							double az = mut.mathP3 != 0.0 ? mut.mathP3 : 1.0;
+							double r = mut.mathP4 != 0.0 ? mut.mathP4 : 1.0;
+							// scale each axis
+							double sx = z.x * ax, sy = z.y * ay, sz = z.z * az;
+							double d2 = sx*sx + sy*sy + sz*sz;
+							if (d2 > 1e-21)
+							{
+								double factor = r * r / d2;
+								mathZ.x = sx * factor / ax;
+								mathZ.y = sy * factor / ay;
+								mathZ.z = sz * factor / az;
+								aux.DE *= factor;
+							}
+							break;
+						}
+						case mutMathTorusInversion:
+						{
+							// inversion in torus: reflect through torus surface
+							double R = mut.mathP1 != 0.0 ? mut.mathP1 : 2.0; // major radius
+							double r = mut.mathP2 != 0.0 ? mut.mathP2 : 1.0; // minor radius
+							double rxy = sqrt(z.x*z.x + z.y*z.y);
+							if (rxy > 1e-21)
+							{
+								// distance from torus center ring
+								double dRing = rxy - R;
+								double dTorus = sqrt(dRing*dRing + z.z*z.z);
+								if (dTorus > 1e-21)
+								{
+									double factor = r * r / (dTorus * dTorus);
+									double scale = (R + dRing * factor) / rxy;
+									mathZ.x = z.x * scale;
+									mathZ.y = z.y * scale;
+									mathZ.z = z.z * factor;
+									aux.DE *= factor;
+								}
+							}
+							break;
+						}
+						case mutMathQuatJuliaKleinian:
+						{
+							// q² + c in quaternion space: q = (P4, x, y, z)
+							double qr = mut.mathP4, qi = z.x, qj = z.y, qk = z.z;
+							double nr = qr*qr - qi*qi - qj*qj - qk*qk;
+							double ni = 2.0*qr*qi;
+							double nj = 2.0*qr*qj;
+							double nk = 2.0*qr*qk;
+							mathZ.x = ni + mut.mathP1;
+							mathZ.y = nj + mut.mathP2;
+							mathZ.z = nk + mut.mathP3;
+							(void)nr;
+							aux.DE = 2.0 * aux.r * aux.DE + 1.0;
+							break;
+						}
+						case mutMathPoincareBall:
+						{
+							// H³ Poincaré ball: map Euclidean to hyperbolic
+							double r2 = z.x*z.x + z.y*z.y + z.z*z.z;
+							double curvature = mut.mathP1 != 0.0 ? mut.mathP1 : 1.0;
+							if (r2 < 1.0 - 1e-12)
+							{
+								// Poincaré metric factor: 2/(1-|z|²)
+								double metricFactor = 2.0 / (1.0 - r2);
+								double hypR = curvature * log((1.0 + sqrt(r2)) / (1.0 - sqrt(r2)));
+								double scale = tanh(hypR * mut.mathP2) / (sqrt(r2) + 1e-21);
+								mathZ.x = z.x * scale;
+								mathZ.y = z.y * scale;
+								mathZ.z = z.z * scale;
+								aux.DE *= metricFactor * fabs(scale);
+							}
+							else
+							{
+								// clamp to ball boundary
+								double rr = sqrt(r2);
+								double scale = 0.999 / rr;
+								mathZ.x = z.x * scale;
+								mathZ.y = z.y * scale;
+								mathZ.z = z.z * scale;
+							}
+							break;
+						}
+						case mutMathLorentzBoost:
+						{
+							// SO(3,1) Lorentz transform: boost in direction (P1,P2,P3), velocity P4
+							double vx = mut.mathP1, vy = mut.mathP2, vz = mut.mathP3;
+							double v = mut.mathP4;
+							double vLen = sqrt(vx*vx + vy*vy + vz*vz);
+							if (vLen > 1e-21 && fabs(v) < 1.0 - 1e-12)
+							{
+								vx /= vLen; vy /= vLen; vz /= vLen;
+								double gamma = 1.0 / sqrt(1.0 - v*v);
+								// w = sqrt(1 + |z|²) for hyperboloid model
+								double w = sqrt(1.0 + z.x*z.x + z.y*z.y + z.z*z.z);
+								// boost: parallel component scales by gamma
+								double zDotV = z.x*vx + z.y*vy + z.z*vz;
+								double parNew = gamma * (zDotV - v * w);
+								double wNew = gamma * (w - v * zDotV);
+								// reconstruct z from boosted components
+								mathZ.x = z.x + (parNew - zDotV) * vx;
+								mathZ.y = z.y + (parNew - zDotV) * vy;
+								mathZ.z = z.z + (parNew - zDotV) * vz;
+								// project back: normalize so w = sqrt(1+|z|²)
+								if (wNew > 1e-21)
+								{
+									double projScale = sqrt(wNew*wNew - 1.0) / 
+										(sqrt(mathZ.x*mathZ.x + mathZ.y*mathZ.y + mathZ.z*mathZ.z) + 1e-21);
+									if (projScale > 0.0 && projScale < 100.0)
+									{
+										mathZ.x *= projScale;
+										mathZ.y *= projScale;
+										mathZ.z *= projScale;
+									}
+								}
+								aux.DE *= gamma;
+							}
+							break;
+						}
+						case mutMathConformeFlow:
+						{
+							// g' = e^(2u(x)) * g — conformal deformation
+							// u(x) = P1 * harmonic potential + P2 * radial + P3 * sinusoidal
+							double r = sqrt(z.x*z.x + z.y*z.y + z.z*z.z);
+							double harmonic = (r > 1e-21) ? mut.mathP1 / r : 0.0;
+							double radial = mut.mathP2 * r;
+							double sinusoidal = mut.mathP3 * sin(r * mut.mathP4);
+							double u = harmonic + radial + sinusoidal;
+							double confFactor = exp(2.0 * u);
+							// clamp to prevent explosion
+							if (confFactor > 100.0) confFactor = 100.0;
+							if (confFactor < 0.01) confFactor = 0.01;
+							mathZ.x = z.x * confFactor;
+							mathZ.y = z.y * confFactor;
+							mathZ.z = z.z * confFactor;
+							aux.DE *= confFactor;
+							break;
+						}
 						default: break;
 					}
 					if (mut.mathMix < 1.0)

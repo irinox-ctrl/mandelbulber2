@@ -2181,10 +2181,22 @@ Static: Fixed weight (simple). Iteration: Weight changes over iterations (morphi
         <item><property name="text"><string>Power N</string></property></item>
         <item><property name="text"><string>Complex Mul</string></property></item>
         <item><property name="text"><string>Quaternion Mul</string></property></item>
-        <item><property name="text"><string>Bilinear</string></property></item>
+        <item><property name="text"><string>Bilinear (Möbius)</string></property></item>
         <item><property name="text"><string>Inv Cylindrical</string></property></item>
         <item><property name="text"><string>Spiral Power</string></property></item>
         <item><property name="text"><string>Hyperbolic Rot</string></property></item>
+        <item><property name="text"><string>Sphere Inversion 3D</string></property></item>
+        <item><property name="text"><string>Loxodromic</string></property></item>
+        <item><property name="text"><string>Parabolic (Horocycle)</string></property></item>
+        <item><property name="text"><string>Schottky Dual</string></property></item>
+        <item><property name="text"><string>Fibonacci Word</string></property></item>
+        <item><property name="text"><string>Maskit Bend</string></property></item>
+        <item><property name="text"><string>Ellipsoid Inversion</string></property></item>
+        <item><property name="text"><string>Torus Inversion</string></property></item>
+        <item><property name="text"><string>Quat Julia-Kleinian</string></property></item>
+        <item><property name="text"><string>Poincaré Ball (H³)</string></property></item>
+        <item><property name="text"><string>Lorentz Boost</string></property></item>
+        <item><property name="text"><string>Conformal Flow</string></property></item>
        </widget>
       </item>
       <item row="12" column="3">
@@ -2267,15 +2279,66 @@ Static: Fixed weight (simple). Iteration: Weight changes over iterations (morphi
         <property name="toolTip"><string>P4 (quaternion w, bilinear d)</string></property>
        </widget>
       </item>
-      <!-- Z-mix and DE scale -->
+      <!-- P5-P8 extended params -->
       <item row="14" column="0">
+       <widget class="QLabel" name="label_mutation_math_p5">
+        <property name="text"><string>P5:</string></property>
+        <property name="alignment"><set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set></property>
+       </widget>
+      </item>
+      <item row="14" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_math_p5">
+        <property name="decimals"><number>4</number></property>
+        <property name="minimum"><double>-100.000000000000000</double></property>
+        <property name="maximum"><double>100.000000000000000</double></property>
+        <property name="singleStep"><double>0.100000000000000</double></property>
+       </widget>
+      </item>
+      <item row="14" column="2">
+       <widget class="QLabel" name="label_mutation_math_p6">
+        <property name="text"><string>P6:</string></property>
+        <property name="alignment"><set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set></property>
+       </widget>
+      </item>
+      <item row="14" column="3">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_math_p6">
+        <property name="decimals"><number>4</number></property>
+        <property name="minimum"><double>-100.000000000000000</double></property>
+        <property name="maximum"><double>100.000000000000000</double></property>
+        <property name="singleStep"><double>0.100000000000000</double></property>
+       </widget>
+      </item>
+      <item row="14" column="4">
+       <widget class="QLabel" name="label_mutation_math_p7">
+        <property name="text"><string>P7:</string></property>
+        <property name="alignment"><set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set></property>
+       </widget>
+      </item>
+      <item row="14" column="5">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_math_p7">
+        <property name="decimals"><number>4</number></property>
+        <property name="minimum"><double>-100.000000000000000</double></property>
+        <property name="maximum"><double>100.000000000000000</double></property>
+        <property name="singleStep"><double>0.100000000000000</double></property>
+       </widget>
+      </item>
+      <item row="14" column="6">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_math_p8">
+        <property name="decimals"><number>4</number></property>
+        <property name="minimum"><double>-100.000000000000000</double></property>
+        <property name="maximum"><double>100.000000000000000</double></property>
+        <property name="singleStep"><double>0.100000000000000</double></property>
+       </widget>
+      </item>
+      <!-- Z-mix and DE scale -->
+      <item row="15" column="0">
        <widget class="QLabel" name="label_mutation_z_mix">
         <property name="text">
          <string>Z-Mix:</string>
         </property>
        </widget>
       </item>
-      <item row="12" column="1" colspan="2">
+      <item row="15" column="1" colspan="2">
        <widget class="MyDoubleSpinBox" name="spinbox_mutation_z_mix">
         <property name="decimals">
          <number>4</number>
@@ -2294,7 +2357,7 @@ Static: Fixed weight (simple). Iteration: Weight changes over iterations (morphi
         </property>
        </widget>
       </item>
-      <item row="14" column="3">
+      <item row="15" column="3">
        <widget class="QLabel" name="label_mutation_de_scale">
         <property name="text">
          <string>DE Scale:</string>
@@ -2304,7 +2367,7 @@ Static: Fixed weight (simple). Iteration: Weight changes over iterations (morphi
         </property>
        </widget>
       </item>
-      <item row="14" column="4" colspan="3">
+      <item row="15" column="4" colspan="3">
        <widget class="MyDoubleSpinBox" name="spinbox_mutation_de_scale">
         <property name="decimals">
          <number>4</number>

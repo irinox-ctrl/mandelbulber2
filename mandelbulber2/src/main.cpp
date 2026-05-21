@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
 	InitSystem();
 
 	// Advanced Weight System build identifier
-	qDebug() << "Advanced Weight System v6.2 - build 20250520 - Math Injection (12 new math ops: sin^p, cosh, exp, log-spiral, power-N, complex, quaternion, bilinear, inv-cyl, spiral, hyperbolic)";
+	qDebug() << "Advanced Weight System v6.3 - build 20250520 - 24 Math Injection ops (Möbius, Sphere Inv, Loxodromic, Schottky, Poincaré H³, Lorentz SO(3,1), Conformal Flow)";
 
 	// configure debug output
 	qInstallMessageHandler(myMessageOutput);

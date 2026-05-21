@@ -213,6 +213,10 @@ typedef struct
 	cl_float mathP2;
 	cl_float mathP3;
 	cl_float mathP4;
+	cl_float mathP5;
+	cl_float mathP6;
+	cl_float mathP7;
+	cl_float mathP8;
 	cl_float mathMix;
 	// Output control
 	cl_float zMix;

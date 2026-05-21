@@ -845,6 +845,259 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						mathZ.y = z.y;
 						break;
 					}
+					case 12: // SphereInversion3D
+					{
+						float cx = mut->mathP1, cy = mut->mathP2, cz = mut->mathP3;
+						float r = (mut->mathP4 != 0.0f) ? mut->mathP4 : 1.0f;
+						float dx = z.x - cx, dy = z.y - cy, dz = z.z - cz;
+						float d2 = dx*dx + dy*dy + dz*dz;
+						if (d2 > 1e-21f)
+						{
+							float factor = r * r / d2;
+							mathZ.x = cx + dx * factor;
+							mathZ.y = cy + dy * factor;
+							mathZ.z = cz + dz * factor;
+							aux.DE *= factor;
+						}
+						break;
+					}
+					case 13: // Loxodromic
+					{
+						float s = (mut->mathP1 != 0.0f) ? mut->mathP1 : 1.0f;
+						float theta = mut->mathP2 * M_PI_F / 180.0f;
+						float axPhi = mut->mathP3 * M_PI_F / 180.0f;
+						float axPsi = mut->mathP4 * M_PI_F / 180.0f;
+						float axX = cos(axPhi) * cos(axPsi);
+						float axY = cos(axPhi) * sin(axPsi);
+						float axZ = sin(axPhi);
+						float ct = cos(theta), st = sin(theta);
+						float dot = z.x*axX + z.y*axY + z.z*axZ;
+						float crx = axY*z.z - axZ*z.y;
+						float cry = axZ*z.x - axX*z.z;
+						float crz = axX*z.y - axY*z.x;
+						mathZ.x = (z.x * ct + crx * st + axX * dot * (1.0f - ct)) * s;
+						mathZ.y = (z.y * ct + cry * st + axY * dot * (1.0f - ct)) * s;
+						mathZ.z = (z.z * ct + crz * st + axZ * dot * (1.0f - ct)) * s;
+						aux.DE *= fabs(s);
+						break;
+					}
+					case 14: // Parabolic
+					{
+						float a = mut->mathP1, b = mut->mathP2, c = mut->mathP3;
+						float denom = 1.0f + c * z.z;
+						if (fabs(denom) > 1e-21f)
+						{
+							mathZ.x = (z.x + a) / denom;
+							mathZ.y = (z.y + b) / denom;
+							mathZ.z = z.z / denom;
+							aux.DE /= fabs(denom);
+						}
+						break;
+					}
+					case 15: // SchottkyDual
+					{
+						float c1x = mut->mathP1, c1y = mut->mathP2, c1z = mut->mathP3;
+						float r1 = (mut->mathP4 != 0.0f) ? mut->mathP4 : 1.0f;
+						float c2x = mut->mathP5, c2y = mut->mathP6, c2z = mut->mathP7;
+						float r2 = (mut->mathP8 != 0.0f) ? mut->mathP8 : 1.0f;
+						float dx1 = z.x - c1x, dy1 = z.y - c1y, dz1 = z.z - c1z;
+						float d1sq = dx1*dx1 + dy1*dy1 + dz1*dz1;
+						if (d1sq < r1 * r1 && d1sq > 1e-21f)
+						{
+							float f = r1 * r1 / d1sq;
+							mathZ.x = c1x + dx1 * f;
+							mathZ.y = c1y + dy1 * f;
+							mathZ.z = c1z + dz1 * f;
+							aux.DE *= f;
+							break;
+						}
+						float dx2 = z.x - c2x, dy2 = z.y - c2y, dz2 = z.z - c2z;
+						float d2sq = dx2*dx2 + dy2*dy2 + dz2*dz2;
+						if (d2sq < r2 * r2 && d2sq > 1e-21f)
+						{
+							float f = r2 * r2 / d2sq;
+							mathZ.x = c2x + dx2 * f;
+							mathZ.y = c2y + dy2 * f;
+							mathZ.z = c2z + dz2 * f;
+							aux.DE *= f;
+						}
+						break;
+					}
+					case 16: // FibonacciWord
+					{
+						int n = i % 64;
+						int a_fib = 1, b_fib = 0, temp_fib;
+						for (int fi = 0; fi < n; fi++)
+						{ temp_fib = a_fib; a_fib = a_fib + b_fib; b_fib = temp_fib; }
+						bool useT1 = (a_fib % 2 == 0);
+						if (useT1)
+						{
+							float angle = mut->mathP1 * M_PI_F / 180.0f;
+							float sc = (mut->mathP2 != 0.0f) ? mut->mathP2 : 1.0f;
+							float ca = cos(angle), sa = sin(angle);
+							mathZ.x = (z.x * ca - z.y * sa) * sc;
+							mathZ.y = (z.x * sa + z.y * ca) * sc;
+							mathZ.z = z.z * sc;
+							aux.DE *= fabs(sc);
+						}
+						else
+						{
+							float lim = (mut->mathP3 != 0.0f) ? mut->mathP3 : 1.0f;
+							float val = (mut->mathP4 != 0.0f) ? mut->mathP4 : 2.0f;
+							if (z.x > lim) mathZ.x = val - z.x;
+							else if (z.x < -lim) mathZ.x = -val - z.x;
+							if (z.y > lim) mathZ.y = val - z.y;
+							else if (z.y < -lim) mathZ.y = -val - z.y;
+							if (z.z > lim) mathZ.z = val - z.z;
+							else if (z.z < -lim) mathZ.z = -val - z.z;
+						}
+						break;
+					}
+					case 17: // MaskitBend
+					{
+						float muRe = mut->mathP1, muIm = mut->mathP2;
+						float bendAngle = mut->mathP3 * M_PI_F / 180.0f;
+						float r2 = z.x*z.x + z.y*z.y + z.z*z.z;
+						if (r2 > 1e-21f)
+						{
+							float invX = z.x / r2, invY = -z.y / r2, invZ = -z.z / r2;
+							mathZ.x = muRe + invX;
+							mathZ.y = muIm + invY;
+							mathZ.z = invZ;
+							if (fabs(bendAngle) > 1e-12f)
+							{
+								float cb = cos(bendAngle), sb = sin(bendAngle);
+								float ty = mathZ.y * cb - mathZ.z * sb;
+								float tz = mathZ.y * sb + mathZ.z * cb;
+								mathZ.y = ty; mathZ.z = tz;
+							}
+							aux.DE = aux.DE / r2 + 1.0f;
+						}
+						break;
+					}
+					case 18: // EllipsoidInversion
+					{
+						float axX = (mut->mathP1 != 0.0f) ? mut->mathP1 : 1.0f;
+						float axY = (mut->mathP2 != 0.0f) ? mut->mathP2 : 1.0f;
+						float axZ = (mut->mathP3 != 0.0f) ? mut->mathP3 : 1.0f;
+						float r = (mut->mathP4 != 0.0f) ? mut->mathP4 : 1.0f;
+						float sx = z.x * axX, sy = z.y * axY, sz = z.z * axZ;
+						float d2 = sx*sx + sy*sy + sz*sz;
+						if (d2 > 1e-21f)
+						{
+							float factor = r * r / d2;
+							mathZ.x = sx * factor / axX;
+							mathZ.y = sy * factor / axY;
+							mathZ.z = sz * factor / axZ;
+							aux.DE *= factor;
+						}
+						break;
+					}
+					case 19: // TorusInversion
+					{
+						float R = (mut->mathP1 != 0.0f) ? mut->mathP1 : 2.0f;
+						float r = (mut->mathP2 != 0.0f) ? mut->mathP2 : 1.0f;
+						float rxy = native_sqrt(z.x*z.x + z.y*z.y);
+						if (rxy > 1e-21f)
+						{
+							float dRing = rxy - R;
+							float dTorus = native_sqrt(dRing*dRing + z.z*z.z);
+							if (dTorus > 1e-21f)
+							{
+								float factor = r * r / (dTorus * dTorus);
+								float scale = (R + dRing * factor) / rxy;
+								mathZ.x = z.x * scale;
+								mathZ.y = z.y * scale;
+								mathZ.z = z.z * factor;
+								aux.DE *= factor;
+							}
+						}
+						break;
+					}
+					case 20: // QuatJuliaKleinian
+					{
+						float qr = mut->mathP4, qi = z.x, qj = z.y, qk = z.z;
+						float ni = 2.0f*qr*qi;
+						float nj = 2.0f*qr*qj;
+						float nk = 2.0f*qr*qk;
+						mathZ.x = ni + mut->mathP1;
+						mathZ.y = nj + mut->mathP2;
+						mathZ.z = nk + mut->mathP3;
+						aux.DE = 2.0f * aux.r * aux.DE + 1.0f;
+						break;
+					}
+					case 21: // PoincareBall
+					{
+						float r2 = z.x*z.x + z.y*z.y + z.z*z.z;
+						float curvature = (mut->mathP1 != 0.0f) ? mut->mathP1 : 1.0f;
+						if (r2 < 1.0f - 1e-12f)
+						{
+							float metricFactor = 2.0f / (1.0f - r2);
+							float sr = native_sqrt(r2);
+							float hypR = curvature * native_log((1.0f + sr) / (1.0f - sr));
+							float scale = tanh(hypR * mut->mathP2) / (sr + 1e-21f);
+							mathZ.x = z.x * scale;
+							mathZ.y = z.y * scale;
+							mathZ.z = z.z * scale;
+							aux.DE *= metricFactor * fabs(scale);
+						}
+						else
+						{
+							float rr = native_sqrt(r2);
+							float scale = 0.999f / rr;
+							mathZ.x = z.x * scale;
+							mathZ.y = z.y * scale;
+							mathZ.z = z.z * scale;
+						}
+						break;
+					}
+					case 22: // LorentzBoost
+					{
+						float vx = mut->mathP1, vy = mut->mathP2, vz = mut->mathP3;
+						float v = mut->mathP4;
+						float vLen = native_sqrt(vx*vx + vy*vy + vz*vz);
+						if (vLen > 1e-21f && fabs(v) < 1.0f - 1e-12f)
+						{
+							vx /= vLen; vy /= vLen; vz /= vLen;
+							float gamma = 1.0f / native_sqrt(1.0f - v*v);
+							float w = native_sqrt(1.0f + z.x*z.x + z.y*z.y + z.z*z.z);
+							float zDotV = z.x*vx + z.y*vy + z.z*vz;
+							float parNew = gamma * (zDotV - v * w);
+							float wNew = gamma * (w - v * zDotV);
+							mathZ.x = z.x + (parNew - zDotV) * vx;
+							mathZ.y = z.y + (parNew - zDotV) * vy;
+							mathZ.z = z.z + (parNew - zDotV) * vz;
+							if (wNew > 1e-21f)
+							{
+								float projScale = native_sqrt(wNew*wNew - 1.0f) /
+									(native_sqrt(mathZ.x*mathZ.x + mathZ.y*mathZ.y + mathZ.z*mathZ.z) + 1e-21f);
+								if (projScale > 0.0f && projScale < 100.0f)
+								{
+									mathZ.x *= projScale;
+									mathZ.y *= projScale;
+									mathZ.z *= projScale;
+								}
+							}
+							aux.DE *= gamma;
+						}
+						break;
+					}
+					case 23: // ConformeFlow
+					{
+						float r = native_sqrt(z.x*z.x + z.y*z.y + z.z*z.z);
+						float harmonic = (r > 1e-21f) ? mut->mathP1 / r : 0.0f;
+						float radial = mut->mathP2 * r;
+						float sinusoidal = mut->mathP3 * native_sin(r * mut->mathP4);
+						float u = harmonic + radial + sinusoidal;
+						float confFactor = exp(2.0f * u);
+						if (confFactor > 100.0f) confFactor = 100.0f;
+						if (confFactor < 0.01f) confFactor = 0.01f;
+						mathZ.x = z.x * confFactor;
+						mathZ.y = z.y * confFactor;
+						mathZ.z = z.z * confFactor;
+						aux.DE *= confFactor;
+						break;
+					}
 				}
 				if (mut->mathMix < 1.0f)
 				{

@@ -203,17 +203,30 @@ enum enumMutationFoldPosition
 enum enumMutationMathType
 {
 	mutMathNone = 0,
-	mutMathSinPower = 1,        // z_i = sin(z_i)^power — hyperbolic sin landscape
-	mutMathCoshField = 2,       // z_i += amplitude * cosh(z_j * freq) — hyperbolic cosine field
-	mutMathExpMap = 3,          // z = exp(z) in 3D — exponential conformal map
-	mutMathLogSpiral = 4,       // z = log(|z|) + i*atan2 spiral — logarithmic conformal map
-	mutMathPowerN = 5,          // z = r^n * (cos(nθ), sin(nθ), cos(nφ)) — generalized power
-	mutMathComplexMul = 6,      // z = z * c_param in complex XY plane — complex multiplication
-	mutMathQuaternionMul = 7,   // z = z * q_param quaternion — 4D rotation/scaling
-	mutMathBilinear = 8,        // z = (a*z + b) / (c*z + d) — Möbius-like conformal map
-	mutMathInvCylindr = 9,      // cylindrical inversion — r_xy → 1/r_xy, z preserved
-	mutMathSpiralPower = 10,    // continuous rotation + scaling per iteration
-	mutMathHyperbolicRot = 11   // hyperbolic rotation (Lorentz boost) in XZ plane
+	mutMathSinPower = 1,
+	mutMathCoshField = 2,
+	mutMathExpMap = 3,
+	mutMathLogSpiral = 4,
+	mutMathPowerN = 5,
+	mutMathComplexMul = 6,
+	mutMathQuaternionMul = 7,
+	mutMathBilinear = 8,
+	mutMathInvCylindr = 9,
+	mutMathSpiralPower = 10,
+	mutMathHyperbolicRot = 11,
+	// v6.3 — Advanced Kleinian/Conformal math
+	mutMathSphereInversion3D = 12,  // T(x) = c + r²(x-c)/|x-c|² — full 3D sphere inversion
+	mutMathLoxodromic = 13,         // s * R_axis(θ) * v — spiral scale + rotation
+	mutMathParabolic = 14,          // horocycle: (x+a, y+b, z)/(1+c*z)
+	mutMathSchottkyDual = 15,       // dual sphere inversions (2 spheres)
+	mutMathFibonacciWord = 16,      // aperiodic automaton: Fibonacci word selects T1/T2
+	mutMathMaskitBend = 17,         // bending along geodesic: μ + 1/z generalized
+	mutMathEllipsoidInversion = 18, // T(x) = c + A*(x-c)/|A*(x-c)|²
+	mutMathTorusInversion = 19,     // inversion in torus coordinates
+	mutMathQuatJuliaKleinian = 20,  // q² + c quaternion Julia within Kleinian
+	mutMathPoincareBall = 21,       // H³ Poincaré ball model mapping
+	mutMathLorentzBoost = 22,       // SO(3,1) Lorentz transform + 4D→3D projection
+	mutMathConformeFlow = 23        // g' = e^(2u(x)) * g conformal deformation
 };
 
 // Per-formula mutation parameters — universal pre/post processing on ANY formula
@@ -243,10 +256,14 @@ struct sFormulaMutationParams
 	double warpAmplitude;
 	// Math injection — new mathematical operations
 	enumMutationMathType mathType;
-	double mathP1;     // primary parameter (power, frequency, real part, etc.)
-	double mathP2;     // secondary parameter (amplitude, imaginary part, etc.)
-	double mathP3;     // tertiary parameter (phase, z component, etc.)
-	double mathP4;     // quaternary parameter (w component for quaternion, etc.)
+	double mathP1;     // primary parameter
+	double mathP2;     // secondary parameter
+	double mathP3;     // tertiary parameter
+	double mathP4;     // quaternary parameter
+	double mathP5;     // extended: 2nd sphere cx / ellipsoid axis x / torus R
+	double mathP6;     // extended: 2nd sphere cy / ellipsoid axis y / torus r
+	double mathP7;     // extended: 2nd sphere cz / ellipsoid axis z / boost velocity
+	double mathP8;     // extended: 2nd sphere r  / conformal potential scale
 	double mathMix;    // 0-1: blend between original z and math-transformed z
 	// Output control
 	double zMix;

@@ -190,6 +190,10 @@ cNineFractals::cNineFractals(std::shared_ptr<const cFractalContainer> par,
 		mutationParams[i].mathP2 = generalPar->Get<double>("mutation_math_p2", i + 1);
 		mutationParams[i].mathP3 = generalPar->Get<double>("mutation_math_p3", i + 1);
 		mutationParams[i].mathP4 = generalPar->Get<double>("mutation_math_p4", i + 1);
+		mutationParams[i].mathP5 = generalPar->Get<double>("mutation_math_p5", i + 1);
+		mutationParams[i].mathP6 = generalPar->Get<double>("mutation_math_p6", i + 1);
+		mutationParams[i].mathP7 = generalPar->Get<double>("mutation_math_p7", i + 1);
+		mutationParams[i].mathP8 = generalPar->Get<double>("mutation_math_p8", i + 1);
 		mutationParams[i].mathMix = generalPar->Get<double>("mutation_math_mix", i + 1);
 		mutationParams[i].zMix = generalPar->Get<double>("mutation_z_mix", i + 1);
 		mutationParams[i].deScale = generalPar->Get<double>("mutation_de_scale", i + 1);
@@ -1052,6 +1056,10 @@ void cNineFractals::CopyToOpenclData(sClFractalSequence *sequence) const
 		sequence->mutationParams[i].mathP2 = mutationParams[i].mathP2;
 		sequence->mutationParams[i].mathP3 = mutationParams[i].mathP3;
 		sequence->mutationParams[i].mathP4 = mutationParams[i].mathP4;
+		sequence->mutationParams[i].mathP5 = mutationParams[i].mathP5;
+		sequence->mutationParams[i].mathP6 = mutationParams[i].mathP6;
+		sequence->mutationParams[i].mathP7 = mutationParams[i].mathP7;
+		sequence->mutationParams[i].mathP8 = mutationParams[i].mathP8;
 		sequence->mutationParams[i].mathMix = mutationParams[i].mathMix;
 		sequence->mutationParams[i].zMix = mutationParams[i].zMix;
 		sequence->mutationParams[i].deScale = mutationParams[i].deScale;
