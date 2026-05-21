@@ -157,6 +157,27 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 	}
 	if (in.forcedMaxiter >= 0) maxN = in.forcedMaxiter;
 
+	// v7.5 — Julia start mode (z₀ override)
+	{
+		const sFormulaMutationParams &mut0 = fractals.GetMutationParams(0);
+		if (mut0.enabled && mut0.juliaStart != mutJuliaStartRay)
+		{
+			CVector4 c = aux.const_c;
+			switch (mut0.juliaStart)
+			{
+				case mutJuliaStartC:
+					z = c; break;
+				case mutJuliaStartRayPlusC:
+					z = z + c; break;
+				case mutJuliaStartZero:
+					aux.const_c = z; aux.c = z; z = CVector4(0.0, 0.0, 0.0, 0.0); break;
+				case mutJuliaStart4D:
+					z = CVector4(c.x, c.y, c.z, c.w); break;
+				default: break;
+			}
+		}
+	}
+
 	// main iteration loop
 	for (i = 0; i < maxN; i++)
 	{
@@ -1482,6 +1503,123 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 				}
 			}
 
+			// v7.5 — Julia pre-fold injection
+			if (mut.enabled && mut.juliaInjection != mutJuliaInjectNone
+				&& i >= mut.iterationStart && i < mut.iterationStop)
+			{
+				CVector4 juliaC = aux.const_c * mut.juliaCMul;
+
+				// C-transform
+				switch (mut.juliaCTransform)
+				{
+					case mutJuliaCSpherical:
+					{
+						double cLen = juliaC.Length();
+						if (cLen > 1e-21) juliaC = juliaC * (mut.juliaCRadius / cLen);
+						break;
+					}
+					case mutJuliaCMobius:
+					{
+						double denom = juliaC.Length() + mut.juliaCMobiusD;
+						if (fabs(denom) > 1e-21)
+							juliaC = (juliaC * mut.juliaCMobiusA + CVector4(mut.juliaCMobiusB, mut.juliaCMobiusB, mut.juliaCMobiusB, 0.0)) * (1.0 / denom);
+						break;
+					}
+					case mutJuliaCRotate:
+						juliaC = mut.juliaCRotMatrix.RotateVector(juliaC);
+						break;
+					case mutJuliaCPower:
+					{
+						double r = juliaC.Length();
+						if (r > 1e-21) {
+							double th = atan2(juliaC.y, juliaC.x);
+							double ph = acos(juliaC.z / r);
+							double rp = pow(r, mut.juliaCPower);
+							juliaC.x = rp * sin(ph * mut.juliaCPower) * cos(th * mut.juliaCPower);
+							juliaC.y = rp * sin(ph * mut.juliaCPower) * sin(th * mut.juliaCPower);
+							juliaC.z = rp * cos(ph * mut.juliaCPower);
+						}
+						break;
+					}
+					case mutJuliaCQuaternion:
+					{
+						double qw = cos(juliaC.Length() * 0.5);
+						double qs = (juliaC.Length() > 1e-21) ? sin(juliaC.Length() * 0.5) / juliaC.Length() : 0.0;
+						double qi = juliaC.x * qs, qj = juliaC.y * qs, qk = juliaC.z * qs;
+						double zw = 0.0;
+						double nw = qw*zw - qi*z.x - qj*z.y - qk*z.z;
+						double nx = qw*z.x + qi*zw + qj*z.z - qk*z.y;
+						double ny = qw*z.y - qi*z.z + qj*zw + qk*z.x;
+						double nz = qw*z.z + qi*z.y - qj*z.x + qk*zw;
+						juliaC = CVector4(nx, ny, nz, 0.0);
+						break;
+					}
+					default: break;
+				}
+
+				// Dynamic modulation
+				switch (mut.juliaDynamic)
+				{
+					case mutJuliaDynOrbitMod:
+						juliaC *= (1.0 + 0.1 * z.Length());
+						break;
+					case mutJuliaDynPulse:
+						juliaC *= sin((double)i * mut.juliaPulseFreq) * mut.juliaPulseAmp;
+						break;
+					case mutJuliaDynFoldTrigger:
+						if (z.Length() > fractals.GetBailout(sequence) * 0.5) juliaC *= 2.0;
+						break;
+					case mutJuliaDynAbsorb:
+						juliaC = juliaC * (1.0 - mut.juliaAbsorb) + z * mut.juliaAbsorb;
+						break;
+					case mutJuliaDynOrbitMemory:
+						juliaC = juliaC + (z - lastZ) * 0.1;
+						break;
+					default: break;
+				}
+
+				// Multi-C modes
+				switch (mut.juliaMulti)
+				{
+					case mutJuliaMultiBipolar:
+						if (z.x < 0.0) juliaC = CVector4(mut.juliaBipolarCRx, mut.juliaBipolarCRy, mut.juliaBipolarCRz, 0.0);
+						break;
+					case mutJuliaMulti4DSwap:
+						if (i % 4 == 1) juliaC = CVector4(juliaC.y, juliaC.z, juliaC.w, juliaC.x);
+						else if (i % 4 == 2) juliaC = CVector4(juliaC.z, juliaC.w, juliaC.x, juliaC.y);
+						else if (i % 4 == 3) juliaC = CVector4(juliaC.w, juliaC.x, juliaC.y, juliaC.z);
+						break;
+					case mutJuliaMultiFourier:
+						juliaC += CVector4(mut.juliaFourierC2x, mut.juliaFourierC2y, mut.juliaFourierC2z, 0.0) * sin((double)i)
+								+ CVector4(mut.juliaFourierC3x, mut.juliaFourierC3y, mut.juliaFourierC3z, 0.0) * cos((double)i * 0.5);
+						break;
+					case mutJuliaMultiNoise:
+					{
+						double n = sin(z.x * mut.juliaNoiseFreq) * cos(z.y * mut.juliaNoiseFreq * 0.7) * sin(z.z * mut.juliaNoiseFreq * 1.3);
+						juliaC += CVector4(n, n, n, 0.0) * mut.juliaNoiseAmp;
+						break;
+					}
+					case mutJuliaMultiRecursive:
+						juliaC = juliaC + z * 0.01;
+						break;
+					default: break;
+				}
+
+				// Injection point
+				if (mut.juliaInjection == mutJuliaInjectPreFold
+					|| mut.juliaInjection == mutJuliaInjectDual)
+				{
+					z += juliaC;
+				}
+				else if (mut.juliaInjection == mutJuliaInjectPreScale)
+				{
+					double r = z.Length();
+					double bail = fractals.GetBailout(sequence);
+					double factor = (bail > 1e-21) ? r / bail : 1.0;
+					z += juliaC * factor;
+				}
+			}
+
 			// -------------- call for fractal formulas by function pointers ---------------
 			if (fractalFormulaFunction && formula != none)
 			{
@@ -1536,6 +1674,40 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 					}
 				}
 			}
+		}
+
+		// v7.5 — Julia mid/post injection (after formula + c-addition)
+		if (mut.enabled && i >= mut.iterationStart && i < mut.iterationStop
+			&& (mut.juliaInjection == mutJuliaInjectMidFold
+				|| mut.juliaInjection == mutJuliaInjectPostScale
+				|| mut.juliaInjection == mutJuliaInjectDual))
+		{
+			CVector4 juliaC = aux.const_c * mut.juliaCMul;
+			// Apply same C-transform pipeline as pre-fold
+			switch (mut.juliaCTransform)
+			{
+				case mutJuliaCSpherical:
+				{
+					double cLen = juliaC.Length();
+					if (cLen > 1e-21) juliaC = juliaC * (mut.juliaCRadius / cLen);
+					break;
+				}
+				case mutJuliaCRotate:
+					juliaC = mut.juliaCRotMatrix.RotateVector(juliaC);
+					break;
+				default: break;
+			}
+			switch (mut.juliaDynamic)
+			{
+				case mutJuliaDynPulse:
+					juliaC *= sin((double)i * mut.juliaPulseFreq) * mut.juliaPulseAmp;
+					break;
+				case mutJuliaDynAbsorb:
+					juliaC = juliaC * (1.0 - mut.juliaAbsorb) + z * mut.juliaAbsorb;
+					break;
+				default: break;
+			}
+			z += juliaC;
 		}
 
 		// -------------- Formula Mutation post-processing ---------------

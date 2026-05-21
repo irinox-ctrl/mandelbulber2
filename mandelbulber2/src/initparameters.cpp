@@ -265,6 +265,29 @@ void InitParams(std::shared_ptr<cParameterContainer> par)
 		// Iteration range for mutation
 		par->addParam("mutation_iteration_start", i, 0, 0, 10000, morphAkima, paramStandard);
 		par->addParam("mutation_iteration_stop", i, 250, 0, 10000, morphAkima, paramStandard);
+		// v7.5 — Julia injection system
+		par->addParam("mutation_julia_injection", i, 0, 0, 5, morphAkima, paramStandard);
+		par->addParam("mutation_julia_start", i, 0, 0, 4, morphAkima, paramStandard);
+		par->addParam("mutation_julia_c_transform", i, 0, 0, 5, morphAkima, paramStandard);
+		par->addParam("mutation_julia_dynamic", i, 0, 0, 5, morphAkima, paramStandard);
+		par->addParam("mutation_julia_multi", i, 0, 0, 5, morphAkima, paramStandard);
+		par->addParam("mutation_julia_c_mul", i, 1.0, -10.0, 10.0, morphAkima, paramStandard);
+		par->addParam("mutation_julia_c_rot_x", i, 0.0, -360.0, 360.0, morphAkima, paramStandard);
+		par->addParam("mutation_julia_c_rot_y", i, 0.0, -360.0, 360.0, morphAkima, paramStandard);
+		par->addParam("mutation_julia_c_rot_z", i, 0.0, -360.0, 360.0, morphAkima, paramStandard);
+		par->addParam("mutation_julia_c_power", i, 2.0, 0.1, 10.0, morphAkima, paramStandard);
+		par->addParam("mutation_julia_c_mobius_a", i, 1.0, -10.0, 10.0, morphAkima, paramStandard);
+		par->addParam("mutation_julia_c_mobius_b", i, 0.0, -10.0, 10.0, morphAkima, paramStandard);
+		par->addParam("mutation_julia_c_mobius_d", i, 1.0, -10.0, 10.0, morphAkima, paramStandard);
+		par->addParam("mutation_julia_c_radius", i, 1.0, 0.01, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_julia_pulse_freq", i, 1.0, 0.01, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_julia_pulse_amp", i, 1.0, 0.0, 10.0, morphAkima, paramStandard);
+		par->addParam("mutation_julia_absorb", i, 0.0, 0.0, 1.0, morphAkima, paramStandard);
+		par->addParam("mutation_julia_noise_freq", i, 1.0, 0.01, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_julia_noise_amp", i, 0.1, 0.0, 10.0, morphAkima, paramStandard);
+		par->addParam("mutation_julia_fourier_c2", i, CVector3(0.0, 0.0, 0.0), morphAkima, paramStandard);
+		par->addParam("mutation_julia_fourier_c3", i, CVector3(0.0, 0.0, 0.0), morphAkima, paramStandard);
+		par->addParam("mutation_julia_bipolar_cr", i, CVector3(0.0, 0.0, 0.0), morphAkima, paramStandard);
 
 		par->addParam("julia_mode", i, false, morphLinear, paramStandard);
 		par->addParam("julia_c", i, CVector3(0.0, 0.0, 0.0), morphAkima, paramStandard);

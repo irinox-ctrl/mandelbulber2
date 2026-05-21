@@ -308,6 +308,18 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 
 	float4 zHistory[MAX_ITERATIONS];
 
+	// v7.5 — Julia start mode (z₀ override, GPU Nebula)
+	{
+		__constant sClFormulaMutationParams *jm0 = &consts->sequence.mutationParams[0];
+		if (jm0->enabled && jm0->juliaStart != 0)
+		{
+			if (jm0->juliaStart == 1) z = aux.const_c;
+			else if (jm0->juliaStart == 2) z = z + aux.const_c;
+			else if (jm0->juliaStart == 3) { aux.const_c = z; aux.c = z; z = (float4)(0.0f, 0.0f, 0.0f, 0.0f); }
+			else if (jm0->juliaStart == 4) z = (float4)(aux.const_c.x, aux.const_c.y, aux.const_c.z, aux.const_c.w);
+		}
+	}
+
 	// loop
 	for (i = 0; i < MAX_ITERATIONS; i++)
 	{
@@ -1597,6 +1609,71 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 			}
 		}
 
+		// v7.5 — Julia pre-fold injection (GPU Nebula)
+		if (mutationActive && consts->sequence.mutationParams[sequence].juliaInjection != 0)
+		{
+			__constant sClFormulaMutationParams *jm = &consts->sequence.mutationParams[sequence];
+			float4 juliaC = aux.const_c * jm->juliaCMul;
+			if (jm->juliaCTransform == 1) {
+				float cLen = length(juliaC);
+				if (cLen > 1e-21f) juliaC = juliaC * (jm->juliaCRadius / cLen);
+			} else if (jm->juliaCTransform == 2) {
+				float denom = length(juliaC) + jm->juliaCMobiusD;
+				if (fabs(denom) > 1e-21f)
+					juliaC = (juliaC * jm->juliaCMobiusA + (float4)(jm->juliaCMobiusB, jm->juliaCMobiusB, jm->juliaCMobiusB, 0.0f)) * (1.0f / denom);
+			} else if (jm->juliaCTransform == 3) {
+				float3 jcR = Matrix33MulFloat3(jm->juliaCRotMatrix, juliaC.xyz);
+				juliaC.xyz = jcR;
+			} else if (jm->juliaCTransform == 4) {
+				float r = length(juliaC);
+				if (r > 1e-21f) {
+					float th = atan2(juliaC.y, juliaC.x);
+					float ph = acos(clamp(juliaC.z / r, -1.0f, 1.0f));
+					float rp = native_powr(r, jm->juliaCPower);
+					juliaC.x = rp * native_sin(ph * jm->juliaCPower) * native_cos(th * jm->juliaCPower);
+					juliaC.y = rp * native_sin(ph * jm->juliaCPower) * native_sin(th * jm->juliaCPower);
+					juliaC.z = rp * native_cos(ph * jm->juliaCPower);
+				}
+			} else if (jm->juliaCTransform == 5) {
+				float cLen = length(juliaC);
+				float qw = native_cos(cLen * 0.5f);
+				float qs = (cLen > 1e-21f) ? native_sin(cLen * 0.5f) / cLen : 0.0f;
+				float qi = juliaC.x * qs, qj = juliaC.y * qs, qk = juliaC.z * qs;
+				float zw = 0.0f;
+				float nx = qw*z.x + qi*zw + qj*z.z - qk*z.y;
+				float ny = qw*z.y - qi*z.z + qj*zw + qk*z.x;
+				float nz = qw*z.z + qi*z.y - qj*z.x + qk*zw;
+				juliaC = (float4)(nx, ny, nz, 0.0f);
+			}
+			if (jm->juliaDynamic == 1) juliaC *= (1.0f + 0.1f * length(z));
+			else if (jm->juliaDynamic == 2) juliaC *= native_sin((float)i * jm->juliaPulseFreq) * jm->juliaPulseAmp;
+			else if (jm->juliaDynamic == 3) { if (length(z) > consts->sequence.bailout[sequence] * 0.5f) juliaC *= 2.0f; }
+			else if (jm->juliaDynamic == 4) juliaC = juliaC * (1.0f - jm->juliaAbsorb) + z * jm->juliaAbsorb;
+			else if (jm->juliaDynamic == 5) { float4 prevZ = (i > 0) ? zHistory[i-1] : z; juliaC = juliaC + (z - prevZ) * 0.1f; }
+			if (jm->juliaMulti == 1) { if (z.x < 0.0f) juliaC = (float4)(jm->juliaBipolarCRx, jm->juliaBipolarCRy, jm->juliaBipolarCRz, 0.0f); }
+			else if (jm->juliaMulti == 2) {
+				if (i % 4 == 1) juliaC = (float4)(juliaC.y, juliaC.z, juliaC.w, juliaC.x);
+				else if (i % 4 == 2) juliaC = (float4)(juliaC.z, juliaC.w, juliaC.x, juliaC.y);
+				else if (i % 4 == 3) juliaC = (float4)(juliaC.w, juliaC.x, juliaC.y, juliaC.z);
+			}
+			else if (jm->juliaMulti == 3) {
+				juliaC += (float4)(jm->juliaFourierC2x, jm->juliaFourierC2y, jm->juliaFourierC2z, 0.0f) * native_sin((float)i)
+						+ (float4)(jm->juliaFourierC3x, jm->juliaFourierC3y, jm->juliaFourierC3z, 0.0f) * native_cos((float)i * 0.5f);
+			}
+			else if (jm->juliaMulti == 4) {
+				float n = native_sin(z.x * jm->juliaNoiseFreq) * native_cos(z.y * jm->juliaNoiseFreq * 0.7f) * native_sin(z.z * jm->juliaNoiseFreq * 1.3f);
+				juliaC += (float4)(n, n, n, 0.0f) * jm->juliaNoiseAmp;
+			}
+			else if (jm->juliaMulti == 5) juliaC = juliaC + z * 0.01f;
+			if (jm->juliaInjection == 1 || jm->juliaInjection == 4) z += juliaC;
+			else if (jm->juliaInjection == 5) {
+				float r = length(z);
+				float bail = consts->sequence.bailout[sequence];
+				float factor = (bail > 1e-21f) ? r / bail : 1.0f;
+				z += juliaC * factor;
+			}
+		}
+
 #if defined(IS_HYBRID)
 			switch (sequence)
 			{
@@ -1659,6 +1736,25 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 #ifdef ITERATION_WEIGHT
 		}
 #endif
+
+		// v7.5 — Julia mid/post injection (GPU Nebula)
+		if (mutationActive && (consts->sequence.mutationParams[sequence].juliaInjection == 2
+			|| consts->sequence.mutationParams[sequence].juliaInjection == 3
+			|| consts->sequence.mutationParams[sequence].juliaInjection == 4))
+		{
+			__constant sClFormulaMutationParams *jm = &consts->sequence.mutationParams[sequence];
+			float4 juliaC = aux.const_c * jm->juliaCMul;
+			if (jm->juliaCTransform == 1) {
+				float cLen = length(juliaC);
+				if (cLen > 1e-21f) juliaC = juliaC * (jm->juliaCRadius / cLen);
+			} else if (jm->juliaCTransform == 3) {
+				float3 jcR = Matrix33MulFloat3(jm->juliaCRotMatrix, juliaC.xyz);
+				juliaC.xyz = jcR;
+			}
+			if (jm->juliaDynamic == 2) juliaC *= native_sin((float)i * jm->juliaPulseFreq) * jm->juliaPulseAmp;
+			else if (jm->juliaDynamic == 4) juliaC = juliaC * (1.0f - jm->juliaAbsorb) + z * jm->juliaAbsorb;
+			z += juliaC;
+		}
 
 		// -------------- Formula Mutation post-processing (GPU Nebula) ---------------
 		if (mutationActive)

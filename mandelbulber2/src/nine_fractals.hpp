@@ -301,6 +301,56 @@ enum enumMutationOrbitTrap
 	mutTrapAngle = 5            // trap = abs(atan2(z.y, z.x))
 };
 
+// v7.5 — Amazing Surf Julia injection system
+enum enumMutationJuliaInjection
+{
+	mutJuliaInjectNone = 0,
+	mutJuliaInjectPreFold = 1,       // z += c before box fold
+	mutJuliaInjectMidFold = 2,       // z += c between box and spherical fold
+	mutJuliaInjectPostScale = 3,     // z += c after scale, before rotation
+	mutJuliaInjectDual = 4,          // c1 pre-fold + c2 post-scale
+	mutJuliaInjectPreScale = 5       // c *= |z|/bailout damping
+};
+
+enum enumMutationJuliaStart
+{
+	mutJuliaStartRay = 0,            // default: z₀ = ray position
+	mutJuliaStartC = 1,              // z₀ = c (classic Julia)
+	mutJuliaStartRayPlusC = 2,       // z₀ = ray + c
+	mutJuliaStartZero = 3,           // z₀ = 0, c = ray
+	mutJuliaStart4D = 4              // z₀ = (c.x, c.y, c.z, c.w) full 4D
+};
+
+enum enumMutationJuliaCTransform
+{
+	mutJuliaCNone = 0,
+	mutJuliaCSpherical = 1,          // c = c/|c| * radius
+	mutJuliaCMobius = 2,             // c = (a*c+b)/(c+d) Möbius
+	mutJuliaCRotate = 3,             // c = rotMatrix * c
+	mutJuliaCPower = 4,              // c = c^p (triplex power)
+	mutJuliaCQuaternion = 5          // quaternion c injection
+};
+
+enum enumMutationJuliaDynamic
+{
+	mutJuliaDynNone = 0,
+	mutJuliaDynOrbitMod = 1,         // c *= (1 + 0.1*|z|)
+	mutJuliaDynPulse = 2,            // c *= sin(iter * freq)
+	mutJuliaDynFoldTrigger = 3,      // c *= 2 when |z| > threshold
+	mutJuliaDynAbsorb = 4,           // c = lerp(c, z, rate)
+	mutJuliaDynOrbitMemory = 5       // c += 0.1*(z - z_prev)
+};
+
+enum enumMutationJuliaMulti
+{
+	mutJuliaMultiNone = 0,
+	mutJuliaMultiBipolar = 1,        // c_left vs c_right per halfspace
+	mutJuliaMulti4DSwap = 2,         // c component swap every 4 iters
+	mutJuliaMultiFourier = 3,        // c1 + c2*sin(iter) + c3*cos(iter/2)
+	mutJuliaMultiNoise = 4,          // c += noise(z*freq)*amp
+	mutJuliaMultiRecursive = 5       // c += 0.01*z (evolving seed)
+};
+
 // Per-formula mutation parameters — universal pre/post processing on ANY formula
 struct sFormulaMutationParams
 {
@@ -354,9 +404,30 @@ struct sFormulaMutationParams
 	int iterationStart;
 	int iterationStop;
 
+	// v7.5 — Julia injection system
+	enumMutationJuliaInjection juliaInjection;
+	enumMutationJuliaStart juliaStart;
+	enumMutationJuliaCTransform juliaCTransform;
+	enumMutationJuliaDynamic juliaDynamic;
+	enumMutationJuliaMulti juliaMulti;
+	double juliaCMul;          // c multiplier (default 1.0)
+	double juliaCRotX, juliaCRotY, juliaCRotZ; // c rotation angles
+	double juliaCPower;        // power for c^p transform
+	double juliaCMobiusA, juliaCMobiusB, juliaCMobiusD; // Möbius params
+	double juliaCRadius;       // sphere radius for spherical projection
+	double juliaPulseFreq;     // frequency for pulse mode
+	double juliaPulseAmp;      // amplitude for pulse mode
+	double juliaAbsorb;        // absorption rate (0-1)
+	double juliaNoiseFreq;     // noise frequency
+	double juliaNoiseAmp;      // noise amplitude
+	double juliaFourierC2x, juliaFourierC2y, juliaFourierC2z; // 2nd harmonic
+	double juliaFourierC3x, juliaFourierC3y, juliaFourierC3z; // 3rd harmonic
+	double juliaBipolarCRx, juliaBipolarCRy, juliaBipolarCRz; // right-half c
+
 	// Pre-computed rotation matrices (filled in constructor)
 	CRotationMatrix preRotMatrix;
 	CRotationMatrix postRotMatrix;
+	CRotationMatrix juliaCRotMatrix;
 };
 
 class cNineFractals

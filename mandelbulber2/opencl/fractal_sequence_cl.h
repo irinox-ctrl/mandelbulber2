@@ -234,9 +234,29 @@ typedef struct
 	// Iteration range
 	cl_int iterationStart;
 	cl_int iterationStop;
+	// v7.5 — Julia injection system
+	cl_int juliaInjection;
+	cl_int juliaStart;
+	cl_int juliaCTransform;
+	cl_int juliaDynamic;
+	cl_int juliaMulti;
+	cl_float juliaCMul;
+	cl_float juliaCRotX, juliaCRotY, juliaCRotZ;
+	cl_float juliaCPower;
+	cl_float juliaCMobiusA, juliaCMobiusB, juliaCMobiusD;
+	cl_float juliaCRadius;
+	cl_float juliaPulseFreq;
+	cl_float juliaPulseAmp;
+	cl_float juliaAbsorb;
+	cl_float juliaNoiseFreq;
+	cl_float juliaNoiseAmp;
+	cl_float juliaFourierC2x, juliaFourierC2y, juliaFourierC2z;
+	cl_float juliaFourierC3x, juliaFourierC3y, juliaFourierC3z;
+	cl_float juliaBipolarCRx, juliaBipolarCRy, juliaBipolarCRz;
 	// Pre-computed rotation matrices (3x3 = 9 floats each)
 	cl_float preRotMatrix[9];
 	cl_float postRotMatrix[9];
+	cl_float juliaCRotMatrix[9];
 } sClFormulaMutationParams;
 
 typedef struct

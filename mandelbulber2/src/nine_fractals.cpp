@@ -214,6 +214,59 @@ cNineFractals::cNineFractals(std::shared_ptr<const cFractalContainer> par,
 			generalPar->Get<int>("mutation_iteration_start", i + 1);
 		mutationParams[i].iterationStop =
 			generalPar->Get<int>("mutation_iteration_stop", i + 1);
+		// v7.5 — Julia injection
+		mutationParams[i].juliaInjection = (enumMutationJuliaInjection)
+			generalPar->Get<int>("mutation_julia_injection", i + 1);
+		mutationParams[i].juliaStart = (enumMutationJuliaStart)
+			generalPar->Get<int>("mutation_julia_start", i + 1);
+		mutationParams[i].juliaCTransform = (enumMutationJuliaCTransform)
+			generalPar->Get<int>("mutation_julia_c_transform", i + 1);
+		mutationParams[i].juliaDynamic = (enumMutationJuliaDynamic)
+			generalPar->Get<int>("mutation_julia_dynamic", i + 1);
+		mutationParams[i].juliaMulti = (enumMutationJuliaMulti)
+			generalPar->Get<int>("mutation_julia_multi", i + 1);
+		mutationParams[i].juliaCMul =
+			generalPar->Get<double>("mutation_julia_c_mul", i + 1);
+		mutationParams[i].juliaCRotX =
+			generalPar->Get<double>("mutation_julia_c_rot_x", i + 1);
+		mutationParams[i].juliaCRotY =
+			generalPar->Get<double>("mutation_julia_c_rot_y", i + 1);
+		mutationParams[i].juliaCRotZ =
+			generalPar->Get<double>("mutation_julia_c_rot_z", i + 1);
+		mutationParams[i].juliaCPower =
+			generalPar->Get<double>("mutation_julia_c_power", i + 1);
+		mutationParams[i].juliaCMobiusA =
+			generalPar->Get<double>("mutation_julia_c_mobius_a", i + 1);
+		mutationParams[i].juliaCMobiusB =
+			generalPar->Get<double>("mutation_julia_c_mobius_b", i + 1);
+		mutationParams[i].juliaCMobiusD =
+			generalPar->Get<double>("mutation_julia_c_mobius_d", i + 1);
+		mutationParams[i].juliaCRadius =
+			generalPar->Get<double>("mutation_julia_c_radius", i + 1);
+		mutationParams[i].juliaPulseFreq =
+			generalPar->Get<double>("mutation_julia_pulse_freq", i + 1);
+		mutationParams[i].juliaPulseAmp =
+			generalPar->Get<double>("mutation_julia_pulse_amp", i + 1);
+		mutationParams[i].juliaAbsorb =
+			generalPar->Get<double>("mutation_julia_absorb", i + 1);
+		mutationParams[i].juliaNoiseFreq =
+			generalPar->Get<double>("mutation_julia_noise_freq", i + 1);
+		mutationParams[i].juliaNoiseAmp =
+			generalPar->Get<double>("mutation_julia_noise_amp", i + 1);
+		{
+			CVector3 fc2 = generalPar->Get<CVector3>("mutation_julia_fourier_c2", i + 1);
+			mutationParams[i].juliaFourierC2x = fc2.x;
+			mutationParams[i].juliaFourierC2y = fc2.y;
+			mutationParams[i].juliaFourierC2z = fc2.z;
+			CVector3 fc3 = generalPar->Get<CVector3>("mutation_julia_fourier_c3", i + 1);
+			mutationParams[i].juliaFourierC3x = fc3.x;
+			mutationParams[i].juliaFourierC3y = fc3.y;
+			mutationParams[i].juliaFourierC3z = fc3.z;
+			CVector3 bcr = generalPar->Get<CVector3>("mutation_julia_bipolar_cr", i + 1);
+			mutationParams[i].juliaBipolarCRx = bcr.x;
+			mutationParams[i].juliaBipolarCRy = bcr.y;
+			mutationParams[i].juliaBipolarCRz = bcr.z;
+		}
 
 		// Smart defaults: PK/JK formulas get Möbius (Bilinear) math preset
 		fractal::enumFractalFormula f = fractals[i]->formula;
@@ -245,6 +298,10 @@ cNineFractals::cNineFractals(std::shared_ptr<const cFractalContainer> par,
 				mutationParams[i].postRotX / 180.0 * M_PI,
 				mutationParams[i].postRotY / 180.0 * M_PI,
 				mutationParams[i].postRotZ / 180.0 * M_PI));
+			mutationParams[i].juliaCRotMatrix.SetRotation2(CVector3(
+				mutationParams[i].juliaCRotX / 180.0 * M_PI,
+				mutationParams[i].juliaCRotY / 180.0 * M_PI,
+				mutationParams[i].juliaCRotZ / 180.0 * M_PI));
 		}
 
 		DEType[i] = fractal::deltaDEType;
@@ -1087,6 +1144,35 @@ void cNineFractals::CopyToOpenclData(sClFractalSequence *sequence) const
 		sequence->mutationParams[i].curvatureColoring = mutationParams[i].curvatureColoring ? 1 : 0;
 		sequence->mutationParams[i].iterationStart = mutationParams[i].iterationStart;
 		sequence->mutationParams[i].iterationStop = mutationParams[i].iterationStop;
+		// v7.5 — Julia injection
+		sequence->mutationParams[i].juliaInjection = static_cast<cl_int>(mutationParams[i].juliaInjection);
+		sequence->mutationParams[i].juliaStart = static_cast<cl_int>(mutationParams[i].juliaStart);
+		sequence->mutationParams[i].juliaCTransform = static_cast<cl_int>(mutationParams[i].juliaCTransform);
+		sequence->mutationParams[i].juliaDynamic = static_cast<cl_int>(mutationParams[i].juliaDynamic);
+		sequence->mutationParams[i].juliaMulti = static_cast<cl_int>(mutationParams[i].juliaMulti);
+		sequence->mutationParams[i].juliaCMul = mutationParams[i].juliaCMul;
+		sequence->mutationParams[i].juliaCRotX = mutationParams[i].juliaCRotX;
+		sequence->mutationParams[i].juliaCRotY = mutationParams[i].juliaCRotY;
+		sequence->mutationParams[i].juliaCRotZ = mutationParams[i].juliaCRotZ;
+		sequence->mutationParams[i].juliaCPower = mutationParams[i].juliaCPower;
+		sequence->mutationParams[i].juliaCMobiusA = mutationParams[i].juliaCMobiusA;
+		sequence->mutationParams[i].juliaCMobiusB = mutationParams[i].juliaCMobiusB;
+		sequence->mutationParams[i].juliaCMobiusD = mutationParams[i].juliaCMobiusD;
+		sequence->mutationParams[i].juliaCRadius = mutationParams[i].juliaCRadius;
+		sequence->mutationParams[i].juliaPulseFreq = mutationParams[i].juliaPulseFreq;
+		sequence->mutationParams[i].juliaPulseAmp = mutationParams[i].juliaPulseAmp;
+		sequence->mutationParams[i].juliaAbsorb = mutationParams[i].juliaAbsorb;
+		sequence->mutationParams[i].juliaNoiseFreq = mutationParams[i].juliaNoiseFreq;
+		sequence->mutationParams[i].juliaNoiseAmp = mutationParams[i].juliaNoiseAmp;
+		sequence->mutationParams[i].juliaFourierC2x = mutationParams[i].juliaFourierC2x;
+		sequence->mutationParams[i].juliaFourierC2y = mutationParams[i].juliaFourierC2y;
+		sequence->mutationParams[i].juliaFourierC2z = mutationParams[i].juliaFourierC2z;
+		sequence->mutationParams[i].juliaFourierC3x = mutationParams[i].juliaFourierC3x;
+		sequence->mutationParams[i].juliaFourierC3y = mutationParams[i].juliaFourierC3y;
+		sequence->mutationParams[i].juliaFourierC3z = mutationParams[i].juliaFourierC3z;
+		sequence->mutationParams[i].juliaBipolarCRx = mutationParams[i].juliaBipolarCRx;
+		sequence->mutationParams[i].juliaBipolarCRy = mutationParams[i].juliaBipolarCRy;
+		sequence->mutationParams[i].juliaBipolarCRz = mutationParams[i].juliaBipolarCRz;
 		// Copy rotation matrices (3x3 = 9 floats each)
 		if (mutationParams[i].enabled)
 		{
@@ -1110,11 +1196,22 @@ void cNineFractals::CopyToOpenclData(sClFractalSequence *sequence) const
 			sequence->mutationParams[i].postRotMatrix[6] = postM.m31;
 			sequence->mutationParams[i].postRotMatrix[7] = postM.m32;
 			sequence->mutationParams[i].postRotMatrix[8] = postM.m33;
+			CMatrix33 juliaM = mutationParams[i].juliaCRotMatrix.GetMatrix();
+			sequence->mutationParams[i].juliaCRotMatrix[0] = juliaM.m11;
+			sequence->mutationParams[i].juliaCRotMatrix[1] = juliaM.m12;
+			sequence->mutationParams[i].juliaCRotMatrix[2] = juliaM.m13;
+			sequence->mutationParams[i].juliaCRotMatrix[3] = juliaM.m21;
+			sequence->mutationParams[i].juliaCRotMatrix[4] = juliaM.m22;
+			sequence->mutationParams[i].juliaCRotMatrix[5] = juliaM.m23;
+			sequence->mutationParams[i].juliaCRotMatrix[6] = juliaM.m31;
+			sequence->mutationParams[i].juliaCRotMatrix[7] = juliaM.m32;
+			sequence->mutationParams[i].juliaCRotMatrix[8] = juliaM.m33;
 		}
 		else
 		{
 			memset(sequence->mutationParams[i].preRotMatrix, 0, sizeof(cl_float) * 9);
 			memset(sequence->mutationParams[i].postRotMatrix, 0, sizeof(cl_float) * 9);
+			memset(sequence->mutationParams[i].juliaCRotMatrix, 0, sizeof(cl_float) * 9);
 		}
 
 		sequence->DEFunctionType[i] = static_cast<enumDEFunctionTypeCl>(DEFunctionType[i]);
