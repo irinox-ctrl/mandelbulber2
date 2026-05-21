@@ -130,6 +130,16 @@ cNineFractals::cNineFractals(std::shared_ptr<const cFractalContainer> par,
 		// Adaptive weight (mode 9)
 		weightParams[i].adaptiveStrength =
 			generalPar->Get<double>("weight_adaptive_strength", i + 1);
+		// Fine-tuning post-processing
+		weightParams[i].weightFloor = generalPar->Get<double>("weight_floor", i + 1);
+		weightParams[i].weightCeiling = generalPar->Get<double>("weight_ceiling", i + 1);
+		weightParams[i].weightGamma = generalPar->Get<double>("weight_gamma", i + 1);
+		weightParams[i].weightInvert = generalPar->Get<bool>("weight_invert", i + 1);
+		weightParams[i].fadeInIterations = generalPar->Get<int>("weight_fade_in", i + 1);
+		weightParams[i].fadeOutIterations = generalPar->Get<int>("weight_fade_out", i + 1);
+		weightParams[i].deSmoothRadius = generalPar->Get<double>("weight_de_smooth_radius", i + 1);
+		weightParams[i].componentBlendCurve =
+			generalPar->Get<double>("weight_component_blend_curve", i + 1);
 		// Separate component weights
 		weightParams[i].separateComponents =
 			generalPar->Get<bool>("weight_separate_components", i + 1);
@@ -582,7 +592,17 @@ double cNineFractals::CalculateWeight(
 		}
 		case weightModeDE:
 		{
-			double delta = currentDE - wp.deThreshold;
+			double smoothDE = currentDE;
+			if (wp.deSmoothRadius > 0.0)
+			{
+				double dist = fabs(currentDE - wp.deThreshold);
+				if (dist < wp.deSmoothRadius)
+				{
+					double t = dist / wp.deSmoothRadius;
+					smoothDE = wp.deThreshold + (currentDE - wp.deThreshold) * t * t * (3.0 - 2.0 * t);
+				}
+			}
+			double delta = smoothDE - wp.deThreshold;
 			double factor = delta * wp.deSensitivity;
 			switch (wp.deModType)
 			{
@@ -802,6 +822,47 @@ double cNineFractals::CalculateWeight(
 		}
 	}
 
+	// --- Fine-tuning post-processing ---
+
+	// Gamma (power curve)
+	if (wp.weightGamma != 1.0 && weight > 0.0 && weight < 1.0)
+	{
+		weight = pow(weight, wp.weightGamma);
+	}
+
+	// Invert
+	if (wp.weightInvert)
+	{
+		weight = 1.0 - weight;
+	}
+
+	// Floor/ceiling clamp
+	weight = qBound(wp.weightFloor, weight, wp.weightCeiling);
+
+	// Iteration fade-in: smooth ramp from 0 to weight over fadeInIterations
+	if (wp.fadeInIterations > 0)
+	{
+		if (iteration < wp.fadeInIterations)
+		{
+			double fadeT = double(iteration) / double(wp.fadeInIterations);
+			double fadeFactor = fadeT * fadeT * (3.0 - 2.0 * fadeT); // smoothstep
+			weight *= fadeFactor;
+		}
+	}
+
+	// Iteration fade-out: smooth ramp from weight to 0 over fadeOutIterations before max
+	if (wp.fadeOutIterations > 0)
+	{
+		int maxIter = (wp.mode == weightModeIteration) ? wp.iterEnd : 250;
+		int fadeStart = maxIter - wp.fadeOutIterations;
+		if (iteration > fadeStart && iteration <= maxIter)
+		{
+			double fadeT = double(maxIter - iteration) / double(wp.fadeOutIterations);
+			double fadeFactor = fadeT * fadeT * (3.0 - 2.0 * fadeT);
+			weight *= fadeFactor;
+		}
+	}
+
 	return weight;
 }
 
@@ -863,6 +924,15 @@ void cNineFractals::CopyToOpenclData(sClFractalSequence *sequence) const
 		sequence->weightParams[i].deRatioModType = static_cast<cl_int>(weightParams[i].deRatioModType);
 		// Adaptive (mode 9)
 		sequence->weightParams[i].adaptiveStrength = weightParams[i].adaptiveStrength;
+		// Fine-tuning post-processing
+		sequence->weightParams[i].weightFloor = weightParams[i].weightFloor;
+		sequence->weightParams[i].weightCeiling = weightParams[i].weightCeiling;
+		sequence->weightParams[i].weightGamma = weightParams[i].weightGamma;
+		sequence->weightParams[i].weightInvert = weightParams[i].weightInvert ? 1 : 0;
+		sequence->weightParams[i].fadeInIterations = weightParams[i].fadeInIterations;
+		sequence->weightParams[i].fadeOutIterations = weightParams[i].fadeOutIterations;
+		sequence->weightParams[i].deSmoothRadius = weightParams[i].deSmoothRadius;
+		sequence->weightParams[i].componentBlendCurve = weightParams[i].componentBlendCurve;
 		// Components
 		sequence->weightParams[i].separateComponents = weightParams[i].separateComponents ? 1 : 0;
 		sequence->weightParams[i].zVectorWeight = weightParams[i].zVectorWeight;

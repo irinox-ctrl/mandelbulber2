@@ -189,6 +189,15 @@ void InitParams(std::shared_ptr<cParameterContainer> par)
 		par->addParam("weight_de_ratio_mod_type", i, 0, 0, 4, morphLinear, paramStandard);
 		// Adaptive weight (mode 9)
 		par->addParam("weight_adaptive_strength", i, 1.0, 0.01, 10.0, morphAkima, paramStandard);
+		// Fine-tuning post-processing
+		par->addParam("weight_floor", i, 0.0, 0.0, 1.0, morphAkima, paramStandard);
+		par->addParam("weight_ceiling", i, 1.0, 0.0, 1.0, morphAkima, paramStandard);
+		par->addParam("weight_gamma", i, 1.0, 0.01, 10.0, morphAkima, paramStandard);
+		par->addParam("weight_invert", i, false, morphLinear, paramStandard);
+		par->addParam("weight_fade_in", i, 0, 0, 1000, morphAkima, paramStandard);
+		par->addParam("weight_fade_out", i, 0, 0, 1000, morphAkima, paramStandard);
+		par->addParam("weight_de_smooth_radius", i, 0.0, 0.0, 100.0, morphAkima, paramStandard);
+		par->addParam("weight_component_blend_curve", i, 1.0, 0.1, 10.0, morphAkima, paramStandard);
 		// Separate component weights
 		par->addParam("weight_separate_components", i, false, morphLinear, paramStandard);
 		par->addParam("weight_z_vector", i, 1.0, 0.0, 1.0, morphAkima, paramStandard);

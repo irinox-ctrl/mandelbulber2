@@ -408,7 +408,17 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 				}
 				else if (weightMode == 2)
 				{
-					float delta = actualDE - wp->deThreshold;
+					float smoothDE = actualDE;
+					if (wp->deSmoothRadius > 0.0f)
+					{
+						float dist = fabs(actualDE - wp->deThreshold);
+						if (dist < wp->deSmoothRadius)
+						{
+							float t = dist / wp->deSmoothRadius;
+							smoothDE = wp->deThreshold + (actualDE - wp->deThreshold) * t * t * (3.0f - 2.0f * t);
+						}
+					}
+					float delta = smoothDE - wp->deThreshold;
 					float factor = delta * wp->deSensitivity;
 					if (wp->deModType == 0) effectiveWeight = wp->deBase + factor;
 					else if (wp->deModType == 1) effectiveWeight = wp->deBase + factor * factor * (factor > 0.0f ? 1.0f : -1.0f);
@@ -490,6 +500,28 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 
 				effectiveWeight *= standardWeight;
 				if (effectiveWeight > 1.0f) effectiveWeight = 1.0f;
+
+				// Fine-tuning post-processing
+				if (wp->weightGamma != 1.0f && effectiveWeight > 0.0f && effectiveWeight < 1.0f)
+					effectiveWeight = pow(effectiveWeight, wp->weightGamma);
+				if (wp->weightInvert)
+					effectiveWeight = 1.0f - effectiveWeight;
+				effectiveWeight = clamp(effectiveWeight, wp->weightFloor, wp->weightCeiling);
+				if (wp->fadeInIterations > 0 && i < wp->fadeInIterations)
+				{
+					float fadeT = (float)i / (float)wp->fadeInIterations;
+					effectiveWeight *= fadeT * fadeT * (3.0f - 2.0f * fadeT);
+				}
+				if (wp->fadeOutIterations > 0)
+				{
+					int maxIter = (weightMode == 1) ? wp->iterEnd : 250;
+					int fadeStart = maxIter - wp->fadeOutIterations;
+					if (i > fadeStart && i <= maxIter)
+					{
+						float fadeT = (float)(maxIter - i) / (float)wp->fadeOutIterations;
+						effectiveWeight *= fadeT * fadeT * (3.0f - 2.0f * fadeT);
+					}
+				}
 			}
 		}
 #endif // ITERATION_WEIGHT
@@ -566,12 +598,21 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 		{
 			__constant sClFormulaWeightParams *wp = &consts->sequence.weightParams[sequence];
 			bool isPKFormula = (consts->sequence.DEFunctionType[sequence] == pseudoKleinianDEFunction);
+			float blendCurve = wp->componentBlendCurve;
 			if (wp->separateComponents)
 			{
 				float kz = effectiveWeight * wp->zVectorWeight;
 				float kde = effectiveWeight * wp->deComponentWeight;
 				float kdist = effectiveWeight * wp->distComponentWeight;
 				float kcol = effectiveWeight * wp->colorComponentWeight;
+
+				if (blendCurve != 1.0f)
+				{
+					if (kz > 0.0f && kz < 1.0f) kz = pow(kz, blendCurve);
+					if (kde > 0.0f && kde < 1.0f) kde = pow(kde, blendCurve);
+					if (kdist > 0.0f && kdist < 1.0f) kdist = pow(kdist, blendCurve);
+					if (kcol > 0.0f && kcol < 1.0f) kcol = pow(kcol, blendCurve);
+				}
 
 				if (kz < 1.0f) z = SmoothCVector(tempZ, z, kz);
 
@@ -603,6 +644,7 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 			else
 			{
 				float k = effectiveWeight;
+				if (blendCurve != 1.0f && k > 0.0f && k < 1.0f) k = pow(k, blendCurve);
 				z = SmoothCVector(tempZ, z, k);
 				float kn = 1.0f - k;
 				aux.DE = aux.DE * k + tempAuxDE * kn;

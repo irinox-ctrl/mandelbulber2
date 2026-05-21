@@ -343,6 +343,7 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 		{
 			const sFormulaWeightParams &wp = fractals.GetWeightParams(sequence);
 			bool isPKFormula = (fractals.GetDEFunctionType(sequence) == fractal::pseudoKleinianDEFunction);
+			double blendCurve = wp.componentBlendCurve;
 
 			if (wp.separateComponents)
 			{
@@ -351,6 +352,15 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 				double kde = effectiveWeight * wp.deComponentWeight;
 				double kdist = effectiveWeight * wp.distComponentWeight;
 				double kcol = effectiveWeight * wp.colorComponentWeight;
+
+				// Apply blend curve exponent
+				if (blendCurve != 1.0)
+				{
+					if (kz > 0.0 && kz < 1.0) kz = pow(kz, blendCurve);
+					if (kde > 0.0 && kde < 1.0) kde = pow(kde, blendCurve);
+					if (kdist > 0.0 && kdist < 1.0) kdist = pow(kdist, blendCurve);
+					if (kcol > 0.0 && kcol < 1.0) kcol = pow(kcol, blendCurve);
+				}
 
 				if (kz < 1.0) z = SmoothCVector(tempZ, z, kz);
 
@@ -384,6 +394,7 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 			{
 				// Unified weight for all components
 				double k = effectiveWeight;
+				if (blendCurve != 1.0 && k > 0.0 && k < 1.0) k = pow(k, blendCurve);
 				z = SmoothCVector(tempZ, z, k);
 				double kn = 1.0 - k;
 				aux.DE = aux.DE * k + tempAuxDE * kn;

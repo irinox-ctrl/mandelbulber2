@@ -463,6 +463,27 @@ void cTabFractal::UpdateWeightWidgetsVisibility(int mode, bool separateComponent
 	ui->label_weight_adaptive_strength->setVisible(showAdaptive);
 	ui->spinbox_weight_adaptive_strength->setVisible(showAdaptive);
 
+	// Fine-tuning params — always visible when advanced weight is active (mode > 0)
+	bool showFineTuning = (mode > 0);
+	ui->label_weight_floor->setVisible(showFineTuning);
+	ui->spinbox_weight_floor->setVisible(showFineTuning);
+	ui->label_weight_ceiling->setVisible(showFineTuning);
+	ui->spinbox_weight_ceiling->setVisible(showFineTuning);
+	ui->label_weight_gamma->setVisible(showFineTuning);
+	ui->spinbox_weight_gamma->setVisible(showFineTuning);
+	ui->checkBox_weight_invert->setVisible(showFineTuning);
+	ui->label_weight_fade_in->setVisible(showFineTuning);
+	ui->spinboxInt_weight_fade_in->setVisible(showFineTuning);
+	ui->label_weight_fade_out->setVisible(showFineTuning);
+	ui->spinboxInt_weight_fade_out->setVisible(showFineTuning);
+	// DE Smooth Radius: only visible in DE-based modes (2, 5, 6, 8)
+	bool showDESmooth = (mode == 2 || mode == 5 || mode == 6 || mode == 8);
+	ui->label_weight_de_smooth_radius->setVisible(showDESmooth);
+	ui->spinbox_weight_de_smooth_radius->setVisible(showDESmooth);
+	// Blend curve: always visible when weight active
+	ui->label_weight_component_blend_curve->setVisible(showFineTuning);
+	ui->spinbox_weight_component_blend_curve->setVisible(showFineTuning);
+
 	// Separate components — always visible
 	// Sub-params only visible when checkbox is checked
 	ui->label_weight_z_vector->setVisible(separateComponents);

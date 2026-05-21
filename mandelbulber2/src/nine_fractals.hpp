@@ -141,6 +141,15 @@ struct sFormulaWeightParams
 	enumWeightModType deRatioModType;
 	// Adaptive (mode 9)
 	double adaptiveStrength;
+	// Fine-tuning post-processing
+	double weightFloor;       // minimum output weight (default 0.0)
+	double weightCeiling;     // maximum output weight (default 1.0)
+	double weightGamma;       // power curve on output weight (default 1.0 = linear)
+	bool weightInvert;        // flip weight: 1 - weight
+	int fadeInIterations;     // smooth ramp-in over N iterations from formula start
+	int fadeOutIterations;    // smooth ramp-out over N iterations before formula stop
+	double deSmoothRadius;    // smoothing zone around DE threshold (default 0.0 = sharp)
+	double componentBlendCurve; // exponent for component interpolation (default 1.0 = linear)
 	// Separate components
 	bool separateComponents;
 	double zVectorWeight;

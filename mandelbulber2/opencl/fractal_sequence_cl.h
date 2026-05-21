@@ -167,6 +167,16 @@ typedef struct
 	cl_float adaptiveStrength;
 	// Separate components
 	cl_int separateComponents;
+	// Fine-tuning post-processing
+	cl_float weightFloor;
+	cl_float weightCeiling;
+	cl_float weightGamma;
+	cl_int weightInvert;
+	cl_int fadeInIterations;
+	cl_int fadeOutIterations;
+	cl_float deSmoothRadius;
+	cl_float componentBlendCurve;
+	// Separate components
 	cl_float zVectorWeight;
 	cl_float deComponentWeight;
 	cl_float distComponentWeight;
