@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
 	InitSystem();
 
 	// Advanced Weight System build identifier
-	qDebug() << "Advanced Weight System v3.2 - build 20250520 - GPU always-on + dynamic UI";
+	qDebug() << "Advanced Weight System v3.3 - build 20250520 - GPU ifdef fix";
 
 	// configure debug output
 	qInstallMessageHandler(myMessageOutput);

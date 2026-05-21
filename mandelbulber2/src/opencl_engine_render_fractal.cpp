@@ -1037,9 +1037,20 @@ void cOpenClEngineRenderFractal::DynamicDataForAOVectors(
 
 void cOpenClEngineRenderFractal::SetParametersForIterationWeight(cNineFractals *fractals)
 {
-	// Weight code is now always compiled in the kernel (no #ifdef guard).
-	// This function is kept for API compatibility but no longer adds defines.
-	Q_UNUSED(fractals);
+	bool weightUsed = false;
+	for (int i = 0; i < NUMBER_OF_FRACTALS; i++)
+	{
+		if (fractals->GetWeight(i) != 1.0)
+		{
+			weightUsed = true;
+		}
+		const sFormulaWeightParams &wp = fractals->GetWeightParams(i);
+		if (wp.mode != weightModeStatic || wp.staticWeight != 1.0)
+		{
+			weightUsed = true;
+		}
+	}
+	if (weightUsed) definesCollector += " -DITERATION_WEIGHT";
 }
 
 void cOpenClEngineRenderFractal::SetParameters(

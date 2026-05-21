@@ -117,7 +117,20 @@ void cOpenClEngineRenderNebula::SetParameters(
 	if (paramRender->common.foldings.boxEnable) definesCollector += " -DBOX_FOLDING";
 	if (paramRender->common.foldings.sphericalEnable) definesCollector += " -DSPHERICAL_FOLDING";
 
-	// Weight code is always compiled in the kernel (no #ifdef guard needed).
+	bool weightUsed = false;
+	for (int i = 0; i < NUMBER_OF_FRACTALS; i++)
+	{
+		if (fractals->GetWeight(i) != 1.0)
+		{
+			weightUsed = true;
+		}
+		const sFormulaWeightParams &wp = fractals->GetWeightParams(i);
+		if (wp.mode != weightModeStatic || wp.staticWeight != 1.0)
+		{
+			weightUsed = true;
+		}
+	}
+	if (weightUsed) definesCollector += " -DITERATION_WEIGHT";
 
 	if (paramRender->limitsEnabled) definesCollector += " -DLIMITS_ENABLED";
 

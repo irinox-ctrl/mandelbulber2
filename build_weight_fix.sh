@@ -41,22 +41,27 @@ else
 fi
 echo ""
 
-# Step 3: Clear OpenCL kernel cache (prevents stale kernel issues on GPU)
-echo "[3/6] Clearing OpenCL kernel cache..."
+# Step 3: Clear ALL OpenCL kernel caches (prevents stale kernel issues on GPU)
+echo "[3/6] Clearing OpenCL kernel caches..."
+# Mandelbulber's own cache
 OPENCL_CACHE_DIR="$HOME/.mandelbulber/opencl_cache"
 if [ -d "$OPENCL_CACHE_DIR" ]; then
     rm -rf "$OPENCL_CACHE_DIR"/*
     echo "  OK - Cleared $OPENCL_CACHE_DIR"
-else
-    # Try alternative cache locations
-    for dir in "$HOME/.mandelbulber/"*opencl* "$HOME/.mandelbulber/"*cache*; do
-        if [ -d "$dir" ]; then
-            rm -rf "$dir"/*
-            echo "  OK - Cleared $dir"
-        fi
-    done
-    echo "  (No standard OpenCL cache dir found, will be fine)"
 fi
+# NVIDIA's compute cache (stale compiled kernels)
+if [ -d "$HOME/.nv/ComputeCache" ]; then
+    rm -rf "$HOME/.nv/ComputeCache"/*
+    echo "  OK - Cleared NVIDIA ComputeCache"
+fi
+# Any other Mandelbulber opencl/cache dirs
+for dir in "$HOME/.mandelbulber/"*opencl* "$HOME/.mandelbulber/"*cache*; do
+    if [ -d "$dir" ]; then
+        rm -rf "$dir"/*
+        echo "  OK - Cleared $dir"
+    fi
+done
+echo "  Caches cleared"
 echo ""
 
 # Step 4: Full clean build
