@@ -682,6 +682,105 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 						z.z = 2.0f * (z.z * 0.5f - floor(z.z * 0.5f + 0.5f));
 						break;
 					}
+					case 20: // Bipolar
+					{
+						float c1 = mut->foldLimit;
+						float c2 = -mut->foldLimit;
+						z.x = fabs(z.x - c1) - fabs(z.x - c2);
+						z.y = fabs(z.y - c1) - fabs(z.y - c2);
+						z.z = fabs(z.z - c1) - fabs(z.z - c2);
+						break;
+					}
+					case 21: // RadialBox
+					{
+						float r = native_sqrt(z.x*z.x + z.y*z.y);
+						float theta = atan2(z.y, z.x);
+						float foldR = mut->foldLimit;
+						if (r > foldR) r = 2.0f * foldR - r;
+						if (r < -foldR) r = -2.0f * foldR - r;
+						z.x = r * native_cos(theta);
+						z.y = r * native_sin(theta);
+						aux.DE *= r / max(native_sqrt(z.x*z.x + z.y*z.y), 1e-21f);
+						break;
+					}
+					case 22: // Shear
+					{
+						float lim = mut->foldLimit;
+						if (z.x > lim) z.x = 2.0f * lim - z.x;
+						else if (z.x < -lim) z.x = -2.0f * lim - z.x;
+						if (z.y > lim) z.y = 2.0f * lim - z.y;
+						else if (z.y < -lim) z.y = -2.0f * lim - z.y;
+						z.x += mut->foldValue * z.y;
+						z.y += mut->foldValue * z.z;
+						break;
+					}
+					case 23: // 3DCross
+					{
+						float lim = mut->foldLimit;
+						int phase = i % 3;
+						if (phase == 0) {
+							if (z.x > lim) z.x = 2.0f*lim - z.x;
+							if (z.x < -lim) z.x = -2.0f*lim - z.x;
+							if (z.y > lim) z.y = 2.0f*lim - z.y;
+							if (z.y < -lim) z.y = -2.0f*lim - z.y;
+						} else if (phase == 1) {
+							if (z.y > lim) z.y = 2.0f*lim - z.y;
+							if (z.y < -lim) z.y = -2.0f*lim - z.y;
+							if (z.z > lim) z.z = 2.0f*lim - z.z;
+							if (z.z < -lim) z.z = -2.0f*lim - z.z;
+						} else {
+							if (z.z > lim) z.z = 2.0f*lim - z.z;
+							if (z.z < -lim) z.z = -2.0f*lim - z.z;
+							if (z.x > lim) z.x = 2.0f*lim - z.x;
+							if (z.x < -lim) z.x = -2.0f*lim - z.x;
+						}
+						break;
+					}
+					case 24: // Conformal
+					{
+						float r2 = z.x*z.x + z.y*z.y + z.z*z.z;
+						if (r2 > 1e-21f)
+						{
+							z.x += z.x / r2;
+							z.y += z.y / r2;
+							z.z += z.z / r2;
+							aux.DE *= fabs(1.0f - 1.0f / r2);
+						}
+						break;
+					}
+					case 25: // Rotation
+					{
+						float lim = mut->foldLimit;
+						if (z.x > lim) z.x = 2.0f*lim - z.x;
+						if (z.x < -lim) z.x = -2.0f*lim - z.x;
+						if (z.y > lim) z.y = 2.0f*lim - z.y;
+						if (z.y < -lim) z.y = -2.0f*lim - z.y;
+						if (z.z > lim) z.z = 2.0f*lim - z.z;
+						if (z.z < -lim) z.z = -2.0f*lim - z.z;
+						float t = z.x; z.x = -z.y; z.y = t;
+						break;
+					}
+					case 26: // ScalePulse
+					{
+						float lim = mut->foldLimit;
+						if (z.x > lim) z.x = 2.0f*lim - z.x;
+						if (z.x < -lim) z.x = -2.0f*lim - z.x;
+						if (z.y > lim) z.y = 2.0f*lim - z.y;
+						if (z.y < -lim) z.y = -2.0f*lim - z.y;
+						if (z.z > lim) z.z = 2.0f*lim - z.z;
+						if (z.z < -lim) z.z = -2.0f*lim - z.z;
+						float pulse = 1.0f + 0.2f * native_sin((float)i * mut->foldValue);
+						z *= pulse;
+						aux.DE *= fabs(pulse);
+						break;
+					}
+					case 27: // TriangleWave
+					{
+						z.x = 2.0f * fabs(z.x * 0.5f - floor(z.x * 0.5f + 0.5f));
+						z.y = 2.0f * fabs(z.y * 0.5f - floor(z.y * 0.5f + 0.5f));
+						z.z = 2.0f * fabs(z.z * 0.5f - floor(z.z * 0.5f + 0.5f));
+						break;
+					}
 				}
 			}
 
@@ -1695,6 +1794,105 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 						z.x = 2.0f * (z.x * 0.5f - floor(z.x * 0.5f + 0.5f));
 						z.y = 2.0f * (z.y * 0.5f - floor(z.y * 0.5f + 0.5f));
 						z.z = 2.0f * (z.z * 0.5f - floor(z.z * 0.5f + 0.5f));
+						break;
+					}
+					case 20: // Bipolar
+					{
+						float c1 = mut->foldLimit;
+						float c2 = -mut->foldLimit;
+						z.x = fabs(z.x - c1) - fabs(z.x - c2);
+						z.y = fabs(z.y - c1) - fabs(z.y - c2);
+						z.z = fabs(z.z - c1) - fabs(z.z - c2);
+						break;
+					}
+					case 21: // RadialBox
+					{
+						float r = native_sqrt(z.x*z.x + z.y*z.y);
+						float theta = atan2(z.y, z.x);
+						float foldR = mut->foldLimit;
+						if (r > foldR) r = 2.0f * foldR - r;
+						if (r < -foldR) r = -2.0f * foldR - r;
+						z.x = r * native_cos(theta);
+						z.y = r * native_sin(theta);
+						aux.DE *= r / max(native_sqrt(z.x*z.x + z.y*z.y), 1e-21f);
+						break;
+					}
+					case 22: // Shear
+					{
+						float lim = mut->foldLimit;
+						if (z.x > lim) z.x = 2.0f * lim - z.x;
+						else if (z.x < -lim) z.x = -2.0f * lim - z.x;
+						if (z.y > lim) z.y = 2.0f * lim - z.y;
+						else if (z.y < -lim) z.y = -2.0f * lim - z.y;
+						z.x += mut->foldValue * z.y;
+						z.y += mut->foldValue * z.z;
+						break;
+					}
+					case 23: // 3DCross
+					{
+						float lim = mut->foldLimit;
+						int phase = i % 3;
+						if (phase == 0) {
+							if (z.x > lim) z.x = 2.0f*lim - z.x;
+							if (z.x < -lim) z.x = -2.0f*lim - z.x;
+							if (z.y > lim) z.y = 2.0f*lim - z.y;
+							if (z.y < -lim) z.y = -2.0f*lim - z.y;
+						} else if (phase == 1) {
+							if (z.y > lim) z.y = 2.0f*lim - z.y;
+							if (z.y < -lim) z.y = -2.0f*lim - z.y;
+							if (z.z > lim) z.z = 2.0f*lim - z.z;
+							if (z.z < -lim) z.z = -2.0f*lim - z.z;
+						} else {
+							if (z.z > lim) z.z = 2.0f*lim - z.z;
+							if (z.z < -lim) z.z = -2.0f*lim - z.z;
+							if (z.x > lim) z.x = 2.0f*lim - z.x;
+							if (z.x < -lim) z.x = -2.0f*lim - z.x;
+						}
+						break;
+					}
+					case 24: // Conformal
+					{
+						float r2 = z.x*z.x + z.y*z.y + z.z*z.z;
+						if (r2 > 1e-21f)
+						{
+							z.x += z.x / r2;
+							z.y += z.y / r2;
+							z.z += z.z / r2;
+							aux.DE *= fabs(1.0f - 1.0f / r2);
+						}
+						break;
+					}
+					case 25: // Rotation
+					{
+						float lim = mut->foldLimit;
+						if (z.x > lim) z.x = 2.0f*lim - z.x;
+						if (z.x < -lim) z.x = -2.0f*lim - z.x;
+						if (z.y > lim) z.y = 2.0f*lim - z.y;
+						if (z.y < -lim) z.y = -2.0f*lim - z.y;
+						if (z.z > lim) z.z = 2.0f*lim - z.z;
+						if (z.z < -lim) z.z = -2.0f*lim - z.z;
+						float t = z.x; z.x = -z.y; z.y = t;
+						break;
+					}
+					case 26: // ScalePulse
+					{
+						float lim = mut->foldLimit;
+						if (z.x > lim) z.x = 2.0f*lim - z.x;
+						if (z.x < -lim) z.x = -2.0f*lim - z.x;
+						if (z.y > lim) z.y = 2.0f*lim - z.y;
+						if (z.y < -lim) z.y = -2.0f*lim - z.y;
+						if (z.z > lim) z.z = 2.0f*lim - z.z;
+						if (z.z < -lim) z.z = -2.0f*lim - z.z;
+						float pulse = 1.0f + 0.2f * native_sin((float)i * mut->foldValue);
+						z *= pulse;
+						aux.DE *= fabs(pulse);
+						break;
+					}
+					case 27: // TriangleWave
+					{
+						z.x = 2.0f * fabs(z.x * 0.5f - floor(z.x * 0.5f + 0.5f));
+						z.y = 2.0f * fabs(z.y * 0.5f - floor(z.y * 0.5f + 0.5f));
+						z.z = 2.0f * fabs(z.z * 0.5f - floor(z.z * 0.5f + 0.5f));
 						break;
 					}
 				}

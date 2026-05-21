@@ -1952,6 +1952,14 @@ Static: Fixed weight (simple). Iteration: Weight changes over iterations (morphi
           <string>Sawtooth</string>
          </property>
         </item>
+        <item><property name="text"><string>Bipolar</string></property></item>
+        <item><property name="text"><string>Radial Box</string></property></item>
+        <item><property name="text"><string>Fold+Shear</string></property></item>
+        <item><property name="text"><string>3D Cross</string></property></item>
+        <item><property name="text"><string>Conformal</string></property></item>
+        <item><property name="text"><string>Fold+Rotation</string></property></item>
+        <item><property name="text"><string>Scale Pulse</string></property></item>
+        <item><property name="text"><string>Triangle Wave</string></property></item>
        </widget>
       </item>
       <item row="8" column="3">

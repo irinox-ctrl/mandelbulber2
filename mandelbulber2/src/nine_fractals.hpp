@@ -192,7 +192,16 @@ enum enumMutationFoldType
 	mutFoldSmoothAbs = 16,    // z * tanh(k*z) — smooth abs replacement
 	mutFoldModuloWrap = 17,   // mod(z, period) - period/2 — tiling
 	mutFoldNestedAbs = 18,    // abs(abs(z) - c) — double buffered abs
-	mutFoldSawtooth = 19      // 2*fract(z/2) - 1 — sawtooth wave fold
+	mutFoldSawtooth = 19,     // 2*fract(z/2) - 1 — sawtooth wave fold
+	// v7.4 — Familie 7 extra fold types
+	mutFoldBipolar = 20,      // two fold centers: |z-c1| - |z-c2|
+	mutFoldRadialBox = 21,    // box fold in polar coordinates
+	mutFoldShear = 22,        // fold + shear: z.x += shear*z.y
+	mutFold3DCross = 23,      // cyclic XY→YZ→ZX fold
+	mutFoldConformal = 24,    // z + 1/z conformal fold
+	mutFoldRotation = 25,     // rotate 90° after fold
+	mutFoldScalePulse = 26,   // scale = 1+A*sin(iter) after fold
+	mutFoldTriangleWave = 27  // 2*|fract(z/2)-0.5| — triangle wave
 };
 
 enum enumMutationWarpType

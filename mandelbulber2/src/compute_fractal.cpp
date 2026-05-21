@@ -492,6 +492,112 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 							z.z = 2.0 * (z.z * 0.5 - floor(z.z * 0.5 + 0.5));
 							break;
 						}
+						case mutFoldBipolar:
+						{
+							double c1 = mut.foldLimit;
+							double c2 = -mut.foldLimit;
+							z.x = fabs(z.x - c1) - fabs(z.x - c2);
+							z.y = fabs(z.y - c1) - fabs(z.y - c2);
+							z.z = fabs(z.z - c1) - fabs(z.z - c2);
+							break;
+						}
+						case mutFoldRadialBox:
+						{
+							double r = sqrt(z.x*z.x + z.y*z.y);
+							double theta = atan2(z.y, z.x);
+							double foldR = mut.foldLimit;
+							if (r > foldR) r = 2.0 * foldR - r;
+							if (r < -foldR) r = -2.0 * foldR - r;
+							z.x = r * cos(theta);
+							z.y = r * sin(theta);
+							aux.DE *= r / max(sqrt(z.x*z.x + z.y*z.y), 1e-21);
+							break;
+						}
+						case mutFoldShear:
+						{
+							double lim = mut.foldLimit;
+							if (z.x > lim) z.x = 2.0 * lim - z.x;
+							else if (z.x < -lim) z.x = -2.0 * lim - z.x;
+							if (z.y > lim) z.y = 2.0 * lim - z.y;
+							else if (z.y < -lim) z.y = -2.0 * lim - z.y;
+							z.x += mut.foldValue * z.y;
+							z.y += mut.foldValue * z.z;
+							break;
+						}
+						case mutFold3DCross:
+						{
+							double lim = mut.foldLimit;
+							int phase = aux.i % 3;
+							if (phase == 0)
+							{
+								if (z.x > lim) z.x = 2.0*lim - z.x;
+								if (z.x < -lim) z.x = -2.0*lim - z.x;
+								if (z.y > lim) z.y = 2.0*lim - z.y;
+								if (z.y < -lim) z.y = -2.0*lim - z.y;
+							}
+							else if (phase == 1)
+							{
+								if (z.y > lim) z.y = 2.0*lim - z.y;
+								if (z.y < -lim) z.y = -2.0*lim - z.y;
+								if (z.z > lim) z.z = 2.0*lim - z.z;
+								if (z.z < -lim) z.z = -2.0*lim - z.z;
+							}
+							else
+							{
+								if (z.z > lim) z.z = 2.0*lim - z.z;
+								if (z.z < -lim) z.z = -2.0*lim - z.z;
+								if (z.x > lim) z.x = 2.0*lim - z.x;
+								if (z.x < -lim) z.x = -2.0*lim - z.x;
+							}
+							break;
+						}
+						case mutFoldConformal:
+						{
+							double r2 = z.x*z.x + z.y*z.y + z.z*z.z;
+							if (r2 > 1e-21)
+							{
+								z.x += z.x / r2;
+								z.y += z.y / r2;
+								z.z += z.z / r2;
+								aux.DE *= fabs(1.0 - 1.0 / (r2));
+							}
+							break;
+						}
+						case mutFoldRotation:
+						{
+							double lim = mut.foldLimit;
+							if (z.x > lim) z.x = 2.0*lim - z.x;
+							if (z.x < -lim) z.x = -2.0*lim - z.x;
+							if (z.y > lim) z.y = 2.0*lim - z.y;
+							if (z.y < -lim) z.y = -2.0*lim - z.y;
+							if (z.z > lim) z.z = 2.0*lim - z.z;
+							if (z.z < -lim) z.z = -2.0*lim - z.z;
+							double t = z.x;
+							z.x = -z.y;
+							z.y = t;
+							break;
+						}
+						case mutFoldScalePulse:
+						{
+							double lim = mut.foldLimit;
+							if (z.x > lim) z.x = 2.0*lim - z.x;
+							if (z.x < -lim) z.x = -2.0*lim - z.x;
+							if (z.y > lim) z.y = 2.0*lim - z.y;
+							if (z.y < -lim) z.y = -2.0*lim - z.y;
+							if (z.z > lim) z.z = 2.0*lim - z.z;
+							if (z.z < -lim) z.z = -2.0*lim - z.z;
+							double pulse = 1.0 + 0.2 * sin((double)aux.i * mut.foldValue);
+							z *= pulse;
+							aux.DE *= fabs(pulse);
+							break;
+						}
+						case mutFoldTriangleWave:
+						{
+							z.x = 2.0 * fabs(z.x * 0.5 - floor(z.x * 0.5 + 0.5));
+							z.y = 2.0 * fabs(z.y * 0.5 - floor(z.y * 0.5 + 0.5));
+							z.z = 2.0 * fabs(z.z * 0.5 - floor(z.z * 0.5 + 0.5));
+							break;
+						}
 						default: break;
 					}
 				}
@@ -1561,6 +1667,112 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 							z.x = 2.0 * (z.x * 0.5 - floor(z.x * 0.5 + 0.5));
 							z.y = 2.0 * (z.y * 0.5 - floor(z.y * 0.5 + 0.5));
 							z.z = 2.0 * (z.z * 0.5 - floor(z.z * 0.5 + 0.5));
+							break;
+						}
+						case mutFoldBipolar:
+						{
+							double c1 = mut.foldLimit;
+							double c2 = -mut.foldLimit;
+							z.x = fabs(z.x - c1) - fabs(z.x - c2);
+							z.y = fabs(z.y - c1) - fabs(z.y - c2);
+							z.z = fabs(z.z - c1) - fabs(z.z - c2);
+							break;
+						}
+						case mutFoldRadialBox:
+						{
+							double r = sqrt(z.x*z.x + z.y*z.y);
+							double theta = atan2(z.y, z.x);
+							double foldR = mut.foldLimit;
+							if (r > foldR) r = 2.0 * foldR - r;
+							if (r < -foldR) r = -2.0 * foldR - r;
+							z.x = r * cos(theta);
+							z.y = r * sin(theta);
+							aux.DE *= r / max(sqrt(z.x*z.x + z.y*z.y), 1e-21);
+							break;
+						}
+						case mutFoldShear:
+						{
+							double lim = mut.foldLimit;
+							if (z.x > lim) z.x = 2.0 * lim - z.x;
+							else if (z.x < -lim) z.x = -2.0 * lim - z.x;
+							if (z.y > lim) z.y = 2.0 * lim - z.y;
+							else if (z.y < -lim) z.y = -2.0 * lim - z.y;
+							z.x += mut.foldValue * z.y;
+							z.y += mut.foldValue * z.z;
+							break;
+						}
+						case mutFold3DCross:
+						{
+							double lim = mut.foldLimit;
+							int phase = aux.i % 3;
+							if (phase == 0)
+							{
+								if (z.x > lim) z.x = 2.0*lim - z.x;
+								if (z.x < -lim) z.x = -2.0*lim - z.x;
+								if (z.y > lim) z.y = 2.0*lim - z.y;
+								if (z.y < -lim) z.y = -2.0*lim - z.y;
+							}
+							else if (phase == 1)
+							{
+								if (z.y > lim) z.y = 2.0*lim - z.y;
+								if (z.y < -lim) z.y = -2.0*lim - z.y;
+								if (z.z > lim) z.z = 2.0*lim - z.z;
+								if (z.z < -lim) z.z = -2.0*lim - z.z;
+							}
+							else
+							{
+								if (z.z > lim) z.z = 2.0*lim - z.z;
+								if (z.z < -lim) z.z = -2.0*lim - z.z;
+								if (z.x > lim) z.x = 2.0*lim - z.x;
+								if (z.x < -lim) z.x = -2.0*lim - z.x;
+							}
+							break;
+						}
+						case mutFoldConformal:
+						{
+							double r2 = z.x*z.x + z.y*z.y + z.z*z.z;
+							if (r2 > 1e-21)
+							{
+								z.x += z.x / r2;
+								z.y += z.y / r2;
+								z.z += z.z / r2;
+								aux.DE *= fabs(1.0 - 1.0 / (r2));
+							}
+							break;
+						}
+						case mutFoldRotation:
+						{
+							double lim = mut.foldLimit;
+							if (z.x > lim) z.x = 2.0*lim - z.x;
+							if (z.x < -lim) z.x = -2.0*lim - z.x;
+							if (z.y > lim) z.y = 2.0*lim - z.y;
+							if (z.y < -lim) z.y = -2.0*lim - z.y;
+							if (z.z > lim) z.z = 2.0*lim - z.z;
+							if (z.z < -lim) z.z = -2.0*lim - z.z;
+							double t = z.x;
+							z.x = -z.y;
+							z.y = t;
+							break;
+						}
+						case mutFoldScalePulse:
+						{
+							double lim = mut.foldLimit;
+							if (z.x > lim) z.x = 2.0*lim - z.x;
+							if (z.x < -lim) z.x = -2.0*lim - z.x;
+							if (z.y > lim) z.y = 2.0*lim - z.y;
+							if (z.y < -lim) z.y = -2.0*lim - z.y;
+							if (z.z > lim) z.z = 2.0*lim - z.z;
+							if (z.z < -lim) z.z = -2.0*lim - z.z;
+							double pulse = 1.0 + 0.2 * sin((double)aux.i * mut.foldValue);
+							z *= pulse;
+							aux.DE *= fabs(pulse);
+							break;
+						}
+						case mutFoldTriangleWave:
+						{
+							z.x = 2.0 * fabs(z.x * 0.5 - floor(z.x * 0.5 + 0.5));
+							z.y = 2.0 * fabs(z.y * 0.5 - floor(z.y * 0.5 + 0.5));
+							z.z = 2.0 * fabs(z.z * 0.5 - floor(z.z * 0.5 + 0.5));
 							break;
 						}
 						default: break;
