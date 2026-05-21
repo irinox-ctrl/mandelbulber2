@@ -707,6 +707,155 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					z.x = nx; z.y = ny;
 				}
 			}
+
+			// Math injection (GPU Nebula)
+			if (mut->mathType != 0)
+			{
+				float4 mathZ = z;
+				switch (mut->mathType)
+				{
+					case 1: // SinPower
+					{
+						float p = mut->mathP1;
+						mathZ.x = sign(native_sin(z.x)) * pow(fabs(native_sin(z.x)), p);
+						mathZ.y = sign(native_sin(z.y)) * pow(fabs(native_sin(z.y)), p);
+						mathZ.z = sign(native_sin(z.z)) * pow(fabs(native_sin(z.z)), p);
+						break;
+					}
+					case 2: // CoshField
+					{
+						float freq = mut->mathP1;
+						float amp = mut->mathP2;
+						mathZ.x = z.x + amp * (cosh(z.y * freq) - 1.0f);
+						mathZ.y = z.y + amp * (cosh(z.z * freq) - 1.0f);
+						mathZ.z = z.z + amp * (cosh(z.x * freq) - 1.0f);
+						break;
+					}
+					case 3: // ExpMap
+					{
+						float r = native_sqrt(z.x*z.x + z.y*z.y + z.z*z.z);
+						if (r > 1e-21f)
+						{
+							float er = native_exp(mut->mathP1 * native_log(r + 1.0f));
+							float theta = atan2(native_sqrt(z.x*z.x + z.y*z.y), z.z);
+							float phi = atan2(z.y, z.x);
+							mathZ.x = er * native_sin(theta + mut->mathP2) * native_cos(phi + mut->mathP3);
+							mathZ.y = er * native_sin(theta + mut->mathP2) * native_sin(phi + mut->mathP3);
+							mathZ.z = er * native_cos(theta + mut->mathP2);
+						}
+						break;
+					}
+					case 4: // LogSpiral
+					{
+						float r = native_sqrt(z.x*z.x + z.y*z.y + z.z*z.z);
+						if (r > 1e-21f)
+						{
+							float lr = native_log(r + 1e-21f) * mut->mathP1;
+							float theta = atan2(native_sqrt(z.x*z.x + z.y*z.y), z.z);
+							float phi = atan2(z.y, z.x);
+							float spiralAngle = phi + lr * mut->mathP2;
+							float newR = native_exp(lr);
+							mathZ.x = newR * native_sin(theta) * native_cos(spiralAngle);
+							mathZ.y = newR * native_sin(theta) * native_sin(spiralAngle);
+							mathZ.z = newR * native_cos(theta);
+						}
+						break;
+					}
+					case 5: // PowerN
+					{
+						float r = native_sqrt(z.x*z.x + z.y*z.y + z.z*z.z);
+						if (r > 1e-21f)
+						{
+							float n = mut->mathP1;
+							float theta = acos(z.z / r);
+							float phi = atan2(z.y, z.x);
+							float rn = pow(r, n);
+							float nTheta = n * theta + mut->mathP2;
+							float nPhi = n * phi + mut->mathP3;
+							mathZ.x = rn * native_sin(nTheta) * native_cos(nPhi);
+							mathZ.y = rn * native_sin(nTheta) * native_sin(nPhi);
+							mathZ.z = rn * native_cos(nTheta);
+							aux.DE = pow(r, n - 1.0f) * n * aux.DE + 1.0f;
+						}
+						break;
+					}
+					case 6: // ComplexMul
+					{
+						float cr = mut->mathP1;
+						float ci = mut->mathP2;
+						mathZ.x = z.x * cr - z.y * ci;
+						mathZ.y = z.x * ci + z.y * cr;
+						mathZ.z = z.z * native_sqrt(cr*cr + ci*ci);
+						break;
+					}
+					case 7: // QuaternionMul
+					{
+						float qr = mut->mathP1, qi = mut->mathP2;
+						float qj = mut->mathP3, qk = mut->mathP4;
+						float zi = z.x, zj = z.y, zk = z.z;
+						mathZ.x = zi*qr + zj*qk - zk*qj;
+						mathZ.y = -zi*qk + zj*qr + zk*qi;
+						mathZ.z = zi*qj - zj*qi + zk*qr;
+						break;
+					}
+					case 8: // Bilinear
+					{
+						float a = mut->mathP1, b = mut->mathP2;
+						float c = mut->mathP3, d = mut->mathP4;
+						float rxy = native_sqrt(z.x*z.x + z.y*z.y);
+						float denom = c * rxy + d;
+						if (fabs(denom) > 1e-21f)
+						{
+							float scale = (a * rxy + b) / denom;
+							mathZ.x = z.x * scale; mathZ.y = z.y * scale; mathZ.z = z.z * scale;
+							aux.DE *= fabs(scale);
+						}
+						break;
+					}
+					case 9: // InvCylindrical
+					{
+						float rxy = native_sqrt(z.x*z.x + z.y*z.y);
+						float radius = mut->mathP1;
+						if (rxy > 1e-21f)
+						{
+							float radius2 = radius * radius;
+							float scale = radius2 / (rxy * rxy);
+							mathZ.x = z.x * scale; mathZ.y = z.y * scale; mathZ.z = z.z;
+							aux.DE *= scale;
+						}
+						break;
+					}
+					case 10: // SpiralPower
+					{
+						float angle = mut->mathP1 * M_PI_F / 180.0f;
+						float scale = mut->mathP2 != 0.0f ? mut->mathP2 : 1.0f;
+						float ca = native_cos(angle); float sa = native_sin(angle);
+						mathZ.x = (z.x * ca - z.y * sa) * scale;
+						mathZ.y = (z.x * sa + z.y * ca) * scale;
+						mathZ.z = z.z * scale;
+						aux.DE *= fabs(scale);
+						break;
+					}
+					case 11: // HyperbolicRot
+					{
+						float angle = mut->mathP1;
+						float ch = cosh(angle); float sh = sinh(angle);
+						mathZ.x = z.x * ch + z.z * sh;
+						mathZ.z = z.x * sh + z.z * ch;
+						mathZ.y = z.y;
+						break;
+					}
+				}
+				if (mut->mathMix < 1.0f)
+				{
+					float m = mut->mathMix;
+					z = mathZ * m + z * (1.0f - m);
+				}
+				else
+				{
+					z = mathZ;
+				}
+			}
 		}
 
 #if defined(IS_HYBRID)

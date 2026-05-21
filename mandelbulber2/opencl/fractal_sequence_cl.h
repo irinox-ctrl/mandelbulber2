@@ -207,6 +207,13 @@ typedef struct
 	cl_int warpType;
 	cl_float warpFrequency;
 	cl_float warpAmplitude;
+	// Math injection
+	cl_int mathType;
+	cl_float mathP1;
+	cl_float mathP2;
+	cl_float mathP3;
+	cl_float mathP4;
+	cl_float mathMix;
 	// Output control
 	cl_float zMix;
 	cl_float deScale;

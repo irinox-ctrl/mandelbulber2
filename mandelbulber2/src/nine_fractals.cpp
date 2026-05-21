@@ -184,6 +184,13 @@ cNineFractals::cNineFractals(std::shared_ptr<const cFractalContainer> par,
 			enumMutationWarpType(generalPar->Get<int>("mutation_warp_type", i + 1));
 		mutationParams[i].warpFrequency = generalPar->Get<double>("mutation_warp_frequency", i + 1);
 		mutationParams[i].warpAmplitude = generalPar->Get<double>("mutation_warp_amplitude", i + 1);
+		mutationParams[i].mathType =
+			enumMutationMathType(generalPar->Get<int>("mutation_math_type", i + 1));
+		mutationParams[i].mathP1 = generalPar->Get<double>("mutation_math_p1", i + 1);
+		mutationParams[i].mathP2 = generalPar->Get<double>("mutation_math_p2", i + 1);
+		mutationParams[i].mathP3 = generalPar->Get<double>("mutation_math_p3", i + 1);
+		mutationParams[i].mathP4 = generalPar->Get<double>("mutation_math_p4", i + 1);
+		mutationParams[i].mathMix = generalPar->Get<double>("mutation_math_mix", i + 1);
 		mutationParams[i].zMix = generalPar->Get<double>("mutation_z_mix", i + 1);
 		mutationParams[i].deScale = generalPar->Get<double>("mutation_de_scale", i + 1);
 		mutationParams[i].iterationStart =
@@ -1021,6 +1028,12 @@ void cNineFractals::CopyToOpenclData(sClFractalSequence *sequence) const
 		sequence->mutationParams[i].warpType = static_cast<cl_int>(mutationParams[i].warpType);
 		sequence->mutationParams[i].warpFrequency = mutationParams[i].warpFrequency;
 		sequence->mutationParams[i].warpAmplitude = mutationParams[i].warpAmplitude;
+		sequence->mutationParams[i].mathType = static_cast<cl_int>(mutationParams[i].mathType);
+		sequence->mutationParams[i].mathP1 = mutationParams[i].mathP1;
+		sequence->mutationParams[i].mathP2 = mutationParams[i].mathP2;
+		sequence->mutationParams[i].mathP3 = mutationParams[i].mathP3;
+		sequence->mutationParams[i].mathP4 = mutationParams[i].mathP4;
+		sequence->mutationParams[i].mathMix = mutationParams[i].mathMix;
 		sequence->mutationParams[i].zMix = mutationParams[i].zMix;
 		sequence->mutationParams[i].deScale = mutationParams[i].deScale;
 		sequence->mutationParams[i].iterationStart = mutationParams[i].iterationStart;

@@ -34,6 +34,8 @@
 
 #include "compute_fractal.hpp"
 
+#include <cmath>
+
 #include "common_math.h"
 #include "fractal.h"
 #include "material.h"
@@ -480,6 +482,164 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 						double nx = z.x * ca - z.y * sa;
 						double ny = z.x * sa + z.y * ca;
 						z.x = nx; z.y = ny;
+					}
+				}
+
+				// Math injection — new mathematical operations
+				if (mut.mathType != mutMathNone)
+				{
+					CVector4 mathZ = z;
+					switch (mut.mathType)
+					{
+						case mutMathSinPower:
+						{
+							double p = mut.mathP1;
+							mathZ.x = sign(sin(z.x)) * pow(fabs(sin(z.x)), p);
+							mathZ.y = sign(sin(z.y)) * pow(fabs(sin(z.y)), p);
+							mathZ.z = sign(sin(z.z)) * pow(fabs(sin(z.z)), p);
+							break;
+						}
+						case mutMathCoshField:
+						{
+							double freq = mut.mathP1;
+							double amp = mut.mathP2;
+							mathZ.x = z.x + amp * (cosh(z.y * freq) - 1.0);
+							mathZ.y = z.y + amp * (cosh(z.z * freq) - 1.0);
+							mathZ.z = z.z + amp * (cosh(z.x * freq) - 1.0);
+							break;
+						}
+						case mutMathExpMap:
+						{
+							double r = sqrt(z.x * z.x + z.y * z.y + z.z * z.z);
+							if (r > 1e-21)
+							{
+								double er = exp(mut.mathP1 * log(r + 1.0));
+								double theta = atan2(sqrt(z.x * z.x + z.y * z.y), z.z);
+								double phi = atan2(z.y, z.x);
+								mathZ.x = er * sin(theta + mut.mathP2) * cos(phi + mut.mathP3);
+								mathZ.y = er * sin(theta + mut.mathP2) * sin(phi + mut.mathP3);
+								mathZ.z = er * cos(theta + mut.mathP2);
+							}
+							break;
+						}
+						case mutMathLogSpiral:
+						{
+							double r = sqrt(z.x * z.x + z.y * z.y + z.z * z.z);
+							if (r > 1e-21)
+							{
+								double lr = log(r + 1e-21) * mut.mathP1;
+								double theta = atan2(sqrt(z.x * z.x + z.y * z.y), z.z);
+								double phi = atan2(z.y, z.x);
+								double spiralAngle = phi + lr * mut.mathP2;
+								double newR = exp(lr);
+								mathZ.x = newR * sin(theta) * cos(spiralAngle);
+								mathZ.y = newR * sin(theta) * sin(spiralAngle);
+								mathZ.z = newR * cos(theta);
+							}
+							break;
+						}
+						case mutMathPowerN:
+						{
+							double r = sqrt(z.x * z.x + z.y * z.y + z.z * z.z);
+							if (r > 1e-21)
+							{
+								double n = mut.mathP1;
+								double theta = acos(z.z / r);
+								double phi = atan2(z.y, z.x);
+								double rn = pow(r, n);
+								double nTheta = n * theta + mut.mathP2;
+								double nPhi = n * phi + mut.mathP3;
+								mathZ.x = rn * sin(nTheta) * cos(nPhi);
+								mathZ.y = rn * sin(nTheta) * sin(nPhi);
+								mathZ.z = rn * cos(nTheta);
+								aux.DE = pow(r, n - 1.0) * n * aux.DE + 1.0;
+							}
+							break;
+						}
+						case mutMathComplexMul:
+						{
+							double cr = mut.mathP1;
+							double ci = mut.mathP2;
+							double nx = z.x * cr - z.y * ci;
+							double ny = z.x * ci + z.y * cr;
+							mathZ.x = nx;
+							mathZ.y = ny;
+							mathZ.z = z.z * sqrt(cr * cr + ci * ci);
+							break;
+						}
+						case mutMathQuaternionMul:
+						{
+							double qr = mut.mathP1, qi = mut.mathP2;
+							double qj = mut.mathP3, qk = mut.mathP4;
+							double zr = 0.0, zi = z.x, zj = z.y, zk = z.z;
+							mathZ.x = zr*qi + zi*qr + zj*qk - zk*qj;
+							mathZ.y = zr*qj - zi*qk + zj*qr + zk*qi;
+							mathZ.z = zr*qk + zi*qj - zj*qi + zk*qr;
+							break;
+						}
+						case mutMathBilinear:
+						{
+							double a = mut.mathP1, b = mut.mathP2;
+							double c = mut.mathP3, d = mut.mathP4;
+							double rxy = sqrt(z.x * z.x + z.y * z.y);
+							double denom = c * rxy + d;
+							if (fabs(denom) > 1e-21)
+							{
+								double scale = (a * rxy + b) / denom;
+								mathZ.x = z.x * scale;
+								mathZ.y = z.y * scale;
+								mathZ.z = z.z * scale;
+								aux.DE *= fabs(scale);
+							}
+							break;
+						}
+						case mutMathInvCylindr:
+						{
+							double rxy = sqrt(z.x * z.x + z.y * z.y);
+							double radius = mut.mathP1;
+							if (rxy > 1e-21)
+							{
+								double radius2 = radius * radius;
+								double scale = radius2 / (rxy * rxy);
+								mathZ.x = z.x * scale;
+								mathZ.y = z.y * scale;
+								mathZ.z = z.z;
+								aux.DE *= scale;
+							}
+							break;
+						}
+						case mutMathSpiralPower:
+						{
+							double angle = mut.mathP1 * M_PI / 180.0;
+							double scale = mut.mathP2 != 0.0 ? mut.mathP2 : 1.0;
+							double ca = cos(angle);
+							double sa = sin(angle);
+							mathZ.x = (z.x * ca - z.y * sa) * scale;
+							mathZ.y = (z.x * sa + z.y * ca) * scale;
+							mathZ.z = z.z * scale;
+							aux.DE *= fabs(scale);
+							break;
+						}
+						case mutMathHyperbolicRot:
+						{
+							double angle = mut.mathP1;
+							double ch = cosh(angle);
+							double sh = sinh(angle);
+							mathZ.x = z.x * ch + z.z * sh;
+							mathZ.z = z.x * sh + z.z * ch;
+							mathZ.y = z.y;
+							break;
+						}
+						default: break;
+					}
+					if (mut.mathMix < 1.0)
+					{
+						double m = mut.mathMix;
+						z = mathZ * m + z * (1.0 - m);
+					}
+					else
+					{
+						z = mathZ;
 					}
 				}
 			}

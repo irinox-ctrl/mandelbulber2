@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
 	InitSystem();
 
 	// Advanced Weight System build identifier
-	qDebug() << "Advanced Weight System v6.1 - build 20250520 - Formula Mutation System (8 folds, 8 warps, iter range)";
+	qDebug() << "Advanced Weight System v6.2 - build 20250520 - Math Injection (12 new math ops: sin^p, cosh, exp, log-spiral, power-N, complex, quaternion, bilinear, inv-cyl, spiral, hyperbolic)";
 
 	// configure debug output
 	qInstallMessageHandler(myMessageOutput);

@@ -200,6 +200,22 @@ enum enumMutationFoldPosition
 	mutFoldPosBoth = 2
 };
 
+enum enumMutationMathType
+{
+	mutMathNone = 0,
+	mutMathSinPower = 1,        // z_i = sin(z_i)^power — hyperbolic sin landscape
+	mutMathCoshField = 2,       // z_i += amplitude * cosh(z_j * freq) — hyperbolic cosine field
+	mutMathExpMap = 3,          // z = exp(z) in 3D — exponential conformal map
+	mutMathLogSpiral = 4,       // z = log(|z|) + i*atan2 spiral — logarithmic conformal map
+	mutMathPowerN = 5,          // z = r^n * (cos(nθ), sin(nθ), cos(nφ)) — generalized power
+	mutMathComplexMul = 6,      // z = z * c_param in complex XY plane — complex multiplication
+	mutMathQuaternionMul = 7,   // z = z * q_param quaternion — 4D rotation/scaling
+	mutMathBilinear = 8,        // z = (a*z + b) / (c*z + d) — Möbius-like conformal map
+	mutMathInvCylindr = 9,      // cylindrical inversion — r_xy → 1/r_xy, z preserved
+	mutMathSpiralPower = 10,    // continuous rotation + scaling per iteration
+	mutMathHyperbolicRot = 11   // hyperbolic rotation (Lorentz boost) in XZ plane
+};
+
 // Per-formula mutation parameters — universal pre/post processing on ANY formula
 struct sFormulaMutationParams
 {
@@ -220,14 +236,21 @@ struct sFormulaMutationParams
 	enumMutationFoldPosition foldPosition;
 	double foldLimit;
 	double foldValue;
-	int kaleidoscopeSides; // for polyfold/kaleidoscope (default 6)
+	int kaleidoscopeSides;
 	// Warp distortion
 	enumMutationWarpType warpType;
 	double warpFrequency;
 	double warpAmplitude;
+	// Math injection — new mathematical operations
+	enumMutationMathType mathType;
+	double mathP1;     // primary parameter (power, frequency, real part, etc.)
+	double mathP2;     // secondary parameter (amplitude, imaginary part, etc.)
+	double mathP3;     // tertiary parameter (phase, z component, etc.)
+	double mathP4;     // quaternary parameter (w component for quaternion, etc.)
+	double mathMix;    // 0-1: blend between original z and math-transformed z
 	// Output control
-	double zMix;     // 0-1: blend between original z and formula output (1.0 = normal)
-	double deScale;  // multiply DE output (default 1.0)
+	double zMix;
+	double deScale;
 	// Iteration range
 	int iterationStart;
 	int iterationStop;
