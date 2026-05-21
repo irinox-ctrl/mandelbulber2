@@ -965,21 +965,116 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 						}
 						case mutMathConformeFlow:
 						{
-							// g' = e^(2u(x)) * g — conformal deformation
-							// u(x) = P1 * harmonic potential + P2 * radial + P3 * sinusoidal
 							double r = sqrt(z.x*z.x + z.y*z.y + z.z*z.z);
 							double harmonic = (r > 1e-21) ? mut.mathP1 / r : 0.0;
 							double radial = mut.mathP2 * r;
 							double sinusoidal = mut.mathP3 * sin(r * mut.mathP4);
 							double u = harmonic + radial + sinusoidal;
 							double confFactor = exp(2.0 * u);
-							// clamp to prevent explosion
 							if (confFactor > 100.0) confFactor = 100.0;
 							if (confFactor < 0.01) confFactor = 0.01;
 							mathZ.x = z.x * confFactor;
 							mathZ.y = z.y * confFactor;
 							mathZ.z = z.z * confFactor;
 							aux.DE *= confFactor;
+							break;
+						}
+						case mutMathFractionalPower:
+						{
+							// r^p with fractional p — P1=power (default 2.718=e)
+							double p = (mut.mathP1 != 0.0) ? mut.mathP1 : 2.718281828;
+							double r = sqrt(z.x*z.x + z.y*z.y + z.z*z.z);
+							if (r > 1e-21)
+							{
+								double theta = acos(z.z / r);
+								double phi = atan2(z.y, z.x);
+								double rp = pow(r, p);
+								mathZ.x = rp * sin(theta * p) * cos(phi * p);
+								mathZ.y = rp * sin(theta * p) * sin(phi * p);
+								mathZ.z = rp * cos(theta * p);
+								aux.DE = aux.DE * p * pow(r, p - 1.0) + 1.0;
+							}
+							break;
+						}
+						case mutMathAnisotropePower:
+						{
+							// P1=power_x, P2=power_y, P3=power_z
+							double px = (mut.mathP1 != 0.0) ? mut.mathP1 : 2.0;
+							double py = (mut.mathP2 != 0.0) ? mut.mathP2 : 2.0;
+							double pz = (mut.mathP3 != 0.0) ? mut.mathP3 : 2.0;
+							double ax = fabs(z.x); double ay = fabs(z.y); double az = fabs(z.z);
+							mathZ.x = (z.x >= 0 ? 1.0 : -1.0) * pow(max(ax, 1e-21), px);
+							mathZ.y = (z.y >= 0 ? 1.0 : -1.0) * pow(max(ay, 1e-21), py);
+							mathZ.z = (z.z >= 0 ? 1.0 : -1.0) * pow(max(az, 1e-21), pz);
+							double maxP = max(px, max(py, pz));
+							double r = sqrt(z.x*z.x + z.y*z.y + z.z*z.z);
+							aux.DE = aux.DE * maxP * pow(max(r, 1e-21), maxP - 1.0) + 1.0;
+							break;
+						}
+						case mutMathHyperbolicTrigPower:
+						{
+							// sinh/cosh triplex power instead of sin/cos — P1=power
+							double p = (mut.mathP1 != 0.0) ? mut.mathP1 : 2.0;
+							double r = sqrt(z.x*z.x + z.y*z.y + z.z*z.z);
+							if (r > 1e-21)
+							{
+								double theta = acos(z.z / r);
+								double phi = atan2(z.y, z.x);
+								double rp = pow(r, p);
+								mathZ.x = rp * sinh(theta * p) * cos(phi * p);
+								mathZ.y = rp * sinh(theta * p) * sin(phi * p);
+								mathZ.z = rp * cosh(theta * p);
+								aux.DE = aux.DE * p * pow(r, p - 1.0) * cosh(theta) + 1.0;
+							}
+							break;
+						}
+						case mutMathLogarithmicRadius:
+						{
+							// log(1 + r^p) — P1=power
+							double p = (mut.mathP1 != 0.0) ? mut.mathP1 : 2.0;
+							double r = sqrt(z.x*z.x + z.y*z.y + z.z*z.z);
+							if (r > 1e-21)
+							{
+								double rp = pow(r, p);
+								double lr = log(1.0 + rp);
+								double scale = lr / r;
+								mathZ.x = z.x * scale;
+								mathZ.y = z.y * scale;
+								mathZ.z = z.z * scale;
+								aux.DE *= p * pow(r, p - 1.0) / (1.0 + rp);
+							}
+							break;
+						}
+						case mutMathPolarSwap:
+						{
+							// swap θ↔φ in spherical coordinates
+							double r = sqrt(z.x*z.x + z.y*z.y + z.z*z.z);
+							if (r > 1e-21)
+							{
+								double theta = acos(z.z / r);
+								double phi = atan2(z.y, z.x);
+								double tmp = theta; theta = phi; phi = tmp;
+								mathZ.x = r * sin(theta) * cos(phi);
+								mathZ.y = r * sin(theta) * sin(phi);
+								mathZ.z = r * cos(theta);
+							}
+							break;
+						}
+						case mutMathRadialModulation:
+						{
+							// r *= (1 + P1*sin(P2*θ)) — P1=amplitude, P2=frequency
+							double amp = (mut.mathP1 != 0.0) ? mut.mathP1 : 0.1;
+							double freq = (mut.mathP2 != 0.0) ? mut.mathP2 : 10.0;
+							double r = sqrt(z.x*z.x + z.y*z.y + z.z*z.z);
+							if (r > 1e-21)
+							{
+								double theta = acos(z.z / r);
+								double mod = 1.0 + amp * sin(freq * theta);
+								mathZ.x = z.x * mod;
+								mathZ.y = z.y * mod;
+								mathZ.z = z.z * mod;
+								aux.DE *= fabs(mod);
+							}
 							break;
 						}
 						default: break;

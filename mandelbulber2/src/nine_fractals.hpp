@@ -235,7 +235,14 @@ enum enumMutationMathType
 	mutMathQuatJuliaKleinian = 20,  // q² + c quaternion Julia within Kleinian
 	mutMathPoincareBall = 21,       // H³ Poincaré ball model mapping
 	mutMathLorentzBoost = 22,       // SO(3,1) Lorentz transform + 4D→3D projection
-	mutMathConformeFlow = 23        // g' = e^(2u(x)) * g conformal deformation
+	mutMathConformeFlow = 23,       // g' = e^(2u(x)) * g conformal deformation
+	// v7.1 — Familie 2 power variation math
+	mutMathFractionalPower = 24,    // r^p with fractional p (e.g. 2.718)
+	mutMathAnisotropePower = 25,    // different power per axis
+	mutMathHyperbolicTrigPower = 26,// sinh/cosh triplex instead of sin/cos
+	mutMathLogarithmicRadius = 27,  // log(1 + r^p) compression
+	mutMathPolarSwap = 28,          // swap θ↔φ
+	mutMathRadialModulation = 29    // r * (1 + A*sin(B*θ))
 };
 
 // Per-formula mutation parameters — universal pre/post processing on ANY formula

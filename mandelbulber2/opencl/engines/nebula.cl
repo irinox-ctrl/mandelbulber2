@@ -1163,6 +1163,98 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						aux.DE *= confFactor;
 						break;
 					}
+					case 24: // FractionalPower
+					{
+						float p = (mut->mathP1 != 0.0f) ? mut->mathP1 : 2.718281828f;
+						float r = native_sqrt(z.x*z.x + z.y*z.y + z.z*z.z);
+						if (r > 1e-21f)
+						{
+							float theta = acos(z.z / r);
+							float phi = atan2(z.y, z.x);
+							float rp = native_powr(r, p);
+							mathZ.x = rp * native_sin(theta * p) * native_cos(phi * p);
+							mathZ.y = rp * native_sin(theta * p) * native_sin(phi * p);
+							mathZ.z = rp * native_cos(theta * p);
+							aux.DE = aux.DE * p * native_powr(r, p - 1.0f) + 1.0f;
+						}
+						break;
+					}
+					case 25: // AnisotropePower
+					{
+						float px = (mut->mathP1 != 0.0f) ? mut->mathP1 : 2.0f;
+						float py = (mut->mathP2 != 0.0f) ? mut->mathP2 : 2.0f;
+						float pz = (mut->mathP3 != 0.0f) ? mut->mathP3 : 2.0f;
+						float ax = fabs(z.x); float ay = fabs(z.y); float az = fabs(z.z);
+						mathZ.x = sign(z.x) * native_powr(max(ax, 1e-21f), px);
+						mathZ.y = sign(z.y) * native_powr(max(ay, 1e-21f), py);
+						mathZ.z = sign(z.z) * native_powr(max(az, 1e-21f), pz);
+						float maxP = max(px, max(py, pz));
+						float r = native_sqrt(z.x*z.x + z.y*z.y + z.z*z.z);
+						aux.DE = aux.DE * maxP * native_powr(max(r, 1e-21f), maxP - 1.0f) + 1.0f;
+						break;
+					}
+					case 26: // HyperbolicTrigPower
+					{
+						float p = (mut->mathP1 != 0.0f) ? mut->mathP1 : 2.0f;
+						float r = native_sqrt(z.x*z.x + z.y*z.y + z.z*z.z);
+						if (r > 1e-21f)
+						{
+							float theta = acos(z.z / r);
+							float phi = atan2(z.y, z.x);
+							float rp = native_powr(r, p);
+							mathZ.x = rp * sinh(theta * p) * native_cos(phi * p);
+							mathZ.y = rp * sinh(theta * p) * native_sin(phi * p);
+							mathZ.z = rp * cosh(theta * p);
+							aux.DE = aux.DE * p * native_powr(r, p - 1.0f) * cosh(theta) + 1.0f;
+						}
+						break;
+					}
+					case 27: // LogarithmicRadius
+					{
+						float p = (mut->mathP1 != 0.0f) ? mut->mathP1 : 2.0f;
+						float r = native_sqrt(z.x*z.x + z.y*z.y + z.z*z.z);
+						if (r > 1e-21f)
+						{
+							float rp = native_powr(r, p);
+							float lr = native_log(1.0f + rp);
+							float sc = lr / r;
+							mathZ.x = z.x * sc;
+							mathZ.y = z.y * sc;
+							mathZ.z = z.z * sc;
+							aux.DE *= p * native_powr(r, p - 1.0f) / (1.0f + rp);
+						}
+						break;
+					}
+					case 28: // PolarSwap
+					{
+						float r = native_sqrt(z.x*z.x + z.y*z.y + z.z*z.z);
+						if (r > 1e-21f)
+						{
+							float theta = acos(z.z / r);
+							float phi = atan2(z.y, z.x);
+							float tmp = theta; theta = phi; phi = tmp;
+							mathZ.x = r * native_sin(theta) * native_cos(phi);
+							mathZ.y = r * native_sin(theta) * native_sin(phi);
+							mathZ.z = r * native_cos(theta);
+						}
+						break;
+					}
+					case 29: // RadialModulation
+					{
+						float amp = (mut->mathP1 != 0.0f) ? mut->mathP1 : 0.1f;
+						float freq = (mut->mathP2 != 0.0f) ? mut->mathP2 : 10.0f;
+						float r = native_sqrt(z.x*z.x + z.y*z.y + z.z*z.z);
+						if (r > 1e-21f)
+						{
+							float theta = acos(z.z / r);
+							float mod = 1.0f + amp * native_sin(freq * theta);
+							mathZ.x = z.x * mod;
+							mathZ.y = z.y * mod;
+							mathZ.z = z.z * mod;
+							aux.DE *= fabs(mod);
+						}
+						break;
+					}
 				}
 				if (mut->mathMix < 1.0f)
 				{
