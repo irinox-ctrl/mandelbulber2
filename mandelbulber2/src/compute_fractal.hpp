@@ -82,6 +82,8 @@ struct sFractalOut
 	double colorIndex;
 	double fakeAO;
 	double orbitTrapR;
+	double pseudoKleinianDE; // passed through from aux for deltaDE path
+	double finalDE;          // aux.DE at end of iteration (for weight system)
 	int iters;
 	bool maxiter;
 	int orbitTrapMinIter;  // iteration at which orbit trap distance was smallest

@@ -426,6 +426,8 @@ double CalculateDistanceSimple(const sParamRender &params, const cNineFractals &
 	sFractalOut fractOut;
 	fractOut.normal = CVector3(0, 0, 0);
 	fractOut.colorIndex = 0;
+	fractOut.pseudoKleinianDE = 1.0;
+	fractOut.finalDE = 1.0;
 
 	if (fractals.GetDEType(forcedFormulaIndex) == fractal::analyticDEType)
 	{
@@ -536,7 +538,7 @@ double CalculateDistanceSimple(const sParamRender &params, const cNineFractals &
 			{
 				const CVector3 z = fractOut.z;
 				const double rxy = sqrt(z.x * z.x + z.y * z.y);
-				distance = max(rxy - 0.92784, fabs(rxy * z.z) / r) / (dr);
+				distance = max(rxy - fractOut.pseudoKleinianDE, fabs(rxy * z.z) / r) / (dr);
 			}
 			else if (fractals.GetDEFunctionType(forcedFormulaIndex) == fractal::josKleinianDEFunction)
 			{

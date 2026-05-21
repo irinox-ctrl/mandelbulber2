@@ -73,6 +73,8 @@ typedef struct
 	float distance;
 	float colorIndex;
 	float orbitTrapR;
+	float pseudoKleinianDE;
+	float finalDE;
 	int orbitTrapMinIter;
 	int orbitTrapCenterIndex;
 	int objectId;
@@ -258,6 +260,31 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 		{
 			float standardWeight = consts->sequence.formulaWeight[sequence];
 			__constant sClFormulaWeightParams *wp = &consts->sequence.weightParams[sequence];
+
+			// Compute actual DE estimate for PK/JK formulas (shared by DE and Conditional modes)
+			float actualDE = aux.DE;
+			if (aux.DE > 0.0f && aux.r > 0.0f)
+			{
+				int deFunc = consts->sequence.DEFunctionType[sequence];
+				if (deFunc == pseudoKleinianDEFunction)
+				{
+					float rxy = native_sqrt(z.x * z.x + z.y * z.y);
+					actualDE = max(rxy - aux.pseudoKleinianDE, fabs(rxy * z.z) / aux.r) / aux.DE;
+				}
+				else if (deFunc == josKleinianDEFunction)
+				{
+					actualDE = min(z.y, 0.05f) / max(aux.DE, 1.0f);
+				}
+				else if (deFunc == logarithmicDEFunction && aux.r > 1.0f)
+				{
+					actualDE = 0.5f * aux.r * native_log(aux.r) / aux.DE;
+				}
+				else if (deFunc == linearDEFunction)
+				{
+					actualDE = aux.r / aux.DE;
+				}
+			}
+
 			int weightMode = wp->mode;
 			if (weightMode == 0) // Static
 			{
@@ -286,7 +313,7 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 			}
 			else if (weightMode == 2) // DE
 			{
-				float delta = aux.DE - wp->deThreshold;
+				float delta = actualDE - wp->deThreshold;
 				float factor = delta * wp->deSensitivity;
 				if (wp->deModType == 0) // Linear
 					effectiveWeight = wp->deBase + factor;
@@ -295,8 +322,8 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 				else if (wp->deModType == 2) // Exponential
 					effectiveWeight = wp->deBase * exp(factor);
 				else if (wp->deModType == 3) // Inverse
-					effectiveWeight = (fabs(aux.DE) > 1e-15f)
-						? wp->deBase * (wp->deThreshold / aux.DE) : 1.0f;
+					effectiveWeight = (fabs(actualDE) > 1e-15f)
+						? wp->deBase * (wp->deThreshold / actualDE) : 1.0f;
 				else // Sigmoid (4)
 					effectiveWeight = wp->deBase + (1.0f - wp->deBase) / (1.0f + exp(-factor));
 				effectiveWeight = clamp(effectiveWeight, 0.0f, 1.0f);
@@ -321,7 +348,7 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 			}
 			else if (weightMode == 4) // Conditional
 			{
-				float testValue = (wp->conditionType == 0) ? aux.DE : length(z);
+				float testValue = (wp->conditionType == 0) ? actualDE : length(z);
 				bool condMet = (testValue < wp->conditionThreshold);
 				int cb = wp->conditionBlend;
 				if (cb == 0) // Step
@@ -459,6 +486,7 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 		if (consts->sequence.isHybrid && effectiveWeight < 1.0f)
 		{
 			__constant sClFormulaWeightParams *wp = &consts->sequence.weightParams[sequence];
+			bool isPKFormula = (consts->sequence.DEFunctionType[sequence] == pseudoKleinianDEFunction);
 			if (wp->separateComponents)
 			{
 				float kz = effectiveWeight * wp->zVectorWeight;
@@ -473,7 +501,8 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 					aux.DE = aux.DE * kde + tempAuxDE * kden;
 					aux.DE0 = aux.DE0 * kde + tempAuxDE0 * kden;
 					aux.dist = aux.dist * kde + tempAuxDist * kden;
-					aux.pseudoKleinianDE = aux.pseudoKleinianDE * kde + tempAuxPseudoKleinianDE * kden;
+					if (isPKFormula)
+						aux.pseudoKleinianDE = aux.pseudoKleinianDE * kde + tempAuxPseudoKleinianDE * kden;
 					aux.actualScale = aux.actualScale * kde + tempAuxActualScale * kden;
 					aux.actualScaleA = aux.actualScaleA * kde + tempAuxActualScaleA * kden;
 				}
@@ -494,7 +523,8 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 				aux.DE = aux.DE * k + tempAuxDE * kn;
 				aux.DE0 = aux.DE0 * k + tempAuxDE0 * kn;
 				aux.dist = aux.dist * k + tempAuxDist * kn;
-				aux.pseudoKleinianDE = aux.pseudoKleinianDE * k + tempAuxPseudoKleinianDE * kn;
+				if (isPKFormula)
+					aux.pseudoKleinianDE = aux.pseudoKleinianDE * k + tempAuxPseudoKleinianDE * kn;
 				aux.actualScale = aux.actualScale * k + tempAuxActualScale * kn;
 				aux.actualScaleA = aux.actualScaleA * k + tempAuxActualScaleA * kn;
 				aux.color = aux.color * k + tempAuxColor * kn;
@@ -961,6 +991,8 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 	}
 	out.z = z;
 	out.orbitTrapMinIter = orbitTrapMinIter;
+	out.pseudoKleinianDE = aux.pseudoKleinianDE;
+	out.finalDE = aux.DE;
 
 	return out;
 }

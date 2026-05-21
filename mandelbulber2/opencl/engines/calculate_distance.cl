@@ -94,6 +94,8 @@ formulaOut CalculateDistance(__constant sClInConstants *consts, float3 point,
 	out.distance = 0.0f;
 	out.colorIndex = 0.0f;
 	out.orbitTrapR = 0.0f;
+	out.pseudoKleinianDE = 1.0f;
+	out.finalDE = 1.0f;
 	out.orbitTrapCenterIndex = 0;
 	out.maxiter = false;
 	out.objectId = 0;
@@ -230,7 +232,7 @@ formulaOut CalculateDistance(__constant sClInConstants *consts, float3 point,
 			out.distance = 0.5f * r * native_log(r) / d;
 #elif DELTA_PSEUDO_KLEINIAN_DE
 			float rxy = native_sqrt(out.z.x * out.z.x + out.z.y * out.z.y);
-			out.distance = max(rxy - 0.92784f, fabs(rxy * out.z.z) / r) / d;
+			out.distance = max(rxy - out.pseudoKleinianDE, fabs(rxy * out.z.z) / r) / d;
 #elif DELTA_JOS_KLEINIAN_DE
 			float4 z = out.z;
 			float rxy = native_sqrt(z.x * z.x + z.z * z.z);

@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
 	InitSystem();
 
 	// Advanced Weight System build identifier
-	qDebug() << "Advanced Weight System v4.0 - build 20250520 - Rewritten gradient opacity system";
+	qDebug() << "Advanced Weight System v4.1 - build 20250520 - PK/JK DE integration + weight system fix";
 
 	// configure debug output
 	qInstallMessageHandler(myMessageOutput);

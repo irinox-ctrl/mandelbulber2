@@ -219,8 +219,32 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 		double effectiveWeight = 1.0;
 		if (fractals.IsHybrid())
 		{
+			// Compute actual DE estimate for weight system (not just aux.DE derivative)
+			double actualDE = aux.DE;
+			if (aux.DE > 0.0 && aux.r > 0.0)
+			{
+				fractal::enumDEFunctionType deFunc = fractals.GetDEFunctionType(sequence);
+				if (deFunc == fractal::pseudoKleinianDEFunction)
+				{
+					double rxy = sqrt(z.x * z.x + z.y * z.y);
+					actualDE = max(rxy - aux.pseudoKleinianDE, fabs(rxy * z.z) / aux.r) / aux.DE;
+				}
+				else if (deFunc == fractal::josKleinianDEFunction)
+				{
+					actualDE = min(z.y, 0.05) / max(aux.DE, 1.0);
+				}
+				else if (deFunc == fractal::logarithmicDEFunction && aux.r > 1.0)
+				{
+					actualDE = 0.5 * aux.r * log(aux.r) / aux.DE;
+				}
+				else if (deFunc == fractal::linearDEFunction)
+				{
+					actualDE = aux.r / aux.DE;
+				}
+			}
+
 			double standardWeight = fractals.GetWeight(sequence);
-			double advancedWeight = fractals.CalculateWeight(sequence, i, aux.DE, aux.r);
+			double advancedWeight = fractals.CalculateWeight(sequence, i, actualDE, aux.r);
 			effectiveWeight = standardWeight * advancedWeight;
 			if (effectiveWeight > 1.0) effectiveWeight = 1.0;
 		}
@@ -287,6 +311,7 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 		if (fractals.IsHybrid() && effectiveWeight < 1.0)
 		{
 			const sFormulaWeightParams &wp = fractals.GetWeightParams(sequence);
+			bool isPKFormula = (fractals.GetDEFunctionType(sequence) == fractal::pseudoKleinianDEFunction);
 
 			if (wp.separateComponents)
 			{
@@ -303,7 +328,8 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 					aux.DE = aux.DE * kde + tempAuxDE * kden;
 					aux.DE0 = aux.DE0 * kde + tempAuxDE0 * kden;
 					aux.dist = aux.dist * kde + tempAuxDist * kden;
-					aux.pseudoKleinianDE = aux.pseudoKleinianDE * kde + tempAuxPseudoKleinianDE * kden;
+					if (isPKFormula)
+						aux.pseudoKleinianDE = aux.pseudoKleinianDE * kde + tempAuxPseudoKleinianDE * kden;
 					aux.actualScale = aux.actualScale * kde + tempAuxActualScale * kden;
 					aux.actualScaleA = aux.actualScaleA * kde + tempAuxActualScaleA * kden;
 				}
@@ -325,7 +351,8 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 				aux.DE = aux.DE * k + tempAuxDE * kn;
 				aux.DE0 = aux.DE0 * k + tempAuxDE0 * kn;
 				aux.dist = aux.dist * k + tempAuxDist * kn;
-				aux.pseudoKleinianDE = aux.pseudoKleinianDE * k + tempAuxPseudoKleinianDE * kn;
+				if (isPKFormula)
+					aux.pseudoKleinianDE = aux.pseudoKleinianDE * k + tempAuxPseudoKleinianDE * kn;
 				aux.actualScale = aux.actualScale * k + tempAuxActualScale * kn;
 				aux.actualScaleA = aux.actualScaleA * k + tempAuxActualScaleA * kn;
 				aux.color = aux.color * k + tempAuxColor * kn;
@@ -845,6 +872,8 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 
 	out->iters = i + 1;
 	out->z = z.GetXYZ();
+	out->pseudoKleinianDE = aux.pseudoKleinianDE;
+	out->finalDE = aux.DE;
 }
 
 template void Compute<calcModeNormal>(const cNineFractals &fractals,
