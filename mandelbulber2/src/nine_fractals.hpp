@@ -173,7 +173,12 @@ enum enumMutationFoldType
 {
 	mutFoldNone = 0,
 	mutFoldBox = 1,
-	mutFoldSphere = 2
+	mutFoldSphere = 2,
+	mutFoldMenger = 3,
+	mutFoldSierpinski = 4,
+	mutFoldAbs = 5,
+	mutFoldKaleidoscope = 6,
+	mutFoldOctahedral = 7
 };
 
 enum enumMutationWarpType
@@ -181,7 +186,18 @@ enum enumMutationWarpType
 	mutWarpNone = 0,
 	mutWarpSine = 1,
 	mutWarpTwist = 2,
-	mutWarpSpiral = 3
+	mutWarpSpiral = 3,
+	mutWarpRadial = 4,
+	mutWarpCylindrical = 5,
+	mutWarpSphericalInversion = 6,
+	mutWarpMobius = 7
+};
+
+enum enumMutationFoldPosition
+{
+	mutFoldPosPre = 0,
+	mutFoldPosPost = 1,
+	mutFoldPosBoth = 2
 };
 
 // Per-formula mutation parameters — universal pre/post processing on ANY formula
@@ -199,10 +215,12 @@ struct sFormulaMutationParams
 	double postOffsetX, postOffsetY, postOffsetZ;
 	// Component swizzle
 	enumMutationSwizzle swizzle;
-	// Fold injection (before formula)
+	// Fold injection
 	enumMutationFoldType foldType;
+	enumMutationFoldPosition foldPosition;
 	double foldLimit;
 	double foldValue;
+	int kaleidoscopeSides; // for polyfold/kaleidoscope (default 6)
 	// Warp distortion
 	enumMutationWarpType warpType;
 	double warpFrequency;
@@ -210,6 +228,9 @@ struct sFormulaMutationParams
 	// Output control
 	double zMix;     // 0-1: blend between original z and formula output (1.0 = normal)
 	double deScale;  // multiply DE output (default 1.0)
+	// Iteration range
+	int iterationStart;
+	int iterationStop;
 
 	// Pre-computed rotation matrices (filled in constructor)
 	CRotationMatrix preRotMatrix;

@@ -487,51 +487,106 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 
 		// -------------- Formula Mutation pre-processing (GPU) ---------------
 		float4 preMutZ = z;
-		if (consts->sequence.mutationParams[sequence].enabled)
+		bool mutationActive = consts->sequence.mutationParams[sequence].enabled
+			&& i >= consts->sequence.mutationParams[sequence].iterationStart
+			&& i < consts->sequence.mutationParams[sequence].iterationStop;
+		if (mutationActive)
 		{
 			__constant sClFormulaMutationParams *mut = &consts->sequence.mutationParams[sequence];
 
-			// Pre-abs
 			if (mut->preAbsX) z.x = fabs(z.x);
 			if (mut->preAbsY) z.y = fabs(z.y);
 			if (mut->preAbsZ) z.z = fabs(z.z);
-
-			// Pre-offset
-			z.x += mut->preOffsetX;
-			z.y += mut->preOffsetY;
-			z.z += mut->preOffsetZ;
-
-			// Pre-rotation
+			z.x += mut->preOffsetX; z.y += mut->preOffsetY; z.z += mut->preOffsetZ;
 			if (mut->preRotX != 0.0f || mut->preRotY != 0.0f || mut->preRotZ != 0.0f)
 			{
 				float3 zr;
-				zr.x = mut->preRotMatrix[0] * z.x + mut->preRotMatrix[1] * z.y + mut->preRotMatrix[2] * z.z;
-				zr.y = mut->preRotMatrix[3] * z.x + mut->preRotMatrix[4] * z.y + mut->preRotMatrix[5] * z.z;
-				zr.z = mut->preRotMatrix[6] * z.x + mut->preRotMatrix[7] * z.y + mut->preRotMatrix[8] * z.z;
+				zr.x = mut->preRotMatrix[0]*z.x + mut->preRotMatrix[1]*z.y + mut->preRotMatrix[2]*z.z;
+				zr.y = mut->preRotMatrix[3]*z.x + mut->preRotMatrix[4]*z.y + mut->preRotMatrix[5]*z.z;
+				zr.z = mut->preRotMatrix[6]*z.x + mut->preRotMatrix[7]*z.y + mut->preRotMatrix[8]*z.z;
 				z.x = zr.x; z.y = zr.y; z.z = zr.z;
 			}
+			if (mut->preScale != 1.0f) { z *= mut->preScale; aux.DE *= mut->preScale; }
 
-			// Pre-scale
-			if (mut->preScale != 1.0f)
+			// Fold injection (pre or both)
+			if (mut->foldType != 0 && (mut->foldPosition == 0 || mut->foldPosition == 2))
 			{
-				z *= mut->preScale;
-				aux.DE *= mut->preScale;
-			}
-
-			// Fold injection
-			if (mut->foldType == 1) // box fold
-			{
-				if (fabs(z.x) > mut->foldLimit) z.x = sign(z.x) * mut->foldValue - z.x;
-				if (fabs(z.y) > mut->foldLimit) z.y = sign(z.y) * mut->foldValue - z.y;
-				if (fabs(z.z) > mut->foldLimit) z.z = sign(z.z) * mut->foldValue - z.z;
-			}
-			else if (mut->foldType == 2) // sphere fold
-			{
-				float rr = z.x * z.x + z.y * z.y + z.z * z.z;
-				float minR2 = mut->foldLimit * mut->foldLimit;
-				float fixR2 = mut->foldValue * mut->foldValue;
-				if (rr < minR2) { z *= fixR2 / minR2; aux.DE *= fixR2 / minR2; }
-				else if (rr < fixR2) { z *= fixR2 / rr; aux.DE *= fixR2 / rr; }
+				switch (mut->foldType)
+				{
+					case 1: // box fold
+						if (fabs(z.x) > mut->foldLimit) z.x = sign(z.x) * mut->foldValue - z.x;
+						if (fabs(z.y) > mut->foldLimit) z.y = sign(z.y) * mut->foldValue - z.y;
+						if (fabs(z.z) > mut->foldLimit) z.z = sign(z.z) * mut->foldValue - z.z;
+						break;
+					case 2: // sphere fold
+					{
+						float rr = z.x*z.x + z.y*z.y + z.z*z.z;
+						float minR2 = mut->foldLimit * mut->foldLimit;
+						float fixR2 = mut->foldValue * mut->foldValue;
+						if (rr < minR2) { z *= fixR2/minR2; aux.DE *= fixR2/minR2; }
+						else if (rr < fixR2) { z *= fixR2/rr; aux.DE *= fixR2/rr; }
+						break;
+					}
+					case 3: // menger fold
+					{
+						z.x = fabs(z.x); z.y = fabs(z.y); z.z = fabs(z.z);
+						if (z.x - z.y < 0) { float t = z.y; z.y = z.x; z.x = t; }
+						if (z.x - z.z < 0) { float t = z.z; z.z = z.x; z.x = t; }
+						if (z.y - z.z < 0) { float t = z.z; z.z = z.y; z.y = t; }
+						float s = mut->foldValue;
+						z.x = z.x * s - mut->foldLimit * (s - 1.0f);
+						z.y = z.y * s - mut->foldLimit * (s - 1.0f);
+						z.z = z.z * s;
+						if (z.z > 0.5f * mut->foldLimit * (s - 1.0f))
+							z.z -= mut->foldLimit * (s - 1.0f);
+						aux.DE *= s;
+						break;
+					}
+					case 4: // sierpinski fold
+					{
+						if (z.x + z.y < 0) { float tx = -z.y; z.y = -z.x; z.x = tx; }
+						if (z.x + z.z < 0) { float tx = -z.z; z.z = -z.x; z.x = tx; }
+						if (z.y + z.z < 0) { float ty = -z.z; z.z = -z.y; z.y = ty; }
+						float s = mut->foldValue;
+						z *= s;
+						z.x -= mut->foldLimit * (s - 1.0f);
+						z.y -= mut->foldLimit * (s - 1.0f);
+						z.z -= mut->foldLimit * (s - 1.0f);
+						aux.DE *= s;
+						break;
+					}
+					case 5: // abs fold (tglad)
+					{
+						z.x = fabs(z.x + mut->foldLimit) - fabs(z.x - mut->foldLimit) - z.x;
+						z.y = fabs(z.y + mut->foldLimit) - fabs(z.y - mut->foldLimit) - z.y;
+						z.z = fabs(z.z + mut->foldLimit) - fabs(z.z - mut->foldLimit) - z.z;
+						break;
+					}
+					case 6: // kaleidoscope
+					{
+						int sides = mut->kaleidoscopeSides;
+						if (sides >= 3)
+						{
+							float angle = M_PI_F / (float)sides;
+							float pAngle = atan2(z.y, z.x);
+							float r = native_sqrt(z.x*z.x + z.y*z.y);
+							pAngle = fmod(pAngle + angle, 2.0f * angle) - angle;
+							z.x = r * native_cos(pAngle);
+							z.y = r * native_sin(pAngle);
+							z.y = fabs(z.y);
+						}
+						break;
+					}
+					case 7: // octahedral fold
+					{
+						if (z.x + z.y < 0) { float tx = -z.y; z.y = -z.x; z.x = tx; }
+						if (z.x + z.z < 0) { float tx = -z.z; z.z = -z.x; z.x = tx; }
+						if (z.y + z.z < 0) { float ty = -z.z; z.z = -z.y; z.y = ty; }
+						if (z.x - z.y < 0) { float tx = z.y; z.y = z.x; z.x = tx; }
+						if (z.x - z.z < 0) { float tx = z.z; z.z = z.x; z.x = tx; }
+						break;
+					}
+				}
 			}
 
 			// Component swizzle
@@ -557,19 +612,58 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 				float angle = z.z * mut->warpFrequency * M_PI_F / 180.0f;
 				float ca = native_cos(angle * mut->warpAmplitude);
 				float sa = native_sin(angle * mut->warpAmplitude);
-				float nx = z.x * ca - z.y * sa;
-				float ny = z.x * sa + z.y * ca;
+				float nx = z.x * ca - z.y * sa; float ny = z.x * sa + z.y * ca;
 				z.x = nx; z.y = ny;
 			}
 			else if (mut->warpType == 3) // spiral
 			{
-				float r = native_sqrt(z.x * z.x + z.y * z.y);
+				float r = native_sqrt(z.x*z.x + z.y*z.y);
 				float angle = r * mut->warpFrequency;
 				float ca = native_cos(angle * mut->warpAmplitude);
 				float sa = native_sin(angle * mut->warpAmplitude);
-				float nx = z.x * ca - z.y * sa;
-				float ny = z.x * sa + z.y * ca;
+				float nx = z.x * ca - z.y * sa; float ny = z.x * sa + z.y * ca;
 				z.x = nx; z.y = ny;
+			}
+			else if (mut->warpType == 4) // radial
+			{
+				float r = native_sqrt(z.x*z.x + z.y*z.y + z.z*z.z);
+				if (r > 1e-21f)
+				{
+					float warp = mut->warpAmplitude * native_sin(r * mut->warpFrequency);
+					z.x += z.x / r * warp; z.y += z.y / r * warp; z.z += z.z / r * warp;
+				}
+			}
+			else if (mut->warpType == 5) // cylindrical
+			{
+				float r = native_sqrt(z.x*z.x + z.y*z.y);
+				if (r > 1e-21f)
+				{
+					float angle = atan2(z.y, z.x);
+					angle += mut->warpAmplitude * native_sin(z.z * mut->warpFrequency);
+					z.x = r * native_cos(angle); z.y = r * native_sin(angle);
+				}
+			}
+			else if (mut->warpType == 6) // spherical inversion
+			{
+				float rr = z.x*z.x + z.y*z.y + z.z*z.z;
+				float radius2 = mut->warpFrequency * mut->warpFrequency;
+				if (rr > 1e-21f)
+				{
+					float factor = radius2 / rr;
+					factor = 1.0f + (factor - 1.0f) * mut->warpAmplitude;
+					z *= factor; aux.DE *= fabs(factor);
+				}
+			}
+			else if (mut->warpType == 7) // mobius
+			{
+				float r2 = z.x*z.x + z.y*z.y;
+				if (r2 > 1e-21f)
+				{
+					float angle = mut->warpAmplitude * mut->warpFrequency / (r2 + 1.0f);
+					float ca = native_cos(angle); float sa = native_sin(angle);
+					float nx = z.x * ca - z.y * sa; float ny = z.x * sa + z.y * ca;
+					z.x = nx; z.y = ny;
+				}
 			}
 		}
 
@@ -644,45 +738,104 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 #endif
 
 		// -------------- Formula Mutation post-processing (GPU) ---------------
-		if (consts->sequence.mutationParams[sequence].enabled)
+		if (mutationActive)
 		{
 			__constant sClFormulaMutationParams *mut = &consts->sequence.mutationParams[sequence];
+
+			// Fold injection (post or both)
+			if (mut->foldType != 0 && (mut->foldPosition == 1 || mut->foldPosition == 2))
+			{
+				switch (mut->foldType)
+				{
+					case 1:
+						if (fabs(z.x) > mut->foldLimit) z.x = sign(z.x) * mut->foldValue - z.x;
+						if (fabs(z.y) > mut->foldLimit) z.y = sign(z.y) * mut->foldValue - z.y;
+						if (fabs(z.z) > mut->foldLimit) z.z = sign(z.z) * mut->foldValue - z.z;
+						break;
+					case 2:
+					{
+						float rr = z.x*z.x + z.y*z.y + z.z*z.z;
+						float minR2 = mut->foldLimit * mut->foldLimit;
+						float fixR2 = mut->foldValue * mut->foldValue;
+						if (rr < minR2) { z *= fixR2/minR2; aux.DE *= fixR2/minR2; }
+						else if (rr < fixR2) { z *= fixR2/rr; aux.DE *= fixR2/rr; }
+						break;
+					}
+					case 3:
+					{
+						z.x = fabs(z.x); z.y = fabs(z.y); z.z = fabs(z.z);
+						if (z.x - z.y < 0) { float t = z.y; z.y = z.x; z.x = t; }
+						if (z.x - z.z < 0) { float t = z.z; z.z = z.x; z.x = t; }
+						if (z.y - z.z < 0) { float t = z.z; z.z = z.y; z.y = t; }
+						float s = mut->foldValue;
+						z.x = z.x * s - mut->foldLimit * (s - 1.0f);
+						z.y = z.y * s - mut->foldLimit * (s - 1.0f);
+						z.z = z.z * s;
+						if (z.z > 0.5f * mut->foldLimit * (s - 1.0f))
+							z.z -= mut->foldLimit * (s - 1.0f);
+						aux.DE *= s;
+						break;
+					}
+					case 4:
+					{
+						if (z.x + z.y < 0) { float tx = -z.y; z.y = -z.x; z.x = tx; }
+						if (z.x + z.z < 0) { float tx = -z.z; z.z = -z.x; z.x = tx; }
+						if (z.y + z.z < 0) { float ty = -z.z; z.z = -z.y; z.y = ty; }
+						float s = mut->foldValue;
+						z *= s;
+						z.x -= mut->foldLimit * (s - 1.0f);
+						z.y -= mut->foldLimit * (s - 1.0f);
+						z.z -= mut->foldLimit * (s - 1.0f);
+						aux.DE *= s;
+						break;
+					}
+					case 5:
+					{
+						z.x = fabs(z.x + mut->foldLimit) - fabs(z.x - mut->foldLimit) - z.x;
+						z.y = fabs(z.y + mut->foldLimit) - fabs(z.y - mut->foldLimit) - z.y;
+						z.z = fabs(z.z + mut->foldLimit) - fabs(z.z - mut->foldLimit) - z.z;
+						break;
+					}
+					case 6:
+					{
+						int sides = mut->kaleidoscopeSides;
+						if (sides >= 3)
+						{
+							float angle = M_PI_F / (float)sides;
+							float pAngle = atan2(z.y, z.x);
+							float r = native_sqrt(z.x*z.x + z.y*z.y);
+							pAngle = fmod(pAngle + angle, 2.0f * angle) - angle;
+							z.x = r * native_cos(pAngle);
+							z.y = r * native_sin(pAngle);
+							z.y = fabs(z.y);
+						}
+						break;
+					}
+					case 7:
+					{
+						if (z.x + z.y < 0) { float tx = -z.y; z.y = -z.x; z.x = tx; }
+						if (z.x + z.z < 0) { float tx = -z.z; z.z = -z.x; z.x = tx; }
+						if (z.y + z.z < 0) { float ty = -z.z; z.z = -z.y; z.y = ty; }
+						if (z.x - z.y < 0) { float tx = z.y; z.y = z.x; z.x = tx; }
+						if (z.x - z.z < 0) { float tx = z.z; z.z = z.x; z.x = tx; }
+						break;
+					}
+				}
+			}
 
 			// Post-rotation
 			if (mut->postRotX != 0.0f || mut->postRotY != 0.0f || mut->postRotZ != 0.0f)
 			{
 				float3 zr;
-				zr.x = mut->postRotMatrix[0] * z.x + mut->postRotMatrix[1] * z.y + mut->postRotMatrix[2] * z.z;
-				zr.y = mut->postRotMatrix[3] * z.x + mut->postRotMatrix[4] * z.y + mut->postRotMatrix[5] * z.z;
-				zr.z = mut->postRotMatrix[6] * z.x + mut->postRotMatrix[7] * z.y + mut->postRotMatrix[8] * z.z;
+				zr.x = mut->postRotMatrix[0]*z.x + mut->postRotMatrix[1]*z.y + mut->postRotMatrix[2]*z.z;
+				zr.y = mut->postRotMatrix[3]*z.x + mut->postRotMatrix[4]*z.y + mut->postRotMatrix[5]*z.z;
+				zr.z = mut->postRotMatrix[6]*z.x + mut->postRotMatrix[7]*z.y + mut->postRotMatrix[8]*z.z;
 				z.x = zr.x; z.y = zr.y; z.z = zr.z;
 			}
-
-			// Post-scale
-			if (mut->postScale != 1.0f)
-			{
-				z *= mut->postScale;
-				aux.DE *= mut->postScale;
-			}
-
-			// Post-offset
-			z.x += mut->postOffsetX;
-			z.y += mut->postOffsetY;
-			z.z += mut->postOffsetZ;
-
-			// Z-mix
-			if (mut->zMix < 1.0f)
-			{
-				float m = mut->zMix;
-				float m1 = 1.0f - m;
-				z = z * m + preMutZ * m1;
-			}
-
-			// DE scale
-			if (mut->deScale != 1.0f)
-			{
-				aux.DE *= mut->deScale;
-			}
+			if (mut->postScale != 1.0f) { z *= mut->postScale; aux.DE *= mut->postScale; }
+			z.x += mut->postOffsetX; z.y += mut->postOffsetY; z.z += mut->postOffsetZ;
+			if (mut->zMix < 1.0f) { float m = mut->zMix; z = z * m + preMutZ * (1.0f - m); }
+			if (mut->deScale != 1.0f) aux.DE *= mut->deScale;
 		}
 
 #ifdef ITERATION_WEIGHT

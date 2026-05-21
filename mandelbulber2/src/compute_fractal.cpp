@@ -286,7 +286,9 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 		if (!fractals.IsHybrid() || effectiveWeight > 0.0)
 		{
 			// -------------- Formula Mutation pre-processing ---------------
-			if (mut.enabled)
+			bool mutationActive = mut.enabled
+				&& i >= mut.iterationStart && i < mut.iterationStop;
+			if (mutationActive)
 			{
 				// Pre-abs
 				if (mut.preAbsX) z.x = fabs(z.x);
@@ -313,20 +315,87 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 					aux.DE *= mut.preScale;
 				}
 
-				// Fold injection (before formula)
-				if (mut.foldType == mutFoldBox)
+				// Fold injection (pre-formula or both)
+				if (mut.foldType != mutFoldNone
+					&& (mut.foldPosition == mutFoldPosPre || mut.foldPosition == mutFoldPosBoth))
 				{
-					if (fabs(z.x) > mut.foldLimit) z.x = sign(z.x) * mut.foldValue - z.x;
-					if (fabs(z.y) > mut.foldLimit) z.y = sign(z.y) * mut.foldValue - z.y;
-					if (fabs(z.z) > mut.foldLimit) z.z = sign(z.z) * mut.foldValue - z.z;
-				}
-				else if (mut.foldType == mutFoldSphere)
-				{
-					double rr = z.x * z.x + z.y * z.y + z.z * z.z;
-					double minR2 = mut.foldLimit * mut.foldLimit;
-					double fixR2 = mut.foldValue * mut.foldValue;
-					if (rr < minR2) { z *= fixR2 / minR2; aux.DE *= fixR2 / minR2; }
-					else if (rr < fixR2) { z *= fixR2 / rr; aux.DE *= fixR2 / rr; }
+					switch (mut.foldType)
+					{
+						case mutFoldBox:
+							if (fabs(z.x) > mut.foldLimit) z.x = sign(z.x) * mut.foldValue - z.x;
+							if (fabs(z.y) > mut.foldLimit) z.y = sign(z.y) * mut.foldValue - z.y;
+							if (fabs(z.z) > mut.foldLimit) z.z = sign(z.z) * mut.foldValue - z.z;
+							break;
+						case mutFoldSphere:
+						{
+							double rr = z.x * z.x + z.y * z.y + z.z * z.z;
+							double minR2 = mut.foldLimit * mut.foldLimit;
+							double fixR2 = mut.foldValue * mut.foldValue;
+							if (rr < minR2) { z *= fixR2 / minR2; aux.DE *= fixR2 / minR2; }
+							else if (rr < fixR2) { z *= fixR2 / rr; aux.DE *= fixR2 / rr; }
+							break;
+						}
+						case mutFoldMenger:
+						{
+							z.x = fabs(z.x); z.y = fabs(z.y); z.z = fabs(z.z);
+							if (z.x - z.y < 0) { double t = z.y; z.y = z.x; z.x = t; }
+							if (z.x - z.z < 0) { double t = z.z; z.z = z.x; z.x = t; }
+							if (z.y - z.z < 0) { double t = z.z; z.z = z.y; z.y = t; }
+							double s = mut.foldValue;
+							z.x = z.x * s - mut.foldLimit * (s - 1.0);
+							z.y = z.y * s - mut.foldLimit * (s - 1.0);
+							z.z = z.z * s;
+							if (z.z > 0.5 * mut.foldLimit * (s - 1.0))
+								z.z -= mut.foldLimit * (s - 1.0);
+							aux.DE *= s;
+							break;
+						}
+						case mutFoldSierpinski:
+						{
+							if (z.x + z.y < 0) { double tx = -z.y; z.y = -z.x; z.x = tx; }
+							if (z.x + z.z < 0) { double tx = -z.z; z.z = -z.x; z.x = tx; }
+							if (z.y + z.z < 0) { double ty = -z.z; z.z = -z.y; z.y = ty; }
+							double s = mut.foldValue;
+							z *= s;
+							z.x -= mut.foldLimit * (s - 1.0);
+							z.y -= mut.foldLimit * (s - 1.0);
+							z.z -= mut.foldLimit * (s - 1.0);
+							aux.DE *= s;
+							break;
+						}
+						case mutFoldAbs:
+						{
+							z.x = fabs(z.x + mut.foldLimit) - fabs(z.x - mut.foldLimit) - z.x;
+							z.y = fabs(z.y + mut.foldLimit) - fabs(z.y - mut.foldLimit) - z.y;
+							z.z = fabs(z.z + mut.foldLimit) - fabs(z.z - mut.foldLimit) - z.z;
+							break;
+						}
+						case mutFoldKaleidoscope:
+						{
+							int sides = mut.kaleidoscopeSides;
+							if (sides >= 3)
+							{
+								double angle = M_PI / sides;
+								double pAngle = atan2(z.y, z.x);
+								double r = sqrt(z.x * z.x + z.y * z.y);
+								pAngle = fmod(pAngle + angle, 2.0 * angle) - angle;
+								z.x = r * cos(pAngle);
+								z.y = r * sin(pAngle);
+								z.y = fabs(z.y);
+							}
+							break;
+						}
+						case mutFoldOctahedral:
+						{
+							if (z.x + z.y < 0) { double tx = -z.y; z.y = -z.x; z.x = tx; }
+							if (z.x + z.z < 0) { double tx = -z.z; z.z = -z.x; z.x = tx; }
+							if (z.y + z.z < 0) { double ty = -z.z; z.z = -z.y; z.y = ty; }
+							if (z.x - z.y < 0) { double tx = z.y; z.y = z.x; z.x = tx; }
+							if (z.x - z.z < 0) { double tx = z.z; z.z = z.x; z.x = tx; }
+							break;
+						}
+						default: break;
+					}
 				}
 
 				// Component swizzle
@@ -365,6 +434,53 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 					double nx = z.x * ca - z.y * sa;
 					double ny = z.x * sa + z.y * ca;
 					z.x = nx; z.y = ny;
+				}
+				else if (mut.warpType == mutWarpRadial)
+				{
+					double r = sqrt(z.x * z.x + z.y * z.y + z.z * z.z);
+					if (r > 1e-21)
+					{
+						double warp = mut.warpAmplitude * sin(r * mut.warpFrequency);
+						z.x += z.x / r * warp;
+						z.y += z.y / r * warp;
+						z.z += z.z / r * warp;
+					}
+				}
+				else if (mut.warpType == mutWarpCylindrical)
+				{
+					double r = sqrt(z.x * z.x + z.y * z.y);
+					if (r > 1e-21)
+					{
+						double angle = atan2(z.y, z.x);
+						angle += mut.warpAmplitude * sin(z.z * mut.warpFrequency);
+						z.x = r * cos(angle);
+						z.y = r * sin(angle);
+					}
+				}
+				else if (mut.warpType == mutWarpSphericalInversion)
+				{
+					double rr = z.x * z.x + z.y * z.y + z.z * z.z;
+					double radius2 = mut.warpFrequency * mut.warpFrequency;
+					if (rr > 1e-21)
+					{
+						double factor = radius2 / rr;
+						factor = 1.0 + (factor - 1.0) * mut.warpAmplitude;
+						z *= factor;
+						aux.DE *= fabs(factor);
+					}
+				}
+				else if (mut.warpType == mutWarpMobius)
+				{
+					double r2 = z.x * z.x + z.y * z.y;
+					if (r2 > 1e-21)
+					{
+						double angle = mut.warpAmplitude * mut.warpFrequency / (r2 + 1.0);
+						double ca = cos(angle);
+						double sa = sin(angle);
+						double nx = z.x * ca - z.y * sa;
+						double ny = z.x * sa + z.y * ca;
+						z.x = nx; z.y = ny;
+					}
 				}
 			}
 
@@ -425,40 +541,127 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 		}
 
 		// -------------- Formula Mutation post-processing ---------------
-		if (mut.enabled)
 		{
-			// Post-rotation
-			if (mut.postRotX != 0.0 || mut.postRotY != 0.0 || mut.postRotZ != 0.0)
+			bool mutationActive = mut.enabled
+				&& i >= mut.iterationStart && i < mut.iterationStop;
+			if (mutationActive)
 			{
-				CVector3 z3 = z.GetXYZ();
-				z3 = mut.postRotMatrix.RotateVector(z3);
-				z = CVector4(z3, z.w);
-			}
+				// Fold injection (post-formula or both)
+				if (mut.foldType != mutFoldNone
+					&& (mut.foldPosition == mutFoldPosPost || mut.foldPosition == mutFoldPosBoth))
+				{
+					switch (mut.foldType)
+					{
+						case mutFoldBox:
+							if (fabs(z.x) > mut.foldLimit) z.x = sign(z.x) * mut.foldValue - z.x;
+							if (fabs(z.y) > mut.foldLimit) z.y = sign(z.y) * mut.foldValue - z.y;
+							if (fabs(z.z) > mut.foldLimit) z.z = sign(z.z) * mut.foldValue - z.z;
+							break;
+						case mutFoldSphere:
+						{
+							double rr = z.x * z.x + z.y * z.y + z.z * z.z;
+							double minR2 = mut.foldLimit * mut.foldLimit;
+							double fixR2 = mut.foldValue * mut.foldValue;
+							if (rr < minR2) { z *= fixR2 / minR2; aux.DE *= fixR2 / minR2; }
+							else if (rr < fixR2) { z *= fixR2 / rr; aux.DE *= fixR2 / rr; }
+							break;
+						}
+						case mutFoldMenger:
+						{
+							z.x = fabs(z.x); z.y = fabs(z.y); z.z = fabs(z.z);
+							if (z.x - z.y < 0) { double t = z.y; z.y = z.x; z.x = t; }
+							if (z.x - z.z < 0) { double t = z.z; z.z = z.x; z.x = t; }
+							if (z.y - z.z < 0) { double t = z.z; z.z = z.y; z.y = t; }
+							double s = mut.foldValue;
+							z.x = z.x * s - mut.foldLimit * (s - 1.0);
+							z.y = z.y * s - mut.foldLimit * (s - 1.0);
+							z.z = z.z * s;
+							if (z.z > 0.5 * mut.foldLimit * (s - 1.0))
+								z.z -= mut.foldLimit * (s - 1.0);
+							aux.DE *= s;
+							break;
+						}
+						case mutFoldSierpinski:
+						{
+							if (z.x + z.y < 0) { double tx = -z.y; z.y = -z.x; z.x = tx; }
+							if (z.x + z.z < 0) { double tx = -z.z; z.z = -z.x; z.x = tx; }
+							if (z.y + z.z < 0) { double ty = -z.z; z.z = -z.y; z.y = ty; }
+							double s = mut.foldValue;
+							z *= s;
+							z.x -= mut.foldLimit * (s - 1.0);
+							z.y -= mut.foldLimit * (s - 1.0);
+							z.z -= mut.foldLimit * (s - 1.0);
+							aux.DE *= s;
+							break;
+						}
+						case mutFoldAbs:
+						{
+							z.x = fabs(z.x + mut.foldLimit) - fabs(z.x - mut.foldLimit) - z.x;
+							z.y = fabs(z.y + mut.foldLimit) - fabs(z.y - mut.foldLimit) - z.y;
+							z.z = fabs(z.z + mut.foldLimit) - fabs(z.z - mut.foldLimit) - z.z;
+							break;
+						}
+						case mutFoldKaleidoscope:
+						{
+							int sides = mut.kaleidoscopeSides;
+							if (sides >= 3)
+							{
+								double angle = M_PI / sides;
+								double pAngle = atan2(z.y, z.x);
+								double r = sqrt(z.x * z.x + z.y * z.y);
+								pAngle = fmod(pAngle + angle, 2.0 * angle) - angle;
+								z.x = r * cos(pAngle);
+								z.y = r * sin(pAngle);
+								z.y = fabs(z.y);
+							}
+							break;
+						}
+						case mutFoldOctahedral:
+						{
+							if (z.x + z.y < 0) { double tx = -z.y; z.y = -z.x; z.x = tx; }
+							if (z.x + z.z < 0) { double tx = -z.z; z.z = -z.x; z.x = tx; }
+							if (z.y + z.z < 0) { double ty = -z.z; z.z = -z.y; z.y = ty; }
+							if (z.x - z.y < 0) { double tx = z.y; z.y = z.x; z.x = tx; }
+							if (z.x - z.z < 0) { double tx = z.z; z.z = z.x; z.x = tx; }
+							break;
+						}
+						default: break;
+					}
+				}
 
-			// Post-scale
-			if (mut.postScale != 1.0)
-			{
-				z *= mut.postScale;
-				aux.DE *= mut.postScale;
-			}
+				// Post-rotation
+				if (mut.postRotX != 0.0 || mut.postRotY != 0.0 || mut.postRotZ != 0.0)
+				{
+					CVector3 z3 = z.GetXYZ();
+					z3 = mut.postRotMatrix.RotateVector(z3);
+					z = CVector4(z3, z.w);
+				}
 
-			// Post-offset
-			z.x += mut.postOffsetX;
-			z.y += mut.postOffsetY;
-			z.z += mut.postOffsetZ;
+				// Post-scale
+				if (mut.postScale != 1.0)
+				{
+					z *= mut.postScale;
+					aux.DE *= mut.postScale;
+				}
 
-			// Z-mix: blend between pre-mutation z and post-mutation z
-			if (mut.zMix < 1.0)
-			{
-				double m = mut.zMix;
-				double m1 = 1.0 - m;
-				z = z * m + preMutZ * m1;
-			}
+				// Post-offset
+				z.x += mut.postOffsetX;
+				z.y += mut.postOffsetY;
+				z.z += mut.postOffsetZ;
 
-			// DE scale
-			if (mut.deScale != 1.0)
-			{
-				aux.DE *= mut.deScale;
+				// Z-mix: blend between pre-mutation z and post-mutation z
+				if (mut.zMix < 1.0)
+				{
+					double m = mut.zMix;
+					double m1 = 1.0 - m;
+					z = z * m + preMutZ * m1;
+				}
+
+				// DE scale
+				if (mut.deScale != 1.0)
+				{
+					aux.DE *= mut.deScale;
+				}
 			}
 		}
 

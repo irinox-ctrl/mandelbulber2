@@ -1867,6 +1867,31 @@ Static: Fixed weight (simple). Iteration: Weight changes over iterations (morphi
           <string>Sphere Fold</string>
          </property>
         </item>
+        <item>
+         <property name="text">
+          <string>Menger Fold</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Sierpinski Fold</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Abs Fold (tglad)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Kaleidoscope</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Octahedral</string>
+         </property>
+        </item>
        </widget>
       </item>
       <item row="8" column="3">
@@ -1957,6 +1982,26 @@ Static: Fixed weight (simple). Iteration: Weight changes over iterations (morphi
           <string>Spiral</string>
          </property>
         </item>
+        <item>
+         <property name="text">
+          <string>Radial</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Cylindrical</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Spherical Inversion</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Möbius</string>
+         </property>
+        </item>
        </widget>
       </item>
       <item row="9" column="3">
@@ -2014,15 +2059,119 @@ Static: Fixed weight (simple). Iteration: Weight changes over iterations (morphi
         </property>
        </widget>
       </item>
-      <!-- Z-mix and DE scale -->
+      <!-- Fold position and kaleidoscope sides -->
       <item row="10" column="0">
+       <widget class="QLabel" name="label_mutation_fold_position">
+        <property name="text">
+         <string>Fold Position:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="10" column="1" colspan="2">
+       <widget class="QComboBox" name="comboBox_mutation_fold_position">
+        <item>
+         <property name="text">
+          <string>Pre-formula</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Post-formula</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Both</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="10" column="3">
+       <widget class="QLabel" name="label_mutation_kaleidoscope_sides">
+        <property name="text">
+         <string>Kal. Sides:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="10" column="4" colspan="3">
+       <widget class="MySpinBox" name="spinboxInt_mutation_kaleidoscope_sides">
+        <property name="minimum">
+         <number>3</number>
+        </property>
+        <property name="maximum">
+         <number>24</number>
+        </property>
+        <property name="value">
+         <number>6</number>
+        </property>
+       </widget>
+      </item>
+      <!-- Iteration range -->
+      <item row="11" column="0">
+       <widget class="QLabel" name="label_mutation_iter_range">
+        <property name="text">
+         <string>Iter Range:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="11" column="1">
+       <widget class="QLabel" name="label_mutation_iter_start">
+        <property name="text">
+         <string>Start:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="11" column="2">
+       <widget class="MySpinBox" name="spinboxInt_mutation_iteration_start">
+        <property name="minimum">
+         <number>0</number>
+        </property>
+        <property name="maximum">
+         <number>10000</number>
+        </property>
+        <property name="value">
+         <number>0</number>
+        </property>
+       </widget>
+      </item>
+      <item row="11" column="3">
+       <widget class="QLabel" name="label_mutation_iter_stop">
+        <property name="text">
+         <string>Stop:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="11" column="4" colspan="3">
+       <widget class="MySpinBox" name="spinboxInt_mutation_iteration_stop">
+        <property name="minimum">
+         <number>0</number>
+        </property>
+        <property name="maximum">
+         <number>10000</number>
+        </property>
+        <property name="value">
+         <number>250</number>
+        </property>
+       </widget>
+      </item>
+      <!-- Z-mix and DE scale -->
+      <item row="12" column="0">
        <widget class="QLabel" name="label_mutation_z_mix">
         <property name="text">
          <string>Z-Mix:</string>
         </property>
        </widget>
       </item>
-      <item row="10" column="1" colspan="2">
+      <item row="12" column="1" colspan="2">
        <widget class="MyDoubleSpinBox" name="spinbox_mutation_z_mix">
         <property name="decimals">
          <number>4</number>
@@ -2041,7 +2190,7 @@ Static: Fixed weight (simple). Iteration: Weight changes over iterations (morphi
         </property>
        </widget>
       </item>
-      <item row="10" column="3">
+      <item row="12" column="3">
        <widget class="QLabel" name="label_mutation_de_scale">
         <property name="text">
          <string>DE Scale:</string>
@@ -2051,7 +2200,7 @@ Static: Fixed weight (simple). Iteration: Weight changes over iterations (morphi
         </property>
        </widget>
       </item>
-      <item row="10" column="4" colspan="3">
+      <item row="12" column="4" colspan="3">
        <widget class="MyDoubleSpinBox" name="spinbox_mutation_de_scale">
         <property name="decimals">
          <number>4</number>

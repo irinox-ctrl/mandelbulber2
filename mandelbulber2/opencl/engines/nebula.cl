@@ -533,7 +533,10 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 
 		// -------------- Formula Mutation pre-processing (GPU Nebula) ---------------
 		float4 preMutZ = z;
-		if (consts->sequence.mutationParams[sequence].enabled)
+		bool mutationActive = consts->sequence.mutationParams[sequence].enabled
+			&& i >= consts->sequence.mutationParams[sequence].iterationStart
+			&& i < consts->sequence.mutationParams[sequence].iterationStop;
+		if (mutationActive)
 		{
 			__constant sClFormulaMutationParams *mut = &consts->sequence.mutationParams[sequence];
 			if (mut->preAbsX) z.x = fabs(z.x);
@@ -549,20 +552,88 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 				z.x = zr.x; z.y = zr.y; z.z = zr.z;
 			}
 			if (mut->preScale != 1.0f) { z *= mut->preScale; aux.DE *= mut->preScale; }
-			if (mut->foldType == 1)
+
+			// Fold injection (pre or both)
+			if (mut->foldType != 0 && (mut->foldPosition == 0 || mut->foldPosition == 2))
 			{
-				if (fabs(z.x) > mut->foldLimit) z.x = sign(z.x) * mut->foldValue - z.x;
-				if (fabs(z.y) > mut->foldLimit) z.y = sign(z.y) * mut->foldValue - z.y;
-				if (fabs(z.z) > mut->foldLimit) z.z = sign(z.z) * mut->foldValue - z.z;
+				switch (mut->foldType)
+				{
+					case 1:
+						if (fabs(z.x) > mut->foldLimit) z.x = sign(z.x) * mut->foldValue - z.x;
+						if (fabs(z.y) > mut->foldLimit) z.y = sign(z.y) * mut->foldValue - z.y;
+						if (fabs(z.z) > mut->foldLimit) z.z = sign(z.z) * mut->foldValue - z.z;
+						break;
+					case 2:
+					{
+						float rr = z.x*z.x + z.y*z.y + z.z*z.z;
+						float minR2 = mut->foldLimit * mut->foldLimit;
+						float fixR2 = mut->foldValue * mut->foldValue;
+						if (rr < minR2) { z *= fixR2/minR2; aux.DE *= fixR2/minR2; }
+						else if (rr < fixR2) { z *= fixR2/rr; aux.DE *= fixR2/rr; }
+						break;
+					}
+					case 3:
+					{
+						z.x = fabs(z.x); z.y = fabs(z.y); z.z = fabs(z.z);
+						if (z.x - z.y < 0) { float t = z.y; z.y = z.x; z.x = t; }
+						if (z.x - z.z < 0) { float t = z.z; z.z = z.x; z.x = t; }
+						if (z.y - z.z < 0) { float t = z.z; z.z = z.y; z.y = t; }
+						float s = mut->foldValue;
+						z.x = z.x * s - mut->foldLimit * (s - 1.0f);
+						z.y = z.y * s - mut->foldLimit * (s - 1.0f);
+						z.z = z.z * s;
+						if (z.z > 0.5f * mut->foldLimit * (s - 1.0f))
+							z.z -= mut->foldLimit * (s - 1.0f);
+						aux.DE *= s;
+						break;
+					}
+					case 4:
+					{
+						if (z.x + z.y < 0) { float tx = -z.y; z.y = -z.x; z.x = tx; }
+						if (z.x + z.z < 0) { float tx = -z.z; z.z = -z.x; z.x = tx; }
+						if (z.y + z.z < 0) { float ty = -z.z; z.z = -z.y; z.y = ty; }
+						float s = mut->foldValue;
+						z *= s;
+						z.x -= mut->foldLimit * (s - 1.0f);
+						z.y -= mut->foldLimit * (s - 1.0f);
+						z.z -= mut->foldLimit * (s - 1.0f);
+						aux.DE *= s;
+						break;
+					}
+					case 5:
+					{
+						z.x = fabs(z.x + mut->foldLimit) - fabs(z.x - mut->foldLimit) - z.x;
+						z.y = fabs(z.y + mut->foldLimit) - fabs(z.y - mut->foldLimit) - z.y;
+						z.z = fabs(z.z + mut->foldLimit) - fabs(z.z - mut->foldLimit) - z.z;
+						break;
+					}
+					case 6:
+					{
+						int sides = mut->kaleidoscopeSides;
+						if (sides >= 3)
+						{
+							float angle = M_PI_F / (float)sides;
+							float pAngle = atan2(z.y, z.x);
+							float r = native_sqrt(z.x*z.x + z.y*z.y);
+							pAngle = fmod(pAngle + angle, 2.0f * angle) - angle;
+							z.x = r * native_cos(pAngle);
+							z.y = r * native_sin(pAngle);
+							z.y = fabs(z.y);
+						}
+						break;
+					}
+					case 7:
+					{
+						if (z.x + z.y < 0) { float tx = -z.y; z.y = -z.x; z.x = tx; }
+						if (z.x + z.z < 0) { float tx = -z.z; z.z = -z.x; z.x = tx; }
+						if (z.y + z.z < 0) { float ty = -z.z; z.z = -z.y; z.y = ty; }
+						if (z.x - z.y < 0) { float tx = z.y; z.y = z.x; z.x = tx; }
+						if (z.x - z.z < 0) { float tx = z.z; z.z = z.x; z.x = tx; }
+						break;
+					}
+				}
 			}
-			else if (mut->foldType == 2)
-			{
-				float rr = z.x*z.x + z.y*z.y + z.z*z.z;
-				float minR2 = mut->foldLimit * mut->foldLimit;
-				float fixR2 = mut->foldValue * mut->foldValue;
-				if (rr < minR2) { z *= fixR2/minR2; aux.DE *= fixR2/minR2; }
-				else if (rr < fixR2) { z *= fixR2/rr; aux.DE *= fixR2/rr; }
-			}
+
 			switch (mut->swizzle)
 			{
 				case 0: break;
@@ -594,6 +665,47 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 				float sa = native_sin(angle * mut->warpAmplitude);
 				float nx = z.x * ca - z.y * sa; float ny = z.x * sa + z.y * ca;
 				z.x = nx; z.y = ny;
+			}
+			else if (mut->warpType == 4)
+			{
+				float r = native_sqrt(z.x*z.x + z.y*z.y + z.z*z.z);
+				if (r > 1e-21f)
+				{
+					float warp = mut->warpAmplitude * native_sin(r * mut->warpFrequency);
+					z.x += z.x/r * warp; z.y += z.y/r * warp; z.z += z.z/r * warp;
+				}
+			}
+			else if (mut->warpType == 5)
+			{
+				float r = native_sqrt(z.x*z.x + z.y*z.y);
+				if (r > 1e-21f)
+				{
+					float angle = atan2(z.y, z.x);
+					angle += mut->warpAmplitude * native_sin(z.z * mut->warpFrequency);
+					z.x = r * native_cos(angle); z.y = r * native_sin(angle);
+				}
+			}
+			else if (mut->warpType == 6)
+			{
+				float rr = z.x*z.x + z.y*z.y + z.z*z.z;
+				float radius2 = mut->warpFrequency * mut->warpFrequency;
+				if (rr > 1e-21f)
+				{
+					float factor = radius2 / rr;
+					factor = 1.0f + (factor - 1.0f) * mut->warpAmplitude;
+					z *= factor; aux.DE *= fabs(factor);
+				}
+			}
+			else if (mut->warpType == 7)
+			{
+				float r2 = z.x*z.x + z.y*z.y;
+				if (r2 > 1e-21f)
+				{
+					float angle = mut->warpAmplitude * mut->warpFrequency / (r2 + 1.0f);
+					float ca = native_cos(angle); float sa = native_sin(angle);
+					float nx = z.x * ca - z.y * sa; float ny = z.x * sa + z.y * ca;
+					z.x = nx; z.y = ny;
+				}
 			}
 		}
 
@@ -661,9 +773,91 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 #endif
 
 		// -------------- Formula Mutation post-processing (GPU Nebula) ---------------
-		if (consts->sequence.mutationParams[sequence].enabled)
+		if (mutationActive)
 		{
 			__constant sClFormulaMutationParams *mut = &consts->sequence.mutationParams[sequence];
+
+			// Fold injection (post or both)
+			if (mut->foldType != 0 && (mut->foldPosition == 1 || mut->foldPosition == 2))
+			{
+				switch (mut->foldType)
+				{
+					case 1:
+						if (fabs(z.x) > mut->foldLimit) z.x = sign(z.x) * mut->foldValue - z.x;
+						if (fabs(z.y) > mut->foldLimit) z.y = sign(z.y) * mut->foldValue - z.y;
+						if (fabs(z.z) > mut->foldLimit) z.z = sign(z.z) * mut->foldValue - z.z;
+						break;
+					case 2:
+					{
+						float rr = z.x*z.x + z.y*z.y + z.z*z.z;
+						float minR2 = mut->foldLimit * mut->foldLimit;
+						float fixR2 = mut->foldValue * mut->foldValue;
+						if (rr < minR2) { z *= fixR2/minR2; aux.DE *= fixR2/minR2; }
+						else if (rr < fixR2) { z *= fixR2/rr; aux.DE *= fixR2/rr; }
+						break;
+					}
+					case 3:
+					{
+						z.x = fabs(z.x); z.y = fabs(z.y); z.z = fabs(z.z);
+						if (z.x - z.y < 0) { float t = z.y; z.y = z.x; z.x = t; }
+						if (z.x - z.z < 0) { float t = z.z; z.z = z.x; z.x = t; }
+						if (z.y - z.z < 0) { float t = z.z; z.z = z.y; z.y = t; }
+						float s = mut->foldValue;
+						z.x = z.x * s - mut->foldLimit * (s - 1.0f);
+						z.y = z.y * s - mut->foldLimit * (s - 1.0f);
+						z.z = z.z * s;
+						if (z.z > 0.5f * mut->foldLimit * (s - 1.0f))
+							z.z -= mut->foldLimit * (s - 1.0f);
+						aux.DE *= s;
+						break;
+					}
+					case 4:
+					{
+						if (z.x + z.y < 0) { float tx = -z.y; z.y = -z.x; z.x = tx; }
+						if (z.x + z.z < 0) { float tx = -z.z; z.z = -z.x; z.x = tx; }
+						if (z.y + z.z < 0) { float ty = -z.z; z.z = -z.y; z.y = ty; }
+						float s = mut->foldValue;
+						z *= s;
+						z.x -= mut->foldLimit * (s - 1.0f);
+						z.y -= mut->foldLimit * (s - 1.0f);
+						z.z -= mut->foldLimit * (s - 1.0f);
+						aux.DE *= s;
+						break;
+					}
+					case 5:
+					{
+						z.x = fabs(z.x + mut->foldLimit) - fabs(z.x - mut->foldLimit) - z.x;
+						z.y = fabs(z.y + mut->foldLimit) - fabs(z.y - mut->foldLimit) - z.y;
+						z.z = fabs(z.z + mut->foldLimit) - fabs(z.z - mut->foldLimit) - z.z;
+						break;
+					}
+					case 6:
+					{
+						int sides = mut->kaleidoscopeSides;
+						if (sides >= 3)
+						{
+							float angle = M_PI_F / (float)sides;
+							float pAngle = atan2(z.y, z.x);
+							float r = native_sqrt(z.x*z.x + z.y*z.y);
+							pAngle = fmod(pAngle + angle, 2.0f * angle) - angle;
+							z.x = r * native_cos(pAngle);
+							z.y = r * native_sin(pAngle);
+							z.y = fabs(z.y);
+						}
+						break;
+					}
+					case 7:
+					{
+						if (z.x + z.y < 0) { float tx = -z.y; z.y = -z.x; z.x = tx; }
+						if (z.x + z.z < 0) { float tx = -z.z; z.z = -z.x; z.x = tx; }
+						if (z.y + z.z < 0) { float ty = -z.z; z.z = -z.y; z.y = ty; }
+						if (z.x - z.y < 0) { float tx = z.y; z.y = z.x; z.x = tx; }
+						if (z.x - z.z < 0) { float tx = z.z; z.z = z.x; z.x = tx; }
+						break;
+					}
+				}
+			}
+
 			if (mut->postRotX != 0.0f || mut->postRotY != 0.0f || mut->postRotZ != 0.0f)
 			{
 				float3 zr;

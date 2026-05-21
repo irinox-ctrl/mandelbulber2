@@ -174,14 +174,22 @@ cNineFractals::cNineFractals(std::shared_ptr<const cFractalContainer> par,
 			enumMutationSwizzle(generalPar->Get<int>("mutation_swizzle", i + 1));
 		mutationParams[i].foldType =
 			enumMutationFoldType(generalPar->Get<int>("mutation_fold_type", i + 1));
+		mutationParams[i].foldPosition =
+			enumMutationFoldPosition(generalPar->Get<int>("mutation_fold_position", i + 1));
 		mutationParams[i].foldLimit = generalPar->Get<double>("mutation_fold_limit", i + 1);
 		mutationParams[i].foldValue = generalPar->Get<double>("mutation_fold_value", i + 1);
+		mutationParams[i].kaleidoscopeSides =
+			generalPar->Get<int>("mutation_kaleidoscope_sides", i + 1);
 		mutationParams[i].warpType =
 			enumMutationWarpType(generalPar->Get<int>("mutation_warp_type", i + 1));
 		mutationParams[i].warpFrequency = generalPar->Get<double>("mutation_warp_frequency", i + 1);
 		mutationParams[i].warpAmplitude = generalPar->Get<double>("mutation_warp_amplitude", i + 1);
 		mutationParams[i].zMix = generalPar->Get<double>("mutation_z_mix", i + 1);
 		mutationParams[i].deScale = generalPar->Get<double>("mutation_de_scale", i + 1);
+		mutationParams[i].iterationStart =
+			generalPar->Get<int>("mutation_iteration_start", i + 1);
+		mutationParams[i].iterationStop =
+			generalPar->Get<int>("mutation_iteration_stop", i + 1);
 
 		// Pre-compute rotation matrices
 		if (mutationParams[i].enabled)
@@ -1006,13 +1014,17 @@ void cNineFractals::CopyToOpenclData(sClFractalSequence *sequence) const
 		sequence->mutationParams[i].postOffsetZ = mutationParams[i].postOffsetZ;
 		sequence->mutationParams[i].swizzle = static_cast<cl_int>(mutationParams[i].swizzle);
 		sequence->mutationParams[i].foldType = static_cast<cl_int>(mutationParams[i].foldType);
+		sequence->mutationParams[i].foldPosition = static_cast<cl_int>(mutationParams[i].foldPosition);
 		sequence->mutationParams[i].foldLimit = mutationParams[i].foldLimit;
 		sequence->mutationParams[i].foldValue = mutationParams[i].foldValue;
+		sequence->mutationParams[i].kaleidoscopeSides = mutationParams[i].kaleidoscopeSides;
 		sequence->mutationParams[i].warpType = static_cast<cl_int>(mutationParams[i].warpType);
 		sequence->mutationParams[i].warpFrequency = mutationParams[i].warpFrequency;
 		sequence->mutationParams[i].warpAmplitude = mutationParams[i].warpAmplitude;
 		sequence->mutationParams[i].zMix = mutationParams[i].zMix;
 		sequence->mutationParams[i].deScale = mutationParams[i].deScale;
+		sequence->mutationParams[i].iterationStart = mutationParams[i].iterationStart;
+		sequence->mutationParams[i].iterationStop = mutationParams[i].iterationStop;
 		// Copy rotation matrices (3x3 = 9 floats each)
 		if (mutationParams[i].enabled)
 		{

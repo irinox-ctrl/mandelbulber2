@@ -199,8 +199,10 @@ typedef struct
 	cl_int swizzle;
 	// Fold injection
 	cl_int foldType;
+	cl_int foldPosition;
 	cl_float foldLimit;
 	cl_float foldValue;
+	cl_int kaleidoscopeSides;
 	// Warp distortion
 	cl_int warpType;
 	cl_float warpFrequency;
@@ -208,6 +210,9 @@ typedef struct
 	// Output control
 	cl_float zMix;
 	cl_float deScale;
+	// Iteration range
+	cl_int iterationStart;
+	cl_int iterationStop;
 	// Pre-computed rotation matrices (3x3 = 9 floats each)
 	cl_float preRotMatrix[9];
 	cl_float postRotMatrix[9];
