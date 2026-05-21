@@ -648,6 +648,220 @@
      </layout>
     </widget>
    </item>
+   <!-- v7.6: Amazing Surf Extensions -->
+   <item>
+    <widget class="MyGroupBox" name="groupCheck_transf_function_enabled_z_false">
+     <property name="title"><string>Z-Axis Fold</string></property>
+     <property name="checkable"><bool>true</bool></property>
+     <property name="checked"><bool>false</bool></property>
+    </widget>
+   </item>
+   <item>
+    <widget class="MyGroupBox" name="groupCheck_transf_function_enabled_b_false">
+     <property name="title"><string>Asymmetric Fold</string></property>
+     <property name="checkable"><bool>true</bool></property>
+     <property name="checked"><bool>false</bool></property>
+     <layout class="QGridLayout" name="gridLayout_asym_fold">
+      <item row="0" column="0">
+       <widget class="QLabel"><property name="text"><string>Fold B (X):</string></property></widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_offset_a05">
+        <property name="minimum"><double>-10.0</double></property>
+        <property name="maximum"><double>10.0</double></property>
+        <property name="singleStep"><double>0.05</double></property>
+        <property name="value"><double>0.5</double></property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel"><property name="text"><string>Fold B (Y):</string></property></widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_offset_b05">
+        <property name="minimum"><double>-10.0</double></property>
+        <property name="maximum"><double>10.0</double></property>
+        <property name="singleStep"><double>0.05</double></property>
+        <property name="value"><double>0.5</double></property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="MyGroupBox" name="groupCheck_transf_function_enabled_c_false">
+     <property name="title"><string>Smooth Fold (Hyperbolic)</string></property>
+     <property name="checkable"><bool>true</bool></property>
+     <property name="checked"><bool>false</bool></property>
+     <layout class="QGridLayout" name="gridLayout_smooth_fold">
+      <item row="0" column="0">
+       <widget class="QLabel"><property name="text"><string>Smoothness (k):</string></property></widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_scale_3">
+        <property name="minimum"><double>0.01</double></property>
+        <property name="maximum"><double>100.0</double></property>
+        <property name="singleStep"><double>0.1</double></property>
+        <property name="value"><double>3.0</double></property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="MyGroupBox" name="groupCheck_transf_function_enabled_d_false">
+     <property name="title"><string>Variable Fold per Iteration</string></property>
+     <property name="checkable"><bool>true</bool></property>
+     <property name="checked"><bool>false</bool></property>
+     <layout class="QGridLayout" name="gridLayout_var_fold">
+      <item row="0" column="0">
+       <widget class="QLabel"><property name="text"><string>Vary amount:</string></property></widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_scale_vary_0">
+        <property name="minimum"><double>-5.0</double></property>
+        <property name="maximum"><double>5.0</double></property>
+        <property name="singleStep"><double>0.05</double></property>
+        <property name="value"><double>0.0</double></property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="MyGroupBox" name="groupCheck_transf_function_enabled_g_false">
+     <property name="title"><string>Anisotropic Spherical (Ellipsoid)</string></property>
+     <property name="checkable"><bool>true</bool></property>
+     <property name="checked"><bool>false</bool></property>
+     <layout class="QGridLayout" name="gridLayout_aniso_sph">
+      <item row="0" column="0">
+       <widget class="QLabel"><property name="text"><string>Ellipsoid axes:</string></property></widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox3_transf_scale_3D_111_x">
+        <property name="minimum"><double>0.01</double></property><property name="maximum"><double>10.0</double></property>
+        <property name="value"><double>1.0</double></property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="MyDoubleSpinBox" name="spinbox3_transf_scale_3D_111_y">
+        <property name="minimum"><double>0.01</double></property><property name="maximum"><double>10.0</double></property>
+        <property name="value"><double>1.0</double></property>
+       </widget>
+      </item>
+      <item row="0" column="3">
+       <widget class="MyDoubleSpinBox" name="spinbox3_transf_scale_3D_111_z">
+        <property name="minimum"><double>0.01</double></property><property name="maximum"><double>10.0</double></property>
+        <property name="value"><double>1.0</double></property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="MyGroupBox" name="groupCheck_transf_function_enabled_h_false">
+     <property name="title"><string>Torus Distance Fold</string></property>
+     <property name="checkable"><bool>true</bool></property>
+     <property name="checked"><bool>false</bool></property>
+     <layout class="QGridLayout" name="gridLayout_torus">
+      <item row="0" column="0">
+       <widget class="QLabel"><property name="text"><string>Torus major R:</string></property></widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_offset_R1">
+        <property name="minimum"><double>0.01</double></property><property name="maximum"><double>10.0</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>1.0</double></property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="MyGroupBox" name="groupCheck_transf_function_enabled_p_false">
+     <property name="title"><string>Pre-Sphere Inversion (Möbius)</string></property>
+     <property name="checkable"><bool>true</bool></property>
+     <property name="checked"><bool>false</bool></property>
+     <layout class="QGridLayout" name="gridLayout_pre_sphere">
+      <item row="0" column="0">
+       <widget class="QLabel"><property name="text"><string>Center:</string></property></widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox3_transf_offset_000_x">
+        <property name="minimum"><double>-10.0</double></property><property name="maximum"><double>10.0</double></property>
+        <property name="value"><double>0.0</double></property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="MyDoubleSpinBox" name="spinbox3_transf_offset_000_y">
+        <property name="minimum"><double>-10.0</double></property><property name="maximum"><double>10.0</double></property>
+        <property name="value"><double>0.0</double></property>
+       </widget>
+      </item>
+      <item row="0" column="3">
+       <widget class="MyDoubleSpinBox" name="spinbox3_transf_offset_000_z">
+        <property name="minimum"><double>-10.0</double></property><property name="maximum"><double>10.0</double></property>
+        <property name="value"><double>0.0</double></property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel"><property name="text"><string>Radius:</string></property></widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_radius_1">
+        <property name="minimum"><double>0.01</double></property><property name="maximum"><double>100.0</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>1.0</double></property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="MyGroupBox" name="groupCheck_transf_function_enabled_t_false">
+     <property name="title"><string>Z-Twist (Screw Motion)</string></property>
+     <property name="checkable"><bool>true</bool></property>
+     <property name="checked"><bool>false</bool></property>
+     <layout class="QGridLayout" name="gridLayout_twist">
+      <item row="0" column="0">
+       <widget class="QLabel"><property name="text"><string>Twist amount:</string></property></widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_offset_01">
+        <property name="minimum"><double>-10.0</double></property><property name="maximum"><double>10.0</double></property>
+        <property name="singleStep"><double>0.01</double></property><property name="value"><double>0.1</double></property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="MyCheckBox" name="checkBox_transf_function_enabled_Ax_false">
+     <property name="text"><string>Pre-Abs X (Mirror)</string></property>
+    </widget>
+   </item>
+   <item>
+    <widget class="MyCheckBox" name="checkBox_transf_function_enabled_Ay_false">
+     <property name="text"><string>Pre-Abs Y (Mirror)</string></property>
+    </widget>
+   </item>
+   <item>
+    <widget class="MyCheckBox" name="checkBox_transf_function_enabled_Az_false">
+     <property name="text"><string>Pre-Abs Z (Mirror)</string></property>
+    </widget>
+   </item>
+   <item>
+    <widget class="MyCheckBox" name="checkBox_transf_function_enabled_Sw_false">
+     <property name="text"><string>Golden Angle Rotation</string></property>
+    </widget>
+   </item>
+   <item>
+    <widget class="MyCheckBox" name="checkBox_transf_function_enabled_Cx_false">
+     <property name="text"><string>Color: m-value trap</string></property>
+    </widget>
+   </item>
+   <item>
+    <widget class="MyCheckBox" name="checkBox_transf_function_enabled_Cy_false">
+     <property name="text"><string>Color: Cross orbit trap</string></property>
+    </widget>
+   </item>
    <item>
     <spacer name="verticalSpacer_2">
      <property name="orientation">
