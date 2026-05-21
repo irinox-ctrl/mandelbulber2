@@ -221,6 +221,16 @@ typedef struct
 	// Output control
 	cl_float zMix;
 	cl_float deScale;
+	// DE tweak (Familie 10)
+	cl_int deTweak;
+	cl_float deTweakP1;
+	cl_float deTweakP2;
+	// Orbit trap
+	cl_int orbitTrap;
+	cl_float trapCenterX, trapCenterY, trapCenterZ;
+	cl_float trapRadius;
+	// Curvature coloring
+	cl_int curvatureColoring;
 	// Iteration range
 	cl_int iterationStart;
 	cl_int iterationStop;

@@ -260,6 +260,28 @@ enum enumMutationMathType
 	mutMathSplitQuaternion = 33     // split quaternion (i²=+1, hyperbolic)
 };
 
+// v7.3 — Familie 10 DE/rendering tweaks
+enum enumMutationDETweak
+{
+	mutDENone = 0,
+	mutDELogarithmic = 1,       // dist = log(1 + DE) — soft misty distance
+	mutDEExponential = 2,       // dist = exp(DE) - 1 — hard aggressive distance
+	mutDENoise = 3,             // dist = DE + noise — eroded surface
+	mutDEModulation = 4,        // dist = DE * (1 + A*sin(B*dist)) — ripple
+	mutDESlack = 5,             // dist = DE * 0.9 — safe understep
+	mutDEAggressive = 6         // dist = DE * 1.1 — fast overstep
+};
+
+enum enumMutationOrbitTrap
+{
+	mutTrapNone = 0,
+	mutTrapSphere = 1,          // trap = abs(|z-c| - r)
+	mutTrapCross = 2,           // trap = min(|z.x|, |z.y|, |z.z|)
+	mutTrapLine = 3,            // trap = dist_to_line(z, axis)
+	mutTrapTorus = 4,           // trap = torus distance
+	mutTrapAngle = 5            // trap = abs(atan2(z.y, z.x))
+};
+
 // Per-formula mutation parameters — universal pre/post processing on ANY formula
 struct sFormulaMutationParams
 {
@@ -299,6 +321,16 @@ struct sFormulaMutationParams
 	// Output control
 	double zMix;
 	double deScale;
+	// DE tweak (Familie 10)
+	enumMutationDETweak deTweak;
+	double deTweakP1;   // noise amplitude / modulation amplitude
+	double deTweakP2;   // modulation frequency
+	// Orbit trap (Familie 10)
+	enumMutationOrbitTrap orbitTrap;
+	double trapCenterX, trapCenterY, trapCenterZ;
+	double trapRadius;
+	// Curvature coloring
+	bool curvatureColoring;
 	// Iteration range
 	int iterationStart;
 	int iterationStop;

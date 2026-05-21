@@ -197,6 +197,19 @@ cNineFractals::cNineFractals(std::shared_ptr<const cFractalContainer> par,
 		mutationParams[i].mathMix = generalPar->Get<double>("mutation_math_mix", i + 1);
 		mutationParams[i].zMix = generalPar->Get<double>("mutation_z_mix", i + 1);
 		mutationParams[i].deScale = generalPar->Get<double>("mutation_de_scale", i + 1);
+		mutationParams[i].deTweak =
+			static_cast<enumMutationDETweak>(generalPar->Get<int>("mutation_de_tweak", i + 1));
+		mutationParams[i].deTweakP1 = generalPar->Get<double>("mutation_de_tweak_p1", i + 1);
+		mutationParams[i].deTweakP2 = generalPar->Get<double>("mutation_de_tweak_p2", i + 1);
+		mutationParams[i].orbitTrap =
+			static_cast<enumMutationOrbitTrap>(generalPar->Get<int>("mutation_orbit_trap", i + 1));
+		CVector3 trapCenter = generalPar->Get<CVector3>("mutation_trap_center", i + 1);
+		mutationParams[i].trapCenterX = trapCenter.x;
+		mutationParams[i].trapCenterY = trapCenter.y;
+		mutationParams[i].trapCenterZ = trapCenter.z;
+		mutationParams[i].trapRadius = generalPar->Get<double>("mutation_trap_radius", i + 1);
+		mutationParams[i].curvatureColoring =
+			generalPar->Get<bool>("mutation_curvature_coloring", i + 1);
 		mutationParams[i].iterationStart =
 			generalPar->Get<int>("mutation_iteration_start", i + 1);
 		mutationParams[i].iterationStop =
@@ -1063,6 +1076,15 @@ void cNineFractals::CopyToOpenclData(sClFractalSequence *sequence) const
 		sequence->mutationParams[i].mathMix = mutationParams[i].mathMix;
 		sequence->mutationParams[i].zMix = mutationParams[i].zMix;
 		sequence->mutationParams[i].deScale = mutationParams[i].deScale;
+		sequence->mutationParams[i].deTweak = static_cast<int>(mutationParams[i].deTweak);
+		sequence->mutationParams[i].deTweakP1 = mutationParams[i].deTweakP1;
+		sequence->mutationParams[i].deTweakP2 = mutationParams[i].deTweakP2;
+		sequence->mutationParams[i].orbitTrap = static_cast<int>(mutationParams[i].orbitTrap);
+		sequence->mutationParams[i].trapCenterX = mutationParams[i].trapCenterX;
+		sequence->mutationParams[i].trapCenterY = mutationParams[i].trapCenterY;
+		sequence->mutationParams[i].trapCenterZ = mutationParams[i].trapCenterZ;
+		sequence->mutationParams[i].trapRadius = mutationParams[i].trapRadius;
+		sequence->mutationParams[i].curvatureColoring = mutationParams[i].curvatureColoring ? 1 : 0;
 		sequence->mutationParams[i].iterationStart = mutationParams[i].iterationStart;
 		sequence->mutationParams[i].iterationStop = mutationParams[i].iterationStop;
 		// Copy rotation matrices (3x3 = 9 floats each)

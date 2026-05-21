@@ -1631,6 +1631,42 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 			z.x += mut->postOffsetX; z.y += mut->postOffsetY; z.z += mut->postOffsetZ;
 			if (mut->zMix < 1.0f) { float m = mut->zMix; z = z * m + preMutZ * (1.0f - m); }
 			if (mut->deScale != 1.0f) aux.DE *= mut->deScale;
+
+			// DE tweak (Familie 10)
+			if (mut->deTweak == 1) aux.DE = native_log(1.0f + fabs(aux.DE));
+			else if (mut->deTweak == 2) aux.DE = native_exp(aux.DE) - 1.0f;
+			else if (mut->deTweak == 3) { float noise = mut->deTweakP1 * native_sin(z.x*13.7f + z.y*7.3f + z.z*11.1f); aux.DE += noise; }
+			else if (mut->deTweak == 4) { aux.DE *= (1.0f + mut->deTweakP1 * native_sin(mut->deTweakP2 * aux.dist)); }
+			else if (mut->deTweak == 5) aux.DE *= 0.9f;
+			else if (mut->deTweak == 6) aux.DE *= 1.1f;
+
+			// Orbit trap (Familie 10)
+			if (mut->orbitTrap == 1) {
+				float dx = z.x - mut->trapCenterX; float dy = z.y - mut->trapCenterY; float dz = z.z - mut->trapCenterZ;
+				float dist2 = native_sqrt(dx*dx + dy*dy + dz*dz);
+				float tv = fabs(dist2 - mut->trapRadius);
+				if (tv < aux.color) aux.color = tv;
+			} else if (mut->orbitTrap == 2) {
+				float tv = min(min(fabs(z.x), fabs(z.y)), fabs(z.z));
+				if (tv < aux.color) aux.color = tv;
+			} else if (mut->orbitTrap == 3) {
+				float tv = native_sqrt(z.y*z.y + z.z*z.z);
+				if (tv < aux.color) aux.color = tv;
+			} else if (mut->orbitTrap == 4) {
+				float dxy = native_sqrt(z.x*z.x + z.y*z.y) - mut->trapRadius;
+				float tv = fabs(native_sqrt(dxy*dxy + z.z*z.z) - mut->deTweakP1);
+				if (tv < aux.color) aux.color = tv;
+			} else if (mut->orbitTrap == 5) {
+				float tv = fabs(atan2(z.y, z.x));
+				if (tv < aux.color) aux.color = tv;
+			}
+
+			// Curvature coloring
+			if (mut->curvatureColoring != 0) {
+				float prevDE2 = (aux.DE != 0.0f) ? aux.DE : 1.0f;
+				float curv = aux.DE / prevDE2;
+				if (curv < aux.color) aux.color = curv;
+			}
 		}
 
 #ifdef ITERATION_WEIGHT

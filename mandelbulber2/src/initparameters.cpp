@@ -252,6 +252,16 @@ void InitParams(std::shared_ptr<cParameterContainer> par)
 		// Output control
 		par->addParam("mutation_z_mix", i, 1.0, 0.0, 1.0, morphAkima, paramStandard);
 		par->addParam("mutation_de_scale", i, 1.0, 0.001, 100.0, morphAkima, paramStandard);
+		// DE tweak (Familie 10)
+		par->addParam("mutation_de_tweak", i, 0, 0, 6, morphAkima, paramStandard);
+		par->addParam("mutation_de_tweak_p1", i, 0.1, 0.0, 10.0, morphAkima, paramStandard);
+		par->addParam("mutation_de_tweak_p2", i, 10.0, 0.0, 1000.0, morphAkima, paramStandard);
+		// Orbit trap
+		par->addParam("mutation_orbit_trap", i, 0, 0, 5, morphAkima, paramStandard);
+		par->addParam("mutation_trap_center", i, CVector3(0.0, 0.0, 0.0), morphAkima, paramStandard);
+		par->addParam("mutation_trap_radius", i, 1.0, 0.001, 100.0, morphAkima, paramStandard);
+		// Curvature coloring
+		par->addParam("mutation_curvature_coloring", i, false, morphLinear, paramStandard);
 		// Iteration range for mutation
 		par->addParam("mutation_iteration_start", i, 0, 0, 10000, morphAkima, paramStandard);
 		par->addParam("mutation_iteration_stop", i, 250, 0, 10000, morphAkima, paramStandard);

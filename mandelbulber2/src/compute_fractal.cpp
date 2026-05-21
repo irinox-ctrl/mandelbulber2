@@ -1513,6 +1513,88 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 				{
 					aux.DE *= mut.deScale;
 				}
+
+				// DE tweak (Familie 10)
+				if (mut.deTweak != mutDENone)
+				{
+					switch (mut.deTweak)
+					{
+						case mutDELogarithmic:
+							aux.DE = log(1.0 + fabs(aux.DE));
+							break;
+						case mutDEExponential:
+							aux.DE = exp(aux.DE) - 1.0;
+							break;
+						case mutDENoise:
+						{
+							double amp = mut.deTweakP1;
+							double noise = amp * sin(z.x * 13.7 + z.y * 7.3 + z.z * 11.1);
+							aux.DE += noise;
+							break;
+						}
+						case mutDEModulation:
+						{
+							double amp = mut.deTweakP1;
+							double freq = mut.deTweakP2;
+							aux.DE *= (1.0 + amp * sin(freq * aux.dist));
+							break;
+						}
+						case mutDESlack:
+							aux.DE *= 0.9;
+							break;
+						case mutDEAggressive:
+							aux.DE *= 1.1;
+							break;
+						default: break;
+					}
+				}
+
+				// Orbit trap (Familie 10)
+				if (mut.orbitTrap != mutTrapNone)
+				{
+					double trapVal = 1e20;
+					switch (mut.orbitTrap)
+					{
+						case mutTrapSphere:
+						{
+							double dx = z.x - mut.trapCenterX;
+							double dy = z.y - mut.trapCenterY;
+							double dz = z.z - mut.trapCenterZ;
+							double dist = sqrt(dx*dx + dy*dy + dz*dz);
+							trapVal = fabs(dist - mut.trapRadius);
+							break;
+						}
+						case mutTrapCross:
+							trapVal = min(min(fabs(z.x), fabs(z.y)), fabs(z.z));
+							break;
+						case mutTrapLine:
+							trapVal = sqrt(z.y * z.y + z.z * z.z);
+							break;
+						case mutTrapTorus:
+						{
+							double R = mut.trapRadius;
+							double r_minor = mut.deTweakP1;
+							double dxy = sqrt(z.x*z.x + z.y*z.y) - R;
+							trapVal = sqrt(dxy*dxy + z.z*z.z) - r_minor;
+							trapVal = fabs(trapVal);
+							break;
+						}
+						case mutTrapAngle:
+							trapVal = fabs(atan2(z.y, z.x));
+							break;
+						default: break;
+					}
+					if (trapVal < aux.color)
+						aux.color = trapVal;
+				}
+
+				// Curvature coloring
+				if (mut.curvatureColoring)
+				{
+					double prevDE = (aux.DE != 0.0) ? aux.DE : 1.0;
+					double curvature = aux.DE / prevDE;
+					aux.color = min(aux.color, curvature);
+				}
 			}
 		}
 

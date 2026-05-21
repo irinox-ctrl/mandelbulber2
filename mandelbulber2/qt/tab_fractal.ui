@@ -2476,6 +2476,90 @@ Static: Fixed weight (simple). Iteration: Weight changes over iterations (morphi
         </property>
        </widget>
       </item>
+      <!-- DE Tweak (Familie 10) -->
+      <item row="16" column="0">
+       <widget class="QLabel" name="label_mutation_de_tweak">
+        <property name="text"><string>DE Tweak:</string></property>
+       </widget>
+      </item>
+      <item row="16" column="1" colspan="2">
+       <widget class="QComboBox" name="comboBox_mutation_de_tweak">
+        <item><property name="text"><string>None</string></property></item>
+        <item><property name="text"><string>Logarithmic (soft/misty)</string></property></item>
+        <item><property name="text"><string>Exponential (hard)</string></property></item>
+        <item><property name="text"><string>Noise (eroded)</string></property></item>
+        <item><property name="text"><string>Modulation (ripple)</string></property></item>
+        <item><property name="text"><string>Slack (0.9x understep)</string></property></item>
+        <item><property name="text"><string>Aggressive (1.1x overstep)</string></property></item>
+       </widget>
+      </item>
+      <item row="16" column="3">
+       <widget class="QLabel" name="label_mutation_de_tweak_p1">
+        <property name="text"><string>Amp:</string></property>
+        <property name="alignment"><set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set></property>
+       </widget>
+      </item>
+      <item row="16" column="4">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_de_tweak_p1">
+        <property name="decimals"><number>4</number></property>
+        <property name="minimum"><double>0.000000000000000</double></property>
+        <property name="maximum"><double>10.000000000000000</double></property>
+        <property name="singleStep"><double>0.010000000000000</double></property>
+        <property name="value"><double>0.100000000000000</double></property>
+       </widget>
+      </item>
+      <item row="16" column="5">
+       <widget class="QLabel" name="label_mutation_de_tweak_p2">
+        <property name="text"><string>Freq:</string></property>
+        <property name="alignment"><set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set></property>
+       </widget>
+      </item>
+      <item row="16" column="6">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_de_tweak_p2">
+        <property name="decimals"><number>4</number></property>
+        <property name="minimum"><double>0.000000000000000</double></property>
+        <property name="maximum"><double>1000.000000000000000</double></property>
+        <property name="singleStep"><double>1.000000000000000</double></property>
+        <property name="value"><double>10.000000000000000</double></property>
+       </widget>
+      </item>
+      <!-- Orbit Trap -->
+      <item row="17" column="0">
+       <widget class="QLabel" name="label_mutation_orbit_trap">
+        <property name="text"><string>Orbit Trap:</string></property>
+       </widget>
+      </item>
+      <item row="17" column="1" colspan="2">
+       <widget class="QComboBox" name="comboBox_mutation_orbit_trap">
+        <item><property name="text"><string>None</string></property></item>
+        <item><property name="text"><string>Sphere</string></property></item>
+        <item><property name="text"><string>Cross (axes)</string></property></item>
+        <item><property name="text"><string>Line (Y-axis)</string></property></item>
+        <item><property name="text"><string>Torus</string></property></item>
+        <item><property name="text"><string>Angle</string></property></item>
+       </widget>
+      </item>
+      <item row="17" column="3">
+       <widget class="QLabel" name="label_mutation_trap_radius">
+        <property name="text"><string>Radius:</string></property>
+        <property name="alignment"><set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set></property>
+       </widget>
+      </item>
+      <item row="17" column="4" colspan="3">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_trap_radius">
+        <property name="decimals"><number>4</number></property>
+        <property name="minimum"><double>0.001000000000000</double></property>
+        <property name="maximum"><double>100.000000000000000</double></property>
+        <property name="singleStep"><double>0.100000000000000</double></property>
+        <property name="value"><double>1.000000000000000</double></property>
+       </widget>
+      </item>
+      <!-- Curvature coloring -->
+      <item row="18" column="0">
+       <widget class="QCheckBox" name="checkBox_mutation_curvature_coloring">
+        <property name="text"><string>Curvature Coloring</string></property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
