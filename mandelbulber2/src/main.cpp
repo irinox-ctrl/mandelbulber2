@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
 	InitSystem();
 
 	// Advanced Weight System build identifier
-	qDebug() << "Advanced Weight System v7.1 - build 20250520 - 16 fold types + Mandalay V2";
+	qDebug() << "Advanced Weight System v7.2 - build 20250520 - 20 folds + 30 math + 11 Mandalay features";
 
 	// configure debug output
 	qInstallMessageHandler(myMessageOutput);

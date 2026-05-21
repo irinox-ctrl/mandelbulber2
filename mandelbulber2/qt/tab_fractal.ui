@@ -1932,6 +1932,26 @@ Static: Fixed weight (simple). Iteration: Weight changes over iterations (morphi
           <string>Power</string>
          </property>
         </item>
+        <item>
+         <property name="text">
+          <string>Smooth Abs (tanh)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Modulo Wrap (tiling)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Nested Abs</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Sawtooth</string>
+         </property>
+        </item>
        </widget>
       </item>
       <item row="8" column="3">

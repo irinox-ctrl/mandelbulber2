@@ -651,6 +651,37 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 						z.z = sign(z.z) * native_powr(max(az, 1e-21f), p);
 						break;
 					}
+					case 16: // smooth abs
+					{
+						float k = (mut->foldLimit > 0.0f) ? mut->foldLimit : 5.0f;
+						z.x = z.x * tanh(k * z.x);
+						z.y = z.y * tanh(k * z.y);
+						z.z = z.z * tanh(k * z.z);
+						break;
+					}
+					case 17: // modulo wrap
+					{
+						float period = (mut->foldValue > 0.0f) ? mut->foldValue : 2.0f;
+						z.x = fmod(z.x + period * 0.5f, period) - period * 0.5f;
+						z.y = fmod(z.y + period * 0.5f, period) - period * 0.5f;
+						z.z = fmod(z.z + period * 0.5f, period) - period * 0.5f;
+						break;
+					}
+					case 18: // nested abs
+					{
+						float c = (mut->foldLimit > 0.0f) ? mut->foldLimit : 1.0f;
+						z.x = fabs(fabs(z.x) - c);
+						z.y = fabs(fabs(z.y) - c);
+						z.z = fabs(fabs(z.z) - c);
+						break;
+					}
+					case 19: // sawtooth
+					{
+						z.x = 2.0f * (z.x * 0.5f - floor(z.x * 0.5f + 0.5f));
+						z.y = 2.0f * (z.y * 0.5f - floor(z.y * 0.5f + 0.5f));
+						z.z = 2.0f * (z.z * 0.5f - floor(z.z * 0.5f + 0.5f));
+						break;
+					}
 				}
 			}
 
@@ -1442,6 +1473,37 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 						z.x = sign(z.x) * native_powr(max(ax, 1e-21f), p);
 						z.y = sign(z.y) * native_powr(max(ay, 1e-21f), p);
 						z.z = sign(z.z) * native_powr(max(az, 1e-21f), p);
+						break;
+					}
+					case 16: // smooth abs
+					{
+						float k = (mut->foldLimit > 0.0f) ? mut->foldLimit : 5.0f;
+						z.x = z.x * tanh(k * z.x);
+						z.y = z.y * tanh(k * z.y);
+						z.z = z.z * tanh(k * z.z);
+						break;
+					}
+					case 17: // modulo wrap
+					{
+						float period = (mut->foldValue > 0.0f) ? mut->foldValue : 2.0f;
+						z.x = fmod(z.x + period * 0.5f, period) - period * 0.5f;
+						z.y = fmod(z.y + period * 0.5f, period) - period * 0.5f;
+						z.z = fmod(z.z + period * 0.5f, period) - period * 0.5f;
+						break;
+					}
+					case 18: // nested abs
+					{
+						float c = (mut->foldLimit > 0.0f) ? mut->foldLimit : 1.0f;
+						z.x = fabs(fabs(z.x) - c);
+						z.y = fabs(fabs(z.y) - c);
+						z.z = fabs(fabs(z.z) - c);
+						break;
+					}
+					case 19: // sawtooth
+					{
+						z.x = 2.0f * (z.x * 0.5f - floor(z.x * 0.5f + 0.5f));
+						z.y = 2.0f * (z.y * 0.5f - floor(z.y * 0.5f + 0.5f));
+						z.z = 2.0f * (z.z * 0.5f - floor(z.z * 0.5f + 0.5f));
 						break;
 					}
 				}

@@ -187,7 +187,12 @@ enum enumMutationFoldType
 	mutFoldSinusoidal = 12,   // z + A*sin(B*z)
 	mutFoldExponential = 13,  // z * exp(-z²) gaussian
 	mutFoldLogarithmic = 14,  // z * log(1+|z|)
-	mutFoldPower = 15         // sign(z) * |z|^p
+	mutFoldPower = 15,        // sign(z) * |z|^p
+	// v7.1 — Familie 8 abs/modulo/discontinuous folds
+	mutFoldSmoothAbs = 16,    // z * tanh(k*z) — smooth abs replacement
+	mutFoldModuloWrap = 17,   // mod(z, period) - period/2 — tiling
+	mutFoldNestedAbs = 18,    // abs(abs(z) - c) — double buffered abs
+	mutFoldSawtooth = 19      // 2*fract(z/2) - 1 — sawtooth wave fold
 };
 
 enum enumMutationWarpType

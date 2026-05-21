@@ -461,6 +461,37 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 							z.z = (z.z >= 0 ? 1.0 : -1.0) * pow(max(az, 1e-21), p);
 							break;
 						}
+						case mutFoldSmoothAbs:
+						{
+							double k = (mut.foldLimit > 0.0) ? mut.foldLimit : 5.0;
+							z.x = z.x * tanh(k * z.x);
+							z.y = z.y * tanh(k * z.y);
+							z.z = z.z * tanh(k * z.z);
+							break;
+						}
+						case mutFoldModuloWrap:
+						{
+							double period = (mut.foldValue > 0.0) ? mut.foldValue : 2.0;
+							z.x = fmod(z.x + period * 0.5, period) - period * 0.5;
+							z.y = fmod(z.y + period * 0.5, period) - period * 0.5;
+							z.z = fmod(z.z + period * 0.5, period) - period * 0.5;
+							break;
+						}
+						case mutFoldNestedAbs:
+						{
+							double c = (mut.foldLimit > 0.0) ? mut.foldLimit : 1.0;
+							z.x = fabs(fabs(z.x) - c);
+							z.y = fabs(fabs(z.y) - c);
+							z.z = fabs(fabs(z.z) - c);
+							break;
+						}
+						case mutFoldSawtooth:
+						{
+							z.x = 2.0 * (z.x * 0.5 - floor(z.x * 0.5 + 0.5));
+							z.y = 2.0 * (z.y * 0.5 - floor(z.y * 0.5 + 0.5));
+							z.z = 2.0 * (z.z * 0.5 - floor(z.z * 0.5 + 0.5));
+							break;
+						}
 						default: break;
 					}
 				}
@@ -1295,6 +1326,37 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 							z.x = (z.x >= 0 ? 1.0 : -1.0) * pow(max(ax, 1e-21), p);
 							z.y = (z.y >= 0 ? 1.0 : -1.0) * pow(max(ay, 1e-21), p);
 							z.z = (z.z >= 0 ? 1.0 : -1.0) * pow(max(az, 1e-21), p);
+							break;
+						}
+						case mutFoldSmoothAbs:
+						{
+							double k = (mut.foldLimit > 0.0) ? mut.foldLimit : 5.0;
+							z.x = z.x * tanh(k * z.x);
+							z.y = z.y * tanh(k * z.y);
+							z.z = z.z * tanh(k * z.z);
+							break;
+						}
+						case mutFoldModuloWrap:
+						{
+							double period = (mut.foldValue > 0.0) ? mut.foldValue : 2.0;
+							z.x = fmod(z.x + period * 0.5, period) - period * 0.5;
+							z.y = fmod(z.y + period * 0.5, period) - period * 0.5;
+							z.z = fmod(z.z + period * 0.5, period) - period * 0.5;
+							break;
+						}
+						case mutFoldNestedAbs:
+						{
+							double c = (mut.foldLimit > 0.0) ? mut.foldLimit : 1.0;
+							z.x = fabs(fabs(z.x) - c);
+							z.y = fabs(fabs(z.y) - c);
+							z.z = fabs(fabs(z.z) - c);
+							break;
+						}
+						case mutFoldSawtooth:
+						{
+							z.x = 2.0 * (z.x * 0.5 - floor(z.x * 0.5 + 0.5));
+							z.y = 2.0 * (z.y * 0.5 - floor(z.y * 0.5 + 0.5));
+							z.z = 2.0 * (z.z * 0.5 - floor(z.z * 0.5 + 0.5));
 							break;
 						}
 						default: break;
