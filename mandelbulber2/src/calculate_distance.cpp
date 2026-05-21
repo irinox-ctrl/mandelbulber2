@@ -133,7 +133,7 @@ double CalculateDistance(const sParamRender &params, const cNineFractals &fracta
 					FractalizeTexture(inTemp.point, data, params, fractals, i + 1, &reduceDisplacement);
 
 				distTemp = DisplacementMap(distTemp, pointFractalized, i + 1, data);
-				distance = PerlinNoiseDisplacement(distance, pointFractalized, data, i + 1);
+				distTemp = PerlinNoiseDisplacement(distTemp, in.point, data, i + 1);
 
 				const params::enumBooleanOperator boolOperator = params.booleanOperator[i];
 
@@ -496,16 +496,11 @@ double CalculateDistanceSimple(const sParamRender &params, const cNineFractals &
 		out->colorIndex = fractOut.colorIndex;
 		out->totalIters += fractOut.iters;
 
-		// don't use maxiter when limits are disabled and iterThresh mode is not used
-		if (!params.limitsEnabled)
-		{
-			if (!params.common.iterThreshMode) maxiter = false;
-		}
-		else
-		{
-			// never use maxiter if normal vectors are calculated
-			if (in.normalCalculationMode) maxiter = false;
-		}
+		// don't use maxiter when iterThresh mode is not used
+		if (!params.common.iterThreshMode) maxiter = false;
+
+		// never use maxiter if normal vectors are calculated
+		if (in.normalCalculationMode) maxiter = false;
 
 		fractIn.forcedMaxiter =
 			fractOut.iters; // for other directions must be the same number of iterations

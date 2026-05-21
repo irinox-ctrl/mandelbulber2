@@ -191,13 +191,11 @@ formulaOut CalculateDistance(__constant sClInConstants *consts, float3 point,
 
 		bool maxiter = out.maxiter;
 
-// don't use maxiter when limits are disabled and iterThresh mode is not used
-#ifndef LIMITS_ENABLED
+		// don't use maxiter when iterThresh mode is not used
 		if (!consts->params.iterThreshMode) maxiter = false;
-#else
+
 		// never use maxiter if normal vectors are calculated
 		if (calcParam->normalCalculationMode) maxiter = false;
-#endif
 
 		float3 deltas[6];
 		deltas[0] = (float3){delta, 0.0f, 0.0f};
