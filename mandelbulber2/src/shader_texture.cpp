@@ -32,6 +32,7 @@
  * cRenderWorker::TextureShader method - calculates texture
  */
 #include <algorithm>
+#include <cmath>
 
 #include "compute_fractal.hpp"
 #include "fractparams.hpp"
@@ -54,9 +55,16 @@ sRGBFloat cRenderWorker::TextureShader(
 	{
 		sFractalIn fractIn(input.point, 0, -1, 1, 0, &params->common, -1, false, input.material);
 		sFractalOut fractOut;
-	fractOut.normal = CVector3(0, 0, 0);
+		fractOut.normal = CVector3(0, 0, 0);
+		fractOut.z = CVector3(0, 0, 0);
 		Compute<fractal::calcModeCubeOrbitTrap>(*fractal, nullptr, fractIn, &fractOut);
 		pointModified = fractOut.z;
+		if (std::isnan(pointModified.x) || std::isnan(pointModified.y)
+			|| std::isnan(pointModified.z) || std::isinf(pointModified.x)
+			|| std::isinf(pointModified.y) || std::isinf(pointModified.z))
+		{
+			return sRGBFloat();
+		}
 	}
 	else
 	{

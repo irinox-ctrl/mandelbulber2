@@ -679,6 +679,10 @@ float3 SurfaceColor(__constant sClInConstants *consts, sRenderData *renderData,
 					float3 gradColor = GetColorFromGradient(colorPosition, false,
 						input->paletteSpecularLength, input->palette + input->paletteSpecularOffset,
 						input->palette + input->midpointSpecularOffset, input->midpointSpecularLength, 0, 0);
+					gradColor = ApplyGradientPostProcess(gradColor,
+						input->material->gradientBrightness, input->material->gradientContrast,
+						input->material->gradientSaturation, input->material->gradientGamma);
+					gradColor = ApplyGradientNoise(gradColor, input->point, input->material->gradientNoiseAmount);
 					float opS = input->material->specularGradientOpacity;
 					if (input->material->specularGradientMaskEnable && input->opacitySpecularLength > 0)
 					{
@@ -702,6 +706,10 @@ float3 SurfaceColor(__constant sClInConstants *consts, sRenderData *renderData,
 					float3 gradColor = GetColorFromGradient(colorPosition, false,
 						input->paletteDiffuseLength, input->palette + input->paletteDiffuseOffset,
 						input->palette + input->midpointDiffuseOffset, input->midpointDiffuseLength, 0, 0);
+					gradColor = ApplyGradientPostProcess(gradColor,
+						input->material->gradientBrightness, input->material->gradientContrast,
+						input->material->gradientSaturation, input->material->gradientGamma);
+					gradColor = ApplyGradientNoise(gradColor, input->point, input->material->gradientNoiseAmount);
 					float opD = input->material->diffuseGradientOpacity;
 					if (input->material->diffuseGradientMaskEnable && input->opacityDiffuseLength > 0)
 					{
@@ -725,6 +733,10 @@ float3 SurfaceColor(__constant sClInConstants *consts, sRenderData *renderData,
 					float3 gradColor = GetColorFromGradient(colorPosition, false,
 						input->paletteLuminosityLength, input->palette + input->paletteLuminosityOffset,
 						input->palette + input->midpointLuminosityOffset, input->midpointLuminosityLength, 0, 0);
+					gradColor = ApplyGradientPostProcess(gradColor,
+						input->material->gradientBrightness, input->material->gradientContrast,
+						input->material->gradientSaturation, input->material->gradientGamma);
+					gradColor = ApplyGradientNoise(gradColor, input->point, input->material->gradientNoiseAmount);
 					float opL = input->material->luminosityGradientOpacity;
 					if (input->material->luminosityGradientMaskEnable && input->opacityLuminosityLength > 0)
 					{
@@ -748,6 +760,10 @@ float3 SurfaceColor(__constant sClInConstants *consts, sRenderData *renderData,
 					float3 gradColor = GetColorFromGradient(colorPosition, false,
 						input->paletteRoughnessLength, input->palette + input->paletteRoughnessOffset,
 						input->palette + input->midpointRoughnessOffset, input->midpointRoughnessLength, 0, 0);
+					gradColor = ApplyGradientPostProcess(gradColor,
+						input->material->gradientBrightness, input->material->gradientContrast,
+						input->material->gradientSaturation, input->material->gradientGamma);
+					gradColor = ApplyGradientNoise(gradColor, input->point, input->material->gradientNoiseAmount);
 					float opRg = input->material->roughnessGradientOpacity;
 					if (input->material->roughnessGradientMaskEnable && input->opacityRoughnessLength > 0)
 					{
@@ -771,6 +787,10 @@ float3 SurfaceColor(__constant sClInConstants *consts, sRenderData *renderData,
 					float3 gradColor = GetColorFromGradient(colorPosition, false,
 						input->paletteReflectanceLength, input->palette + input->paletteReflectanceOffset,
 						input->palette + input->midpointReflectanceOffset, input->midpointReflectanceLength, 0, 0);
+					gradColor = ApplyGradientPostProcess(gradColor,
+						input->material->gradientBrightness, input->material->gradientContrast,
+						input->material->gradientSaturation, input->material->gradientGamma);
+					gradColor = ApplyGradientNoise(gradColor, input->point, input->material->gradientNoiseAmount);
 					float opRef = input->material->reflectanceGradientOpacity;
 					if (input->material->reflectanceGradientMaskEnable && input->opacityReflectanceLength > 0)
 					{
@@ -794,6 +814,10 @@ float3 SurfaceColor(__constant sClInConstants *consts, sRenderData *renderData,
 					float3 gradColor = GetColorFromGradient(colorPosition, false,
 						input->paletteTransparencyLength, input->palette + input->paletteTransparencyOffset,
 						input->palette + input->midpointTransparencyOffset, input->midpointTransparencyLength, 0, 0);
+					gradColor = ApplyGradientPostProcess(gradColor,
+						input->material->gradientBrightness, input->material->gradientContrast,
+						input->material->gradientSaturation, input->material->gradientGamma);
+					gradColor = ApplyGradientNoise(gradColor, input->point, input->material->gradientNoiseAmount);
 					float opT = input->material->transparencyGradientOpacity;
 					if (input->material->transparencyGradientMaskEnable && input->opacityTransparencyLength > 0)
 					{

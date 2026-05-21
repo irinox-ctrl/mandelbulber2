@@ -225,6 +225,33 @@ sRGBAFloat cRenderWorker::SurfaceColour(
 				if (input.material->specularGradientEnable)
 				{
 					sRGBFloat gradColor = input.material->gradientSpecular.GetColorFloat(colorPosition, false);
+					gradColor.R *= input.material->gradientBrightness;
+					gradColor.G *= input.material->gradientBrightness;
+					gradColor.B *= input.material->gradientBrightness;
+					gradColor.R = (gradColor.R - 0.5f) * input.material->gradientContrast + 0.5f;
+					gradColor.G = (gradColor.G - 0.5f) * input.material->gradientContrast + 0.5f;
+					gradColor.B = (gradColor.B - 0.5f) * input.material->gradientContrast + 0.5f;
+					if (input.material->gradientSaturation != 1.0f)
+					{
+						float maxV = fmaxf(gradColor.R, fmaxf(gradColor.G, gradColor.B));
+						float minV = fminf(gradColor.R, fminf(gradColor.G, gradColor.B));
+						float l = (maxV + minV) * 0.5f;
+						gradColor.R = l + (gradColor.R - l) * input.material->gradientSaturation;
+						gradColor.G = l + (gradColor.G - l) * input.material->gradientSaturation;
+						gradColor.B = l + (gradColor.B - l) * input.material->gradientSaturation;
+					}
+					if (input.material->gradientGamma != 1.0f)
+					{
+						gradColor.R = powf(fmaxf(0.0f, gradColor.R), input.material->gradientGamma);
+						gradColor.G = powf(fmaxf(0.0f, gradColor.G), input.material->gradientGamma);
+						gradColor.B = powf(fmaxf(0.0f, gradColor.B), input.material->gradientGamma);
+					}
+					if (input.material->gradientNoiseAmount > 0.0f)
+					{
+						float h = sinf(point.x * 127.1f + point.y * 311.7f + point.z * 74.7f) * 43758.5453f;
+						float noise = (h - floorf(h) - 0.5f) * 2.0f * input.material->gradientNoiseAmount;
+						gradColor.R += noise; gradColor.G += noise; gradColor.B += noise;
+					}
 					float op = input.material->specularGradientOpacity;
 					if (input.material->specularGradientMaskEnable)
 					{
@@ -241,6 +268,33 @@ sRGBAFloat cRenderWorker::SurfaceColour(
 				if (input.material->diffuseGradientEnable)
 				{
 					sRGBFloat gradColor = input.material->gradientDiffuse.GetColorFloat(colorPosition, false);
+					gradColor.R *= input.material->gradientBrightness;
+					gradColor.G *= input.material->gradientBrightness;
+					gradColor.B *= input.material->gradientBrightness;
+					gradColor.R = (gradColor.R - 0.5f) * input.material->gradientContrast + 0.5f;
+					gradColor.G = (gradColor.G - 0.5f) * input.material->gradientContrast + 0.5f;
+					gradColor.B = (gradColor.B - 0.5f) * input.material->gradientContrast + 0.5f;
+					if (input.material->gradientSaturation != 1.0f)
+					{
+						float maxV = fmaxf(gradColor.R, fmaxf(gradColor.G, gradColor.B));
+						float minV = fminf(gradColor.R, fminf(gradColor.G, gradColor.B));
+						float l = (maxV + minV) * 0.5f;
+						gradColor.R = l + (gradColor.R - l) * input.material->gradientSaturation;
+						gradColor.G = l + (gradColor.G - l) * input.material->gradientSaturation;
+						gradColor.B = l + (gradColor.B - l) * input.material->gradientSaturation;
+					}
+					if (input.material->gradientGamma != 1.0f)
+					{
+						gradColor.R = powf(fmaxf(0.0f, gradColor.R), input.material->gradientGamma);
+						gradColor.G = powf(fmaxf(0.0f, gradColor.G), input.material->gradientGamma);
+						gradColor.B = powf(fmaxf(0.0f, gradColor.B), input.material->gradientGamma);
+					}
+					if (input.material->gradientNoiseAmount > 0.0f)
+					{
+						float h = sinf(point.x * 127.1f + point.y * 311.7f + point.z * 74.7f) * 43758.5453f;
+						float noise = (h - floorf(h) - 0.5f) * 2.0f * input.material->gradientNoiseAmount;
+						gradColor.R += noise; gradColor.G += noise; gradColor.B += noise;
+					}
 					float op = input.material->diffuseGradientOpacity;
 					if (input.material->diffuseGradientMaskEnable)
 					{
@@ -257,6 +311,33 @@ sRGBAFloat cRenderWorker::SurfaceColour(
 				if (input.material->luminosityGradientEnable)
 				{
 					sRGBFloat gradColor = input.material->gradientLuminosity.GetColorFloat(colorPosition, false);
+					gradColor.R *= input.material->gradientBrightness;
+					gradColor.G *= input.material->gradientBrightness;
+					gradColor.B *= input.material->gradientBrightness;
+					gradColor.R = (gradColor.R - 0.5f) * input.material->gradientContrast + 0.5f;
+					gradColor.G = (gradColor.G - 0.5f) * input.material->gradientContrast + 0.5f;
+					gradColor.B = (gradColor.B - 0.5f) * input.material->gradientContrast + 0.5f;
+					if (input.material->gradientSaturation != 1.0f)
+					{
+						float maxV = fmaxf(gradColor.R, fmaxf(gradColor.G, gradColor.B));
+						float minV = fminf(gradColor.R, fminf(gradColor.G, gradColor.B));
+						float l = (maxV + minV) * 0.5f;
+						gradColor.R = l + (gradColor.R - l) * input.material->gradientSaturation;
+						gradColor.G = l + (gradColor.G - l) * input.material->gradientSaturation;
+						gradColor.B = l + (gradColor.B - l) * input.material->gradientSaturation;
+					}
+					if (input.material->gradientGamma != 1.0f)
+					{
+						gradColor.R = powf(fmaxf(0.0f, gradColor.R), input.material->gradientGamma);
+						gradColor.G = powf(fmaxf(0.0f, gradColor.G), input.material->gradientGamma);
+						gradColor.B = powf(fmaxf(0.0f, gradColor.B), input.material->gradientGamma);
+					}
+					if (input.material->gradientNoiseAmount > 0.0f)
+					{
+						float h = sinf(point.x * 127.1f + point.y * 311.7f + point.z * 74.7f) * 43758.5453f;
+						float noise = (h - floorf(h) - 0.5f) * 2.0f * input.material->gradientNoiseAmount;
+						gradColor.R += noise; gradColor.G += noise; gradColor.B += noise;
+					}
 					float op = input.material->luminosityGradientOpacity;
 					if (input.material->luminosityGradientMaskEnable)
 					{
@@ -273,6 +354,33 @@ sRGBAFloat cRenderWorker::SurfaceColour(
 				if (input.material->roughnessGradientEnable)
 				{
 					sRGBFloat gradColor = input.material->gradientRoughness.GetColorFloat(colorPosition, false);
+					gradColor.R *= input.material->gradientBrightness;
+					gradColor.G *= input.material->gradientBrightness;
+					gradColor.B *= input.material->gradientBrightness;
+					gradColor.R = (gradColor.R - 0.5f) * input.material->gradientContrast + 0.5f;
+					gradColor.G = (gradColor.G - 0.5f) * input.material->gradientContrast + 0.5f;
+					gradColor.B = (gradColor.B - 0.5f) * input.material->gradientContrast + 0.5f;
+					if (input.material->gradientSaturation != 1.0f)
+					{
+						float maxV = fmaxf(gradColor.R, fmaxf(gradColor.G, gradColor.B));
+						float minV = fminf(gradColor.R, fminf(gradColor.G, gradColor.B));
+						float l = (maxV + minV) * 0.5f;
+						gradColor.R = l + (gradColor.R - l) * input.material->gradientSaturation;
+						gradColor.G = l + (gradColor.G - l) * input.material->gradientSaturation;
+						gradColor.B = l + (gradColor.B - l) * input.material->gradientSaturation;
+					}
+					if (input.material->gradientGamma != 1.0f)
+					{
+						gradColor.R = powf(fmaxf(0.0f, gradColor.R), input.material->gradientGamma);
+						gradColor.G = powf(fmaxf(0.0f, gradColor.G), input.material->gradientGamma);
+						gradColor.B = powf(fmaxf(0.0f, gradColor.B), input.material->gradientGamma);
+					}
+					if (input.material->gradientNoiseAmount > 0.0f)
+					{
+						float h = sinf(point.x * 127.1f + point.y * 311.7f + point.z * 74.7f) * 43758.5453f;
+						float noise = (h - floorf(h) - 0.5f) * 2.0f * input.material->gradientNoiseAmount;
+						gradColor.R += noise; gradColor.G += noise; gradColor.B += noise;
+					}
 					float op = input.material->roughnessGradientOpacity;
 					if (input.material->roughnessGradientMaskEnable)
 					{
@@ -289,6 +397,33 @@ sRGBAFloat cRenderWorker::SurfaceColour(
 				if (input.material->reflectanceGradientEnable)
 				{
 					sRGBFloat gradColor = input.material->gradientReflectance.GetColorFloat(colorPosition, false);
+					gradColor.R *= input.material->gradientBrightness;
+					gradColor.G *= input.material->gradientBrightness;
+					gradColor.B *= input.material->gradientBrightness;
+					gradColor.R = (gradColor.R - 0.5f) * input.material->gradientContrast + 0.5f;
+					gradColor.G = (gradColor.G - 0.5f) * input.material->gradientContrast + 0.5f;
+					gradColor.B = (gradColor.B - 0.5f) * input.material->gradientContrast + 0.5f;
+					if (input.material->gradientSaturation != 1.0f)
+					{
+						float maxV = fmaxf(gradColor.R, fmaxf(gradColor.G, gradColor.B));
+						float minV = fminf(gradColor.R, fminf(gradColor.G, gradColor.B));
+						float l = (maxV + minV) * 0.5f;
+						gradColor.R = l + (gradColor.R - l) * input.material->gradientSaturation;
+						gradColor.G = l + (gradColor.G - l) * input.material->gradientSaturation;
+						gradColor.B = l + (gradColor.B - l) * input.material->gradientSaturation;
+					}
+					if (input.material->gradientGamma != 1.0f)
+					{
+						gradColor.R = powf(fmaxf(0.0f, gradColor.R), input.material->gradientGamma);
+						gradColor.G = powf(fmaxf(0.0f, gradColor.G), input.material->gradientGamma);
+						gradColor.B = powf(fmaxf(0.0f, gradColor.B), input.material->gradientGamma);
+					}
+					if (input.material->gradientNoiseAmount > 0.0f)
+					{
+						float h = sinf(point.x * 127.1f + point.y * 311.7f + point.z * 74.7f) * 43758.5453f;
+						float noise = (h - floorf(h) - 0.5f) * 2.0f * input.material->gradientNoiseAmount;
+						gradColor.R += noise; gradColor.G += noise; gradColor.B += noise;
+					}
 					float op = input.material->reflectanceGradientOpacity;
 					if (input.material->reflectanceGradientMaskEnable)
 					{
@@ -305,6 +440,33 @@ sRGBAFloat cRenderWorker::SurfaceColour(
 				if (input.material->transparencyGradientEnable)
 				{
 					sRGBFloat gradColor = input.material->gradientTransparency.GetColorFloat(colorPosition, false);
+					gradColor.R *= input.material->gradientBrightness;
+					gradColor.G *= input.material->gradientBrightness;
+					gradColor.B *= input.material->gradientBrightness;
+					gradColor.R = (gradColor.R - 0.5f) * input.material->gradientContrast + 0.5f;
+					gradColor.G = (gradColor.G - 0.5f) * input.material->gradientContrast + 0.5f;
+					gradColor.B = (gradColor.B - 0.5f) * input.material->gradientContrast + 0.5f;
+					if (input.material->gradientSaturation != 1.0f)
+					{
+						float maxV = fmaxf(gradColor.R, fmaxf(gradColor.G, gradColor.B));
+						float minV = fminf(gradColor.R, fminf(gradColor.G, gradColor.B));
+						float l = (maxV + minV) * 0.5f;
+						gradColor.R = l + (gradColor.R - l) * input.material->gradientSaturation;
+						gradColor.G = l + (gradColor.G - l) * input.material->gradientSaturation;
+						gradColor.B = l + (gradColor.B - l) * input.material->gradientSaturation;
+					}
+					if (input.material->gradientGamma != 1.0f)
+					{
+						gradColor.R = powf(fmaxf(0.0f, gradColor.R), input.material->gradientGamma);
+						gradColor.G = powf(fmaxf(0.0f, gradColor.G), input.material->gradientGamma);
+						gradColor.B = powf(fmaxf(0.0f, gradColor.B), input.material->gradientGamma);
+					}
+					if (input.material->gradientNoiseAmount > 0.0f)
+					{
+						float h = sinf(point.x * 127.1f + point.y * 311.7f + point.z * 74.7f) * 43758.5453f;
+						float noise = (h - floorf(h) - 0.5f) * 2.0f * input.material->gradientNoiseAmount;
+						gradColor.R += noise; gradColor.G += noise; gradColor.B += noise;
+					}
 					float op = input.material->transparencyGradientOpacity;
 					if (input.material->transparencyGradientMaskEnable)
 					{

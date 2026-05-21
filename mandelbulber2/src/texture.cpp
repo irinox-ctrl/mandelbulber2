@@ -449,6 +449,8 @@ sRGBFloat cTexture::BicubicInterpolation(float x, float y, const sRGBFloat *bitm
 	if (!bitm || w <= 0 || h <= 0) return sRGBFloat();
 	if (std::isnan(x) || std::isnan(y) || std::isinf(x) || std::isinf(y))
 		return sRGBFloat();
+	if (x < -1e9f || x > 1e9f || y < -1e9f || y > 1e9f)
+		return sRGBFloat();
 	const int ix = int(x);
 	const int iy = int(y);
 	const float rx = x - ix;

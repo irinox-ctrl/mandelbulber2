@@ -2507,19 +2507,29 @@ void InitMaterialParams(int materialId, std::shared_ptr<cParameterContainer> par
 		paramStandard);
 
 	// Gradient System V3 parameters
-	par->addParam(cMaterial::Name("gradient_scale", materialId), 1.0, morphLinear, paramStandard);
-	par->addParam(cMaterial::Name("gradient_offset", materialId), 0.0, morphLinear, paramStandard);
+	par->addParam(cMaterial::Name("gradient_scale", materialId), 1.0, 0.001, 100.0,
+		morphLinear, paramStandard);
+	par->addParam(cMaterial::Name("gradient_offset", materialId), 0.0, -100.0, 100.0,
+		morphLinear, paramStandard);
 	par->addParam(cMaterial::Name("gradient_repeat_mode", materialId), 0, morphLinear, paramStandard);
 	par->addParam(cMaterial::Name("opacity_invert", materialId), false, morphLinear, paramStandard);
-	par->addParam(cMaterial::Name("mask_contrast", materialId), 1.0, morphLinear, paramStandard);
-	par->addParam(cMaterial::Name("mask_black_point", materialId), 0.0, morphLinear, paramStandard);
-	par->addParam(cMaterial::Name("mask_white_point", materialId), 1.0, morphLinear, paramStandard);
-	par->addParam(cMaterial::Name("gradient_brightness", materialId), 1.0, morphLinear, paramStandard);
-	par->addParam(cMaterial::Name("gradient_contrast", materialId), 1.0, morphLinear, paramStandard);
-	par->addParam(cMaterial::Name("gradient_saturation", materialId), 1.0, morphLinear, paramStandard);
-	par->addParam(cMaterial::Name("gradient_gamma", materialId), 1.0, morphLinear, paramStandard);
+	par->addParam(cMaterial::Name("mask_contrast", materialId), 1.0, 0.0, 10.0,
+		morphLinear, paramStandard);
+	par->addParam(cMaterial::Name("mask_black_point", materialId), 0.0, 0.0, 1.0,
+		morphLinear, paramStandard);
+	par->addParam(cMaterial::Name("mask_white_point", materialId), 1.0, 0.0, 1.0,
+		morphLinear, paramStandard);
+	par->addParam(cMaterial::Name("gradient_brightness", materialId), 1.0, 0.0, 10.0,
+		morphLinear, paramStandard);
+	par->addParam(cMaterial::Name("gradient_contrast", materialId), 1.0, 0.0, 10.0,
+		morphLinear, paramStandard);
+	par->addParam(cMaterial::Name("gradient_saturation", materialId), 1.0, 0.0, 10.0,
+		morphLinear, paramStandard);
+	par->addParam(cMaterial::Name("gradient_gamma", materialId), 1.0, 0.01, 10.0,
+		morphLinear, paramStandard);
 	par->addParam(cMaterial::Name("gradient_color_space", materialId), 0, morphLinear, paramStandard);
-	par->addParam(cMaterial::Name("gradient_noise_amount", materialId), 0.0, morphLinear, paramStandard);
+	par->addParam(cMaterial::Name("gradient_noise_amount", materialId), 0.0, 0.0, 1.0,
+		morphLinear, paramStandard);
 
 	par->addParam(cMaterial::Name("specular_gradient_mask_enable", materialId), false, morphLinear,
 		paramStandard);
