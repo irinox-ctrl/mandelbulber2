@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
 	InitSystem();
 
 	// Advanced Weight System build identifier
-	qDebug() << "Advanced Weight System v7.3 - build 20250520 - 20 folds + 34 math + 12 warps + DE/traps";
+	qDebug() << "Advanced Weight System v7.4 - build 20250520 - 28 folds + 42 math + 12 warps + DE/traps";
 
 	// configure debug output
 	qInstallMessageHandler(myMessageOutput);

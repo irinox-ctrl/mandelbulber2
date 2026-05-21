@@ -1534,6 +1534,52 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 						}
 						break;
 					}
+					case 38: // HyperbolicSine
+					{
+						float amp = (mut->mathP1 != 0.0f) ? mut->mathP1 : 1.0f;
+						mathZ.x = amp * sinh(z.x);
+						mathZ.y = amp * sinh(z.y);
+						mathZ.z = amp * sinh(z.z);
+						aux.DE = aux.DE * amp * cosh(native_sqrt(z.x*z.x + z.y*z.y + z.z*z.z)) + 1.0f;
+						break;
+					}
+					case 39: // BesselApprox
+					{
+						float freq = (mut->mathP1 != 0.0f) ? mut->mathP1 : 1.0f;
+						float r = native_sqrt(z.x*z.x + z.y*z.y + z.z*z.z);
+						if (r > 1e-21f)
+						{
+							float j0 = native_cos(freq * r) / native_sqrt(max(r, 1e-21f));
+							mathZ.x = z.x * j0;
+							mathZ.y = z.y * j0;
+							mathZ.z = z.z * j0;
+							aux.DE = aux.DE * fabs(j0) + 1.0f;
+						}
+						break;
+					}
+					case 40: // LambertW
+					{
+						float amp = (mut->mathP1 != 0.0f) ? mut->mathP1 : 1.0f;
+						float r = native_sqrt(z.x*z.x + z.y*z.y + z.z*z.z);
+						float er = native_exp(min(r, 20.0f));
+						mathZ.x = amp * z.x * er;
+						mathZ.y = amp * z.y * er;
+						mathZ.z = amp * z.z * er;
+						aux.DE = aux.DE * amp * er * (1.0f + r) + 1.0f;
+						break;
+					}
+					case 41: // ErrorFunction
+					{
+						float scale = (mut->mathP1 != 0.0f) ? mut->mathP1 : 1.0f;
+						float sqrtPi = 1.7724538509f;
+						mathZ.x = scale * tanh(sqrtPi * z.x);
+						mathZ.y = scale * tanh(sqrtPi * z.y);
+						mathZ.z = scale * tanh(sqrtPi * z.z);
+						float r = native_sqrt(z.x*z.x + z.y*z.y + z.z*z.z);
+						float erfDeriv = 2.0f / sqrtPi * native_exp(-r*r);
+						aux.DE = aux.DE * scale * erfDeriv + 1.0f;
+						break;
+					}
 				}
 				if (mut->mathMix < 1.0f)
 				{

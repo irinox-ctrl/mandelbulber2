@@ -271,7 +271,12 @@ enum enumMutationMathType
 	mutMathFordCircles = 34,        // z += 1/(n²·z) circle packing
 	mutMathApollonianNet = 35,      // inversie in 4 bollen, nearest
 	mutMathConformalWedge = 36,     // z^α sector mapping
-	mutMathCircleInvChain = 37      // sequential circle inversions
+	mutMathCircleInvChain = 37,     // sequential circle inversions
+	// v7.4 — Familie 6 special trig/functions
+	mutMathHyperbolicSine = 38,     // sinh(z) + c
+	mutMathBesselApprox = 39,       // J₀(r) approximation
+	mutMathLambertW = 40,           // z*exp(z) + c
+	mutMathErrorFunction = 41       // erf(z) + c
 };
 
 // v7.3 — Familie 10 DE/rendering tweaks

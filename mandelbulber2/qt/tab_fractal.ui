@@ -2299,6 +2299,10 @@ Static: Fixed weight (simple). Iteration: Weight changes over iterations (morphi
         <item><property name="text"><string>Apollonian Net</string></property></item>
         <item><property name="text"><string>Conformal Wedge</string></property></item>
         <item><property name="text"><string>Circle Inv Chain</string></property></item>
+        <item><property name="text"><string>Hyperbolic Sine</string></property></item>
+        <item><property name="text"><string>Bessel Approx</string></property></item>
+        <item><property name="text"><string>Lambert W</string></property></item>
+        <item><property name="text"><string>Error Function</string></property></item>
        </widget>
       </item>
       <item row="12" column="3">

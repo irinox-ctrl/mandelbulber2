@@ -1418,6 +1418,56 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 							}
 							break;
 						}
+						case mutMathHyperbolicSine:
+						{
+							// sinh(z) + c — P1=amplitude scale
+							double amp = (mut.mathP1 != 0.0) ? mut.mathP1 : 1.0;
+							mathZ.x = amp * sinh(z.x);
+							mathZ.y = amp * sinh(z.y);
+							mathZ.z = amp * sinh(z.z);
+							aux.DE = aux.DE * amp * cosh(sqrt(z.x*z.x + z.y*z.y + z.z*z.z)) + 1.0;
+							break;
+						}
+						case mutMathBesselApprox:
+						{
+							// J₀(r) ≈ cos(r)/sqrt(r) — P1=frequency
+							double freq = (mut.mathP1 != 0.0) ? mut.mathP1 : 1.0;
+							double r = sqrt(z.x*z.x + z.y*z.y + z.z*z.z);
+							if (r > 1e-21)
+							{
+								double j0 = cos(freq * r) / sqrt(max(r, 1e-21));
+								mathZ.x = z.x * j0;
+								mathZ.y = z.y * j0;
+								mathZ.z = z.z * j0;
+								aux.DE = aux.DE * fabs(j0) + 1.0;
+							}
+							break;
+						}
+						case mutMathLambertW:
+						{
+							// z * exp(z) + c — P1=amplitude
+							double amp = (mut.mathP1 != 0.0) ? mut.mathP1 : 1.0;
+							double r = sqrt(z.x*z.x + z.y*z.y + z.z*z.z);
+							double er = exp(min(r, 20.0));
+							mathZ.x = amp * z.x * er;
+							mathZ.y = amp * z.y * er;
+							mathZ.z = amp * z.z * er;
+							aux.DE = aux.DE * amp * er * (1.0 + r) + 1.0;
+							break;
+						}
+						case mutMathErrorFunction:
+						{
+							// erf(z) ≈ tanh(sqrt(π)*z) — fast approximation
+							double scale = (mut.mathP1 != 0.0) ? mut.mathP1 : 1.0;
+							double sqrtPi = 1.7724538509;
+							mathZ.x = scale * tanh(sqrtPi * z.x);
+							mathZ.y = scale * tanh(sqrtPi * z.y);
+							mathZ.z = scale * tanh(sqrtPi * z.z);
+							double r = sqrt(z.x*z.x + z.y*z.y + z.z*z.z);
+							double erfDeriv = 2.0 / sqrtPi * exp(-r*r);
+							aux.DE = aux.DE * scale * erfDeriv + 1.0;
+							break;
+						}
 						default: break;
 					}
 					if (mut.mathMix < 1.0)
