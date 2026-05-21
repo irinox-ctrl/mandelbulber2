@@ -257,7 +257,12 @@ enum enumMutationMathType
 	mutMathDualQuaternion = 30,     // q1 * z * q2 (two quaternion multiplication)
 	mutMathOctonionPower = 31,      // o^p in octonion (8D→3D projection)
 	mutMathQuaternionMobius = 32,   // (az+b)/(cz+d) quaternion Möbius
-	mutMathSplitQuaternion = 33     // split quaternion (i²=+1, hyperbolic)
+	mutMathSplitQuaternion = 33,    // split quaternion (i²=+1, hyperbolic)
+	// v7.3 — Familie 3 extra Kleinian math
+	mutMathFordCircles = 34,        // z += 1/(n²·z) circle packing
+	mutMathApollonianNet = 35,      // inversie in 4 bollen, nearest
+	mutMathConformalWedge = 36,     // z^α sector mapping
+	mutMathCircleInvChain = 37      // sequential circle inversions
 };
 
 // v7.3 — Familie 10 DE/rendering tweaks

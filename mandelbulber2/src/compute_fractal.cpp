@@ -1209,8 +1209,6 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 						}
 						case mutMathSplitQuaternion:
 						{
-							// Split quaternion: i²=+1 — z² in split algebra
-							// P1=power
 							double p = (mut.mathP1 != 0.0) ? mut.mathP1 : 2.0;
 							double r = sqrt(fabs(z.x*z.x + z.y*z.y - z.z*z.z));
 							if (r > 1e-21)
@@ -1222,6 +1220,95 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 								mathZ.y = rp * cosh(theta * p) * sin(phi * p);
 								mathZ.z = rp * sinh(theta * p);
 								aux.DE = aux.DE * p * pow(max(r, 1e-21), p - 1.0) + 1.0;
+							}
+							break;
+						}
+						case mutMathFordCircles:
+						{
+							// z += sum(1/(n²·z)) for n=1..N — P1=N (default 3)
+							int N = (mut.mathP1 > 0.5) ? (int)mut.mathP1 : 3;
+							double r2 = z.x*z.x + z.y*z.y + z.z*z.z;
+							if (r2 > 1e-21)
+							{
+								for (int n = 1; n <= N; n++)
+								{
+									double nn = (double)(n * n);
+									double factor = 1.0 / (nn * r2);
+									mathZ.x = z.x + z.x * factor;
+									mathZ.y = z.y + z.y * factor;
+									mathZ.z = z.z + z.z * factor;
+									aux.DE *= (1.0 + factor);
+								}
+							}
+							break;
+						}
+						case mutMathApollonianNet:
+						{
+							// Inversie in 4 bollen, kies dichtstbijzijnde
+							// P1-P4 = radii, centers op tetraeder vertices
+							double rad = (mut.mathP1 > 0.0) ? mut.mathP1 : 1.0;
+							CVector4 centers[4];
+							centers[0] = CVector4(1, 1, 1, 0);
+							centers[1] = CVector4(1, -1, -1, 0);
+							centers[2] = CVector4(-1, 1, -1, 0);
+							centers[3] = CVector4(-1, -1, 1, 0);
+							double minDist = 1e20;
+							int closest = 0;
+							for (int s = 0; s < 4; s++)
+							{
+								CVector4 diff = z - centers[s];
+								double d = diff.Dot(diff);
+								if (d < minDist) { minDist = d; closest = s; }
+							}
+							if (minDist > 1e-21)
+							{
+								double r2 = rad * rad;
+								CVector4 diff = z - centers[closest];
+								double factor = r2 / minDist;
+								mathZ = centers[closest] + diff * factor;
+								aux.DE *= factor;
+							}
+							break;
+						}
+						case mutMathConformalWedge:
+						{
+							// z^α — P1=α (sector angle mapping)
+							double alpha = (mut.mathP1 != 0.0) ? mut.mathP1 : 2.0;
+							double r = sqrt(z.x*z.x + z.y*z.y + z.z*z.z);
+							if (r > 1e-21)
+							{
+								double theta = acos(z.z / r);
+								double phi = atan2(z.y, z.x);
+								double rp = pow(r, alpha);
+								mathZ.x = rp * sin(theta * alpha) * cos(phi * alpha);
+								mathZ.y = rp * sin(theta * alpha) * sin(phi * alpha);
+								mathZ.z = rp * cos(theta * alpha);
+								aux.DE = aux.DE * alpha * pow(r, alpha - 1.0) + 1.0;
+							}
+							break;
+						}
+						case mutMathCircleInvChain:
+						{
+							// Sequential circle inversions: 3 circles
+							// P1=r1, P2=r2, P3=r3, P4=spacing
+							double r1 = (mut.mathP1 > 0.0) ? mut.mathP1 : 1.0;
+							double r2c = (mut.mathP2 > 0.0) ? mut.mathP2 : 0.8;
+							double r3 = (mut.mathP3 > 0.0) ? mut.mathP3 : 0.6;
+							double spacing = (mut.mathP4 != 0.0) ? mut.mathP4 : 2.0;
+							double radii[3] = {r1, r2c, r3};
+							double offsets[3] = {-spacing, 0.0, spacing};
+							for (int c = 0; c < 3; c++)
+							{
+								double dx = z.x - offsets[c];
+								double dist2 = dx*dx + z.y*z.y + z.z*z.z;
+								if (dist2 > 1e-21 && dist2 < radii[c] * radii[c])
+								{
+									double factor = (radii[c] * radii[c]) / dist2;
+									mathZ.x = offsets[c] + dx * factor;
+									mathZ.y = z.y * factor;
+									mathZ.z = z.z * factor;
+									aux.DE *= factor;
+								}
 							}
 							break;
 						}

@@ -1353,6 +1353,88 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 						}
 						break;
 					}
+					case 34: // FordCircles
+					{
+						int N = (mut->mathP1 > 0.5f) ? (int)mut->mathP1 : 3;
+						float r2 = z.x*z.x + z.y*z.y + z.z*z.z;
+						if (r2 > 1e-21f)
+						{
+							for (int n = 1; n <= N; n++)
+							{
+								float nn = (float)(n * n);
+								float factor = 1.0f / (nn * r2);
+								mathZ.x = z.x + z.x * factor;
+								mathZ.y = z.y + z.y * factor;
+								mathZ.z = z.z + z.z * factor;
+								aux.DE *= (1.0f + factor);
+							}
+						}
+						break;
+					}
+					case 35: // ApollonianNet
+					{
+						float rad = (mut->mathP1 > 0.0f) ? mut->mathP1 : 1.0f;
+						float4 centers[4];
+						centers[0] = (float4)(1.0f, 1.0f, 1.0f, 0.0f);
+						centers[1] = (float4)(1.0f, -1.0f, -1.0f, 0.0f);
+						centers[2] = (float4)(-1.0f, 1.0f, -1.0f, 0.0f);
+						centers[3] = (float4)(-1.0f, -1.0f, 1.0f, 0.0f);
+						float minDist = 1e20f; int closest = 0;
+						for (int s = 0; s < 4; s++)
+						{
+							float4 diff = z - centers[s];
+							float d = dot(diff, diff);
+							if (d < minDist) { minDist = d; closest = s; }
+						}
+						if (minDist > 1e-21f)
+						{
+							float r2 = rad * rad;
+							float4 diff = z - centers[closest];
+							float factor = r2 / minDist;
+							mathZ = centers[closest] + diff * factor;
+							aux.DE *= factor;
+						}
+						break;
+					}
+					case 36: // ConformalWedge
+					{
+						float alpha = (mut->mathP1 != 0.0f) ? mut->mathP1 : 2.0f;
+						float r = native_sqrt(z.x*z.x + z.y*z.y + z.z*z.z);
+						if (r > 1e-21f)
+						{
+							float theta = acos(z.z / r);
+							float phi = atan2(z.y, z.x);
+							float rp = native_powr(r, alpha);
+							mathZ.x = rp * native_sin(theta * alpha) * native_cos(phi * alpha);
+							mathZ.y = rp * native_sin(theta * alpha) * native_sin(phi * alpha);
+							mathZ.z = rp * native_cos(theta * alpha);
+							aux.DE = aux.DE * alpha * native_powr(r, alpha - 1.0f) + 1.0f;
+						}
+						break;
+					}
+					case 37: // CircleInvChain
+					{
+						float r1 = (mut->mathP1 > 0.0f) ? mut->mathP1 : 1.0f;
+						float r2c = (mut->mathP2 > 0.0f) ? mut->mathP2 : 0.8f;
+						float r3 = (mut->mathP3 > 0.0f) ? mut->mathP3 : 0.6f;
+						float spacing = (mut->mathP4 != 0.0f) ? mut->mathP4 : 2.0f;
+						float radii[3]; radii[0] = r1; radii[1] = r2c; radii[2] = r3;
+						float offsets[3]; offsets[0] = -spacing; offsets[1] = 0.0f; offsets[2] = spacing;
+						for (int c = 0; c < 3; c++)
+						{
+							float dx = z.x - offsets[c];
+							float dist2 = dx*dx + z.y*z.y + z.z*z.z;
+							if (dist2 > 1e-21f && dist2 < radii[c] * radii[c])
+							{
+								float factor = (radii[c] * radii[c]) / dist2;
+								mathZ.x = offsets[c] + dx * factor;
+								mathZ.y = z.y * factor;
+								mathZ.z = z.z * factor;
+								aux.DE *= factor;
+							}
+						}
+						break;
+					}
 				}
 				if (mut->mathMix < 1.0f)
 				{
