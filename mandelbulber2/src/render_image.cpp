@@ -35,7 +35,9 @@
 #include "render_image.hpp"
 
 #include <algorithm>
+#include <cmath>
 #include <memory>
+#include <vector>
 
 #include "ao_modes.h"
 #include "cast.hpp"
@@ -314,6 +316,142 @@ void cRenderer::RenderSSAO()
 
 void cRenderer::RenderDOF()
 {
+	double focusDist = params->DOFFocus;
+	double radius = params->DOFRadius;
+	double maxRadius = params->DOFMaxRadius;
+	double blurOpacity = params->DOFBlurOpacity;
+	int numberOfPasses = params->DOFNumberOfPasses;
+
+	// Auto-DOF: analyze z-buffer to compute optimal parameters
+	if (params->DOFAutoFocus)
+	{
+		const quint64 w = image->GetWidth();
+		const quint64 h = image->GetHeight();
+
+		// Collect all valid depth samples from z-buffer
+		std::vector<double> depths;
+		depths.reserve(w * h / 4); // typically ~25% of pixels have valid depth
+
+		for (quint64 y = 0; y < h; y += 2) // sample every 2nd pixel for speed
+		{
+			for (quint64 x = 0; x < w; x += 2)
+			{
+				double z = image->GetPixelZBuffer(x, y);
+				if (z > 0.0 && z < 1e10) depths.push_back(z);
+			}
+		}
+
+		if (!depths.empty())
+		{
+			std::sort(depths.begin(), depths.end());
+
+			double minDepth = depths.front();
+			double maxDepth = depths.back();
+			double medianDepth = depths[depths.size() / 2];
+
+			// Compute focus distance based on mode
+			switch (params->DOFAutoFocusMode)
+			{
+				case 0: // Center — focus on center of image
+				{
+					int cx = int(w / 2);
+					int cy = int(h / 2);
+					// 5x5 sample around center for robustness
+					std::vector<double> centerSamples;
+					for (int dy = -2; dy <= 2; dy++)
+					{
+						for (int dx = -2; dx <= 2; dx++)
+						{
+							int sx = cx + dx;
+							int sy = cy + dy;
+							if (sx >= 0 && sx < int(w) && sy >= 0 && sy < int(h))
+							{
+								double z = image->GetPixelZBuffer(quint64(sx), quint64(sy));
+								if (z > 0.0 && z < 1e10) centerSamples.push_back(z);
+							}
+						}
+					}
+					if (!centerSamples.empty())
+					{
+						std::sort(centerSamples.begin(), centerSamples.end());
+						focusDist = centerSamples[centerSamples.size() / 2];
+					}
+					else
+					{
+						focusDist = medianDepth;
+					}
+					break;
+				}
+				case 1: // Median — focus at median depth of entire scene
+				{
+					focusDist = medianDepth;
+					break;
+				}
+				case 2: // Histogram peak — focus at most common depth
+				{
+					const int numBins = 64;
+					double logMin = log(minDepth);
+					double logMax = log(maxDepth);
+					double binWidth = (logMax - logMin) / numBins;
+					if (binWidth < 1e-15) binWidth = 1e-15;
+
+					std::vector<int> histogram(numBins, 0);
+					for (double d : depths)
+					{
+						int bin = int((log(d) - logMin) / binWidth);
+						if (bin >= numBins) bin = numBins - 1;
+						if (bin < 0) bin = 0;
+						histogram[bin]++;
+					}
+
+					int peakBin = 0;
+					int peakCount = 0;
+					for (int i = 0; i < numBins; i++)
+					{
+						if (histogram[i] > peakCount)
+						{
+							peakCount = histogram[i];
+							peakBin = i;
+						}
+					}
+					focusDist = exp(logMin + (peakBin + 0.5) * binWidth);
+					break;
+				}
+				case 3: // Closest object — focus on nearest surface
+				{
+					// Use 5th percentile to avoid single outlier pixels
+					size_t idx = depths.size() / 20;
+					focusDist = depths[idx];
+					break;
+				}
+			}
+
+			// Apply focus bias
+			focusDist += params->autoDofFocusBias * focusDist * 0.01;
+			if (focusDist < 1e-10) focusDist = 1e-10;
+
+			// Auto-compute radius from scene depth range
+			// The idea: wider depth range → more blur needed
+			double depthRange = maxDepth - minDepth;
+			if (depthRange < 1e-10) depthRange = 1e-10;
+			double depthRatio = depthRange / focusDist;
+			// Scale: depthRatio of 1.0 → radius ~10, depthRatio of 10 → radius ~30
+			double autoRadius = 5.0 + 15.0 * std::min(depthRatio, 5.0) / 5.0;
+			radius = autoRadius * params->autoDofRadiusScale;
+
+			// Scale other params
+			maxRadius *= params->autoDofMaxRadiusScale;
+			blurOpacity *= params->autoDofBlurOpacityScale;
+
+			WriteLog(QString("Auto-DOF: mode=%1 focus=%2 radius=%3 depthRange=[%4,%5]")
+				.arg(params->DOFAutoFocusMode)
+				.arg(focusDist)
+				.arg(radius)
+				.arg(minDepth)
+				.arg(maxDepth), 2);
+		}
+	}
+
 	cPostRenderingDOF dof(image);
 	connect(&dof, SIGNAL(updateProgressAndStatus(const QString &, const QString &, double)), this,
 		SIGNAL(updateProgressAndStatus(const QString &, const QString &, double)));
@@ -325,20 +463,20 @@ void cRenderer::RenderDOF()
 		cRegion<int> region;
 		region = data->stereo.GetRegion(
 			CVector2<int>(image->GetWidth(), image->GetHeight()), cStereo::eyeLeft);
-		dof.Render(region, params->DOFRadius * (region.width + region.height) / 2000.0,
-			params->DOFFocus, params->DOFNumberOfPasses, params->DOFBlurOpacity, params->DOFMaxRadius,
+		dof.Render(region, radius * (region.width + region.height) / 2000.0,
+			focusDist, numberOfPasses, blurOpacity, maxRadius,
 			data->stopRequest);
 		region = data->stereo.GetRegion(
 			CVector2<int>(image->GetWidth(), image->GetHeight()), cStereo::eyeRight);
-		dof.Render(region, params->DOFRadius * (region.width + region.height) / 2000.0,
-			params->DOFFocus, params->DOFNumberOfPasses, params->DOFBlurOpacity, params->DOFMaxRadius,
+		dof.Render(region, radius * (region.width + region.height) / 2000.0,
+			focusDist, numberOfPasses, blurOpacity, maxRadius,
 			data->stopRequest);
 	}
 	else
 	{
 		dof.Render(data->screenRegion,
-			params->DOFRadius * (image->GetWidth() + image->GetHeight()) / 2000.0, params->DOFFocus,
-			params->DOFNumberOfPasses, params->DOFBlurOpacity, params->DOFMaxRadius, data->stopRequest);
+			radius * (image->GetWidth() + image->GetHeight()) / 2000.0, focusDist,
+			numberOfPasses, blurOpacity, maxRadius, data->stopRequest);
 	}
 }
 

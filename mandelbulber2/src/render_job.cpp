@@ -35,6 +35,8 @@
 #include "render_job.hpp"
 
 #include <algorithm>
+#include <cmath>
+#include <vector>
 
 #include <QWidget>
 
@@ -967,6 +969,89 @@ void cRenderJob::RenderDOFWithOpenCl(std::shared_ptr<sParamRender> params, bool 
 	{
 		if (params->DOFEnabled && !params->DOFMonteCarlo)
 		{
+			// Auto-DOF: compute optimal parameters from z-buffer before GPU DOF
+			if (params->DOFAutoFocus)
+			{
+				const quint64 w = image->GetWidth();
+				const quint64 h = image->GetHeight();
+				std::vector<double> depths;
+				depths.reserve(w * h / 4);
+				for (quint64 y = 0; y < h; y += 2)
+				{
+					for (quint64 x = 0; x < w; x += 2)
+					{
+						double z = image->GetPixelZBuffer(x, y);
+						if (z > 0.0 && z < 1e10) depths.push_back(z);
+					}
+				}
+				if (!depths.empty())
+				{
+					std::sort(depths.begin(), depths.end());
+					double minDepth = depths.front();
+					double maxDepth = depths.back();
+					double medianDepth = depths[depths.size() / 2];
+
+					switch (params->DOFAutoFocusMode)
+					{
+						case 0: // Center
+						{
+							int cx = int(w / 2), cy = int(h / 2);
+							std::vector<double> cs;
+							for (int dy = -2; dy <= 2; dy++)
+								for (int dx = -2; dx <= 2; dx++)
+								{
+									int sx = cx + dx, sy = cy + dy;
+									if (sx >= 0 && sx < int(w) && sy >= 0 && sy < int(h))
+									{
+										double z = image->GetPixelZBuffer(quint64(sx), quint64(sy));
+										if (z > 0.0 && z < 1e10) cs.push_back(z);
+									}
+								}
+							if (!cs.empty())
+							{
+								std::sort(cs.begin(), cs.end());
+								params->DOFFocus = cs[cs.size() / 2];
+							}
+							else params->DOFFocus = medianDepth;
+							break;
+						}
+						case 1: params->DOFFocus = medianDepth; break;
+						case 2: // Histogram peak
+						{
+							const int nb = 64;
+							double lMin = log(minDepth), lMax = log(maxDepth);
+							double bw = (lMax - lMin) / nb;
+							if (bw < 1e-15) bw = 1e-15;
+							std::vector<int> hist(nb, 0);
+							for (double d : depths)
+							{
+								int b = int((log(d) - lMin) / bw);
+								if (b >= nb) b = nb - 1;
+								if (b < 0) b = 0;
+								hist[b]++;
+							}
+							int peak = 0, pc = 0;
+							for (int i = 0; i < nb; i++) if (hist[i] > pc) { pc = hist[i]; peak = i; }
+							params->DOFFocus = exp(lMin + (peak + 0.5) * bw);
+							break;
+						}
+						case 3: params->DOFFocus = depths[depths.size() / 20]; break;
+					}
+
+					params->DOFFocus += params->autoDofFocusBias * params->DOFFocus * 0.01;
+					if (params->DOFFocus < 1e-10) params->DOFFocus = 1e-10;
+
+					double depthRange = maxDepth - minDepth;
+					if (depthRange < 1e-10) depthRange = 1e-10;
+					double depthRatio = depthRange / params->DOFFocus;
+					params->DOFRadius = (5.0 + 15.0 * std::min(depthRatio, 5.0) / 5.0) * params->autoDofRadiusScale;
+					params->DOFMaxRadius *= params->autoDofMaxRadiusScale;
+					params->DOFBlurOpacity *= params->autoDofBlurOpacityScale;
+
+					WriteLog(QString("GPU Auto-DOF: focus=%1 radius=%2").arg(params->DOFFocus).arg(params->DOFRadius), 2);
+				}
+			}
+
 			connect(gOpenCl->openclEngineRenderDOF, SIGNAL(updateImage()), this, SIGNAL(updateImage()));
 			connect(gOpenCl->openclEngineRenderDOF,
 				SIGNAL(updateProgressAndStatus(const QString &, const QString &, double)), this,

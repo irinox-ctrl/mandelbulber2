@@ -739,76 +739,115 @@ void cDockEffects::slotPressedButtonSetDOFByMouse()
 	renderedImageWidget->setClickMode(item);
 }
 
-// NIEUWE DIRECTE AUTO-FOCUS: Zet focus op centrum van beeld
-// Gebruikt 9x9 multi-sample analyse voor betrouwbaarheid
+// Auto-focus button: analyze z-buffer using selected mode and set optimal DOF parameters
 void cDockEffects::slotPressedButtonAutoFocusCenter()
 {
 	if (!gMainInterface || !gMainInterface->mainImage) return;
 
 	std::shared_ptr<cImage> image = gMainInterface->mainImage;
-	const quint64 width = image->GetWidth();
-	const quint64 height = image->GetHeight();
+	const quint64 w = image->GetWidth();
+	const quint64 h = image->GetHeight();
 
-	if (width == 0 || height == 0) return;
+	if (w == 0 || h == 0) return;
 
-	// Centrum van het beeld
-	const int centerX = int(width / 2);
-	const int centerY = int(height / 2);
+	// Read current auto-focus mode from UI
+	SynchronizeInterfaceWindow(this, params, qInterface::read);
+	int mode = params->Get<int>("DOF_auto_focus_mode");
 
-	WriteLog("DOF Auto-Focus Center: Starting 9x9 analysis at image center...", 2);
+	WriteLog(QString("DOF Auto-Focus: Analyzing z-buffer, mode=%1").arg(mode), 2);
 
-	// 9x9 multi-sample analyse
-	std::vector<double> depthSamples;
-	depthSamples.reserve(81);
-
-	const int sampleRadius = 4; // 9x9 area
-
-	for (int dy = -sampleRadius; dy <= sampleRadius; ++dy)
+	// Collect valid depth samples (every 2nd pixel for speed)
+	std::vector<double> depths;
+	depths.reserve(w * h / 4);
+	for (quint64 y = 0; y < h; y += 2)
 	{
-		for (int dx = -sampleRadius; dx <= sampleRadius; ++dx)
+		for (quint64 x = 0; x < w; x += 2)
 		{
-			int sampleX = centerX + dx;
-			int sampleY = centerY + dy;
+			double z = image->GetPixelZBuffer(x, y);
+			if (z > 0.0 && z < 1e10) depths.push_back(z);
+		}
+	}
 
-			// Bounds check
-			if (sampleX >= 0 && sampleX < int(width) && sampleY >= 0 && sampleY < int(height))
-			{
-				double sampleDepth = image->GetPixelZBuffer(quint64(sampleX), quint64(sampleY));
-				// Filter out infinity/invalid values
-				if (sampleDepth < 1e10 && sampleDepth > 0.0)
+	if (depths.empty())
+	{
+		WriteLog("DOF Auto-Focus: No valid depth samples found", 2);
+		return;
+	}
+
+	std::sort(depths.begin(), depths.end());
+	double minDepth = depths.front();
+	double maxDepth = depths.back();
+	double medianDepth = depths[depths.size() / 2];
+	double focusDist = medianDepth;
+
+	switch (mode)
+	{
+		case 0: // Center
+		{
+			int cx = int(w / 2), cy = int(h / 2);
+			std::vector<double> cs;
+			for (int dy = -4; dy <= 4; dy++)
+				for (int dx = -4; dx <= 4; dx++)
 				{
-					depthSamples.push_back(sampleDepth);
+					int sx = cx + dx, sy = cy + dy;
+					if (sx >= 0 && sx < int(w) && sy >= 0 && sy < int(h))
+					{
+						double z = image->GetPixelZBuffer(quint64(sx), quint64(sy));
+						if (z > 0.0 && z < 1e10) cs.push_back(z);
+					}
 				}
+			if (!cs.empty())
+			{
+				std::sort(cs.begin(), cs.end());
+				focusDist = cs[cs.size() / 2];
 			}
+			break;
 		}
+		case 1: // Median
+			focusDist = medianDepth;
+			break;
+		case 2: // Histogram peak
+		{
+			const int nb = 64;
+			double logMin = log(minDepth), logMax = log(maxDepth);
+			double bw = (logMax - logMin) / nb;
+			if (bw < 1e-15) bw = 1e-15;
+			std::vector<int> hist(nb, 0);
+			for (double d : depths)
+			{
+				int b = int((log(d) - logMin) / bw);
+				if (b >= nb) b = nb - 1;
+				if (b < 0) b = 0;
+				hist[b]++;
+			}
+			int peak = 0, pc = 0;
+			for (int i = 0; i < nb; i++) if (hist[i] > pc) { pc = hist[i]; peak = i; }
+			focusDist = exp(logMin + (peak + 0.5) * bw);
+			break;
+		}
+		case 3: // Closest object (5th percentile)
+			focusDist = depths[depths.size() / 20];
+			break;
 	}
 
-	double DOF;
-	if (!depthSamples.empty())
-	{
-		// Use median for robustness
-		std::sort(depthSamples.begin(), depthSamples.end());
-		size_t medianIndex = depthSamples.size() / 2;
-		if (depthSamples.size() % 2 == 0 && depthSamples.size() > 1)
-		{
-			DOF = (depthSamples[medianIndex - 1] + depthSamples[medianIndex]) / 2.0;
-		}
-		else
-		{
-			DOF = depthSamples[medianIndex];
-		}
-		WriteLog(QString("DOF Auto-Focus Center: Median from %1 samples = %2")
-			.arg(depthSamples.size()).arg(DOF), 2);
-	}
-	else
-	{
-		// Fallback: use center pixel
-		DOF = image->GetPixelZBuffer(quint64(centerX), quint64(centerY));
-		WriteLog(QString("DOF Auto-Focus Center: No valid samples, using center pixel = %1").arg(DOF), 2);
-	}
+	// Apply focus bias
+	double bias = params->Get<double>("auto_dof_focus_bias");
+	focusDist += bias * focusDist * 0.01;
+	if (focusDist < 1e-10) focusDist = 1e-10;
 
-	// Set parameter
-	params->Set("DOF_focus", DOF);
+	// Auto-compute radius from depth range
+	double depthRange = maxDepth - minDepth;
+	if (depthRange < 1e-10) depthRange = 1e-10;
+	double depthRatio = depthRange / focusDist;
+	double radiusScale = params->Get<double>("auto_dof_radius_scale");
+	double autoRadius = (5.0 + 15.0 * std::min(depthRatio, 5.0) / 5.0) * radiusScale;
+
+	WriteLog(QString("DOF Auto-Focus: focus=%1 autoRadius=%2 depth=[%3,%4]")
+		.arg(focusDist).arg(autoRadius).arg(minDepth).arg(maxDepth), 2);
+
+	// Set parameters
+	params->Set("DOF_focus", focusDist);
+	params->Set("DOF_radius", autoRadius);
 
 	// Update UI
 	SynchronizeInterfaceWindow(this, params, qInterface::write);

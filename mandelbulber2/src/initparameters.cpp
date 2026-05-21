@@ -439,13 +439,13 @@ void InitParams(std::shared_ptr<cParameterContainer> par)
 	par->addParam("DOF_HDR", false, morphLinear, paramStandard);
 	par->addParam("DOF_number_of_passes", 1, 1, 10, morphLinear, paramStandard);
 	par->addParam("DOF_blur_opacity", 4.0, 0.01, 10.0, morphLinear, paramStandard);
-	par->addParam("auto_dof_focus_bias", 0.0, -500.0, 500.0, morphLinear, paramStandard);
+	par->addParam("auto_dof_focus_bias", 0.0, -100.0, 100.0, morphLinear, paramStandard);
 	par->addParam("auto_dof_radius_scale", 1.0, 0.1, 5.0, morphLinear, paramStandard);
 	par->addParam("auto_dof_max_radius_scale", 1.0, 0.1, 5.0, morphLinear, paramStandard);
 	par->addParam("auto_dof_blur_opacity_scale", 1.0, 0.1, 5.0, morphLinear, paramStandard);
 	par->addParam("DOF_auto_focus", false, morphLinear, paramStandard);
 	par->addParam("DOF_auto_focus_mode", 0, 0, 3, morphLinear, paramStandard);
-	par->addParam("DOF_blur_kernel", 0, 0, 4, morphLinear, paramStandard);
+	par->addParam("DOF_blur_kernel", 0, 0, 5, morphLinear, paramStandard);
 	par->addParam("DOF_monte_carlo", false, morphLinear, paramStandard);
 	par->addParam("DOF_samples", 100, morphLinear, paramStandard);
 	par->addParam("DOF_min_samples", 10, morphLinear, paramStandard);
