@@ -267,6 +267,25 @@ struct sFractalMandalay
 	// #7 Quaternion Pre-Rotation
 	bool quatRotEnabled;
 	CVector4 quatRot; // xyz = imaginary, w = real
+
+	// #8 Ellipsoïde Fold (non-spherical fold boundary)
+	bool ellipsoidFoldEnabled;
+	CVector4 ellipsoidAxes; // xyz = semi-axes a,b,c
+	double ellipsoidMinR;
+
+	// #9 Torus Fold
+	bool torusFoldEnabled;
+	double torusMajorR; // R: distance center to tube center
+	double torusMinorR; // r: tube radius
+	double torusFoldStrength;
+
+	// #10 Logarithmic Spherical Fold
+	bool logSphericalFoldEnabled;
+	double logSphericalMinR;
+
+	// #11 Hyperbolische Box Fold
+	bool hyperBoxFoldEnabled;
+	double hyperBoxFoldK; // sinh/cosh steepness
 };
 
 struct sFractalDonut

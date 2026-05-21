@@ -205,6 +205,79 @@ REAL4 MandalayBoxV2Iteration(REAL4 z, __constant sFractalCl *fractal, sExtendedA
 		z.z += fractal->mandalay.zShearStrength * r_xy;
 	}
 
+	// === #8 Ellipsoïde Fold ===
+	if (fractal->mandalay.ellipsoidFoldEnabled)
+	{
+		REAL ax = fractal->mandalay.ellipsoidAxes.x;
+		REAL ay = fractal->mandalay.ellipsoidAxes.y;
+		REAL az = fractal->mandalay.ellipsoidAxes.z;
+		if (ax < 1e-21f) ax = 1.0f;
+		if (ay < 1e-21f) ay = 1.0f;
+		if (az < 1e-21f) az = 1.0f;
+		REAL rr_ell = (z.x / ax) * (z.x / ax)
+			+ (z.y / ay) * (z.y / ay) + (z.z / az) * (z.z / az);
+		REAL minR2 = fractal->mandalay.ellipsoidMinR * fractal->mandalay.ellipsoidMinR;
+		if (rr_ell < minR2 && minR2 > 1e-21f)
+		{
+			REAL factor = 1.0f / minR2;
+			z *= factor;
+			aux->DE *= factor;
+		}
+		else if (rr_ell < 1.0f)
+		{
+			REAL factor = 1.0f / rr_ell;
+			z *= factor;
+			aux->DE *= factor;
+		}
+	}
+
+	// === #9 Torus Fold ===
+	if (fractal->mandalay.torusFoldEnabled)
+	{
+		REAL R = fractal->mandalay.torusMajorR;
+		REAL r_minor = fractal->mandalay.torusMinorR;
+		REAL rxy = native_sqrt(z.x * z.x + z.y * z.y);
+		REAL dTorus = native_sqrt((rxy - R) * (rxy - R) + z.z * z.z);
+		if (dTorus < r_minor && dTorus > 1e-21f)
+		{
+			REAL factor = r_minor / dTorus * fractal->mandalay.torusFoldStrength;
+			REAL dx = rxy - R;
+			if (rxy > 1e-21f)
+			{
+				z.x += dx * (factor - 1.0f) * z.x / rxy;
+				z.y += dx * (factor - 1.0f) * z.y / rxy;
+			}
+			z.z *= factor;
+			aux->DE *= fabs(factor);
+		}
+	}
+
+	// === #10 Logarithmic Spherical Fold ===
+	if (fractal->mandalay.logSphericalFoldEnabled)
+	{
+		REAL rr = dot(z, z);
+		REAL minR = fractal->mandalay.logSphericalMinR;
+		if (rr > 1e-21f && rr < 1.0f)
+		{
+			REAL logFactor = native_log(rr) / native_log(max(minR * minR, 1e-21f));
+			if (logFactor > 1e-21f)
+			{
+				z *= logFactor;
+				aux->DE *= logFactor;
+			}
+		}
+	}
+
+	// === #11 Hyperbolische Box Fold ===
+	if (fractal->mandalay.hyperBoxFoldEnabled)
+	{
+		REAL k = fractal->mandalay.hyperBoxFoldK;
+		z.x = sinh(k * z.x) / max(k, 1e-21f);
+		z.y = sinh(k * z.y) / max(k, 1e-21f);
+		z.z = sinh(k * z.z) / max(k, 1e-21f);
+		aux->DE *= cosh(k * z.x);
+	}
+
 	// spherical fold
 	REAL useScale = 1.0f;
 	if (aux->i >= fractal->transformCommon.startIterationsS

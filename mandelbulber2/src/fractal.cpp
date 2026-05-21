@@ -141,6 +141,17 @@ sFractal::sFractal(const std::shared_ptr<cParameterContainer> container)
 	mandalay.gVary = container->Get<double>("mandalay_g_vary");
 	mandalay.quatRotEnabled = container->Get<bool>("mandalay_quat_rot_enabled");
 	mandalay.quatRot = container->Get<CVector4>("mandalay_quat_rot");
+	mandalay.ellipsoidFoldEnabled = container->Get<bool>("mandalay_ellipsoid_fold_enabled");
+	mandalay.ellipsoidAxes = container->Get<CVector4>("mandalay_ellipsoid_axes");
+	mandalay.ellipsoidMinR = container->Get<double>("mandalay_ellipsoid_min_r");
+	mandalay.torusFoldEnabled = container->Get<bool>("mandalay_torus_fold_enabled");
+	mandalay.torusMajorR = container->Get<double>("mandalay_torus_major_r");
+	mandalay.torusMinorR = container->Get<double>("mandalay_torus_minor_r");
+	mandalay.torusFoldStrength = container->Get<double>("mandalay_torus_fold_strength");
+	mandalay.logSphericalFoldEnabled = container->Get<bool>("mandalay_log_spherical_fold_enabled");
+	mandalay.logSphericalMinR = container->Get<double>("mandalay_log_spherical_min_r");
+	mandalay.hyperBoxFoldEnabled = container->Get<bool>("mandalay_hyper_box_fold_enabled");
+	mandalay.hyperBoxFoldK = container->Get<double>("mandalay_hyper_box_fold_k");
 
 	donut.ringRadius = container->Get<double>("donut_ring_radius");
 	donut.ringThickness = container->Get<double>("donut_ring_thickness");

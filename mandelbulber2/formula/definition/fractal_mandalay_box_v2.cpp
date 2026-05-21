@@ -192,6 +192,80 @@ void cFractalMandalayBoxV2::FormulaCode(CVector4 &z, const sFractal *fractal, sE
 		z.z += fractal->mandalay.zShearStrength * r_xy;
 	}
 
+	// === #8 Ellipsoïde Fold ===
+	if (fractal->mandalay.ellipsoidFoldEnabled)
+	{
+		double ax = fractal->mandalay.ellipsoidAxes.x;
+		double ay = fractal->mandalay.ellipsoidAxes.y;
+		double az = fractal->mandalay.ellipsoidAxes.z;
+		if (ax < 1e-21) ax = 1.0;
+		if (ay < 1e-21) ay = 1.0;
+		if (az < 1e-21) az = 1.0;
+		double rr_ell = (z.x / ax) * (z.x / ax)
+			+ (z.y / ay) * (z.y / ay) + (z.z / az) * (z.z / az);
+		double minR2 = fractal->mandalay.ellipsoidMinR * fractal->mandalay.ellipsoidMinR;
+		double maxScale = max(ax, max(ay, az));
+		if (rr_ell < minR2 && minR2 > 1e-21)
+		{
+			double factor = 1.0 / minR2;
+			z *= factor;
+			aux.DE *= factor;
+		}
+		else if (rr_ell < 1.0)
+		{
+			double factor = 1.0 / rr_ell;
+			z *= factor;
+			aux.DE *= factor;
+		}
+	}
+
+	// === #9 Torus Fold ===
+	if (fractal->mandalay.torusFoldEnabled)
+	{
+		double R = fractal->mandalay.torusMajorR;
+		double r_minor = fractal->mandalay.torusMinorR;
+		double rxy = sqrt(z.x * z.x + z.y * z.y);
+		double dTorus = sqrt((rxy - R) * (rxy - R) + z.z * z.z);
+		if (dTorus < r_minor && dTorus > 1e-21)
+		{
+			double factor = r_minor / dTorus * fractal->mandalay.torusFoldStrength;
+			double dx = rxy - R;
+			if (rxy > 1e-21)
+			{
+				z.x += dx * (factor - 1.0) * z.x / rxy;
+				z.y += dx * (factor - 1.0) * z.y / rxy;
+			}
+			z.z *= factor;
+			aux.DE *= fabs(factor);
+		}
+	}
+
+	// === #10 Logarithmic Spherical Fold ===
+	if (fractal->mandalay.logSphericalFoldEnabled)
+	{
+		double rr = z.Dot(z);
+		double minR = fractal->mandalay.logSphericalMinR;
+		if (rr > 1e-21 && rr < 1.0)
+		{
+			double logFactor = log(rr) / log(max(minR * minR, 1e-21));
+			if (logFactor > 1e-21)
+			{
+				z *= logFactor;
+				aux.DE *= logFactor;
+			}
+		}
+	}
+
+	// === #11 Hyperbolische Box Fold ===
+	if (fractal->mandalay.hyperBoxFoldEnabled)
+	{
+		double k = fractal->mandalay.hyperBoxFoldK;
+		z.x = sinh(k * z.x) / max(k, 1e-21);
+		z.y = sinh(k * z.y) / max(k, 1e-21);
+		z.z = sinh(k * z.z) / max(k, 1e-21);
+		aux.DE *= cosh(k * z.x);
+	}
+
 	// spherical fold
 	double useScale = 1.0;
 	if (aux.i >= fractal->transformCommon.startIterationsS

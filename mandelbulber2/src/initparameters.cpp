@@ -1405,6 +1405,25 @@ void InitFractalParams(std::shared_ptr<cParameterContainer> par)
 	par->addParam("mandalay_quat_rot_enabled", false, morphLinear, paramStandard);
 	par->addParam("mandalay_quat_rot", CVector4(0.0, 0.0, 0.0, 1.0), morphAkima, paramStandard);
 
+	// #8 Ellipsoïde Fold
+	par->addParam("mandalay_ellipsoid_fold_enabled", false, morphLinear, paramStandard);
+	par->addParam("mandalay_ellipsoid_axes", CVector4(1.0, 1.0, 1.0, 0.0), morphAkima, paramStandard);
+	par->addParam("mandalay_ellipsoid_min_r", 0.25, 0.0, 100.0, morphAkima, paramStandard);
+
+	// #9 Torus Fold
+	par->addParam("mandalay_torus_fold_enabled", false, morphLinear, paramStandard);
+	par->addParam("mandalay_torus_major_r", 1.0, 0.01, 100.0, morphAkima, paramStandard);
+	par->addParam("mandalay_torus_minor_r", 0.3, 0.01, 100.0, morphAkima, paramStandard);
+	par->addParam("mandalay_torus_fold_strength", 1.0, 0.0, 10.0, morphAkima, paramStandard);
+
+	// #10 Logarithmic Spherical Fold
+	par->addParam("mandalay_log_spherical_fold_enabled", false, morphLinear, paramStandard);
+	par->addParam("mandalay_log_spherical_min_r", 0.25, 0.001, 100.0, morphAkima, paramStandard);
+
+	// #11 Hyperbolische Box Fold
+	par->addParam("mandalay_hyper_box_fold_enabled", false, morphLinear, paramStandard);
+	par->addParam("mandalay_hyper_box_fold_k", 1.0, 0.01, 10.0, morphAkima, paramStandard);
+
 	// mandelbulbMulti
 	par->addParam("mandelbulbMulti_acos_or_asin", 0, morphNone, paramStandard, qslAcosAsin);
 	par->addParam("mandelbulbMulti_atan_or_atan2", 0, morphNone, paramStandard, qslAtanAtan2);

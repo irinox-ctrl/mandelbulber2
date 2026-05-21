@@ -277,6 +277,25 @@ typedef struct
 	// #7 Quaternion Pre-Rotation
 	cl_int quatRotEnabled;
 	cl_float4 quatRot;
+
+	// #8 Ellipsoïde Fold
+	cl_int ellipsoidFoldEnabled;
+	cl_float4 ellipsoidAxes;
+	cl_float ellipsoidMinR;
+
+	// #9 Torus Fold
+	cl_int torusFoldEnabled;
+	cl_float torusMajorR;
+	cl_float torusMinorR;
+	cl_float torusFoldStrength;
+
+	// #10 Logarithmic Spherical Fold
+	cl_int logSphericalFoldEnabled;
+	cl_float logSphericalMinR;
+
+	// #11 Hyperbolische Box Fold
+	cl_int hyperBoxFoldEnabled;
+	cl_float hyperBoxFoldK;
 } sFractalMandalayCI;
 
 typedef struct
@@ -1295,6 +1314,17 @@ inline sFractalMandalayCI clCopySFractalMandalayCI(const sFractalMandalay &sourc
 	target.gVary = source.gVary;
 	target.quatRotEnabled = source.quatRotEnabled;
 	target.quatRot = toClFloat4(source.quatRot);
+	target.ellipsoidFoldEnabled = source.ellipsoidFoldEnabled;
+	target.ellipsoidAxes = toClFloat4(source.ellipsoidAxes);
+	target.ellipsoidMinR = source.ellipsoidMinR;
+	target.torusFoldEnabled = source.torusFoldEnabled;
+	target.torusMajorR = source.torusMajorR;
+	target.torusMinorR = source.torusMinorR;
+	target.torusFoldStrength = source.torusFoldStrength;
+	target.logSphericalFoldEnabled = source.logSphericalFoldEnabled;
+	target.logSphericalMinR = source.logSphericalMinR;
+	target.hyperBoxFoldEnabled = source.hyperBoxFoldEnabled;
+	target.hyperBoxFoldK = source.hyperBoxFoldK;
 	return target;
 }
 

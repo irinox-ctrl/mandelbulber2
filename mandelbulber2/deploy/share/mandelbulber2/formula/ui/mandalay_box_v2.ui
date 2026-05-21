@@ -1937,6 +1937,166 @@
     </widget>
    </item>
 
+   <!-- =============== #8 Ellipsoïde Fold =============== -->
+   <item>
+    <widget class="QGroupBox" name="groupCheck_mandalay_ellipsoid_fold_enabled">
+     <property name="title">
+      <string>Ellipsoïde Fold</string>
+     </property>
+     <property name="checkable"><bool>true</bool></property>
+     <property name="checked"><bool>false</bool></property>
+     <layout class="QGridLayout">
+      <item row="0" column="0">
+       <widget class="QLabel"><property name="text"><string>Axis A (x):</string></property></widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="MyDoubleSpinBox" name="mandalay_ellipsoid_axes_x">
+        <property name="value"><double>1.000000000000000</double></property>
+        <property name="decimals"><number>6</number></property>
+        <property name="minimum"><double>0.010000000000000</double></property>
+        <property name="maximum"><double>100.000000000000000</double></property>
+        <property name="singleStep"><double>0.100000000000000</double></property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QLabel"><property name="text"><string>Axis B (y):</string></property></widget>
+      </item>
+      <item row="0" column="3">
+       <widget class="MyDoubleSpinBox" name="mandalay_ellipsoid_axes_y">
+        <property name="value"><double>1.000000000000000</double></property>
+        <property name="decimals"><number>6</number></property>
+        <property name="minimum"><double>0.010000000000000</double></property>
+        <property name="maximum"><double>100.000000000000000</double></property>
+        <property name="singleStep"><double>0.100000000000000</double></property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel"><property name="text"><string>Axis C (z):</string></property></widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="MyDoubleSpinBox" name="mandalay_ellipsoid_axes_z">
+        <property name="value"><double>1.000000000000000</double></property>
+        <property name="decimals"><number>6</number></property>
+        <property name="minimum"><double>0.010000000000000</double></property>
+        <property name="maximum"><double>100.000000000000000</double></property>
+        <property name="singleStep"><double>0.100000000000000</double></property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QLabel"><property name="text"><string>Min R:</string></property></widget>
+      </item>
+      <item row="1" column="3">
+       <widget class="MyDoubleSpinBox" name="mandalay_ellipsoid_min_r">
+        <property name="value"><double>0.250000000000000</double></property>
+        <property name="decimals"><number>6</number></property>
+        <property name="minimum"><double>0.000000000000000</double></property>
+        <property name="maximum"><double>100.000000000000000</double></property>
+        <property name="singleStep"><double>0.010000000000000</double></property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+
+   <!-- =============== #9 Torus Fold =============== -->
+   <item>
+    <widget class="QGroupBox" name="groupCheck_mandalay_torus_fold_enabled">
+     <property name="title">
+      <string>Torus Fold</string>
+     </property>
+     <property name="checkable"><bool>true</bool></property>
+     <property name="checked"><bool>false</bool></property>
+     <layout class="QGridLayout">
+      <item row="0" column="0">
+       <widget class="QLabel"><property name="text"><string>Major R:</string></property></widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="MyDoubleSpinBox" name="mandalay_torus_major_r">
+        <property name="value"><double>1.000000000000000</double></property>
+        <property name="decimals"><number>6</number></property>
+        <property name="minimum"><double>0.010000000000000</double></property>
+        <property name="maximum"><double>100.000000000000000</double></property>
+        <property name="singleStep"><double>0.100000000000000</double></property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QLabel"><property name="text"><string>Minor r:</string></property></widget>
+      </item>
+      <item row="0" column="3">
+       <widget class="MyDoubleSpinBox" name="mandalay_torus_minor_r">
+        <property name="value"><double>0.300000000000000</double></property>
+        <property name="decimals"><number>6</number></property>
+        <property name="minimum"><double>0.010000000000000</double></property>
+        <property name="maximum"><double>100.000000000000000</double></property>
+        <property name="singleStep"><double>0.010000000000000</double></property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel"><property name="text"><string>Strength:</string></property></widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="MyDoubleSpinBox" name="mandalay_torus_fold_strength">
+        <property name="value"><double>1.000000000000000</double></property>
+        <property name="decimals"><number>6</number></property>
+        <property name="minimum"><double>0.000000000000000</double></property>
+        <property name="maximum"><double>10.000000000000000</double></property>
+        <property name="singleStep"><double>0.100000000000000</double></property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+
+   <!-- =============== #10 Logarithmic Spherical Fold =============== -->
+   <item>
+    <widget class="QGroupBox" name="groupCheck_mandalay_log_spherical_fold_enabled">
+     <property name="title">
+      <string>Logarithmic Spherical Fold</string>
+     </property>
+     <property name="checkable"><bool>true</bool></property>
+     <property name="checked"><bool>false</bool></property>
+     <layout class="QGridLayout">
+      <item row="0" column="0">
+       <widget class="QLabel"><property name="text"><string>Min R:</string></property></widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="MyDoubleSpinBox" name="mandalay_log_spherical_min_r">
+        <property name="value"><double>0.250000000000000</double></property>
+        <property name="decimals"><number>6</number></property>
+        <property name="minimum"><double>0.001000000000000</double></property>
+        <property name="maximum"><double>100.000000000000000</double></property>
+        <property name="singleStep"><double>0.010000000000000</double></property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+
+   <!-- =============== #11 Hyperbolische Box Fold =============== -->
+   <item>
+    <widget class="QGroupBox" name="groupCheck_mandalay_hyper_box_fold_enabled">
+     <property name="title">
+      <string>Hyperbolische Box Fold</string>
+     </property>
+     <property name="checkable"><bool>true</bool></property>
+     <property name="checked"><bool>false</bool></property>
+     <layout class="QGridLayout">
+      <item row="0" column="0">
+       <widget class="QLabel"><property name="text"><string>Steepness (k):</string></property></widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="MyDoubleSpinBox" name="mandalay_hyper_box_fold_k">
+        <property name="value"><double>1.000000000000000</double></property>
+        <property name="decimals"><number>6</number></property>
+        <property name="minimum"><double>0.010000000000000</double></property>
+        <property name="maximum"><double>10.000000000000000</double></property>
+        <property name="singleStep"><double>0.100000000000000</double></property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+
    <item>
     <widget class="MyGroupBox" name="groupCheck_info">
      <property name="title">
