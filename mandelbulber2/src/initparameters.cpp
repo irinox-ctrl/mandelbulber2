@@ -143,16 +143,17 @@ void InitParams(std::shared_ptr<cParameterContainer> par)
 		par->addParam("formula_stop_iteration", i, 250, 0, 65536, morphAkima, paramStandard);
 
 		// Advanced weight system parameters
-		// Weight mode: 0=Static, 1=Iteration, 2=DE, 3=ZLength, 4=Conditional, 5=OrbitTrap, 6=Curve
-		par->addParam("weight_mode", i, 0, 0, 6, morphLinear, paramStandard);
+		// Weight mode: 0=Static, 1=Iteration, 2=DE, 3=ZLength, 4=Conditional, 5=OrbitTrap,
+		//              6=Curve, 7=TransformPassthrough, 8=DERatio, 9=Adaptive
+		par->addParam("weight_mode", i, 0, 0, 9, morphLinear, paramStandard);
 		par->addParam("weight_static", i, 1.0, 0.0, 1.0, morphAkima, paramStandard);
 		// Iteration-based weight
 		par->addParam("weight_iter_start", i, 0, 0, 65536, morphAkima, paramStandard);
 		par->addParam("weight_iter_end", i, 30, 0, 65536, morphAkima, paramStandard);
 		par->addParam("weight_start", i, 0.0, 0.0, 1.0, morphAkima, paramStandard);
 		par->addParam("weight_end", i, 1.0, 0.0, 1.0, morphAkima, paramStandard);
-		// Blend mode: 0=Linear, 1=Smooth, 2=Step
-		par->addParam("weight_blend_mode", i, 0, 0, 2, morphLinear, paramStandard);
+		// Blend mode: 0=Linear, 1=Smooth, 2=Step, 3=Multiply, 4=Power, 5=Min, 6=Max
+		par->addParam("weight_blend_mode", i, 0, 0, 6, morphLinear, paramStandard);
 		// DE-based weight
 		par->addParam("weight_de_base", i, 0.5, 0.0, 1.0, morphAkima, paramStandard);
 		par->addParam("weight_de_sensitivity", i, 1.0, 0.0, 100.0, morphAkima, paramStandard);
@@ -163,30 +164,36 @@ void InitParams(std::shared_ptr<cParameterContainer> par)
 		par->addParam("weight_zlength_base", i, 0.5, 0.0, 1.0, morphAkima, paramStandard);
 		par->addParam("weight_zlength_sens", i, 1.0, 0.0, 100.0, morphAkima, paramStandard);
 		par->addParam("weight_zlength_threshold", i, 2.0, 0.0, 1000.0, morphAkima, paramStandard);
-		// Z-Length mod type: 0=Linear, 1=Smooth, 2=Exponential, 3=Inverse, 4=Sigmoid
 		par->addParam("weight_zlength_mod_type", i, 0, 0, 4, morphLinear, paramStandard);
 		// Conditional weight
-		// Condition type: 0=DE_Threshold, 1=ZLength
-		par->addParam("weight_condition_type", i, 0, 0, 1, morphLinear, paramStandard);
+		// Condition type: 0=DE, 1=ZLength, 2=Dist (DIFS), 3=Iteration
+		par->addParam("weight_condition_type", i, 0, 0, 3, morphLinear, paramStandard);
 		par->addParam("weight_condition_threshold", i, 0.5, 0.0, 1000.0, morphAkima, paramStandard);
 		par->addParam("weight_true", i, 1.0, 0.0, 1.0, morphAkima, paramStandard);
 		par->addParam("weight_false", i, 0.0, 0.0, 1.0, morphAkima, paramStandard);
-		// Condition blend: 0=Step, 1=Linear
-		par->addParam("weight_condition_blend", i, 0, 0, 1, morphLinear, paramStandard);
+		// Condition blend: 0=Step, 1=Linear, 2=Smooth, 3=Multiply, 4=Power, 5=Min, 6=Max
+		par->addParam("weight_condition_blend", i, 0, 0, 6, morphLinear, paramStandard);
 		// OrbitTrap-based weight (mode 5)
 		par->addParam("weight_orbit_trap_base", i, 0.5, 0.0, 1.0, morphAkima, paramStandard);
 		par->addParam("weight_orbit_trap_sensitivity", i, 1.0, 0.0, 100.0, morphAkima, paramStandard);
 		par->addParam("weight_orbit_trap_threshold", i, 1.0, 0.0, 1000.0, morphAkima, paramStandard);
 		par->addParam("weight_orbit_trap_mod_type", i, 0, 0, 4, morphLinear, paramStandard);
-		// Curve-based weight (mode 6) — custom power curve
+		// Curve-based weight (mode 6)
 		par->addParam("weight_curve_base", i, 0.5, 0.0, 1.0, morphAkima, paramStandard);
 		par->addParam("weight_curve_sensitivity", i, 1.0, 0.0, 100.0, morphAkima, paramStandard);
 		par->addParam("weight_curve_power", i, 2.0, 0.01, 10.0, morphAkima, paramStandard);
 		par->addParam("weight_curve_mod_type", i, 0, 0, 4, morphLinear, paramStandard);
+		// DE Ratio weight (mode 8)
+		par->addParam("weight_de_ratio_scale", i, 1.0, 0.01, 100.0, morphAkima, paramStandard);
+		par->addParam("weight_de_ratio_offset", i, 1.0, 1e-15, 1000.0, morphAkima, paramStandard);
+		par->addParam("weight_de_ratio_mod_type", i, 0, 0, 4, morphLinear, paramStandard);
+		// Adaptive weight (mode 9)
+		par->addParam("weight_adaptive_strength", i, 1.0, 0.01, 10.0, morphAkima, paramStandard);
 		// Separate component weights
 		par->addParam("weight_separate_components", i, false, morphLinear, paramStandard);
 		par->addParam("weight_z_vector", i, 1.0, 0.0, 1.0, morphAkima, paramStandard);
 		par->addParam("weight_de_component", i, 1.0, 0.0, 1.0, morphAkima, paramStandard);
+		par->addParam("weight_dist_component", i, 1.0, 0.0, 1.0, morphAkima, paramStandard);
 		par->addParam("weight_color_component", i, 1.0, 0.0, 1.0, morphAkima, paramStandard);
 
 		par->addParam("julia_mode", i, false, morphLinear, paramStandard);

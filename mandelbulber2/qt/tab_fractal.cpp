@@ -449,12 +449,28 @@ void cTabFractal::UpdateWeightWidgetsVisibility(int mode, bool separateComponent
 	ui->label_weight_curve_mod_type->setVisible(showCurve);
 	ui->comboBox_weight_curve_mod_type->setVisible(showCurve);
 
+	// DE Ratio params (mode 8)
+	bool showDERatio = (mode == 8);
+	ui->label_weight_de_ratio_scale->setVisible(showDERatio);
+	ui->spinbox_weight_de_ratio_scale->setVisible(showDERatio);
+	ui->label_weight_de_ratio_offset->setVisible(showDERatio);
+	ui->spinbox_weight_de_ratio_offset->setVisible(showDERatio);
+	ui->label_weight_de_ratio_mod_type->setVisible(showDERatio);
+	ui->comboBox_weight_de_ratio_mod_type->setVisible(showDERatio);
+
+	// Adaptive params (mode 9)
+	bool showAdaptive = (mode == 9);
+	ui->label_weight_adaptive_strength->setVisible(showAdaptive);
+	ui->spinbox_weight_adaptive_strength->setVisible(showAdaptive);
+
 	// Separate components — always visible
 	// Sub-params only visible when checkbox is checked
 	ui->label_weight_z_vector->setVisible(separateComponents);
 	ui->spinbox_weight_z_vector->setVisible(separateComponents);
 	ui->label_weight_de_component->setVisible(separateComponents);
 	ui->spinbox_weight_de_component->setVisible(separateComponents);
+	ui->label_weight_dist_component->setVisible(separateComponents);
+	ui->spinbox_weight_dist_component->setVisible(separateComponents);
 	ui->label_weight_color_component->setVisible(separateComponents);
 	ui->spinbox_weight_color_component->setVisible(separateComponents);
 }

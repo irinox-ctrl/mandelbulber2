@@ -64,14 +64,21 @@ enum enumWeightMode
 	weightModeZLength = 3,
 	weightModeConditional = 4,
 	weightModeOrbitTrap = 5,
-	weightModeCurve = 6
+	weightModeCurve = 6,
+	weightModeTransformPassthrough = 7,
+	weightModeDERatio = 8,
+	weightModeAdaptive = 9
 };
 
 enum enumWeightBlendMode
 {
 	weightBlendLinear = 0,
 	weightBlendSmooth = 1,
-	weightBlendStep = 2
+	weightBlendStep = 2,
+	weightBlendMultiply = 3,
+	weightBlendPower = 4,
+	weightBlendMin = 5,
+	weightBlendMax = 6
 };
 
 enum enumWeightModType
@@ -86,7 +93,9 @@ enum enumWeightModType
 enum enumWeightConditionType
 {
 	weightCondDE = 0,
-	weightCondZLength = 1
+	weightCondZLength = 1,
+	weightCondDist = 2,
+	weightCondIteration = 3
 };
 
 // Per-formula advanced weight parameters
@@ -126,10 +135,17 @@ struct sFormulaWeightParams
 	double curveSensitivity;
 	double curvePower;
 	enumWeightModType curveModType;
+	// DE Ratio (mode 8)
+	double deRatioScale;
+	double deRatioOffset;
+	enumWeightModType deRatioModType;
+	// Adaptive (mode 9)
+	double adaptiveStrength;
 	// Separate components
 	bool separateComponents;
 	double zVectorWeight;
 	double deComponentWeight;
+	double distComponentWeight;
 	double colorComponentWeight;
 };
 
@@ -149,7 +165,8 @@ public:
 		return weightParams[formulaIndex];
 	}
 	// Calculate effective weight based on mode and current iteration state
-	double CalculateWeight(int formulaIndex, int iteration, double currentDE, double zLength) const;
+	double CalculateWeight(int formulaIndex, int iteration, double currentDE, double zLength,
+		double currentDist = 0.0, fractal::enumDEFunctionType deFunc = fractal::undefinedDEFunction) const;
 	inline int GetMaxFractalIndex() const { return maxFractalIndex; }
 	inline bool IsAddCConstant(int formulaIndex) const { return addCConstant[formulaIndex]; }
 	inline bool IsCheckForBailout(int formulaIndex) const { return checkForBailout[formulaIndex]; }

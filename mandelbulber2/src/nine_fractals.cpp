@@ -122,11 +122,22 @@ cNineFractals::cNineFractals(std::shared_ptr<const cFractalContainer> par,
 		weightParams[i].curvePower = generalPar->Get<double>("weight_curve_power", i + 1);
 		weightParams[i].curveModType =
 			enumWeightModType(generalPar->Get<int>("weight_curve_mod_type", i + 1));
+		// DE Ratio weight (mode 8)
+		weightParams[i].deRatioScale = generalPar->Get<double>("weight_de_ratio_scale", i + 1);
+		weightParams[i].deRatioOffset = generalPar->Get<double>("weight_de_ratio_offset", i + 1);
+		weightParams[i].deRatioModType =
+			enumWeightModType(generalPar->Get<int>("weight_de_ratio_mod_type", i + 1));
+		// Adaptive weight (mode 9)
+		weightParams[i].adaptiveStrength =
+			generalPar->Get<double>("weight_adaptive_strength", i + 1);
+		// Separate component weights
 		weightParams[i].separateComponents =
 			generalPar->Get<bool>("weight_separate_components", i + 1);
 		weightParams[i].zVectorWeight = generalPar->Get<double>("weight_z_vector", i + 1);
 		weightParams[i].deComponentWeight =
 			generalPar->Get<double>("weight_de_component", i + 1);
+		weightParams[i].distComponentWeight =
+			generalPar->Get<double>("weight_dist_component", i + 1);
 		weightParams[i].colorComponentWeight =
 			generalPar->Get<double>("weight_color_component", i + 1);
 
@@ -512,7 +523,8 @@ int cNineFractals::GetIndexOnFractalList(fractal::enumFractalFormula formula)
 }
 
 double cNineFractals::CalculateWeight(
-	int formulaIndex, int iteration, double currentDE, double zLength) const
+	int formulaIndex, int iteration, double currentDE, double zLength,
+	double currentDist, fractal::enumDEFunctionType deFunc) const
 {
 	const sFormulaWeightParams &wp = weightParams[formulaIndex];
 
@@ -543,11 +555,27 @@ double cNineFractals::CalculateWeight(
 					case weightBlendLinear: weight = wp.startWeight + t * (wp.endWeight - wp.startWeight); break;
 					case weightBlendSmooth:
 					{
-						double s = t * t * (3.0 - 2.0 * t); // smoothstep
+						double s = t * t * (3.0 - 2.0 * t);
 						weight = wp.startWeight + s * (wp.endWeight - wp.startWeight);
 						break;
 					}
 					case weightBlendStep: weight = (t < 0.5) ? wp.startWeight : wp.endWeight; break;
+					case weightBlendMultiply:
+					{
+						weight = wp.startWeight * pow(wp.endWeight / max(wp.startWeight, 1e-15), t);
+						break;
+					}
+					case weightBlendPower:
+					{
+						weight = wp.startWeight + pow(t, 2.0) * (wp.endWeight - wp.startWeight);
+						break;
+					}
+					case weightBlendMin:
+						weight = min(wp.startWeight, wp.endWeight);
+						break;
+					case weightBlendMax:
+						weight = max(wp.startWeight, wp.endWeight);
+						break;
 				}
 			}
 			break;
@@ -611,6 +639,8 @@ double cNineFractals::CalculateWeight(
 			{
 				case weightCondDE: testValue = currentDE; break;
 				case weightCondZLength: testValue = zLength; break;
+				case weightCondDist: testValue = currentDist; break;
+				case weightCondIteration: testValue = double(iteration); break;
 			}
 			bool conditionMet = (testValue < wp.conditionThreshold);
 			switch (wp.conditionBlend)
@@ -620,23 +650,27 @@ double cNineFractals::CalculateWeight(
 					break;
 				case weightBlendLinear:
 				{
-					double blend = qBound(0.0, testValue / wp.conditionThreshold, 1.0);
+					double blend = (wp.conditionThreshold > 1e-15)
+						? qBound(0.0, testValue / wp.conditionThreshold, 1.0) : (conditionMet ? 0.0 : 1.0);
 					weight = wp.trueWeight * (1.0 - blend) + wp.falseWeight * blend;
 					break;
 				}
 				case weightBlendSmooth:
 				{
-					double blend = qBound(0.0, testValue / wp.conditionThreshold, 1.0);
+					double blend = (wp.conditionThreshold > 1e-15)
+						? qBound(0.0, testValue / wp.conditionThreshold, 1.0) : (conditionMet ? 0.0 : 1.0);
 					double s = blend * blend * (3.0 - 2.0 * blend);
 					weight = wp.trueWeight * (1.0 - s) + wp.falseWeight * s;
 					break;
 				}
+				default:
+					weight = conditionMet ? wp.trueWeight : wp.falseWeight;
+					break;
 			}
 			break;
 		}
 		case weightModeOrbitTrap:
 		{
-			// Weight based on minimum orbit distance (uses zLength as proxy for orbit magnitude)
 			double orbitDist = zLength;
 			double delta = orbitDist - wp.orbitTrapThreshold;
 			double factor = delta * wp.orbitTrapSensitivity;
@@ -664,7 +698,6 @@ double cNineFractals::CalculateWeight(
 		}
 		case weightModeCurve:
 		{
-			// Custom power curve: weight = base + sens * (DE/threshold)^power
 			double normalized = (wp.curveBase > 1e-15) ? currentDE / wp.curveBase : currentDE;
 			double powered = pow(fabs(normalized * wp.curveSensitivity), wp.curvePower);
 			switch (wp.curveModType)
@@ -687,6 +720,82 @@ double cNineFractals::CalculateWeight(
 				case weightModSigmoid:
 					weight = wp.curveBase + (1.0 - wp.curveBase) / (1.0 + exp(-(powered - 0.5) * 6.0));
 					break;
+			}
+			weight = qBound(0.0, weight, 1.0);
+			break;
+		}
+		case weightModeTransformPassthrough:
+		{
+			weight = 1.0;
+			break;
+		}
+		case weightModeDERatio:
+		{
+			// Weight based on ratio of current DE to a reference scale
+			double ratio = (wp.deRatioOffset > 1e-15)
+				? currentDE / wp.deRatioOffset : currentDE;
+			ratio *= wp.deRatioScale;
+			switch (wp.deRatioModType)
+			{
+				case weightModLinear:
+					weight = qBound(0.0, ratio, 1.0);
+					break;
+				case weightModSmooth:
+				{
+					double clamped = qBound(0.0, ratio, 1.0);
+					weight = clamped * clamped * (3.0 - 2.0 * clamped);
+					break;
+				}
+				case weightModExponential:
+					weight = 1.0 - exp(-fabs(ratio));
+					break;
+				case weightModInverse:
+					weight = (fabs(ratio) > 1e-15) ? qBound(0.0, 1.0 / ratio, 1.0) : 1.0;
+					break;
+				case weightModSigmoid:
+					weight = 1.0 / (1.0 + exp(-(ratio - 0.5) * 6.0));
+					break;
+			}
+			break;
+		}
+		case weightModeAdaptive:
+		{
+			// Auto-select weight function based on formula's DE type
+			double str = wp.adaptiveStrength;
+			if (deFunc == fractal::logarithmicDEFunction)
+			{
+				// Logarithmic: sigmoid curve — works well with exponential DE growth
+				double normalized = (currentDE > 1e-15) ? log(1.0 + currentDE) : 0.0;
+				weight = 1.0 / (1.0 + exp(-(normalized - 0.5) * 4.0 * str));
+			}
+			else if (deFunc == fractal::linearDEFunction)
+			{
+				// Linear: smooth interpolation
+				double normalized = qBound(0.0, currentDE * str, 1.0);
+				weight = normalized * normalized * (3.0 - 2.0 * normalized);
+			}
+			else if (deFunc == fractal::customDEFunction)
+			{
+				// DIFS: inverse distance — closer = stronger weight
+				double dist = (currentDist > 1e-15) ? currentDist : currentDE;
+				weight = (dist > 1e-15) ? qBound(0.0, str / (str + dist), 1.0) : 1.0;
+			}
+			else if (deFunc == fractal::pseudoKleinianDEFunction
+				|| deFunc == fractal::josKleinianDEFunction)
+			{
+				// PK/JK: sigmoid on bounded DE
+				weight = 1.0 / (1.0 + exp(-(currentDE - 0.5) * 6.0 * str));
+			}
+			else if (deFunc == fractal::withoutDEFunction)
+			{
+				// Transform: always full weight
+				weight = 1.0;
+			}
+			else
+			{
+				// Fallback: smooth
+				double normalized = qBound(0.0, currentDE * str, 1.0);
+				weight = normalized * normalized * (3.0 - 2.0 * normalized);
 			}
 			weight = qBound(0.0, weight, 1.0);
 			break;
@@ -748,9 +857,17 @@ void cNineFractals::CopyToOpenclData(sClFractalSequence *sequence) const
 		sequence->weightParams[i].curveSensitivity = weightParams[i].curveSensitivity;
 		sequence->weightParams[i].curvePower = weightParams[i].curvePower;
 		sequence->weightParams[i].curveModType = static_cast<cl_int>(weightParams[i].curveModType);
+		// DE Ratio (mode 8)
+		sequence->weightParams[i].deRatioScale = weightParams[i].deRatioScale;
+		sequence->weightParams[i].deRatioOffset = weightParams[i].deRatioOffset;
+		sequence->weightParams[i].deRatioModType = static_cast<cl_int>(weightParams[i].deRatioModType);
+		// Adaptive (mode 9)
+		sequence->weightParams[i].adaptiveStrength = weightParams[i].adaptiveStrength;
+		// Components
 		sequence->weightParams[i].separateComponents = weightParams[i].separateComponents ? 1 : 0;
 		sequence->weightParams[i].zVectorWeight = weightParams[i].zVectorWeight;
 		sequence->weightParams[i].deComponentWeight = weightParams[i].deComponentWeight;
+		sequence->weightParams[i].distComponentWeight = weightParams[i].distComponentWeight;
 		sequence->weightParams[i].colorComponentWeight = weightParams[i].colorComponentWeight;
 
 		sequence->DEFunctionType[i] = static_cast<enumDEFunctionTypeCl>(DEFunctionType[i]);

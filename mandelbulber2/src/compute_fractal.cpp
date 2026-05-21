@@ -219,34 +219,65 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 		double effectiveWeight = 1.0;
 		if (fractals.IsHybrid())
 		{
-			// Compute actual DE estimate for weight system (not just aux.DE derivative)
-			double actualDE = aux.DE;
-			if (aux.DE > 0.0 && aux.r > 0.0)
-			{
-				fractal::enumDEFunctionType deFunc = fractals.GetDEFunctionType(sequence);
-				if (deFunc == fractal::pseudoKleinianDEFunction)
-				{
-					double rxy = sqrt(z.x * z.x + z.y * z.y);
-					actualDE = max(rxy - aux.pseudoKleinianDE, fabs(rxy * z.z) / aux.r) / aux.DE;
-				}
-				else if (deFunc == fractal::josKleinianDEFunction)
-				{
-					actualDE = min(z.y, 0.05) / max(aux.DE, 1.0);
-				}
-				else if (deFunc == fractal::logarithmicDEFunction && aux.r > 1.0)
-				{
-					actualDE = 0.5 * aux.r * log(aux.r) / aux.DE;
-				}
-				else if (deFunc == fractal::linearDEFunction)
-				{
-					actualDE = aux.r / aux.DE;
-				}
-			}
+			fractal::enumDEFunctionType deFunc = fractals.GetDEFunctionType(sequence);
 
-			double standardWeight = fractals.GetWeight(sequence);
-			double advancedWeight = fractals.CalculateWeight(sequence, i, actualDE, aux.r);
-			effectiveWeight = standardWeight * advancedWeight;
-			if (effectiveWeight > 1.0) effectiveWeight = 1.0;
+			// Transforms (withoutDEFunction): auto-passthrough if transform passthrough mode
+			const sFormulaWeightParams &wp = fractals.GetWeightParams(sequence);
+			if (deFunc == fractal::withoutDEFunction && wp.mode == weightModeTransformPassthrough)
+			{
+				effectiveWeight = 1.0;
+			}
+			else
+			{
+				// Compute actual DE estimate per formula type
+				double actualDE = aux.DE;
+				if (aux.r > 0.0)
+				{
+					if (deFunc == fractal::pseudoKleinianDEFunction)
+					{
+						double rxy = sqrt(z.x * z.x + z.y * z.y);
+						actualDE = (aux.DE > 0.0)
+							? max(rxy - aux.pseudoKleinianDE, fabs(rxy * z.z) / aux.r) / aux.DE
+							: aux.r;
+					}
+					else if (deFunc == fractal::josKleinianDEFunction)
+					{
+						actualDE = min(z.y, fractal->analyticDE.tweak005)
+							/ max(aux.DE, fractal->analyticDE.offset1);
+					}
+					else if (deFunc == fractal::logarithmicDEFunction)
+					{
+						actualDE = (aux.DE > 0.0 && aux.r > 1.0)
+							? 0.5 * aux.r * log(aux.r) / aux.DE : aux.r;
+					}
+					else if (deFunc == fractal::linearDEFunction)
+					{
+						actualDE = (aux.DE > 0.0) ? aux.r / aux.DE : aux.r;
+					}
+					else if (deFunc == fractal::customDEFunction)
+					{
+						// DIFS formulas store distance in aux.dist
+						actualDE = (aux.dist > 0.0) ? aux.dist : aux.r;
+					}
+					else if (deFunc == fractal::maxAxisDEFunction)
+					{
+						CVector4 absZ = fabs(z);
+						double maxZ = dMax(absZ.x, absZ.y, absZ.z);
+						actualDE = (aux.DE > 0.0) ? maxZ / aux.DE : maxZ;
+					}
+					else if (deFunc == fractal::withoutDEFunction)
+					{
+						// Transforms: use z magnitude change as proxy
+						actualDE = aux.r;
+					}
+				}
+
+				double standardWeight = fractals.GetWeight(sequence);
+				double advancedWeight = fractals.CalculateWeight(
+					sequence, i, actualDE, aux.r, aux.dist, deFunc);
+				effectiveWeight = standardWeight * advancedWeight;
+				if (effectiveWeight > 1.0) effectiveWeight = 1.0;
+			}
 		}
 
 		if (!fractals.IsHybrid() || effectiveWeight > 0.0)
@@ -315,9 +346,10 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 
 			if (wp.separateComponents)
 			{
-				// Separate component weights: z, DE, and color can have different blend factors
+				// Separate component weights: z, DE, dist, and color can have different blend factors
 				double kz = effectiveWeight * wp.zVectorWeight;
 				double kde = effectiveWeight * wp.deComponentWeight;
+				double kdist = effectiveWeight * wp.distComponentWeight;
 				double kcol = effectiveWeight * wp.colorComponentWeight;
 
 				if (kz < 1.0) z = SmoothCVector(tempZ, z, kz);
@@ -327,11 +359,17 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 					double kden = 1.0 - kde;
 					aux.DE = aux.DE * kde + tempAuxDE * kden;
 					aux.DE0 = aux.DE0 * kde + tempAuxDE0 * kden;
-					aux.dist = aux.dist * kde + tempAuxDist * kden;
 					if (isPKFormula)
 						aux.pseudoKleinianDE = aux.pseudoKleinianDE * kde + tempAuxPseudoKleinianDE * kden;
 					aux.actualScale = aux.actualScale * kde + tempAuxActualScale * kden;
 					aux.actualScaleA = aux.actualScaleA * kde + tempAuxActualScaleA * kden;
+				}
+
+				// DIFS dist has its own component weight
+				if (kdist < 1.0)
+				{
+					double kdistn = 1.0 - kdist;
+					aux.dist = aux.dist * kdist + tempAuxDist * kdistn;
 				}
 
 				if (kcol < 1.0)

@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
 	InitSystem();
 
 	// Advanced Weight System build identifier
-	qDebug() << "Advanced Weight System v4.2 - build 20250520 - Auto-DOF z-buffer analysis";
+	qDebug() << "Advanced Weight System v5.0 - build 20250520 - Weight system perfection";
 
 	// configure debug output
 	qInstallMessageHandler(myMessageOutput);

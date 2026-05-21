@@ -91,6 +91,11 @@ typedef enum
 	clWeightModeDE = 2,
 	clWeightModeZLength = 3,
 	clWeightModeConditional = 4,
+	clWeightModeOrbitTrap = 5,
+	clWeightModeCurve = 6,
+	clWeightModeTransformPassthrough = 7,
+	clWeightModeDERatio = 8,
+	clWeightModeAdaptive = 9,
 } enumWeightModeCl;
 
 typedef enum
@@ -98,6 +103,10 @@ typedef enum
 	clWeightBlendLinear = 0,
 	clWeightBlendSmooth = 1,
 	clWeightBlendStep = 2,
+	clWeightBlendMultiply = 3,
+	clWeightBlendPower = 4,
+	clWeightBlendMin = 5,
+	clWeightBlendMax = 6,
 } enumWeightBlendModeCl;
 
 typedef enum
@@ -113,6 +122,8 @@ typedef enum
 {
 	clWeightCondDE = 0,
 	clWeightCondZLength = 1,
+	clWeightCondDist = 2,
+	clWeightCondIteration = 3,
 } enumWeightCondTypeCl;
 
 // Per-formula advanced weight parameters for OpenCL
@@ -148,10 +159,17 @@ typedef struct
 	cl_float curveSensitivity;
 	cl_float curvePower;
 	cl_int curveModType;
+	// DE Ratio (mode 8)
+	cl_float deRatioScale;
+	cl_float deRatioOffset;
+	cl_int deRatioModType;
+	// Adaptive (mode 9)
+	cl_float adaptiveStrength;
 	// Separate components
 	cl_int separateComponents;
 	cl_float zVectorWeight;
 	cl_float deComponentWeight;
+	cl_float distComponentWeight;
 	cl_float colorComponentWeight;
 } sClFormulaWeightParams;
 

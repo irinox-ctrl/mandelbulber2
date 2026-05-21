@@ -342,153 +342,155 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 #ifdef ITERATION_WEIGHT
 		if (consts->sequence.isHybrid)
 		{
-			float standardWeight = consts->sequence.formulaWeight[sequence];
+			int deFunc = consts->sequence.DEFunctionType[sequence];
 			__constant sClFormulaWeightParams *wp = &consts->sequence.weightParams[sequence];
-
-			// Compute actual DE estimate for PK/JK formulas
-			float actualDE = aux.DE;
-			if (aux.DE > 0.0f && aux.r > 0.0f)
-			{
-				int deFunc = consts->sequence.DEFunctionType[sequence];
-				if (deFunc == pseudoKleinianDEFunction)
-				{
-					float rxy = native_sqrt(z.x * z.x + z.y * z.y);
-					actualDE = max(rxy - aux.pseudoKleinianDE, fabs(rxy * z.z) / aux.r) / aux.DE;
-				}
-				else if (deFunc == josKleinianDEFunction)
-				{
-					actualDE = min(z.y, 0.05f) / max(aux.DE, 1.0f);
-				}
-				else if (deFunc == logarithmicDEFunction && aux.r > 1.0f)
-				{
-					actualDE = 0.5f * aux.r * native_log(aux.r) / aux.DE;
-				}
-				else if (deFunc == linearDEFunction)
-				{
-					actualDE = aux.r / aux.DE;
-				}
-			}
-
 			int weightMode = wp->mode;
-			if (weightMode == 0) // Static
+
+			if (deFunc == 0 && weightMode == 7)
 			{
-				effectiveWeight = wp->staticWeight;
+				effectiveWeight = 1.0f;
 			}
-			else if (weightMode == 1) // Iteration
+			else
 			{
-				if (i <= wp->iterStart)
-					effectiveWeight = wp->startWeight;
-				else if (i >= wp->iterEnd)
-					effectiveWeight = wp->endWeight;
-				else
+				float standardWeight = consts->sequence.formulaWeight[sequence];
+				float actualDE = aux.DE;
+				if (aux.r > 0.0f)
 				{
-					float t = (float)(i - wp->iterStart) / (float)(wp->iterEnd - wp->iterStart);
-					int bm = wp->blendMode;
-					if (bm == 0) // Linear
-						effectiveWeight = wp->startWeight + t * (wp->endWeight - wp->startWeight);
-					else if (bm == 1) // Smooth
+					if (deFunc == pseudoKleinianDEFunction)
 					{
-						float s = t * t * (3.0f - 2.0f * t);
-						effectiveWeight = wp->startWeight + s * (wp->endWeight - wp->startWeight);
+						float rxy = native_sqrt(z.x * z.x + z.y * z.y);
+						actualDE = (aux.DE > 0.0f) ? max(rxy - aux.pseudoKleinianDE, fabs(rxy * z.z) / aux.r) / aux.DE : aux.r;
 					}
-					else // Step
-						effectiveWeight = (t < 0.5f) ? wp->startWeight : wp->endWeight;
+					else if (deFunc == josKleinianDEFunction)
+					{
+						actualDE = min(z.y, fractal->analyticDE.tweak005) / max(aux.DE, fractal->analyticDE.offset1);
+					}
+					else if (deFunc == logarithmicDEFunction)
+					{
+						actualDE = (aux.DE > 0.0f && aux.r > 1.0f) ? 0.5f * aux.r * native_log(aux.r) / aux.DE : aux.r;
+					}
+					else if (deFunc == linearDEFunction)
+					{
+						actualDE = (aux.DE > 0.0f) ? aux.r / aux.DE : aux.r;
+					}
+					else if (deFunc == customDEFunction)
+					{
+						actualDE = (aux.dist > 0.0f) ? aux.dist : aux.r;
+					}
+					else if (deFunc == maxAxisDEFunction)
+					{
+						float maxZ = max(max(fabs(z.x), fabs(z.y)), fabs(z.z));
+						actualDE = (aux.DE > 0.0f) ? maxZ / aux.DE : maxZ;
+					}
+					else if (deFunc == 0)
+					{
+						actualDE = aux.r;
+					}
 				}
-			}
-			else if (weightMode == 2) // DE
-			{
-				float delta = actualDE - wp->deThreshold;
-				float factor = delta * wp->deSensitivity;
-				if (wp->deModType == 0) // Linear
-					effectiveWeight = wp->deBase + factor;
-				else if (wp->deModType == 1) // Smooth
-					effectiveWeight = wp->deBase + factor * factor * (factor > 0.0f ? 1.0f : -1.0f);
-				else if (wp->deModType == 2) // Exponential
-					effectiveWeight = wp->deBase * exp(factor);
-				else if (wp->deModType == 3) // Inverse
-					effectiveWeight = (fabs(actualDE) > 1e-15f)
-						? wp->deBase * (wp->deThreshold / actualDE) : 1.0f;
-				else // Sigmoid (4)
-					effectiveWeight = wp->deBase + (1.0f - wp->deBase) / (1.0f + exp(-factor));
-				effectiveWeight = clamp(effectiveWeight, 0.0f, 1.0f);
-			}
-			else if (weightMode == 3) // ZLength
-			{
-				float zLen = length(z);
-				float delta = zLen - wp->zlengthThreshold;
-				float factor = delta * wp->zlengthSens;
-				if (wp->zlengthModType == 0) // Linear
-					effectiveWeight = wp->zlengthBase + factor;
-				else if (wp->zlengthModType == 1) // Smooth
-					effectiveWeight = wp->zlengthBase + factor * factor * (factor > 0.0f ? 1.0f : -1.0f);
-				else if (wp->zlengthModType == 2) // Exponential
-					effectiveWeight = wp->zlengthBase * exp(factor);
-				else if (wp->zlengthModType == 3) // Inverse
-					effectiveWeight = (fabs(zLen) > 1e-15f)
-						? wp->zlengthBase * (wp->zlengthThreshold / zLen) : 1.0f;
-				else // Sigmoid (4)
-					effectiveWeight = wp->zlengthBase + (1.0f - wp->zlengthBase) / (1.0f + exp(-factor));
-				effectiveWeight = clamp(effectiveWeight, 0.0f, 1.0f);
-			}
-			else if (weightMode == 4) // Conditional
-			{
-				float testValue = (wp->conditionType == 0) ? actualDE : length(z);
-				bool condMet = (testValue < wp->conditionThreshold);
-				int cb = wp->conditionBlend;
-				if (cb == 0) // Step
-					effectiveWeight = condMet ? wp->trueWeight : wp->falseWeight;
-				else if (cb == 1) // Linear
+
+				if (weightMode == 0) effectiveWeight = wp->staticWeight;
+				else if (weightMode == 1)
 				{
-					float blend = clamp(testValue / wp->conditionThreshold, 0.0f, 1.0f);
-					effectiveWeight = wp->trueWeight * (1.0f - blend) + wp->falseWeight * blend;
+					if (i <= wp->iterStart) effectiveWeight = wp->startWeight;
+					else if (i >= wp->iterEnd) effectiveWeight = wp->endWeight;
+					else
+					{
+						float t = (float)(i - wp->iterStart) / (float)(wp->iterEnd - wp->iterStart);
+						int bm = wp->blendMode;
+						if (bm == 0) effectiveWeight = wp->startWeight + t * (wp->endWeight - wp->startWeight);
+						else if (bm == 1) { float s = t * t * (3.0f - 2.0f * t); effectiveWeight = wp->startWeight + s * (wp->endWeight - wp->startWeight); }
+						else if (bm == 2) effectiveWeight = (t < 0.5f) ? wp->startWeight : wp->endWeight;
+						else if (bm == 3) effectiveWeight = wp->startWeight * pow(wp->endWeight / max(wp->startWeight, 1e-15f), t);
+						else if (bm == 4) effectiveWeight = wp->startWeight + pow(t, 2.0f) * (wp->endWeight - wp->startWeight);
+						else if (bm == 5) effectiveWeight = min(wp->startWeight, wp->endWeight);
+						else effectiveWeight = max(wp->startWeight, wp->endWeight);
+					}
 				}
-				else // Smooth
+				else if (weightMode == 2)
 				{
-					float blend = clamp(testValue / wp->conditionThreshold, 0.0f, 1.0f);
-					float s = blend * blend * (3.0f - 2.0f * blend);
-					effectiveWeight = wp->trueWeight * (1.0f - s) + wp->falseWeight * s;
+					float delta = actualDE - wp->deThreshold;
+					float factor = delta * wp->deSensitivity;
+					if (wp->deModType == 0) effectiveWeight = wp->deBase + factor;
+					else if (wp->deModType == 1) effectiveWeight = wp->deBase + factor * factor * (factor > 0.0f ? 1.0f : -1.0f);
+					else if (wp->deModType == 2) effectiveWeight = wp->deBase * exp(factor);
+					else if (wp->deModType == 3) effectiveWeight = (fabs(actualDE) > 1e-15f) ? wp->deBase * (wp->deThreshold / actualDE) : 1.0f;
+					else effectiveWeight = wp->deBase + (1.0f - wp->deBase) / (1.0f + exp(-factor));
+					effectiveWeight = clamp(effectiveWeight, 0.0f, 1.0f);
 				}
-			}
-			else if (weightMode == 5) // OrbitTrap
-			{
-				float orbitDist = length(z);
-				float delta = orbitDist - wp->orbitTrapThreshold;
-				float factor = delta * wp->orbitTrapSensitivity;
-				if (wp->orbitTrapModType == 0)
-					effectiveWeight = wp->orbitTrapBase + factor;
-				else if (wp->orbitTrapModType == 1)
-					effectiveWeight = wp->orbitTrapBase + factor * factor * (factor > 0.0f ? 1.0f : -1.0f);
-				else if (wp->orbitTrapModType == 2)
-					effectiveWeight = wp->orbitTrapBase * exp(factor);
-				else if (wp->orbitTrapModType == 3)
-					effectiveWeight = (fabs(orbitDist) > 1e-15f)
-						? wp->orbitTrapBase * (wp->orbitTrapThreshold / orbitDist) : 1.0f;
-				else
-					effectiveWeight = wp->orbitTrapBase + (1.0f - wp->orbitTrapBase) / (1.0f + exp(-factor));
-				effectiveWeight = clamp(effectiveWeight, 0.0f, 1.0f);
-			}
-			else if (weightMode == 6) // Curve
-			{
-				float normalized = (wp->curveBase > 1e-15f) ? aux.DE / wp->curveBase : aux.DE;
-				float powered = pow(fabs(normalized * wp->curveSensitivity), wp->curvePower);
-				if (wp->curveModType == 0)
-					effectiveWeight = wp->curveBase + powered * (normalized >= 0.0f ? 1.0f : -1.0f);
-				else if (wp->curveModType == 1)
+				else if (weightMode == 3)
 				{
-					float s = powered * powered * (3.0f - 2.0f * powered);
-					effectiveWeight = wp->curveBase + s;
+					float zLen = length(z);
+					float delta = zLen - wp->zlengthThreshold;
+					float factor = delta * wp->zlengthSens;
+					if (wp->zlengthModType == 0) effectiveWeight = wp->zlengthBase + factor;
+					else if (wp->zlengthModType == 1) effectiveWeight = wp->zlengthBase + factor * factor * (factor > 0.0f ? 1.0f : -1.0f);
+					else if (wp->zlengthModType == 2) effectiveWeight = wp->zlengthBase * exp(factor);
+					else if (wp->zlengthModType == 3) effectiveWeight = (fabs(zLen) > 1e-15f) ? wp->zlengthBase * (wp->zlengthThreshold / zLen) : 1.0f;
+					else effectiveWeight = wp->zlengthBase + (1.0f - wp->zlengthBase) / (1.0f + exp(-factor));
+					effectiveWeight = clamp(effectiveWeight, 0.0f, 1.0f);
 				}
-				else if (wp->curveModType == 2)
-					effectiveWeight = wp->curveBase * exp(powered - 1.0f);
-				else if (wp->curveModType == 3)
-					effectiveWeight = (powered > 1e-15f) ? wp->curveBase / powered : 1.0f;
-				else
-					effectiveWeight = wp->curveBase + (1.0f - wp->curveBase) / (1.0f + exp(-(powered - 0.5f) * 6.0f));
-				effectiveWeight = clamp(effectiveWeight, 0.0f, 1.0f);
+				else if (weightMode == 4)
+				{
+					float testValue = 0.0f;
+					if (wp->conditionType == 0) testValue = actualDE;
+					else if (wp->conditionType == 1) testValue = length(z);
+					else if (wp->conditionType == 2) testValue = aux.dist;
+					else testValue = (float)i;
+					bool condMet = (testValue < wp->conditionThreshold);
+					int cb = wp->conditionBlend;
+					if (cb == 2) { float blend = (wp->conditionThreshold > 1e-15f) ? clamp(testValue / wp->conditionThreshold, 0.0f, 1.0f) : (condMet ? 0.0f : 1.0f); float s = blend * blend * (3.0f - 2.0f * blend); effectiveWeight = wp->trueWeight * (1.0f - s) + wp->falseWeight * s; }
+					else if (cb == 1) { float blend = (wp->conditionThreshold > 1e-15f) ? clamp(testValue / wp->conditionThreshold, 0.0f, 1.0f) : (condMet ? 0.0f : 1.0f); effectiveWeight = wp->trueWeight * (1.0f - blend) + wp->falseWeight * blend; }
+					else effectiveWeight = condMet ? wp->trueWeight : wp->falseWeight;
+				}
+				else if (weightMode == 5)
+				{
+					float orbitDist = length(z);
+					float delta = orbitDist - wp->orbitTrapThreshold;
+					float factor = delta * wp->orbitTrapSensitivity;
+					if (wp->orbitTrapModType == 0) effectiveWeight = wp->orbitTrapBase + factor;
+					else if (wp->orbitTrapModType == 1) effectiveWeight = wp->orbitTrapBase + factor * factor * (factor > 0.0f ? 1.0f : -1.0f);
+					else if (wp->orbitTrapModType == 2) effectiveWeight = wp->orbitTrapBase * exp(factor);
+					else if (wp->orbitTrapModType == 3) effectiveWeight = (fabs(orbitDist) > 1e-15f) ? wp->orbitTrapBase * (wp->orbitTrapThreshold / orbitDist) : 1.0f;
+					else effectiveWeight = wp->orbitTrapBase + (1.0f - wp->orbitTrapBase) / (1.0f + exp(-factor));
+					effectiveWeight = clamp(effectiveWeight, 0.0f, 1.0f);
+				}
+				else if (weightMode == 6)
+				{
+					float normalized = (wp->curveBase > 1e-15f) ? actualDE / wp->curveBase : actualDE;
+					float powered = pow(fabs(normalized * wp->curveSensitivity), wp->curvePower);
+					if (wp->curveModType == 0) effectiveWeight = wp->curveBase + powered * (normalized >= 0.0f ? 1.0f : -1.0f);
+					else if (wp->curveModType == 1) { float s = powered * powered * (3.0f - 2.0f * powered); effectiveWeight = wp->curveBase + s; }
+					else if (wp->curveModType == 2) effectiveWeight = wp->curveBase * exp(powered - 1.0f);
+					else if (wp->curveModType == 3) effectiveWeight = (powered > 1e-15f) ? wp->curveBase / powered : 1.0f;
+					else effectiveWeight = wp->curveBase + (1.0f - wp->curveBase) / (1.0f + exp(-(powered - 0.5f) * 6.0f));
+					effectiveWeight = clamp(effectiveWeight, 0.0f, 1.0f);
+				}
+				else if (weightMode == 7) effectiveWeight = 1.0f;
+				else if (weightMode == 8)
+				{
+					float ratio = (wp->deRatioOffset > 1e-15f) ? actualDE / wp->deRatioOffset : actualDE;
+					ratio *= wp->deRatioScale;
+					if (wp->deRatioModType == 0) effectiveWeight = clamp(ratio, 0.0f, 1.0f);
+					else if (wp->deRatioModType == 1) { float c = clamp(ratio, 0.0f, 1.0f); effectiveWeight = c * c * (3.0f - 2.0f * c); }
+					else if (wp->deRatioModType == 2) effectiveWeight = 1.0f - exp(-fabs(ratio));
+					else if (wp->deRatioModType == 3) effectiveWeight = (fabs(ratio) > 1e-15f) ? clamp(1.0f / ratio, 0.0f, 1.0f) : 1.0f;
+					else effectiveWeight = 1.0f / (1.0f + exp(-(ratio - 0.5f) * 6.0f));
+				}
+				else if (weightMode == 9)
+				{
+					float str = wp->adaptiveStrength;
+					if (deFunc == logarithmicDEFunction) { float norm = (actualDE > 1e-15f) ? native_log(1.0f + actualDE) : 0.0f; effectiveWeight = 1.0f / (1.0f + exp(-(norm - 0.5f) * 4.0f * str)); }
+					else if (deFunc == linearDEFunction) { float norm = clamp(actualDE * str, 0.0f, 1.0f); effectiveWeight = norm * norm * (3.0f - 2.0f * norm); }
+					else if (deFunc == customDEFunction) { float dist = (aux.dist > 1e-15f) ? aux.dist : actualDE; effectiveWeight = (dist > 1e-15f) ? clamp(str / (str + dist), 0.0f, 1.0f) : 1.0f; }
+					else if (deFunc == pseudoKleinianDEFunction || deFunc == josKleinianDEFunction) effectiveWeight = 1.0f / (1.0f + exp(-(actualDE - 0.5f) * 6.0f * str));
+					else if (deFunc == 0) effectiveWeight = 1.0f;
+					else { float norm = clamp(actualDE * str, 0.0f, 1.0f); effectiveWeight = norm * norm * (3.0f - 2.0f * norm); }
+					effectiveWeight = clamp(effectiveWeight, 0.0f, 1.0f);
+				}
+
+				effectiveWeight *= standardWeight;
+				if (effectiveWeight > 1.0f) effectiveWeight = 1.0f;
 			}
-			// Multiply advanced weight by standard formula weight
-			effectiveWeight *= standardWeight;
-			if (effectiveWeight > 1.0f) effectiveWeight = 1.0f;
 		}
 #endif // ITERATION_WEIGHT
 
@@ -568,6 +570,7 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 			{
 				float kz = effectiveWeight * wp->zVectorWeight;
 				float kde = effectiveWeight * wp->deComponentWeight;
+				float kdist = effectiveWeight * wp->distComponentWeight;
 				float kcol = effectiveWeight * wp->colorComponentWeight;
 
 				if (kz < 1.0f) z = SmoothCVector(tempZ, z, kz);
@@ -577,11 +580,16 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					float kden = 1.0f - kde;
 					aux.DE = aux.DE * kde + tempAuxDE * kden;
 					aux.DE0 = aux.DE0 * kde + tempAuxDE0 * kden;
-					aux.dist = aux.dist * kde + tempAuxDist * kden;
 					if (isPKFormula)
 						aux.pseudoKleinianDE = aux.pseudoKleinianDE * kde + tempAuxPseudoKleinianDE * kden;
 					aux.actualScale = aux.actualScale * kde + tempAuxActualScale * kden;
 					aux.actualScaleA = aux.actualScaleA * kde + tempAuxActualScaleA * kden;
+				}
+
+				if (kdist < 1.0f)
+				{
+					float kdistn = 1.0f - kdist;
+					aux.dist = aux.dist * kdist + tempAuxDist * kdistn;
 				}
 
 				if (kcol < 1.0f)
