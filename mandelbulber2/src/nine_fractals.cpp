@@ -151,6 +151,51 @@ cNineFractals::cNineFractals(std::shared_ptr<const cFractalContainer> par,
 		weightParams[i].colorComponentWeight =
 			generalPar->Get<double>("weight_color_component", i + 1);
 
+		// Formula Mutation parameters
+		mutationParams[i].enabled = generalPar->Get<bool>("mutation_enabled", i + 1);
+		mutationParams[i].preRotX = generalPar->Get<double>("mutation_pre_rotation_x", i + 1);
+		mutationParams[i].preRotY = generalPar->Get<double>("mutation_pre_rotation_y", i + 1);
+		mutationParams[i].preRotZ = generalPar->Get<double>("mutation_pre_rotation_z", i + 1);
+		mutationParams[i].preScale = generalPar->Get<double>("mutation_pre_scale", i + 1);
+		mutationParams[i].preOffsetX = generalPar->Get<double>("mutation_pre_offset_x", i + 1);
+		mutationParams[i].preOffsetY = generalPar->Get<double>("mutation_pre_offset_y", i + 1);
+		mutationParams[i].preOffsetZ = generalPar->Get<double>("mutation_pre_offset_z", i + 1);
+		mutationParams[i].preAbsX = generalPar->Get<bool>("mutation_pre_abs_x", i + 1);
+		mutationParams[i].preAbsY = generalPar->Get<bool>("mutation_pre_abs_y", i + 1);
+		mutationParams[i].preAbsZ = generalPar->Get<bool>("mutation_pre_abs_z", i + 1);
+		mutationParams[i].postRotX = generalPar->Get<double>("mutation_post_rotation_x", i + 1);
+		mutationParams[i].postRotY = generalPar->Get<double>("mutation_post_rotation_y", i + 1);
+		mutationParams[i].postRotZ = generalPar->Get<double>("mutation_post_rotation_z", i + 1);
+		mutationParams[i].postScale = generalPar->Get<double>("mutation_post_scale", i + 1);
+		mutationParams[i].postOffsetX = generalPar->Get<double>("mutation_post_offset_x", i + 1);
+		mutationParams[i].postOffsetY = generalPar->Get<double>("mutation_post_offset_y", i + 1);
+		mutationParams[i].postOffsetZ = generalPar->Get<double>("mutation_post_offset_z", i + 1);
+		mutationParams[i].swizzle =
+			enumMutationSwizzle(generalPar->Get<int>("mutation_swizzle", i + 1));
+		mutationParams[i].foldType =
+			enumMutationFoldType(generalPar->Get<int>("mutation_fold_type", i + 1));
+		mutationParams[i].foldLimit = generalPar->Get<double>("mutation_fold_limit", i + 1);
+		mutationParams[i].foldValue = generalPar->Get<double>("mutation_fold_value", i + 1);
+		mutationParams[i].warpType =
+			enumMutationWarpType(generalPar->Get<int>("mutation_warp_type", i + 1));
+		mutationParams[i].warpFrequency = generalPar->Get<double>("mutation_warp_frequency", i + 1);
+		mutationParams[i].warpAmplitude = generalPar->Get<double>("mutation_warp_amplitude", i + 1);
+		mutationParams[i].zMix = generalPar->Get<double>("mutation_z_mix", i + 1);
+		mutationParams[i].deScale = generalPar->Get<double>("mutation_de_scale", i + 1);
+
+		// Pre-compute rotation matrices
+		if (mutationParams[i].enabled)
+		{
+			mutationParams[i].preRotMatrix.SetRotation2(CVector3(
+				mutationParams[i].preRotX / 180.0 * M_PI,
+				mutationParams[i].preRotY / 180.0 * M_PI,
+				mutationParams[i].preRotZ / 180.0 * M_PI));
+			mutationParams[i].postRotMatrix.SetRotation2(CVector3(
+				mutationParams[i].postRotX / 180.0 * M_PI,
+				mutationParams[i].postRotY / 180.0 * M_PI,
+				mutationParams[i].postRotZ / 180.0 * M_PI));
+		}
+
 		DEType[i] = fractal::deltaDEType;
 		DEFunctionType[i] = fractal::logarithmicDEFunction;
 
@@ -939,6 +984,64 @@ void cNineFractals::CopyToOpenclData(sClFractalSequence *sequence) const
 		sequence->weightParams[i].deComponentWeight = weightParams[i].deComponentWeight;
 		sequence->weightParams[i].distComponentWeight = weightParams[i].distComponentWeight;
 		sequence->weightParams[i].colorComponentWeight = weightParams[i].colorComponentWeight;
+
+		// Formula Mutation parameters
+		sequence->mutationParams[i].enabled = mutationParams[i].enabled ? 1 : 0;
+		sequence->mutationParams[i].preRotX = mutationParams[i].preRotX;
+		sequence->mutationParams[i].preRotY = mutationParams[i].preRotY;
+		sequence->mutationParams[i].preRotZ = mutationParams[i].preRotZ;
+		sequence->mutationParams[i].preScale = mutationParams[i].preScale;
+		sequence->mutationParams[i].preOffsetX = mutationParams[i].preOffsetX;
+		sequence->mutationParams[i].preOffsetY = mutationParams[i].preOffsetY;
+		sequence->mutationParams[i].preOffsetZ = mutationParams[i].preOffsetZ;
+		sequence->mutationParams[i].preAbsX = mutationParams[i].preAbsX ? 1 : 0;
+		sequence->mutationParams[i].preAbsY = mutationParams[i].preAbsY ? 1 : 0;
+		sequence->mutationParams[i].preAbsZ = mutationParams[i].preAbsZ ? 1 : 0;
+		sequence->mutationParams[i].postRotX = mutationParams[i].postRotX;
+		sequence->mutationParams[i].postRotY = mutationParams[i].postRotY;
+		sequence->mutationParams[i].postRotZ = mutationParams[i].postRotZ;
+		sequence->mutationParams[i].postScale = mutationParams[i].postScale;
+		sequence->mutationParams[i].postOffsetX = mutationParams[i].postOffsetX;
+		sequence->mutationParams[i].postOffsetY = mutationParams[i].postOffsetY;
+		sequence->mutationParams[i].postOffsetZ = mutationParams[i].postOffsetZ;
+		sequence->mutationParams[i].swizzle = static_cast<cl_int>(mutationParams[i].swizzle);
+		sequence->mutationParams[i].foldType = static_cast<cl_int>(mutationParams[i].foldType);
+		sequence->mutationParams[i].foldLimit = mutationParams[i].foldLimit;
+		sequence->mutationParams[i].foldValue = mutationParams[i].foldValue;
+		sequence->mutationParams[i].warpType = static_cast<cl_int>(mutationParams[i].warpType);
+		sequence->mutationParams[i].warpFrequency = mutationParams[i].warpFrequency;
+		sequence->mutationParams[i].warpAmplitude = mutationParams[i].warpAmplitude;
+		sequence->mutationParams[i].zMix = mutationParams[i].zMix;
+		sequence->mutationParams[i].deScale = mutationParams[i].deScale;
+		// Copy rotation matrices (3x3 = 9 floats each)
+		if (mutationParams[i].enabled)
+		{
+			CMatrix33 preM = mutationParams[i].preRotMatrix.GetMatrix();
+			CMatrix33 postM = mutationParams[i].postRotMatrix.GetMatrix();
+			sequence->mutationParams[i].preRotMatrix[0] = preM.m11;
+			sequence->mutationParams[i].preRotMatrix[1] = preM.m12;
+			sequence->mutationParams[i].preRotMatrix[2] = preM.m13;
+			sequence->mutationParams[i].preRotMatrix[3] = preM.m21;
+			sequence->mutationParams[i].preRotMatrix[4] = preM.m22;
+			sequence->mutationParams[i].preRotMatrix[5] = preM.m23;
+			sequence->mutationParams[i].preRotMatrix[6] = preM.m31;
+			sequence->mutationParams[i].preRotMatrix[7] = preM.m32;
+			sequence->mutationParams[i].preRotMatrix[8] = preM.m33;
+			sequence->mutationParams[i].postRotMatrix[0] = postM.m11;
+			sequence->mutationParams[i].postRotMatrix[1] = postM.m12;
+			sequence->mutationParams[i].postRotMatrix[2] = postM.m13;
+			sequence->mutationParams[i].postRotMatrix[3] = postM.m21;
+			sequence->mutationParams[i].postRotMatrix[4] = postM.m22;
+			sequence->mutationParams[i].postRotMatrix[5] = postM.m23;
+			sequence->mutationParams[i].postRotMatrix[6] = postM.m31;
+			sequence->mutationParams[i].postRotMatrix[7] = postM.m32;
+			sequence->mutationParams[i].postRotMatrix[8] = postM.m33;
+		}
+		else
+		{
+			memset(sequence->mutationParams[i].preRotMatrix, 0, sizeof(cl_float) * 9);
+			memset(sequence->mutationParams[i].postRotMatrix, 0, sizeof(cl_float) * 9);
+		}
 
 		sequence->DEFunctionType[i] = static_cast<enumDEFunctionTypeCl>(DEFunctionType[i]);
 		sequence->DEType[i] = static_cast<enumDETypeCl>(DEType[i]);

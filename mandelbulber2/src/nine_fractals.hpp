@@ -158,6 +158,64 @@ struct sFormulaWeightParams
 	double colorComponentWeight;
 };
 
+// Formula mutation enums
+enum enumMutationSwizzle
+{
+	mutSwizzleXYZ = 0,
+	mutSwizzleXZY = 1,
+	mutSwizzleYXZ = 2,
+	mutSwizzleYZX = 3,
+	mutSwizzleZXY = 4,
+	mutSwizzleZYX = 5
+};
+
+enum enumMutationFoldType
+{
+	mutFoldNone = 0,
+	mutFoldBox = 1,
+	mutFoldSphere = 2
+};
+
+enum enumMutationWarpType
+{
+	mutWarpNone = 0,
+	mutWarpSine = 1,
+	mutWarpTwist = 2,
+	mutWarpSpiral = 3
+};
+
+// Per-formula mutation parameters — universal pre/post processing on ANY formula
+struct sFormulaMutationParams
+{
+	bool enabled;
+	// Pre-transform
+	double preRotX, preRotY, preRotZ; // degrees
+	double preScale;                  // uniform scale (default 1.0)
+	double preOffsetX, preOffsetY, preOffsetZ;
+	bool preAbsX, preAbsY, preAbsZ;
+	// Post-transform
+	double postRotX, postRotY, postRotZ; // degrees
+	double postScale;                    // uniform scale (default 1.0)
+	double postOffsetX, postOffsetY, postOffsetZ;
+	// Component swizzle
+	enumMutationSwizzle swizzle;
+	// Fold injection (before formula)
+	enumMutationFoldType foldType;
+	double foldLimit;
+	double foldValue;
+	// Warp distortion
+	enumMutationWarpType warpType;
+	double warpFrequency;
+	double warpAmplitude;
+	// Output control
+	double zMix;     // 0-1: blend between original z and formula output (1.0 = normal)
+	double deScale;  // multiply DE output (default 1.0)
+
+	// Pre-computed rotation matrices (filled in constructor)
+	CRotationMatrix preRotMatrix;
+	CRotationMatrix postRotMatrix;
+};
+
 class cNineFractals
 {
 public:
@@ -172,6 +230,10 @@ public:
 	inline const sFormulaWeightParams &GetWeightParams(int formulaIndex) const
 	{
 		return weightParams[formulaIndex];
+	}
+	inline const sFormulaMutationParams &GetMutationParams(int formulaIndex) const
+	{
+		return mutationParams[formulaIndex];
 	}
 	// Calculate effective weight based on mode and current iteration state
 	double CalculateWeight(int formulaIndex, int iteration, double currentDE, double zLength,
@@ -228,6 +290,7 @@ private:
 
 	double formulaWeight[NUMBER_OF_FRACTALS];
 	sFormulaWeightParams weightParams[NUMBER_OF_FRACTALS];
+	sFormulaMutationParams mutationParams[NUMBER_OF_FRACTALS];
 	fractal::enumDEFunctionType DEFunctionType[NUMBER_OF_FRACTALS];
 	fractal::enumDEType DEType[NUMBER_OF_FRACTALS];
 	fractal::enumDEAnalyticFunction DEAnalyticFunction[NUMBER_OF_FRACTALS];

@@ -185,10 +185,41 @@ typedef struct
 
 typedef struct
 {
+	cl_int enabled;
+	// Pre-transform
+	cl_float preRotX, preRotY, preRotZ;
+	cl_float preScale;
+	cl_float preOffsetX, preOffsetY, preOffsetZ;
+	cl_int preAbsX, preAbsY, preAbsZ;
+	// Post-transform
+	cl_float postRotX, postRotY, postRotZ;
+	cl_float postScale;
+	cl_float postOffsetX, postOffsetY, postOffsetZ;
+	// Component swizzle
+	cl_int swizzle;
+	// Fold injection
+	cl_int foldType;
+	cl_float foldLimit;
+	cl_float foldValue;
+	// Warp distortion
+	cl_int warpType;
+	cl_float warpFrequency;
+	cl_float warpAmplitude;
+	// Output control
+	cl_float zMix;
+	cl_float deScale;
+	// Pre-computed rotation matrices (3x3 = 9 floats each)
+	cl_float preRotMatrix[9];
+	cl_float postRotMatrix[9];
+} sClFormulaMutationParams;
+
+typedef struct
+{
 	cl_int isHybrid;
 	cl_int hybridSequence[OPENCL_FRACTAL_SEQUENCE_LENGTH];
 	cl_float formulaWeight[NUMBER_OF_FRACTALS];
 	sClFormulaWeightParams weightParams[NUMBER_OF_FRACTALS];
+	sClFormulaMutationParams mutationParams[NUMBER_OF_FRACTALS];
 	enumDEFunctionTypeCl DEFunctionType[NUMBER_OF_FRACTALS];
 	enumDETypeCl DEType[NUMBER_OF_FRACTALS];
 	cl_int counts[NUMBER_OF_FRACTALS];

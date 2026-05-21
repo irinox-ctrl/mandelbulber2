@@ -280,8 +280,94 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 			}
 		}
 
+		const sFormulaMutationParams &mut = fractals.GetMutationParams(sequence);
+		CVector4 preMutZ = z;
+
 		if (!fractals.IsHybrid() || effectiveWeight > 0.0)
 		{
+			// -------------- Formula Mutation pre-processing ---------------
+			if (mut.enabled)
+			{
+				// Pre-abs
+				if (mut.preAbsX) z.x = fabs(z.x);
+				if (mut.preAbsY) z.y = fabs(z.y);
+				if (mut.preAbsZ) z.z = fabs(z.z);
+
+				// Pre-offset
+				z.x += mut.preOffsetX;
+				z.y += mut.preOffsetY;
+				z.z += mut.preOffsetZ;
+
+				// Pre-rotation
+				if (mut.preRotX != 0.0 || mut.preRotY != 0.0 || mut.preRotZ != 0.0)
+				{
+					CVector3 z3 = z.GetXYZ();
+					z3 = mut.preRotMatrix.RotateVector(z3);
+					z = CVector4(z3, z.w);
+				}
+
+				// Pre-scale
+				if (mut.preScale != 1.0)
+				{
+					z *= mut.preScale;
+					aux.DE *= mut.preScale;
+				}
+
+				// Fold injection (before formula)
+				if (mut.foldType == mutFoldBox)
+				{
+					if (fabs(z.x) > mut.foldLimit) z.x = sign(z.x) * mut.foldValue - z.x;
+					if (fabs(z.y) > mut.foldLimit) z.y = sign(z.y) * mut.foldValue - z.y;
+					if (fabs(z.z) > mut.foldLimit) z.z = sign(z.z) * mut.foldValue - z.z;
+				}
+				else if (mut.foldType == mutFoldSphere)
+				{
+					double rr = z.x * z.x + z.y * z.y + z.z * z.z;
+					double minR2 = mut.foldLimit * mut.foldLimit;
+					double fixR2 = mut.foldValue * mut.foldValue;
+					if (rr < minR2) { z *= fixR2 / minR2; aux.DE *= fixR2 / minR2; }
+					else if (rr < fixR2) { z *= fixR2 / rr; aux.DE *= fixR2 / rr; }
+				}
+
+				// Component swizzle
+				switch (mut.swizzle)
+				{
+					case mutSwizzleXYZ: break;
+					case mutSwizzleXZY: { double t = z.y; z.y = z.z; z.z = t; } break;
+					case mutSwizzleYXZ: { double t = z.x; z.x = z.y; z.y = t; } break;
+					case mutSwizzleYZX: { double t = z.x; z.x = z.y; z.y = z.z; z.z = t; } break;
+					case mutSwizzleZXY: { double t = z.z; z.z = z.y; z.y = z.x; z.x = t; } break;
+					case mutSwizzleZYX: { double t = z.x; z.x = z.z; z.z = t; } break;
+				}
+
+				// Warp distortion
+				if (mut.warpType == mutWarpSine)
+				{
+					z.x += mut.warpAmplitude * sin(z.y * mut.warpFrequency);
+					z.y += mut.warpAmplitude * sin(z.z * mut.warpFrequency);
+					z.z += mut.warpAmplitude * sin(z.x * mut.warpFrequency);
+				}
+				else if (mut.warpType == mutWarpTwist)
+				{
+					double angle = z.z * mut.warpFrequency * M_PI / 180.0;
+					double ca = cos(angle * mut.warpAmplitude);
+					double sa = sin(angle * mut.warpAmplitude);
+					double nx = z.x * ca - z.y * sa;
+					double ny = z.x * sa + z.y * ca;
+					z.x = nx; z.y = ny;
+				}
+				else if (mut.warpType == mutWarpSpiral)
+				{
+					double r = sqrt(z.x * z.x + z.y * z.y);
+					double angle = r * mut.warpFrequency;
+					double ca = cos(angle * mut.warpAmplitude);
+					double sa = sin(angle * mut.warpAmplitude);
+					double nx = z.x * ca - z.y * sa;
+					double ny = z.x * sa + z.y * ca;
+					z.x = nx; z.y = ny;
+				}
+			}
+
 			// -------------- call for fractal formulas by function pointers ---------------
 			if (fractalFormulaFunction && formula != none)
 			{
@@ -335,6 +421,44 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 						break;
 					}
 				}
+			}
+		}
+
+		// -------------- Formula Mutation post-processing ---------------
+		if (mut.enabled)
+		{
+			// Post-rotation
+			if (mut.postRotX != 0.0 || mut.postRotY != 0.0 || mut.postRotZ != 0.0)
+			{
+				CVector3 z3 = z.GetXYZ();
+				z3 = mut.postRotMatrix.RotateVector(z3);
+				z = CVector4(z3, z.w);
+			}
+
+			// Post-scale
+			if (mut.postScale != 1.0)
+			{
+				z *= mut.postScale;
+				aux.DE *= mut.postScale;
+			}
+
+			// Post-offset
+			z.x += mut.postOffsetX;
+			z.y += mut.postOffsetY;
+			z.z += mut.postOffsetZ;
+
+			// Z-mix: blend between pre-mutation z and post-mutation z
+			if (mut.zMix < 1.0)
+			{
+				double m = mut.zMix;
+				double m1 = 1.0 - m;
+				z = z * m + preMutZ * m1;
+			}
+
+			// DE scale
+			if (mut.deScale != 1.0)
+			{
+				aux.DE *= mut.deScale;
 			}
 		}
 

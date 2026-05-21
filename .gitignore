@@ -164,3 +164,4 @@ test_fake_lights_v2/
 # Patch rejects
 *.rej
 *.orig
+mandelbulber2/qmake/mandelbulber2

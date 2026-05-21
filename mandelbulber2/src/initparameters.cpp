@@ -205,6 +205,41 @@ void InitParams(std::shared_ptr<cParameterContainer> par)
 		par->addParam("weight_dist_component", i, 1.0, 0.0, 1.0, morphAkima, paramStandard);
 		par->addParam("weight_color_component", i, 1.0, 0.0, 1.0, morphAkima, paramStandard);
 
+		// Formula Mutation parameters
+		par->addParam("mutation_enabled", i, false, morphLinear, paramStandard);
+		// Pre-transform
+		par->addParam("mutation_pre_rotation_x", i, 0.0, -360.0, 360.0, morphAkima, paramStandard);
+		par->addParam("mutation_pre_rotation_y", i, 0.0, -360.0, 360.0, morphAkima, paramStandard);
+		par->addParam("mutation_pre_rotation_z", i, 0.0, -360.0, 360.0, morphAkima, paramStandard);
+		par->addParam("mutation_pre_scale", i, 1.0, 0.001, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_pre_offset_x", i, 0.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_pre_offset_y", i, 0.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_pre_offset_z", i, 0.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_pre_abs_x", i, false, morphLinear, paramStandard);
+		par->addParam("mutation_pre_abs_y", i, false, morphLinear, paramStandard);
+		par->addParam("mutation_pre_abs_z", i, false, morphLinear, paramStandard);
+		// Post-transform
+		par->addParam("mutation_post_rotation_x", i, 0.0, -360.0, 360.0, morphAkima, paramStandard);
+		par->addParam("mutation_post_rotation_y", i, 0.0, -360.0, 360.0, morphAkima, paramStandard);
+		par->addParam("mutation_post_rotation_z", i, 0.0, -360.0, 360.0, morphAkima, paramStandard);
+		par->addParam("mutation_post_scale", i, 1.0, 0.001, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_post_offset_x", i, 0.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_post_offset_y", i, 0.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_post_offset_z", i, 0.0, -100.0, 100.0, morphAkima, paramStandard);
+		// Component swizzle
+		par->addParam("mutation_swizzle", i, 0, 0, 5, morphAkima, paramStandard);
+		// Fold injection
+		par->addParam("mutation_fold_type", i, 0, 0, 2, morphAkima, paramStandard);
+		par->addParam("mutation_fold_limit", i, 1.0, 0.001, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_fold_value", i, 2.0, 0.001, 200.0, morphAkima, paramStandard);
+		// Warp distortion
+		par->addParam("mutation_warp_type", i, 0, 0, 3, morphAkima, paramStandard);
+		par->addParam("mutation_warp_frequency", i, 1.0, 0.001, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_warp_amplitude", i, 0.0, 0.0, 100.0, morphAkima, paramStandard);
+		// Output control
+		par->addParam("mutation_z_mix", i, 1.0, 0.0, 1.0, morphAkima, paramStandard);
+		par->addParam("mutation_de_scale", i, 1.0, 0.001, 100.0, morphAkima, paramStandard);
+
 		par->addParam("julia_mode", i, false, morphLinear, paramStandard);
 		par->addParam("julia_c", i, CVector3(0.0, 0.0, 0.0), morphAkima, paramStandard);
 		par->addParam(

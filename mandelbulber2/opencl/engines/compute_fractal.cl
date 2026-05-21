@@ -485,6 +485,94 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 		{
 #endif
 
+		// -------------- Formula Mutation pre-processing (GPU) ---------------
+		float4 preMutZ = z;
+		if (consts->sequence.mutationParams[sequence].enabled)
+		{
+			__constant sClFormulaMutationParams *mut = &consts->sequence.mutationParams[sequence];
+
+			// Pre-abs
+			if (mut->preAbsX) z.x = fabs(z.x);
+			if (mut->preAbsY) z.y = fabs(z.y);
+			if (mut->preAbsZ) z.z = fabs(z.z);
+
+			// Pre-offset
+			z.x += mut->preOffsetX;
+			z.y += mut->preOffsetY;
+			z.z += mut->preOffsetZ;
+
+			// Pre-rotation
+			if (mut->preRotX != 0.0f || mut->preRotY != 0.0f || mut->preRotZ != 0.0f)
+			{
+				float3 zr;
+				zr.x = mut->preRotMatrix[0] * z.x + mut->preRotMatrix[1] * z.y + mut->preRotMatrix[2] * z.z;
+				zr.y = mut->preRotMatrix[3] * z.x + mut->preRotMatrix[4] * z.y + mut->preRotMatrix[5] * z.z;
+				zr.z = mut->preRotMatrix[6] * z.x + mut->preRotMatrix[7] * z.y + mut->preRotMatrix[8] * z.z;
+				z.x = zr.x; z.y = zr.y; z.z = zr.z;
+			}
+
+			// Pre-scale
+			if (mut->preScale != 1.0f)
+			{
+				z *= mut->preScale;
+				aux.DE *= mut->preScale;
+			}
+
+			// Fold injection
+			if (mut->foldType == 1) // box fold
+			{
+				if (fabs(z.x) > mut->foldLimit) z.x = sign(z.x) * mut->foldValue - z.x;
+				if (fabs(z.y) > mut->foldLimit) z.y = sign(z.y) * mut->foldValue - z.y;
+				if (fabs(z.z) > mut->foldLimit) z.z = sign(z.z) * mut->foldValue - z.z;
+			}
+			else if (mut->foldType == 2) // sphere fold
+			{
+				float rr = z.x * z.x + z.y * z.y + z.z * z.z;
+				float minR2 = mut->foldLimit * mut->foldLimit;
+				float fixR2 = mut->foldValue * mut->foldValue;
+				if (rr < minR2) { z *= fixR2 / minR2; aux.DE *= fixR2 / minR2; }
+				else if (rr < fixR2) { z *= fixR2 / rr; aux.DE *= fixR2 / rr; }
+			}
+
+			// Component swizzle
+			switch (mut->swizzle)
+			{
+				case 0: break;
+				case 1: { float t = z.y; z.y = z.z; z.z = t; } break;
+				case 2: { float t = z.x; z.x = z.y; z.y = t; } break;
+				case 3: { float t = z.x; z.x = z.y; z.y = z.z; z.z = t; } break;
+				case 4: { float t = z.z; z.z = z.y; z.y = z.x; z.x = t; } break;
+				case 5: { float t = z.x; z.x = z.z; z.z = t; } break;
+			}
+
+			// Warp distortion
+			if (mut->warpType == 1) // sine
+			{
+				z.x += mut->warpAmplitude * native_sin(z.y * mut->warpFrequency);
+				z.y += mut->warpAmplitude * native_sin(z.z * mut->warpFrequency);
+				z.z += mut->warpAmplitude * native_sin(z.x * mut->warpFrequency);
+			}
+			else if (mut->warpType == 2) // twist
+			{
+				float angle = z.z * mut->warpFrequency * M_PI_F / 180.0f;
+				float ca = native_cos(angle * mut->warpAmplitude);
+				float sa = native_sin(angle * mut->warpAmplitude);
+				float nx = z.x * ca - z.y * sa;
+				float ny = z.x * sa + z.y * ca;
+				z.x = nx; z.y = ny;
+			}
+			else if (mut->warpType == 3) // spiral
+			{
+				float r = native_sqrt(z.x * z.x + z.y * z.y);
+				float angle = r * mut->warpFrequency;
+				float ca = native_cos(angle * mut->warpAmplitude);
+				float sa = native_sin(angle * mut->warpAmplitude);
+				float nx = z.x * ca - z.y * sa;
+				float ny = z.x * sa + z.y * ca;
+				z.x = nx; z.y = ny;
+			}
+		}
+
 #if defined(IS_HYBRID) || defined(BOOLEAN_OPERATORS)
 			switch (sequence)
 			{
@@ -553,7 +641,51 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 
 #ifdef ITERATION_WEIGHT
 		}
+#endif
 
+		// -------------- Formula Mutation post-processing (GPU) ---------------
+		if (consts->sequence.mutationParams[sequence].enabled)
+		{
+			__constant sClFormulaMutationParams *mut = &consts->sequence.mutationParams[sequence];
+
+			// Post-rotation
+			if (mut->postRotX != 0.0f || mut->postRotY != 0.0f || mut->postRotZ != 0.0f)
+			{
+				float3 zr;
+				zr.x = mut->postRotMatrix[0] * z.x + mut->postRotMatrix[1] * z.y + mut->postRotMatrix[2] * z.z;
+				zr.y = mut->postRotMatrix[3] * z.x + mut->postRotMatrix[4] * z.y + mut->postRotMatrix[5] * z.z;
+				zr.z = mut->postRotMatrix[6] * z.x + mut->postRotMatrix[7] * z.y + mut->postRotMatrix[8] * z.z;
+				z.x = zr.x; z.y = zr.y; z.z = zr.z;
+			}
+
+			// Post-scale
+			if (mut->postScale != 1.0f)
+			{
+				z *= mut->postScale;
+				aux.DE *= mut->postScale;
+			}
+
+			// Post-offset
+			z.x += mut->postOffsetX;
+			z.y += mut->postOffsetY;
+			z.z += mut->postOffsetZ;
+
+			// Z-mix
+			if (mut->zMix < 1.0f)
+			{
+				float m = mut->zMix;
+				float m1 = 1.0f - m;
+				z = z * m + preMutZ * m1;
+			}
+
+			// DE scale
+			if (mut->deScale != 1.0f)
+			{
+				aux.DE *= mut->deScale;
+			}
+		}
+
+#ifdef ITERATION_WEIGHT
 		// Apply weight blending in hybrid mode
 		if (consts->sequence.isHybrid && effectiveWeight < 1.0f)
 		{

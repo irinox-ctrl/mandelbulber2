@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
 	InitSystem();
 
 	// Advanced Weight System build identifier
-	qDebug() << "Advanced Weight System v5.0 - build 20250520 - Weight system perfection";
+	qDebug() << "Advanced Weight System v6.0 - build 20250520 - Formula Mutation System";
 
 	// configure debug output
 	qInstallMessageHandler(myMessageOutput);
