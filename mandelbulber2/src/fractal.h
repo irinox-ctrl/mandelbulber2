@@ -227,6 +227,48 @@ struct sFractalBuffalo
 	bool posz;
 };
 
+// Mandalay Box V2 extended features
+struct sFractalMandalay
+{
+	// #1 Cylinder Fold
+	bool cylinderFoldEnabled;
+	double cylMinR;
+	double cylMix;
+	int startIterationsCy;
+	int stopIterationsCy;
+
+	// #2 Multi-Sequencing Clips
+	bool multiClipEnabled;
+	int numClips;
+	CVector4 fo2;
+	CVector4 fo3;
+	CVector4 fo4;
+	CVector4 g2;
+	CVector4 g3;
+	CVector4 g4;
+
+	// #3 Pre-Sphere Inversion (Kleinian-style)
+	bool preSphereInvertEnabled;
+	CVector4 invertCenter; // xyz = center, w = radius
+
+	// #4 Anisotrope Scale (per-axis)
+	bool anisotropeScaleEnabled;
+	CVector4 scale3D;
+
+	// #5 Z-Shear (parabolische diepte-vervorming)
+	bool zShearEnabled;
+	double zShearStrength;
+
+	// #6 Variable Clip Limits (adaptieve fo/g)
+	bool variableClipEnabled;
+	double foVary;
+	double gVary;
+
+	// #7 Quaternion Pre-Rotation
+	bool quatRotEnabled;
+	CVector4 quatRot; // xyz = imaginary, w = real
+};
+
 struct sFractalDonut
 {
 	double ringRadius;
@@ -877,6 +919,7 @@ struct sFractal
 	sFractalCombo4 combo4;
 	sFractalCombo5 combo5;
 	sFractalCombo6 combo6;
+	sFractalMandalay mandalay;
 
 #ifdef USE_OPENCL
 //	double customParameters[15];

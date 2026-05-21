@@ -237,6 +237,48 @@ typedef struct
 	cl_int posz;
 } sFractalBuffaloCl;
 
+// Mandalay Box V2 extended features
+typedef struct
+{
+	// #1 Cylinder Fold
+	cl_int cylinderFoldEnabled;
+	cl_float cylMinR;
+	cl_float cylMix;
+	cl_int startIterationsCy;
+	cl_int stopIterationsCy;
+
+	// #2 Multi-Sequencing Clips
+	cl_int multiClipEnabled;
+	cl_int numClips;
+	cl_float4 fo2;
+	cl_float4 fo3;
+	cl_float4 fo4;
+	cl_float4 g2;
+	cl_float4 g3;
+	cl_float4 g4;
+
+	// #3 Pre-Sphere Inversion
+	cl_int preSphereInvertEnabled;
+	cl_float4 invertCenter;
+
+	// #4 Anisotrope Scale
+	cl_int anisotropeScaleEnabled;
+	cl_float4 scale3D;
+
+	// #5 Z-Shear
+	cl_int zShearEnabled;
+	cl_float zShearStrength;
+
+	// #6 Variable Clip Limits
+	cl_int variableClipEnabled;
+	cl_float foVary;
+	cl_float gVary;
+
+	// #7 Quaternion Pre-Rotation
+	cl_int quatRotEnabled;
+	cl_float4 quatRot;
+} sFractalMandalayCI;
+
 typedef struct
 {
 	cl_float ringRadius;
@@ -884,6 +926,7 @@ typedef struct
 	sFractalCombo4Cl combo4;
 	sFractalCombo5Cl combo5;
 	sFractalCombo6Cl combo6;
+	sFractalMandalayCI mandalay;
 
 #ifdef USE_OPENCL
 //	cl_float customParameters[15];
@@ -1222,6 +1265,36 @@ inline sFractalCombo6Cl clCopySFractalCombo6Cl(const sFractalCombo6 &source)
 {
 	sFractalCombo6Cl target;
 	target.combo6 = enumMulti_combo6Cl(source.combo6);
+	return target;
+}
+
+inline sFractalMandalayCI clCopySFractalMandalayCI(const sFractalMandalay &source)
+{
+	sFractalMandalayCI target;
+	target.cylinderFoldEnabled = source.cylinderFoldEnabled;
+	target.cylMinR = source.cylMinR;
+	target.cylMix = source.cylMix;
+	target.startIterationsCy = source.startIterationsCy;
+	target.stopIterationsCy = source.stopIterationsCy;
+	target.multiClipEnabled = source.multiClipEnabled;
+	target.numClips = source.numClips;
+	target.fo2 = toClFloat4(source.fo2);
+	target.fo3 = toClFloat4(source.fo3);
+	target.fo4 = toClFloat4(source.fo4);
+	target.g2 = toClFloat4(source.g2);
+	target.g3 = toClFloat4(source.g3);
+	target.g4 = toClFloat4(source.g4);
+	target.preSphereInvertEnabled = source.preSphereInvertEnabled;
+	target.invertCenter = toClFloat4(source.invertCenter);
+	target.anisotropeScaleEnabled = source.anisotropeScaleEnabled;
+	target.scale3D = toClFloat4(source.scale3D);
+	target.zShearEnabled = source.zShearEnabled;
+	target.zShearStrength = source.zShearStrength;
+	target.variableClipEnabled = source.variableClipEnabled;
+	target.foVary = source.foVary;
+	target.gVary = source.gVary;
+	target.quatRotEnabled = source.quatRotEnabled;
+	target.quatRot = toClFloat4(source.quatRot);
 	return target;
 }
 
@@ -1669,6 +1742,7 @@ inline sFractalCl clCopySFractalCl(const sFractal &source)
 	target.combo4 = clCopySFractalCombo4Cl(source.combo4);
 	target.combo5 = clCopySFractalCombo5Cl(source.combo5);
 	target.combo6 = clCopySFractalCombo6Cl(source.combo6);
+	target.mandalay = clCopySFractalMandalayCI(source.mandalay);
 	return target;
 }
 #endif /* OPENCL_KERNEL_CODE */

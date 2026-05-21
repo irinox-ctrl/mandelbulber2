@@ -1379,6 +1379,564 @@
      </layout>
     </widget>
    </item>
+   <!-- =============== #7 Quaternion Pre-Rotation =============== -->
+   <item>
+    <widget class="MyGroupBox" name="groupCheck_mandalay_quat_rot_enabled">
+     <property name="title">
+      <string>Quaternion Pre-Rotation</string>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_mandalay_quat">
+      <property name="spacing">
+       <number>2</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_mandalay_quat_x">
+        <property name="text"><string>qi (X):</string></property>
+        <property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox4_mandalay_quat_rot_x">
+        <property name="decimals"><number>6</number></property>
+        <property name="minimum"><double>-10.000000000000000</double></property>
+        <property name="maximum"><double>10.000000000000000</double></property>
+        <property name="singleStep"><double>0.010000000000000</double></property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QLabel" name="label_mandalay_quat_y">
+        <property name="text"><string>qj (Y):</string></property>
+        <property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property>
+       </widget>
+      </item>
+      <item row="0" column="3">
+       <widget class="MyDoubleSpinBox" name="spinbox4_mandalay_quat_rot_y">
+        <property name="decimals"><number>6</number></property>
+        <property name="minimum"><double>-10.000000000000000</double></property>
+        <property name="maximum"><double>10.000000000000000</double></property>
+        <property name="singleStep"><double>0.010000000000000</double></property>
+       </widget>
+      </item>
+      <item row="0" column="4">
+       <widget class="QLabel" name="label_mandalay_quat_z">
+        <property name="text"><string>qk (Z):</string></property>
+        <property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property>
+       </widget>
+      </item>
+      <item row="0" column="5">
+       <widget class="MyDoubleSpinBox" name="spinbox4_mandalay_quat_rot_z">
+        <property name="decimals"><number>6</number></property>
+        <property name="minimum"><double>-10.000000000000000</double></property>
+        <property name="maximum"><double>10.000000000000000</double></property>
+        <property name="singleStep"><double>0.010000000000000</double></property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_mandalay_quat_w">
+        <property name="text"><string>qw (Real):</string></property>
+        <property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox4_mandalay_quat_rot_w">
+        <property name="decimals"><number>6</number></property>
+        <property name="minimum"><double>-10.000000000000000</double></property>
+        <property name="maximum"><double>10.000000000000000</double></property>
+        <property name="singleStep"><double>0.010000000000000</double></property>
+        <property name="value"><double>1.000000000000000</double></property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+
+   <!-- =============== #3 Pre-Sphere Inversion =============== -->
+   <item>
+    <widget class="MyGroupBox" name="groupCheck_mandalay_pre_sphere_invert_enabled">
+     <property name="title">
+      <string>Pre-Sphere Inversion (Kleinian)</string>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_mandalay_inv">
+      <property name="spacing">
+       <number>2</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_mandalay_inv_cx">
+        <property name="text"><string>Center X:</string></property>
+        <property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox4_mandalay_invert_center_x">
+        <property name="decimals"><number>6</number></property>
+        <property name="minimum"><double>-100.000000000000000</double></property>
+        <property name="maximum"><double>100.000000000000000</double></property>
+        <property name="singleStep"><double>0.100000000000000</double></property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QLabel" name="label_mandalay_inv_cy">
+        <property name="text"><string>Center Y:</string></property>
+        <property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property>
+       </widget>
+      </item>
+      <item row="0" column="3">
+       <widget class="MyDoubleSpinBox" name="spinbox4_mandalay_invert_center_y">
+        <property name="decimals"><number>6</number></property>
+        <property name="minimum"><double>-100.000000000000000</double></property>
+        <property name="maximum"><double>100.000000000000000</double></property>
+        <property name="singleStep"><double>0.100000000000000</double></property>
+       </widget>
+      </item>
+      <item row="0" column="4">
+       <widget class="QLabel" name="label_mandalay_inv_cz">
+        <property name="text"><string>Center Z:</string></property>
+        <property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property>
+       </widget>
+      </item>
+      <item row="0" column="5">
+       <widget class="MyDoubleSpinBox" name="spinbox4_mandalay_invert_center_z">
+        <property name="decimals"><number>6</number></property>
+        <property name="minimum"><double>-100.000000000000000</double></property>
+        <property name="maximum"><double>100.000000000000000</double></property>
+        <property name="singleStep"><double>0.100000000000000</double></property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_mandalay_inv_r">
+        <property name="text"><string>Radius:</string></property>
+        <property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox4_mandalay_invert_center_w">
+        <property name="decimals"><number>6</number></property>
+        <property name="minimum"><double>0.001000000000000</double></property>
+        <property name="maximum"><double>100.000000000000000</double></property>
+        <property name="singleStep"><double>0.100000000000000</double></property>
+        <property name="value"><double>1.000000000000000</double></property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+
+   <!-- =============== #1 Cylinder Fold =============== -->
+   <item>
+    <widget class="MyGroupBox" name="groupCheck_mandalay_cylinder_fold_enabled">
+     <property name="title">
+      <string>Cylinder Fold</string>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_mandalay_cyl">
+      <property name="spacing">
+       <number>2</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_mandalay_cyl_minr">
+        <property name="text"><string>Min R²:</string></property>
+        <property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_mandalay_cyl_min_r">
+        <property name="decimals"><number>6</number></property>
+        <property name="minimum"><double>0.000000000000000</double></property>
+        <property name="maximum"><double>100.000000000000000</double></property>
+        <property name="singleStep"><double>0.010000000000000</double></property>
+        <property name="value"><double>0.250000000000000</double></property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QLabel" name="label_mandalay_cyl_mix">
+        <property name="text"><string>Mix:</string></property>
+        <property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property>
+       </widget>
+      </item>
+      <item row="0" column="3">
+       <widget class="MyDoubleSpinBox" name="spinbox_mandalay_cyl_mix">
+        <property name="decimals"><number>4</number></property>
+        <property name="minimum"><double>0.000000000000000</double></property>
+        <property name="maximum"><double>1.000000000000000</double></property>
+        <property name="singleStep"><double>0.050000000000000</double></property>
+        <property name="value"><double>1.000000000000000</double></property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_mandalay_cyl_start">
+        <property name="text"><string>start at iteration:</string></property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="MySpinBox" name="spinboxInt_mandalay_start_iterations_cy">
+        <property name="minimum"><number>0</number></property>
+        <property name="maximum"><number>999</number></property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QLabel" name="label_mandalay_cyl_stop">
+        <property name="text"><string>stop at iteration:</string></property>
+       </widget>
+      </item>
+      <item row="1" column="3">
+       <widget class="MySpinBox" name="spinboxInt_mandalay_stop_iterations_cy">
+        <property name="minimum"><number>0</number></property>
+        <property name="maximum"><number>999</number></property>
+        <property name="value"><number>250</number></property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+
+   <!-- =============== #2 Multi-Sequencing Clips =============== -->
+   <item>
+    <widget class="MyGroupBox" name="groupCheck_mandalay_multi_clip_enabled">
+     <property name="title">
+      <string>Multi-Sequencing Clips</string>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_mandalay_mc">
+      <property name="spacing">
+       <number>2</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_mandalay_num_clips">
+        <property name="text"><string>Number of clips:</string></property>
+        <property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="MySpinBox" name="spinboxInt_mandalay_num_clips">
+        <property name="minimum"><number>1</number></property>
+        <property name="maximum"><number>4</number></property>
+        <property name="value"><number>1</number></property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_mandalay_fo2">
+        <property name="text"><string>fo2:</string></property>
+        <property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox4_mandalay_fo2_x">
+        <property name="decimals"><number>6</number></property>
+        <property name="minimum"><double>-99.990000000000000</double></property>
+        <property name="singleStep"><double>0.010000000000000</double></property>
+        <property name="value"><double>0.555000000000000</double></property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="MyDoubleSpinBox" name="spinbox4_mandalay_fo2_y">
+        <property name="decimals"><number>6</number></property>
+        <property name="minimum"><double>-99.990000000000000</double></property>
+        <property name="singleStep"><double>0.010000000000000</double></property>
+        <property name="value"><double>0.555000000000000</double></property>
+       </widget>
+      </item>
+      <item row="1" column="3">
+       <widget class="MyDoubleSpinBox" name="spinbox4_mandalay_fo2_z">
+        <property name="decimals"><number>6</number></property>
+        <property name="minimum"><double>-99.990000000000000</double></property>
+        <property name="singleStep"><double>0.010000000000000</double></property>
+        <property name="value"><double>0.555000000000000</double></property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_mandalay_g2">
+        <property name="text"><string>g2:</string></property>
+        <property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox4_mandalay_g2_x">
+        <property name="decimals"><number>6</number></property>
+        <property name="minimum"><double>-99.990000000000000</double></property>
+        <property name="singleStep"><double>0.010000000000000</double></property>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <widget class="MyDoubleSpinBox" name="spinbox4_mandalay_g2_y">
+        <property name="decimals"><number>6</number></property>
+        <property name="minimum"><double>-99.990000000000000</double></property>
+        <property name="singleStep"><double>0.010000000000000</double></property>
+       </widget>
+      </item>
+      <item row="2" column="3">
+       <widget class="MyDoubleSpinBox" name="spinbox4_mandalay_g2_z">
+        <property name="decimals"><number>6</number></property>
+        <property name="minimum"><double>-99.990000000000000</double></property>
+        <property name="singleStep"><double>0.010000000000000</double></property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_mandalay_fo3">
+        <property name="text"><string>fo3:</string></property>
+        <property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox4_mandalay_fo3_x">
+        <property name="decimals"><number>6</number></property>
+        <property name="minimum"><double>-99.990000000000000</double></property>
+        <property name="singleStep"><double>0.010000000000000</double></property>
+        <property name="value"><double>0.555000000000000</double></property>
+       </widget>
+      </item>
+      <item row="3" column="2">
+       <widget class="MyDoubleSpinBox" name="spinbox4_mandalay_fo3_y">
+        <property name="decimals"><number>6</number></property>
+        <property name="minimum"><double>-99.990000000000000</double></property>
+        <property name="singleStep"><double>0.010000000000000</double></property>
+        <property name="value"><double>0.555000000000000</double></property>
+       </widget>
+      </item>
+      <item row="3" column="3">
+       <widget class="MyDoubleSpinBox" name="spinbox4_mandalay_fo3_z">
+        <property name="decimals"><number>6</number></property>
+        <property name="minimum"><double>-99.990000000000000</double></property>
+        <property name="singleStep"><double>0.010000000000000</double></property>
+        <property name="value"><double>0.555000000000000</double></property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="label_mandalay_g3">
+        <property name="text"><string>g3:</string></property>
+        <property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox4_mandalay_g3_x">
+        <property name="decimals"><number>6</number></property>
+        <property name="minimum"><double>-99.990000000000000</double></property>
+        <property name="singleStep"><double>0.010000000000000</double></property>
+       </widget>
+      </item>
+      <item row="4" column="2">
+       <widget class="MyDoubleSpinBox" name="spinbox4_mandalay_g3_y">
+        <property name="decimals"><number>6</number></property>
+        <property name="minimum"><double>-99.990000000000000</double></property>
+        <property name="singleStep"><double>0.010000000000000</double></property>
+       </widget>
+      </item>
+      <item row="4" column="3">
+       <widget class="MyDoubleSpinBox" name="spinbox4_mandalay_g3_z">
+        <property name="decimals"><number>6</number></property>
+        <property name="minimum"><double>-99.990000000000000</double></property>
+        <property name="singleStep"><double>0.010000000000000</double></property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QLabel" name="label_mandalay_fo4">
+        <property name="text"><string>fo4:</string></property>
+        <property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox4_mandalay_fo4_x">
+        <property name="decimals"><number>6</number></property>
+        <property name="minimum"><double>-99.990000000000000</double></property>
+        <property name="singleStep"><double>0.010000000000000</double></property>
+        <property name="value"><double>0.555000000000000</double></property>
+       </widget>
+      </item>
+      <item row="5" column="2">
+       <widget class="MyDoubleSpinBox" name="spinbox4_mandalay_fo4_y">
+        <property name="decimals"><number>6</number></property>
+        <property name="minimum"><double>-99.990000000000000</double></property>
+        <property name="singleStep"><double>0.010000000000000</double></property>
+        <property name="value"><double>0.555000000000000</double></property>
+       </widget>
+      </item>
+      <item row="5" column="3">
+       <widget class="MyDoubleSpinBox" name="spinbox4_mandalay_fo4_z">
+        <property name="decimals"><number>6</number></property>
+        <property name="minimum"><double>-99.990000000000000</double></property>
+        <property name="singleStep"><double>0.010000000000000</double></property>
+        <property name="value"><double>0.555000000000000</double></property>
+       </widget>
+      </item>
+      <item row="6" column="0">
+       <widget class="QLabel" name="label_mandalay_g4">
+        <property name="text"><string>g4:</string></property>
+        <property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property>
+       </widget>
+      </item>
+      <item row="6" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox4_mandalay_g4_x">
+        <property name="decimals"><number>6</number></property>
+        <property name="minimum"><double>-99.990000000000000</double></property>
+        <property name="singleStep"><double>0.010000000000000</double></property>
+       </widget>
+      </item>
+      <item row="6" column="2">
+       <widget class="MyDoubleSpinBox" name="spinbox4_mandalay_g4_y">
+        <property name="decimals"><number>6</number></property>
+        <property name="minimum"><double>-99.990000000000000</double></property>
+        <property name="singleStep"><double>0.010000000000000</double></property>
+       </widget>
+      </item>
+      <item row="6" column="3">
+       <widget class="MyDoubleSpinBox" name="spinbox4_mandalay_g4_z">
+        <property name="decimals"><number>6</number></property>
+        <property name="minimum"><double>-99.990000000000000</double></property>
+        <property name="singleStep"><double>0.010000000000000</double></property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+
+   <!-- =============== #4 Anisotrope Scale =============== -->
+   <item>
+    <widget class="MyGroupBox" name="groupCheck_mandalay_anisotrope_scale_enabled">
+     <property name="title">
+      <string>Anisotrope Scale (per-axis)</string>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_mandalay_as">
+      <property name="spacing">
+       <number>2</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_mandalay_sx">
+        <property name="text"><string>Scale X:</string></property>
+        <property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox4_mandalay_scale_3d_x">
+        <property name="decimals"><number>6</number></property>
+        <property name="minimum"><double>-100.000000000000000</double></property>
+        <property name="maximum"><double>100.000000000000000</double></property>
+        <property name="singleStep"><double>0.100000000000000</double></property>
+        <property name="value"><double>2.000000000000000</double></property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QLabel" name="label_mandalay_sy">
+        <property name="text"><string>Scale Y:</string></property>
+        <property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property>
+       </widget>
+      </item>
+      <item row="0" column="3">
+       <widget class="MyDoubleSpinBox" name="spinbox4_mandalay_scale_3d_y">
+        <property name="decimals"><number>6</number></property>
+        <property name="minimum"><double>-100.000000000000000</double></property>
+        <property name="maximum"><double>100.000000000000000</double></property>
+        <property name="singleStep"><double>0.100000000000000</double></property>
+        <property name="value"><double>2.000000000000000</double></property>
+       </widget>
+      </item>
+      <item row="0" column="4">
+       <widget class="QLabel" name="label_mandalay_sz">
+        <property name="text"><string>Scale Z:</string></property>
+        <property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property>
+       </widget>
+      </item>
+      <item row="0" column="5">
+       <widget class="MyDoubleSpinBox" name="spinbox4_mandalay_scale_3d_z">
+        <property name="decimals"><number>6</number></property>
+        <property name="minimum"><double>-100.000000000000000</double></property>
+        <property name="maximum"><double>100.000000000000000</double></property>
+        <property name="singleStep"><double>0.100000000000000</double></property>
+        <property name="value"><double>2.000000000000000</double></property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+
+   <!-- =============== #5 Z-Shear =============== -->
+   <item>
+    <widget class="MyGroupBox" name="groupCheck_mandalay_z_shear_enabled">
+     <property name="title">
+      <string>Z-Shear (Parabolische Diepte)</string>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_mandalay_zs">
+      <property name="spacing">
+       <number>2</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_mandalay_zshear">
+        <property name="text"><string>Strength:</string></property>
+        <property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_mandalay_z_shear_strength">
+        <property name="decimals"><number>6</number></property>
+        <property name="minimum"><double>-10.000000000000000</double></property>
+        <property name="maximum"><double>10.000000000000000</double></property>
+        <property name="singleStep"><double>0.010000000000000</double></property>
+        <property name="value"><double>0.100000000000000</double></property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+
+   <!-- =============== #6 Variable Clip Limits =============== -->
+   <item>
+    <widget class="MyGroupBox" name="groupCheck_mandalay_variable_clip_enabled">
+     <property name="title">
+      <string>Variable Clip Limits (Adaptive)</string>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_mandalay_vc">
+      <property name="spacing">
+       <number>2</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_mandalay_fovary">
+        <property name="text"><string>fo vary:</string></property>
+        <property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_mandalay_fo_vary">
+        <property name="decimals"><number>6</number></property>
+        <property name="minimum"><double>-5.000000000000000</double></property>
+        <property name="maximum"><double>5.000000000000000</double></property>
+        <property name="singleStep"><double>0.010000000000000</double></property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QLabel" name="label_mandalay_gvary">
+        <property name="text"><string>g vary:</string></property>
+        <property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property>
+       </widget>
+      </item>
+      <item row="0" column="3">
+       <widget class="MyDoubleSpinBox" name="spinbox_mandalay_g_vary">
+        <property name="decimals"><number>6</number></property>
+        <property name="minimum"><double>-5.000000000000000</double></property>
+        <property name="maximum"><double>5.000000000000000</double></property>
+        <property name="singleStep"><double>0.010000000000000</double></property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+
    <item>
     <widget class="MyGroupBox" name="groupCheck_info">
      <property name="title">

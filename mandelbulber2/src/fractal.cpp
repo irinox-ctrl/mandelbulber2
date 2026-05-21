@@ -116,6 +116,32 @@ sFractal::sFractal(const std::shared_ptr<cParameterContainer> container)
 	buffalo.absz = container->Get<bool>("buffalo_abs_z");
 	buffalo.posz = container->Get<bool>("buffalo_pos_z");
 
+	// Mandalay Box V2 extended features
+	mandalay.cylinderFoldEnabled = container->Get<bool>("mandalay_cylinder_fold_enabled");
+	mandalay.cylMinR = container->Get<double>("mandalay_cyl_min_r");
+	mandalay.cylMix = container->Get<double>("mandalay_cyl_mix");
+	mandalay.startIterationsCy = container->Get<int>("mandalay_start_iterations_cy");
+	mandalay.stopIterationsCy = container->Get<int>("mandalay_stop_iterations_cy");
+	mandalay.multiClipEnabled = container->Get<bool>("mandalay_multi_clip_enabled");
+	mandalay.numClips = container->Get<int>("mandalay_num_clips");
+	mandalay.fo2 = container->Get<CVector4>("mandalay_fo2");
+	mandalay.fo3 = container->Get<CVector4>("mandalay_fo3");
+	mandalay.fo4 = container->Get<CVector4>("mandalay_fo4");
+	mandalay.g2 = container->Get<CVector4>("mandalay_g2");
+	mandalay.g3 = container->Get<CVector4>("mandalay_g3");
+	mandalay.g4 = container->Get<CVector4>("mandalay_g4");
+	mandalay.preSphereInvertEnabled = container->Get<bool>("mandalay_pre_sphere_invert_enabled");
+	mandalay.invertCenter = container->Get<CVector4>("mandalay_invert_center");
+	mandalay.anisotropeScaleEnabled = container->Get<bool>("mandalay_anisotrope_scale_enabled");
+	mandalay.scale3D = container->Get<CVector4>("mandalay_scale_3d");
+	mandalay.zShearEnabled = container->Get<bool>("mandalay_z_shear_enabled");
+	mandalay.zShearStrength = container->Get<double>("mandalay_z_shear_strength");
+	mandalay.variableClipEnabled = container->Get<bool>("mandalay_variable_clip_enabled");
+	mandalay.foVary = container->Get<double>("mandalay_fo_vary");
+	mandalay.gVary = container->Get<double>("mandalay_g_vary");
+	mandalay.quatRotEnabled = container->Get<bool>("mandalay_quat_rot_enabled");
+	mandalay.quatRot = container->Get<CVector4>("mandalay_quat_rot");
+
 	donut.ringRadius = container->Get<double>("donut_ring_radius");
 	donut.ringThickness = container->Get<double>("donut_ring_thickness");
 	donut.factor = container->Get<double>("donut_factor");

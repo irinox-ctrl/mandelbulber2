@@ -30,6 +30,38 @@ void cFractalMandalayBoxV2::FormulaCode(CVector4 &z, const sFractal *fractal, sE
 	double colorAdd = 0.0;
 	double rrCol = 0.0;
 
+	// === #7 Quaternion Pre-Rotation (4D → 3D) ===
+	if (fractal->mandalay.quatRotEnabled)
+	{
+		double qw = fractal->mandalay.quatRot.w;
+		double qi = fractal->mandalay.quatRot.x;
+		double qj = fractal->mandalay.quatRot.y;
+		double qk = fractal->mandalay.quatRot.z;
+		// q * z * q^-1 (z as pure quaternion)
+		double tx = qw*z.x + qj*z.z - qk*z.y;
+		double ty = qw*z.y + qk*z.x - qi*z.z;
+		double tz = qw*z.z + qi*z.y - qj*z.x;
+		double tw = -(qi*z.x + qj*z.y + qk*z.z);
+		z.x = tx*qw - tw*qi - ty*qk + tz*qj;
+		z.y = ty*qw - tw*qj - tz*qi + tx*qk;
+		z.z = tz*qw - tw*qk - tx*qj + ty*qi;
+	}
+
+	// === #3 Pre-Sphere Inversion (Kleinian-style Möbius) ===
+	if (fractal->mandalay.preSphereInvertEnabled)
+	{
+		CVector4 c_inv = fractal->mandalay.invertCenter;
+		double radius = c_inv.w;
+		CVector4 diff = z - CVector4(c_inv.x, c_inv.y, c_inv.z, 0.0);
+		double dist2 = diff.Dot(diff);
+		if (dist2 < radius * radius && dist2 > 1e-21)
+		{
+			double factor = radius * radius / dist2;
+			z = CVector4(c_inv.x, c_inv.y, c_inv.z, 0.0) + diff * factor;
+			aux.DE *= factor;
+		}
+	}
+
 	// tglad fold
 	if (fractal->transformCommon.functionEnabledAFalse
 			&& aux.i >= fractal->transformCommon.startIterationsA
@@ -63,48 +95,102 @@ void cFractalMandalayBoxV2::FormulaCode(CVector4 &z, const sFractal *fractal, sE
 		z = fabs(z);
 	}
 
+	// === #6 Variable Clip Limits (adaptive fo/g) ===
 	CVector4 fo = fractal->transformCommon.additionConstant0555;
 	CVector4 g = fractal->transformCommon.offsetA000;
-	CVector4 p = z;
-	CVector4 q = z;
+	if (fractal->mandalay.variableClipEnabled)
+	{
+		double adaptive = 1.0 + fractal->mandalay.foVary * (aux.r - 1.0);
+		fo *= adaptive;
+		double gAdaptive = 1.0 + fractal->mandalay.gVary * (aux.r - 1.0);
+		g *= gAdaptive;
+	}
 
-	double t1, t2, v, v1;
+	// === Mandalay 3D clip (with optional multi-sequencing #2) ===
+	int numClipPasses = 1;
+	CVector4 foArray[4];
+	CVector4 gArray[4];
+	foArray[0] = fo;
+	gArray[0] = g;
 
-	if(p.z > p.y) swap(p.y, p.z);
-	t1 = p.x - 2.0 * fo.x;
-	t2 = p.y - 4.0 * fo.x;
-	v = max(fabs(t1 + fo.x) - fo.x, t2);
-	v1 = max(t1 - g.x, p.y);
-	v = min(v, v1);
-	q.x = min(v, p.x);
+	if (fractal->mandalay.multiClipEnabled && fractal->mandalay.numClips > 1)
+	{
+		numClipPasses = min(fractal->mandalay.numClips, 4);
+		if (numClipPasses > 1) { foArray[1] = fractal->mandalay.fo2; gArray[1] = fractal->mandalay.g2; }
+		if (numClipPasses > 2) { foArray[2] = fractal->mandalay.fo3; gArray[2] = fractal->mandalay.g3; }
+		if (numClipPasses > 3) { foArray[3] = fractal->mandalay.fo4; gArray[3] = fractal->mandalay.g4; }
+	}
 
-	if (!fractal->transformCommon.functionEnabledSwFalse) p = z;
-	else p = q;
+	for (int clip = 0; clip < numClipPasses; clip++)
+	{
+		CVector4 cfo = foArray[clip];
+		CVector4 cg = gArray[clip];
+		CVector4 p = z;
+		CVector4 q = z;
+		double t1, t2, v, v1;
 
-	if(p.x > p.z) swap(p.z, p.x);
-	t1 = p.y - 2.0 * fo.y;
-	t2 = p.z - 4.0 * fo.y;
-	v = max(fabs(t1 + fo.y) - fo.y, t2);
-	v1 = max(t1 - g.y, p.z);
-	v = min(v, v1);
-	q.y = min(v, p.y);
+		if(p.z > p.y) swap(p.y, p.z);
+		t1 = p.x - 2.0 * cfo.x;
+		t2 = p.y - 4.0 * cfo.x;
+		v = max(fabs(t1 + cfo.x) - cfo.x, t2);
+		v1 = max(t1 - cg.x, p.y);
+		v = min(v, v1);
+		q.x = min(v, p.x);
 
-	if (!fractal->transformCommon.functionEnabledSwFalse) p = z;
-	else p = q;
+		if (!fractal->transformCommon.functionEnabledSwFalse) p = z;
+		else p = q;
 
-	if(p.y > p.x) swap(p.x, p.y);
-	t1 = p.z - 2.0 * fo.z;
-	t2 = p.x - 4.0 * fo.z;
-	v = max(fabs(t1 + fo.z) - fo.z, t2);
-	v1 = max(t1 - g.z, p.x);
-	v = min(v, v1);
-	q.z = min(v, p.z);
+		if(p.x > p.z) swap(p.z, p.x);
+		t1 = p.y - 2.0 * cfo.y;
+		t2 = p.z - 4.0 * cfo.y;
+		v = max(fabs(t1 + cfo.y) - cfo.y, t2);
+		v1 = max(t1 - cg.y, p.z);
+		v = min(v, v1);
+		q.y = min(v, p.y);
 
-	z = q;
+		if (!fractal->transformCommon.functionEnabledSwFalse) p = z;
+		else p = q;
+
+		if(p.y > p.x) swap(p.x, p.y);
+		t1 = p.z - 2.0 * cfo.z;
+		t2 = p.x - 4.0 * cfo.z;
+		v = max(fabs(t1 + cfo.z) - cfo.z, t2);
+		v1 = max(t1 - cg.z, p.x);
+		v = min(v, v1);
+		q.z = min(v, p.z);
+
+		z = q;
+	}
 
 	z.x *= signX;
 	z.y *= signY;
 	z.z *= signZ;
+
+	// === #1 Cylinder Fold (XY-plane, Z unaffected) ===
+	if (fractal->mandalay.cylinderFoldEnabled
+			&& aux.i >= fractal->mandalay.startIterationsCy
+			&& aux.i < fractal->mandalay.stopIterationsCy)
+	{
+		double rr_cyl = z.x * z.x + z.y * z.y;
+		double minCylR = fractal->mandalay.cylMinR;
+		double cylMix = fractal->mandalay.cylMix;
+		double useScale_cyl = aux.actualScaleA + fractal->transformCommon.scale2;
+		double cyl_dividend = (rr_cyl < minCylR) ? minCylR : min(rr_cyl, 1.0);
+		if (cyl_dividend > 1e-21)
+		{
+			double cyl_m = useScale_cyl / cyl_dividend;
+			z.x *= (cyl_m - 1.0) * cylMix + 1.0;
+			z.y *= (cyl_m - 1.0) * cylMix + 1.0;
+			aux.DE = aux.DE * fabs(cyl_m) + 1.0;
+		}
+	}
+
+	// === #5 Z-Shear / Parabolische Diepte-Vervorming ===
+	if (fractal->mandalay.zShearEnabled)
+	{
+		double r_xy = z.x * z.x + z.y * z.y;
+		z.z += fractal->mandalay.zShearStrength * r_xy;
+	}
 
 	// spherical fold
 	double useScale = 1.0;
@@ -128,10 +214,23 @@ void cFractalMandalayBoxV2::FormulaCode(CVector4 &z, const sFractal *fractal, sE
 		}
 	}
 
-	// scale
-	useScale = aux.actualScaleA + fractal->transformCommon.scale2;
-	z *= useScale;
-	aux.DE = aux.DE * fabs(useScale) + 1.0;
+	// === #4 Anisotrope Scale (per-axis) ===
+	if (fractal->mandalay.anisotropeScaleEnabled)
+	{
+		CVector4 s3d = fractal->mandalay.scale3D;
+		z.x *= s3d.x;
+		z.y *= s3d.y;
+		z.z *= s3d.z;
+		double maxScale = max(fabs(s3d.x), max(fabs(s3d.y), fabs(s3d.z)));
+		aux.DE = aux.DE * maxScale + 1.0;
+	}
+	else
+	{
+		// original uniform scale
+		useScale = aux.actualScaleA + fractal->transformCommon.scale2;
+		z *= useScale;
+		aux.DE = aux.DE * fabs(useScale) + 1.0;
+	}
 
 	if (fractal->transformCommon.functionEnabledKFalse
 			&& aux.i >= fractal->transformCommon.startIterationsK
@@ -169,8 +268,8 @@ void cFractalMandalayBoxV2::FormulaCode(CVector4 &z, const sFractal *fractal, sE
 	//aux.dist
 	if (fractal->transformCommon.functionEnabledOFalse)
 	{
-		p = fabs(z);
-		aux.DE0 = max(p.x, max(p.y, p.z));
+		CVector4 pd = fabs(z);
+		aux.DE0 = max(pd.x, max(pd.y, pd.z));
 		aux.dist = min(aux.dist, aux.DE0 / aux.DE);
 	}
 }

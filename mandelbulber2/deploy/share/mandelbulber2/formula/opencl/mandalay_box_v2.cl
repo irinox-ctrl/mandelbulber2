@@ -19,6 +19,43 @@ REAL4 MandalayBoxV2Iteration(REAL4 z, __constant sFractalCl *fractal, sExtendedA
 	REAL colorAdd = 0.0f;
 	REAL rrCol = 0.0f;
 
+	// === #7 Quaternion Pre-Rotation (4D → 3D) ===
+	if (fractal->mandalay.quatRotEnabled)
+	{
+		REAL qw = fractal->mandalay.quatRot.w;
+		REAL qi = fractal->mandalay.quatRot.x;
+		REAL qj = fractal->mandalay.quatRot.y;
+		REAL qk = fractal->mandalay.quatRot.z;
+		REAL tx = qw*z.x + qj*z.z - qk*z.y;
+		REAL ty = qw*z.y + qk*z.x - qi*z.z;
+		REAL tz = qw*z.z + qi*z.y - qj*z.x;
+		REAL tw = -(qi*z.x + qj*z.y + qk*z.z);
+		z.x = tx*qw - tw*qi - ty*qk + tz*qj;
+		z.y = ty*qw - tw*qj - tz*qi + tx*qk;
+		z.z = tz*qw - tw*qk - tx*qj + ty*qi;
+	}
+
+	// === #3 Pre-Sphere Inversion (Kleinian-style Möbius) ===
+	if (fractal->mandalay.preSphereInvertEnabled)
+	{
+		REAL4 c_inv = fractal->mandalay.invertCenter;
+		REAL radius = c_inv.w;
+		REAL4 diff;
+		diff.x = z.x - c_inv.x;
+		diff.y = z.y - c_inv.y;
+		diff.z = z.z - c_inv.z;
+		diff.w = 0.0f;
+		REAL dist2 = dot(diff, diff);
+		if (dist2 < radius * radius && dist2 > 1e-21f)
+		{
+			REAL factor = radius * radius / dist2;
+			z.x = c_inv.x + diff.x * factor;
+			z.y = c_inv.y + diff.y * factor;
+			z.z = c_inv.z + diff.z * factor;
+			aux->DE *= factor;
+		}
+	}
+
 	// tglad fold
 	if (fractal->transformCommon.functionEnabledAFalse
 			&& aux->i >= fractal->transformCommon.startIterationsA
@@ -52,67 +89,121 @@ REAL4 MandalayBoxV2Iteration(REAL4 z, __constant sFractalCl *fractal, sExtendedA
 		z = fabs(z);
 	}
 
+	// === #6 Variable Clip Limits (adaptive fo/g) ===
 	REAL4 fo = fractal->transformCommon.additionConstant0555;
 	REAL4 g = fractal->transformCommon.offsetA000;
-	REAL4 p = z;
-	REAL4 q = z;
-
-	REAL t1, t2, v, v1;
-
-	if (p.z > p.y)
+	if (fractal->mandalay.variableClipEnabled)
 	{
-		REAL temp = p.y;
-		p.y = p.z;
-		p.z = temp;
+		REAL adaptive = 1.0f + fractal->mandalay.foVary * (aux->r - 1.0f);
+		fo *= adaptive;
+		REAL gAdaptive = 1.0f + fractal->mandalay.gVary * (aux->r - 1.0f);
+		g *= gAdaptive;
 	}
-	t1 = p.x - 2.0f * fo.x;
-	t2 = p.y - 4.0f * fo.x;
-	v = max(fabs(t1 + fo.x) - fo.x, t2);
-	v1 = max(t1 - g.x, p.y);
-	v = min(v, v1);
-	q.x = min(v, p.x);
 
-	if (!fractal->transformCommon.functionEnabledSwFalse)
-		p = z;
-	else
-		p = q;
+	// === Mandalay 3D clip (with optional multi-sequencing #2) ===
+	int numClipPasses = 1;
+	REAL4 foArr[4];
+	REAL4 gArr[4];
+	foArr[0] = fo;
+	gArr[0] = g;
 
-	if (p.x > p.z)
+	if (fractal->mandalay.multiClipEnabled && fractal->mandalay.numClips > 1)
 	{
-		REAL temp = p.z;
-		p.z = p.x;
-		p.x = temp;
+		numClipPasses = min(fractal->mandalay.numClips, 4);
+		if (numClipPasses > 1) { foArr[1] = fractal->mandalay.fo2; gArr[1] = fractal->mandalay.g2; }
+		if (numClipPasses > 2) { foArr[2] = fractal->mandalay.fo3; gArr[2] = fractal->mandalay.g3; }
+		if (numClipPasses > 3) { foArr[3] = fractal->mandalay.fo4; gArr[3] = fractal->mandalay.g4; }
 	}
-	t1 = p.y - 2.0f * fo.y;
-	t2 = p.z - 4.0f * fo.y;
-	v = max(fabs(t1 + fo.y) - fo.y, t2);
-	v1 = max(t1 - g.y, p.z);
-	v = min(v, v1);
-	q.y = min(v, p.y);
 
-	if (!fractal->transformCommon.functionEnabledSwFalse)
-		p = z;
-	else
-		p = q;
-
-	if (p.y > p.x)
+	for (int clipIdx = 0; clipIdx < numClipPasses; clipIdx++)
 	{
-		REAL temp = p.x;
-		p.x = p.y;
-		p.y = temp;
-	}
-	t1 = p.z - 2.0f * fo.z;
-	t2 = p.x - 4.0f * fo.z;
-	v = max(fabs(t1 + fo.z) - fo.z, t2);
-	v1 = max(t1 - g.z, p.x);
-	v = min(v, v1);
-	q.z = min(v, p.z);
+		REAL4 cfo = foArr[clipIdx];
+		REAL4 cg = gArr[clipIdx];
+		REAL4 p = z;
+		REAL4 q = z;
+		REAL t1, t2, v, v1;
 
-	z = q;
+		if (p.z > p.y)
+		{
+			REAL temp = p.y;
+			p.y = p.z;
+			p.z = temp;
+		}
+		t1 = p.x - 2.0f * cfo.x;
+		t2 = p.y - 4.0f * cfo.x;
+		v = max(fabs(t1 + cfo.x) - cfo.x, t2);
+		v1 = max(t1 - cg.x, p.y);
+		v = min(v, v1);
+		q.x = min(v, p.x);
+
+		if (!fractal->transformCommon.functionEnabledSwFalse)
+			p = z;
+		else
+			p = q;
+
+		if (p.x > p.z)
+		{
+			REAL temp = p.z;
+			p.z = p.x;
+			p.x = temp;
+		}
+		t1 = p.y - 2.0f * cfo.y;
+		t2 = p.z - 4.0f * cfo.y;
+		v = max(fabs(t1 + cfo.y) - cfo.y, t2);
+		v1 = max(t1 - cg.y, p.z);
+		v = min(v, v1);
+		q.y = min(v, p.y);
+
+		if (!fractal->transformCommon.functionEnabledSwFalse)
+			p = z;
+		else
+			p = q;
+
+		if (p.y > p.x)
+		{
+			REAL temp = p.x;
+			p.x = p.y;
+			p.y = temp;
+		}
+		t1 = p.z - 2.0f * cfo.z;
+		t2 = p.x - 4.0f * cfo.z;
+		v = max(fabs(t1 + cfo.z) - cfo.z, t2);
+		v1 = max(t1 - cg.z, p.x);
+		v = min(v, v1);
+		q.z = min(v, p.z);
+
+		z = q;
+	}
 
 	z.x *= signX;
 	z.y *= signY;
 	z.z *= signZ;
+
+	// === #1 Cylinder Fold (XY-plane, Z unaffected) ===
+	if (fractal->mandalay.cylinderFoldEnabled
+			&& aux->i >= fractal->mandalay.startIterationsCy
+			&& aux->i < fractal->mandalay.stopIterationsCy)
+	{
+		REAL rr_cyl = z.x * z.x + z.y * z.y;
+		REAL minCylR = fractal->mandalay.cylMinR;
+		REAL cylMix = fractal->mandalay.cylMix;
+		REAL useScale_cyl = aux->actualScaleA + fractal->transformCommon.scale2;
+		REAL cyl_dividend = (rr_cyl < minCylR) ? minCylR : min(rr_cyl, 1.0f);
+		if (cyl_dividend > 1e-21f)
+		{
+			REAL cyl_m = useScale_cyl / cyl_dividend;
+			z.x *= (cyl_m - 1.0f) * cylMix + 1.0f;
+			z.y *= (cyl_m - 1.0f) * cylMix + 1.0f;
+			aux->DE = aux->DE * fabs(cyl_m) + 1.0f;
+		}
+	}
+
+	// === #5 Z-Shear / Parabolische Diepte-Vervorming ===
+	if (fractal->mandalay.zShearEnabled)
+	{
+		REAL r_xy = z.x * z.x + z.y * z.y;
+		z.z += fractal->mandalay.zShearStrength * r_xy;
+	}
 
 	// spherical fold
 	REAL useScale = 1.0f;
@@ -136,10 +227,23 @@ REAL4 MandalayBoxV2Iteration(REAL4 z, __constant sFractalCl *fractal, sExtendedA
 		}
 	}
 
-	// scale
-	useScale = aux->actualScaleA + fractal->transformCommon.scale2;
-	z *= useScale;
-	aux->DE = aux->DE * fabs(useScale) + 1.0f;
+	// === #4 Anisotrope Scale (per-axis) ===
+	if (fractal->mandalay.anisotropeScaleEnabled)
+	{
+		REAL4 s3d = fractal->mandalay.scale3D;
+		z.x *= s3d.x;
+		z.y *= s3d.y;
+		z.z *= s3d.z;
+		REAL maxScale = max(fabs(s3d.x), max(fabs(s3d.y), fabs(s3d.z)));
+		aux->DE = aux->DE * maxScale + 1.0f;
+	}
+	else
+	{
+		// original uniform scale
+		useScale = aux->actualScaleA + fractal->transformCommon.scale2;
+		z *= useScale;
+		aux->DE = aux->DE * fabs(useScale) + 1.0f;
+	}
 
 	if (fractal->transformCommon.functionEnabledKFalse
 			&& aux->i >= fractal->transformCommon.startIterationsK
@@ -178,7 +282,7 @@ REAL4 MandalayBoxV2Iteration(REAL4 z, __constant sFractalCl *fractal, sExtendedA
 	// aux->dist
 	if (fractal->transformCommon.functionEnabledOFalse)
 	{
-		p = fabs(z);
+		REAL4 p = fabs(z);
 		aux->DE0 = max(p.x, max(p.y, p.z));
 		aux->dist = min(aux->dist, aux->DE0 / aux->DE);
 	}

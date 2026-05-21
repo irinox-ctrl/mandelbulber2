@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
 	InitSystem();
 
 	// Advanced Weight System build identifier
-	qDebug() << "Advanced Weight System v6.3 - build 20250520 - 24 Math Injection ops (Möbius, Sphere Inv, Loxodromic, Schottky, Poincaré H³, Lorentz SO(3,1), Conformal Flow)";
+	qDebug() << "Advanced Weight System v7.0 - build 20250520 - Mandalay Box V2: CylFold, MultiClip, SphereInv, AnisoScale, ZShear, VarClip, QuatRot";
 
 	// configure debug output
 	qInstallMessageHandler(myMessageOutput);

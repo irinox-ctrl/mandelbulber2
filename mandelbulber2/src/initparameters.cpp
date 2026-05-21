@@ -1372,6 +1372,39 @@ void InitFractalParams(std::shared_ptr<cParameterContainer> par)
 
 	par->addParam("aboxMod1_foldM", CVector3(0.0, 0.0, 0.0), morphAkima, paramStandard);
 
+	// Mandalay Box V2 extended features
+	// #1 Cylinder Fold
+	par->addParam("mandalay_cylinder_fold_enabled", false, morphLinear, paramStandard);
+	par->addParam("mandalay_cyl_min_r", 0.25, 0.0, 100.0, morphAkima, paramStandard);
+	par->addParam("mandalay_cyl_mix", 1.0, 0.0, 1.0, morphAkima, paramStandard);
+	par->addParam("mandalay_start_iterations_cy", 0, 0, 999, morphLinear, paramStandard);
+	par->addParam("mandalay_stop_iterations_cy", 250, 0, 999, morphLinear, paramStandard);
+	// #2 Multi-Sequencing Clips
+	par->addParam("mandalay_multi_clip_enabled", false, morphLinear, paramStandard);
+	par->addParam("mandalay_num_clips", 1, 1, 4, morphLinear, paramStandard);
+	par->addParam("mandalay_fo2", CVector4(0.555, 0.555, 0.555, 0.0), morphAkima, paramStandard);
+	par->addParam("mandalay_fo3", CVector4(0.555, 0.555, 0.555, 0.0), morphAkima, paramStandard);
+	par->addParam("mandalay_fo4", CVector4(0.555, 0.555, 0.555, 0.0), morphAkima, paramStandard);
+	par->addParam("mandalay_g2", CVector4(0.0, 0.0, 0.0, 0.0), morphAkima, paramStandard);
+	par->addParam("mandalay_g3", CVector4(0.0, 0.0, 0.0, 0.0), morphAkima, paramStandard);
+	par->addParam("mandalay_g4", CVector4(0.0, 0.0, 0.0, 0.0), morphAkima, paramStandard);
+	// #3 Pre-Sphere Inversion
+	par->addParam("mandalay_pre_sphere_invert_enabled", false, morphLinear, paramStandard);
+	par->addParam("mandalay_invert_center", CVector4(0.0, 0.0, 0.0, 1.0), morphAkima, paramStandard);
+	// #4 Anisotrope Scale
+	par->addParam("mandalay_anisotrope_scale_enabled", false, morphLinear, paramStandard);
+	par->addParam("mandalay_scale_3d", CVector4(2.0, 2.0, 2.0, 0.0), morphAkima, paramStandard);
+	// #5 Z-Shear
+	par->addParam("mandalay_z_shear_enabled", false, morphLinear, paramStandard);
+	par->addParam("mandalay_z_shear_strength", 0.1, -10.0, 10.0, morphAkima, paramStandard);
+	// #6 Variable Clip Limits
+	par->addParam("mandalay_variable_clip_enabled", false, morphLinear, paramStandard);
+	par->addParam("mandalay_fo_vary", 0.0, -5.0, 5.0, morphAkima, paramStandard);
+	par->addParam("mandalay_g_vary", 0.0, -5.0, 5.0, morphAkima, paramStandard);
+	// #7 Quaternion Pre-Rotation
+	par->addParam("mandalay_quat_rot_enabled", false, morphLinear, paramStandard);
+	par->addParam("mandalay_quat_rot", CVector4(0.0, 0.0, 0.0, 1.0), morphAkima, paramStandard);
+
 	// mandelbulbMulti
 	par->addParam("mandelbulbMulti_acos_or_asin", 0, morphNone, paramStandard, qslAcosAsin);
 	par->addParam("mandelbulbMulti_atan_or_atan2", 0, morphNone, paramStandard, qslAtanAtan2);
