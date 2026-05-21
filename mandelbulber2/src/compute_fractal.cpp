@@ -580,6 +580,44 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 						z.x = nx; z.y = ny;
 					}
 				}
+				else if (mut.warpType == mutWarpIFSContraction)
+				{
+					double s0 = mut.warpAmplitude;
+					double a = mut.warpFrequency;
+					double s = s0 * (1.0 + a * sin((double)aux.i));
+					z *= s;
+					aux.DE = aux.DE * fabs(s) + 1.0;
+				}
+				else if (mut.warpType == mutWarpIFSRotation)
+				{
+					double goldenAngle = 2.399963229728653;
+					double angle = goldenAngle * aux.i * mut.warpAmplitude;
+					double ca = cos(angle); double sa = sin(angle);
+					double nx = z.x * ca - z.y * sa;
+					double ny = z.x * sa + z.y * ca;
+					z.x = nx; z.y = ny;
+				}
+				else if (mut.warpType == mutWarpPolarIFS)
+				{
+					double r = sqrt(z.x * z.x + z.y * z.y + z.z * z.z);
+					if (r > 1e-21)
+					{
+						double theta = acos(z.z / r);
+						double phi = atan2(z.y, z.x);
+						double sr = mut.warpAmplitude;
+						r *= sr;
+						theta *= mut.warpFrequency;
+						z.x = r * sin(theta) * cos(phi);
+						z.y = r * sin(theta) * sin(phi);
+						z.z = r * cos(theta);
+						aux.DE = aux.DE * fabs(sr) + 1.0;
+					}
+				}
+				else if (mut.warpType == mutWarpShearIFS)
+				{
+					z.x += mut.warpAmplitude * z.y;
+					z.y += mut.warpFrequency * z.z;
+				}
 
 				// Math injection — new mathematical operations
 				if (mut.mathType != mutMathNone)

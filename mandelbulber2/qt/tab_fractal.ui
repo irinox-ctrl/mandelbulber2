@@ -2062,6 +2062,26 @@ Static: Fixed weight (simple). Iteration: Weight changes over iterations (morphi
           <string>Möbius</string>
          </property>
         </item>
+        <item>
+         <property name="text">
+          <string>IFS Contraction</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>IFS Rotation (Golden)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Polar IFS</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Shear IFS</string>
+         </property>
+        </item>
        </widget>
       </item>
       <item row="9" column="3">

@@ -204,7 +204,12 @@ enum enumMutationWarpType
 	mutWarpRadial = 4,
 	mutWarpCylindrical = 5,
 	mutWarpSphericalInversion = 6,
-	mutWarpMobius = 7
+	mutWarpMobius = 7,
+	// v7.2 — Familie 4 IFS/Menger warps
+	mutWarpIFSContraction = 8,    // variable contraction s = s0*(1 + A*sin(iter))
+	mutWarpIFSRotation = 9,       // golden angle rotation per iteration
+	mutWarpPolarIFS = 10,         // contraction in polar (r,θ,z) coords
+	mutWarpShearIFS = 11          // z.x += shear * z.y
 };
 
 enum enumMutationFoldPosition

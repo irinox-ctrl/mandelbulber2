@@ -761,6 +761,43 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 					z.x = nx; z.y = ny;
 				}
 			}
+			else if (mut->warpType == 8) // IFS contraction
+			{
+				float s0 = mut->warpAmplitude;
+				float a = mut->warpFrequency;
+				float s = s0 * (1.0f + a * native_sin((float)aux.i));
+				z *= s;
+				aux.DE = aux.DE * fabs(s) + 1.0f;
+			}
+			else if (mut->warpType == 9) // IFS rotation (golden angle)
+			{
+				float goldenAngle = 2.399963229728653f;
+				float angle = goldenAngle * aux.i * mut->warpAmplitude;
+				float ca = native_cos(angle); float sa = native_sin(angle);
+				float nx = z.x * ca - z.y * sa; float ny = z.x * sa + z.y * ca;
+				z.x = nx; z.y = ny;
+			}
+			else if (mut->warpType == 10) // Polar IFS
+			{
+				float r = native_sqrt(z.x*z.x + z.y*z.y + z.z*z.z);
+				if (r > 1e-21f)
+				{
+					float theta = acos(z.z / r);
+					float phi = atan2(z.y, z.x);
+					float sr = mut->warpAmplitude;
+					r *= sr;
+					theta *= mut->warpFrequency;
+					z.x = r * native_sin(theta) * native_cos(phi);
+					z.y = r * native_sin(theta) * native_sin(phi);
+					z.z = r * native_cos(theta);
+					aux.DE = aux.DE * fabs(sr) + 1.0f;
+				}
+			}
+			else if (mut->warpType == 11) // Shear IFS
+			{
+				z.x += mut->warpAmplitude * z.y;
+				z.y += mut->warpFrequency * z.z;
+			}
 
 			// Math injection (GPU)
 			if (mut->mathType != 0)
