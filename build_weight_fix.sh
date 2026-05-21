@@ -1,5 +1,5 @@
 #!/bin/bash
-# Mandelbulber Advanced Weight System v3.2 - Clean Build Script
+# Mandelbulber Advanced Weight System v3.2 + Texture System Upgrade - Clean Build Script
 # Run this from the repository root directory
 set -e
 
@@ -93,6 +93,18 @@ else
     echo "  WARNING - OrbitTrap params not in binary strings"
 fi
 
+# Verify texture system additions
+if strings mandelbulber2/qmake/mandelbulber2 | grep -q "mappingTriplanar"; then
+    echo "  OK - Triplanar mapping mode confirmed"
+else
+    echo "  WARNING - Triplanar mapping not found in binary strings"
+fi
+if strings mandelbulber2/qmake/mandelbulber2 | grep -q "fractalizeShapeCylinder"; then
+    echo "  OK - Cylinder fractalize shape confirmed"
+else
+    echo "  WARNING - Cylinder fractalize shape not found in binary strings"
+fi
+
 echo ""
 echo "=== BUILD COMPLETE ==="
 echo ""
@@ -112,4 +124,9 @@ echo "     - Change 'Static Weight' to 0.3 -> dramatic change"
 echo "     - Change 'Weight Mode' to Iteration/DE/ZLength/Conditional/OrbitTrap/Curve"
 echo "     - Each mode has its own parameters that become active"
 echo "  4. Works identically on CPU and GPU (Full, Limited, Nebula)"
+echo ""
+echo "Test the new texture system modes:"
+echo "  - Material editor -> Texture mapping type: Triplanar, Equirectangular"
+echo "  - Fractalize texture -> Orbit trap shape: Cylinder, Torus, Spiral"
+echo "  - Coloring algorithm: orbit trap Cylinder, orbit trap Torus"
 echo ""
