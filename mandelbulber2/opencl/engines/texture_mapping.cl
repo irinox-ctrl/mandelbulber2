@@ -264,6 +264,98 @@ float2 TextureMapping(float3 inPoint, float3 normalVector, __global sObjectDataC
 #endif
 			break;
 		}
+
+		case mappingTriplanar:
+		{
+#ifdef USE_TRIPLANAR_MAPPING
+			float3 absNormal = fabs(normalVector);
+			float blendSharpness = 2.0f;
+			float wx = pow(absNormal.x, blendSharpness);
+			float wy = pow(absNormal.y, blendSharpness);
+			float wz = pow(absNormal.z, blendSharpness);
+			float wSum = wx + wy + wz;
+			if (wSum < 1e-10f) wSum = 1e-10f;
+			wx /= wSum;
+			wy /= wSum;
+			wz /= wSum;
+
+			float2 texX_plane = (float2){
+				point.y / -material->textureScale.x - material->textureCenter.x,
+				point.z / material->textureScale.y - material->textureCenter.y};
+			float2 texY_plane = (float2){
+				point.x / -material->textureScale.x - material->textureCenter.x,
+				point.z / material->textureScale.y - material->textureCenter.y};
+			float2 texZ_plane = (float2){
+				point.x / -material->textureScale.x - material->textureCenter.x,
+				point.y / material->textureScale.y - material->textureCenter.y};
+
+			textureCoordinates = texX_plane * wx + texY_plane * wy + texZ_plane * wz;
+
+#ifdef USE_NORMAL_MAP_TEXTURE
+			if (textureVectorX && textureVectorY)
+			{
+				float3 texXvec, texYvec;
+				if (absNormal.x >= absNormal.y && absNormal.x >= absNormal.z)
+				{
+					texXvec = (float3){0.0f, 1.0f, 0.0f};
+					texYvec = (float3){0.0f, 0.0f, 1.0f};
+				}
+				else if (absNormal.y >= absNormal.z)
+				{
+					texXvec = (float3){1.0f, 0.0f, 0.0f};
+					texYvec = (float3){0.0f, 0.0f, 1.0f};
+				}
+				else
+				{
+					texXvec = (float3){1.0f, 0.0f, 0.0f};
+					texYvec = (float3){0.0f, 1.0f, 0.0f};
+				}
+				texXvec = Matrix33MulFloat3(TransposeMatrix(objectData->rotationMatrix), texXvec);
+				texXvec = Matrix33MulFloat3(TransposeMatrix(material->rotMatrixTexture), texXvec);
+				*textureVectorX = texXvec;
+				texYvec = Matrix33MulFloat3(TransposeMatrix(objectData->rotationMatrix), texYvec);
+				texYvec = Matrix33MulFloat3(TransposeMatrix(material->rotMatrixTexture), texYvec);
+				*textureVectorY = texYvec;
+			}
+#endif
+#endif
+			break;
+		}
+
+		case mappingEquirectangular:
+		{
+#ifdef USE_EQUIRECTANGULAR_MAPPING
+			float r = length(point);
+			if (r < 1e-15f) r = 1e-15f;
+			float longitude = atan2(point.y, point.x);
+			float latitude = asin(clamp(point.z / r, -1.0f, 1.0f));
+
+			textureCoordinates.x = (longitude + M_PI_F) / (2.0f * M_PI_F);
+			textureCoordinates.y = (latitude + M_PI_F / 2.0f) / M_PI_F;
+			textureCoordinates.x /= material->textureScale.x;
+			textureCoordinates.y /= material->textureScale.y;
+			textureCoordinates.x -= material->textureCenter.x;
+			textureCoordinates.y -= material->textureCenter.y;
+
+#ifdef USE_NORMAL_MAP_TEXTURE
+			if (textureVectorX && textureVectorY)
+			{
+				float3 texYvec = (float3){0.0f, 0.0f, -1.0f};
+				float3 texXvec = cross(texYvec, point);
+				texXvec = normalize(texXvec);
+				texYvec = cross(texXvec, point);
+
+				texXvec = Matrix33MulFloat3(TransposeMatrix(objectData->rotationMatrix), texXvec);
+				texXvec = Matrix33MulFloat3(TransposeMatrix(material->rotMatrixTexture), texXvec);
+				*textureVectorX = texXvec;
+				texYvec = Matrix33MulFloat3(TransposeMatrix(objectData->rotationMatrix), texYvec);
+				texYvec = Matrix33MulFloat3(TransposeMatrix(material->rotMatrixTexture), texYvec);
+				*textureVectorY = texYvec;
+			}
+#endif
+#endif
+			break;
+		}
 	}
 	return textureCoordinates;
 }

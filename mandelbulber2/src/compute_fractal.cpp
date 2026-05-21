@@ -411,6 +411,19 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 						len = fabs(colorZ.Dot(in.material->fractalColoring.lineDirection));
 						break;
 					}
+					case fractalColoring_Cylinder:
+					{
+						double distFromAxis = sqrt(colorZ.x * colorZ.x + colorZ.y * colorZ.y);
+						len = fabs(distFromAxis - in.material->fractalColoring.sphereRadius);
+						break;
+					}
+					case fractalColoring_Torus:
+					{
+						double majorR = in.material->fractalColoring.sphereRadius;
+						double distXY = sqrt(colorZ.x * colorZ.x + colorZ.y * colorZ.y) - majorR;
+						len = sqrt(distXY * distXY + colorZ.z * colorZ.z);
+						break;
+					}
 					case fractalColoring_None:
 					{
 						len = aux.r;
@@ -613,8 +626,41 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 						}
 						case texture::fractalizeShapePlane:
 						{
-							// Plane at Z=0 by default (user can rotate with texture rotation)
 							if (fabs(zz.z) < size)
+							{
+								trapHit = true;
+							}
+							break;
+						}
+						case texture::fractalizeShapeCylinder:
+						{
+							double distFromAxis = sqrt(zz.x * zz.x + zz.y * zz.y);
+							if (distFromAxis < size && fabs(zz.z) < size * 2.0)
+							{
+								trapHit = true;
+							}
+							break;
+						}
+						case texture::fractalizeShapeTorus:
+						{
+							double majorR = size;
+							double minorR = size * 0.4;
+							double distXY = sqrt(zz.x * zz.x + zz.y * zz.y) - majorR;
+							double distTorus = sqrt(distXY * distXY + zz.z * zz.z);
+							if (distTorus < minorR)
+							{
+								trapHit = true;
+							}
+							break;
+						}
+						case texture::fractalizeShapeSpiral:
+						{
+							double angle = atan2(zz.y, zz.x);
+							double r = sqrt(zz.x * zz.x + zz.y * zz.y);
+							double spiralR = size * (angle + M_PI) / (2.0 * M_PI);
+							double spiralDist = fmod(fabs(r - spiralR), size);
+							if (spiralDist > size * 0.5) spiralDist = size - spiralDist;
+							if (spiralDist < size * 0.3 && fabs(zz.z) < size)
 							{
 								trapHit = true;
 							}

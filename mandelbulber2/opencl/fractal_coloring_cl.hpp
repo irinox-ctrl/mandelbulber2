@@ -65,7 +65,9 @@ typedef enum
 	fractalColoringCl_ZDotPoint = 1,
 	fractalColoringCl_Sphere = 2,
 	fractalColoringCl_Cross = 3,
-	fractalColoringCl_Line = 4
+	fractalColoringCl_Line = 4,
+	fractalColoringCl_Cylinder = 5,
+	fractalColoringCl_Torus = 6
 } enumFractalColoringCl;
 
 typedef struct

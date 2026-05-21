@@ -48,7 +48,9 @@ enum enumFractalColoring
 	fractalColoring_ZDotPoint = 1,
 	fractalColoring_Sphere = 2,
 	fractalColoring_Cross = 3,
-	fractalColoring_Line = 4
+	fractalColoring_Line = 4,
+	fractalColoring_Cylinder = 5,
+	fractalColoring_Torus = 6
 };
 
 struct sFractalColoring

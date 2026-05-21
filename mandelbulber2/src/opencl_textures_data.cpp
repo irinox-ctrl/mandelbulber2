@@ -68,6 +68,8 @@ cOpenClTexturesData::cOpenClTexturesData(int _numberOfTextures)
 	useCylindicalMapping = false;
 	useSphericalMapping = false;
 	useCubicMapping = false;
+	useTriplanarMapping = false;
+	useEquirectangularMapping = false;
 }
 
 cOpenClTexturesData::~cOpenClTexturesData()
@@ -163,6 +165,8 @@ void cOpenClTexturesData::BuildAllTexturesData(const sTextures &textures,
 	useCylindicalMapping = false;
 	useSphericalMapping = false;
 	useCubicMapping = false;
+	useTriplanarMapping = false;
+	useEquirectangularMapping = false;
 
 	for (auto const &materialPair : materials) // for each material from materials
 	{
@@ -240,6 +244,8 @@ void cOpenClTexturesData::BuildAllTexturesData(const sTextures &textures,
 			case texture::mappingCylindrical: useCylindicalMapping = true; break;
 			case texture::mappingSpherical: useSphericalMapping = true; break;
 			case texture::mappingCubic: useCubicMapping = true; break;
+			case texture::mappingTriplanar: useTriplanarMapping = true; break;
+			case texture::mappingEquirectangular: useEquirectangularMapping = true; break;
 		}
 	}
 
@@ -360,6 +366,8 @@ QString cOpenClTexturesData::GetDefinesCollector() const
 	if (useCylindicalMapping) definesCollector += " -DUSE_CYLINDRICAL_MAPPING";
 	if (useSphericalMapping) definesCollector += " -DUSE_SPHERICAL_MAPPING";
 	if (useCubicMapping) definesCollector += " -DUSE_CUBIC_MAPPING";
+	if (useTriplanarMapping) definesCollector += " -DUSE_TRIPLANAR_MAPPING";
+	if (useEquirectangularMapping) definesCollector += " -DUSE_EQUIRECTANGULAR_MAPPING";
 	return definesCollector;
 }
 

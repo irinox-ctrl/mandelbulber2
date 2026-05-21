@@ -63,7 +63,9 @@ typedef enum
 	mappingSpherical = 0,
 	mappingCubic = 1,
 	mappingCylindrical = 2,
-	mappingPlanar = 3
+	mappingPlanar = 3,
+	mappingTriplanar = 4,
+	mappingEquirectangular = 5
 } enumTextureMappingCl;
 
 typedef enum
@@ -76,5 +78,17 @@ typedef enum
 	texTransparency = 5,
 	texTransparencyAlpha = 6
 } enumTextureSelectionCl;
+
+typedef enum
+{
+	fractalizeShapeCube = 0,
+	fractalizeShapeSphere = 1,
+	fractalizeShapeCross = 2,
+	fractalizeShapeLine = 3,
+	fractalizeShapePlane = 4,
+	fractalizeShapeCylinder = 5,
+	fractalizeShapeTorus = 6,
+	fractalizeShapeSpiral = 7
+} enumFractalizeShapeCl;
 
 #endif /* MANDELBULBER2_OPENCL_TEXTURE_ENUMS_CL_HPP_ */

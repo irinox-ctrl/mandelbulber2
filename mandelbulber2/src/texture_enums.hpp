@@ -42,7 +42,9 @@ enum enumTextureMapping
 	mappingSpherical = 0,
 	mappingCubic = 1,
 	mappingCylindrical = 2,
-	mappingPlanar = 3
+	mappingPlanar = 3,
+	mappingTriplanar = 4,
+	mappingEquirectangular = 5
 };
 
 enum enumTextureSelection
@@ -62,7 +64,10 @@ enum enumFractalizeShape
 	fractalizeShapeSphere = 1,
 	fractalizeShapeCross = 2,
 	fractalizeShapeLine = 3,
-	fractalizeShapePlane = 4
+	fractalizeShapePlane = 4,
+	fractalizeShapeCylinder = 5,
+	fractalizeShapeTorus = 6,
+	fractalizeShapeSpiral = 7
 };
 } // namespace texture
 

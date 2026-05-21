@@ -81,6 +81,8 @@ private:
 	bool useCylindicalMapping;
 	bool useSphericalMapping;
 	bool useCubicMapping;
+	bool useTriplanarMapping;
+	bool useEquirectangularMapping;
 };
 
 #endif // USE_OPENCL

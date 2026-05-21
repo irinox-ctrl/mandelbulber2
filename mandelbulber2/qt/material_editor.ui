@@ -656,6 +656,16 @@ sphere radius:</string>
                 <string>orbit trap: Line</string>
                </property>
               </item>
+              <item>
+               <property name="text">
+                <string>orbit trap: Cylinder</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>orbit trap: Torus</string>
+               </property>
+              </item>
              </widget>
             </item>
             <item row="6" column="1">
@@ -5133,6 +5143,57 @@ direction vector:</string>
                  </property>
                 </widget>
                </item>
+               <item row="2" column="0">
+                <widget class="QLabel" name="label_fractalize_shape">
+                 <property name="text">
+                  <string>Orbit trap shape:</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="1">
+                <widget class="MyComboBox" name="comboBox_texture_fractalize_shape">
+                 <item>
+                  <property name="text">
+                   <string>Cube</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Sphere</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Cross</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Line</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Plane</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Cylinder</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Torus</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Spiral</string>
+                  </property>
+                 </item>
+                </widget>
+               </item>
               </layout>
              </item>
             </layout>
@@ -5268,6 +5329,16 @@ object size)</string>
               <item>
                <property name="text">
                 <string>Planar</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Triplanar</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Equirectangular</string>
                </property>
               </item>
              </widget>

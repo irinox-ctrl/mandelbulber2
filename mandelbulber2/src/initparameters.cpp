@@ -2164,8 +2164,8 @@ void InitMaterialParams(int materialId, std::shared_ptr<cParameterContainer> par
 	par->addParam(cMaterial::Name("fractal_coloring_add_start_value", materialId), 0.0, 0.0, 1e20,
 		morphAkima, paramStandard);
 	par->addParam(cMaterial::Name("fractal_coloring_algorithm", materialId),
-		int(fractalColoring_Standard), 0, 4, morphNone,
-		paramStandard); // = 0,0,4
+		int(fractalColoring_Standard), 0, 6, morphNone,
+		paramStandard);
 	par->addParam(cMaterial::Name("fractal_coloring_aux_color_false", materialId), false, morphNone,
 		paramStandard);
 	par->addParam(cMaterial::Name("fractal_coloring_aux_color_hybrid_weight", materialId), 0.0, -1e20,
@@ -2409,7 +2409,7 @@ void InitMaterialParams(int materialId, std::shared_ptr<cParameterContainer> par
 		paramStandard);
 	par->addParam(cMaterial::Name("texture_fractalize_cube_size", materialId), 2.0, 1e-15, 1e5,
 		morphAkima, paramStandard);
-	par->addParam(cMaterial::Name("texture_fractalize_shape", materialId), 0, 0, 4, morphNone,
+	par->addParam(cMaterial::Name("texture_fractalize_shape", materialId), 0, 0, 7, morphNone,
 		paramStandard);
 	par->addParam(cMaterial::Name("texture_fractalize_size_multiplier", materialId), 1.0, 0.001, 100.0,
 		morphAkima, paramStandard);

@@ -560,6 +560,19 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 						len = fabs(dot(fractalColoring->lineDirection, colorZ));
 						break;
 					}
+					case fractalColoringCl_Cylinder:
+					{
+						float distFromAxis = sqrt(colorZ.x * colorZ.x + colorZ.y * colorZ.y);
+						len = fabs(distFromAxis - fractalColoring->sphereRadius);
+						break;
+					}
+					case fractalColoringCl_Torus:
+					{
+						float majorR = fractalColoring->sphereRadius;
+						float distXY = sqrt(colorZ.x * colorZ.x + colorZ.y * colorZ.y) - majorR;
+						len = sqrt(distXY * distXY + colorZ.z * colorZ.z);
+						break;
+					}
 					case fractalColoringCl_None:
 					{
 						len = aux.r;
@@ -756,8 +769,41 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 						}
 						case 4: // fractalizeShapePlane
 						{
-							// Plane at Z=0 by default (user can rotate with texture rotation)
 							if (fabs(zz.z) < size)
+							{
+								trapHit = true;
+							}
+							break;
+						}
+						case 5: // fractalizeShapeCylinder
+						{
+							float distFromAxis = sqrt(zz.x * zz.x + zz.y * zz.y);
+							if (distFromAxis < size && fabs(zz.z) < size * 2.0f)
+							{
+								trapHit = true;
+							}
+							break;
+						}
+						case 6: // fractalizeShapeTorus
+						{
+							float majorR = size;
+							float minorR = size * 0.4f;
+							float distXY = sqrt(zz.x * zz.x + zz.y * zz.y) - majorR;
+							float distTorus = sqrt(distXY * distXY + zz.z * zz.z);
+							if (distTorus < minorR)
+							{
+								trapHit = true;
+							}
+							break;
+						}
+						case 7: // fractalizeShapeSpiral
+						{
+							float angle = atan2(zz.y, zz.x);
+							float r = sqrt(zz.x * zz.x + zz.y * zz.y);
+							float spiralR = size * (angle + M_PI_F) / (2.0f * M_PI_F);
+							float spiralDist = fmod(fabs(r - spiralR), size);
+							if (spiralDist > size * 0.5f) spiralDist = size - spiralDist;
+							if (spiralDist < size * 0.3f && fabs(zz.z) < size)
 							{
 								trapHit = true;
 							}

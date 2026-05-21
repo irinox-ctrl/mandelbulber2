@@ -249,6 +249,88 @@ CVector2<float> TextureMapping(CVector3 inPoint, CVector3 normalVector,
 
 			break;
 		}
+		case texture::mappingTriplanar:
+		{
+			CVector3 absNormal(fabs(normalVector.x), fabs(normalVector.y), fabs(normalVector.z));
+			double blendSharpness = 2.0;
+			double wx = pow(absNormal.x, blendSharpness);
+			double wy = pow(absNormal.y, blendSharpness);
+			double wz = pow(absNormal.z, blendSharpness);
+			double wSum = wx + wy + wz;
+			if (wSum < 1e-10) wSum = 1e-10;
+			wx /= wSum;
+			wy /= wSum;
+			wz /= wSum;
+
+			CVector2<float> texX_plane(point.y / -material->textureScale.x - material->textureCenter.x,
+				point.z / material->textureScale.y - material->textureCenter.y);
+			CVector2<float> texY_plane(point.x / -material->textureScale.x - material->textureCenter.x,
+				point.z / material->textureScale.y - material->textureCenter.y);
+			CVector2<float> texZ_plane(point.x / -material->textureScale.x - material->textureCenter.x,
+				point.y / material->textureScale.y - material->textureCenter.y);
+
+			textureCoordinates = texX_plane * wx + texY_plane * wy + texZ_plane * wz;
+
+			if (textureVectorX && textureVectorY)
+			{
+				CVector3 texXvec, texYvec;
+				if (absNormal.x >= absNormal.y && absNormal.x >= absNormal.z)
+				{
+					texXvec = CVector3(0.0, 1.0, 0.0);
+					texYvec = CVector3(0.0, 0.0, 1.0);
+				}
+				else if (absNormal.y >= absNormal.z)
+				{
+					texXvec = CVector3(1.0, 0.0, 0.0);
+					texYvec = CVector3(0.0, 0.0, 1.0);
+				}
+				else
+				{
+					texXvec = CVector3(1.0, 0.0, 0.0);
+					texYvec = CVector3(0.0, 1.0, 0.0);
+				}
+				texXvec = objectData.rotationMatrix.Transpose().RotateVector(texXvec);
+				texXvec = material->rotMatrixTexture.Transpose().RotateVector(texXvec);
+				*textureVectorX = texXvec;
+				texYvec = objectData.rotationMatrix.Transpose().RotateVector(texYvec);
+				texYvec = material->rotMatrixTexture.Transpose().RotateVector(texYvec);
+				*textureVectorY = texYvec;
+			}
+			break;
+		}
+		case texture::mappingEquirectangular:
+		{
+			double r = point.Length();
+			if (r < 1e-15) r = 1e-15;
+			double longitude = atan2(point.y, point.x);
+			double sinVal = point.z / r;
+			if (sinVal < -1.0) sinVal = -1.0;
+			if (sinVal > 1.0) sinVal = 1.0;
+			double latitude = asin(sinVal);
+
+			textureCoordinates.x = (longitude + M_PI) / (2.0 * M_PI);
+			textureCoordinates.y = (latitude + M_PI / 2.0) / M_PI;
+			textureCoordinates.x /= material->textureScale.x;
+			textureCoordinates.y /= material->textureScale.y;
+			textureCoordinates.x -= material->textureCenter.x;
+			textureCoordinates.y -= material->textureCenter.y;
+
+			if (textureVectorX && textureVectorY)
+			{
+				CVector3 texYvec(0.0, 0.0, -1.0);
+				CVector3 texXvec = texYvec.Cross(point);
+				texXvec.Normalize();
+				texYvec = texXvec.Cross(point);
+
+				texXvec = objectData.rotationMatrix.Transpose().RotateVector(texXvec);
+				texXvec = material->rotMatrixTexture.Transpose().RotateVector(texXvec);
+				*textureVectorX = texXvec;
+				texYvec = objectData.rotationMatrix.Transpose().RotateVector(texYvec);
+				texYvec = material->rotMatrixTexture.Transpose().RotateVector(texYvec);
+				*textureVectorY = texYvec;
+			}
+			break;
+		}
 	}
 	return textureCoordinates;
 }
