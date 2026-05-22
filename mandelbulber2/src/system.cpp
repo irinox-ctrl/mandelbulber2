@@ -38,6 +38,7 @@
 
 #include <clocale>
 
+#include <QFile>
 #include <QTextStream>
 
 #include "global_data.hpp"
@@ -587,8 +588,25 @@ void UpdateUISkin()
 			colorText1 = QColor(255, 150, 50);
 			colorText2 = Qt::black;
 			break;
+		case 8: // 3x3lion Professional
+		{
+			colorBackground1 = QColor(30, 30, 46);
+			colorBackground2 = QColor(17, 17, 27);
+			colorText1 = QColor(205, 214, 244);
+			colorText2 = QColor(30, 30, 46);
+			// Load the QSS stylesheet from resources
+			QFile styleFile(":/styles/styles/3x3lion.qss");
+			if (styleFile.open(QFile::ReadOnly | QFile::Text))
+			{
+				QString styleSheet = QLatin1String(styleFile.readAll());
+				qApp->setStyleSheet(styleSheet);
+				styleFile.close();
+			}
+			break;
+		}
 		default: // normal skin
 			palette = defaultPalette;
+			qApp->setStyleSheet(""); // clear any previous stylesheet
 			break;
 	}
 	if (gPar->Get<int>("ui_skin") != 0)
@@ -603,9 +621,9 @@ void UpdateUISkin()
 		palette.setColor(QPalette::Button, colorBackground1);
 		palette.setColor(QPalette::ButtonText, colorText1);
 		palette.setColor(QPalette::BrightText, Qt::red);
-		palette.setColor(QPalette::Link, QColor(42, 130, 218));
+		palette.setColor(QPalette::Link, QColor(137, 180, 250));
 
-		palette.setColor(QPalette::Highlight, QColor(42, 130, 218));
+		palette.setColor(QPalette::Highlight, QColor(137, 180, 250));
 		palette.setColor(QPalette::HighlightedText, colorText2);
 	}
 	// set ui skin

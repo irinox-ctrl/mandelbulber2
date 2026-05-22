@@ -175,4 +175,7 @@
   <qresource prefix="/fonts">
     <file>fonts/nasalization-rg.ttf</file>
   </qresource>
+  <qresource prefix="/styles">
+    <file>styles/3x3lion.qss</file>
+  </qresource>
 </RCC>
