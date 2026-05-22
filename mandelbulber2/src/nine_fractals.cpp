@@ -1173,45 +1173,21 @@ void cNineFractals::CopyToOpenclData(sClFractalSequence *sequence) const
 		sequence->mutationParams[i].juliaBipolarCRx = mutationParams[i].juliaBipolarCRx;
 		sequence->mutationParams[i].juliaBipolarCRy = mutationParams[i].juliaBipolarCRy;
 		sequence->mutationParams[i].juliaBipolarCRz = mutationParams[i].juliaBipolarCRz;
-		// Copy rotation matrices (3x3 = 9 floats each)
+		// Copy rotation matrices using matrix33 type
 		if (mutationParams[i].enabled)
 		{
-			CMatrix33 preM = mutationParams[i].preRotMatrix.GetMatrix();
-			CMatrix33 postM = mutationParams[i].postRotMatrix.GetMatrix();
-			sequence->mutationParams[i].preRotMatrix[0] = preM.m11;
-			sequence->mutationParams[i].preRotMatrix[1] = preM.m12;
-			sequence->mutationParams[i].preRotMatrix[2] = preM.m13;
-			sequence->mutationParams[i].preRotMatrix[3] = preM.m21;
-			sequence->mutationParams[i].preRotMatrix[4] = preM.m22;
-			sequence->mutationParams[i].preRotMatrix[5] = preM.m23;
-			sequence->mutationParams[i].preRotMatrix[6] = preM.m31;
-			sequence->mutationParams[i].preRotMatrix[7] = preM.m32;
-			sequence->mutationParams[i].preRotMatrix[8] = preM.m33;
-			sequence->mutationParams[i].postRotMatrix[0] = postM.m11;
-			sequence->mutationParams[i].postRotMatrix[1] = postM.m12;
-			sequence->mutationParams[i].postRotMatrix[2] = postM.m13;
-			sequence->mutationParams[i].postRotMatrix[3] = postM.m21;
-			sequence->mutationParams[i].postRotMatrix[4] = postM.m22;
-			sequence->mutationParams[i].postRotMatrix[5] = postM.m23;
-			sequence->mutationParams[i].postRotMatrix[6] = postM.m31;
-			sequence->mutationParams[i].postRotMatrix[7] = postM.m32;
-			sequence->mutationParams[i].postRotMatrix[8] = postM.m33;
-			CMatrix33 juliaM = mutationParams[i].juliaCRotMatrix.GetMatrix();
-			sequence->mutationParams[i].juliaCRotMatrix[0] = juliaM.m11;
-			sequence->mutationParams[i].juliaCRotMatrix[1] = juliaM.m12;
-			sequence->mutationParams[i].juliaCRotMatrix[2] = juliaM.m13;
-			sequence->mutationParams[i].juliaCRotMatrix[3] = juliaM.m21;
-			sequence->mutationParams[i].juliaCRotMatrix[4] = juliaM.m22;
-			sequence->mutationParams[i].juliaCRotMatrix[5] = juliaM.m23;
-			sequence->mutationParams[i].juliaCRotMatrix[6] = juliaM.m31;
-			sequence->mutationParams[i].juliaCRotMatrix[7] = juliaM.m32;
-			sequence->mutationParams[i].juliaCRotMatrix[8] = juliaM.m33;
+			sequence->mutationParams[i].preRotMatrix =
+				toClMatrix33(mutationParams[i].preRotMatrix);
+			sequence->mutationParams[i].postRotMatrix =
+				toClMatrix33(mutationParams[i].postRotMatrix);
+			sequence->mutationParams[i].juliaCRotMatrix =
+				toClMatrix33(mutationParams[i].juliaCRotMatrix);
 		}
 		else
 		{
-			memset(sequence->mutationParams[i].preRotMatrix, 0, sizeof(cl_float) * 9);
-			memset(sequence->mutationParams[i].postRotMatrix, 0, sizeof(cl_float) * 9);
-			memset(sequence->mutationParams[i].juliaCRotMatrix, 0, sizeof(cl_float) * 9);
+			memset(&sequence->mutationParams[i].preRotMatrix, 0, sizeof(matrix33));
+			memset(&sequence->mutationParams[i].postRotMatrix, 0, sizeof(matrix33));
+			memset(&sequence->mutationParams[i].juliaCRotMatrix, 0, sizeof(matrix33));
 		}
 
 		sequence->DEFunctionType[i] = static_cast<enumDEFunctionTypeCl>(DEFunctionType[i]);

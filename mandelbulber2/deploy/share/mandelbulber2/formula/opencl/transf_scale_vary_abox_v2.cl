@@ -16,7 +16,7 @@
 #pragma OPENCL EXTENSION cl_khr_fp64 : enable
 
 #ifndef DOUBLE_PRECISION
-float4 TransfScaleVaryAboxV2Iteration(float4 z, __constant sFractalCl *fractal, sExtendedAuxCl *aux)
+float4 TransfScaleVaryAboxV2Iteration(float4 z, __global const sFractalCl *fractal, sExtendedAuxCl *aux)
 {
 	if (aux->i >= fractal->transformCommon.startIterations
 			&& aux->i < fractal->transformCommon.stopIterations)
@@ -85,7 +85,7 @@ float4 TransfScaleVaryAboxV2Iteration(float4 z, __constant sFractalCl *fractal, 
 }
 #else
 double4 TransfScaleVaryAboxV2Iteration(
-	double4 z, __constant sFractalCl *fractal, sExtendedAuxCl *aux)
+	double4 z, __global const sFractalCl *fractal, sExtendedAuxCl *aux)
 {
 	if (aux->i >= fractal->transformCommon.startIterations
 			&& aux->i < fractal->transformCommon.stopIterations)

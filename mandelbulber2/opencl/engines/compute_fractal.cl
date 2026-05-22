@@ -512,11 +512,7 @@ formulaOut Fractal(__global const sClInConstants *consts, float3 point, sClCalcP
 			z.x += mut->preOffsetX; z.y += mut->preOffsetY; z.z += mut->preOffsetZ;
 			if (mut->preRotX != 0.0f || mut->preRotY != 0.0f || mut->preRotZ != 0.0f)
 			{
-				float3 zr;
-				zr.x = mut->preRotMatrix[0]*z.x + mut->preRotMatrix[1]*z.y + mut->preRotMatrix[2]*z.z;
-				zr.y = mut->preRotMatrix[3]*z.x + mut->preRotMatrix[4]*z.y + mut->preRotMatrix[5]*z.z;
-				zr.z = mut->preRotMatrix[6]*z.x + mut->preRotMatrix[7]*z.y + mut->preRotMatrix[8]*z.z;
-				z.x = zr.x; z.y = zr.y; z.z = zr.z;
+				z.xyz = Matrix33MulFloat3(mut->preRotMatrix, z.xyz);
 			}
 			if (mut->preScale != 1.0f) { z *= mut->preScale; aux.DE *= mut->preScale; }
 
@@ -2047,11 +2043,7 @@ formulaOut Fractal(__global const sClInConstants *consts, float3 point, sClCalcP
 			// Post-rotation
 			if (mut->postRotX != 0.0f || mut->postRotY != 0.0f || mut->postRotZ != 0.0f)
 			{
-				float3 zr;
-				zr.x = mut->postRotMatrix[0]*z.x + mut->postRotMatrix[1]*z.y + mut->postRotMatrix[2]*z.z;
-				zr.y = mut->postRotMatrix[3]*z.x + mut->postRotMatrix[4]*z.y + mut->postRotMatrix[5]*z.z;
-				zr.z = mut->postRotMatrix[6]*z.x + mut->postRotMatrix[7]*z.y + mut->postRotMatrix[8]*z.z;
-				z.x = zr.x; z.y = zr.y; z.z = zr.z;
+				z.xyz = Matrix33MulFloat3(mut->postRotMatrix, z.xyz);
 			}
 			if (mut->postScale != 1.0f) { z *= mut->postScale; aux.DE *= mut->postScale; }
 			z.x += mut->postOffsetX; z.y += mut->postOffsetY; z.z += mut->postOffsetZ;

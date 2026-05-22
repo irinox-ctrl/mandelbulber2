@@ -41,6 +41,7 @@
 #ifndef OPENCL_KERNEL_CODE
 #include "src/fractal_enums.h"
 #include "src/include_header_wrapper.hpp"
+#include "opencl_algebra.h"
 #endif
 
 typedef enum
@@ -253,10 +254,10 @@ typedef struct
 	cl_float juliaFourierC2x, juliaFourierC2y, juliaFourierC2z;
 	cl_float juliaFourierC3x, juliaFourierC3y, juliaFourierC3z;
 	cl_float juliaBipolarCRx, juliaBipolarCRy, juliaBipolarCRz;
-	// Pre-computed rotation matrices (3x3 = 9 floats each)
-	cl_float preRotMatrix[9];
-	cl_float postRotMatrix[9];
-	cl_float juliaCRotMatrix[9];
+	// Pre-computed rotation matrices
+	matrix33 preRotMatrix;
+	matrix33 postRotMatrix;
+	matrix33 juliaCRotMatrix;
 } sClFormulaMutationParams;
 
 typedef struct
