@@ -728,9 +728,9 @@ void cTabFractal::slotPressedButtonMutationReset()
 	setD("mutation_julia_c_radius", 1.0);
 	// Inversion
 	setI("mutation_inv_type", 0);
-	setD("mutation_inv_center_x", 0.0);
-	setD("mutation_inv_center_y", 0.0);
-	setD("mutation_inv_center_z", 0.0);
+	setD("mutation_inv_center_ax", 0.0);
+	setD("mutation_inv_center_ay", 0.0);
+	setD("mutation_inv_center_az", 0.0);
 	setD("mutation_inv_radius", 1.0);
 	setD("mutation_inv_param_a", 1.0);
 	setD("mutation_inv_param_b", 1.0);
@@ -744,9 +744,9 @@ void cTabFractal::slotPressedButtonMutationReset()
 	setD("mutation_inv_pre_rot_ax", 0.0);
 	setD("mutation_inv_pre_rot_ay", 0.0);
 	setD("mutation_inv_pre_rot_az", 0.0);
-	setD("mutation_inv_center2_x", 0.0);
-	setD("mutation_inv_center2_y", 0.0);
-	setD("mutation_inv_center2_z", 0.0);
+	setD("mutation_inv_center2_ax", 0.0);
+	setD("mutation_inv_center2_ay", 0.0);
+	setD("mutation_inv_center2_az", 0.0);
 	setD("mutation_inv_radius2", 1.0);
 	setD("mutation_inv_weight", 0.5);
 	setI("mutation_inv_n_steps", 4);
@@ -756,12 +756,12 @@ void cTabFractal::slotPressedButtonMutationReset()
 	setI("mutation_inv_iter_stop", 10000);
 	// Clip
 	setI("mutation_clip_type", 0);
-	setD("mutation_clip_center_x", 0.0);
-	setD("mutation_clip_center_y", 0.0);
-	setD("mutation_clip_center_z", 0.0);
-	setD("mutation_clip_size_x", 1.0);
-	setD("mutation_clip_size_y", 1.0);
-	setD("mutation_clip_size_z", 1.0);
+	setD("mutation_clip_center_ax", 0.0);
+	setD("mutation_clip_center_ay", 0.0);
+	setD("mutation_clip_center_az", 0.0);
+	setD("mutation_clip_size_ax", 1.0);
+	setD("mutation_clip_size_ay", 1.0);
+	setD("mutation_clip_size_az", 1.0);
 	setD("mutation_clip_radius", 1.0);
 	setD("mutation_clip_major_radius", 2.0);
 	setD("mutation_clip_angle", 0.0);

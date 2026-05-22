@@ -285,9 +285,9 @@ cNineFractals::cNineFractals(std::shared_ptr<const cFractalContainer> par,
 
 		// v7.6 — Inversion system
 		mutationParams[i].inversionType = generalPar->Get<int>("mutation_inv_type", i + 1);
-		mutationParams[i].invCenterX = generalPar->Get<double>("mutation_inv_center_x", i + 1);
-		mutationParams[i].invCenterY = generalPar->Get<double>("mutation_inv_center_y", i + 1);
-		mutationParams[i].invCenterZ = generalPar->Get<double>("mutation_inv_center_z", i + 1);
+		mutationParams[i].invCenterX = generalPar->Get<double>("mutation_inv_center_ax", i + 1);
+		mutationParams[i].invCenterY = generalPar->Get<double>("mutation_inv_center_ay", i + 1);
+		mutationParams[i].invCenterZ = generalPar->Get<double>("mutation_inv_center_az", i + 1);
 		mutationParams[i].invRadius = generalPar->Get<double>("mutation_inv_radius", i + 1);
 		mutationParams[i].invParamA = generalPar->Get<double>("mutation_inv_param_a", i + 1);
 		mutationParams[i].invParamB = generalPar->Get<double>("mutation_inv_param_b", i + 1);
@@ -301,9 +301,9 @@ cNineFractals::cNineFractals(std::shared_ptr<const cFractalContainer> par,
 		mutationParams[i].invPreRotX = generalPar->Get<double>("mutation_inv_pre_rot_x", i + 1);
 		mutationParams[i].invPreRotY = generalPar->Get<double>("mutation_inv_pre_rot_y", i + 1);
 		mutationParams[i].invPreRotZ = generalPar->Get<double>("mutation_inv_pre_rot_z", i + 1);
-		mutationParams[i].invCenter2X = generalPar->Get<double>("mutation_inv_center2_x", i + 1);
-		mutationParams[i].invCenter2Y = generalPar->Get<double>("mutation_inv_center2_y", i + 1);
-		mutationParams[i].invCenter2Z = generalPar->Get<double>("mutation_inv_center2_z", i + 1);
+		mutationParams[i].invCenter2X = generalPar->Get<double>("mutation_inv_center2_ax", i + 1);
+		mutationParams[i].invCenter2Y = generalPar->Get<double>("mutation_inv_center2_ay", i + 1);
+		mutationParams[i].invCenter2Z = generalPar->Get<double>("mutation_inv_center2_az", i + 1);
 		mutationParams[i].invRadius2 = generalPar->Get<double>("mutation_inv_radius2", i + 1);
 		mutationParams[i].invWeight = generalPar->Get<double>("mutation_inv_weight", i + 1);
 		mutationParams[i].invNSteps = generalPar->Get<int>("mutation_inv_n_steps", i + 1);
@@ -313,12 +313,12 @@ cNineFractals::cNineFractals(std::shared_ptr<const cFractalContainer> par,
 		mutationParams[i].invIterStop = generalPar->Get<int>("mutation_inv_iter_stop", i + 1);
 		// v7.6 — Clip system
 		mutationParams[i].clipType = generalPar->Get<int>("mutation_clip_type", i + 1);
-		mutationParams[i].clipCenterX = generalPar->Get<double>("mutation_clip_center_x", i + 1);
-		mutationParams[i].clipCenterY = generalPar->Get<double>("mutation_clip_center_y", i + 1);
-		mutationParams[i].clipCenterZ = generalPar->Get<double>("mutation_clip_center_z", i + 1);
-		mutationParams[i].clipSizeX = generalPar->Get<double>("mutation_clip_size_x", i + 1);
-		mutationParams[i].clipSizeY = generalPar->Get<double>("mutation_clip_size_y", i + 1);
-		mutationParams[i].clipSizeZ = generalPar->Get<double>("mutation_clip_size_z", i + 1);
+		mutationParams[i].clipCenterX = generalPar->Get<double>("mutation_clip_center_ax", i + 1);
+		mutationParams[i].clipCenterY = generalPar->Get<double>("mutation_clip_center_ay", i + 1);
+		mutationParams[i].clipCenterZ = generalPar->Get<double>("mutation_clip_center_az", i + 1);
+		mutationParams[i].clipSizeX = generalPar->Get<double>("mutation_clip_size_ax", i + 1);
+		mutationParams[i].clipSizeY = generalPar->Get<double>("mutation_clip_size_ay", i + 1);
+		mutationParams[i].clipSizeZ = generalPar->Get<double>("mutation_clip_size_az", i + 1);
 		mutationParams[i].clipRadius = generalPar->Get<double>("mutation_clip_radius", i + 1);
 		mutationParams[i].clipMajorRadius = generalPar->Get<double>("mutation_clip_major_radius", i + 1);
 		mutationParams[i].clipAngle = generalPar->Get<double>("mutation_clip_angle", i + 1);

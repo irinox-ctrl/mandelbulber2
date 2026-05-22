@@ -306,9 +306,9 @@ void InitParams(std::shared_ptr<cParameterContainer> par)
 
 		// v7.6 — Inversion system (50 types)
 		par->addParam("mutation_inv_type", i, 0, 0, 50, morphAkima, paramStandard);
-		par->addParam("mutation_inv_center_x", i, 0.0, -100.0, 100.0, morphAkima, paramStandard);
-		par->addParam("mutation_inv_center_y", i, 0.0, -100.0, 100.0, morphAkima, paramStandard);
-		par->addParam("mutation_inv_center_z", i, 0.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_inv_center_ax", i, 0.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_inv_center_ay", i, 0.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_inv_center_az", i, 0.0, -100.0, 100.0, morphAkima, paramStandard);
 		par->addParam("mutation_inv_radius", i, 1.0, 0.001, 100.0, morphAkima, paramStandard);
 		par->addParam("mutation_inv_param_a", i, 1.0, 0.001, 100.0, morphAkima, paramStandard);
 		par->addParam("mutation_inv_param_b", i, 1.0, 0.001, 100.0, morphAkima, paramStandard);
@@ -322,9 +322,9 @@ void InitParams(std::shared_ptr<cParameterContainer> par)
 		par->addParam("mutation_inv_pre_rot_x", i, 0.0, -360.0, 360.0, morphAkima, paramStandard);
 		par->addParam("mutation_inv_pre_rot_y", i, 0.0, -360.0, 360.0, morphAkima, paramStandard);
 		par->addParam("mutation_inv_pre_rot_z", i, 0.0, -360.0, 360.0, morphAkima, paramStandard);
-		par->addParam("mutation_inv_center2_x", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
-		par->addParam("mutation_inv_center2_y", i, 0.0, -100.0, 100.0, morphAkima, paramStandard);
-		par->addParam("mutation_inv_center2_z", i, 0.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_inv_center2_ax", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_inv_center2_ay", i, 0.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_inv_center2_az", i, 0.0, -100.0, 100.0, morphAkima, paramStandard);
 		par->addParam("mutation_inv_radius2", i, 1.0, 0.001, 100.0, morphAkima, paramStandard);
 		par->addParam("mutation_inv_weight", i, 1.0, 0.0, 10.0, morphAkima, paramStandard);
 		par->addParam("mutation_inv_n_steps", i, 2, 1, 8, morphAkima, paramStandard);
@@ -334,12 +334,12 @@ void InitParams(std::shared_ptr<cParameterContainer> par)
 		par->addParam("mutation_inv_iter_stop", i, 10000, 0, 10000, morphAkima, paramStandard);
 		// v7.6 — Clip system (50 types)
 		par->addParam("mutation_clip_type", i, 0, 0, 50, morphAkima, paramStandard);
-		par->addParam("mutation_clip_center_x", i, 0.0, -100.0, 100.0, morphAkima, paramStandard);
-		par->addParam("mutation_clip_center_y", i, 0.0, -100.0, 100.0, morphAkima, paramStandard);
-		par->addParam("mutation_clip_center_z", i, 0.0, -100.0, 100.0, morphAkima, paramStandard);
-		par->addParam("mutation_clip_size_x", i, 1.0, 0.001, 100.0, morphAkima, paramStandard);
-		par->addParam("mutation_clip_size_y", i, 1.0, 0.001, 100.0, morphAkima, paramStandard);
-		par->addParam("mutation_clip_size_z", i, 1.0, 0.001, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_clip_center_ax", i, 0.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_clip_center_ay", i, 0.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_clip_center_az", i, 0.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_clip_size_ax", i, 1.0, 0.001, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_clip_size_ay", i, 1.0, 0.001, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_clip_size_az", i, 1.0, 0.001, 100.0, morphAkima, paramStandard);
 		par->addParam("mutation_clip_radius", i, 1.0, 0.001, 100.0, morphAkima, paramStandard);
 		par->addParam("mutation_clip_major_radius", i, 2.0, 0.001, 100.0, morphAkima, paramStandard);
 		par->addParam("mutation_clip_angle", i, 0.0, -360.0, 360.0, morphAkima, paramStandard);
