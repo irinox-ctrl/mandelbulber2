@@ -27,8 +27,9 @@
 
 | 100 Noise & Procedural DE (V1-V100) | ✅ Klaar | CPU + GPU + UI + Iteratie |
 | 100 Orbit Trap DE (V1-V100) | ✅ Klaar | CPU + GPU + UI + Iteratie |
+| 100 MandelTorus DE (V1-V100) | ✅ Klaar | CPU + GPU + UI + Iteratie |
 
-**Totaal transformaties: 1300** (50 inv + 50 clip + 100 JL + 100 PK + 200 MB + 100 WD + 100 SK + 400 AB + 100 Noise + 100 Orbit)
+**Totaal transformaties: 1400** (50 inv + 50 clip + 100 JL + 100 PK + 200 MB + 100 WD + 100 SK + 400 AB + 100 Noise + 100 Orbit + 100 Torus)
 
 ---
 
@@ -240,4 +241,4 @@ Globale "Iter Range" (iterationStart/iterationStop) is de master gate — per-se
 
 ---
 
-*Laatst bijgewerkt: 2026-05-20 — Sessie 9 (v7.11)*
+*Laatst bijgewerkt: 2026-05-22 — Sessie 10 (v7.12)*
