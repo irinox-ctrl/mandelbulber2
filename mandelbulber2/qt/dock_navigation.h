@@ -39,6 +39,10 @@
 
 #include <QWidget>
 
+class QLabel;
+class QGroupBox;
+class QToolButton;
+
 // forward declarations
 class cAutomatedWidgets;
 
@@ -86,9 +90,24 @@ private slots:
 	void slotChangedOpenCLMode(int index);
 	void slotOpenNavigator();
 
+	// 3x3lion navigation upgrades
+	void slotQuickViewHome();
+	void slotQuickViewTop();
+	void slotQuickViewFront();
+	void slotQuickViewRight();
+	void slotCopyCameraCoords();
+	void slotPasteCameraCoords();
+	void slotCopyTargetCoords();
+	void slotPasteTargetCoords();
+	void slotToggleSection();
+
 private:
 	void ConnectSignals() const;
 	void SetIconSizes();
+	void SetupCollapsibleSections();
+	void SetupQuickPresets();
+	void SetCameraView(double cx, double cy, double cz, double tx, double ty, double tz,
+		double yaw, double pitch, double roll, double distance);
 
 	Ui::cDockNavigation *ui;
 

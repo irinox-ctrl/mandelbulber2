@@ -49,6 +49,11 @@
 #include "src/system.hpp"
 #include "src/write_log.hpp"
 
+#include <QApplication>
+#include <QClipboard>
+#include <QGroupBox>
+#include <QPropertyAnimation>
+
 cDockNavigation::cDockNavigation(QWidget *parent) : QWidget(parent), ui(new Ui::cDockNavigation)
 {
 	ui->setupUi(this);
@@ -57,6 +62,8 @@ cDockNavigation::cDockNavigation(QWidget *parent) : QWidget(parent), ui(new Ui::
 	manipulations = new cManipulations(this);
 	ConnectSignals();
 	SetIconSizes();
+	SetupCollapsibleSections();
+	SetupQuickPresets();
 }
 
 cDockNavigation::~cDockNavigation()
@@ -102,7 +109,7 @@ void cDockNavigation::SetIconSizes()
 {
 	QFontMetrics fm(font());
 	int pixelFontSize = fm.height();
-	QSize iconSize(int(pixelFontSize * 2.5), int(pixelFontSize * 2.5));
+	QSize iconSize(int(pixelFontSize * 3.2), int(pixelFontSize * 3.2));
 	ui->bu_move_backward->setIconSize(iconSize);
 	ui->bu_move_down->setIconSize(iconSize);
 	ui->bu_move_forward->setIconSize(iconSize);
@@ -284,4 +291,175 @@ void cDockNavigation::slotOpenNavigator()
 	navigator->SetMouseClickFunction(gMainInterface->GetMouseClickFunction());
 	navigator->show();
 	navigator->AllPrepared();
+}
+
+// --- 3x3lion Navigation Upgrades ---
+
+void cDockNavigation::SetupCollapsibleSections()
+{
+	QList<QGroupBox *> groups = {
+		ui->groupBox_coordinates,
+		ui->groupBox_rotation,
+		ui->groupBox_11  // sweet spot
+	};
+
+	for (QGroupBox *box : groups)
+	{
+		box->setCheckable(true);
+		box->setChecked(true);
+		box->setProperty("collapsible", true);
+		connect(box, &QGroupBox::toggled, [box](bool checked) {
+			for (QObject *child : box->children())
+			{
+				QWidget *w = qobject_cast<QWidget *>(child);
+				if (w) w->setVisible(checked);
+			}
+		});
+	}
+
+	// Sweet spot collapsed by default
+	ui->groupBox_11->setChecked(false);
+	for (QObject *child : ui->groupBox_11->children())
+	{
+		QWidget *w = qobject_cast<QWidget *>(child);
+		if (w) w->setVisible(false);
+	}
+}
+
+void cDockNavigation::SetupQuickPresets()
+{
+	// Quick presets are added via .ui file; connect them here
+	if (ui->pushButton_view_home)
+		connect(ui->pushButton_view_home, &QPushButton::clicked, this,
+			&cDockNavigation::slotQuickViewHome);
+	if (ui->pushButton_view_top)
+		connect(ui->pushButton_view_top, &QPushButton::clicked, this,
+			&cDockNavigation::slotQuickViewTop);
+	if (ui->pushButton_view_front)
+		connect(ui->pushButton_view_front, &QPushButton::clicked, this,
+			&cDockNavigation::slotQuickViewFront);
+	if (ui->pushButton_view_right)
+		connect(ui->pushButton_view_right, &QPushButton::clicked, this,
+			&cDockNavigation::slotQuickViewRight);
+
+	// Copy/paste buttons
+	if (ui->pushButton_copy_camera)
+		connect(ui->pushButton_copy_camera, &QPushButton::clicked, this,
+			&cDockNavigation::slotCopyCameraCoords);
+	if (ui->pushButton_paste_camera)
+		connect(ui->pushButton_paste_camera, &QPushButton::clicked, this,
+			&cDockNavigation::slotPasteCameraCoords);
+	if (ui->pushButton_copy_target)
+		connect(ui->pushButton_copy_target, &QPushButton::clicked, this,
+			&cDockNavigation::slotCopyTargetCoords);
+	if (ui->pushButton_paste_target)
+		connect(ui->pushButton_paste_target, &QPushButton::clicked, this,
+			&cDockNavigation::slotPasteTargetCoords);
+}
+
+void cDockNavigation::SetCameraView(double cx, double cy, double cz,
+	double tx, double ty, double tz, double yaw, double pitch, double roll, double distance)
+{
+	QWidget *dock = const_cast<cDockNavigation *>(this);
+	SynchronizeInterfaceWindow(dock, params, qInterface::read);
+
+	params->Set("camera", CVector3(cx, cy, cz));
+	params->Set("target", CVector3(tx, ty, tz));
+	params->Set("camera_rotation", CVector3(yaw, pitch, roll));
+	params->Set("camera_distance_to_target", distance);
+
+	SynchronizeInterfaceWindow(dock, params, qInterface::write);
+	emit signalRender();
+}
+
+void cDockNavigation::slotQuickViewHome()
+{
+	SetCameraView(3.0, -6.0, 2.0, 0.0, 0.0, 0.0, 26.565, -16.602, 0.0, 7.0);
+}
+
+void cDockNavigation::slotQuickViewTop()
+{
+	SetCameraView(0.0, 0.0, 7.0, 0.0, 0.0, 0.0, 0.0, -90.0, 0.0, 7.0);
+}
+
+void cDockNavigation::slotQuickViewFront()
+{
+	SetCameraView(0.0, -7.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 7.0);
+}
+
+void cDockNavigation::slotQuickViewRight()
+{
+	SetCameraView(7.0, 0.0, 0.0, 0.0, 0.0, 0.0, 90.0, 0.0, 0.0, 7.0);
+}
+
+void cDockNavigation::slotCopyCameraCoords()
+{
+	QWidget *dock = const_cast<cDockNavigation *>(this);
+	SynchronizeInterfaceWindow(dock, params, qInterface::read);
+	CVector3 cam = params->Get<CVector3>("camera");
+	QString text = QString("%1, %2, %3").arg(cam.x, 0, 'g', 15).arg(cam.y, 0, 'g', 15).arg(cam.z, 0, 'g', 15);
+	QApplication::clipboard()->setText(text);
+}
+
+void cDockNavigation::slotPasteCameraCoords()
+{
+	QString text = QApplication::clipboard()->text();
+	QStringList parts = text.split(',');
+	if (parts.size() >= 3)
+	{
+		bool okX, okY, okZ;
+		double x = parts[0].trimmed().toDouble(&okX);
+		double y = parts[1].trimmed().toDouble(&okY);
+		double z = parts[2].trimmed().toDouble(&okZ);
+		if (okX && okY && okZ)
+		{
+			QWidget *dock = const_cast<cDockNavigation *>(this);
+			SynchronizeInterfaceWindow(dock, params, qInterface::read);
+			params->Set("camera", CVector3(x, y, z));
+			SynchronizeInterfaceWindow(dock, params, qInterface::write);
+			emit signalRender();
+		}
+	}
+}
+
+void cDockNavigation::slotCopyTargetCoords()
+{
+	QWidget *dock = const_cast<cDockNavigation *>(this);
+	SynchronizeInterfaceWindow(dock, params, qInterface::read);
+	CVector3 tgt = params->Get<CVector3>("target");
+	QString text = QString("%1, %2, %3").arg(tgt.x, 0, 'g', 15).arg(tgt.y, 0, 'g', 15).arg(tgt.z, 0, 'g', 15);
+	QApplication::clipboard()->setText(text);
+}
+
+void cDockNavigation::slotPasteTargetCoords()
+{
+	QString text = QApplication::clipboard()->text();
+	QStringList parts = text.split(',');
+	if (parts.size() >= 3)
+	{
+		bool okX, okY, okZ;
+		double x = parts[0].trimmed().toDouble(&okX);
+		double y = parts[1].trimmed().toDouble(&okY);
+		double z = parts[2].trimmed().toDouble(&okZ);
+		if (okX && okY && okZ)
+		{
+			QWidget *dock = const_cast<cDockNavigation *>(this);
+			SynchronizeInterfaceWindow(dock, params, qInterface::read);
+			params->Set("target", CVector3(x, y, z));
+			SynchronizeInterfaceWindow(dock, params, qInterface::write);
+			emit signalRender();
+		}
+	}
+}
+
+void cDockNavigation::slotToggleSection()
+{
+	QGroupBox *box = qobject_cast<QGroupBox *>(sender());
+	if (!box) return;
+	bool show = box->isChecked();
+	for (QObject *child : box->children())
+	{
+		QWidget *w = qobject_cast<QWidget *>(child);
+		if (w) w->setVisible(show);
+	}
 }
