@@ -341,6 +341,11 @@ typedef struct
 	cl_float orbitFactor;
 	cl_float orbitParamA, orbitParamB, orbitParamC, orbitParamD;
 	cl_int orbitIterStart, orbitIterStop;
+	// v7.12 — MandelTorus DE system (100 types)
+	cl_int torusType;
+	cl_float torusFactor;
+	cl_float torusParamA, torusParamB, torusParamC, torusParamD;
+	cl_int torusIterStart, torusIterStop;
 	// Pre-computed rotation matrices
 	matrix33 preRotMatrix;
 	matrix33 postRotMatrix;

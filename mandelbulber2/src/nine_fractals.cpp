@@ -441,6 +441,16 @@ cNineFractals::cNineFractals(std::shared_ptr<const cFractalContainer> par,
 		mutationParams[i].orbitIterStart = generalPar->Get<int>("mutation_orbit_iter_start", i + 1);
 		mutationParams[i].orbitIterStop = generalPar->Get<int>("mutation_orbit_iter_stop", i + 1);
 
+		// v7.12 — MandelTorus DE system
+		mutationParams[i].torusType = generalPar->Get<int>("mutation_torus_type", i + 1);
+		mutationParams[i].torusFactor = generalPar->Get<double>("mutation_torus_factor", i + 1);
+		mutationParams[i].torusParamA = generalPar->Get<double>("mutation_torus_param_a", i + 1);
+		mutationParams[i].torusParamB = generalPar->Get<double>("mutation_torus_param_b", i + 1);
+		mutationParams[i].torusParamC = generalPar->Get<double>("mutation_torus_param_c", i + 1);
+		mutationParams[i].torusParamD = generalPar->Get<double>("mutation_torus_param_d", i + 1);
+		mutationParams[i].torusIterStart = generalPar->Get<int>("mutation_torus_iter_start", i + 1);
+		mutationParams[i].torusIterStop = generalPar->Get<int>("mutation_torus_iter_stop", i + 1);
+
 		// Smart defaults: PK/JK formulas get Möbius (Bilinear) math preset
 		fractal::enumFractalFormula f = fractals[i]->formula;
 		bool isPKJK = (f == fractal::pseudoKleinian || f == fractal::pseudoKleinian4d
@@ -1525,6 +1535,16 @@ void cNineFractals::CopyToOpenclData(sClFractalSequence *sequence) const
 		sequence->mutationParams[i].orbitParamD = mutationParams[i].orbitParamD;
 		sequence->mutationParams[i].orbitIterStart = mutationParams[i].orbitIterStart;
 		sequence->mutationParams[i].orbitIterStop = mutationParams[i].orbitIterStop;
+
+		// v7.12 — MandelTorus DE system
+		sequence->mutationParams[i].torusType = mutationParams[i].torusType;
+		sequence->mutationParams[i].torusFactor = mutationParams[i].torusFactor;
+		sequence->mutationParams[i].torusParamA = mutationParams[i].torusParamA;
+		sequence->mutationParams[i].torusParamB = mutationParams[i].torusParamB;
+		sequence->mutationParams[i].torusParamC = mutationParams[i].torusParamC;
+		sequence->mutationParams[i].torusParamD = mutationParams[i].torusParamD;
+		sequence->mutationParams[i].torusIterStart = mutationParams[i].torusIterStart;
+		sequence->mutationParams[i].torusIterStop = mutationParams[i].torusIterStop;
 
 		// Copy rotation matrices using matrix33 type
 		if (mutationParams[i].enabled)

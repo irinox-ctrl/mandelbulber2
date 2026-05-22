@@ -886,6 +886,16 @@ void cTabFractal::slotPressedButtonMutationReset()
 	setI("mutation_orbit_iter_start", 0);
 	setI("mutation_orbit_iter_stop", 10000);
 
+	// MandelTorus DE reset
+	setI("mutation_torus_type", 0);
+	setD("mutation_torus_factor", 1.0);
+	setD("mutation_torus_param_a", 1.0);
+	setD("mutation_torus_param_b", 1.0);
+	setD("mutation_torus_param_c", 1.0);
+	setD("mutation_torus_param_d", 1.0);
+	setI("mutation_torus_iter_start", 0);
+	setI("mutation_torus_iter_stop", 10000);
+
 	// Write defaults back to UI widgets
 	SynchronizeInterface(params, qInterface::write);
 }

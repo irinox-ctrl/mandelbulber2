@@ -520,6 +520,12 @@ struct sFormulaMutationParams
 	double orbitParamA, orbitParamB, orbitParamC, orbitParamD;
 	int orbitIterStart, orbitIterStop;
 
+	// v7.12 — MandelTorus DE system (100 types)
+	int torusType;
+	double torusFactor;
+	double torusParamA, torusParamB, torusParamC, torusParamD;
+	int torusIterStart, torusIterStop;
+
 	// Pre-computed rotation matrices (filled in constructor)
 	CRotationMatrix preRotMatrix;
 	CRotationMatrix postRotMatrix;

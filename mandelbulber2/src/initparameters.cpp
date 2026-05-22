@@ -462,6 +462,16 @@ void InitParams(std::shared_ptr<cParameterContainer> par)
 		par->addParam("mutation_orbit_iter_start", i, 0, 0, 10000, morphAkima, paramStandard);
 		par->addParam("mutation_orbit_iter_stop", i, 10000, 0, 10000, morphAkima, paramStandard);
 
+		// v7.12 — MandelTorus DE system (100 types)
+		par->addParam("mutation_torus_type", i, 0, 0, 100, morphAkima, paramStandard);
+		par->addParam("mutation_torus_factor", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_torus_param_a", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_torus_param_b", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_torus_param_c", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_torus_param_d", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_torus_iter_start", i, 0, 0, 10000, morphAkima, paramStandard);
+		par->addParam("mutation_torus_iter_stop", i, 10000, 0, 10000, morphAkima, paramStandard);
+
 		par->addParam("julia_mode", i, false, morphLinear, paramStandard);
 		par->addParam("julia_c", i, CVector3(0.0, 0.0, 0.0), morphAkima, paramStandard);
 		par->addParam(
