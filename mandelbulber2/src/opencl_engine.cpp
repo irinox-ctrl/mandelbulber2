@@ -43,6 +43,7 @@
 #include <QDebug>
 #include <QDir>
 #include <QElapsedTimer>
+#include <QRegularExpression>
 
 #include "error_message.hpp"
 #include "opencl_hardware.h"
@@ -99,6 +100,25 @@ bool cOpenClEngine::Build(const QByteArray &programString, QString *errorText, b
 		// calculating hash code of the program
 		QCryptographicHash hashCryptProgram(QCryptographicHash::Md4);
 		hashCryptProgram.addData(programString);
+
+		// Include contents of all #include'd header files in hash so that
+		// header changes (e.g. struct field additions) invalidate the cache.
+		{
+			QRegularExpression includeRx(R"(#include\s+"([^"]+)")");
+			QRegularExpressionMatchIterator it = includeRx.globalMatch(QString(programString));
+			while (it.hasNext())
+			{
+				QRegularExpressionMatch match = it.next();
+				QString headerPath = match.captured(1);
+				QFile headerFile(headerPath);
+				if (headerFile.open(QIODevice::ReadOnly))
+				{
+					hashCryptProgram.addData(headerFile.readAll());
+					headerFile.close();
+				}
+			}
+		}
+
 		// recompile also if selected devices changed
 		for (int d = 0; d < hardware->getEnabledDevices().size(); d++)
 		{
