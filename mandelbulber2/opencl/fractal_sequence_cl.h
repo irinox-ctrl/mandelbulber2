@@ -232,9 +232,17 @@ typedef struct
 	cl_float trapRadius;
 	// Curvature coloring
 	cl_int curvatureColoring;
-	// Iteration range
+	// Iteration range (global master)
 	cl_int iterationStart;
 	cl_int iterationStop;
+	// Per-section iteration ranges
+	cl_int preIterStart, preIterStop;
+	cl_int foldIterStart, foldIterStop;
+	cl_int warpIterStart, warpIterStop;
+	cl_int mathIterStart, mathIterStop;
+	cl_int postIterStart, postIterStop;
+	cl_int juliaIterStart, juliaIterStop;
+	cl_int deIterStart, deIterStop;
 	// v7.5 — Julia injection system
 	cl_int juliaInjection;
 	cl_int juliaStart;

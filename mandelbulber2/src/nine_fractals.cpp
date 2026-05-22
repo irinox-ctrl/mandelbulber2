@@ -214,6 +214,21 @@ cNineFractals::cNineFractals(std::shared_ptr<const cFractalContainer> par,
 			generalPar->Get<int>("mutation_iteration_start", i + 1);
 		mutationParams[i].iterationStop =
 			generalPar->Get<int>("mutation_iteration_stop", i + 1);
+		// Per-section iteration ranges
+		mutationParams[i].preIterStart = generalPar->Get<int>("mutation_pre_iter_start", i + 1);
+		mutationParams[i].preIterStop = generalPar->Get<int>("mutation_pre_iter_stop", i + 1);
+		mutationParams[i].foldIterStart = generalPar->Get<int>("mutation_fold_iter_start", i + 1);
+		mutationParams[i].foldIterStop = generalPar->Get<int>("mutation_fold_iter_stop", i + 1);
+		mutationParams[i].warpIterStart = generalPar->Get<int>("mutation_warp_iter_start", i + 1);
+		mutationParams[i].warpIterStop = generalPar->Get<int>("mutation_warp_iter_stop", i + 1);
+		mutationParams[i].mathIterStart = generalPar->Get<int>("mutation_math_iter_start", i + 1);
+		mutationParams[i].mathIterStop = generalPar->Get<int>("mutation_math_iter_stop", i + 1);
+		mutationParams[i].postIterStart = generalPar->Get<int>("mutation_post_iter_start", i + 1);
+		mutationParams[i].postIterStop = generalPar->Get<int>("mutation_post_iter_stop", i + 1);
+		mutationParams[i].juliaIterStart = generalPar->Get<int>("mutation_julia_iter_start", i + 1);
+		mutationParams[i].juliaIterStop = generalPar->Get<int>("mutation_julia_iter_stop", i + 1);
+		mutationParams[i].deIterStart = generalPar->Get<int>("mutation_de_iter_start", i + 1);
+		mutationParams[i].deIterStop = generalPar->Get<int>("mutation_de_iter_stop", i + 1);
 		// v7.5 — Julia injection
 		mutationParams[i].juliaInjection = (enumMutationJuliaInjection)
 			generalPar->Get<int>("mutation_julia_injection", i + 1);
@@ -1144,6 +1159,21 @@ void cNineFractals::CopyToOpenclData(sClFractalSequence *sequence) const
 		sequence->mutationParams[i].curvatureColoring = mutationParams[i].curvatureColoring ? 1 : 0;
 		sequence->mutationParams[i].iterationStart = mutationParams[i].iterationStart;
 		sequence->mutationParams[i].iterationStop = mutationParams[i].iterationStop;
+		// Per-section iteration ranges
+		sequence->mutationParams[i].preIterStart = mutationParams[i].preIterStart;
+		sequence->mutationParams[i].preIterStop = mutationParams[i].preIterStop;
+		sequence->mutationParams[i].foldIterStart = mutationParams[i].foldIterStart;
+		sequence->mutationParams[i].foldIterStop = mutationParams[i].foldIterStop;
+		sequence->mutationParams[i].warpIterStart = mutationParams[i].warpIterStart;
+		sequence->mutationParams[i].warpIterStop = mutationParams[i].warpIterStop;
+		sequence->mutationParams[i].mathIterStart = mutationParams[i].mathIterStart;
+		sequence->mutationParams[i].mathIterStop = mutationParams[i].mathIterStop;
+		sequence->mutationParams[i].postIterStart = mutationParams[i].postIterStart;
+		sequence->mutationParams[i].postIterStop = mutationParams[i].postIterStop;
+		sequence->mutationParams[i].juliaIterStart = mutationParams[i].juliaIterStart;
+		sequence->mutationParams[i].juliaIterStop = mutationParams[i].juliaIterStop;
+		sequence->mutationParams[i].deIterStart = mutationParams[i].deIterStart;
+		sequence->mutationParams[i].deIterStop = mutationParams[i].deIterStop;
 		// v7.5 — Julia injection
 		sequence->mutationParams[i].juliaInjection = static_cast<cl_int>(mutationParams[i].juliaInjection);
 		sequence->mutationParams[i].juliaStart = static_cast<cl_int>(mutationParams[i].juliaStart);

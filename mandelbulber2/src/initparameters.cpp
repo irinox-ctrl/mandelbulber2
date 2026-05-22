@@ -262,9 +262,24 @@ void InitParams(std::shared_ptr<cParameterContainer> par)
 		par->addParam("mutation_trap_radius", i, 1.0, 0.001, 100.0, morphAkima, paramStandard);
 		// Curvature coloring
 		par->addParam("mutation_curvature_coloring", i, false, morphLinear, paramStandard);
-		// Iteration range for mutation
+		// Iteration range for mutation (global master)
 		par->addParam("mutation_iteration_start", i, 0, 0, 10000, morphAkima, paramStandard);
 		par->addParam("mutation_iteration_stop", i, 250, 0, 10000, morphAkima, paramStandard);
+		// Per-section iteration ranges (default 0-10000 = always active within master range)
+		par->addParam("mutation_pre_iter_start", i, 0, 0, 10000, morphAkima, paramStandard);
+		par->addParam("mutation_pre_iter_stop", i, 10000, 0, 10000, morphAkima, paramStandard);
+		par->addParam("mutation_fold_iter_start", i, 0, 0, 10000, morphAkima, paramStandard);
+		par->addParam("mutation_fold_iter_stop", i, 10000, 0, 10000, morphAkima, paramStandard);
+		par->addParam("mutation_warp_iter_start", i, 0, 0, 10000, morphAkima, paramStandard);
+		par->addParam("mutation_warp_iter_stop", i, 10000, 0, 10000, morphAkima, paramStandard);
+		par->addParam("mutation_math_iter_start", i, 0, 0, 10000, morphAkima, paramStandard);
+		par->addParam("mutation_math_iter_stop", i, 10000, 0, 10000, morphAkima, paramStandard);
+		par->addParam("mutation_post_iter_start", i, 0, 0, 10000, morphAkima, paramStandard);
+		par->addParam("mutation_post_iter_stop", i, 10000, 0, 10000, morphAkima, paramStandard);
+		par->addParam("mutation_julia_iter_start", i, 0, 0, 10000, morphAkima, paramStandard);
+		par->addParam("mutation_julia_iter_stop", i, 10000, 0, 10000, morphAkima, paramStandard);
+		par->addParam("mutation_de_iter_start", i, 0, 0, 10000, morphAkima, paramStandard);
+		par->addParam("mutation_de_iter_stop", i, 10000, 0, 10000, morphAkima, paramStandard);
 		// v7.5 — Julia injection system
 		par->addParam("mutation_julia_injection", i, 0, 0, 5, morphAkima, paramStandard);
 		par->addParam("mutation_julia_start", i, 0, 0, 4, morphAkima, paramStandard);

@@ -400,9 +400,17 @@ struct sFormulaMutationParams
 	double trapRadius;
 	// Curvature coloring
 	bool curvatureColoring;
-	// Iteration range
+	// Iteration range (global master)
 	int iterationStart;
 	int iterationStop;
+	// Per-section iteration ranges
+	int preIterStart, preIterStop;
+	int foldIterStart, foldIterStop;
+	int warpIterStart, warpIterStop;
+	int mathIterStart, mathIterStop;
+	int postIterStart, postIterStop;
+	int juliaIterStart, juliaIterStop;
+	int deIterStart, deIterStop;
 
 	// v7.5 — Julia injection system
 	enumMutationJuliaInjection juliaInjection;

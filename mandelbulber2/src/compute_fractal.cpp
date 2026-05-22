@@ -313,33 +313,31 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 				&& i >= mut.iterationStart && i < mut.iterationStop;
 			if (mutationActive)
 			{
-				// Pre-abs
-				if (mut.preAbsX) z.x = fabs(z.x);
-				if (mut.preAbsY) z.y = fabs(z.y);
-				if (mut.preAbsZ) z.z = fabs(z.z);
-
-				// Pre-offset
-				z.x += mut.preOffsetX;
-				z.y += mut.preOffsetY;
-				z.z += mut.preOffsetZ;
-
-				// Pre-rotation
-				if (mut.preRotX != 0.0 || mut.preRotY != 0.0 || mut.preRotZ != 0.0)
+				// Pre-transform (per-section iteration range)
+				if (i >= mut.preIterStart && i < mut.preIterStop)
 				{
-					CVector3 z3 = z.GetXYZ();
-					z3 = mut.preRotMatrix.RotateVector(z3);
-					z = CVector4(z3, z.w);
+					if (mut.preAbsX) z.x = fabs(z.x);
+					if (mut.preAbsY) z.y = fabs(z.y);
+					if (mut.preAbsZ) z.z = fabs(z.z);
+					z.x += mut.preOffsetX;
+					z.y += mut.preOffsetY;
+					z.z += mut.preOffsetZ;
+					if (mut.preRotX != 0.0 || mut.preRotY != 0.0 || mut.preRotZ != 0.0)
+					{
+						CVector3 z3 = z.GetXYZ();
+						z3 = mut.preRotMatrix.RotateVector(z3);
+						z = CVector4(z3, z.w);
+					}
+					if (mut.preScale != 1.0)
+					{
+						z *= mut.preScale;
+						aux.DE *= mut.preScale;
+					}
 				}
 
-				// Pre-scale
-				if (mut.preScale != 1.0)
-				{
-					z *= mut.preScale;
-					aux.DE *= mut.preScale;
-				}
-
-				// Fold injection (pre-formula or both)
-				if (mut.foldType != mutFoldNone
+				// Fold injection (pre-formula or both, per-section iteration range)
+				if (i >= mut.foldIterStart && i < mut.foldIterStop
+					&& mut.foldType != mutFoldNone
 					&& (mut.foldPosition == mutFoldPosPre || mut.foldPosition == mutFoldPosBoth))
 				{
 					switch (mut.foldType)
@@ -634,7 +632,8 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 					case mutSwizzleZYX: { double t = z.x; z.x = z.z; z.z = t; } break;
 				}
 
-				// Warp distortion
+				// Warp distortion (per-section iteration range)
+				if (i >= mut.warpIterStart && i < mut.warpIterStop) {
 				if (mut.warpType == mutWarpSine)
 				{
 					z.x += mut.warpAmplitude * sin(z.y * mut.warpFrequency);
@@ -746,8 +745,11 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 					z.y += mut.warpFrequency * z.z;
 				}
 
-				// Math injection — new mathematical operations
-				if (mut.mathType != mutMathNone)
+				} // end warp iteration range
+
+				// Math injection (per-section iteration range)
+				if (i >= mut.mathIterStart && i < mut.mathIterStop
+					&& mut.mathType != mutMathNone)
 				{
 					CVector4 mathZ = z;
 					switch (mut.mathType)
@@ -1503,9 +1505,10 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 				}
 			}
 
-			// v7.5 — Julia pre-fold injection
+			// v7.5 — Julia pre-fold injection (per-section iteration range)
 			if (mut.enabled && mut.juliaInjection != mutJuliaInjectNone
-				&& i >= mut.iterationStart && i < mut.iterationStop)
+				&& i >= mut.iterationStart && i < mut.iterationStop
+				&& i >= mut.juliaIterStart && i < mut.juliaIterStop)
 			{
 				CVector4 juliaC = aux.const_c * mut.juliaCMul;
 
@@ -1676,8 +1679,9 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 			}
 		}
 
-		// v7.5 — Julia mid/post injection (after formula + c-addition)
+		// v7.5 — Julia mid/post injection (per-section iteration range)
 		if (mut.enabled && i >= mut.iterationStart && i < mut.iterationStop
+			&& i >= mut.juliaIterStart && i < mut.juliaIterStop
 			&& (mut.juliaInjection == mutJuliaInjectMidFold
 				|| mut.juliaInjection == mutJuliaInjectPostScale
 				|| mut.juliaInjection == mutJuliaInjectDual))
@@ -1716,8 +1720,9 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 				&& i >= mut.iterationStart && i < mut.iterationStop;
 			if (mutationActive)
 			{
-				// Fold injection (post-formula or both)
-				if (mut.foldType != mutFoldNone
+				// Fold injection (post-formula or both, per-section iteration range)
+				if (i >= mut.foldIterStart && i < mut.foldIterStop
+					&& mut.foldType != mutFoldNone
 					&& (mut.foldPosition == mutFoldPosPost || mut.foldPosition == mutFoldPosBoth))
 				{
 					switch (mut.foldType)
@@ -2001,27 +2006,26 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 					}
 				}
 
-				// Post-rotation
-				if (mut.postRotX != 0.0 || mut.postRotY != 0.0 || mut.postRotZ != 0.0)
+				// Post-transform (per-section iteration range)
+				if (i >= mut.postIterStart && i < mut.postIterStop)
 				{
-					CVector3 z3 = z.GetXYZ();
-					z3 = mut.postRotMatrix.RotateVector(z3);
-					z = CVector4(z3, z.w);
+					if (mut.postRotX != 0.0 || mut.postRotY != 0.0 || mut.postRotZ != 0.0)
+					{
+						CVector3 z3 = z.GetXYZ();
+						z3 = mut.postRotMatrix.RotateVector(z3);
+						z = CVector4(z3, z.w);
+					}
+					if (mut.postScale != 1.0)
+					{
+						z *= mut.postScale;
+						aux.DE *= mut.postScale;
+					}
+					z.x += mut.postOffsetX;
+					z.y += mut.postOffsetY;
+					z.z += mut.postOffsetZ;
 				}
 
-				// Post-scale
-				if (mut.postScale != 1.0)
-				{
-					z *= mut.postScale;
-					aux.DE *= mut.postScale;
-				}
-
-				// Post-offset
-				z.x += mut.postOffsetX;
-				z.y += mut.postOffsetY;
-				z.z += mut.postOffsetZ;
-
-				// Z-mix: blend between pre-mutation z and post-mutation z
+				// Z-mix
 				if (mut.zMix < 1.0)
 				{
 					double m = mut.zMix;
@@ -2029,7 +2033,9 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 					z = z * m + preMutZ * m1;
 				}
 
-				// DE scale
+				// DE tweak + DE scale (per-section iteration range)
+				if (i >= mut.deIterStart && i < mut.deIterStop)
+				{
 				if (mut.deScale != 1.0)
 				{
 					aux.DE *= mut.deScale;
@@ -2069,8 +2075,9 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 						default: break;
 					}
 				}
+				} // end DE iteration range
 
-				// Orbit trap (Familie 10)
+				// Orbit trap
 				if (mut.orbitTrap != mutTrapNone)
 				{
 					double trapVal = 1e20;

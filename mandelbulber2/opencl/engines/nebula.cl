@@ -551,18 +551,24 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 		if (mutationActive)
 		{
 			__constant sClFormulaMutationParams *mut = &consts->sequence.mutationParams[sequence];
-			if (mut->preAbsX) z.x = fabs(z.x);
-			if (mut->preAbsY) z.y = fabs(z.y);
-			if (mut->preAbsZ) z.z = fabs(z.z);
-			z.x += mut->preOffsetX; z.y += mut->preOffsetY; z.z += mut->preOffsetZ;
-			if (mut->preRotX != 0.0f || mut->preRotY != 0.0f || mut->preRotZ != 0.0f)
+
+			// Pre-transform (per-section iteration range)
+			if (i >= mut->preIterStart && i < mut->preIterStop)
 			{
-				z.xyz = Matrix33MulFloat3(mut->preRotMatrix, z.xyz);
+				if (mut->preAbsX) z.x = fabs(z.x);
+				if (mut->preAbsY) z.y = fabs(z.y);
+				if (mut->preAbsZ) z.z = fabs(z.z);
+				z.x += mut->preOffsetX; z.y += mut->preOffsetY; z.z += mut->preOffsetZ;
+				if (mut->preRotX != 0.0f || mut->preRotY != 0.0f || mut->preRotZ != 0.0f)
+				{
+					z.xyz = Matrix33MulFloat3(mut->preRotMatrix, z.xyz);
+				}
+				if (mut->preScale != 1.0f) { z *= mut->preScale; aux.DE *= mut->preScale; }
 			}
-			if (mut->preScale != 1.0f) { z *= mut->preScale; aux.DE *= mut->preScale; }
 
 			// Fold injection (pre or both)
-			if (mut->foldType != 0 && (mut->foldPosition == 0 || mut->foldPosition == 2))
+			if (i >= mut->foldIterStart && i < mut->foldIterStop
+				&& mut->foldType != 0 && (mut->foldPosition == 0 || mut->foldPosition == 2))
 			{
 				switch (mut->foldType)
 				{
@@ -808,6 +814,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 				case 4: { float t = z.z; z.z = z.y; z.y = z.x; z.x = t; } break;
 				case 5: { float t = z.x; z.x = z.z; z.z = t; } break;
 			}
+			// Warp distortion (per-section iteration range)
+			if (i >= mut->warpIterStart && i < mut->warpIterStop) {
 			if (mut->warpType == 1)
 			{
 				z.x += mut->warpAmplitude * native_sin(z.y * mut->warpFrequency);
@@ -910,8 +918,11 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 				z.y += mut->warpFrequency * z.z;
 			}
 
-			// Math injection (GPU Nebula)
-			if (mut->mathType != 0)
+			} // end warp iteration range
+
+			// Math injection (GPU Nebula, per-section iteration range)
+			if (i >= mut->mathIterStart && i < mut->mathIterStop
+				&& mut->mathType != 0)
 			{
 				float4 mathZ = z;
 				switch (mut->mathType)
@@ -1605,8 +1616,11 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 			}
 		}
 
-		// v7.5 — Julia pre-fold injection (GPU Nebula)
-		if (mutationActive && consts->sequence.mutationParams[sequence].juliaInjection != 0)
+		// v7.5 — Julia pre-fold injection (GPU Nebula, per-section iteration range)
+		if (mutationActive
+			&& i >= consts->sequence.mutationParams[sequence].juliaIterStart
+			&& i < consts->sequence.mutationParams[sequence].juliaIterStop
+			&& consts->sequence.mutationParams[sequence].juliaInjection != 0)
 		{
 			__constant sClFormulaMutationParams *jm = &consts->sequence.mutationParams[sequence];
 			float4 juliaC = aux.const_c * jm->juliaCMul;
@@ -1733,8 +1747,11 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 		}
 #endif
 
-		// v7.5 — Julia mid/post injection (GPU Nebula)
-		if (mutationActive && (consts->sequence.mutationParams[sequence].juliaInjection == 2
+		// v7.5 — Julia mid/post injection (GPU Nebula, per-section iteration range)
+		if (mutationActive
+			&& i >= consts->sequence.mutationParams[sequence].juliaIterStart
+			&& i < consts->sequence.mutationParams[sequence].juliaIterStop
+			&& (consts->sequence.mutationParams[sequence].juliaInjection == 2
 			|| consts->sequence.mutationParams[sequence].juliaInjection == 3
 			|| consts->sequence.mutationParams[sequence].juliaInjection == 4))
 		{
@@ -1757,8 +1774,9 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 		{
 			__constant sClFormulaMutationParams *mut = &consts->sequence.mutationParams[sequence];
 
-			// Fold injection (post or both)
-			if (mut->foldType != 0 && (mut->foldPosition == 1 || mut->foldPosition == 2))
+			// Fold injection (post or both, per-section iteration range)
+			if (i >= mut->foldIterStart && i < mut->foldIterStop
+				&& mut->foldType != 0 && (mut->foldPosition == 1 || mut->foldPosition == 2))
 			{
 				switch (mut->foldType)
 				{
@@ -1995,21 +2013,28 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 				}
 			}
 
-			if (mut->postRotX != 0.0f || mut->postRotY != 0.0f || mut->postRotZ != 0.0f)
+			// Post-transform (per-section iteration range)
+			if (i >= mut->postIterStart && i < mut->postIterStop)
 			{
-				z.xyz = Matrix33MulFloat3(mut->postRotMatrix, z.xyz);
+				if (mut->postRotX != 0.0f || mut->postRotY != 0.0f || mut->postRotZ != 0.0f)
+				{
+					z.xyz = Matrix33MulFloat3(mut->postRotMatrix, z.xyz);
+				}
+				if (mut->postScale != 1.0f) { z *= mut->postScale; aux.DE *= mut->postScale; }
+				z.x += mut->postOffsetX; z.y += mut->postOffsetY; z.z += mut->postOffsetZ;
 			}
-			if (mut->postScale != 1.0f) { z *= mut->postScale; aux.DE *= mut->postScale; }
-			z.x += mut->postOffsetX; z.y += mut->postOffsetY; z.z += mut->postOffsetZ;
 			if (mut->zMix < 1.0f) { float m = mut->zMix; z = z * m + preMutZ * (1.0f - m); }
-			if (mut->deScale != 1.0f) aux.DE *= mut->deScale;
 
+			// DE tweak (per-section iteration range)
+			if (i >= mut->deIterStart && i < mut->deIterStop) {
+			if (mut->deScale != 1.0f) aux.DE *= mut->deScale;
 			if (mut->deTweak == 1) aux.DE = native_log(1.0f + fabs(aux.DE));
 			else if (mut->deTweak == 2) aux.DE = native_exp(aux.DE) - 1.0f;
 			else if (mut->deTweak == 3) { float noise = mut->deTweakP1 * native_sin(z.x*13.7f + z.y*7.3f + z.z*11.1f); aux.DE += noise; }
 			else if (mut->deTweak == 4) { aux.DE *= (1.0f + mut->deTweakP1 * native_sin(mut->deTweakP2 * aux.dist)); }
 			else if (mut->deTweak == 5) aux.DE *= 0.9f;
 			else if (mut->deTweak == 6) aux.DE *= 1.1f;
+			} // end DE iteration range
 
 			if (mut->orbitTrap == 1) {
 				float dx = z.x - mut->trapCenterX; float dy = z.y - mut->trapCenterY; float dz = z.z - mut->trapCenterZ;

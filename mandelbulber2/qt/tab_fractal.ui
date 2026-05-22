@@ -2716,7 +2716,179 @@ Static: Fixed weight (simple). Iteration: Weight changes over iterations (morphi
        <property name="value"><double>1.000000000000000</double></property>
       </widget>
      </item>
-     <item row="29" column="0" colspan="2">
+     <!-- Per-section iteration ranges -->
+     <item row="30" column="0" colspan="7">
+      <widget class="QLabel" name="label_mutation_section_iter_header">
+       <property name="text">
+        <string>— Per-Section Iteration Ranges —</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="31" column="0">
+      <widget class="QLabel" name="label_mutation_pre_iter"><property name="text"><string>Pre-Transform:</string></property></widget>
+     </item>
+     <item row="31" column="1">
+      <widget class="QLabel" name="label_mutation_pre_iter_s"><property name="text"><string>Start:</string></property><property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property></widget>
+     </item>
+     <item row="31" column="2">
+      <widget class="MySpinBox" name="spinboxInt_mutation_pre_iter_start">
+       <property name="minimum"><number>0</number></property>
+       <property name="maximum"><number>10000</number></property>
+       <property name="value"><number>0</number></property>
+      </widget>
+     </item>
+     <item row="31" column="3">
+      <widget class="QLabel" name="label_mutation_pre_iter_e"><property name="text"><string>Stop:</string></property><property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property></widget>
+     </item>
+     <item row="31" column="4" colspan="3">
+      <widget class="MySpinBox" name="spinboxInt_mutation_pre_iter_stop">
+       <property name="minimum"><number>0</number></property>
+       <property name="maximum"><number>10000</number></property>
+       <property name="value"><number>10000</number></property>
+      </widget>
+     </item>
+     <item row="32" column="0">
+      <widget class="QLabel" name="label_mutation_fold_iter"><property name="text"><string>Fold:</string></property></widget>
+     </item>
+     <item row="32" column="1">
+      <widget class="QLabel" name="label_mutation_fold_iter_s"><property name="text"><string>Start:</string></property><property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property></widget>
+     </item>
+     <item row="32" column="2">
+      <widget class="MySpinBox" name="spinboxInt_mutation_fold_iter_start">
+       <property name="minimum"><number>0</number></property>
+       <property name="maximum"><number>10000</number></property>
+       <property name="value"><number>0</number></property>
+      </widget>
+     </item>
+     <item row="32" column="3">
+      <widget class="QLabel" name="label_mutation_fold_iter_e"><property name="text"><string>Stop:</string></property><property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property></widget>
+     </item>
+     <item row="32" column="4" colspan="3">
+      <widget class="MySpinBox" name="spinboxInt_mutation_fold_iter_stop">
+       <property name="minimum"><number>0</number></property>
+       <property name="maximum"><number>10000</number></property>
+       <property name="value"><number>10000</number></property>
+      </widget>
+     </item>
+     <item row="33" column="0">
+      <widget class="QLabel" name="label_mutation_warp_iter"><property name="text"><string>Warp:</string></property></widget>
+     </item>
+     <item row="33" column="1">
+      <widget class="QLabel" name="label_mutation_warp_iter_s"><property name="text"><string>Start:</string></property><property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property></widget>
+     </item>
+     <item row="33" column="2">
+      <widget class="MySpinBox" name="spinboxInt_mutation_warp_iter_start">
+       <property name="minimum"><number>0</number></property>
+       <property name="maximum"><number>10000</number></property>
+       <property name="value"><number>0</number></property>
+      </widget>
+     </item>
+     <item row="33" column="3">
+      <widget class="QLabel" name="label_mutation_warp_iter_e"><property name="text"><string>Stop:</string></property><property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property></widget>
+     </item>
+     <item row="33" column="4" colspan="3">
+      <widget class="MySpinBox" name="spinboxInt_mutation_warp_iter_stop">
+       <property name="minimum"><number>0</number></property>
+       <property name="maximum"><number>10000</number></property>
+       <property name="value"><number>10000</number></property>
+      </widget>
+     </item>
+     <item row="34" column="0">
+      <widget class="QLabel" name="label_mutation_math_iter"><property name="text"><string>Math:</string></property></widget>
+     </item>
+     <item row="34" column="1">
+      <widget class="QLabel" name="label_mutation_math_iter_s"><property name="text"><string>Start:</string></property><property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property></widget>
+     </item>
+     <item row="34" column="2">
+      <widget class="MySpinBox" name="spinboxInt_mutation_math_iter_start">
+       <property name="minimum"><number>0</number></property>
+       <property name="maximum"><number>10000</number></property>
+       <property name="value"><number>0</number></property>
+      </widget>
+     </item>
+     <item row="34" column="3">
+      <widget class="QLabel" name="label_mutation_math_iter_e"><property name="text"><string>Stop:</string></property><property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property></widget>
+     </item>
+     <item row="34" column="4" colspan="3">
+      <widget class="MySpinBox" name="spinboxInt_mutation_math_iter_stop">
+       <property name="minimum"><number>0</number></property>
+       <property name="maximum"><number>10000</number></property>
+       <property name="value"><number>10000</number></property>
+      </widget>
+     </item>
+     <item row="35" column="0">
+      <widget class="QLabel" name="label_mutation_post_iter"><property name="text"><string>Post-Transform:</string></property></widget>
+     </item>
+     <item row="35" column="1">
+      <widget class="QLabel" name="label_mutation_post_iter_s"><property name="text"><string>Start:</string></property><property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property></widget>
+     </item>
+     <item row="35" column="2">
+      <widget class="MySpinBox" name="spinboxInt_mutation_post_iter_start">
+       <property name="minimum"><number>0</number></property>
+       <property name="maximum"><number>10000</number></property>
+       <property name="value"><number>0</number></property>
+      </widget>
+     </item>
+     <item row="35" column="3">
+      <widget class="QLabel" name="label_mutation_post_iter_e"><property name="text"><string>Stop:</string></property><property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property></widget>
+     </item>
+     <item row="35" column="4" colspan="3">
+      <widget class="MySpinBox" name="spinboxInt_mutation_post_iter_stop">
+       <property name="minimum"><number>0</number></property>
+       <property name="maximum"><number>10000</number></property>
+       <property name="value"><number>10000</number></property>
+      </widget>
+     </item>
+     <item row="36" column="0">
+      <widget class="QLabel" name="label_mutation_julia_iter"><property name="text"><string>Julia:</string></property></widget>
+     </item>
+     <item row="36" column="1">
+      <widget class="QLabel" name="label_mutation_julia_iter_s"><property name="text"><string>Start:</string></property><property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property></widget>
+     </item>
+     <item row="36" column="2">
+      <widget class="MySpinBox" name="spinboxInt_mutation_julia_iter_start">
+       <property name="minimum"><number>0</number></property>
+       <property name="maximum"><number>10000</number></property>
+       <property name="value"><number>0</number></property>
+      </widget>
+     </item>
+     <item row="36" column="3">
+      <widget class="QLabel" name="label_mutation_julia_iter_e"><property name="text"><string>Stop:</string></property><property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property></widget>
+     </item>
+     <item row="36" column="4" colspan="3">
+      <widget class="MySpinBox" name="spinboxInt_mutation_julia_iter_stop">
+       <property name="minimum"><number>0</number></property>
+       <property name="maximum"><number>10000</number></property>
+       <property name="value"><number>10000</number></property>
+      </widget>
+     </item>
+     <item row="37" column="0">
+      <widget class="QLabel" name="label_mutation_de_iter"><property name="text"><string>DE/Output:</string></property></widget>
+     </item>
+     <item row="37" column="1">
+      <widget class="QLabel" name="label_mutation_de_iter_s"><property name="text"><string>Start:</string></property><property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property></widget>
+     </item>
+     <item row="37" column="2">
+      <widget class="MySpinBox" name="spinboxInt_mutation_de_iter_start">
+       <property name="minimum"><number>0</number></property>
+       <property name="maximum"><number>10000</number></property>
+       <property name="value"><number>0</number></property>
+      </widget>
+     </item>
+     <item row="37" column="3">
+      <widget class="QLabel" name="label_mutation_de_iter_e"><property name="text"><string>Stop:</string></property><property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property></widget>
+     </item>
+     <item row="37" column="4" colspan="3">
+      <widget class="MySpinBox" name="spinboxInt_mutation_de_iter_stop">
+       <property name="minimum"><number>0</number></property>
+       <property name="maximum"><number>10000</number></property>
+       <property name="value"><number>10000</number></property>
+      </widget>
+     </item>
+     <item row="38" column="0" colspan="7">
       <widget class="QPushButton" name="pushButton_mutation_reset">
        <property name="text">
         <string>Reset Mutation to Defaults</string>

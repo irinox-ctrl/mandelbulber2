@@ -700,9 +700,23 @@ void cTabFractal::slotPressedButtonMutationReset()
 	setD("mutation_de_scale", 1.0);
 	setI("mutation_de_tweak", 0);
 	setI("mutation_orbit_trap", 0);
-	// Iterations
+	// Iterations (global + per-section)
 	setI("mutation_iteration_start", 0);
 	setI("mutation_iteration_stop", 250);
+	setI("mutation_pre_iter_start", 0);
+	setI("mutation_pre_iter_stop", 10000);
+	setI("mutation_fold_iter_start", 0);
+	setI("mutation_fold_iter_stop", 10000);
+	setI("mutation_warp_iter_start", 0);
+	setI("mutation_warp_iter_stop", 10000);
+	setI("mutation_math_iter_start", 0);
+	setI("mutation_math_iter_stop", 10000);
+	setI("mutation_post_iter_start", 0);
+	setI("mutation_post_iter_stop", 10000);
+	setI("mutation_julia_iter_start", 0);
+	setI("mutation_julia_iter_stop", 10000);
+	setI("mutation_de_iter_start", 0);
+	setI("mutation_de_iter_stop", 10000);
 	// Julia
 	setI("mutation_julia_injection", 0);
 	setI("mutation_julia_start", 0);
