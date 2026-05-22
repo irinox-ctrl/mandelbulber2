@@ -346,7 +346,7 @@ void cTabFractal::FrameIterationFormulaSetWidgetsVisibility(bool visible) const
 	ui->spinboxInt_formula_stop_iteration->setVisible(visible);
 	ui->checkBox_check_for_bailout->setVisible(visible);
 	ui->groupBox_advanced_weight->setVisible(visible);
-	ui->groupCheck_mutation_enabled->setVisible(visible);
+	// Formula Mutation is always visible (works in single formula mode too)
 }
 
 void cTabFractal::ConnectSignals()
