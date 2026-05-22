@@ -192,34 +192,7 @@ void cFractalMandalayBoxV2::FormulaCode(CVector4 &z, const sFractal *fractal, sE
 		z.z += fractal->mandalay.zShearStrength * r_xy;
 	}
 
-	// === #8 Ellipsoïde Fold ===
-	if (fractal->mandalay.ellipsoidFoldEnabled)
-	{
-		double ax = fractal->mandalay.ellipsoidAxes.x;
-		double ay = fractal->mandalay.ellipsoidAxes.y;
-		double az = fractal->mandalay.ellipsoidAxes.z;
-		if (ax < 1e-21) ax = 1.0;
-		if (ay < 1e-21) ay = 1.0;
-		if (az < 1e-21) az = 1.0;
-		double rr_ell = (z.x / ax) * (z.x / ax)
-			+ (z.y / ay) * (z.y / ay) + (z.z / az) * (z.z / az);
-		double minR2 = fractal->mandalay.ellipsoidMinR * fractal->mandalay.ellipsoidMinR;
-		double maxScale = max(ax, max(ay, az));
-		if (rr_ell < minR2 && minR2 > 1e-21)
-		{
-			double factor = 1.0 / minR2;
-			z *= factor;
-			aux.DE *= factor;
-		}
-		else if (rr_ell < 1.0)
-		{
-			double factor = 1.0 / rr_ell;
-			z *= factor;
-			aux.DE *= factor;
-		}
-	}
-
-	// === #9 Torus Fold ===
+	// === #9 Torus Fold (pre-spherical) ===
 	if (fractal->mandalay.torusFoldEnabled)
 	{
 		double R = fractal->mandalay.torusMajorR;
@@ -240,51 +213,68 @@ void cFractalMandalayBoxV2::FormulaCode(CVector4 &z, const sFractal *fractal, sE
 		}
 	}
 
-	// === #10 Logarithmic Spherical Fold ===
-	if (fractal->mandalay.logSphericalFoldEnabled)
-	{
-		double rr = z.Dot(z);
-		double minR = fractal->mandalay.logSphericalMinR;
-		if (rr > 1e-21 && rr < 1.0)
-		{
-			double logFactor = log(rr) / log(max(minR * minR, 1e-21));
-			if (logFactor > 1e-21)
-			{
-				z *= logFactor;
-				aux.DE *= logFactor;
-			}
-		}
-	}
-
-	// === #11 Hyperbolische Box Fold ===
+	// === #11 Hyperbolische Box Fold (pre-spherical) ===
 	if (fractal->mandalay.hyperBoxFoldEnabled)
 	{
 		double k = fractal->mandalay.hyperBoxFoldK;
-		z.x = sinh(k * z.x) / max(k, 1e-21);
-		z.y = sinh(k * z.y) / max(k, 1e-21);
-		z.z = sinh(k * z.z) / max(k, 1e-21);
-		aux.DE *= cosh(k * z.x);
+		double ox = z.x, oy = z.y, oz = z.z;
+		z.x = sinh(k * ox) / max(k, 1e-21);
+		z.y = sinh(k * oy) / max(k, 1e-21);
+		z.z = sinh(k * oz) / max(k, 1e-21);
+		aux.DE *= max(fabs(cosh(k * ox)), max(fabs(cosh(k * oy)), fabs(cosh(k * oz))));
 	}
 
-	// spherical fold
+	// spherical fold (with #8 Ellipsoïde and #10 Logarithmic variants)
 	double useScale = 1.0;
 	if (aux.i >= fractal->transformCommon.startIterationsS
 			&& aux.i < fractal->transformCommon.stopIterationsS)
 	{
-
-		double rr = z.Dot(z);
-		rrCol = rr;
-		if (rr < fractal->transformCommon.minR2p25)
+		// === #8 Ellipsoïde: use anisotropic distance instead of z.Dot(z) ===
+		double rr;
+		if (fractal->mandalay.ellipsoidFoldEnabled)
 		{
-			double tglad_factor1 = fractal->transformCommon.maxR2d1 / fractal->transformCommon.minR2p25;
-			z *= tglad_factor1;
-			aux.DE *= tglad_factor1;
+			double ax = fractal->mandalay.ellipsoidAxes.x;
+			double ay = fractal->mandalay.ellipsoidAxes.y;
+			double az = fractal->mandalay.ellipsoidAxes.z;
+			if (ax < 1e-21) ax = 1.0;
+			if (ay < 1e-21) ay = 1.0;
+			if (az < 1e-21) az = 1.0;
+			rr = (z.x / ax) * (z.x / ax)
+				+ (z.y / ay) * (z.y / ay) + (z.z / az) * (z.z / az);
 		}
-		else if (rr < fractal->transformCommon.maxR2d1)
+		else
 		{
-			double tglad_factor2 = fractal->transformCommon.maxR2d1 / rr;
-			z *= tglad_factor2;
-			aux.DE *= tglad_factor2;
+			rr = z.Dot(z);
+		}
+		rrCol = rr;
+
+		// === #10 Logarithmic: smooth dividend instead of hard min/max ===
+		if (fractal->mandalay.logSphericalFoldEnabled)
+		{
+			double k = max(fractal->mandalay.logSphericalMinR, 1e-21);
+			double dividend = log(1.0 + rr * k) / k;
+			if (dividend > 1e-21)
+			{
+				double factor = fractal->transformCommon.maxR2d1 / dividend;
+				z *= factor;
+				aux.DE *= fabs(factor);
+			}
+		}
+		else
+		{
+			// standard spherical fold
+			if (rr < fractal->transformCommon.minR2p25)
+			{
+				double tglad_factor1 = fractal->transformCommon.maxR2d1 / fractal->transformCommon.minR2p25;
+				z *= tglad_factor1;
+				aux.DE *= tglad_factor1;
+			}
+			else if (rr < fractal->transformCommon.maxR2d1)
+			{
+				double tglad_factor2 = fractal->transformCommon.maxR2d1 / rr;
+				z *= tglad_factor2;
+				aux.DE *= tglad_factor2;
+			}
 		}
 	}
 

@@ -205,33 +205,7 @@ REAL4 MandalayBoxV2Iteration(REAL4 z, __global const sFractalCl *fractal, sExten
 		z.z += fractal->mandalay.zShearStrength * r_xy;
 	}
 
-	// === #8 Ellipsoïde Fold ===
-	if (fractal->mandalay.ellipsoidFoldEnabled)
-	{
-		REAL ax = fractal->mandalay.ellipsoidAxes.x;
-		REAL ay = fractal->mandalay.ellipsoidAxes.y;
-		REAL az = fractal->mandalay.ellipsoidAxes.z;
-		if (ax < 1e-21f) ax = 1.0f;
-		if (ay < 1e-21f) ay = 1.0f;
-		if (az < 1e-21f) az = 1.0f;
-		REAL rr_ell = (z.x / ax) * (z.x / ax)
-			+ (z.y / ay) * (z.y / ay) + (z.z / az) * (z.z / az);
-		REAL minR2 = fractal->mandalay.ellipsoidMinR * fractal->mandalay.ellipsoidMinR;
-		if (rr_ell < minR2 && minR2 > 1e-21f)
-		{
-			REAL factor = 1.0f / minR2;
-			z *= factor;
-			aux->DE *= factor;
-		}
-		else if (rr_ell < 1.0f)
-		{
-			REAL factor = 1.0f / rr_ell;
-			z *= factor;
-			aux->DE *= factor;
-		}
-	}
-
-	// === #9 Torus Fold ===
+	// === #9 Torus Fold (pre-spherical) ===
 	if (fractal->mandalay.torusFoldEnabled)
 	{
 		REAL R = fractal->mandalay.torusMajorR;
@@ -252,51 +226,68 @@ REAL4 MandalayBoxV2Iteration(REAL4 z, __global const sFractalCl *fractal, sExten
 		}
 	}
 
-	// === #10 Logarithmic Spherical Fold ===
-	if (fractal->mandalay.logSphericalFoldEnabled)
-	{
-		REAL rr = dot(z, z);
-		REAL minR = fractal->mandalay.logSphericalMinR;
-		if (rr > 1e-21f && rr < 1.0f)
-		{
-			REAL logFactor = native_log(rr) / native_log(max(minR * minR, 1e-21f));
-			if (logFactor > 1e-21f)
-			{
-				z *= logFactor;
-				aux->DE *= logFactor;
-			}
-		}
-	}
-
-	// === #11 Hyperbolische Box Fold ===
+	// === #11 Hyperbolische Box Fold (pre-spherical) ===
 	if (fractal->mandalay.hyperBoxFoldEnabled)
 	{
 		REAL k = fractal->mandalay.hyperBoxFoldK;
-		z.x = sinh(k * z.x) / max(k, 1e-21f);
-		z.y = sinh(k * z.y) / max(k, 1e-21f);
-		z.z = sinh(k * z.z) / max(k, 1e-21f);
-		aux->DE *= cosh(k * z.x);
+		REAL ox = z.x, oy = z.y, oz = z.z;
+		z.x = sinh(k * ox) / max(k, 1e-21f);
+		z.y = sinh(k * oy) / max(k, 1e-21f);
+		z.z = sinh(k * oz) / max(k, 1e-21f);
+		aux->DE *= max(fabs(cosh(k * ox)), max(fabs(cosh(k * oy)), fabs(cosh(k * oz))));
 	}
 
-	// spherical fold
+	// spherical fold (with #8 Ellipsoïde and #10 Logarithmic variants)
 	REAL useScale = 1.0f;
 	if (aux->i >= fractal->transformCommon.startIterationsS
 			&& aux->i < fractal->transformCommon.stopIterationsS)
 	{
-
-		REAL rr = dot(z, z);
-		rrCol = rr;
-		if (rr < fractal->transformCommon.minR2p25)
+		// === #8 Ellipsoïde: use anisotropic distance instead of dot(z,z) ===
+		REAL rr;
+		if (fractal->mandalay.ellipsoidFoldEnabled)
 		{
-			REAL tglad_factor1 = fractal->transformCommon.maxR2d1 / fractal->transformCommon.minR2p25;
-			z *= tglad_factor1;
-			aux->DE *= tglad_factor1;
+			REAL ax = fractal->mandalay.ellipsoidAxes.x;
+			REAL ay = fractal->mandalay.ellipsoidAxes.y;
+			REAL az = fractal->mandalay.ellipsoidAxes.z;
+			if (ax < 1e-21f) ax = 1.0f;
+			if (ay < 1e-21f) ay = 1.0f;
+			if (az < 1e-21f) az = 1.0f;
+			rr = (z.x / ax) * (z.x / ax)
+				+ (z.y / ay) * (z.y / ay) + (z.z / az) * (z.z / az);
 		}
-		else if (rr < fractal->transformCommon.maxR2d1)
+		else
 		{
-			REAL tglad_factor2 = fractal->transformCommon.maxR2d1 / rr;
-			z *= tglad_factor2;
-			aux->DE *= tglad_factor2;
+			rr = dot(z, z);
+		}
+		rrCol = rr;
+
+		// === #10 Logarithmic: smooth dividend instead of hard min/max ===
+		if (fractal->mandalay.logSphericalFoldEnabled)
+		{
+			REAL lk = max(fractal->mandalay.logSphericalMinR, 1e-21f);
+			REAL dividend = native_log(1.0f + rr * lk) / lk;
+			if (dividend > 1e-21f)
+			{
+				REAL factor = fractal->transformCommon.maxR2d1 / dividend;
+				z *= factor;
+				aux->DE *= fabs(factor);
+			}
+		}
+		else
+		{
+			// standard spherical fold
+			if (rr < fractal->transformCommon.minR2p25)
+			{
+				REAL tglad_factor1 = fractal->transformCommon.maxR2d1 / fractal->transformCommon.minR2p25;
+				z *= tglad_factor1;
+				aux->DE *= tglad_factor1;
+			}
+			else if (rr < fractal->transformCommon.maxR2d1)
+			{
+				REAL tglad_factor2 = fractal->transformCommon.maxR2d1 / rr;
+				z *= tglad_factor2;
+				aux->DE *= tglad_factor2;
+			}
 		}
 	}
 
