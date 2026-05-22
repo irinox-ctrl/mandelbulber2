@@ -49,6 +49,7 @@
 #include "parameters.hpp"
 #include "system_directories.hpp"
 #include "write_log.hpp"
+#include "opencl_diagnostics.h"
 
 cOpenClEngine::cOpenClEngine(cOpenClHardware *_hardware) : QObject(_hardware), hardware(_hardware)
 {
@@ -235,6 +236,11 @@ bool cOpenClEngine::Build(const QByteArray &programString, QString *errorText, b
 					*errorText = QString::fromStdString(errorMessageStream.str());
 
 					std::cerr << buildLogText;
+
+					// GPU Diagnostics: enhanced error analysis
+					QString diagError = GPUDiag::FormatKernelBuildError(
+						QString::fromStdString(buildLogText), QString());
+					std::cerr << diagError.toStdString();
 
 					if (!quiet)
 					{

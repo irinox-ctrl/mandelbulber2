@@ -80,6 +80,7 @@
 #include "opencl/fractal_cl.h"
 #include "opencl/fractparams_cl.hpp"
 #include "../opencl/mesh_export_data_cl.h"
+#include "opencl_diagnostics.h"
 #endif
 
 cOpenClEngineRenderFractal::cOpenClEngineRenderFractal(cOpenClHardware *_hardware)
@@ -1118,6 +1119,13 @@ void cOpenClEngineRenderFractal::SetParameters(
 
 		WriteLogDouble("Constant buffer size [KB]", sizeof(sClInConstants) / 1024.0, 2);
 
+		// GPU Diagnostics: struct layout report
+		{
+			QString diagReport = GPUDiag::RunStructDiagnostics();
+			WriteLogString("GPU Struct Diagnostics", diagReport.toUtf8().constData(), 2);
+			std::cerr << diagReport.toStdString();
+		}
+
 		//---------- DYNAMIC DATA -------------
 
 		renderData->ValidateObjects();
@@ -1229,6 +1237,14 @@ bool cOpenClEngineRenderFractal::PreAllocateBuffers(
 	Q_UNUSED(params);
 
 	cl_int err;
+
+	// GPU Diagnostics: verify constant buffer before sending to GPU
+	if (constantInBuffer)
+	{
+		QString bufReport = GPUDiag::VerifyConstantBuffer(constantInBuffer.get());
+		WriteLogString("GPU Buffer Verification", bufReport.toUtf8().constData(), 2);
+		std::cerr << bufReport.toStdString();
+	}
 
 	// allocating input buffers for each device
 	for (int d = 0; d < hardware->getEnabledDevices().size(); d++)
