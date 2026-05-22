@@ -357,6 +357,32 @@ void InitParams(std::shared_ptr<cParameterContainer> par)
 		par->addParam("mutation_clip_threshold", i, 0.1, 0.0, 100.0, morphAkima, paramStandard);
 		par->addParam("mutation_clip_iter_start", i, 0, 0, 10000, morphAkima, paramStandard);
 		par->addParam("mutation_clip_iter_stop", i, 10000, 0, 10000, morphAkima, paramStandard);
+		// v7.7 — Jos Leys DE system (100 types)
+		par->addParam("mutation_jos_de_type", i, 0, 0, 100, morphAkima, paramStandard);
+		par->addParam("mutation_jos_factor", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_jos_param_a", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_jos_param_b", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_jos_param_c", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_jos_param_d", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_jos_freq", i, 1.0, 0.01, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_jos_amp", i, 0.5, -10.0, 10.0, morphAkima, paramStandard);
+		par->addParam("mutation_jos_scale", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_jos_phase", i, 0.0, -360.0, 360.0, morphAkima, paramStandard);
+		par->addParam("mutation_jos_iter_start", i, 0, 0, 10000, morphAkima, paramStandard);
+		par->addParam("mutation_jos_iter_stop", i, 10000, 0, 10000, morphAkima, paramStandard);
+		// v7.7 — Pseudokleinian DE system (100 types)
+		par->addParam("mutation_pk_de_type", i, 0, 0, 100, morphAkima, paramStandard);
+		par->addParam("mutation_pk_factor", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_pk_param_a", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_pk_param_b", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_pk_param_c", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_pk_param_d", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_pk_freq", i, 1.0, 0.01, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_pk_amp", i, 0.5, -10.0, 10.0, morphAkima, paramStandard);
+		par->addParam("mutation_pk_scale", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_pk_phase", i, 0.0, -360.0, 360.0, morphAkima, paramStandard);
+		par->addParam("mutation_pk_iter_start", i, 0, 0, 10000, morphAkima, paramStandard);
+		par->addParam("mutation_pk_iter_stop", i, 10000, 0, 10000, morphAkima, paramStandard);
 
 		par->addParam("julia_mode", i, false, morphLinear, paramStandard);
 		par->addParam("julia_c", i, CVector3(0.0, 0.0, 0.0), morphAkima, paramStandard);

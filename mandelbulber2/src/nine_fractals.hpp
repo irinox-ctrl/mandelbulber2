@@ -461,6 +461,22 @@ struct sFormulaMutationParams
 	double clipThreshold;
 	int clipIterStart, clipIterStop;
 
+	// v7.7 — Jos Leys DE system (100 types)
+	int josLeysDeType;
+	double josFactor;
+	double josParamA, josParamB, josParamC, josParamD;
+	double josFreq, josAmp;
+	double josScale, josPhase;
+	int josIterStart, josIterStop;
+
+	// v7.7 — Pseudokleinian DE system (100 types)
+	int pseudoKleinianDeType;
+	double pkFactor;
+	double pkParamA, pkParamB, pkParamC, pkParamD;
+	double pkFreq, pkAmp;
+	double pkScale, pkPhase;
+	int pkIterStart, pkIterStop;
+
 	// Pre-computed rotation matrices (filled in constructor)
 	CRotationMatrix preRotMatrix;
 	CRotationMatrix postRotMatrix;

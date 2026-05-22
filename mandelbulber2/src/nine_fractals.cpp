@@ -336,6 +336,32 @@ cNineFractals::cNineFractals(std::shared_ptr<const cFractalContainer> par,
 		mutationParams[i].clipThreshold = generalPar->Get<double>("mutation_clip_threshold", i + 1);
 		mutationParams[i].clipIterStart = generalPar->Get<int>("mutation_clip_iter_start", i + 1);
 		mutationParams[i].clipIterStop = generalPar->Get<int>("mutation_clip_iter_stop", i + 1);
+		// v7.7 — Jos Leys DE system
+		mutationParams[i].josLeysDeType = generalPar->Get<int>("mutation_jos_de_type", i + 1);
+		mutationParams[i].josFactor = generalPar->Get<double>("mutation_jos_factor", i + 1);
+		mutationParams[i].josParamA = generalPar->Get<double>("mutation_jos_param_a", i + 1);
+		mutationParams[i].josParamB = generalPar->Get<double>("mutation_jos_param_b", i + 1);
+		mutationParams[i].josParamC = generalPar->Get<double>("mutation_jos_param_c", i + 1);
+		mutationParams[i].josParamD = generalPar->Get<double>("mutation_jos_param_d", i + 1);
+		mutationParams[i].josFreq = generalPar->Get<double>("mutation_jos_freq", i + 1);
+		mutationParams[i].josAmp = generalPar->Get<double>("mutation_jos_amp", i + 1);
+		mutationParams[i].josScale = generalPar->Get<double>("mutation_jos_scale", i + 1);
+		mutationParams[i].josPhase = generalPar->Get<double>("mutation_jos_phase", i + 1);
+		mutationParams[i].josIterStart = generalPar->Get<int>("mutation_jos_iter_start", i + 1);
+		mutationParams[i].josIterStop = generalPar->Get<int>("mutation_jos_iter_stop", i + 1);
+		// v7.7 — Pseudokleinian DE system
+		mutationParams[i].pseudoKleinianDeType = generalPar->Get<int>("mutation_pk_de_type", i + 1);
+		mutationParams[i].pkFactor = generalPar->Get<double>("mutation_pk_factor", i + 1);
+		mutationParams[i].pkParamA = generalPar->Get<double>("mutation_pk_param_a", i + 1);
+		mutationParams[i].pkParamB = generalPar->Get<double>("mutation_pk_param_b", i + 1);
+		mutationParams[i].pkParamC = generalPar->Get<double>("mutation_pk_param_c", i + 1);
+		mutationParams[i].pkParamD = generalPar->Get<double>("mutation_pk_param_d", i + 1);
+		mutationParams[i].pkFreq = generalPar->Get<double>("mutation_pk_freq", i + 1);
+		mutationParams[i].pkAmp = generalPar->Get<double>("mutation_pk_amp", i + 1);
+		mutationParams[i].pkScale = generalPar->Get<double>("mutation_pk_scale", i + 1);
+		mutationParams[i].pkPhase = generalPar->Get<double>("mutation_pk_phase", i + 1);
+		mutationParams[i].pkIterStart = generalPar->Get<int>("mutation_pk_iter_start", i + 1);
+		mutationParams[i].pkIterStop = generalPar->Get<int>("mutation_pk_iter_stop", i + 1);
 
 		// Smart defaults: PK/JK formulas get Möbius (Bilinear) math preset
 		fractal::enumFractalFormula f = fractals[i]->formula;
@@ -1318,6 +1344,32 @@ void cNineFractals::CopyToOpenclData(sClFractalSequence *sequence) const
 		sequence->mutationParams[i].clipThreshold = mutationParams[i].clipThreshold;
 		sequence->mutationParams[i].clipIterStart = mutationParams[i].clipIterStart;
 		sequence->mutationParams[i].clipIterStop = mutationParams[i].clipIterStop;
+		// v7.7 — Jos Leys DE system
+		sequence->mutationParams[i].josLeysDeType = mutationParams[i].josLeysDeType;
+		sequence->mutationParams[i].josFactor = mutationParams[i].josFactor;
+		sequence->mutationParams[i].josParamA = mutationParams[i].josParamA;
+		sequence->mutationParams[i].josParamB = mutationParams[i].josParamB;
+		sequence->mutationParams[i].josParamC = mutationParams[i].josParamC;
+		sequence->mutationParams[i].josParamD = mutationParams[i].josParamD;
+		sequence->mutationParams[i].josFreq = mutationParams[i].josFreq;
+		sequence->mutationParams[i].josAmp = mutationParams[i].josAmp;
+		sequence->mutationParams[i].josScale = mutationParams[i].josScale;
+		sequence->mutationParams[i].josPhase = mutationParams[i].josPhase;
+		sequence->mutationParams[i].josIterStart = mutationParams[i].josIterStart;
+		sequence->mutationParams[i].josIterStop = mutationParams[i].josIterStop;
+		// v7.7 — Pseudokleinian DE system
+		sequence->mutationParams[i].pseudoKleinianDeType = mutationParams[i].pseudoKleinianDeType;
+		sequence->mutationParams[i].pkFactor = mutationParams[i].pkFactor;
+		sequence->mutationParams[i].pkParamA = mutationParams[i].pkParamA;
+		sequence->mutationParams[i].pkParamB = mutationParams[i].pkParamB;
+		sequence->mutationParams[i].pkParamC = mutationParams[i].pkParamC;
+		sequence->mutationParams[i].pkParamD = mutationParams[i].pkParamD;
+		sequence->mutationParams[i].pkFreq = mutationParams[i].pkFreq;
+		sequence->mutationParams[i].pkAmp = mutationParams[i].pkAmp;
+		sequence->mutationParams[i].pkScale = mutationParams[i].pkScale;
+		sequence->mutationParams[i].pkPhase = mutationParams[i].pkPhase;
+		sequence->mutationParams[i].pkIterStart = mutationParams[i].pkIterStart;
+		sequence->mutationParams[i].pkIterStop = mutationParams[i].pkIterStop;
 		// Copy rotation matrices using matrix33 type
 		if (mutationParams[i].enabled)
 		{

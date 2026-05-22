@@ -3058,6 +3058,234 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 				}
 			}
 
+			// v7.7 — Jos Leys DE system (per-section iteration range)
+			if (i >= mut->josIterStart && i < mut->josIterStop && mut->josLeysDeType != 0)
+			{
+				float jf = mut->josFactor;
+				float ja = mut->josParamA, jb = mut->josParamB, jc = mut->josParamC, jd = mut->josParamD;
+				float jfreq = mut->josFreq, jamp = mut->josAmp, jsc = mut->josScale, jph = mut->josPhase;
+				float zx = z.x, zy = z.y, zz2 = z.z;
+				float rr = zx*zx + zy*zy + zz2*zz2; if (rr < 1e-21f) rr = 1e-21f;
+				float r = native_sqrt(rr);
+				switch (mut->josLeysDeType)
+				{
+					case 1: { float k1=ja,k2=jb,k3=jc,k4=jd; float curv=(k1+k2+k3+k4)/fmax(1.0f,r); aux.DE*=(1.0f+jf*curv); break; }
+					case 2: { float phi=atan2(zy,zx); float sp=ja*native_exp(2.0f*M_PI_F*(jb*phi+jc*native_log(fmax(1e-10f,r)))); aux.DE*=(1.0f+jf*sp); break; }
+					case 3: { float prod=1.0f; for(int k=0;k<4;k++){float dk=r+ja*(float)(k+1); prod*=fmax(0.01f,dk);} aux.DE*=(1.0f+jf*jsc/fmax(1e-10f,prod)); break; }
+					case 4: { float af=ja*native_log(fmax(1e-10f,r))+jb*atan2(zy,zx); aux.DE*=(1.0f+jf*tanh(af)); break; }
+					case 5: { float hyp=4.0f*M_PI_F*(ja-1.0f)/fmax(1e-10f,rr); aux.DE*=(1.0f+jf*tanh(hyp)); break; }
+					case 6: { float bel=ja*zy/fmax(1e-10f,rr); aux.DE*=(1.0f+jf*tanh(bel)); break; }
+					case 7: { float tr=ja*jb/fmax(1e-10f,r); aux.DE*=(1.0f+jf*tanh(tr)); break; }
+					case 8: { float rl=ja/(fmax(1e-10f,r*r)+jb*jb); aux.DE*=(1.0f+jf*rl); break; }
+					case 9: { float bs=ja*jb*jc/fmax(1e-10f,rr); aux.DE*=(1.0f+jf*tanh(bs)); break; }
+					case 10: { float ew=ja*native_sin(jfreq*zx)*native_cos(jfreq*zy)/fmax(1e-10f,r); aux.DE*=(1.0f+jf*ew); break; }
+					case 11: { float hc=native_exp(-fabs(zy))*ja/fmax(1e-10f,r); aux.DE*=(1.0f+jf*hc); break; }
+					case 12: { float q2=fmax(1.0f,ja); float fr2=1.0f/(2.0f*q2*q2); aux.DE*=(1.0f+jf*fr2/fmax(1e-10f,r)); break; }
+					case 13: { float med=(zx+zy)/(fmax(1e-10f,2.0f*r)); aux.DE*=(1.0f+jf*ja*med); break; }
+					case 14: { float jt=ja*native_sin(M_PI_F*zx/fmax(0.01f,jb))*native_sin(M_PI_F*zy/fmax(0.01f,jc)); aux.DE*=(1.0f+jf*jt/fmax(1e-10f,rr)); break; }
+					case 15: { float eta=native_exp(M_PI_F*zy/(12.0f*fmax(0.01f,ja))); for(int n=1;n<8;n++) eta*=(1.0f-native_exp(-2.0f*M_PI_F*n*fabs(zy)/fmax(0.01f,ja))); aux.DE*=(1.0f+jf*fabs(eta)); break; }
+					case 16: { float wp=1.0f/(rr+1e-10f); for(int n=1;n<6;n++){float dn2=(zx-n*ja)*(zx-n*ja)+(zy-n*jb)*(zy-n*jb)+zz2*zz2; wp+=1.0f/fmax(1e-10f,dn2)-1.0f/(n*n*ja*ja+n*n*jb*jb+1e-10f);} aux.DE*=(1.0f+jf*fabs(wp)); break; }
+					case 17: { float th=0.0f; for(int n=0;n<8;n++){float qn=native_exp(-M_PI_F*n*n*fabs(zy)/fmax(0.01f,ja)); th+=qn*native_cos(2.0f*M_PI_F*n*zx/fmax(0.01f,ja));} aux.DE*=(1.0f+jf*fabs(th)); break; }
+					case 18: { float eis=0.0f; for(int m=-3;m<=3;m++) for(int n=-3;n<=3;n++){if(m==0&&n==0)continue; float dn=m*ja+n*jb; eis+=1.0f/fmax(1e-10f,native_powr(fabs(dn*dn+rr),jc));} aux.DE*=(1.0f+jf*fabs(eis)); break; }
+					case 19: { float hek=ja*native_sin(jfreq*r)*native_cos(jfreq*atan2(zy,zx)+jph); aux.DE*=(1.0f+jf*hek/fmax(1e-10f,r)); break; }
+					case 20: { float maas=ja*native_sin(jfreq*native_log(fmax(1e-10f,r)))*native_cos(jfreq*atan2(zy,zx)); aux.DE*=(1.0f+jf*maas); break; }
+					case 21: { float selb=1.0f; for(int k=1;k<=5;k++){selb*=(1.0f-native_exp(-ja*k*r));} aux.DE*=(1.0f+jf*(1.0f-fabs(selb))); break; }
+					case 22: { float ruel=1.0f; for(int k=1;k<=5;k++){ruel*=(1.0f-native_exp(-ja*k*native_log(fmax(1e-10f,r))));} aux.DE*=(1.0f+jf*fabs(ruel)); break; }
+					case 23: { float dz=ja*native_sin(jfreq*r)*native_exp(-jb*r); aux.DE*=(1.0f+jf*dz); break; }
+					case 24: { float gut=0.0f; for(int p=1;p<=5;p++){gut+=ja*native_cos(jfreq*p*r+jph)/fmax(1.0f,(float)p);} aux.DE*=(1.0f+jf*gut/fmax(1e-10f,r)); break; }
+					case 25: { float berry=ja*zy*zz2/fmax(1e-10f,rr*r); aux.DE*=(1.0f+jf*berry); break; }
+					case 26: { float hann=ja*zx*zy/fmax(1e-10f,rr); aux.DE*=(1.0f+jf*hann); break; }
+					case 27: { float ab_ph=ja*atan2(zy,zx)/fmax(1e-10f,r); aux.DE*=(1.0f+jf*ab_ph); break; }
+					case 28: { float ac_ph=ja*jb*zz2/fmax(1e-10f,rr); aux.DE*=(1.0f+jf*ac_ph); break; }
+					case 29: { float sab=ja*native_sin(jfreq*r)*zy/fmax(1e-10f,rr); aux.DE*=(1.0f+jf*sab); break; }
+					case 30: { float hmw=ja*(zx*zy-zy*zz2)/fmax(1e-10f,rr*r); aux.DE*=(1.0f+jf*hmw); break; }
+					case 31: { float ana=ja*native_sin(jfreq*rr+jph)/fmax(1e-10f,r); aux.DE*=(1.0f+jf*ana); break; }
+					case 32: { float panch=ja*native_cos(jfreq*zx)*native_cos(jfreq*zy)*native_cos(jfreq*zz2); aux.DE*=(1.0f+jf*panch/fmax(1e-10f,r)); break; }
+					case 33: { float mt=ja/(2.0f*fmax(1e-10f,fabs(zx-zy))); aux.DE*=(1.0f+jf*tanh(mt)); break; }
+					case 34: { float ml=M_PI_F*ja/(2.0f*fmax(1e-10f,r)); aux.DE*=(1.0f+jf*tanh(ml)); break; }
+					case 35: { float sw=ja*jb/(fmax(1e-10f,r)*jc); aux.DE*=(1.0f+jf*tanh(sw)); break; }
+					case 36: { float pw=ja*native_exp(-jb*rr); aux.DE*=(1.0f+jf*pw); break; }
+					case 37: { float gp=ja*native_sqrt(fmax(0.0f,r/jb)); aux.DE*=(1.0f+jf*tanh(gp)); break; }
+					case 38: { float rov=ja*native_sin(jfreq*zx+jph)*native_cos(jfreq*zy); aux.DE*=(1.0f+jf*rov/fmax(1e-10f,r)); break; }
+					case 39: { float barb=ja*native_sqrt(fmax(0.0f,zx*zx+zy*zy))/fmax(1e-10f,r); aux.DE*=(1.0f+jf*barb); break; }
+					case 40: { float con=ja*native_exp(-jb*fabs(zz2))*native_sin(jfreq*r); aux.DE*=(1.0f+jf*con); break; }
+					case 41: { float ach=ja*native_sin(jfreq*zx)*native_sin(jfreq*zy)*native_cos(jfreq*zz2)/fmax(1e-10f,r); aux.DE*=(1.0f+jf*ach); break; }
+					case 42: { float que=ja/(fmax(1e-10f,rr)); aux.DE*=(1.0f+jf*que); break; }
+					case 43: { float rw=0.0f; for(int n=1;n<=8;n++){rw+=native_cos(jfreq*n*zx+jph*n)*native_exp(-jb*n);} aux.DE*=(1.0f+jf*ja*rw/fmax(1e-10f,r)); break; }
+					case 44: { float nd=ja*floor(native_sin(jfreq*zx)*native_sin(jfreq*zy)*4.0f+2.0f)/4.0f; aux.DE*=(1.0f+jf*nd); break; }
+					case 45: { float nl=ja*fabs(native_sin(jfreq*zx)*native_cos(jfreq*zy))*jb; aux.DE*=(1.0f+jf*nl/fmax(1e-10f,r)); break; }
+					case 46: { float pc=ja*(tanh(jb*(r-jc))+1.0f)*0.5f; aux.DE*=(1.0f+jf*pc); break; }
+					case 47: { float ip=ja*tanh(jb*(native_sin(jfreq*zx)+native_sin(jfreq*zy)+native_sin(jfreq*zz2))); aux.DE*=(1.0f+jf*ip); break; }
+					case 48: { float cle=ja*native_sin(jfreq*atan2(zy,zx))*native_exp(-jb*r); aux.DE*=(1.0f+jf*cle); break; }
+					case 49: { float sle=ja*zy/(fmax(1e-10f,rr))*native_exp(-jb*fabs(zx)); aux.DE*=(1.0f+jf*sle); break; }
+					case 50: { float gff=ja*native_cos(jfreq*zx)*native_cos(jfreq*zy)/fmax(1e-10f,r); aux.DE*=(1.0f+jf*gff); break; }
+					case 51: { float lqg=ja*native_exp(jb*native_sin(jfreq*r+jph)); aux.DE*=(1.0f+jf*lqg/fmax(1e-10f,r)); break; }
+					case 52: { float bm=ja*native_sqrt(fmax(0.0f,rr-jb*jb))/fmax(1e-10f,rr); aux.DE*=(1.0f+jf*bm); break; }
+					case 53: { float pm2=ja*(2.0f-fabs(zx)+fabs(zy)-fabs(zz2))/fmax(1e-10f,r); aux.DE*=(1.0f+jf*tanh(pm2)); break; }
+					case 54: { float tt=ja*(zx*zy+zy*zz2+zz2*zx)/fmax(1e-10f,rr*r); aux.DE*=(1.0f+jf*tt); break; }
+					case 55: { float jon=ja*native_sin(M_PI_F*jb*r+jph)/fmax(1e-10f,r); aux.DE*=(1.0f+jf*jon); break; }
+					case 56: { float hom=ja*(native_sin(jfreq*zx)+native_sin(jfreq*zy))*jb/fmax(1e-10f,rr); aux.DE*=(1.0f+jf*hom); break; }
+					case 57: { float kau=ja*tanh(jb*native_sin(jfreq*r)*native_cos(jfreq*atan2(zy,zx))); aux.DE*=(1.0f+jf*kau); break; }
+					case 58: { float cs=ja*native_sin(jfreq*zx)*native_sin(jfreq*zy)*native_sin(jfreq*zz2)/(fmax(1e-10f,r*r)); aux.DE*=(1.0f+jf*cs); break; }
+					case 59: { float wrt=ja*jb*native_cos(jfreq*r+jph)/fmax(1e-10f,rr); aux.DE*=(1.0f+jf*wrt); break; }
+					case 60: { float tv=ja*jb*jc/(fmax(1e-10f,rr*r)); aux.DE*=(1.0f+jf*tanh(tv)); break; }
+					case 61: { float cy=ja*native_powr(fmax(1e-10f,r),jb-3.0f); aux.DE*=(1.0f+jf*cy); break; }
+					case 62: { float dw=ja/(fmax(1e-10f,rr))*native_cos(jfreq*zz2); aux.DE*=(1.0f+jf*dw); break; }
+					case 63: { float yd=ja*jb*(zx*zy-zy*zx)/(fmax(1e-10f,rr)); aux.DE*=(1.0f+jf*yd*jc); break; }
+					case 64: { float mtc=ja*native_sin(jfreq*zx+jph)*native_cos(jfreq*zy)*native_sin(jfreq*zz2)/fmax(1e-10f,r); aux.DE*=(1.0f+jf*mtc); break; }
+					case 65: { float fus=ja*(native_sin(jb*zx)*native_sin(jc*zy)+native_sin(jd*zz2))/fmax(1e-10f,r); aux.DE*=(1.0f+jf*fus); break; }
+					case 66: { float bra=ja*native_cos(jfreq*atan2(zy,zx)+jph)*native_cos(jfreq*atan2(zz2,r)); aux.DE*=(1.0f+jf*bra); break; }
+					case 67: { float rib=ja*native_sin(jfreq*r)*native_cos(jb*atan2(zy,zx)+jph); aux.DE*=(1.0f+jf*rib/fmax(1e-10f,r)); break; }
+					case 68: { float hopf=ja*jb*tanh(jc*(zx*zy+zy*zz2)); aux.DE*=(1.0f+jf*hopf/fmax(1e-10f,r)); break; }
+					case 69: { float qg=ja*native_powr(fmax(1e-10f,r),-jb)*native_sin(jfreq*r+jph); aux.DE*=(1.0f+jf*qg); break; }
+					case 70: { float dd=ja*jb*(1.0f/(fmax(1e-10f,rr))+zx*zy/(fmax(1e-10f,rr*r))); aux.DE*=(1.0f+jf*tanh(dd)); break; }
+					case 71: { float nich=ja*native_exp(-jb*rr)*native_sin(jfreq*zx)*native_cos(jfreq*zy); aux.DE*=(1.0f+jf*nich); break; }
+					case 72: { float rack=ja*(zx*zx-zy*zy)/(fmax(1e-10f,rr))*jb; aux.DE*=(1.0f+jf*rack); break; }
+					case 73: { float quan=ja*(zx*zx*zx-3.0f*zx*zy*zy)/(fmax(1e-10f,rr*r))*jb; aux.DE*=(1.0f+jf*quan); break; }
+					case 74: { float biq=ja*native_sin(jfreq*(zx+zy))*native_cos(jfreq*(zx-zy))/fmax(1e-10f,r); aux.DE*=(1.0f+jf*biq); break; }
+					case 75: { float ske=ja*jb*native_sin(jfreq*r+jph)/(fmax(1e-10f,rr)); aux.DE*=(1.0f+jf*ske); break; }
+					case 76: { float khov=ja*native_powr(fmax(1e-10f,fabs(native_sin(jfreq*r))),2.0f)*jb/fmax(1e-10f,r); aux.DE*=(1.0f+jf*khov); break; }
+					case 77: { float hf=ja*native_exp(-jb*r)*native_cos(jfreq*zz2+jph); aux.DE*=(1.0f+jf*hf); break; }
+					case 78: { float kf=ja*atan2(zy,zx)*native_exp(-jb*fabs(zz2))/M_PI_F; aux.DE*=(1.0f+jf*kf/fmax(1e-10f,r)); break; }
+					case 79: { float ech2=ja*native_sin(jfreq*zx)*native_exp(-jb*zy)*native_cos(jfreq*zz2)/fmax(1e-10f,r); aux.DE*=(1.0f+jf*ech2); break; }
+					case 80: { float sft=ja*native_cos(jfreq*r)*native_sin(jfreq*atan2(zy,zx)+jph)/fmax(1e-10f,r); aux.DE*=(1.0f+jf*sft); break; }
+					case 81: { float lag=ja*(zx*zy+zy*zz2)/(fmax(1e-10f,rr))*jb; aux.DE*=(1.0f+jf*lag); break; }
+					case 82: { float fuk=ja*native_sin(jb*zx)*native_cos(jc*zy)*native_sin(jd*zz2)/fmax(1e-10f,r); aux.DE*=(1.0f+jf*fuk); break; }
+					case 83: { float mir=ja*(native_sin(jfreq*zx)*native_sin(jfreq*zy)-native_cos(jfreq*zz2))/fmax(1e-10f,r); aux.DE*=(1.0f+jf*mir); break; }
+					case 84: { float hmir=ja*native_cos(jfreq*(zx+zy+zz2)+jph)/fmax(1e-10f,r); aux.DE*=(1.0f+jf*hmir); break; }
+					case 85: { float syz=ja*native_sin(jfreq*r)*native_sin(jfreq*atan2(zy,zx))*native_cos(jfreq*zz2/fmax(0.01f,jb)); aux.DE*=(1.0f+jf*syz); break; }
+					case 86: { float slag=ja*native_cos(jfreq*zx+jph)*jb; aux.DE*=(1.0f+jf*slag/fmax(1e-10f,r)); break; }
+					case 87: { float g2=ja*native_sin(jfreq*zx)*native_sin(jfreq*zy)*native_sin(jfreq*zz2)*jb; aux.DE*=(1.0f+jf*g2/fmax(1e-10f,rr)); break; }
+					case 88: { float sp7=ja*native_cos(jfreq*(zx*zy+zy*zz2+zz2*zx)/fmax(1e-10f,rr)+jph); aux.DE*=(1.0f+jf*sp7); break; }
+					case 89: { float cy2=ja*native_exp(-jb*rr)*jc; aux.DE*=(1.0f+jf*cy2); break; }
+					case 90: { float hkah=ja*(zx*zx-zy*zy+zz2*zz2)/(fmax(1e-10f,rr*r))*jb; aux.DE*=(1.0f+jf*hkah); break; }
+					case 91: { float qkah=ja*jb*(zx*zy*zz2)/(fmax(1e-10f,rr*rr)); aux.DE*=(1.0f+jf*tanh(qkah)); break; }
+					case 92: { float sas=ja*native_sqrt(fmax(0.0f,r-jb))/fmax(1e-10f,r); aux.DE*=(1.0f+jf*sas); break; }
+					case 93: { float s3s=ja*(native_sin(jfreq*zx)+native_sin(jfreq*zy)+native_sin(jfreq*zz2))/(3.0f*fmax(1e-10f,r)); aux.DE*=(1.0f+jf*s3s); break; }
+					case 94: { float exh=ja*native_powr(fmax(1e-10f,r),-jb)*native_cos(jfreq*r+jph); aux.DE*=(1.0f+jf*exh); break; }
+					case 95: { float joy=ja*native_sin(jfreq*zx/fmax(0.01f,jb))*native_sin(jfreq*zy/fmax(0.01f,jc))*native_sin(jfreq*zz2/fmax(0.01f,jd)); aux.DE*=(1.0f+jf*joy); break; }
+					case 96: { float kov=ja*native_exp(-jb*fabs(zz2))*native_cos(jfreq*native_sqrt(fmax(0.0f,zx*zx+zy*zy))); aux.DE*=(1.0f+jf*kov); break; }
+					case 97: { float chnp=ja*jb*tanh(jc*r-jd); aux.DE*=(1.0f+jf*chnp/fmax(1e-10f,r)); break; }
+					case 98: { float bsr=ja*native_exp(-jb*r)*native_cos(jfreq*r+jph)*jc; aux.DE*=(1.0f+jf*bsr); break; }
+					case 99: { float ah=ja*jb/(fmax(1e-10f,rr))*native_cos(jfreq*atan2(zy,zx)+jph); aux.DE*=(1.0f+jf*ah); break; }
+					case 100: { float gh=ja*jb*jc/fmax(1e-10f,r)*native_sin(jfreq*zz2+jph); aux.DE*=(1.0f+jf*gh); break; }
+				}
+			}
+
+			// v7.7 — Pseudokleinian DE system (per-section iteration range)
+			if (i >= mut->pkIterStart && i < mut->pkIterStop && mut->pseudoKleinianDeType != 0)
+			{
+				float pf = mut->pkFactor;
+				float pa = mut->pkParamA, pb = mut->pkParamB, pc = mut->pkParamC, pd = mut->pkParamD;
+				float pfreq = mut->pkFreq, pamp = mut->pkAmp, psc = mut->pkScale, pph = mut->pkPhase;
+				float zx = z.x, zy = z.y, zz2 = z.z;
+				float rr = zx*zx + zy*zy + zz2*zz2; if (rr < 1e-21f) rr = 1e-21f;
+				float r = native_sqrt(rr);
+				switch (mut->pseudoKleinianDeType)
+				{
+					case 1: { float mu=pa*zy/fmax(1e-10f,rr); aux.DE*=(1.0f+pf*tanh(mu)); break; }
+					case 2: { float bers=pa*native_log(fmax(1e-10f,r))*pb; aux.DE*=(1.0f+pf*tanh(bers)); break; }
+					case 3: { float eq=pa*native_sin(pfreq*zx)*native_cos(pfreq*zy); aux.DE*=(1.0f+pf*eq/fmax(1e-10f,r)); break; }
+					case 4: { float bc=pa*pb*zy/fmax(1e-10f,rr); aux.DE*=(1.0f+pf*bc); break; }
+					case 5: { float ham=pa*native_exp(-pb*r)*native_sin(pfreq*zx); aux.DE*=(1.0f+pf*ham); break; }
+					case 6: { float wp=pa*pb/(fmax(1e-10f,rr)); aux.DE*=(1.0f+pf*wp); break; }
+					case 7: { float tm=pa*fabs(zx-zy)/fmax(1e-10f,r); aux.DE*=(1.0f+pf*tanh(tm)); break; }
+					case 8: { float kob=pa*tanh(pb*r)/fmax(1e-10f,r); aux.DE*=(1.0f+pf*kob); break; }
+					case 9: { float car=pa*fabs(native_sin(pfreq*r))/fmax(1e-10f,r); aux.DE*=(1.0f+pf*car); break; }
+					case 10: { float berg=pa*pb*native_cos(pfreq*zx+pph)*native_cos(pfreq*zy)/fmax(1e-10f,rr); aux.DE*=(1.0f+pf*berg); break; }
+					case 11: { float ke=pa*pb/fmax(1e-10f,r)*tanh(pc*rr); aux.DE*=(1.0f+pf*ke); break; }
+					case 12: { float csc2=pa*tanh(pb*(r-pc)); aux.DE*=(1.0f+pf*csc2); break; }
+					case 13: { float duy=pa*pb*native_exp(-pc*rr); aux.DE*=(1.0f+pf*duy); break; }
+					case 14: { float hk=pa*native_sin(pfreq*zx)*native_cos(pfreq*zy)*native_exp(-pb*fabs(zz2)); aux.DE*=(1.0f+pf*hk); break; }
+					case 15: { float nah=pa*pb*(zx*zy+zy*zz2)/(fmax(1e-10f,rr*r)); aux.DE*=(1.0f+pf*nah); break; }
+					case 16: { float hm=pa*native_exp(-pb*rr)*native_cos(pfreq*r+pph); aux.DE*=(1.0f+pf*hm); break; }
+					case 17: { float ms=pa*(1.0f-zz2/fmax(1e-10f,r)); aux.DE*=(1.0f+pf*ms*pb); break; }
+					case 18: { float cmc=pa*native_cos(pfreq*zx)*native_cos(pfreq*zy)*pb; aux.DE*=(1.0f+pf*cmc/fmax(1e-10f,r)); break; }
+					case 19: { float wil=pa*(zx*zx+zy*zy)/(fmax(1e-10f,rr*r))*pb; aux.DE*=(1.0f+pf*wil); break; }
+					case 20: { float iso=pa*native_cos(pfreq*zx+pph)*native_cos(pfreq*zy)*pb; aux.DE*=(1.0f+pf*iso); break; }
+					case 21: { float lax=pa*native_sin(pfreq*zx)*native_cos(pfreq*zy)*native_sin(pfreq*zz2)/fmax(1e-10f,r); aux.DE*=(1.0f+pf*lax); break; }
+					case 22: { float bac=pa*native_exp(-pb*r)*native_sin(pfreq*r+pph); aux.DE*=(1.0f+pf*bac); break; }
+					case 23: { float dar=pa*pb*native_cos(pfreq*r+pph)/fmax(1e-10f,rr); aux.DE*=(1.0f+pf*dar); break; }
+					case 24: { float mou=pa*native_sin(pfreq*zx)*native_sin(pfreq*zy)/fmax(1e-10f,r); aux.DE*=(1.0f+pf*mou); break; }
+					case 25: { float hir=pa*pb*native_exp(-pc*rr)*native_cos(pfreq*r); aux.DE*=(1.0f+pf*hir); break; }
+					case 26: { float sat=pa*native_sin(pfreq*zx+pph)*native_cos(pfreq*zy)*native_sin(pfreq*zz2)/fmax(1e-10f,r); aux.DE*=(1.0f+pf*sat); break; }
+					case 27: { float kp=pa*(native_sin(pfreq*zx)*native_cos(pfreq*zy)+native_sin(pfreq*zy)*native_cos(pfreq*zz2))/fmax(1e-10f,r); aux.DE*=(1.0f+pf*kp); break; }
+					case 28: { float kdv=pa*native_sin(pfreq*zx+pph)*native_exp(-pb*zy*zy)/fmax(1e-10f,r); aux.DE*=(1.0f+pf*kdv); break; }
+					case 29: { float nls=pa*native_exp(-pb*(zx*zx+zy*zy))*native_cos(pfreq*zz2+pph); aux.DE*=(1.0f+pf*nls); break; }
+					case 30: { float sg=pa*native_sin(native_sin(pfreq*zx+pph))*pb; aux.DE*=(1.0f+pf*sg/fmax(1e-10f,r)); break; }
+					case 31: { float toda=pa*native_exp(pb*(zx-zy))-pa*native_exp(pb*(zy-zz2)); aux.DE*=(1.0f+pf*tanh(toda)/fmax(1e-10f,r)); break; }
+					case 32: { float cm=0.0f; {float d1=zx-zy; float d2=zy-zz2; float d3=zx-zz2; cm=pa*(1.0f/fmax(1e-10f,d1*d1*d1)+1.0f/fmax(1e-10f,d2*d2*d2)+1.0f/fmax(1e-10f,d3*d3*d3));} aux.DE*=(1.0f+pf*tanh(cm)); break; }
+					case 33: { float rs=pa*tanh(pb*(zx-zy))*tanh(pb*(zy-zz2))/fmax(1e-10f,r); aux.DE*=(1.0f+pf*rs); break; }
+					case 34: { float hs=pa*pb*(zx*zy+zy*zz2+zz2*zx)/(fmax(1e-10f,rr*r)); aux.DE*=(1.0f+pf*hs); break; }
+					case 35: { float bm=pa*native_sin(pfreq*zx)*native_sin(pfreq*zy)*pb/fmax(1e-10f,r); aux.DE*=(1.0f+pf*bm); break; }
+					case 36: { float aci=pa*native_sin(pfreq*r+pph)*native_cos(pfreq*atan2(zy,zx))/fmax(1e-10f,r); aux.DE*=(1.0f+pf*aci); break; }
+					case 37: { float sep=pa*(native_sin(pb*zx)+native_sin(pc*zy)+native_sin(pd*zz2))/fmax(1e-10f,r); aux.DE*=(1.0f+pf*sep); break; }
+					case 38: { float aa=pa*native_cos(pfreq*r)*pfreq/fmax(1e-10f,r); aux.DE*=(1.0f+pf*aa); break; }
+					case 39: { float kam=pa*native_cos(pfreq*r+pph)*(1.0f-pb/fmax(1e-10f,r)); aux.DE*=(1.0f+pf*kam); break; }
+					case 40: { float nek=pa*native_exp(-1.0f/fmax(1e-10f,native_powr(fmax(1e-10f,pb),pc))); aux.DE*=(1.0f+pf*nek); break; }
+					case 41: { float ard=pa*native_sin(pfreq*zx)*native_cos(pfreq*zy)*native_sin(pfreq*zz2)/fmax(1e-10f,rr); aux.DE*=(1.0f+pf*ard); break; }
+					case 42: { float abm=pa*fabs(native_sin(pfreq*zx+pph))/fmax(1e-10f,r); aux.DE*=(1.0f+pf*abm); break; }
+					case 43: { float mse=pa*pb*native_exp(-pc*rr)*native_sin(pfreq*zx); aux.DE*=(1.0f+pf*mse); break; }
+					case 44: { float pei=pa*(1.0f-native_exp(-pb*fabs(zx-zy)))/fmax(1e-10f,r); aux.DE*=(1.0f+pf*pei); break; }
+					case 45: { float fk=pa*native_sin(pfreq*zx+pph)*native_cos(pb*zy); aux.DE*=(1.0f+pf*fk/fmax(1e-10f,r)); break; }
+					case 46: { float sm=pa*native_sin(pfreq*atan2(zy,zx)+pph)*pb; aux.DE*=(1.0f+pf*sm/fmax(1e-10f,r)); break; }
+					case 47: { float chi=pa*tanh(pb*(r-pc)); aux.DE*=(1.0f+pf*chi); break; }
+					case 48: { float gre=0.5f*(1.0f-pa*native_cos(pfreq*r+pph)/fmax(1e-10f,r)); aux.DE*=(1.0f+pf*gre); break; }
+					case 49: { float rg=pa*native_powr(fmax(1e-10f,r),-pb)*native_cos(pfreq*native_log(fmax(1e-10f,r))+pph); aux.DE*=(1.0f+pf*rg); break; }
+					case 50: { float fg=pa*4.669201609f*native_sin(pfreq*r+pph)/(fmax(1e-10f,r)); aux.DE*=(1.0f+pf*fg); break; }
+					case 51: { float sh3=pa*floor(native_sin(pfreq*zx)*3.0f+1.5f)/3.0f; aux.DE*=(1.0f+pf*sh3); break; }
+					case 52: { float sar=pa*(native_sin(pfreq*zx)*native_sin(pfreq*zy)*native_sin(pfreq*zz2)>0.0f?1.0f:-1.0f)*pb; aux.DE*=(1.0f+pf*sar/fmax(1e-10f,r)); break; }
+					case 53: { float sml=pa*tanh(pb*zx)*tanh(pb*zy); aux.DE*=(1.0f+pf*sml); break; }
+					case 54: { float ano=pa*fabs(fmod(pb*zx+pc*zy,1.0f)-0.5f)*4.0f; aux.DE*=(1.0f+pf*ano/fmax(1e-10f,r)); break; }
+					case 55: { float axa=pa*native_exp(-pb*r)*native_cos(pfreq*r+pph); aux.DE*=(1.0f+pf*axa); break; }
+					case 56: { float srb=pa*pb*native_exp(-pc*rr)/fmax(1e-10f,r); aux.DE*=(1.0f+pf*srb); break; }
+					case 57: { float pes=pa*native_log(fmax(1e-10f,r))*pb; aux.DE*=(1.0f+pf*tanh(pes)); break; }
+					case 58: { float ly=pa*pb*native_log(fmax(1e-10f,r))/fmax(1e-10f,r); aux.DE*=(1.0f+pf*tanh(ly)); break; }
+					case 59: { float yt=pa*native_exp(-pb*r)*native_sin(pfreq*r+pph); aux.DE*=(1.0f+pf*yt); break; }
+					case 60: { float to=pa*pb*native_sin(pfreq*zx)*native_sin(pfreq*zy)/(fmax(1e-10f,rr)); aux.DE*=(1.0f+pf*to); break; }
+					case 61: { float rpf=pa*native_exp(-pb*r)/fmax(1e-10f,r); aux.DE*=(1.0f+pf*rpf); break; }
+					case 62: { float thf=pa*tanh(pb*(r-pc))*pd; aux.DE*=(1.0f+pf*thf); break; }
+					case 63: { float gib=pa*native_exp(-pb*rr)*pc; aux.DE*=(1.0f+pf*gib); break; }
+					case 64: { float eqs=pa*native_cos(pfreq*r+pph)/(fmax(1e-10f,r)); aux.DE*=(1.0f+pf*eqs); break; }
+					case 65: { float pht=pa*(1.0f/(1.0f+native_exp(-pb*(r-pc)))-0.5f)*2.0f; aux.DE*=(1.0f+pf*pht); break; }
+					case 66: { float brf=pa*native_exp(-pb*r)*native_cos(pfreq*atan2(zy,zx)+pph); aux.DE*=(1.0f+pf*brf); break; }
+					case 67: { float spc=pa*native_sin(pfreq*zx)*native_cos(pfreq*zy)*native_sin(pfreq*zz2)*pb; aux.DE*=(1.0f+pf*spc/fmax(1e-10f,r)); break; }
+					case 68: { float sha=pa*native_exp(-pb*fabs(r-pc)); aux.DE*=(1.0f+pf*sha); break; }
+					case 69: { float sst=pa*native_cos(pfreq*r+pph)*native_exp(-pb*r); aux.DE*=(1.0f+pf*sst); break; }
+					case 70: { float oms=pa*native_sin(pfreq*zx)*native_sin(pfreq*zy)*pb/fmax(1e-10f,rr); aux.DE*=(1.0f+pf*oms); break; }
+					case 71: { float mss=pa*native_exp(-pb*r)*(1.0f-native_cos(pfreq*r)); aux.DE*=(1.0f+pf*mss); break; }
+					case 72: { float gfl=-pa*pb*(zx+zy+zz2)/fmax(1e-10f,r*r); aux.DE*=(1.0f+pf*tanh(gfl)); break; }
+					case 73: { float mor=pa*(r-pb)*(r-pb)*native_exp(-pc*r); aux.DE*=(1.0f+pf*mor/fmax(1e-10f,r)); break; }
+					case 74: { float moh=pa*native_exp(-pb*rr)*native_sin(pfreq*r+pph); aux.DE*=(1.0f+pf*moh); break; }
+					case 75: { float flo=pa*native_sin(pfreq*zx)*native_cos(pfreq*zy)*pb; aux.DE*=(1.0f+pf*flo/fmax(1e-10f,r)); break; }
+					case 76: { float sca=pa*pb*r*r/(fmax(1e-10f,r*r+pc*pc)); aux.DE*=(1.0f+pf*sca); break; }
+					case 77: { float hof=pa*pb/fmax(1e-10f,r); aux.DE*=(1.0f+pf*tanh(hof)); break; }
+					case 78: { float hz=pa*M_PI_F*pb/(2.0f*fmax(1e-10f,r)); aux.DE*=(1.0f+pf*tanh(hz)); break; }
+					case 79: { float ekh=pa*native_sin(pfreq*r+pph)*pb/fmax(1e-10f,r); aux.DE*=(1.0f+pf*ekh); break; }
+					case 80: { float nsq=pa*pb*(1.0f-r/fmax(1e-10f,pc)); aux.DE*=(1.0f+pf*tanh(nsq)); break; }
+					case 81: { float emb=pa*pb*native_sin(pfreq*r+pph)/fmax(1e-10f,rr); aux.DE*=(1.0f+pf*emb); break; }
+					case 82: { float echc=pa*native_sin(pfreq*zx)*native_cos(pfreq*zy)*pb/fmax(1e-10f,r); aux.DE*=(1.0f+pf*echc); break; }
+					case 83: { float fib=pa*native_sin(pfreq*r)*native_cos(1.618033988749f*pfreq*r+pph)/fmax(1e-10f,r); aux.DE*=(1.0f+pf*fib); break; }
+					case 84: { float hut=pa*pb*native_sin(pfreq*atan2(zy,zx)+pph)/fmax(1e-10f,r); aux.DE*=(1.0f+pf*hut); break; }
+					case 85: { float cmk=pa*native_cos(pfreq*r)*native_exp(-pb*r)*pc; aux.DE*=(1.0f+pf*cmk); break; }
+					case 86: { float vfc=pa*pb*native_sin(pfreq*r+pph)/(fmax(1e-10f,r*r)); aux.DE*=(1.0f+pf*vfc); break; }
+					case 87: { float pol=pa*native_exp(-pb*rr)*native_cos(pfreq*r)*pc; aux.DE*=(1.0f+pf*pol); break; }
+					case 88: { float scc=pa*tanh(pb*r)*native_cos(pfreq*r+pph)/fmax(1e-10f,r); aux.DE*=(1.0f+pf*scc); break; }
+					case 89: { float gwi=pa*pb*native_sin(pfreq*zx)*native_sin(pfreq*zy)*native_sin(pfreq*zz2)/(fmax(1e-10f,rr)); aux.DE*=(1.0f+pf*gwi); break; }
+					case 90: { float qco=pa*native_cos(pfreq*(zx+zy+zz2)+pph)*pb/fmax(1e-10f,r); aux.DE*=(1.0f+pf*qco); break; }
+					case 91: { float msy=pa*(native_sin(pfreq*zx)*native_sin(pfreq*zy)-native_cos(pfreq*zz2))/fmax(1e-10f,r); aux.DE*=(1.0f+pf*msy); break; }
+					case 92: { float hv=pa*native_exp(-pb*rr)*native_sin(pfreq*r+pph); aux.DE*=(1.0f+pf*hv); break; }
+					case 93: { float bat=pa*native_cos(pfreq*zx+pph)*native_cos(pfreq*zy)*native_cos(pfreq*zz2)/fmax(1e-10f,r); aux.DE*=(1.0f+pf*bat); break; }
+					case 94: { float gpo=pa*pb*native_sin(pfreq*r)/(fmax(1e-10f,r*r)); aux.DE*=(1.0f+pf*gpo); break; }
+					case 95: { float syzf=pa*native_sin(pfreq*r)*native_sin(pfreq*atan2(zy,zx)+pph)*pb; aux.DE*=(1.0f+pf*syzf/fmax(1e-10f,r)); break; }
+					case 96: { float gs=pa*native_exp(-pb*fabs(zz2))*native_cos(pfreq*native_sqrt(fmax(0.0f,zx*zx+zy*zy))+pph); aux.DE*=(1.0f+pf*gs); break; }
+					case 97: { float scd=pa*pb*tanh(pc*native_sin(pfreq*r+pph)); aux.DE*=(1.0f+pf*scd/fmax(1e-10f,r)); break; }
+					case 98: { float thf2=pa*native_sin(pfreq*zx+pph)*native_cos(pfreq*zy)*pb; aux.DE*=(1.0f+pf*thf2/fmax(1e-10f,r)); break; }
+					case 99: { float cla=pa*pb*(zx*zy+zy*zz2+zz2*zx)/(fmax(1e-10f,rr*r)); aux.DE*=(1.0f+pf*cla); break; }
+					case 100: { float clv=pa*native_sin(pfreq*(zx*zy+zy*zz2)/fmax(1e-10f,rr)+pph)*pb; aux.DE*=(1.0f+pf*clv); break; }
+				}
+			}
+
 			// DE tweak (per-section iteration range)
 			if (i >= mut->deIterStart && i < mut->deIterStop) {
 			if (mut->deScale != 1.0f) aux.DE *= mut->deScale;

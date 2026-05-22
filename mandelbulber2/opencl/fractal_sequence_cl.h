@@ -290,6 +290,20 @@ typedef struct
 	cl_float clipParamA, clipParamB, clipParamC;
 	cl_float clipThreshold;
 	cl_int clipIterStart, clipIterStop;
+	// v7.7 — Jos Leys DE system (100 types)
+	cl_int josLeysDeType;
+	cl_float josFactor;
+	cl_float josParamA, josParamB, josParamC, josParamD;
+	cl_float josFreq, josAmp;
+	cl_float josScale, josPhase;
+	cl_int josIterStart, josIterStop;
+	// v7.7 — Pseudokleinian DE system (100 types)
+	cl_int pseudoKleinianDeType;
+	cl_float pkFactor;
+	cl_float pkParamA, pkParamB, pkParamC, pkParamD;
+	cl_float pkFreq, pkAmp;
+	cl_float pkScale, pkPhase;
+	cl_int pkIterStart, pkIterStop;
 	// Pre-computed rotation matrices
 	matrix33 preRotMatrix;
 	matrix33 postRotMatrix;
