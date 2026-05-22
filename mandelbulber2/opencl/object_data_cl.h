@@ -102,6 +102,13 @@ typedef struct
 	cl_int mirrorX;
 	cl_int mirrorY;
 	cl_int mirrorZ;
+	// Groups & Boolean targeting
+	cl_int groupId;
+	cl_int groupEnabled;
+	cl_int groupBooleanOperator;
+	cl_float groupSmoothRadius;
+	cl_int groupPriority;
+	cl_int booleanTargetGroupId;
 	// Deformers
 	cl_int deformBendEnable;
 	cl_float deformBendAngle;

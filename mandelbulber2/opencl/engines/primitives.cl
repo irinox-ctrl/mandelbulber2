@@ -1016,6 +1016,205 @@ float PrimitiveTerrainPlane(__global sPrimitiveCl *primitive, float3 _point)
 }
 #endif
 
+// Helper: evaluate one primitive's distance (all clones, all types)
+float EvaluatePrimitiveDistCl(sRenderData *renderData, __global sPrimitiveCl *primitive,
+	float3 point2, float currentDist)
+{
+	int cloneCount = primitive->object.clonerEnabled ? primitive->object.clonerCount : 1;
+	float distTemp = 1e20f;
+
+	for (int ci = 0; ci < cloneCount; ci++)
+	{
+		sCloneTransformCl cloneTransform = ApplyCloneTransformOpenCL(primitive, ci);
+		float3 point3 = point2 - cloneTransform.offset;
+
+		if (length(cloneTransform.rotation) > 1e-10f)
+		{
+			matrix33 cloneRotMatrix = (matrix33){
+				(float3){1.0f, 0.0f, 0.0f},
+				(float3){0.0f, 1.0f, 0.0f},
+				(float3){0.0f, 0.0f, 1.0f}};
+			cloneRotMatrix = RotateZ(cloneRotMatrix, cloneTransform.rotation.z * M_PI_F / 180.0f);
+			cloneRotMatrix = RotateY(cloneRotMatrix, cloneTransform.rotation.y * M_PI_F / 180.0f);
+			cloneRotMatrix = RotateX(cloneRotMatrix, cloneTransform.rotation.x * M_PI_F / 180.0f);
+			point3 = Matrix33MulFloat3(cloneRotMatrix, point3);
+		}
+
+		float minCloneScale = 1.0f;
+		if (cloneTransform.scale.x > 1e-10f && cloneTransform.scale.y > 1e-10f
+				&& cloneTransform.scale.z > 1e-10f)
+		{
+			point3.x /= cloneTransform.scale.x;
+			point3.y /= cloneTransform.scale.y;
+			point3.z /= cloneTransform.scale.z;
+			minCloneScale = fmin(cloneTransform.scale.x, fmin(cloneTransform.scale.y, cloneTransform.scale.z));
+		}
+
+		float dTemp = 0.0f;
+
+		switch (primitive->object.objectType)
+		{
+#ifdef USE_PRIMITIVE_PLANE
+			case objPlane: dTemp = PrimitivePlane(primitive, point3); break;
+#endif
+#ifdef USE_PRIMITIVE_BOX
+			case objBox: dTemp = PrimitiveBox(primitive, point3); break;
+#endif
+#ifdef USE_PRIMITIVE_SPHERE
+			case objSphere: dTemp = PrimitiveSphere(primitive, point3); break;
+#endif
+#ifdef USE_PRIMITIVE_RECTANGLE
+			case objRectangle: dTemp = PrimitiveRectangle(primitive, point3); break;
+#endif
+#ifdef USE_PRIMITIVE_CYLINDER
+			case objCylinder: dTemp = PrimitiveCylinder(primitive, point3); break;
+#endif
+#ifdef USE_PRIMITIVE_CIRCLE
+			case objCircle: dTemp = PrimitiveCircle(primitive, point3); break;
+#endif
+#ifdef USE_PRIMITIVE_CONE
+			case objCone: dTemp = PrimitiveCone(primitive, point3); break;
+#endif
+#ifdef USE_PRIMITIVE_WATER
+			case objWater: dTemp = PrimitiveWater(primitive, point3, currentDist); break;
+#endif
+#ifdef USE_PRIMITIVE_TORUS
+			case objTorus: dTemp = PrimitiveTorus(primitive, point3); break;
+#endif
+#ifdef USE_PRIMITIVE_PRISM
+			case objPrism: dTemp = PrimitivePrism(primitive, point3); break;
+#endif
+#ifdef USE_PRIMITIVE_ELLIPSOID
+			case objEllipsoid: dTemp = PrimitiveEllipsoid(primitive, point3); break;
+#endif
+#ifdef USE_PRIMITIVE_CAPSULE
+			case objCapsule: dTemp = PrimitiveCapsule(primitive, point3); break;
+#endif
+#ifdef USE_PRIMITIVE_HEXPRISM
+			case objHexPrism: dTemp = PrimitiveHexPrism(primitive, point3); break;
+#endif
+#ifdef USE_PRIMITIVE_LAVAPLANE
+			case objLavaPlane: dTemp = PrimitiveLavaPlane(primitive, point3, currentDist); break;
+#endif
+#ifdef USE_PRIMITIVE_OCTAHEDRON
+			case objOctahedron: dTemp = PrimitiveOctahedron(primitive, point3); break;
+#endif
+#ifdef USE_PRIMITIVE_PYRAMID
+			case objPyramid: dTemp = PrimitivePyramid(primitive, point3); break;
+#endif
+#ifdef USE_PRIMITIVE_TERRAINPLANE
+			case objTerrainPlane: dTemp = PrimitiveTerrainPlane(primitive, point3); break;
+#endif
+			default: break;
+		}
+
+		dTemp *= GetPrimitiveMinScale(primitive);
+		dTemp *= minCloneScale;
+		if (dTemp < distTemp) distTemp = dTemp;
+	}
+	return distTemp;
+}
+
+// Helper: apply boolean operator on GPU
+void ApplyBooleanOpCl(int booleanOp, float *distance, float distTemp,
+	float detailSize, bool normalCalculationMode, int *closestObject, int objectId,
+	bool smoothEnable, float smoothDist)
+{
+	switch (booleanOp)
+	{
+		case clPrimBooleanOperatorOR:
+		{
+			if (distTemp < *distance) *closestObject = objectId;
+			if (smoothEnable)
+				*distance = opSmoothUnion(distTemp, *distance, smoothDist);
+			else
+				*distance = fmin(*distance, distTemp);
+			break;
+		}
+		case clPrimBooleanOperatorAND:
+		{
+			if (distTemp > *distance) *closestObject = objectId;
+			*distance = fmax(*distance, distTemp);
+			break;
+		}
+		case clPrimBooleanOperatorSUB:
+		{
+			const float limit = 1.5f;
+			if (*distance < detailSize)
+			{
+				if (distTemp < detailSize * limit * 1.5f) *closestObject = objectId;
+				if (distTemp < detailSize * limit)
+				{
+					if (normalCalculationMode)
+						*distance = fmax(detailSize * limit - distTemp, *distance);
+					else
+						*distance = detailSize * limit;
+				}
+				else
+				{
+					*distance = fmax(detailSize * limit - distTemp, *distance);
+					if (*distance < 0.0f) *distance = 0.0f;
+				}
+			}
+			break;
+		}
+		case clPrimBooleanOperatorRevSUB:
+		{
+			int closestObjectTemp = *closestObject;
+			*closestObject = objectId;
+			const float limit = 1.5f;
+			if (distTemp < detailSize)
+			{
+				if (*distance < detailSize * limit * 1.5f) *closestObject = closestObjectTemp;
+				if (*distance < detailSize * limit)
+				{
+					if (normalCalculationMode)
+						*distance = fmax(detailSize * limit - *distance, distTemp);
+					else
+						*distance = detailSize * limit;
+				}
+				else
+				{
+					distTemp = fmax(detailSize * limit - *distance, distTemp);
+					*distance = distTemp;
+					if (*distance < 0.0f) *distance = 0.0f;
+				}
+			}
+			else
+			{
+				*distance = distTemp;
+			}
+			break;
+		}
+		case clPrimBooleanOperatorSmoothOR:
+		{
+			float r = smoothDist;
+			if (r < 1e-10f) r = 0.1f;
+			if (distTemp < *distance) *closestObject = objectId;
+			*distance = opSmoothUnion(distTemp, *distance, r);
+			break;
+		}
+		case clPrimBooleanOperatorSmoothAND:
+		{
+			float r = smoothDist;
+			if (r < 1e-10f) r = 0.1f;
+			if (distTemp > *distance) *closestObject = objectId;
+			*distance = opSmoothIntersection(*distance, distTemp, r);
+			break;
+		}
+		case clPrimBooleanOperatorSmoothSUB:
+		{
+			float r = smoothDist;
+			if (r < 1e-10f) r = 0.1f;
+			if (distTemp < detailSize) *closestObject = objectId;
+			*distance = opSmoothSubtraction(distTemp, *distance, r);
+			break;
+		}
+	}
+}
+
+#define MAX_GROUPS_CL 32
+
 float TotalDistanceToPrimitives(__constant sClInConstants *consts, sRenderData *renderData,
 	float3 point, float fractalDistance, float detailSize, bool normalCalculationMode,
 	int *closestObjectId, int objectIdForVolumetrics)
@@ -1027,339 +1226,146 @@ float TotalDistanceToPrimitives(__constant sClInConstants *consts, sRenderData *
 	float3 point2 = point - renderData->primitivesGlobalData->allPrimitivesPosition;
 	point2 = Matrix33MulFloat3(renderData->primitivesGlobalData->mRotAllPrimitivesRotation, point2);
 
+	// Group-aware boolean evaluation
+	// Pass 1: evaluate groups
+	float groupDist[MAX_GROUPS_CL];
+	int groupClosest[MAX_GROUPS_CL];
+	int groupIds[MAX_GROUPS_CL];
+	int groupBoolOps[MAX_GROUPS_CL];
+	float groupSmoothR[MAX_GROUPS_CL];
+	bool groupActive[MAX_GROUPS_CL];
+	int numGroups = 0;
+
+	// Initialize
+	for (int g = 0; g < MAX_GROUPS_CL; g++)
+	{
+		groupDist[g] = 1e20f;
+		groupClosest[g] = -1;
+		groupActive[g] = false;
+	}
+
+	// First pass: evaluate grouped primitives
 	for (int i = 0; i < numberOfPrimitives; i++)
 	{
 		__global sPrimitiveCl *primitive = &renderData->primitives[i];
+		if (!primitive->object.enable) continue;
+		if (!primitive->object.groupEnabled) continue;
+		if (primitive->object.groupId <= 0) continue;
 
-		if (primitive->object.enable)
+		int gid = primitive->object.groupId;
+
+		// Find or allocate group slot
+		int gSlot = -1;
+		for (int g = 0; g < numGroups; g++)
 		{
-			int cloneCount = primitive->object.clonerEnabled ? primitive->object.clonerCount : 1;
-			float distTemp = 1e20f;
+			if (groupIds[g] == gid) { gSlot = g; break; }
+		}
+		if (gSlot < 0 && numGroups < MAX_GROUPS_CL)
+		{
+			gSlot = numGroups++;
+			groupIds[gSlot] = gid;
+			groupDist[gSlot] = 1e20f;
+			groupClosest[gSlot] = -1;
+			groupBoolOps[gSlot] = primitive->object.groupBooleanOperator;
+			groupSmoothR[gSlot] = primitive->object.groupSmoothRadius;
+			groupActive[gSlot] = true;
+		}
+		if (gSlot < 0) continue;
 
-			for (int ci = 0; ci < cloneCount; ci++)
-			{
-				sCloneTransformCl cloneTransform = ApplyCloneTransformOpenCL(primitive, ci);
-				float3 point3 = point2 - cloneTransform.offset;
+		float distTemp = EvaluatePrimitiveDistCl(renderData, primitive, point2, groupDist[gSlot]);
 
-				// Apply per-clone rotation
-				if (length(cloneTransform.rotation) > 1e-10f)
-				{
-					matrix33 cloneRotMatrix = (matrix33){
-						(float3){1.0f, 0.0f, 0.0f},
-						(float3){0.0f, 1.0f, 0.0f},
-						(float3){0.0f, 0.0f, 1.0f}};
-					cloneRotMatrix = RotateZ(cloneRotMatrix, cloneTransform.rotation.z * M_PI_F / 180.0f);
-					cloneRotMatrix = RotateY(cloneRotMatrix, cloneTransform.rotation.y * M_PI_F / 180.0f);
-					cloneRotMatrix = RotateX(cloneRotMatrix, cloneTransform.rotation.x * M_PI_F / 180.0f);
-					point3 = Matrix33MulFloat3(cloneRotMatrix, point3);
-				}
+		if (objectIdForVolumetrics == primitive->object.objectId)
+		{
+			*closestObjectId = primitive->object.objectId;
+			return distTemp;
+		}
+		if (primitive->object.usedForVolumetric) continue;
 
-				// Apply per-clone scale
-				float minCloneScale = 1.0f;
-				if (cloneTransform.scale.x > 1e-10f && cloneTransform.scale.y > 1e-10f
-						&& cloneTransform.scale.z > 1e-10f)
-				{
-					point3.x /= cloneTransform.scale.x;
-					point3.y /= cloneTransform.scale.y;
-					point3.z /= cloneTransform.scale.z;
-					minCloneScale = fmin(cloneTransform.scale.x, fmin(cloneTransform.scale.y, cloneTransform.scale.z));
-				}
+		// First member in group: set distance directly
+		if (groupDist[gSlot] >= 1e19f)
+		{
+			groupDist[gSlot] = distTemp;
+			groupClosest[gSlot] = primitive->object.objectId;
+		}
+		else
+		{
+			ApplyBooleanOpCl(primitive->booleanOperator, &groupDist[gSlot], distTemp,
+				detailSize, normalCalculationMode, &groupClosest[gSlot],
+				primitive->object.objectId, primitive->object.smoothDeCombineEnable,
+				primitive->object.smoothDeCombineDistance);
+		}
+	}
 
-				float dTemp = 0.0f;
+	// Combine group results into scene
+	for (int g = 0; g < numGroups; g++)
+	{
+		if (!groupActive[g] || groupDist[g] >= 1e19f) continue;
+		ApplyBooleanOpCl(groupBoolOps[g], &dist, groupDist[g],
+			detailSize, normalCalculationMode, &closestObject,
+			groupClosest[g], true, groupSmoothR[g]);
+	}
 
-				switch (primitive->object.objectType)
-				{
-#ifdef USE_PRIMITIVE_PLANE
-					case objPlane:
-					{
-						dTemp = PrimitivePlane(primitive, point3);
-						break;
-					}
-#endif
+	// Second pass: evaluate ungrouped primitives (flat chain, backward compatible)
+	for (int i = 0; i < numberOfPrimitives; i++)
+	{
+		__global sPrimitiveCl *primitive = &renderData->primitives[i];
+		if (!primitive->object.enable) continue;
+		if (!primitive->object.groupEnabled) continue;
+		if (primitive->object.groupId > 0) continue;
 
-#ifdef USE_PRIMITIVE_BOX
-					case objBox:
-					{
-						dTemp = PrimitiveBox(primitive, point3);
-						break;
-					}
-#endif
+		float distTemp = EvaluatePrimitiveDistCl(renderData, primitive, point2, dist);
 
-#ifdef USE_PRIMITIVE_SPHERE
-					case objSphere:
-					{
-						dTemp = PrimitiveSphere(primitive, point3);
-						break;
-					}
-#endif
-
-#ifdef USE_PRIMITIVE_RECTANGLE
-					case objRectangle:
-					{
-						dTemp = PrimitiveRectangle(primitive, point3);
-						break;
-					}
-#endif
-
-#ifdef USE_PRIMITIVE_CYLINDER
-					case objCylinder:
-					{
-						dTemp = PrimitiveCylinder(primitive, point3);
-						break;
-					}
-#endif
-
-#ifdef USE_PRIMITIVE_CIRCLE
-					case objCircle:
-					{
-						dTemp = PrimitiveCircle(primitive, point3);
-						break;
-					}
-#endif
-
-#ifdef USE_PRIMITIVE_CONE
-					case objCone:
-					{
-						dTemp = PrimitiveCone(primitive, point3);
-						break;
-					}
-#endif
-
-#ifdef USE_PRIMITIVE_WATER
-					case objWater:
-					{
-						dTemp = PrimitiveWater(primitive, point3, dist);
-						break;
-					}
-#endif
-
-#ifdef USE_PRIMITIVE_TORUS
-					case objTorus:
-					{
-						dTemp = PrimitiveTorus(primitive, point3);
-						break;
-					}
-#endif
-
-#ifdef USE_PRIMITIVE_PRISM
-					case objPrism:
-					{
-						dTemp = PrimitivePrism(primitive, point3);
-						break;
-					}
-#endif
-
-#ifdef USE_PRIMITIVE_ELLIPSOID
-					case objEllipsoid:
-					{
-						dTemp = PrimitiveEllipsoid(primitive, point3);
-						break;
-					}
-#endif
-
-#ifdef USE_PRIMITIVE_CAPSULE
-					case objCapsule:
-					{
-						dTemp = PrimitiveCapsule(primitive, point3);
-						break;
-					}
-#endif
-
-#ifdef USE_PRIMITIVE_HEXPRISM
-					case objHexPrism:
-					{
-						dTemp = PrimitiveHexPrism(primitive, point3);
-						break;
-					}
-#endif
-
-#ifdef USE_PRIMITIVE_LAVAPLANE
-					case objLavaPlane:
-					{
-						dTemp = PrimitiveLavaPlane(primitive, point3);
-						break;
-					}
-#endif
-
-#ifdef USE_PRIMITIVE_OCTAHEDRON
-					case objOctahedron:
-					{
-						dTemp = PrimitiveOctahedron(primitive, point3);
-						break;
-					}
-#endif
-
-#ifdef USE_PRIMITIVE_PYRAMID
-					case objPyramid:
-					{
-						dTemp = PrimitivePyramid(primitive, point3);
-						break;
-					}
-#endif
-
-#ifdef USE_PRIMITIVE_TERRAINPLANE
-					case objTerrainPlane:
-					{
-						dTemp = PrimitiveTerrainPlane(primitive, point3);
-						break;
-					}
-#endif
-
-					default: break;
-				}
-
-				dTemp *= GetPrimitiveMinScale(primitive);
-				dTemp *= minCloneScale;
-				if (dTemp < distTemp)
-					distTemp = dTemp;
-			}
-
-			if (objectIdForVolumetrics == primitive->object.objectId)
-			{
-				return distTemp;
-			}
-			else
-			{
-				if (primitive->object.usedForVolumetric)
-					continue; // skip distance calculation if primitive is used for volumetric effects
-			}
+		if (objectIdForVolumetrics == primitive->object.objectId)
+		{
+			*closestObjectId = primitive->object.objectId;
+			return distTemp;
+		}
+		if (primitive->object.usedForVolumetric) continue;
 
 #ifdef USE_DISPLACEMENT_TEXTURE
-			distTemp = DisplacementMap(distTemp, point2, primitive->object.objectId, renderData, 1.0f);
+		distTemp = DisplacementMap(distTemp, point2, primitive->object.objectId, renderData, 1.0f);
 #endif
 
 #if defined(USE_PERLIN_NOISE) && defined(USE_PERLIN_NOISE_DISPLACEMENT)
-			distTemp = PerlinNoiseDisplacement(distTemp, point2, renderData, primitive->object.objectId);
-#endif // USE_PERLIN_NOISE
+		distTemp = PerlinNoiseDisplacement(distTemp, point2, renderData, primitive->object.objectId);
+#endif
 
-			switch (primitive->booleanOperator)
+		// Boolean target: if targeting a specific group, combine with that group
+		if (primitive->object.booleanTargetGroupId >= 0)
+		{
+			int targetSlot = -1;
+			for (int g = 0; g < numGroups; g++)
 			{
-				case clPrimBooleanOperatorOR:
+				if (groupIds[g] == primitive->object.booleanTargetGroupId)
 				{
-					if (distTemp < dist)
-					{
-						closestObject = primitive->object.objectId;
-					}
-
-					if (primitive->object.smoothDeCombineEnable)
-					{
-						dist = opSmoothUnion(distTemp, dist, primitive->object.smoothDeCombineDistance);
-					}
-					else
-					{
-						dist = min(distTemp, dist);
-					}
+					targetSlot = g;
 					break;
 				}
-				case clPrimBooleanOperatorAND:
+			}
+			if (targetSlot >= 0 && groupActive[targetSlot])
+			{
+				ApplyBooleanOpCl(primitive->booleanOperator, &groupDist[targetSlot], distTemp,
+					detailSize, normalCalculationMode, &groupClosest[targetSlot],
+					primitive->object.objectId, primitive->object.smoothDeCombineEnable,
+					primitive->object.smoothDeCombineDistance);
+				// Re-combine groups into scene
+				dist = fractalDistance;
+				closestObject = *closestObjectId;
+				for (int g = 0; g < numGroups; g++)
 				{
-					if (distTemp > dist)
-					{
-						closestObject = primitive->object.objectId;
-					}
-					dist = max(dist, distTemp);
-					break;
+					if (!groupActive[g] || groupDist[g] >= 1e19f) continue;
+					ApplyBooleanOpCl(groupBoolOps[g], &dist, groupDist[g],
+						detailSize, normalCalculationMode, &closestObject,
+						groupClosest[g], true, groupSmoothR[g]);
 				}
-				case clPrimBooleanOperatorSUB:
-				{
-					const float limit = 1.5f;
-					if (dist < detailSize) // if inside 1st
-					{
-						if (distTemp < detailSize * limit * 1.5f)
-						{
-							closestObject = primitive->object.objectId;
-						}
-
-						if (distTemp < detailSize * limit) // if inside 2nd
-						{
-							if (normalCalculationMode)
-							{
-								dist = max(detailSize * limit - distTemp, dist);
-							}
-							else
-							{
-								dist = detailSize * limit;
-							}
-						}
-						else // if outside of 2nd
-						{
-							dist = max(detailSize * limit - distTemp, dist);
-							if (dist < 0.0f) dist = 0.0f;
-						}
-					}
-					break;
-				}
-				case clPrimBooleanOperatorRevSUB:
-				{
-					int closestObjectTemp = closestObject;
-					closestObject = primitive->object.objectId;
-					const float limit = 1.5f;
-					if (distTemp < detailSize) // if inside 2nd
-					{
-						if (dist < detailSize * limit * 1.5f)
-						{
-							closestObject = closestObjectTemp;
-						}
-
-						if (dist < detailSize * limit) // if inside 1st
-						{
-							if (normalCalculationMode)
-							{
-								dist = max(detailSize * limit - dist, distTemp);
-							}
-							else
-							{
-								dist = detailSize * limit;
-							}
-						}
-						else // if outside of 1st
-						{
-							distTemp = max(detailSize * limit - dist, distTemp);
-							dist = distTemp;
-							if (dist < 0.0f) dist = 0.0f;
-						}
-					}
-					else
-					{
-						dist = distTemp;
-					}
-					break;
-				}
-				case clPrimBooleanOperatorSmoothOR:
-				{
-					float smoothR = primitive->object.smoothDeCombineDistance;
-					if (smoothR < 1e-10f) smoothR = 0.1f;
-					if (distTemp < dist)
-					{
-						closestObject = primitive->object.objectId;
-					}
-					dist = opSmoothUnion(distTemp, dist, smoothR);
-					break;
-				}
-				case clPrimBooleanOperatorSmoothAND:
-				{
-					float smoothR = primitive->object.smoothDeCombineDistance;
-					if (smoothR < 1e-10f) smoothR = 0.1f;
-					if (distTemp > dist)
-					{
-						closestObject = primitive->object.objectId;
-					}
-					dist = opSmoothIntersection(dist, distTemp, smoothR);
-					break;
-				}
-				case clPrimBooleanOperatorSmoothSUB:
-				{
-					float smoothR = primitive->object.smoothDeCombineDistance;
-					if (smoothR < 1e-10f) smoothR = 0.1f;
-					if (distTemp < detailSize)
-					{
-						closestObject = primitive->object.objectId;
-					}
-					dist = opSmoothSubtraction(distTemp, dist, smoothR);
-					break;
-				}
-			} // switch
+				continue;
+			}
 		}
+
+		ApplyBooleanOpCl(primitive->booleanOperator, &dist, distTemp,
+			detailSize, normalCalculationMode, &closestObject,
+			primitive->object.objectId, primitive->object.smoothDeCombineEnable,
+			primitive->object.smoothDeCombineDistance);
 	}
 
 	*closestObjectId = closestObject;

@@ -1166,7 +1166,33 @@
        </property>
       </widget>
      </item>
-     <item row="57" column="0" colspan="3">
+     <item row="57" column="0">
+      <widget class="QLabel" name="label_boolean_target_group_id">
+       <property name="text">
+        <string>Boolean target group:</string>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="57" column="2">
+      <widget class="MySpinBox" name="spinboxInt_boolean_target_group_id">
+       <property name="toolTip">
+        <string>-1 = global, 0+ = target specific group</string>
+       </property>
+       <property name="minimum">
+        <number>-1</number>
+       </property>
+       <property name="maximum">
+        <number>99</number>
+       </property>
+       <property name="value">
+        <number>-1</number>
+       </property>
+      </widget>
+     </item>
+     <item row="58" column="0" colspan="3">
       <widget class="QLabel" name="label_group_transformations">
        <property name="font">
         <font>

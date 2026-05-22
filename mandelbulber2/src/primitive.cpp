@@ -137,6 +137,9 @@ sPrimitiveBasic::sPrimitiveBasic(
 	instanceMasterId = par->Get<int>(fullName + "_instance_master_id");
 	instanceInheritTransform = par->Get<bool>(fullName + "_instance_inherit_transform");
 
+	// Load boolean target
+	booleanTargetGroupId = par->Get<int>(fullName + "_boolean_target_group_id");
+
 	// Load boolean edge modification
 	booleanEdgeChamfer = par->Get<double>(fullName + "_boolean_edge_chamfer");
 	booleanEdgeChamferQuality = par->Get<int>(fullName + "_boolean_edge_chamfer_quality");

@@ -331,6 +331,148 @@ cPrimitives::~cPrimitives()
 	// nothing to do
 }
 
+// Evaluate a single primitive's raw distance (including cloner instances)
+double cPrimitives::EvaluatePrimitiveDistance(
+	const std::shared_ptr<sPrimitiveBasic> &primitive, CVector3 point2, double currentDist) const
+{
+	sPrimitiveWater *water = dynamic_cast<sPrimitiveWater *>(primitive.get());
+	double distTemp;
+	if (water)
+		distTemp = water->PrimitiveDistanceWater(point2, currentDist);
+	else
+		distTemp = primitive->PrimitiveDistance(point2);
+
+	if (primitive->cloner.enabled && primitive->cloner.count > 1)
+	{
+		for (int ci = 1; ci < primitive->cloner.count; ci++)
+		{
+			CVector3 cloneRotation, cloneScale;
+			CVector3 cloneOffset = primitive->ApplyCloneTransform(ci, cloneRotation, cloneScale);
+			CVector3 pointClone = point2 - cloneOffset;
+
+			if (cloneRotation.Length() > 1e-10)
+			{
+				CRotationMatrix cloneRotMatrix;
+				cloneRotMatrix.SetRotation2(cloneRotation * M_PI / 180.0);
+				pointClone = cloneRotMatrix.RotateVector(pointClone);
+			}
+
+			double minCloneScale = 1.0;
+			if (cloneScale.x > 1e-10 && cloneScale.y > 1e-10 && cloneScale.z > 1e-10)
+			{
+				pointClone.x /= cloneScale.x;
+				pointClone.y /= cloneScale.y;
+				pointClone.z /= cloneScale.z;
+				minCloneScale = cloneScale.x;
+				if (cloneScale.y < minCloneScale) minCloneScale = cloneScale.y;
+				if (cloneScale.z < minCloneScale) minCloneScale = cloneScale.z;
+			}
+
+			double d;
+			if (water)
+				d = water->PrimitiveDistanceWater(pointClone, currentDist);
+			else
+				d = primitive->PrimitiveDistance(pointClone);
+			d *= minCloneScale;
+			if (d < distTemp) distTemp = d;
+		}
+	}
+	return distTemp;
+}
+
+// Apply boolean operator to combine distTemp into distance
+void cPrimitives::ApplyBooleanOp(int booleanOp, double &distance, double distTemp,
+	double detailSize, bool normalCalculationMode, int &closestObject, int objectId,
+	bool smoothEnable, double smoothDist) const
+{
+	using namespace fractal;
+	switch (booleanOp)
+	{
+		case primBooleanOperatorOR:
+		{
+			if (distTemp < distance) closestObject = objectId;
+			if (smoothEnable)
+				distance = opSmoothUnion(distance, distTemp, smoothDist);
+			else
+				distance = min(distance, distTemp);
+			break;
+		}
+		case primBooleanOperatorAND:
+		{
+			if (distTemp > distance) closestObject = objectId;
+			distance = max(distance, distTemp);
+			break;
+		}
+		case primBooleanOperatorSUB:
+		{
+			const double limit = 1.5;
+			if (distance < detailSize)
+			{
+				if (distTemp < detailSize * limit * 1.5) closestObject = objectId;
+				if (distTemp < detailSize * limit)
+				{
+					if (normalCalculationMode)
+						distance = max(detailSize * limit - distTemp, distance);
+					else
+						distance = detailSize * limit;
+				}
+				else
+				{
+					distance = max(detailSize * limit - distTemp, distance);
+					if (distance < 0) distance = 0;
+				}
+			}
+			break;
+		}
+		case primBooleanOperatorRevSUB:
+		{
+			int closestObjectTemp = closestObject;
+			closestObject = objectId;
+			const double limit = 1.5;
+			if (distTemp < detailSize)
+			{
+				if (distance < detailSize * limit * 1.5) closestObject = closestObjectTemp;
+				if (distance < detailSize * limit)
+				{
+					if (normalCalculationMode)
+						distance = max(detailSize * limit - distance, distTemp);
+					else
+						distance = detailSize * limit;
+				}
+				else
+				{
+					distTemp = max(detailSize * limit - distance, distTemp);
+					distance = distTemp;
+					if (distance < 0) distance = 0;
+				}
+			}
+			else
+			{
+				distance = distTemp;
+			}
+			break;
+		}
+		case primBooleanOperatorSmoothOR:
+		{
+			if (distTemp < distance) closestObject = objectId;
+			distance = opSmoothUnion(distance, distTemp, smoothDist);
+			break;
+		}
+		case primBooleanOperatorSmoothAND:
+		{
+			if (distTemp > distance) closestObject = objectId;
+			distance = opSmoothIntersection(distance, distTemp, smoothDist);
+			break;
+		}
+		case primBooleanOperatorSmoothSUB:
+		{
+			if (-distTemp > distance) closestObject = objectId;
+			distance = opSmoothSubtraction(distTemp, distance, smoothDist);
+			break;
+		}
+	}
+}
+
 double cPrimitives::TotalDistance(CVector3 point, double fractalDistance, double detailSize,
 	bool normalCalculationMode, int *closestObjectId, sRenderData *data,
 	int objectIdForVolumetrics) const
@@ -344,180 +486,139 @@ double cPrimitives::TotalDistance(CVector3 point, double fractalDistance, double
 		CVector3 point2 = point - allPrimitivesPosition;
 		point2 = mRotAllPrimitivesRotation.RotateVector(point2);
 
+		// Collect unique group IDs and sort primitives by priority
+		QMap<int, QVector<std::shared_ptr<sPrimitiveBasic>>> groups;
+		QVector<std::shared_ptr<sPrimitiveBasic>> ungrouped;
+
 		for (auto primitive : allPrimitives)
 		{
-			if (primitive->enable)
+			if (!primitive->enable) continue;
+			if (!primitive->groupEnabled) continue;
+
+			if (primitive->groupId > 0)
+				groups[primitive->groupId].append(primitive);
+			else
+				ungrouped.append(primitive);
+		}
+
+		// Sort each group by priority
+		auto sortByPriority = [](const std::shared_ptr<sPrimitiveBasic> &a,
+								  const std::shared_ptr<sPrimitiveBasic> &b) {
+			return a->groupPriority < b->groupPriority;
+		};
+
+		for (auto &group : groups)
+			std::sort(group.begin(), group.end(), sortByPriority);
+		std::sort(ungrouped.begin(), ungrouped.end(), sortByPriority);
+
+		// Evaluate each group to produce a single group distance
+		QMap<int, double> groupDistances;
+		QMap<int, int> groupClosestObjects;
+		int groupBoolOp = primBooleanOperatorOR;
+		double groupSmoothR = 0.1;
+
+		for (auto it = groups.begin(); it != groups.end(); ++it)
+		{
+			int gid = it.key();
+			const auto &members = it.value();
+			double gDist = 1e20;
+			int gClosest = -1;
+			bool firstInGroup = true;
+
+			for (const auto &prim : members)
 			{
-				sPrimitiveWater *water = dynamic_cast<sPrimitiveWater *>(primitive.get());
-				double distTemp;
-				if (water)
+				double distTemp = EvaluatePrimitiveDistance(prim, point2, gDist);
+
+				if (objectIdForVolumetrics == prim->objectId)
 				{
-					distTemp = water->PrimitiveDistanceWater(point2, distance);
-				}
-				else
-				{
-					distTemp = primitive->PrimitiveDistance(point2);
-				}
-
-				// Cloner: evaluate all clone instances and take minimum distance (union)
-				if (primitive->cloner.enabled && primitive->cloner.count > 1)
-				{
-					for (int ci = 1; ci < primitive->cloner.count; ci++)
-					{
-						CVector3 cloneRotation, cloneScale;
-						CVector3 cloneOffset = primitive->ApplyCloneTransform(ci, cloneRotation, cloneScale);
-						CVector3 pointClone = point2 - cloneOffset;
-
-						// Apply per-clone rotation
-						if (cloneRotation.Length() > 1e-10)
-						{
-							CRotationMatrix cloneRotMatrix;
-							cloneRotMatrix.SetRotation2(cloneRotation * M_PI / 180.0);
-							pointClone = cloneRotMatrix.RotateVector(pointClone);
-						}
-
-						// Apply per-clone scale and compute scale correction
-						double minCloneScale = 1.0;
-						if (cloneScale.x > 1e-10 && cloneScale.y > 1e-10 && cloneScale.z > 1e-10)
-						{
-							pointClone.x /= cloneScale.x;
-							pointClone.y /= cloneScale.y;
-							pointClone.z /= cloneScale.z;
-							minCloneScale = cloneScale.x;
-							if (cloneScale.y < minCloneScale) minCloneScale = cloneScale.y;
-							if (cloneScale.z < minCloneScale) minCloneScale = cloneScale.z;
-						}
-
-						double d;
-						if (water)
-						{
-							d = water->PrimitiveDistanceWater(pointClone, distance);
-						}
-						else
-						{
-							d = primitive->PrimitiveDistance(pointClone);
-						}
-						d *= minCloneScale;
-						if (d < distTemp)
-						{
-							distTemp = d;
-						}
-					}
-				}
-
-				if (objectIdForVolumetrics == primitive->objectId)
-				{
+					*closestObjectId = prim->objectId;
 					return distTemp;
 				}
+				if (prim->usedForVolumetric) continue;
+
+				distTemp = DisplacementMap(distTemp, point2, prim->objectId, data);
+				distTemp = PerlinNoiseDisplacement(distTemp, point2, data, prim->objectId);
+
+				if (firstInGroup)
+				{
+					gDist = distTemp;
+					gClosest = prim->objectId;
+					groupBoolOp = prim->groupBooleanOperator;
+					groupSmoothR = prim->groupSmoothRadius;
+					firstInGroup = false;
+				}
 				else
 				{
-					if (primitive->usedForVolumetric)
-						continue; // skip distance calculation if primitive is used for volumetric effects
+					ApplyBooleanOp(prim->booleanOperator, gDist, distTemp,
+						detailSize, normalCalculationMode, gClosest, prim->objectId,
+						prim->smoothDeCombineEnable, prim->smoothDeCombineDistance);
 				}
+			}
 
-				distTemp = DisplacementMap(distTemp, point2, primitive->objectId, data);
-				distTemp = PerlinNoiseDisplacement(distTemp, point2, data, primitive->objectId);
-
-				switch (primitive->booleanOperator)
-				{
-					case primBooleanOperatorOR:
-					{
-						if (distTemp < distance)
-						{
-							closestObject = primitive->objectId;
-						}
-						if (primitive->smoothDeCombineEnable)
-						{
-							distance = opSmoothUnion(distance, distTemp, primitive->smoothDeCombineDistance);
-						}
-						else
-						{
-							distance = min(distance, distTemp);
-						}
-						break;
-					}
-					case primBooleanOperatorAND:
-					{
-						if (distTemp > distance)
-						{
-							closestObject = primitive->objectId;
-						}
-						distance = max(distance, distTemp);
-						break;
-					}
-					case primBooleanOperatorSUB:
-					{
-						const double limit = 1.5;
-						if (distance < detailSize) // if inside 1st
-						{
-							if (distTemp < detailSize * limit * 1.5)
-							{
-								closestObject = primitive->objectId;
-							}
-
-							if (distTemp < detailSize * limit) // if inside 2nd
-							{
-								if (normalCalculationMode)
-								{
-									distance = max(detailSize * limit - distTemp, distance);
-								}
-								else
-								{
-									distance = detailSize * limit;
-								}
-							}
-							else // if outside of 2nd
-							{
-								distance = max(detailSize * limit - distTemp, distance);
-								if (distance < 0) distance = 0;
-							}
-						}
-						break;
-					}
-					case primBooleanOperatorRevSUB:
-					{
-						int closestObjectTemp = closestObject;
-						closestObject = primitive->objectId;
-						const double limit = 1.5;
-						if (distTemp < detailSize) // if inside 2nd
-						{
-							if (distance < detailSize * limit * 1.5)
-							{
-								closestObject = closestObjectTemp;
-							}
-
-							if (distance < detailSize * limit) // if inside 1st
-							{
-								if (normalCalculationMode)
-								{
-									distance = max(detailSize * limit - distance, distTemp);
-								}
-								else
-								{
-									distance = detailSize * limit;
-								}
-							}
-							else // if outside of 1st
-							{
-								distTemp = max(detailSize * limit - distance, distTemp);
-								distance = distTemp;
-								if (distance < 0) distance = 0;
-							}
-						}
-						else
-						{
-							distance = distTemp;
-						}
-						break;
-					}
-				} // switch
+			if (!firstInGroup)
+			{
+				groupDistances[gid] = gDist;
+				groupClosestObjects[gid] = gClosest;
 			}
 		}
 
-	} // if is any primitive
+		// Combine group results into scene distance
+		for (auto it = groupDistances.begin(); it != groupDistances.end(); ++it)
+		{
+			int gid = it.key();
+			double gDist = it.value();
+			int gClosest = groupClosestObjects[gid];
+			ApplyBooleanOp(groupBoolOp, distance, gDist,
+				detailSize, normalCalculationMode, closestObject, gClosest,
+				true, groupSmoothR);
+		}
+
+		// Evaluate ungrouped primitives (flat chain, backward compatible)
+		for (const auto &primitive : ungrouped)
+		{
+			double distTemp = EvaluatePrimitiveDistance(primitive, point2, distance);
+
+			if (objectIdForVolumetrics == primitive->objectId)
+			{
+				*closestObjectId = primitive->objectId;
+				return distTemp;
+			}
+			if (primitive->usedForVolumetric) continue;
+
+			distTemp = DisplacementMap(distTemp, point2, primitive->objectId, data);
+			distTemp = PerlinNoiseDisplacement(distTemp, point2, data, primitive->objectId);
+
+			// Boolean target: if targeting a specific group, combine with that group's result
+			if (primitive->booleanTargetGroupId >= 0
+				&& groupDistances.contains(primitive->booleanTargetGroupId))
+			{
+				double targetDist = groupDistances[primitive->booleanTargetGroupId];
+				int targetClosest = groupClosestObjects[primitive->booleanTargetGroupId];
+				ApplyBooleanOp(primitive->booleanOperator, targetDist, distTemp,
+					detailSize, normalCalculationMode, targetClosest, primitive->objectId,
+					primitive->smoothDeCombineEnable, primitive->smoothDeCombineDistance);
+				groupDistances[primitive->booleanTargetGroupId] = targetDist;
+				groupClosestObjects[primitive->booleanTargetGroupId] = targetClosest;
+				// Re-combine updated group into scene
+				distance = fractalDistance;
+				closestObject = *closestObjectId;
+				for (auto git = groupDistances.begin(); git != groupDistances.end(); ++git)
+				{
+					ApplyBooleanOp(groupBoolOp, distance, git.value(),
+						detailSize, normalCalculationMode, closestObject,
+						groupClosestObjects[git.key()], true, groupSmoothR);
+				}
+			}
+			else
+			{
+				ApplyBooleanOp(primitive->booleanOperator, distance, distTemp,
+					detailSize, normalCalculationMode, closestObject, primitive->objectId,
+					primitive->smoothDeCombineEnable, primitive->smoothDeCombineDistance);
+			}
+		}
+	}
 
 	*closestObjectId = closestObject;
-
 	return distance;
 }
 

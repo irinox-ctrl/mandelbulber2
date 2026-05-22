@@ -71,6 +71,13 @@ public:
 	double TotalDistance(CVector3 point, double fractalDistance, double detailSize,
 		bool normalCalculationMode, int *closestObjectId, sRenderData *data,
 		int objectIdForVolumetrics) const;
+
+	double EvaluatePrimitiveDistance(const std::shared_ptr<sPrimitiveBasic> &primitive,
+		CVector3 point2, double currentDist) const;
+	void ApplyBooleanOp(int booleanOp, double &distance, double distTemp,
+		double detailSize, bool normalCalculationMode, int &closestObject, int objectId,
+		bool smoothEnable, double smoothDist) const;
+
 	const std::shared_ptr<sPrimitiveBasic> GetPrimitive(const int index) const
 	{
 		return allPrimitives[index];

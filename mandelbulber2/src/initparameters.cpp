@@ -2322,6 +2322,9 @@ void InitPrimitiveParams(const sPrimitiveItem &primitive, std::shared_ptr<cParam
 	par->addParam(QString(primitiveName) + "_instance_master_id", -1, morphNone, paramStandard);
 	par->addParam(QString(primitiveName) + "_instance_inherit_transform", true, morphNone, paramStandard);
 
+	// Boolean target group
+	par->addParam(QString(primitiveName) + "_boolean_target_group_id", -1, -1, 99, morphLinear, paramStandard);
+
 	// Boolean Edge Modification
 	par->addParam(QString(primitiveName) + "_boolean_edge_chamfer", 0.0, 0.0, 10.0, morphLinear, paramStandard);
 	par->addParam(QString(primitiveName) + "_boolean_edge_chamfer_quality", 4, 2, 16, morphLinear, paramStandard);
@@ -3186,6 +3189,7 @@ void DeletePrimitiveParams(fractal::enumObjectType objectType, const QString pri
 	par->DeleteParameter(QString(primitiveName) + "_enabled");
 	par->DeleteParameter(QString(primitiveName) + "_material_id");
 	par->DeleteParameter(QString(primitiveName) + "_boolean_operator");
+	par->DeleteParameter(QString(primitiveName) + "_boolean_target_group_id");
 	par->DeleteParameter(QString(primitiveName) + "_calculation_order");
 	par->DeleteParameter(QString(primitiveName) + "_smooth_de_combine_enable");
 	par->DeleteParameter(QString(primitiveName) + "_smooth_de_combine_distance");

@@ -971,6 +971,14 @@ QString cOpenClDynamicData::BuildPrimitivesData(const cPrimitives *primitivesCon
 		primitiveCl.object.mirrorY = primitive->mirrorY;
 		primitiveCl.object.mirrorZ = primitive->mirrorZ;
 
+		// Groups & Boolean targeting
+		primitiveCl.object.groupId = primitive->groupId;
+		primitiveCl.object.groupEnabled = primitive->groupEnabled;
+		primitiveCl.object.groupBooleanOperator = primitive->groupBooleanOperator;
+		primitiveCl.object.groupSmoothRadius = primitive->groupSmoothRadius;
+		primitiveCl.object.groupPriority = primitive->groupPriority;
+		primitiveCl.object.booleanTargetGroupId = primitive->booleanTargetGroupId;
+
 		// Deformers
 		primitiveCl.object.deformBendEnable = primitive->deformBendEnable;
 		primitiveCl.object.deformBendAngle = primitive->deformBendAngle;

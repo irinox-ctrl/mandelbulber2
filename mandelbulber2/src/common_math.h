@@ -87,6 +87,18 @@ inline double opSmoothUnion(double d1, double d2, double k)
 	return dmix(d2, d1, h) - k * h * (1.0 - h);
 }
 
+inline double opSmoothIntersection(double d1, double d2, double k)
+{
+	double h = clamp(0.5 - 0.5 * (d2 - d1) / k, 0.0, 1.0);
+	return dmix(d2, d1, h) + k * h * (1.0 - h);
+}
+
+inline double opSmoothSubtraction(double d1, double d2, double k)
+{
+	double h = clamp(0.5 - 0.5 * (d2 + d1) / k, 0.0, 1.0);
+	return dmix(d2, -d1, h) + k * h * (1.0 - h);
+}
+
 // polynomial smooth min;
 // reference: http://www.iquilezles.org/www/articles/smin/smin.htm
 inline double dsmin(double a, double b, double k = 1)

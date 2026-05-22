@@ -150,6 +150,9 @@ struct sPrimitiveBasic : cObjectData
 	int instanceMasterId = -1;                    // ID of master primitive (-1 = none)
 	bool instanceInheritTransform = true;         // inherit position/rotation/scale from master
 
+	// Boolean target
+	int booleanTargetGroupId = -1;                // -1 = global accumulator, >=0 = target specific group
+
 	// Boolean Edge Modification
 	double booleanEdgeChamfer = 0.0;              // chamfer/bevel radius on boolean edges
 	int booleanEdgeChamferQuality = 4;            // quality/smoothness of chamfer (2-16)
