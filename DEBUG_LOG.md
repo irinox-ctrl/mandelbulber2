@@ -25,7 +25,10 @@
 | 100 Symmetry/Kaleidoscope (V1-V100) | ✅ Klaar | CPU + GPU + UI + Iteratie |
 | 300 Abox DE (V1-V300) | ✅ Klaar | CPU + GPU + UI + Iteratie |
 
-**Totaal transformaties: 1000** (50 inv + 50 clip + 100 JL + 100 PK + 200 MB + 100 WD + 100 SK + 300 AB)
+| 100 Noise & Procedural DE (V1-V100) | ✅ Klaar | CPU + GPU + UI + Iteratie |
+| 100 Orbit Trap DE (V1-V100) | ✅ Klaar | CPU + GPU + UI + Iteratie |
+
+**Totaal transformaties: 1200** (50 inv + 50 clip + 100 JL + 100 PK + 200 MB + 100 WD + 100 SK + 300 AB + 100 Noise + 100 Orbit)
 
 ---
 
@@ -228,4 +231,4 @@ Globale "Iter Range" (iterationStart/iterationStop) is de master gate — per-se
 
 ---
 
-*Laatst bijgewerkt: 2026-05-20 — Sessie 8*
+*Laatst bijgewerkt: 2026-05-20 — Sessie 9 (v7.10)*
