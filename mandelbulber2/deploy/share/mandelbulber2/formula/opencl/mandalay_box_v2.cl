@@ -94,10 +94,14 @@ REAL4 MandalayBoxV2Iteration(REAL4 z, __global const sFractalCl *fractal, sExten
 	REAL4 g = fractal->transformCommon.offsetA000;
 	if (fractal->mandalay.variableClipEnabled)
 	{
-		REAL adaptive = 1.0f + fractal->mandalay.foVary * (aux->r - 1.0f);
+		REAL orbitDist = aux->r - 1.0f;
+		REAL adaptive = 1.0f + fractal->mandalay.foVary * orbitDist;
 		fo *= adaptive;
-		REAL gAdaptive = 1.0f + fractal->mandalay.gVary * (aux->r - 1.0f);
-		g *= gAdaptive;
+		// g uses additive variation (g defaults to 0, so multiplicative would be 0*x=0)
+		REAL gAdd = fractal->mandalay.gVary * orbitDist;
+		g.x += gAdd;
+		g.y += gAdd;
+		g.z += gAdd;
 	}
 
 	// === Mandalay 3D clip (with optional multi-sequencing #2) ===

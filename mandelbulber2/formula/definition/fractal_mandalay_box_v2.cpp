@@ -100,10 +100,12 @@ void cFractalMandalayBoxV2::FormulaCode(CVector4 &z, const sFractal *fractal, sE
 	CVector4 g = fractal->transformCommon.offsetA000;
 	if (fractal->mandalay.variableClipEnabled)
 	{
-		double adaptive = 1.0 + fractal->mandalay.foVary * (aux.r - 1.0);
+		double orbitDist = aux.r - 1.0;
+		double adaptive = 1.0 + fractal->mandalay.foVary * orbitDist;
 		fo *= adaptive;
-		double gAdaptive = 1.0 + fractal->mandalay.gVary * (aux.r - 1.0);
-		g *= gAdaptive;
+		// g uses additive variation (g defaults to 0, so multiplicative would be 0*x=0)
+		double gAdd = fractal->mandalay.gVary * orbitDist;
+		g += CVector4(gAdd, gAdd, gAdd, 0.0);
 	}
 
 	// === Mandalay 3D clip (with optional multi-sequencing #2) ===
