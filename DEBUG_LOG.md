@@ -109,6 +109,28 @@
 
 ---
 
+### ISSUE-007: Windows MSVC build — DOFLogLevel enum clashes
+- **Datum:** Sessie 5
+- **Symptoom:** MSVC `error C2059: syntax error: 'constant'` op `dof_log.hpp` lijn 46; `error C2065: 'INFO': undeclared identifier` op `interface.cpp`
+- **Oorzaak:** Windows API headers (`wingdi.h`) definiëren `#define ERROR 0`. Onze `DOFLogLevel` enum gebruikte `ERROR`, `WARN`, `INFO`, `DEBUG`, `TRACE` als enum waarden. Na preprocessor macro expansie werd `ERROR = 1` → `0 = 1` → syntax error.
+- **Fix:** Enum waarden hernoemd naar `LvlError`, `LvlWarn`, `LvlInfo`, `LvlDebug`, `LvlTrace`. Toegevoegd `#undef ERROR` en `#undef DEBUG` guards.
+- **Getroffen bestanden:** `dof_log.hpp`, `dof_log.cpp`
+- **Status:** ✅ Opgelost
+- **Les:** **NOOIT** Windows API reserved woorden gebruiken als enum/variabele namen: `ERROR`, `DEBUG`, `NEAR`, `FAR`, `IN`, `OUT`, `OPTIONAL`, `CONST`, `TRUE`, `FALSE`, etc.
+
+---
+
+### ISSUE-008: Windows MSVC build — raw string literal parsing
+- **Datum:** Sessie 5
+- **Symptoom:** MSVC `error C2001: newline in constant` op `opencl_engine.cpp` lijn 107
+- **Oorzaak:** MSVC had moeite met de raw string literal `R"(#include\s+"([^"]+)")"` — de embedded aanhalingstekens en escape characters verwarren de parser in sommige MSVC versies.
+- **Fix:** Vervangen door standaard escaped `QString("#include\\s+\"([^\"]+)\"")`.
+- **Getroffen bestanden:** `opencl_engine.cpp`
+- **Status:** ✅ Opgelost
+- **Les:** **Vermijd raw string literals (`R"()"`) in cross-platform code** wanneer de inhoud aanhalingstekens bevat. Gebruik gewone escaped strings voor maximale compatibiliteit.
+
+---
+
 ## Bekende Beperkingen & Aandachtspunten
 
 ### Struct Alignment Regels (GPU/CPU)
@@ -169,4 +191,4 @@ Globale "Iter Range" (iterationStart/iterationStop) is de master gate — per-se
 
 ---
 
-*Laatst bijgewerkt: 2026-05-20 — Sessie 4*
+*Laatst bijgewerkt: 2026-05-22 — Sessie 5*
