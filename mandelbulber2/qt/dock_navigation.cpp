@@ -47,11 +47,20 @@
 #include "src/manipulations.h"
 #include "src/render_window.hpp"
 #include "src/system.hpp"
+#include "src/system_directories.hpp"
 #include "src/write_log.hpp"
 
 #include <QApplication>
 #include <QClipboard>
+#include <QDateTime>
+#include <QDir>
+#include <QFileDialog>
 #include <QGroupBox>
+#include <QInputDialog>
+#include <QJsonDocument>
+#include <QJsonArray>
+#include <QJsonObject>
+#include <QListWidget>
 #include <QPropertyAnimation>
 
 cDockNavigation::cDockNavigation(QWidget *parent) : QWidget(parent), ui(new Ui::cDockNavigation)
@@ -64,6 +73,7 @@ cDockNavigation::cDockNavigation(QWidget *parent) : QWidget(parent), ui(new Ui::
 	SetIconSizes();
 	SetupCollapsibleSections();
 	SetupQuickPresets();
+	SetupBookmarks();
 }
 
 cDockNavigation::~cDockNavigation()
@@ -462,4 +472,229 @@ void cDockNavigation::slotToggleSection()
 		QWidget *w = qobject_cast<QWidget *>(child);
 		if (w) w->setVisible(show);
 	}
+}
+
+// --- 3x3lion Camera Bookmark System ---
+
+void cDockNavigation::SetupBookmarks()
+{
+	bookmarkListWidget = ui->listWidget_bookmarks;
+
+	connect(ui->pushButton_bookmark_save, &QPushButton::clicked, this,
+		&cDockNavigation::slotBookmarkSave);
+	connect(ui->pushButton_bookmark_recall, &QPushButton::clicked, this,
+		&cDockNavigation::slotBookmarkRecall);
+	connect(ui->pushButton_bookmark_delete, &QPushButton::clicked, this,
+		&cDockNavigation::slotBookmarkDelete);
+	connect(ui->pushButton_bookmark_export, &QPushButton::clicked, this,
+		&cDockNavigation::slotBookmarkExport);
+	connect(ui->pushButton_bookmark_import, &QPushButton::clicked, this,
+		&cDockNavigation::slotBookmarkImport);
+
+	// Double-click to recall
+	connect(bookmarkListWidget, &QListWidget::itemDoubleClicked, this,
+		&cDockNavigation::slotBookmarkRecall);
+
+	LoadBookmarksFromFile();
+}
+
+QString cDockNavigation::BookmarksFilePath() const
+{
+	return systemDirectories.GetDataDirectoryHidden() + "camera_bookmarks.json";
+}
+
+void cDockNavigation::SaveBookmarksToFile()
+{
+	QJsonArray arr;
+	for (const sCameraBookmark &b : bookmarks)
+	{
+		QJsonObject obj;
+		obj["name"] = b.name;
+		obj["cam_x"] = b.camera.x;
+		obj["cam_y"] = b.camera.y;
+		obj["cam_z"] = b.camera.z;
+		obj["tgt_x"] = b.target.x;
+		obj["tgt_y"] = b.target.y;
+		obj["tgt_z"] = b.target.z;
+		obj["rot_x"] = b.rotation.x;
+		obj["rot_y"] = b.rotation.y;
+		obj["rot_z"] = b.rotation.z;
+		obj["distance"] = b.distance;
+		obj["timestamp"] = b.timestamp;
+		arr.append(obj);
+	}
+
+	QString path = BookmarksFilePath();
+	QDir().mkpath(QFileInfo(path).absolutePath());
+	QFile file(path);
+	if (file.open(QIODevice::WriteOnly))
+	{
+		file.write(QJsonDocument(arr).toJson());
+		file.close();
+	}
+}
+
+void cDockNavigation::LoadBookmarksFromFile()
+{
+	bookmarks.clear();
+	QString path = BookmarksFilePath();
+	QFile file(path);
+	if (!file.exists()) return;
+	if (!file.open(QIODevice::ReadOnly)) return;
+
+	QJsonDocument doc = QJsonDocument::fromJson(file.readAll());
+	file.close();
+	if (!doc.isArray()) return;
+
+	QJsonArray arr = doc.array();
+	for (const QJsonValue &val : arr)
+	{
+		QJsonObject obj = val.toObject();
+		sCameraBookmark b;
+		b.name = obj["name"].toString();
+		b.camera = CVector3(obj["cam_x"].toDouble(), obj["cam_y"].toDouble(), obj["cam_z"].toDouble());
+		b.target = CVector3(obj["tgt_x"].toDouble(), obj["tgt_y"].toDouble(), obj["tgt_z"].toDouble());
+		b.rotation =
+			CVector3(obj["rot_x"].toDouble(), obj["rot_y"].toDouble(), obj["rot_z"].toDouble());
+		b.distance = obj["distance"].toDouble();
+		b.timestamp = obj["timestamp"].toString();
+		bookmarks.append(b);
+	}
+
+	RefreshBookmarkList();
+}
+
+void cDockNavigation::RefreshBookmarkList()
+{
+	if (!bookmarkListWidget) return;
+	bookmarkListWidget->clear();
+	for (int i = 0; i < bookmarks.size(); i++)
+	{
+		const sCameraBookmark &b = bookmarks[i];
+		QString display =
+			QString("%1 — d:%2").arg(b.name).arg(b.distance, 0, 'g', 4);
+		bookmarkListWidget->addItem(display);
+	}
+}
+
+void cDockNavigation::slotBookmarkSave()
+{
+	QWidget *dock = const_cast<cDockNavigation *>(this);
+	SynchronizeInterfaceWindow(dock, params, qInterface::read);
+
+	CVector3 cam = params->Get<CVector3>("camera");
+	CVector3 tgt = params->Get<CVector3>("target");
+	CVector3 rot = params->Get<CVector3>("camera_rotation");
+	double dist = params->Get<double>("camera_distance_to_target");
+
+	QString defaultName = QString("BM-%1").arg(bookmarks.size() + 1);
+	QString name = QInputDialog::getText(this, "Save Bookmark", "Bookmark name:", QLineEdit::Normal,
+		defaultName);
+	if (name.isEmpty()) return;
+
+	sCameraBookmark b;
+	b.name = name;
+	b.camera = cam;
+	b.target = tgt;
+	b.rotation = rot;
+	b.distance = dist;
+	b.timestamp = QDateTime::currentDateTime().toString(Qt::ISODate);
+
+	bookmarks.append(b);
+	SaveBookmarksToFile();
+	RefreshBookmarkList();
+}
+
+void cDockNavigation::slotBookmarkRecall()
+{
+	int row = bookmarkListWidget ? bookmarkListWidget->currentRow() : -1;
+	if (row < 0 || row >= bookmarks.size()) return;
+
+	const sCameraBookmark &b = bookmarks[row];
+
+	QWidget *dock = const_cast<cDockNavigation *>(this);
+	SynchronizeInterfaceWindow(dock, params, qInterface::read);
+
+	params->Set("camera", b.camera);
+	params->Set("target", b.target);
+	params->Set("camera_rotation", b.rotation);
+	params->Set("camera_distance_to_target", b.distance);
+
+	SynchronizeInterfaceWindow(dock, params, qInterface::write);
+	emit signalRender();
+}
+
+void cDockNavigation::slotBookmarkDelete()
+{
+	int row = bookmarkListWidget ? bookmarkListWidget->currentRow() : -1;
+	if (row < 0 || row >= bookmarks.size()) return;
+
+	bookmarks.removeAt(row);
+	SaveBookmarksToFile();
+	RefreshBookmarkList();
+}
+
+void cDockNavigation::slotBookmarkExport()
+{
+	QString path = QFileDialog::getSaveFileName(
+		this, "Export Bookmarks", "3x3lion_bookmarks.json", "JSON Files (*.json)");
+	if (path.isEmpty()) return;
+
+	QJsonArray arr;
+	for (const sCameraBookmark &b : bookmarks)
+	{
+		QJsonObject obj;
+		obj["name"] = b.name;
+		obj["cam_x"] = b.camera.x;
+		obj["cam_y"] = b.camera.y;
+		obj["cam_z"] = b.camera.z;
+		obj["tgt_x"] = b.target.x;
+		obj["tgt_y"] = b.target.y;
+		obj["tgt_z"] = b.target.z;
+		obj["rot_x"] = b.rotation.x;
+		obj["rot_y"] = b.rotation.y;
+		obj["rot_z"] = b.rotation.z;
+		obj["distance"] = b.distance;
+		obj["timestamp"] = b.timestamp;
+		arr.append(obj);
+	}
+
+	QFile file(path);
+	if (file.open(QIODevice::WriteOnly))
+	{
+		file.write(QJsonDocument(arr).toJson());
+		file.close();
+	}
+}
+
+void cDockNavigation::slotBookmarkImport()
+{
+	QString path = QFileDialog::getOpenFileName(
+		this, "Import Bookmarks", QString(), "JSON Files (*.json)");
+	if (path.isEmpty()) return;
+
+	QFile file(path);
+	if (!file.open(QIODevice::ReadOnly)) return;
+
+	QJsonDocument doc = QJsonDocument::fromJson(file.readAll());
+	file.close();
+	if (!doc.isArray()) return;
+
+	QJsonArray arr = doc.array();
+	for (const QJsonValue &val : arr)
+	{
+		QJsonObject obj = val.toObject();
+		sCameraBookmark b;
+		b.name = obj["name"].toString();
+		b.camera = CVector3(obj["cam_x"].toDouble(), obj["cam_y"].toDouble(), obj["cam_z"].toDouble());
+		b.target = CVector3(obj["tgt_x"].toDouble(), obj["tgt_y"].toDouble(), obj["tgt_z"].toDouble());
+		b.rotation =
+			CVector3(obj["rot_x"].toDouble(), obj["rot_y"].toDouble(), obj["rot_z"].toDouble());
+		b.distance = obj["distance"].toDouble();
+		b.timestamp = obj["timestamp"].toString();
+		bookmarks.append(b);
+	}
+
+	SaveBookmarksToFile();
+	RefreshBookmarkList();
 }

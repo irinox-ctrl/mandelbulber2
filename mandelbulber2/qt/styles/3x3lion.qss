@@ -1246,3 +1246,104 @@ QPushButton#pushButton_openNavigator:hover {
     color: #1e1e2e;
     border-style: solid;
 }
+
+/* -- Bookmarks Section -- */
+QGroupBox#groupBox_bookmarks {
+    background-color: #181825;
+    border: 1px solid #45475a;
+    border-radius: 8px;
+    margin-top: 16px;
+    padding: 14px 10px 10px 10px;
+}
+
+QGroupBox#groupBox_bookmarks::title {
+    color: #f9e2af;
+    background-color: #181825;
+    border-radius: 4px;
+    padding: 2px 10px;
+    font-weight: bold;
+}
+
+QListWidget#listWidget_bookmarks {
+    background-color: #11111b;
+    color: #cdd6f4;
+    border: 1px solid #313244;
+    border-radius: 6px;
+    font-size: 8pt;
+}
+
+QListWidget#listWidget_bookmarks::item {
+    padding: 3px 6px;
+    border-radius: 3px;
+}
+
+QListWidget#listWidget_bookmarks::item:selected {
+    background-color: #313244;
+    color: #f9e2af;
+}
+
+QListWidget#listWidget_bookmarks::item:hover {
+    background-color: #1e1e2e;
+}
+
+QPushButton#pushButton_bookmark_save {
+    background-color: #1e1e2e;
+    color: #a6e3a1;
+    border: 1px solid #a6e3a1;
+    border-radius: 3px;
+    padding: 2px 6px;
+    font-size: 7pt;
+    font-weight: bold;
+}
+
+QPushButton#pushButton_bookmark_save:hover {
+    background-color: #a6e3a1;
+    color: #1e1e2e;
+}
+
+QPushButton#pushButton_bookmark_recall {
+    background-color: #1e1e2e;
+    color: #89b4fa;
+    border: 1px solid #89b4fa;
+    border-radius: 3px;
+    padding: 2px 6px;
+    font-size: 7pt;
+    font-weight: bold;
+}
+
+QPushButton#pushButton_bookmark_recall:hover {
+    background-color: #89b4fa;
+    color: #1e1e2e;
+}
+
+QPushButton#pushButton_bookmark_delete {
+    background-color: #1e1e2e;
+    color: #f38ba8;
+    border: 1px solid #f38ba8;
+    border-radius: 3px;
+    padding: 2px 6px;
+    font-size: 7pt;
+    font-weight: bold;
+}
+
+QPushButton#pushButton_bookmark_delete:hover {
+    background-color: #f38ba8;
+    color: #1e1e2e;
+}
+
+QPushButton#pushButton_bookmark_export,
+QPushButton#pushButton_bookmark_import {
+    background-color: #11111b;
+    color: #a6adc8;
+    border: 1px solid #313244;
+    border-radius: 3px;
+    padding: 2px 6px;
+    font-size: 7pt;
+}
+
+QPushButton#pushButton_bookmark_export:hover,
+QPushButton#pushButton_bookmark_import:hover {
+    background-color: #313244;
+    color: #89b4fa;
+    border-color: #89b4fa;
+}

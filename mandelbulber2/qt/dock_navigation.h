@@ -38,10 +38,15 @@
 #include <memory>
 
 #include <QWidget>
+#include <QJsonArray>
+#include <QJsonObject>
+
+#include "src/algebra.hpp"
 
 class QLabel;
 class QGroupBox;
 class QToolButton;
+class QListWidget;
 
 // forward declarations
 class cAutomatedWidgets;
@@ -101,6 +106,13 @@ private slots:
 	void slotPasteTargetCoords();
 	void slotToggleSection();
 
+	// Camera bookmarks
+	void slotBookmarkSave();
+	void slotBookmarkRecall();
+	void slotBookmarkDelete();
+	void slotBookmarkExport();
+	void slotBookmarkImport();
+
 private:
 	void ConnectSignals() const;
 	void SetIconSizes();
@@ -108,6 +120,26 @@ private:
 	void SetupQuickPresets();
 	void SetCameraView(double cx, double cy, double cz, double tx, double ty, double tz,
 		double yaw, double pitch, double roll, double distance);
+
+	// Bookmark system
+	struct sCameraBookmark
+	{
+		QString name;
+		CVector3 camera;
+		CVector3 target;
+		CVector3 rotation;
+		double distance;
+		QString timestamp;
+	};
+
+	void SetupBookmarks();
+	void SaveBookmarksToFile();
+	void LoadBookmarksFromFile();
+	void RefreshBookmarkList();
+	QString BookmarksFilePath() const;
+
+	QList<sCameraBookmark> bookmarks;
+	QListWidget *bookmarkListWidget = nullptr;
 
 	Ui::cDockNavigation *ui;
 
