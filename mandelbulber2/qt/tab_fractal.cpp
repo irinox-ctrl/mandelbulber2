@@ -864,6 +864,28 @@ void cTabFractal::slotPressedButtonMutationReset()
 	setI("mutation_ab_iter_start", 0);
 	setI("mutation_ab_iter_stop", 10000);
 
+	// Noise & Procedural DE reset
+	setI("mutation_noise_type", 0);
+	setD("mutation_noise_factor", 1.0);
+	setD("mutation_noise_param_a", 1.0);
+	setD("mutation_noise_param_b", 1.0);
+	setD("mutation_noise_param_c", 1.0);
+	setD("mutation_noise_param_d", 1.0);
+	setD("mutation_noise_freq", 1.0);
+	setD("mutation_noise_amp", 0.5);
+	setI("mutation_noise_iter_start", 0);
+	setI("mutation_noise_iter_stop", 10000);
+
+	// Orbit Trap DE reset
+	setI("mutation_orbit_trap_type", 0);
+	setD("mutation_orbit_factor", 1.0);
+	setD("mutation_orbit_param_a", 1.0);
+	setD("mutation_orbit_param_b", 1.0);
+	setD("mutation_orbit_param_c", 1.0);
+	setD("mutation_orbit_param_d", 1.0);
+	setI("mutation_orbit_iter_start", 0);
+	setI("mutation_orbit_iter_stop", 10000);
+
 	// Write defaults back to UI widgets
 	SynchronizeInterface(params, qInterface::write);
 }

@@ -330,6 +330,17 @@ typedef struct
 	cl_float abParamA, abParamB, abParamC, abParamD;
 	cl_float abParamE, abParamF, abParamG, abParamH;
 	cl_int abIterStart, abIterStop;
+	// v7.10 — Noise & Procedural DE system (100 types)
+	cl_int noiseType;
+	cl_float noiseFactor;
+	cl_float noiseParamA, noiseParamB, noiseParamC, noiseParamD;
+	cl_float noiseFreq, noiseAmp;
+	cl_int noiseIterStart, noiseIterStop;
+	// v7.10 — Orbit Trap DE system (100 types)
+	cl_int orbitTrapType;
+	cl_float orbitFactor;
+	cl_float orbitParamA, orbitParamB, orbitParamC, orbitParamD;
+	cl_int orbitIterStart, orbitIterStop;
 	// Pre-computed rotation matrices
 	matrix33 preRotMatrix;
 	matrix33 postRotMatrix;

@@ -507,6 +507,19 @@ struct sFormulaMutationParams
 	double abParamE, abParamF, abParamG, abParamH;
 	int abIterStart, abIterStop;
 
+	// v7.10 — Noise & Procedural DE system (100 types)
+	int noiseType;
+	double noiseFactor;
+	double noiseParamA, noiseParamB, noiseParamC, noiseParamD;
+	double noiseFreq, noiseAmp;
+	int noiseIterStart, noiseIterStop;
+
+	// v7.10 — Orbit Trap DE system (100 types)
+	int orbitTrapType;
+	double orbitFactor;
+	double orbitParamA, orbitParamB, orbitParamC, orbitParamD;
+	int orbitIterStart, orbitIterStop;
+
 	// Pre-computed rotation matrices (filled in constructor)
 	CRotationMatrix preRotMatrix;
 	CRotationMatrix postRotMatrix;

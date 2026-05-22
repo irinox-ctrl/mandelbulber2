@@ -440,6 +440,28 @@ void InitParams(std::shared_ptr<cParameterContainer> par)
 		par->addParam("mutation_ab_iter_start", i, 0, 0, 10000, morphAkima, paramStandard);
 		par->addParam("mutation_ab_iter_stop", i, 10000, 0, 10000, morphAkima, paramStandard);
 
+		// v7.10 — Noise & Procedural DE system (100 types)
+		par->addParam("mutation_noise_type", i, 0, 0, 100, morphAkima, paramStandard);
+		par->addParam("mutation_noise_factor", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_noise_param_a", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_noise_param_b", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_noise_param_c", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_noise_param_d", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_noise_freq", i, 1.0, 0.001, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_noise_amp", i, 0.5, -10.0, 10.0, morphAkima, paramStandard);
+		par->addParam("mutation_noise_iter_start", i, 0, 0, 10000, morphAkima, paramStandard);
+		par->addParam("mutation_noise_iter_stop", i, 10000, 0, 10000, morphAkima, paramStandard);
+
+		// v7.10 — Orbit Trap DE system (100 types)
+		par->addParam("mutation_orbit_trap_type", i, 0, 0, 100, morphAkima, paramStandard);
+		par->addParam("mutation_orbit_factor", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_orbit_param_a", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_orbit_param_b", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_orbit_param_c", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_orbit_param_d", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_orbit_iter_start", i, 0, 0, 10000, morphAkima, paramStandard);
+		par->addParam("mutation_orbit_iter_stop", i, 10000, 0, 10000, morphAkima, paramStandard);
+
 		par->addParam("julia_mode", i, false, morphLinear, paramStandard);
 		par->addParam("julia_c", i, CVector3(0.0, 0.0, 0.0), morphAkima, paramStandard);
 		par->addParam(

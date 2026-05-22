@@ -419,6 +419,28 @@ cNineFractals::cNineFractals(std::shared_ptr<const cFractalContainer> par,
 		mutationParams[i].abIterStart = generalPar->Get<int>("mutation_ab_iter_start", i + 1);
 		mutationParams[i].abIterStop = generalPar->Get<int>("mutation_ab_iter_stop", i + 1);
 
+		// v7.10 — Noise & Procedural DE system
+		mutationParams[i].noiseType = generalPar->Get<int>("mutation_noise_type", i + 1);
+		mutationParams[i].noiseFactor = generalPar->Get<double>("mutation_noise_factor", i + 1);
+		mutationParams[i].noiseParamA = generalPar->Get<double>("mutation_noise_param_a", i + 1);
+		mutationParams[i].noiseParamB = generalPar->Get<double>("mutation_noise_param_b", i + 1);
+		mutationParams[i].noiseParamC = generalPar->Get<double>("mutation_noise_param_c", i + 1);
+		mutationParams[i].noiseParamD = generalPar->Get<double>("mutation_noise_param_d", i + 1);
+		mutationParams[i].noiseFreq = generalPar->Get<double>("mutation_noise_freq", i + 1);
+		mutationParams[i].noiseAmp = generalPar->Get<double>("mutation_noise_amp", i + 1);
+		mutationParams[i].noiseIterStart = generalPar->Get<int>("mutation_noise_iter_start", i + 1);
+		mutationParams[i].noiseIterStop = generalPar->Get<int>("mutation_noise_iter_stop", i + 1);
+
+		// v7.10 — Orbit Trap DE system
+		mutationParams[i].orbitTrapType = generalPar->Get<int>("mutation_orbit_trap_type", i + 1);
+		mutationParams[i].orbitFactor = generalPar->Get<double>("mutation_orbit_factor", i + 1);
+		mutationParams[i].orbitParamA = generalPar->Get<double>("mutation_orbit_param_a", i + 1);
+		mutationParams[i].orbitParamB = generalPar->Get<double>("mutation_orbit_param_b", i + 1);
+		mutationParams[i].orbitParamC = generalPar->Get<double>("mutation_orbit_param_c", i + 1);
+		mutationParams[i].orbitParamD = generalPar->Get<double>("mutation_orbit_param_d", i + 1);
+		mutationParams[i].orbitIterStart = generalPar->Get<int>("mutation_orbit_iter_start", i + 1);
+		mutationParams[i].orbitIterStop = generalPar->Get<int>("mutation_orbit_iter_stop", i + 1);
+
 		// Smart defaults: PK/JK formulas get Möbius (Bilinear) math preset
 		fractal::enumFractalFormula f = fractals[i]->formula;
 		bool isPKJK = (f == fractal::pseudoKleinian || f == fractal::pseudoKleinian4d
@@ -1481,6 +1503,28 @@ void cNineFractals::CopyToOpenclData(sClFractalSequence *sequence) const
 		sequence->mutationParams[i].abParamH = mutationParams[i].abParamH;
 		sequence->mutationParams[i].abIterStart = mutationParams[i].abIterStart;
 		sequence->mutationParams[i].abIterStop = mutationParams[i].abIterStop;
+
+		// v7.10 — Noise & Procedural DE system
+		sequence->mutationParams[i].noiseType = mutationParams[i].noiseType;
+		sequence->mutationParams[i].noiseFactor = mutationParams[i].noiseFactor;
+		sequence->mutationParams[i].noiseParamA = mutationParams[i].noiseParamA;
+		sequence->mutationParams[i].noiseParamB = mutationParams[i].noiseParamB;
+		sequence->mutationParams[i].noiseParamC = mutationParams[i].noiseParamC;
+		sequence->mutationParams[i].noiseParamD = mutationParams[i].noiseParamD;
+		sequence->mutationParams[i].noiseFreq = mutationParams[i].noiseFreq;
+		sequence->mutationParams[i].noiseAmp = mutationParams[i].noiseAmp;
+		sequence->mutationParams[i].noiseIterStart = mutationParams[i].noiseIterStart;
+		sequence->mutationParams[i].noiseIterStop = mutationParams[i].noiseIterStop;
+
+		// v7.10 — Orbit Trap DE system
+		sequence->mutationParams[i].orbitTrapType = mutationParams[i].orbitTrapType;
+		sequence->mutationParams[i].orbitFactor = mutationParams[i].orbitFactor;
+		sequence->mutationParams[i].orbitParamA = mutationParams[i].orbitParamA;
+		sequence->mutationParams[i].orbitParamB = mutationParams[i].orbitParamB;
+		sequence->mutationParams[i].orbitParamC = mutationParams[i].orbitParamC;
+		sequence->mutationParams[i].orbitParamD = mutationParams[i].orbitParamD;
+		sequence->mutationParams[i].orbitIterStart = mutationParams[i].orbitIterStart;
+		sequence->mutationParams[i].orbitIterStop = mutationParams[i].orbitIterStop;
 
 		// Copy rotation matrices using matrix33 type
 		if (mutationParams[i].enabled)
