@@ -477,6 +477,13 @@ struct sFormulaMutationParams
 	double pkScale, pkPhase;
 	int pkIterStart, pkIterStop;
 
+	// v7.8 — Mandelbox Math system (200 types)
+	int mbMathType;
+	double mbFactor;
+	double mbParamA, mbParamB, mbParamC, mbParamD;
+	double mbParamE, mbParamF, mbParamG, mbParamH;
+	int mbIterStart, mbIterStop;
+
 	// Pre-computed rotation matrices (filled in constructor)
 	CRotationMatrix preRotMatrix;
 	CRotationMatrix postRotMatrix;

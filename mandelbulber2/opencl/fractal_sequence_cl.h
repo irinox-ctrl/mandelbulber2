@@ -304,6 +304,12 @@ typedef struct
 	cl_float pkFreq, pkAmp;
 	cl_float pkScale, pkPhase;
 	cl_int pkIterStart, pkIterStop;
+	// v7.8 — Mandelbox Math system (200 types)
+	cl_int mbMathType;
+	cl_float mbFactor;
+	cl_float mbParamA, mbParamB, mbParamC, mbParamD;
+	cl_float mbParamE, mbParamF, mbParamG, mbParamH;
+	cl_int mbIterStart, mbIterStop;
 	// Pre-computed rotation matrices
 	matrix33 preRotMatrix;
 	matrix33 postRotMatrix;

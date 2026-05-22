@@ -780,6 +780,48 @@ void cTabFractal::slotPressedButtonMutationReset()
 	setI("mutation_clip_iter_start", 0);
 	setI("mutation_clip_iter_stop", 10000);
 
+	// Jos Leys DE reset
+	setI("mutation_jos_de_type", 0);
+	setD("mutation_jos_factor", 1.0);
+	setD("mutation_jos_param_a", 1.0);
+	setD("mutation_jos_param_b", 1.0);
+	setD("mutation_jos_param_c", 1.0);
+	setD("mutation_jos_param_d", 1.0);
+	setD("mutation_jos_freq", 1.0);
+	setD("mutation_jos_amp", 0.5);
+	setD("mutation_jos_scale", 1.0);
+	setD("mutation_jos_phase", 0.0);
+	setI("mutation_jos_iter_start", 0);
+	setI("mutation_jos_iter_stop", 10000);
+
+	// Pseudokleinian DE reset
+	setI("mutation_pk_de_type", 0);
+	setD("mutation_pk_factor", 1.0);
+	setD("mutation_pk_param_a", 1.0);
+	setD("mutation_pk_param_b", 1.0);
+	setD("mutation_pk_param_c", 1.0);
+	setD("mutation_pk_param_d", 1.0);
+	setD("mutation_pk_freq", 1.0);
+	setD("mutation_pk_amp", 0.5);
+	setD("mutation_pk_scale", 1.0);
+	setD("mutation_pk_phase", 0.0);
+	setI("mutation_pk_iter_start", 0);
+	setI("mutation_pk_iter_stop", 10000);
+
+	// Mandelbox Math reset
+	setI("mutation_mb_math_type", 0);
+	setD("mutation_mb_factor", 1.0);
+	setD("mutation_mb_param_a", 1.0);
+	setD("mutation_mb_param_b", 1.0);
+	setD("mutation_mb_param_c", 1.0);
+	setD("mutation_mb_param_d", 1.0);
+	setD("mutation_mb_param_e", 1.0);
+	setD("mutation_mb_param_f", 1.0);
+	setD("mutation_mb_param_g", 1.0);
+	setD("mutation_mb_param_h", 0.0);
+	setI("mutation_mb_iter_start", 0);
+	setI("mutation_mb_iter_stop", 10000);
+
 	// Write defaults back to UI widgets
 	SynchronizeInterface(params, qInterface::write);
 }
