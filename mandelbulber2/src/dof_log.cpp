@@ -75,11 +75,11 @@ static QString ExtractFunctionName(const char *funcInfo)
 // ---------------------------------------------------------------------------
 static const char *LevelToString(DOFLogLevel level)
 {
-	if (level == DOFLogLevel::ERROR) return "ERR";
-	if (level == DOFLogLevel::WARN) return "WRN";
-	if (level == DOFLogLevel::INFO) return "INF";
-	if (level == DOFLogLevel::DEBUG) return "DBG";
-	if (level == DOFLogLevel::TRACE) return "TRC";
+	if (level == DOFLogLevel::LvlError) return "ERR";
+	if (level == DOFLogLevel::LvlWarn) return "WRN";
+	if (level == DOFLogLevel::LvlInfo) return "INF";
+	if (level == DOFLogLevel::LvlDebug) return "DBG";
+	if (level == DOFLogLevel::LvlTrace) return "TRC";
 	return "UNK";
 }
 

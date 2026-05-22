@@ -104,7 +104,7 @@ bool cOpenClEngine::Build(const QByteArray &programString, QString *errorText, b
 		// Include contents of all #include'd header files in hash so that
 		// header changes (e.g. struct field additions) invalidate the cache.
 		{
-			QRegularExpression includeRx(R"(#include\s+"([^"]+)")");
+			QRegularExpression includeRx(QString("#include\\s+\"([^\"]+)\""));
 			QRegularExpressionMatchIterator it = includeRx.globalMatch(QString(programString));
 			while (it.hasNext())
 			{

@@ -39,15 +39,23 @@
 
 #include <QString>
 
+// Undefine Windows API macros that clash with our enum names
+#ifdef ERROR
+#undef ERROR
+#endif
+#ifdef DEBUG
+#undef DEBUG
+#endif
+
 // Log severity levels for DOF auto-focus operations.
 // Mapped to existing Mandelbulber verbosity levels (1-3) for compatibility.
 enum class DOFLogLevel
 {
-	ERROR = 1, // Critical failures that prevent auto-focus from working
-	WARN = 1,	 // Warnings that may affect result quality
-	INFO = 2,	 // Major decisions (which path taken, key values)
-	DEBUG = 3, // Detailed diagnostics (sample counts, percentiles)
-	TRACE = 3	 // Per-pixel or per-probe values (very verbose)
+	LvlError = 1, // Critical failures that prevent auto-focus from working
+	LvlWarn = 1,  // Warnings that may affect result quality
+	LvlInfo = 2,  // Major decisions (which path taken, key values)
+	LvlDebug = 3, // Detailed diagnostics (sample counts, percentiles)
+	LvlTrace = 3  // Per-pixel or per-probe values (very verbose)
 };
 
 // Core structured logging function.
@@ -64,7 +72,7 @@ void DOFLogFmt(
 // Macros — these are the public API.
 // Usage: LOG_INFO("Auto-focus started")
 //        LOG_DEBUG("z-buffer samples: " + QString::number(count))
-//        LOG_DOF_FMT(DOFLogLevel::DEBUG, "median = %.4f", median)
+//        LOG_DOF_FMT(DOFLogLevel::LvlDebug, "median = %.4f", median)
 // ---------------------------------------------------------------------------
 
 #define LOG_DOF(level, msg) DOFLog(level, __FILE__, __LINE__, Q_FUNC_INFO, msg)
@@ -72,10 +80,10 @@ void DOFLogFmt(
 #define LOG_DOF_FMT(level, fmt, ...) \
 	DOFLogFmt(level, __FILE__, __LINE__, Q_FUNC_INFO, fmt, __VA_ARGS__)
 
-#define LOG_ERROR(msg) LOG_DOF(DOFLogLevel::ERROR, msg)
-#define LOG_WARN(msg) LOG_DOF(DOFLogLevel::WARN, msg)
-#define LOG_INFO(msg) LOG_DOF(DOFLogLevel::INFO, msg)
-#define LOG_DEBUG(msg) LOG_DOF(DOFLogLevel::DEBUG, msg)
-#define LOG_TRACE(msg) LOG_DOF(DOFLogLevel::TRACE, msg)
+#define LOG_ERROR(msg) LOG_DOF(DOFLogLevel::LvlError, msg)
+#define LOG_WARN(msg) LOG_DOF(DOFLogLevel::LvlWarn, msg)
+#define LOG_INFO(msg) LOG_DOF(DOFLogLevel::LvlInfo, msg)
+#define LOG_DEBUG(msg) LOG_DOF(DOFLogLevel::LvlDebug, msg)
+#define LOG_TRACE(msg) LOG_DOF(DOFLogLevel::LvlTrace, msg)
 
 #endif /* MANDELBULBER2_SRC_DOF_LOG_HPP_ */
