@@ -644,9 +644,7 @@ void cTabFractal::slotPressedButtonResetFormula() const
 void cTabFractal::slotPressedButtonMutationReset()
 {
 	int idx = tabIndex + 1;
-	// Reset all mutation params to defaults for this slot
-	params->Set("mutation_enabled_" + QString::number(idx), false);
-	ui->groupCheck_mutation_enabled->setChecked(false);
+	// Reset all mutation params to defaults (keep enabled state unchanged)
 
 	auto setD = [&](const QString &name, double val) {
 		params->Set(name + "_" + QString::number(idx), val);
