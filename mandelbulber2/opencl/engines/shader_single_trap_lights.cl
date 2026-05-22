@@ -32,7 +32,7 @@
  * Single Trap Lights — OpenCL shader
  */
 
-float SingleTrapLightDistanceCl(float3 point, __global const sSingleTrapLightLayerCl *layer, float animSize)
+float SingleTrapLightDistanceCl(float3 point, __constant sSingleTrapLightLayerCl *layer, float animSize)
 {
 	float3 delta = point - layer->position.xyz;
 	delta = Matrix33MulFloat3(layer->mRotRotation, delta);
@@ -284,7 +284,7 @@ float3 SingleTrapLightsShader(__constant sClInConstants *consts, sShaderInputDat
 	for (int j = 0; j < consts->params.singleTrapLights.activeLayerCount; j++)
 	{
 		if (soloL > 0 && soloL != j + 1) continue;
-		__global const sSingleTrapLightLayerCl *lj = &consts->params.singleTrapLights.layers[j];
+		__constant sSingleTrapLightLayerCl *lj = &consts->params.singleTrapLights.layers[j];
 		if (lj->enabled != 0 && lj->coloringMode == 2)
 		{
 			needOrbitColor = true;
@@ -358,7 +358,7 @@ float3 SingleTrapLightsShader(__constant sClInConstants *consts, sShaderInputDat
 
 	for (int i = 0; i < consts->params.singleTrapLights.activeLayerCount; i++)
 	{
-		__global const sSingleTrapLightLayerCl *layer = &consts->params.singleTrapLights.layers[i];
+		__constant sSingleTrapLightLayerCl *layer = &consts->params.singleTrapLights.layers[i];
 		if (!layer->enabled) continue;
 		if (soloL > 0 && soloL != i + 1) continue;
 

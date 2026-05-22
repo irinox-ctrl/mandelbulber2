@@ -213,7 +213,7 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 
 	// v7.5 — Julia start mode (z₀ override, GPU)
 	{
-		__global const sClFormulaMutationParams *jm0 = &consts->sequence.mutationParams[0];
+		__constant sClFormulaMutationParams *jm0 = &consts->sequence.mutationParams[0];
 		if (jm0->enabled && jm0->juliaStart != 0)
 		{
 			if (jm0->juliaStart == 1) z = aux.const_c; // z₀ = c
@@ -271,7 +271,7 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 		if (consts->sequence.isHybrid)
 		{
 			int deFunc = consts->sequence.DEFunctionType[sequence];
-			__global const sClFormulaWeightParams *wp = &consts->sequence.weightParams[sequence];
+			__constant sClFormulaWeightParams *wp = &consts->sequence.weightParams[sequence];
 			int weightMode = wp->mode;
 
 			// Transform passthrough: always weight=1
@@ -504,7 +504,7 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 #endif
 		if (mutationActive)
 		{
-			__global const sClFormulaMutationParams *mut = &consts->sequence.mutationParams[sequence];
+			__constant sClFormulaMutationParams *mut = &consts->sequence.mutationParams[sequence];
 
 			if (mut->preAbsX) z.x = fabs(z.x);
 			if (mut->preAbsY) z.y = fabs(z.y);
@@ -1604,7 +1604,7 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 		// v7.5 — Julia pre-fold injection (GPU)
 		if (mutationActive && consts->sequence.mutationParams[sequence].juliaInjection != 0)
 		{
-			__global const sClFormulaMutationParams *jm = &consts->sequence.mutationParams[sequence];
+			__constant sClFormulaMutationParams *jm = &consts->sequence.mutationParams[sequence];
 			float4 juliaC = aux.const_c * jm->juliaCMul;
 			// C-transform
 			if (jm->juliaCTransform == 1) { // spherical
@@ -1745,7 +1745,7 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 			|| consts->sequence.mutationParams[sequence].juliaInjection == 3
 			|| consts->sequence.mutationParams[sequence].juliaInjection == 4))
 		{
-			__global const sClFormulaMutationParams *jm = &consts->sequence.mutationParams[sequence];
+			__constant sClFormulaMutationParams *jm = &consts->sequence.mutationParams[sequence];
 			float4 juliaC = aux.const_c * jm->juliaCMul;
 			if (jm->juliaCTransform == 1) {
 				float cLen = length(juliaC);
@@ -1762,7 +1762,7 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 		// -------------- Formula Mutation post-processing (GPU) ---------------
 		if (mutationActive)
 		{
-			__global const sClFormulaMutationParams *mut = &consts->sequence.mutationParams[sequence];
+			__constant sClFormulaMutationParams *mut = &consts->sequence.mutationParams[sequence];
 
 			// Fold injection (post or both)
 			if (mut->foldType != 0 && (mut->foldPosition == 1 || mut->foldPosition == 2))
@@ -2091,7 +2091,7 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 		// Apply weight blending in hybrid mode
 		if (consts->sequence.isHybrid && effectiveWeight < 1.0f)
 		{
-			__global const sClFormulaWeightParams *wp = &consts->sequence.weightParams[sequence];
+			__constant sClFormulaWeightParams *wp = &consts->sequence.weightParams[sequence];
 			bool isPKFormula = (consts->sequence.DEFunctionType[sequence] == pseudoKleinianDEFunction);
 			float blendCurve = wp->componentBlendCurve;
 			if (wp->separateComponents)

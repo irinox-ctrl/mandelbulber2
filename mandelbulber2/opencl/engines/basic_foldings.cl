@@ -32,7 +32,7 @@
  * Basic Foldings - Box fold and Spherical fold
  */
 
-REAL4 BoxFolding(REAL4 z, __global const sFractalFoldingsCl *foldings, sExtendedAuxCl *aux)
+REAL4 BoxFolding(REAL4 z, __constant sFractalFoldingsCl *foldings, sExtendedAuxCl *aux)
 {
 	if (z.x > foldings->boxLimit)
 	{
@@ -67,7 +67,7 @@ REAL4 BoxFolding(REAL4 z, __global const sFractalFoldingsCl *foldings, sExtended
 	return z;
 }
 
-REAL4 SphericalFolding(REAL4 z, __global const sFractalFoldingsCl *foldings, sExtendedAuxCl *aux)
+REAL4 SphericalFolding(REAL4 z, __constant sFractalFoldingsCl *foldings, sExtendedAuxCl *aux)
 {
 	REAL fR2_2 = foldings->sphericalOuter * foldings->sphericalOuter;
 	REAL mR2_2 = foldings->sphericalInner * foldings->sphericalInner;

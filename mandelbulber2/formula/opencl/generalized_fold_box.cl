@@ -19,7 +19,7 @@ REAL4 GeneralizedFoldBoxIteration(REAL4 z, __constant sFractalCl *fractal, sExte
 {
 	REAL3 zXYZ = z.xyz;
 	int i;
-	__global const REAL3 *Nv;
+	__constant REAL3 *Nv;
 	int sides;
 
 	switch (fractal->genFoldBox.type)

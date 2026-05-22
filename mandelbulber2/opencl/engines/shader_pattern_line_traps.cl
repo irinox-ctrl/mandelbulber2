@@ -1233,7 +1233,7 @@ float3 PatternLineTrapsShader(__constant sClInConstants *consts, float3 point,
 	for (int i = 0; i < PATTERN_LINE_TRAP_COUNT; i++)
 	{
 		if (soloL > 0 && soloL != i + 1) continue;
-		__global const sPatternLineTrapLayerCl *layer = &consts->params.patternLineTraps.layers[i];
+		__constant sPatternLineTrapLayerCl *layer = &consts->params.patternLineTraps.layers[i];
 		if (!layer->enabled) continue;
 
 		sPatternLineTrapLayerCl effLayer = *layer;

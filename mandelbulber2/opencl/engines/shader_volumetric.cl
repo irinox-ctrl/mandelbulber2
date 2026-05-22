@@ -753,7 +753,7 @@ float4 VolumetricShader(__constant sClInConstants *consts, sRenderData *renderDa
 			int layerCount = 0;
 			for (int i = 0; i < consts->params.singleTrapLights.activeLayerCount; i++)
 			{
-				__global const sSingleTrapLightLayerCl *layer = &consts->params.singleTrapLights.layers[i];
+				__constant sSingleTrapLightLayerCl *layer = &consts->params.singleTrapLights.layers[i];
 				if (!layer->enabled) continue;
 				if (soloL > 0 && soloL != i + 1) continue;
 

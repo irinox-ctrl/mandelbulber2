@@ -50,7 +50,7 @@ static inline float GlowSphereFalloff(float distance, float falloff_radius)
 }
 
 /* Single sphere: returns RGB glow contribution */
-static inline float3 _GlowSphereShaderSingle(__global const sGlowSphereCl *sphere, int frameNo, float3 point)
+static inline float3 _GlowSphereShaderSingle(__constant sGlowSphereCl *sphere, int frameNo, float3 point)
 {
 	if (sphere->enabled == 0) return (float3)(0.0f, 0.0f, 0.0f);
 
@@ -90,7 +90,7 @@ float3 GlowSphereShaderGPU(__constant sClInConstants *consts, float3 point)
 }
 
 /* Single sphere: returns RGB diffuse lighting at a surface point */
-static inline float3 _GlowSphereSurfaceLightSingle(__global const sGlowSphereCl *sphere, int frameNo,
+static inline float3 _GlowSphereSurfaceLightSingle(__constant sGlowSphereCl *sphere, int frameNo,
 	float3 surfacePoint, float3 normal, float shading)
 {
 	if (sphere->enabled == 0) return (float3)(0.0f);
@@ -122,7 +122,7 @@ float3 GlowSphereSurfaceLightGPU(__constant sClInConstants *consts, float3 surfa
 }
 
 /* Single sphere: returns distance to sphere surface */
-static inline float _GlowSphereDistanceSingle(__global const sGlowSphereCl *sphere, float3 point)
+static inline float _GlowSphereDistanceSingle(__constant sGlowSphereCl *sphere, float3 point)
 {
 	if (sphere->enabled == 0) return 1e30f;
 	return GlowSphereDistance(point, sphere->position.xyz, sphere->radius);
