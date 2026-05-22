@@ -110,6 +110,69 @@ float3 CalculateCloneOffsetOpenCL(__global sPrimitiveCl *primitive, int index)
 				(iy - (count.y - 1.0f) * 0.5f) * size.y,
 				(iz - (count.z - 1.0f) * 0.5f) * size.z};
 		}
+		case 3: // Honeycomb
+		{
+			float s = primitive->object.clonerHoneycombSpacing;
+			if (s < 1e-10f) s = 1.0f;
+			int cx = (int)primitive->object.clonerGridCount.x;
+			int cy = (int)primitive->object.clonerGridCount.y;
+			if (cx < 1) cx = 1;
+			if (cy < 1) cy = 1;
+			int ix = index % cx;
+			int iy = index / cx;
+			float px = ix * s + (iy % 2) * s * 0.5f;
+			float py = iy * s * 0.866025f;
+			switch (primitive->object.clonerPlane)
+			{
+				case 0: return (float3){px, py, 0.0f};
+				case 1: return (float3){px, 0.0f, py};
+				case 2: return (float3){0.0f, px, py};
+			}
+			return (float3){px, py, 0.0f};
+		}
+		case 4: // Fibonacci sphere
+		{
+			if (primitive->object.clonerCount <= 1) return (float3){0.0f, 0.0f, 0.0f};
+			float golden = (1.0f + native_sqrt(5.0f)) / 2.0f;
+			float theta = 2.0f * M_PI_F * index / golden;
+			float phi2 = acos(1.0f - 2.0f * (index + 0.5f) / primitive->object.clonerCount);
+			float r = primitive->object.clonerRadius;
+			return (float3){r * native_sin(phi2) * native_cos(theta),
+							r * native_sin(phi2) * native_sin(theta),
+							r * native_cos(phi2)};
+		}
+		case 5: // Random
+		{
+			uint sd = ((uint)primitive->object.clonerRandomSeed * 73856093u) ^ ((uint)index * 19349663u);
+			float rx, ry, rz;
+			sd = (sd << 13u) ^ sd;
+			sd = sd * (sd * sd * 15731u + 789221u) + 1376312589u;
+			rx = ((float)(sd & 0x7fffffffu) / (float)0x7fffffffu) * 2.0f - 1.0f;
+			sd = (sd << 13u) ^ sd;
+			sd = sd * (sd * sd * 15731u + 789221u) + 1376312589u;
+			ry = ((float)(sd & 0x7fffffffu) / (float)0x7fffffffu) * 2.0f - 1.0f;
+			sd = (sd << 13u) ^ sd;
+			sd = sd * (sd * sd * 15731u + 789221u) + 1376312589u;
+			rz = ((float)(sd & 0x7fffffffu) / (float)0x7fffffffu) * 2.0f - 1.0f;
+			return (float3){rx * primitive->object.clonerRandomBounds.x,
+							ry * primitive->object.clonerRandomBounds.y,
+							rz * primitive->object.clonerRandomBounds.z};
+		}
+		case 6: // Spiral
+		{
+			if (primitive->object.clonerCount <= 1) return (float3){0.0f, 0.0f, 0.0f};
+			float t = (float)index / (float)(primitive->object.clonerCount - 1);
+			float angle2 = t * primitive->object.clonerSpiralTurns * 2.0f * M_PI_F;
+			float r2 = primitive->object.clonerRadius * t;
+			float h = t * primitive->object.clonerSpiralHeight;
+			switch (primitive->object.clonerPlane)
+			{
+				case 0: return (float3){native_cos(angle2) * r2, native_sin(angle2) * r2, h};
+				case 1: return (float3){native_cos(angle2) * r2, h, native_sin(angle2) * r2};
+				case 2: return (float3){h, native_cos(angle2) * r2, native_sin(angle2) * r2};
+			}
+			return (float3){native_cos(angle2) * r2, native_sin(angle2) * r2, h};
+		}
 	}
 	return (float3){0.0f, 0.0f, 0.0f};
 }

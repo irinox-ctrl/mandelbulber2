@@ -952,6 +952,11 @@ QString cOpenClDynamicData::BuildPrimitivesData(const cPrimitives *primitivesCon
 		primitiveCl.object.clonerPlane = primitive->cloner.plane;
 		primitiveCl.object.clonerGridCount = toClFloat3(primitive->cloner.gridCount);
 		primitiveCl.object.clonerGridSize = toClFloat3(primitive->cloner.gridSize);
+		primitiveCl.object.clonerSpiralHeight = primitive->cloner.spiralHeight;
+		primitiveCl.object.clonerSpiralTurns = primitive->cloner.spiralTurns;
+		primitiveCl.object.clonerRandomSeed = primitive->cloner.randomSeed;
+		primitiveCl.object.clonerRandomBounds = toClFloat3(primitive->cloner.randomBounds);
+		primitiveCl.object.clonerHoneycombSpacing = primitive->cloner.honeycombSpacing;
 
 		// Advanced Repeat
 		primitiveCl.object.repeatMode = primitive->repeatMode;

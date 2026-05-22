@@ -79,7 +79,11 @@ struct sPrimitiveBasic : cObjectData
 		{
 			LINEAR = 0,
 			RADIAL = 1,
-			GRID = 2
+			GRID = 2,
+			HONEYCOMB = 3,
+			FIBONACCI = 4,
+			RANDOM = 5,
+			SPIRAL = 6
 		} mode = LINEAR;
 		int count = 1;
 		CVector3 offset = CVector3(1.0, 0.0, 0.0);
@@ -89,6 +93,14 @@ struct sPrimitiveBasic : cObjectData
 		int plane = 0; // 0=XY, 1=XZ, 2=YZ
 		CVector3 gridCount = CVector3(3, 3, 3);
 		CVector3 gridSize = CVector3(10.0, 10.0, 10.0);
+		// Spiral params
+		double spiralHeight = 10.0;
+		double spiralTurns = 3.0;
+		// Random params
+		int randomSeed = 42;
+		CVector3 randomBounds = CVector3(5.0, 5.0, 5.0);
+		// Honeycomb params
+		double honeycombSpacing = 1.0;
 	} cloner;
 
 	double smoothRadius = 0.1;

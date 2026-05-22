@@ -77,6 +77,11 @@ sPrimitiveBasic::sPrimitiveBasic(
 	cloner.plane = par->Get<int>(fullName + "_cloner_plane");
 	cloner.gridCount = par->Get<CVector3>(fullName + "_cloner_grid_count");
 	cloner.gridSize = par->Get<CVector3>(fullName + "_cloner_grid_size");
+	cloner.spiralHeight = par->Get<double>(fullName + "_cloner_spiral_height");
+	cloner.spiralTurns = par->Get<double>(fullName + "_cloner_spiral_turns");
+	cloner.randomSeed = par->Get<int>(fullName + "_cloner_random_seed");
+	cloner.randomBounds = par->Get<CVector3>(fullName + "_cloner_random_bounds");
+	cloner.honeycombSpacing = par->Get<double>(fullName + "_cloner_honeycomb_spacing");
 
 	smoothRadius = par->Get<double>(fullName + "_smooth_radius");
 	mirrorX = par->Get<bool>(fullName + "_mirror_x");
@@ -367,6 +372,66 @@ CVector3 sPrimitiveBasic::CalculateCloneOffset(int index) const
 			double stepZ = cloner.gridSize.z / (countZ > 1 ? countZ - 1 : 1);
 
 			return CVector3(x * stepX, y * stepY, z * stepZ);
+		}
+		case ClonerSettings::HONEYCOMB:
+		{
+			double s = cloner.honeycombSpacing;
+			if (s < 1e-10) s = 1.0;
+			int countX = (int)cloner.gridCount.x;
+			int countY = (int)cloner.gridCount.y;
+			if (countX < 1) countX = 1;
+			if (countY < 1) countY = 1;
+
+			int x = index % countX;
+			int y = index / countX;
+			double px = x * s + (y % 2) * s * 0.5;
+			double py = y * s * 0.866025; // sqrt(3)/2
+
+			switch (cloner.plane)
+			{
+				case 0: return CVector3(px, py, 0.0);
+				case 1: return CVector3(px, 0.0, py);
+				case 2: return CVector3(0.0, px, py);
+				default: return CVector3(px, py, 0.0);
+			}
+		}
+		case ClonerSettings::FIBONACCI:
+		{
+			if (cloner.count <= 1) return CVector3(0.0, 0.0, 0.0);
+			double golden = (1.0 + sqrt(5.0)) / 2.0;
+			double theta = 2.0 * M_PI * index / golden;
+			double phi = acos(1.0 - 2.0 * (index + 0.5) / cloner.count);
+			double r = cloner.radius;
+			return CVector3(r * sin(phi) * cos(theta), r * sin(phi) * sin(theta), r * cos(phi));
+		}
+		case ClonerSettings::RANDOM:
+		{
+			unsigned int seed = (unsigned int)(cloner.randomSeed * 73856093u) ^ (index * 19349663u);
+			auto rng = [&seed]() -> double {
+				seed = (seed << 13) ^ seed;
+				seed = seed * (seed * seed * 15731u + 789221u) + 1376312589u;
+				return ((seed & 0x7fffffff) / double(0x7fffffff)) * 2.0 - 1.0;
+			};
+			return CVector3(
+				rng() * cloner.randomBounds.x,
+				rng() * cloner.randomBounds.y,
+				rng() * cloner.randomBounds.z);
+		}
+		case ClonerSettings::SPIRAL:
+		{
+			if (cloner.count <= 1) return CVector3(0.0, 0.0, 0.0);
+			double t = (double)index / (double)(cloner.count - 1);
+			double angle = t * cloner.spiralTurns * 2.0 * M_PI;
+			double r = cloner.radius * t;
+			double h = t * cloner.spiralHeight;
+
+			switch (cloner.plane)
+			{
+				case 0: return CVector3(cos(angle) * r, sin(angle) * r, h);
+				case 1: return CVector3(cos(angle) * r, h, sin(angle) * r);
+				case 2: return CVector3(h, cos(angle) * r, sin(angle) * r);
+				default: return CVector3(cos(angle) * r, sin(angle) * r, h);
+			}
 		}
 		default: return CVector3(0.0, 0.0, 0.0);
 	}

@@ -2249,6 +2249,11 @@ void InitPrimitiveParams(const sPrimitiveItem &primitive, std::shared_ptr<cParam
 	par->addParam(QString(primitiveName) + "_cloner_plane", 0, morphNone, paramStandard);
 	par->addParam(QString(primitiveName) + "_cloner_grid_count", CVector3(3.0, 3.0, 3.0), morphLinear, paramStandard);
 	par->addParam(QString(primitiveName) + "_cloner_grid_size", CVector3(10.0, 10.0, 10.0), morphLinear, paramStandard);
+	par->addParam(QString(primitiveName) + "_cloner_spiral_height", 10.0, 0.0, 1000.0, morphLinear, paramStandard);
+	par->addParam(QString(primitiveName) + "_cloner_spiral_turns", 3.0, 0.0, 100.0, morphLinear, paramStandard);
+	par->addParam(QString(primitiveName) + "_cloner_random_seed", 42, 0, 99999, morphLinear, paramStandard);
+	par->addParam(QString(primitiveName) + "_cloner_random_bounds", CVector3(5.0, 5.0, 5.0), morphAkima, paramStandard);
+	par->addParam(QString(primitiveName) + "_cloner_honeycomb_spacing", 1.0, 0.001, 1000.0, morphLinear, paramStandard);
 
 	// Effector parameters (MoGraph style)
 	for (int i = 1; i <= 4; i++)

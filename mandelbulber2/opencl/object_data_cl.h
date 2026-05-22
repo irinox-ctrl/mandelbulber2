@@ -86,6 +86,11 @@ typedef struct
 	cl_int clonerPlane;
 	cl_float3 clonerGridCount;
 	cl_float3 clonerGridSize;
+	cl_float clonerSpiralHeight;
+	cl_float clonerSpiralTurns;
+	cl_int clonerRandomSeed;
+	cl_float3 clonerRandomBounds;
+	cl_float clonerHoneycombSpacing;
 	// Repeat
 	cl_int repeatMode;
 	cl_float repeatRotationStep;
