@@ -241,4 +241,23 @@ Globale "Iter Range" (iterationStart/iterationStop) is de master gate — per-se
 
 ---
 
-*Laatst bijgewerkt: 2026-05-22 — Sessie 10 (v7.12)*
+### ISSUE-013: 284 GPU conversiefouten + runtime safety issues
+- **Datum:** Sessie 10 (v7.12.1)
+- **Symptoom:** Geen compilatiefouten, maar potentiële runtime crashes/NaN op GPU
+- **Root Cause:** Generator scripts produceerden GPU code met:
+  - 44× `double` keyword (moet `float` zijn in OpenCL)
+  - 212× bare math functies (`exp`, `sqrt`, `sin`, `cos`, `log`) zonder `native_` prefix
+  - 4× `exp()` met onbegrensde positieve argumenten (overflow → Inf)
+  - 4× `log()` met potentieel nul/negatief argument (→ NaN)
+- **Fix:** 
+  - `mutation_scanner.py --fix` voor automatische GPU conversies
+  - Handmatige exp() clamping: `exp(fmin(arg, 20.0))`
+  - Handmatige log() bescherming: `log(fmax(arg, 1e-21))`
+- **Detectie:** Nieuwe `mutation_scanner.py` tool (6-punt automatische audit)
+- **Status:** ✅ Alle CRITICAL en HIGH issues opgelost
+- **Resterend (MEDIUM):** 149× div-by-zero (veilig met defaults), 110× sqrt domain, 5× cosh, 2× DE unbounded
+- **Les:** ALTIJD `mutation_scanner.py` draaien na elke nieuwe batch transformaties. Scanner detecteert fouten die de compiler niet vangt.
+
+---
+
+*Laatst bijgewerkt: 2026-05-22 — Sessie 10 (v7.12.1)*
