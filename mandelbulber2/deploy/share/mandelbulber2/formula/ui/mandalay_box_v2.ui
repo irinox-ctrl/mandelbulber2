@@ -1950,7 +1950,7 @@
        <widget class="QLabel"><property name="text"><string>Axis A (x):</string></property></widget>
       </item>
       <item row="0" column="1">
-       <widget class="MyDoubleSpinBox" name="mandalay_ellipsoid_axes_x">
+       <widget class="MyDoubleSpinBox" name="spinbox4_mandalay_ellipsoid_axes_x">
         <property name="value"><double>1.000000000000000</double></property>
         <property name="decimals"><number>6</number></property>
         <property name="minimum"><double>0.010000000000000</double></property>
@@ -1962,7 +1962,7 @@
        <widget class="QLabel"><property name="text"><string>Axis B (y):</string></property></widget>
       </item>
       <item row="0" column="3">
-       <widget class="MyDoubleSpinBox" name="mandalay_ellipsoid_axes_y">
+       <widget class="MyDoubleSpinBox" name="spinbox4_mandalay_ellipsoid_axes_y">
         <property name="value"><double>1.000000000000000</double></property>
         <property name="decimals"><number>6</number></property>
         <property name="minimum"><double>0.010000000000000</double></property>
@@ -1974,7 +1974,7 @@
        <widget class="QLabel"><property name="text"><string>Axis C (z):</string></property></widget>
       </item>
       <item row="1" column="1">
-       <widget class="MyDoubleSpinBox" name="mandalay_ellipsoid_axes_z">
+       <widget class="MyDoubleSpinBox" name="spinbox4_mandalay_ellipsoid_axes_z">
         <property name="value"><double>1.000000000000000</double></property>
         <property name="decimals"><number>6</number></property>
         <property name="minimum"><double>0.010000000000000</double></property>
@@ -1986,7 +1986,7 @@
        <widget class="QLabel"><property name="text"><string>Min R:</string></property></widget>
       </item>
       <item row="1" column="3">
-       <widget class="MyDoubleSpinBox" name="mandalay_ellipsoid_min_r">
+       <widget class="MyDoubleSpinBox" name="spinbox_mandalay_ellipsoid_min_r">
         <property name="value"><double>0.250000000000000</double></property>
         <property name="decimals"><number>6</number></property>
         <property name="minimum"><double>0.000000000000000</double></property>
@@ -2011,7 +2011,7 @@
        <widget class="QLabel"><property name="text"><string>Major R:</string></property></widget>
       </item>
       <item row="0" column="1">
-       <widget class="MyDoubleSpinBox" name="mandalay_torus_major_r">
+       <widget class="MyDoubleSpinBox" name="spinbox_mandalay_torus_major_r">
         <property name="value"><double>1.000000000000000</double></property>
         <property name="decimals"><number>6</number></property>
         <property name="minimum"><double>0.010000000000000</double></property>
@@ -2023,7 +2023,7 @@
        <widget class="QLabel"><property name="text"><string>Minor r:</string></property></widget>
       </item>
       <item row="0" column="3">
-       <widget class="MyDoubleSpinBox" name="mandalay_torus_minor_r">
+       <widget class="MyDoubleSpinBox" name="spinbox_mandalay_torus_minor_r">
         <property name="value"><double>0.300000000000000</double></property>
         <property name="decimals"><number>6</number></property>
         <property name="minimum"><double>0.010000000000000</double></property>
@@ -2035,7 +2035,7 @@
        <widget class="QLabel"><property name="text"><string>Strength:</string></property></widget>
       </item>
       <item row="1" column="1">
-       <widget class="MyDoubleSpinBox" name="mandalay_torus_fold_strength">
+       <widget class="MyDoubleSpinBox" name="spinbox_mandalay_torus_fold_strength">
         <property name="value"><double>1.000000000000000</double></property>
         <property name="decimals"><number>6</number></property>
         <property name="minimum"><double>0.000000000000000</double></property>
@@ -2060,7 +2060,7 @@
        <widget class="QLabel"><property name="text"><string>Min R:</string></property></widget>
       </item>
       <item row="0" column="1">
-       <widget class="MyDoubleSpinBox" name="mandalay_log_spherical_min_r">
+       <widget class="MyDoubleSpinBox" name="spinbox_mandalay_log_spherical_min_r">
         <property name="value"><double>0.250000000000000</double></property>
         <property name="decimals"><number>6</number></property>
         <property name="minimum"><double>0.001000000000000</double></property>
@@ -2085,7 +2085,7 @@
        <widget class="QLabel"><property name="text"><string>Steepness (k):</string></property></widget>
       </item>
       <item row="0" column="1">
-       <widget class="MyDoubleSpinBox" name="mandalay_hyper_box_fold_k">
+       <widget class="MyDoubleSpinBox" name="spinbox_mandalay_hyper_box_fold_k">
         <property name="value"><double>1.000000000000000</double></property>
         <property name="decimals"><number>6</number></property>
         <property name="minimum"><double>0.010000000000000</double></property>

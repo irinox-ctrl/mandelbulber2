@@ -16,6 +16,8 @@
 
 #include <QString>
 #include <QStringList>
+#include <QFile>
+#include <QTextStream>
 #include <iostream>
 #include <sstream>
 #include <iomanip>
@@ -343,7 +345,105 @@ inline QString ScanForAddressSpaceMismatches(const QString & /*deployPath*/)
 }
 
 // ═══════════════════════════════════════════════════════════════════
-//  SECTION 5: Full Diagnostics Runner
+//  SECTION 5: UI Widget Binding Validator
+// ═══════════════════════════════════════════════════════════════════
+//
+// Validates that UI .ui files use correct widget name prefixes.
+// In Mandelbulber, the SynchronizeInterfaceWindow system requires:
+//   - MyDoubleSpinBox → prefix "spinbox_" (scalar) or "spinbox3_"/"spinbox4_" (vector component)
+//   - MySpinBox → prefix "spinboxInt_"
+//   - QGroupBox/MyGroupBox → prefix "groupCheck_" (for bool params)
+//   - MyCheckBox → prefix "checkBox_"
+//
+// A widget named "mandalay_ellipsoid_axes_x" will FAIL to bind because
+// parseWidgetProperties() splits on the first underscore:
+//   typeName = "mandalay" (not a recognized prefix)
+//   paramName = "ellipsoid_axes_x" (doesn't match any registered param)
+//
+// Correct: "spinbox4_mandalay_ellipsoid_axes_x"
+//   typeName = "spinbox4" (recognized)
+//   paramName = "mandalay_ellipsoid_axes_x" (matches param + component)
+
+struct sWidgetBindingRule
+{
+	const char *widgetClass;
+	const char *requiredPrefixes; // comma-separated
+	const char *description;
+};
+
+inline QString ValidateUIWidgetBindings(const QString &uiFilePath)
+{
+	std::ostringstream out;
+	out << "\n╔══════════════════════════════════════════════════════════════╗\n";
+	out << "║     UI WIDGET BINDING VALIDATOR                             ║\n";
+	out << "╠══════════════════════════════════════════════════════════════╣\n";
+
+	QFile file(uiFilePath);
+	if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+	{
+		out << "║ ERROR: Cannot open " << uiFilePath.toStdString() << "\n";
+		out << "╚══════════════════════════════════════════════════════════════╝\n";
+		return QString::fromStdString(out.str());
+	}
+
+	int errors = 0;
+	int lineNum = 0;
+	QTextStream in(&file);
+	while (!in.atEnd())
+	{
+		QString line = in.readLine();
+		lineNum++;
+
+		// Check MyDoubleSpinBox
+		if (line.contains("MyDoubleSpinBox") && line.contains("name=\""))
+		{
+			int nameStart = line.indexOf("name=\"") + 6;
+			int nameEnd = line.indexOf("\"", nameStart);
+			if (nameEnd > nameStart)
+			{
+				QString widgetName = line.mid(nameStart, nameEnd - nameStart);
+				if (!widgetName.startsWith("spinbox") && !widgetName.startsWith("logedit"))
+				{
+					out << "║ ✗ LINE " << lineNum << ": MyDoubleSpinBox \"" << widgetName.toStdString()
+						<< "\"\n";
+					out << "║   MISSING PREFIX: needs spinbox_ or spinbox3_/spinbox4_ prefix\n";
+					errors++;
+				}
+			}
+		}
+
+		// Check MySpinBox (integer)
+		if (line.contains("MySpinBox") && !line.contains("MyDoubleSpinBox")
+			&& line.contains("name=\""))
+		{
+			int nameStart = line.indexOf("name=\"") + 6;
+			int nameEnd = line.indexOf("\"", nameStart);
+			if (nameEnd > nameStart)
+			{
+				QString widgetName = line.mid(nameStart, nameEnd - nameStart);
+				if (!widgetName.startsWith("spinboxInt"))
+				{
+					out << "║ ✗ LINE " << lineNum << ": MySpinBox \"" << widgetName.toStdString()
+						<< "\"\n";
+					out << "║   MISSING PREFIX: needs spinboxInt_ prefix\n";
+					errors++;
+				}
+			}
+		}
+	}
+	file.close();
+
+	if (errors == 0)
+		out << "║ ✓ All widget bindings have correct prefixes                 ║\n";
+	else
+		out << "║ TOTAL: " << errors << " widget(s) with broken parameter binding\n";
+
+	out << "╚══════════════════════════════════════════════════════════════╝\n";
+	return QString::fromStdString(out.str());
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  SECTION 6: Full Diagnostics Runner
 // ═══════════════════════════════════════════════════════════════════
 
 inline void RunFullDiagnostics(const sClInConstants *buffer)
