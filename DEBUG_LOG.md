@@ -23,12 +23,12 @@
 | 200 Mandelbox Math (V1-V200) | ✅ Klaar | CPU + GPU + UI + Iteratie |
 | 100 Warp Distortion (V1-V100) | ✅ Klaar | CPU + GPU + UI + Iteratie |
 | 100 Symmetry/Kaleidoscope (V1-V100) | ✅ Klaar | CPU + GPU + UI + Iteratie |
-| 300 Abox DE (V1-V300) | ✅ Klaar | CPU + GPU + UI + Iteratie |
+| 400 Abox DE (V1-V400) | ✅ Klaar | CPU + GPU + UI + Iteratie |
 
 | 100 Noise & Procedural DE (V1-V100) | ✅ Klaar | CPU + GPU + UI + Iteratie |
 | 100 Orbit Trap DE (V1-V100) | ✅ Klaar | CPU + GPU + UI + Iteratie |
 
-**Totaal transformaties: 1200** (50 inv + 50 clip + 100 JL + 100 PK + 200 MB + 100 WD + 100 SK + 300 AB + 100 Noise + 100 Orbit)
+**Totaal transformaties: 1300** (50 inv + 50 clip + 100 JL + 100 PK + 200 MB + 100 WD + 100 SK + 400 AB + 100 Noise + 100 Orbit)
 
 ---
 
@@ -231,4 +231,13 @@ Globale "Iter Range" (iterationStart/iterationStop) is de master gate — per-se
 
 ---
 
-*Laatst bijgewerkt: 2026-05-20 — Sessie 9 (v7.10)*
+### ISSUE-012: `afp` niet gedeclareerd in Abox V308 scope
+- **Datum:** Sessie 9
+- **Symptoom:** `afp was not declared in this scope; did you mean aff?`
+- **Root Cause:** Generator script gebruikte `afp` als variabelenaam voor parameter F, maar in Abox scope heet die `aff` (niet `af` want dat is al factor)
+- **Fix:** `afp` vervangen door `aff` in V308 (CPU + GPU)
+- **Les:** In Abox scope: factor=`af`, params=`aa`-`ae`, `aff` (F), `ag`, `ah`. Nooit andere namen gebruiken.
+
+---
+
+*Laatst bijgewerkt: 2026-05-20 — Sessie 9 (v7.11)*
