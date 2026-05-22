@@ -451,6 +451,26 @@ cNineFractals::cNineFractals(std::shared_ptr<const cFractalContainer> par,
 		mutationParams[i].torusIterStart = generalPar->Get<int>("mutation_torus_iter_start", i + 1);
 		mutationParams[i].torusIterStop = generalPar->Get<int>("mutation_torus_iter_stop", i + 1);
 
+		// v7.13 — Amazing Surf 1-4
+		mutationParams[i].asType = generalPar->Get<int>("mutation_as_type", i + 1);
+		mutationParams[i].asFactor = generalPar->Get<double>("mutation_as_factor", i + 1);
+		mutationParams[i].asParamA = generalPar->Get<double>("mutation_as_param_a", i + 1);
+		mutationParams[i].asParamB = generalPar->Get<double>("mutation_as_param_b", i + 1);
+		mutationParams[i].asParamC = generalPar->Get<double>("mutation_as_param_c", i + 1);
+		mutationParams[i].asParamD = generalPar->Get<double>("mutation_as_param_d", i + 1);
+		mutationParams[i].asIterStart = generalPar->Get<int>("mutation_as_iter_start", i + 1);
+		mutationParams[i].asIterStop = generalPar->Get<int>("mutation_as_iter_stop", i + 1);
+
+		// v7.13 — SphereTree/Menger
+		mutationParams[i].smType = generalPar->Get<int>("mutation_sm_type", i + 1);
+		mutationParams[i].smFactor = generalPar->Get<double>("mutation_sm_factor", i + 1);
+		mutationParams[i].smParamA = generalPar->Get<double>("mutation_sm_param_a", i + 1);
+		mutationParams[i].smParamB = generalPar->Get<double>("mutation_sm_param_b", i + 1);
+		mutationParams[i].smParamC = generalPar->Get<double>("mutation_sm_param_c", i + 1);
+		mutationParams[i].smParamD = generalPar->Get<double>("mutation_sm_param_d", i + 1);
+		mutationParams[i].smIterStart = generalPar->Get<int>("mutation_sm_iter_start", i + 1);
+		mutationParams[i].smIterStop = generalPar->Get<int>("mutation_sm_iter_stop", i + 1);
+
 		// Smart defaults: PK/JK formulas get Möbius (Bilinear) math preset
 		fractal::enumFractalFormula f = fractals[i]->formula;
 		bool isPKJK = (f == fractal::pseudoKleinian || f == fractal::pseudoKleinian4d
@@ -1545,6 +1565,26 @@ void cNineFractals::CopyToOpenclData(sClFractalSequence *sequence) const
 		sequence->mutationParams[i].torusParamD = mutationParams[i].torusParamD;
 		sequence->mutationParams[i].torusIterStart = mutationParams[i].torusIterStart;
 		sequence->mutationParams[i].torusIterStop = mutationParams[i].torusIterStop;
+
+		// v7.13 — Amazing Surf 1-4
+		sequence->mutationParams[i].asType = mutationParams[i].asType;
+		sequence->mutationParams[i].asFactor = mutationParams[i].asFactor;
+		sequence->mutationParams[i].asParamA = mutationParams[i].asParamA;
+		sequence->mutationParams[i].asParamB = mutationParams[i].asParamB;
+		sequence->mutationParams[i].asParamC = mutationParams[i].asParamC;
+		sequence->mutationParams[i].asParamD = mutationParams[i].asParamD;
+		sequence->mutationParams[i].asIterStart = mutationParams[i].asIterStart;
+		sequence->mutationParams[i].asIterStop = mutationParams[i].asIterStop;
+
+		// v7.13 — SphereTree/Menger
+		sequence->mutationParams[i].smType = mutationParams[i].smType;
+		sequence->mutationParams[i].smFactor = mutationParams[i].smFactor;
+		sequence->mutationParams[i].smParamA = mutationParams[i].smParamA;
+		sequence->mutationParams[i].smParamB = mutationParams[i].smParamB;
+		sequence->mutationParams[i].smParamC = mutationParams[i].smParamC;
+		sequence->mutationParams[i].smParamD = mutationParams[i].smParamD;
+		sequence->mutationParams[i].smIterStart = mutationParams[i].smIterStart;
+		sequence->mutationParams[i].smIterStop = mutationParams[i].smIterStop;
 
 		// Copy rotation matrices using matrix33 type
 		if (mutationParams[i].enabled)

@@ -346,6 +346,16 @@ typedef struct
 	cl_float torusFactor;
 	cl_float torusParamA, torusParamB, torusParamC, torusParamD;
 	cl_int torusIterStart, torusIterStop;
+	// v7.13 — Amazing Surf 1-4 DE system (100 types)
+	cl_int asType;
+	cl_float asFactor;
+	cl_float asParamA, asParamB, asParamC, asParamD;
+	cl_int asIterStart, asIterStop;
+	// v7.13 — SphereTree/Menger DE system (100 types)
+	cl_int smType;
+	cl_float smFactor;
+	cl_float smParamA, smParamB, smParamC, smParamD;
+	cl_int smIterStart, smIterStop;
 	// Pre-computed rotation matrices
 	matrix33 preRotMatrix;
 	matrix33 postRotMatrix;

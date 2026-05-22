@@ -526,6 +526,18 @@ struct sFormulaMutationParams
 	double torusParamA, torusParamB, torusParamC, torusParamD;
 	int torusIterStart, torusIterStop;
 
+	// v7.13 — Amazing Surf 1-4 DE system (100 types)
+	int asType;
+	double asFactor;
+	double asParamA, asParamB, asParamC, asParamD;
+	int asIterStart, asIterStop;
+
+	// v7.13 — SphereTree/Menger DE system (100 types)
+	int smType;
+	double smFactor;
+	double smParamA, smParamB, smParamC, smParamD;
+	int smIterStart, smIterStop;
+
 	// Pre-computed rotation matrices (filled in constructor)
 	CRotationMatrix preRotMatrix;
 	CRotationMatrix postRotMatrix;
