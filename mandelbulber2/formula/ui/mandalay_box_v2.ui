@@ -1449,7 +1449,30 @@
         <property name="value"><double>1.000000000000000</double></property>
        </widget>
       </item>
-     </layout>
+           <item row="2" column="0">
+       <widget class="QLabel" name="label_mandalay_start_qr">
+        <property name="text"><string>start at iteration:</string></property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="MySpinBox" name="spinboxInt_mandalay_start_iterations_qr">
+        <property name="minimum"><number>0</number></property>
+        <property name="maximum"><number>999</number></property>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <widget class="QLabel" name="label_mandalay_stop_qr">
+        <property name="text"><string>stop at iteration:</string></property>
+       </widget>
+      </item>
+      <item row="2" column="3">
+       <widget class="MySpinBox" name="spinboxInt_mandalay_stop_iterations_qr">
+        <property name="minimum"><number>0</number></property>
+        <property name="maximum"><number>999</number></property>
+        <property name="value"><number>250</number></property>
+       </widget>
+      </item>
+</layout>
     </widget>
    </item>
 
@@ -1523,7 +1546,30 @@
         <property name="value"><double>1.000000000000000</double></property>
        </widget>
       </item>
-     </layout>
+           <item row="2" column="0">
+       <widget class="QLabel" name="label_mandalay_start_pi">
+        <property name="text"><string>start at iteration:</string></property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="MySpinBox" name="spinboxInt_mandalay_start_iterations_pi">
+        <property name="minimum"><number>0</number></property>
+        <property name="maximum"><number>999</number></property>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <widget class="QLabel" name="label_mandalay_stop_pi">
+        <property name="text"><string>stop at iteration:</string></property>
+       </widget>
+      </item>
+      <item row="2" column="3">
+       <widget class="MySpinBox" name="spinboxInt_mandalay_stop_iterations_pi">
+        <property name="minimum"><number>0</number></property>
+        <property name="maximum"><number>999</number></property>
+        <property name="value"><number>250</number></property>
+       </widget>
+      </item>
+</layout>
     </widget>
    </item>
 
@@ -1856,7 +1902,30 @@
         <property name="value"><double>2.000000000000000</double></property>
        </widget>
       </item>
-     </layout>
+           <item row="1" column="0">
+       <widget class="QLabel" name="label_mandalay_start_as">
+        <property name="text"><string>start at iteration:</string></property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="MySpinBox" name="spinboxInt_mandalay_start_iterations_as">
+        <property name="minimum"><number>0</number></property>
+        <property name="maximum"><number>999</number></property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QLabel" name="label_mandalay_stop_as">
+        <property name="text"><string>stop at iteration:</string></property>
+       </widget>
+      </item>
+      <item row="1" column="3">
+       <widget class="MySpinBox" name="spinboxInt_mandalay_stop_iterations_as">
+        <property name="minimum"><number>0</number></property>
+        <property name="maximum"><number>999</number></property>
+        <property name="value"><number>250</number></property>
+       </widget>
+      </item>
+</layout>
     </widget>
    </item>
 
@@ -1888,7 +1957,30 @@
         <property name="value"><double>0.100000000000000</double></property>
        </widget>
       </item>
-     </layout>
+           <item row="1" column="0">
+       <widget class="QLabel" name="label_mandalay_start_zs">
+        <property name="text"><string>start at iteration:</string></property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="MySpinBox" name="spinboxInt_mandalay_start_iterations_zs">
+        <property name="minimum"><number>0</number></property>
+        <property name="maximum"><number>999</number></property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QLabel" name="label_mandalay_stop_zs">
+        <property name="text"><string>stop at iteration:</string></property>
+       </widget>
+      </item>
+      <item row="1" column="3">
+       <widget class="MySpinBox" name="spinboxInt_mandalay_stop_iterations_zs">
+        <property name="minimum"><number>0</number></property>
+        <property name="maximum"><number>999</number></property>
+        <property name="value"><number>250</number></property>
+       </widget>
+      </item>
+</layout>
     </widget>
    </item>
 
@@ -1933,7 +2025,30 @@
         <property name="singleStep"><double>0.010000000000000</double></property>
        </widget>
       </item>
-     </layout>
+           <item row="1" column="0">
+       <widget class="QLabel" name="label_mandalay_start_vc">
+        <property name="text"><string>start at iteration:</string></property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="MySpinBox" name="spinboxInt_mandalay_start_iterations_vc">
+        <property name="minimum"><number>0</number></property>
+        <property name="maximum"><number>999</number></property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QLabel" name="label_mandalay_stop_vc">
+        <property name="text"><string>stop at iteration:</string></property>
+       </widget>
+      </item>
+      <item row="1" column="3">
+       <widget class="MySpinBox" name="spinboxInt_mandalay_stop_iterations_vc">
+        <property name="minimum"><number>0</number></property>
+        <property name="maximum"><number>999</number></property>
+        <property name="value"><number>250</number></property>
+       </widget>
+      </item>
+</layout>
     </widget>
    </item>
 
@@ -2043,7 +2158,30 @@
         <property name="singleStep"><double>0.100000000000000</double></property>
        </widget>
       </item>
-     </layout>
+           <item row="2" column="0">
+       <widget class="QLabel" name="label_mandalay_start_tf">
+        <property name="text"><string>start at iteration:</string></property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="MySpinBox" name="spinboxInt_mandalay_start_iterations_tf">
+        <property name="minimum"><number>0</number></property>
+        <property name="maximum"><number>999</number></property>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <widget class="QLabel" name="label_mandalay_stop_tf">
+        <property name="text"><string>stop at iteration:</string></property>
+       </widget>
+      </item>
+      <item row="2" column="3">
+       <widget class="MySpinBox" name="spinboxInt_mandalay_stop_iterations_tf">
+        <property name="minimum"><number>0</number></property>
+        <property name="maximum"><number>999</number></property>
+        <property name="value"><number>250</number></property>
+       </widget>
+      </item>
+</layout>
     </widget>
    </item>
 
@@ -2093,7 +2231,30 @@
         <property name="singleStep"><double>0.100000000000000</double></property>
        </widget>
       </item>
-     </layout>
+           <item row="1" column="0">
+       <widget class="QLabel" name="label_mandalay_start_hb">
+        <property name="text"><string>start at iteration:</string></property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="MySpinBox" name="spinboxInt_mandalay_start_iterations_hb">
+        <property name="minimum"><number>0</number></property>
+        <property name="maximum"><number>999</number></property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QLabel" name="label_mandalay_stop_hb">
+        <property name="text"><string>stop at iteration:</string></property>
+       </widget>
+      </item>
+      <item row="1" column="3">
+       <widget class="MySpinBox" name="spinboxInt_mandalay_stop_iterations_hb">
+        <property name="minimum"><number>0</number></property>
+        <property name="maximum"><number>999</number></property>
+        <property name="value"><number>250</number></property>
+       </widget>
+      </item>
+</layout>
     </widget>
    </item>
 

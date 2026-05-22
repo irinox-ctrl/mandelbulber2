@@ -260,23 +260,33 @@ typedef struct
 	// #3 Pre-Sphere Inversion
 	cl_int preSphereInvertEnabled;
 	cl_float4 invertCenter;
+	cl_int startIterationsPI;
+	cl_int stopIterationsPI;
 
 	// #4 Anisotrope Scale
 	cl_int anisotropeScaleEnabled;
 	cl_float4 scale3D;
+	cl_int startIterationsAS;
+	cl_int stopIterationsAS;
 
 	// #5 Z-Shear
 	cl_int zShearEnabled;
 	cl_float zShearStrength;
+	cl_int startIterationsZS;
+	cl_int stopIterationsZS;
 
 	// #6 Variable Clip Limits
 	cl_int variableClipEnabled;
 	cl_float foVary;
 	cl_float gVary;
+	cl_int startIterationsVC;
+	cl_int stopIterationsVC;
 
 	// #7 Quaternion Pre-Rotation
 	cl_int quatRotEnabled;
 	cl_float4 quatRot;
+	cl_int startIterationsQR;
+	cl_int stopIterationsQR;
 
 	// #8 Ellipsoïde Fold
 	cl_int ellipsoidFoldEnabled;
@@ -288,6 +298,8 @@ typedef struct
 	cl_float torusMajorR;
 	cl_float torusMinorR;
 	cl_float torusFoldStrength;
+	cl_int startIterationsTF;
+	cl_int stopIterationsTF;
 
 	// #10 Logarithmic Spherical Fold
 	cl_int logSphericalFoldEnabled;
@@ -296,6 +308,8 @@ typedef struct
 	// #11 Hyperbolische Box Fold
 	cl_int hyperBoxFoldEnabled;
 	cl_float hyperBoxFoldK;
+	cl_int startIterationsHB;
+	cl_int stopIterationsHB;
 } sFractalMandalayCI;
 
 typedef struct
@@ -1305,15 +1319,25 @@ inline sFractalMandalayCI clCopySFractalMandalayCI(const sFractalMandalay &sourc
 	target.g4 = toClFloat4(source.g4);
 	target.preSphereInvertEnabled = source.preSphereInvertEnabled;
 	target.invertCenter = toClFloat4(source.invertCenter);
+	target.startIterationsPI = source.startIterationsPI;
+	target.stopIterationsPI = source.stopIterationsPI;
 	target.anisotropeScaleEnabled = source.anisotropeScaleEnabled;
 	target.scale3D = toClFloat4(source.scale3D);
+	target.startIterationsAS = source.startIterationsAS;
+	target.stopIterationsAS = source.stopIterationsAS;
 	target.zShearEnabled = source.zShearEnabled;
 	target.zShearStrength = source.zShearStrength;
+	target.startIterationsZS = source.startIterationsZS;
+	target.stopIterationsZS = source.stopIterationsZS;
 	target.variableClipEnabled = source.variableClipEnabled;
 	target.foVary = source.foVary;
 	target.gVary = source.gVary;
+	target.startIterationsVC = source.startIterationsVC;
+	target.stopIterationsVC = source.stopIterationsVC;
 	target.quatRotEnabled = source.quatRotEnabled;
 	target.quatRot = toClFloat4(source.quatRot);
+	target.startIterationsQR = source.startIterationsQR;
+	target.stopIterationsQR = source.stopIterationsQR;
 	target.ellipsoidFoldEnabled = source.ellipsoidFoldEnabled;
 	target.ellipsoidAxes = toClFloat4(source.ellipsoidAxes);
 	target.ellipsoidMinR = source.ellipsoidMinR;
@@ -1321,10 +1345,14 @@ inline sFractalMandalayCI clCopySFractalMandalayCI(const sFractalMandalay &sourc
 	target.torusMajorR = source.torusMajorR;
 	target.torusMinorR = source.torusMinorR;
 	target.torusFoldStrength = source.torusFoldStrength;
+	target.startIterationsTF = source.startIterationsTF;
+	target.stopIterationsTF = source.stopIterationsTF;
 	target.logSphericalFoldEnabled = source.logSphericalFoldEnabled;
 	target.logSphericalMinR = source.logSphericalMinR;
 	target.hyperBoxFoldEnabled = source.hyperBoxFoldEnabled;
 	target.hyperBoxFoldK = source.hyperBoxFoldK;
+	target.startIterationsHB = source.startIterationsHB;
+	target.stopIterationsHB = source.stopIterationsHB;
 	return target;
 }
 

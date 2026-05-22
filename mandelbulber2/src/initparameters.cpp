@@ -1424,19 +1424,29 @@ void InitFractalParams(std::shared_ptr<cParameterContainer> par)
 	// #3 Pre-Sphere Inversion
 	par->addParam("mandalay_pre_sphere_invert_enabled", false, morphLinear, paramStandard);
 	par->addParam("mandalay_invert_center", CVector4(0.0, 0.0, 0.0, 1.0), morphAkima, paramStandard);
+	par->addParam("mandalay_start_iterations_pi", 0, 0, 999, morphLinear, paramStandard);
+	par->addParam("mandalay_stop_iterations_pi", 250, 0, 999, morphLinear, paramStandard);
 	// #4 Anisotrope Scale
 	par->addParam("mandalay_anisotrope_scale_enabled", false, morphLinear, paramStandard);
 	par->addParam("mandalay_scale_3d", CVector4(2.0, 2.0, 2.0, 0.0), morphAkima, paramStandard);
+	par->addParam("mandalay_start_iterations_as", 0, 0, 999, morphLinear, paramStandard);
+	par->addParam("mandalay_stop_iterations_as", 250, 0, 999, morphLinear, paramStandard);
 	// #5 Z-Shear
 	par->addParam("mandalay_z_shear_enabled", false, morphLinear, paramStandard);
 	par->addParam("mandalay_z_shear_strength", 0.1, -10.0, 10.0, morphAkima, paramStandard);
+	par->addParam("mandalay_start_iterations_zs", 0, 0, 999, morphLinear, paramStandard);
+	par->addParam("mandalay_stop_iterations_zs", 250, 0, 999, morphLinear, paramStandard);
 	// #6 Variable Clip Limits
 	par->addParam("mandalay_variable_clip_enabled", false, morphLinear, paramStandard);
 	par->addParam("mandalay_fo_vary", 0.0, -5.0, 5.0, morphAkima, paramStandard);
 	par->addParam("mandalay_g_vary", 0.0, -5.0, 5.0, morphAkima, paramStandard);
+	par->addParam("mandalay_start_iterations_vc", 0, 0, 999, morphLinear, paramStandard);
+	par->addParam("mandalay_stop_iterations_vc", 250, 0, 999, morphLinear, paramStandard);
 	// #7 Quaternion Pre-Rotation
 	par->addParam("mandalay_quat_rot_enabled", false, morphLinear, paramStandard);
 	par->addParam("mandalay_quat_rot", CVector4(0.0, 0.0, 0.0, 1.0), morphAkima, paramStandard);
+	par->addParam("mandalay_start_iterations_qr", 0, 0, 999, morphLinear, paramStandard);
+	par->addParam("mandalay_stop_iterations_qr", 250, 0, 999, morphLinear, paramStandard);
 
 	// #8 Ellipsoïde Fold
 	par->addParam("mandalay_ellipsoid_fold_enabled", false, morphLinear, paramStandard);
@@ -1448,6 +1458,8 @@ void InitFractalParams(std::shared_ptr<cParameterContainer> par)
 	par->addParam("mandalay_torus_major_r", 1.0, 0.01, 100.0, morphAkima, paramStandard);
 	par->addParam("mandalay_torus_minor_r", 0.3, 0.01, 100.0, morphAkima, paramStandard);
 	par->addParam("mandalay_torus_fold_strength", 1.0, 0.0, 10.0, morphAkima, paramStandard);
+	par->addParam("mandalay_start_iterations_tf", 0, 0, 999, morphLinear, paramStandard);
+	par->addParam("mandalay_stop_iterations_tf", 250, 0, 999, morphLinear, paramStandard);
 
 	// #10 Logarithmic Spherical Fold
 	par->addParam("mandalay_log_spherical_fold_enabled", false, morphLinear, paramStandard);
@@ -1456,6 +1468,8 @@ void InitFractalParams(std::shared_ptr<cParameterContainer> par)
 	// #11 Hyperbolische Box Fold
 	par->addParam("mandalay_hyper_box_fold_enabled", false, morphLinear, paramStandard);
 	par->addParam("mandalay_hyper_box_fold_k", 1.0, 0.01, 10.0, morphAkima, paramStandard);
+	par->addParam("mandalay_start_iterations_hb", 0, 0, 999, morphLinear, paramStandard);
+	par->addParam("mandalay_stop_iterations_hb", 250, 0, 999, morphLinear, paramStandard);
 
 	// mandelbulbMulti
 	par->addParam("mandelbulbMulti_acos_or_asin", 0, morphNone, paramStandard, qslAcosAsin);

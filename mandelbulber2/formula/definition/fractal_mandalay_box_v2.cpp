@@ -31,7 +31,9 @@ void cFractalMandalayBoxV2::FormulaCode(CVector4 &z, const sFractal *fractal, sE
 	double rrCol = 0.0;
 
 	// === #7 Quaternion Pre-Rotation (4D → 3D) ===
-	if (fractal->mandalay.quatRotEnabled)
+	if (fractal->mandalay.quatRotEnabled
+			&& aux.i >= fractal->mandalay.startIterationsQR
+			&& aux.i < fractal->mandalay.stopIterationsQR)
 	{
 		double qw = fractal->mandalay.quatRot.w;
 		double qi = fractal->mandalay.quatRot.x;
@@ -48,7 +50,9 @@ void cFractalMandalayBoxV2::FormulaCode(CVector4 &z, const sFractal *fractal, sE
 	}
 
 	// === #3 Pre-Sphere Inversion (Kleinian-style Möbius) ===
-	if (fractal->mandalay.preSphereInvertEnabled)
+	if (fractal->mandalay.preSphereInvertEnabled
+			&& aux.i >= fractal->mandalay.startIterationsPI
+			&& aux.i < fractal->mandalay.stopIterationsPI)
 	{
 		CVector4 c_inv = fractal->mandalay.invertCenter;
 		double radius = c_inv.w;
@@ -98,7 +102,9 @@ void cFractalMandalayBoxV2::FormulaCode(CVector4 &z, const sFractal *fractal, sE
 	// === #6 Variable Clip Limits (adaptive fo/g) ===
 	CVector4 fo = fractal->transformCommon.additionConstant0555;
 	CVector4 g = fractal->transformCommon.offsetA000;
-	if (fractal->mandalay.variableClipEnabled)
+	if (fractal->mandalay.variableClipEnabled
+			&& aux.i >= fractal->mandalay.startIterationsVC
+			&& aux.i < fractal->mandalay.stopIterationsVC)
 	{
 		double orbitDist = aux.r - 1.0;
 		double adaptive = 1.0 + fractal->mandalay.foVary * orbitDist;
@@ -188,14 +194,18 @@ void cFractalMandalayBoxV2::FormulaCode(CVector4 &z, const sFractal *fractal, sE
 	}
 
 	// === #5 Z-Shear / Parabolische Diepte-Vervorming ===
-	if (fractal->mandalay.zShearEnabled)
+	if (fractal->mandalay.zShearEnabled
+			&& aux.i >= fractal->mandalay.startIterationsZS
+			&& aux.i < fractal->mandalay.stopIterationsZS)
 	{
 		double r_xy = z.x * z.x + z.y * z.y;
 		z.z += fractal->mandalay.zShearStrength * r_xy;
 	}
 
 	// === #9 Torus Fold (pre-spherical) ===
-	if (fractal->mandalay.torusFoldEnabled)
+	if (fractal->mandalay.torusFoldEnabled
+			&& aux.i >= fractal->mandalay.startIterationsTF
+			&& aux.i < fractal->mandalay.stopIterationsTF)
 	{
 		double R = fractal->mandalay.torusMajorR;
 		double r_minor = fractal->mandalay.torusMinorR;
@@ -216,7 +226,9 @@ void cFractalMandalayBoxV2::FormulaCode(CVector4 &z, const sFractal *fractal, sE
 	}
 
 	// === #11 Hyperbolische Box Fold (pre-spherical) ===
-	if (fractal->mandalay.hyperBoxFoldEnabled)
+	if (fractal->mandalay.hyperBoxFoldEnabled
+			&& aux.i >= fractal->mandalay.startIterationsHB
+			&& aux.i < fractal->mandalay.stopIterationsHB)
 	{
 		double k = fractal->mandalay.hyperBoxFoldK;
 		double ox = z.x, oy = z.y, oz = z.z;
@@ -281,7 +293,9 @@ void cFractalMandalayBoxV2::FormulaCode(CVector4 &z, const sFractal *fractal, sE
 	}
 
 	// === #4 Anisotrope Scale (per-axis) ===
-	if (fractal->mandalay.anisotropeScaleEnabled)
+	if (fractal->mandalay.anisotropeScaleEnabled
+			&& aux.i >= fractal->mandalay.startIterationsAS
+			&& aux.i < fractal->mandalay.stopIterationsAS)
 	{
 		CVector4 s3d = fractal->mandalay.scale3D;
 		z.x *= s3d.x;

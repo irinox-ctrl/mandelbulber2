@@ -20,7 +20,9 @@ REAL4 MandalayBoxV2Iteration(REAL4 z, __global const sFractalCl *fractal, sExten
 	REAL rrCol = 0.0f;
 
 	// === #7 Quaternion Pre-Rotation (4D → 3D) ===
-	if (fractal->mandalay.quatRotEnabled)
+	if (fractal->mandalay.quatRotEnabled
+			&& aux->i >= fractal->mandalay.startIterationsQR
+			&& aux->i < fractal->mandalay.stopIterationsQR)
 	{
 		REAL qw = fractal->mandalay.quatRot.w;
 		REAL qi = fractal->mandalay.quatRot.x;
@@ -36,7 +38,9 @@ REAL4 MandalayBoxV2Iteration(REAL4 z, __global const sFractalCl *fractal, sExten
 	}
 
 	// === #3 Pre-Sphere Inversion (Kleinian-style Möbius) ===
-	if (fractal->mandalay.preSphereInvertEnabled)
+	if (fractal->mandalay.preSphereInvertEnabled
+			&& aux->i >= fractal->mandalay.startIterationsPI
+			&& aux->i < fractal->mandalay.stopIterationsPI)
 	{
 		REAL4 c_inv = fractal->mandalay.invertCenter;
 		REAL radius = c_inv.w;
@@ -92,7 +96,9 @@ REAL4 MandalayBoxV2Iteration(REAL4 z, __global const sFractalCl *fractal, sExten
 	// === #6 Variable Clip Limits (adaptive fo/g) ===
 	REAL4 fo = fractal->transformCommon.additionConstant0555;
 	REAL4 g = fractal->transformCommon.offsetA000;
-	if (fractal->mandalay.variableClipEnabled)
+	if (fractal->mandalay.variableClipEnabled
+			&& aux->i >= fractal->mandalay.startIterationsVC
+			&& aux->i < fractal->mandalay.stopIterationsVC)
 	{
 		REAL orbitDist = aux->r - 1.0f;
 		REAL adaptive = 1.0f + fractal->mandalay.foVary * orbitDist;
@@ -203,14 +209,18 @@ REAL4 MandalayBoxV2Iteration(REAL4 z, __global const sFractalCl *fractal, sExten
 	}
 
 	// === #5 Z-Shear / Parabolische Diepte-Vervorming ===
-	if (fractal->mandalay.zShearEnabled)
+	if (fractal->mandalay.zShearEnabled
+			&& aux->i >= fractal->mandalay.startIterationsZS
+			&& aux->i < fractal->mandalay.stopIterationsZS)
 	{
 		REAL r_xy = z.x * z.x + z.y * z.y;
 		z.z += fractal->mandalay.zShearStrength * r_xy;
 	}
 
 	// === #9 Torus Fold (pre-spherical) ===
-	if (fractal->mandalay.torusFoldEnabled)
+	if (fractal->mandalay.torusFoldEnabled
+			&& aux->i >= fractal->mandalay.startIterationsTF
+			&& aux->i < fractal->mandalay.stopIterationsTF)
 	{
 		REAL R = fractal->mandalay.torusMajorR;
 		REAL r_minor = fractal->mandalay.torusMinorR;
@@ -231,7 +241,9 @@ REAL4 MandalayBoxV2Iteration(REAL4 z, __global const sFractalCl *fractal, sExten
 	}
 
 	// === #11 Hyperbolische Box Fold (pre-spherical) ===
-	if (fractal->mandalay.hyperBoxFoldEnabled)
+	if (fractal->mandalay.hyperBoxFoldEnabled
+			&& aux->i >= fractal->mandalay.startIterationsHB
+			&& aux->i < fractal->mandalay.stopIterationsHB)
 	{
 		REAL k = fractal->mandalay.hyperBoxFoldK;
 		REAL ox = z.x, oy = z.y, oz = z.z;
@@ -296,7 +308,9 @@ REAL4 MandalayBoxV2Iteration(REAL4 z, __global const sFractalCl *fractal, sExten
 	}
 
 	// === #4 Anisotrope Scale (per-axis) ===
-	if (fractal->mandalay.anisotropeScaleEnabled)
+	if (fractal->mandalay.anisotropeScaleEnabled
+			&& aux->i >= fractal->mandalay.startIterationsAS
+			&& aux->i < fractal->mandalay.stopIterationsAS)
 	{
 		REAL4 s3d = fractal->mandalay.scale3D;
 		z.x *= s3d.x;

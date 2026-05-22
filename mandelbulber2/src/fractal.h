@@ -250,23 +250,33 @@ struct sFractalMandalay
 	// #3 Pre-Sphere Inversion (Kleinian-style)
 	bool preSphereInvertEnabled;
 	CVector4 invertCenter; // xyz = center, w = radius
+	int startIterationsPI;
+	int stopIterationsPI;
 
 	// #4 Anisotrope Scale (per-axis)
 	bool anisotropeScaleEnabled;
 	CVector4 scale3D;
+	int startIterationsAS;
+	int stopIterationsAS;
 
 	// #5 Z-Shear (parabolische diepte-vervorming)
 	bool zShearEnabled;
 	double zShearStrength;
+	int startIterationsZS;
+	int stopIterationsZS;
 
 	// #6 Variable Clip Limits (adaptieve fo/g)
 	bool variableClipEnabled;
 	double foVary;
 	double gVary;
+	int startIterationsVC;
+	int stopIterationsVC;
 
 	// #7 Quaternion Pre-Rotation
 	bool quatRotEnabled;
 	CVector4 quatRot; // xyz = imaginary, w = real
+	int startIterationsQR;
+	int stopIterationsQR;
 
 	// #8 Ellipsoïde Fold (non-spherical fold boundary)
 	bool ellipsoidFoldEnabled;
@@ -278,6 +288,8 @@ struct sFractalMandalay
 	double torusMajorR; // R: distance center to tube center
 	double torusMinorR; // r: tube radius
 	double torusFoldStrength;
+	int startIterationsTF;
+	int stopIterationsTF;
 
 	// #10 Logarithmic Spherical Fold
 	bool logSphericalFoldEnabled;
@@ -286,6 +298,8 @@ struct sFractalMandalay
 	// #11 Hyperbolische Box Fold
 	bool hyperBoxFoldEnabled;
 	double hyperBoxFoldK; // sinh/cosh steepness
+	int startIterationsHB;
+	int stopIterationsHB;
 };
 
 struct sFractalDonut
