@@ -1,0 +1,63 @@
+name: Build Windows x64
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ devin/* ]
+
+jobs:
+  build-windows:
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Add MSBuild to PATH
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Restore NuGet packages
+        working-directory: mandelbulber2/msvc
+        run: nuget restore mandelbulber2.sln
+
+      - name: Build autogen (moc/uic/rcc)
+        working-directory: mandelbulber2/msvc
+        run: msbuild mandelbulber2_autogen.vcxproj /p:Configuration=Release /p:Platform=x64 /m
+
+      - name: Build mandelbulber2
+        working-directory: mandelbulber2/msvc
+        run: msbuild mandelbulber2.vcxproj /p:Configuration=Release /p:Platform=x64 /m
+
+      - name: Collect distributable
+        shell: pwsh
+        run: |
+          $out = "mandelbulber2-win64"
+          New-Item -ItemType Directory -Force -Path $out
+
+          # Main executable
+          Copy-Item "build-win/Release/x64/mandelbulber2.exe" $out/
+
+          # Qt and OpenCL DLLs from NuGet packages
+          Get-ChildItem -Path packages -Recurse -Filter "*.dll" |
+            Where-Object { $_.FullName -match "x64" -or $_.FullName -match "win64" } |
+            Copy-Item -Destination $out/ -Force
+
+          # OpenCL kernels and headers
+          Copy-Item -Recurse "mandelbulber2/opencl" "$out/opencl"
+          Copy-Item -Recurse "mandelbulber2/formula" "$out/formula"
+
+          # Data files
+          if (Test-Path "mandelbulber2/data") {
+            Copy-Item -Recurse "mandelbulber2/data" "$out/data"
+          }
+          if (Test-Path "mandelbulber2/language") {
+            Copy-Item -Recurse "mandelbulber2/language" "$out/language"
+          }
+
+          # Compress
+          Compress-Archive -Path "$out/*" -DestinationPath "mandelbulber2-win64.zip"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: mandelbulber2-win64
+          path: mandelbulber2-win64.zip
+          retention-days: 30
