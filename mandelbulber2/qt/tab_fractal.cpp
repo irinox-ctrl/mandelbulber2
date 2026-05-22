@@ -331,6 +331,15 @@ void cTabFractal::SynchronizeInterface(
 	SynchronizeInterfaceWindow(ui->groupBox_advanced_weight, par, mode);
 
 	WriteLog("cTabFractal::SynchronizeInterface: groupCheck_mutation_enabled", 3);
+	// groupCheck's own checked state must be synced explicitly:
+	// SynchronizeInterfaceWindow processes CHILDREN only, not the widget itself.
+	{
+		QString paramName = "mutation_enabled_" + QString::number(tabIndex + 1);
+		if (mode == qInterface::read)
+			par->Set(paramName, ui->groupCheck_mutation_enabled->isChecked());
+		else
+			ui->groupCheck_mutation_enabled->setChecked(par->Get<bool>(paramName));
+	}
 	SynchronizeInterfaceWindow(ui->groupCheck_mutation_enabled, par, mode);
 }
 
