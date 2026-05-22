@@ -1246,6 +1246,9 @@ bool cOpenClEngineRenderFractal::PreAllocateBuffers(
 		std::cerr << bufReport.toStdString();
 	}
 
+	// ComboBox ↔ Parameter range validation
+	GPUDiag::RunComboBoxDiagnostics();
+
 	// allocating input buffers for each device
 	for (int d = 0; d < hardware->getEnabledDevices().size(); d++)
 	{

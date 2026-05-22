@@ -461,6 +461,87 @@ inline void RunFullDiagnostics(const sClInConstants *buffer)
 	std::cerr << scanReport.toStdString();
 }
 
+// ═══════════════════════════════════════════════════════════════════
+//  SECTION 7: ComboBox ↔ Parameter Range Validator
+// ═══════════════════════════════════════════════════════════════════
+//
+// Validates that parameter max values match the number of items in
+// corresponding QComboBox widgets. When a comboBox has N items but
+// the parameter max is M < N-1, selections above index M are silently
+// clamped, causing "dropdown doesn't work" symptoms.
+//
+// Common pattern:
+//   UI comboBox has 28 items (index 0-27)
+//   par->addParam("mutation_fold_type", i, 0, 0, 7, ...)  ← max=7 is WRONG
+//   User selects item 15 → clamped to 7 → wrong fold applied
+//
+// This validator is called at startup and logs any mismatches.
+
+struct sComboBoxRangeCheck
+{
+	const char *paramName;
+	int maxValue;      // from addParam
+	int comboBoxItems; // count of <item> in UI
+};
+
+inline QString ValidateComboBoxRanges()
+{
+	std::ostringstream out;
+	out << "\n╔══════════════════════════════════════════════════════════════╗\n";
+	out << "║     COMBOBOX ↔ PARAMETER RANGE VALIDATOR                    ║\n";
+	out << "╠══════════════════════════════════════════════════════════════╣\n";
+
+	// Expected ranges: paramName, paramMax, comboBoxItemCount
+	sComboBoxRangeCheck checks[] = {
+		{"mutation_fold_type", 27, 28},
+		{"mutation_warp_type", 11, 12},
+		{"mutation_math_type", 41, 42},
+		{"mutation_swizzle", 5, 6},
+		{"mutation_fold_position", 2, 3},
+		{"mutation_de_tweak", 6, 7},
+		{"mutation_orbit_trap", 5, 6},
+		{"mutation_julia_injection", 5, 6},
+		{"mutation_julia_start", 4, 5},
+		{"mutation_julia_c_transform", 5, 6},
+		{"mutation_julia_dynamic", 5, 6},
+		{"mutation_julia_multi", 5, 6},
+	};
+
+	int errors = 0;
+	for (const auto &c : checks)
+	{
+		int expectedMax = c.comboBoxItems - 1;
+		if (c.maxValue != expectedMax)
+		{
+			out << "║ ✗ " << c.paramName << ": param max=" << c.maxValue
+				<< " but comboBox has " << c.comboBoxItems << " items (needs max="
+				<< expectedMax << ")\n";
+			errors++;
+		}
+		else
+		{
+			out << "║ ✓ " << c.paramName << ": max=" << c.maxValue
+				<< " matches " << c.comboBoxItems << " items\n";
+		}
+	}
+
+	if (errors == 0)
+		out << "╠══════════════════════════════════════════════════════════════╣\n"
+			<< "║ All comboBox ranges are correct                             ║\n";
+	else
+		out << "╠══════════════════════════════════════════════════════════════╣\n"
+			<< "║ ⚠ " << errors << " param(s) have mismatched ranges — dropdowns won't work!\n";
+
+	out << "╚══════════════════════════════════════════════════════════════╝\n";
+	return QString::fromStdString(out.str());
+}
+
+inline void RunComboBoxDiagnostics()
+{
+	QString comboReport = ValidateComboBoxRanges();
+	std::cerr << comboReport.toStdString();
+}
+
 } // namespace GPUDiag
 
 #endif // USE_OPENCL
