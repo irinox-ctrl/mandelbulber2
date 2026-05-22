@@ -80,7 +80,7 @@ void RenderWindow::slotImportOldSettings()
 		gMainInterface->SynchronizeInterface(gPar, gParFractal, qInterface::write);
 		gMainInterface->ComboMouseClickUpdate();
 		systemData.lastSettingsFile = filename;
-		setWindowTitle(QString("Mandelbulber (") + filename + ")");
+		setWindowTitle(QString(APP_NAME) + " (" + filename + ")");
 	}
 }
 
@@ -107,29 +107,34 @@ void RenderWindow::slotImportMandelbulb3dSettings()
 	//		gMainInterface->SynchronizeInterface(gPar, gParFractal, qInterface::write);
 	//		gMainInterface->ComboMouseClickUpdate();
 	//		systemData.lastSettingsFile = filename;
-	//		setWindowTitle(QString("Mandelbulber (") + filename + ")");
+	//		setWindowTitle(QString(APP_NAME) + " (" + filename + ")");
 	//	}
 }
 
 void RenderWindow::slotMenuAboutMandelbulber()
 {
-	QString text = "<h2>Mandelbulber</h2>";
+	QString text = "<h2>" + QString(APP_NAME) + "</h2>";
 	text += "version: <b>" + QString(MANDELBULBER_VERSION_STRING) + "</b>" + "<br>";
+	text += "Founded by: <b>" + QString(APP_FOUNDERS) + "</b><br>";
+	text += "<br>";
+	text += "Based on Mandelbulber by Krzysztof Marczak<br>";
 	text += "<br>";
 	text += "Licence: GNU GPL version 3.0<br>";
 	text += "Copyright Ⓒ 2025<br>";
-	text += "project leader: Krzysztof Marczak<br>";
-	text += "Project contributors:<br>";
-	text += "Sebastian Jennen, Graeme McLaren, Bernardo Martelli,<br>";
-	text += "Robert Pancoast, knighty, makemeunsee, Marius Schilder,<br>";
-	text += "Ryan Hitchman, Jeff Epler, Martin Reinecke, Quazgaa, Adrian Meyer<br>";
-	text += "github:rikardfalkeborn, github:orbitcowboy, github:brunetton,<br>";
-	text += "github:biberino, github:luchansky, github:jeroenrijckaert,<br>";
-	text += "github:KoviRobi, github:psyriccio, github:valera-rozuvan,<br>";
-	text += "github:probonopd, github:mia-0, github:gitter-badger, <br>";
-	text += "github:danuni, github:Starmute<br>";
 	text += "<br>";
-	text += "Thanks to many friends from Mandelbulber community<br>";
+	text += "<b>1600+ fractal transformations</b><br>";
+	text += "Amazing Surf 1-4 (100 types) | SphereTree/Menger (100 types)<br>";
+	text += "MandelTorus (100 types) | Abox (300 types) | Noise/Orbit (200 types)<br>";
+	text += "Symmetry/Kaleidoscope (100 types) | Warp/Distortion (100 types)<br>";
+	text += "Boolean groups | 7 Cloner modes | Full GPU/CPU parity<br>";
+	text += "<br>";
+	text += "Original Mandelbulber contributors:<br>";
+	text += "Krzysztof Marczak, Sebastian Jennen, Graeme McLaren,<br>";
+	text += "Bernardo Martelli, Robert Pancoast, knighty, makemeunsee,<br>";
+	text += "Marius Schilder, Ryan Hitchman, Jeff Epler, Martin Reinecke,<br>";
+	text += "Quazgaa, Adrian Meyer, and many more<br>";
+	text += "<br>";
+	text += "Thanks to the Mandelbulber community<br>";
 	text +=
 		"<a "
 		"href=\"https://www.facebook.com/groups/mandelbulber/\">https://www.facebook.com/groups/"
@@ -138,7 +143,7 @@ void RenderWindow::slotMenuAboutMandelbulber()
 	text += "<br>";
 	text += "<a href=\"http://www.mandelbulber.com\">www.mandelbulber.com</a>";
 
-	QMessageBox::about(this, "About Mandelbulber", text);
+	QMessageBox::about(this, "About " + QString(APP_NAME), text);
 }
 
 void RenderWindow::slotMenuAboutQt()
@@ -787,7 +792,7 @@ void RenderWindow::slotMenuSaveSettings()
 		parSettings.SaveToFile(filename);
 		systemData.lastSettingsFile = filename;
 		SaveSettingsToRecent(filename);
-		setWindowTitle(QString("Mandelbulber (") + filename + ")");
+		setWindowTitle(QString(APP_NAME) + " (" + filename + ")");
 
 		// QString hash = parSettings.GetHashCode();
 		// cThumbnail thumbnail(gPar, gParFractal, 200, 200);

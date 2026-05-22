@@ -184,7 +184,7 @@ void cInterface::ShowUi()
 	mainWindow->ui->actionAbout_Manual->setText(
 		QApplication::translate("RenderWindow", "About &User Manual", 0));
 	mainWindow->ui->actionAbout_Mandelbulber->setText(
-		QApplication::translate("RenderWindow", "&Info Mandelbulber", 0));
+		QApplication::translate("RenderWindow", "&Info 3x3lion", 0));
 	mainWindow->ui->actionAbout_ThirdParty->setText(
 		QApplication::translate("RenderWindow", "Info &Third Party", 0));
 #endif
@@ -250,7 +250,7 @@ void cInterface::ShowUi()
 	progressBarFrameInternal->setLayout(progressBarLayout);
 	mainWindow->ui->statusbar->addPermanentWidget(progressBarFrameInternal);
 
-	mainWindow->setWindowTitle(QString("Mandelbulber (") + systemData.lastSettingsFile + ")");
+	mainWindow->setWindowTitle(QString(APP_NAME) + " (" + systemData.lastSettingsFile + ")");
 
 #ifndef USE_EXR
 	{

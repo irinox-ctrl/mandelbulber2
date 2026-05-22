@@ -1,42 +1,34 @@
+# 3x3lion
+
+**Founded by Iri and Devin** | Based on Mandelbulber by Krzysztof Marczak
+
 ![Banner](https://raw.githubusercontent.com/buddhi1980/mandelbulber2/wiki/assets/images/mandelbulberBanner.png)
-<table>
-<tr>
-    <th>Coverity Scan</th>
-    <th>Build Status</th>
-    <th>Gitter Chat</th>
-</tr>
-<tr>
-    <td><a href="https://scan.coverity.com/projects/mandelbulber-v2">
-        <img alt="Coverity Scan" src="https://scan.coverity.com/projects/4723/badge.svg?flat=1"></a></td>
-    <td>
-        Linux: <a href="https://travis-ci.com/github/buddhi1980/mandelbulber2">
-                <img alt="Build Status Linux" src="https://app.travis-ci.com/buddhi1980/mandelbulber2.svg?token=qcG1fmxoCFwBfsQ6A6PF&branch=master"></a></br>
-        Windows: <a href="https://ci.appveyor.com/project/buddhi1980/mandelbulber2">
-                <img alt="Build Status Windows" src="https://ci.appveyor.com/api/projects/status/urd2h30tu7reg4mp?svg=true"></a></br>
-        OSX: <a href="https://circleci.com/gh/buddhi1980/mandelbulber2">
-                <img alt="Build Status OSX Circle CI" src="https://circleci.com/gh/buddhi1980/mandelbulber2.svg?style=shield">
-</a></br>
-Azure: <a href="https://dev.azure.com/buddhi19800328/Mandelbulber/_build?definitionId=1"><img alt="Build status Azure" src="https://dev.azure.com/buddhi19800328/Mandelbulber/_apis/build/status/buddhi1980.mandelbulber2?branchName=master"></a>
 
-</td>
-    </td>
-    <td><a href="https://gitter.im/buddhi1980/mandelbulber2?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge">
-        <img alt="Join the chat" src="https://badges.gitter.im/Join%20Chat.svg"></a></td>
-</tr>
-</table>
+---
 
+## What is 3x3lion?
 
+3x3lion is a massively expanded 3D fractal generator with **1600+ transformations** and full GPU/CPU parity.
 
-
-## Universal Idea
-
-Mandelbulber creatively generates three-dimensional fractals.
-
-Explore trigonometric, hyper-complex, Mandelbox, IFS, and many other 3D fractals.
+Explore trigonometric, hyper-complex, Mandelbox, IFS, Amazing Surf, SphereTree, Menger, MandelTorus, and hundreds more 3D fractals.
 
 Render with a great palette of customizable materials to create stunning images and videos.
 
 The possibilities are literally **infinite**!
+
+### Transformation Systems (1600+ types)
+
+| System | Types | Description |
+|--------|-------|-------------|
+| Amazing Surf 1-4 | 100 | Sigmoid, Gaussian, Julia, Neural, Quantum, Fluid, Optical, Cosmological DE mutations |
+| SphereTree/Menger | 100 | Variable branching, 4D/5D/6D Menger, Cross/Prism, Meta-hybrids |
+| MandelTorus | 100 | Torus knots, Hopf fibration, Villarceau circles, Clifford tori |
+| Abox Extended | 300 | Box fold variants, Kali mutations, sphere inversions |
+| Noise/Orbit | 200 | Perlin noise DE, orbit trap modifications |
+| Symmetry/Kaleidoscope | 100 | N-fold symmetry, kaleidoscopic IFS |
+| Warp/Distortion | 100 | Space warping, coordinate distortions |
+| Boolean Groups | — | Group-based smooth union/intersection/subtraction |
+| Cloner System | 7 modes | Grid, Linear, Radial, Honeycomb, Fibonacci, Random, Spiral |
 
 ![Test Render](https://raw.githubusercontent.com/buddhi1980/mandelbulber2/wiki/assets/images/mandelbulberTestrender.jpg)
 

@@ -37,6 +37,8 @@
 
 #define MANDELBULBER_VERSION 2.35
 #define MANDELBULBER_VERSION_STRING "2.35-dev"
+#define APP_NAME "3x3lion"
+#define APP_FOUNDERS "Iri and Devin"
 
 #define DO_QUOTE(X) #X
 #define QUOTE(X) DO_QUOTE(X)

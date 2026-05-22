@@ -199,10 +199,10 @@ bool InitSystem()
 		fclose(logfile);
 	}
 
-	out << "Mandelbulber " << MANDELBULBER_VERSION_STRING << "\n";
+	out << APP_NAME << " " << MANDELBULBER_VERSION_STRING << "\n";
 	out << "Log file name: " << systemData.logfileName << "\n";
 	;
-	WriteLogString("Mandelbulber version", QString(MANDELBULBER_VERSION_STRING), 1);
+	WriteLogString(QString(APP_NAME) + " version", QString(MANDELBULBER_VERSION_STRING), 1);
 
 	// detecting number of CPU cores
 	systemData.numberOfThreads = get_cpu_count();
