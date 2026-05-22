@@ -538,16 +538,16 @@ kernel void Nebula(__global float4 *inOutImage, __global const sClInConstants *c
 		}
 #endif // ITERATION_WEIGHT
 
-#ifdef ITERATION_WEIGHT
-		if (effectiveWeight > 0.0f)
-		{
-#endif
-
 		// -------------- Formula Mutation pre-processing (GPU Nebula) ---------------
 		float4 preMutZ = z;
 		bool mutationActive = consts->sequence.mutationParams[sequence].enabled
 			&& i >= consts->sequence.mutationParams[sequence].iterationStart
 			&& i < consts->sequence.mutationParams[sequence].iterationStop;
+
+#ifdef ITERATION_WEIGHT
+		if (effectiveWeight > 0.0f)
+		{
+#endif
 		if (mutationActive)
 		{
 			__global const sClFormulaMutationParams *mut = &consts->sequence.mutationParams[sequence];
