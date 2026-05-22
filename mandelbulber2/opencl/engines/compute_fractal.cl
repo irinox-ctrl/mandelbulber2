@@ -363,9 +363,9 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 					float factor = delta * wp->deSensitivity;
 					if (wp->deModType == 0) effectiveWeight = wp->deBase + factor;
 					else if (wp->deModType == 1) effectiveWeight = wp->deBase + factor * factor * (factor > 0.0f ? 1.0f : -1.0f);
-					else if (wp->deModType == 2) effectiveWeight = wp->deBase * exp(factor);
+					else if (wp->deModType == 2) effectiveWeight = wp->deBase * native_exp(factor);
 					else if (wp->deModType == 3) effectiveWeight = (fabs(actualDE) > 1e-15f) ? wp->deBase * (wp->deThreshold / actualDE) : 1.0f;
-					else effectiveWeight = wp->deBase + (1.0f - wp->deBase) / (1.0f + exp(-factor));
+					else effectiveWeight = wp->deBase + (1.0f - wp->deBase) / (1.0f + native_exp(-factor));
 					effectiveWeight = clamp(effectiveWeight, 0.0f, 1.0f);
 				}
 				else if (weightMode == 3) // ZLength
@@ -375,9 +375,9 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 					float factor = delta * wp->zlengthSens;
 					if (wp->zlengthModType == 0) effectiveWeight = wp->zlengthBase + factor;
 					else if (wp->zlengthModType == 1) effectiveWeight = wp->zlengthBase + factor * factor * (factor > 0.0f ? 1.0f : -1.0f);
-					else if (wp->zlengthModType == 2) effectiveWeight = wp->zlengthBase * exp(factor);
+					else if (wp->zlengthModType == 2) effectiveWeight = wp->zlengthBase * native_exp(factor);
 					else if (wp->zlengthModType == 3) effectiveWeight = (fabs(zLen) > 1e-15f) ? wp->zlengthBase * (wp->zlengthThreshold / zLen) : 1.0f;
-					else effectiveWeight = wp->zlengthBase + (1.0f - wp->zlengthBase) / (1.0f + exp(-factor));
+					else effectiveWeight = wp->zlengthBase + (1.0f - wp->zlengthBase) / (1.0f + native_exp(-factor));
 					effectiveWeight = clamp(effectiveWeight, 0.0f, 1.0f);
 				}
 				else if (weightMode == 4) // Conditional
@@ -400,9 +400,9 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 					float factor = delta * wp->orbitTrapSensitivity;
 					if (wp->orbitTrapModType == 0) effectiveWeight = wp->orbitTrapBase + factor;
 					else if (wp->orbitTrapModType == 1) effectiveWeight = wp->orbitTrapBase + factor * factor * (factor > 0.0f ? 1.0f : -1.0f);
-					else if (wp->orbitTrapModType == 2) effectiveWeight = wp->orbitTrapBase * exp(factor);
+					else if (wp->orbitTrapModType == 2) effectiveWeight = wp->orbitTrapBase * native_exp(factor);
 					else if (wp->orbitTrapModType == 3) effectiveWeight = (fabs(orbitDist) > 1e-15f) ? wp->orbitTrapBase * (wp->orbitTrapThreshold / orbitDist) : 1.0f;
-					else effectiveWeight = wp->orbitTrapBase + (1.0f - wp->orbitTrapBase) / (1.0f + exp(-factor));
+					else effectiveWeight = wp->orbitTrapBase + (1.0f - wp->orbitTrapBase) / (1.0f + native_exp(-factor));
 					effectiveWeight = clamp(effectiveWeight, 0.0f, 1.0f);
 				}
 				else if (weightMode == 6) // Curve
@@ -411,9 +411,9 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 					float powered = pow(fabs(normalized * wp->curveSensitivity), wp->curvePower);
 					if (wp->curveModType == 0) effectiveWeight = wp->curveBase + powered * (normalized >= 0.0f ? 1.0f : -1.0f);
 					else if (wp->curveModType == 1) { float s = powered * powered * (3.0f - 2.0f * powered); effectiveWeight = wp->curveBase + s; }
-					else if (wp->curveModType == 2) effectiveWeight = wp->curveBase * exp(powered - 1.0f);
+					else if (wp->curveModType == 2) effectiveWeight = wp->curveBase * native_exp(powered - 1.0f);
 					else if (wp->curveModType == 3) effectiveWeight = (powered > 1e-15f) ? wp->curveBase / powered : 1.0f;
-					else effectiveWeight = wp->curveBase + (1.0f - wp->curveBase) / (1.0f + exp(-(powered - 0.5f) * 6.0f));
+					else effectiveWeight = wp->curveBase + (1.0f - wp->curveBase) / (1.0f + native_exp(-(powered - 0.5f) * 6.0f));
 					effectiveWeight = clamp(effectiveWeight, 0.0f, 1.0f);
 				}
 				else if (weightMode == 7) // Transform Passthrough
@@ -426,9 +426,9 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 					ratio *= wp->deRatioScale;
 					if (wp->deRatioModType == 0) effectiveWeight = clamp(ratio, 0.0f, 1.0f);
 					else if (wp->deRatioModType == 1) { float c = clamp(ratio, 0.0f, 1.0f); effectiveWeight = c * c * (3.0f - 2.0f * c); }
-					else if (wp->deRatioModType == 2) effectiveWeight = 1.0f - exp(-fabs(ratio));
+					else if (wp->deRatioModType == 2) effectiveWeight = 1.0f - native_exp(-fabs(ratio));
 					else if (wp->deRatioModType == 3) effectiveWeight = (fabs(ratio) > 1e-15f) ? clamp(1.0f / ratio, 0.0f, 1.0f) : 1.0f;
-					else effectiveWeight = 1.0f / (1.0f + exp(-(ratio - 0.5f) * 6.0f));
+					else effectiveWeight = 1.0f / (1.0f + native_exp(-(ratio - 0.5f) * 6.0f));
 				}
 				else if (weightMode == 9) // Adaptive
 				{
@@ -436,7 +436,7 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 					if (deFunc == logarithmicDEFunction)
 					{
 						float norm = (actualDE > 1e-15f) ? native_log(1.0f + actualDE) : 0.0f;
-						effectiveWeight = 1.0f / (1.0f + exp(-(norm - 0.5f) * 4.0f * str));
+						effectiveWeight = 1.0f / (1.0f + native_exp(-(norm - 0.5f) * 4.0f * str));
 					}
 					else if (deFunc == linearDEFunction)
 					{
@@ -450,7 +450,7 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 					}
 					else if (deFunc == pseudoKleinianDEFunction || deFunc == josKleinianDEFunction)
 					{
-						effectiveWeight = 1.0f / (1.0f + exp(-(actualDE - 0.5f) * 6.0f * str));
+						effectiveWeight = 1.0f / (1.0f + native_exp(-(actualDE - 0.5f) * 6.0f * str));
 					}
 					else if (deFunc == 0) // withoutDEFunction
 					{
@@ -1613,10 +1613,10 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 						float theta = mut->mathP2 * M_PI_F / 180.0f;
 						float axPhi = mut->mathP3 * M_PI_F / 180.0f;
 						float axPsi = mut->mathP4 * M_PI_F / 180.0f;
-						float axX = cos(axPhi) * cos(axPsi);
-						float axY = cos(axPhi) * sin(axPsi);
-						float axZ = sin(axPhi);
-						float ct = cos(theta), st = sin(theta);
+						float axX = native_cos(axPhi) * native_cos(axPsi);
+						float axY = native_cos(axPhi) * native_sin(axPsi);
+						float axZ = native_sin(axPhi);
+						float ct = native_cos(theta), st = native_sin(theta);
 						float dot = z.x*axX + z.y*axY + z.z*axZ;
 						float crx = axY*z.z - axZ*z.y;
 						float cry = axZ*z.x - axX*z.z;
@@ -1680,7 +1680,7 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 						{
 							float angle = mut->mathP1 * M_PI_F / 180.0f;
 							float sc = (mut->mathP2 != 0.0f) ? mut->mathP2 : 1.0f;
-							float ca = cos(angle), sa = sin(angle);
+							float ca = native_cos(angle), sa = native_sin(angle);
 							mathZ.x = (z.x * ca - z.y * sa) * sc;
 							mathZ.y = (z.x * sa + z.y * ca) * sc;
 							mathZ.z = z.z * sc;
@@ -1712,7 +1712,7 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 							mathZ.z = invZ;
 							if (fabs(bendAngle) > 1e-12f)
 							{
-								float cb = cos(bendAngle), sb = sin(bendAngle);
+								float cb = native_cos(bendAngle), sb = native_sin(bendAngle);
 								float ty = mathZ.y * cb - mathZ.z * sb;
 								float tz = mathZ.y * sb + mathZ.z * cb;
 								mathZ.y = ty; mathZ.z = tz;
@@ -1835,7 +1835,7 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 						float radial = mut->mathP2 * r;
 						float sinusoidal = mut->mathP3 * native_sin(r * mut->mathP4);
 						float u = harmonic + radial + sinusoidal;
-						float confFactor = exp(2.0f * u);
+						float confFactor = native_exp(2.0f * u);
 						if (confFactor > 100.0f) confFactor = 100.0f;
 						if (confFactor < 0.01f) confFactor = 0.01f;
 						mathZ.x = z.x * confFactor;
@@ -3119,7 +3119,7 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 					case 48: { float cle=ja*native_sin(jfreq*atan2(zy,zx))*native_exp(-jb*r); aux.DE*=(1.0f+jf*cle); break; }
 					case 49: { float sle=ja*zy/(fmax(1e-10f,rr))*native_exp(-jb*fabs(zx)); aux.DE*=(1.0f+jf*sle); break; }
 					case 50: { float gff=ja*native_cos(jfreq*zx)*native_cos(jfreq*zy)/fmax(1e-10f,r); aux.DE*=(1.0f+jf*gff); break; }
-					case 51: { float lqg=ja*native_exp(jb*native_sin(jfreq*r+jph)); aux.DE*=(1.0f+jf*lqg/fmax(1e-10f,r)); break; }
+					case 51: { float lqg=ja*native_exp(fmin(jb*native_sin(jfreq*r+jph),20.0f)); aux.DE*=(1.0f+jf*lqg/fmax(1e-10f,r)); break; }
 					case 52: { float bm=ja*native_sqrt(fmax(0.0f,rr-jb*jb))/fmax(1e-10f,rr); aux.DE*=(1.0f+jf*bm); break; }
 					case 53: { float pm2=ja*(2.0f-fabs(zx)+fabs(zy)-fabs(zz2))/fmax(1e-10f,r); aux.DE*=(1.0f+jf*tanh(pm2)); break; }
 					case 54: { float tt=ja*(zx*zy+zy*zz2+zz2*zx)/fmax(1e-10f,rr*r); aux.DE*=(1.0f+jf*tt); break; }
@@ -3698,7 +3698,7 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 						case 71: { if(z.x*z.y > 0) { float t=z.x; z.x=z.y; z.y=t; } break; }
 						case 72: { if(z.x*z.y < 0) { z.x = fabs(z.x); z.y = fabs(z.y); } break; }
 						case 73: { if(r < sa) { z *= sf; aux.DE *= fabs(sf); } else { z.x = fabs(z.x); z.y = fabs(z.y); } break; }
-						case 74: { if(fmod(double(i), sa) < sb) { z.x = fabs(z.x); z.y = fabs(z.y); z.z = fabs(z.z); } break; }
+						case 74: { if(fmod(float(i), sa) < sb) { z.x = fabs(z.x); z.y = fabs(z.y); z.z = fabs(z.z); } break; }
 						case 75: { { float d = z.x*native_cos(sang) + z.y*native_sin(sang); if(d < soff) { z.x -= 2.0*(d-soff)*native_cos(sang); z.y -= 2.0*(d-soff)*native_sin(sang); } } break; }
 						case 76: { { float d1 = z.x*native_cos(sang)+z.y*native_sin(sang); if(d1<0){z.x-=2.0*d1*native_cos(sang);z.y-=2.0*d1*native_sin(sang);} float a2=sang+M_PI_F/fmax(1.0,sa); float d2=z.x*native_cos(a2)+z.y*native_sin(a2); if(d2<0){z.x-=2.0*d2*native_cos(a2);z.y-=2.0*d2*native_sin(a2);} } break; }
 						case 77: { { for(int k=0;k<int(fmax(1,sa));k++){ z.x=fabs(z.x)-sb; z.y=fabs(z.y)-sc; if(z.x<z.y){float t=z.x;z.x=z.y;z.y=t;} } } break; }
@@ -3799,12 +3799,12 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 						case 58: { { float golden=1.6180339887; aux.DE*=fabs(aa+ab*native_pow(golden,ac*i-ad)); } break; }
 						case 59: { aux.DE *= fabs(aa + ab * native_sin(ac * i) * native_cos(ad * r)); break; }
 						case 60: { { float s=aa+ab*native_tanh(ac*(i-ad)); aux.DE*=fabs(s); } break; }
-						case 61: { aux.DE *= fmax(0.01, fabs(aa + ab * fmod(double(i) * ac, ad))); break; }
+						case 61: { aux.DE *= fmax(0.01, fabs(aa + ab * fmod(float(i) * ac, ad))); break; }
 						case 62: { aux.DE *= fabs(aa + ab / (1.0 + ac * i)); break; }
 						case 63: { { float ph=atan2(zy,zx); aux.DE*=fabs(aa+ab*native_sin(ac*ph)); } break; }
 						case 64: { aux.DE *= fabs(aa + ab * (zx*zx - zy*zy) / (rr + 1e-21)); break; }
 						case 65: { aux.DE *= fabs(aa + ab * native_sin(ac * i * M_PI_F / ad)); break; }
-						case 66: { { float s=aa*(1.0+ab*native_sin(ac*double(i))); aux.DE*=fabs(s); } break; }
+						case 66: { { float s=aa*(1.0+ab*native_sin(ac*float(i))); aux.DE*=fabs(s); } break; }
 						case 67: { aux.DE *= fabs(aa + ab * fabs(native_sin(ac * r + ad * i))); break; }
 						case 68: { { float s=aa+ab*native_cos(ac*r)*native_sin(ad*i*0.1); aux.DE*=fabs(s); } break; }
 						case 69: { aux.DE *= fabs(aa + ab * (native_sin(ac*zx)+native_sin(ad*zy)+native_sin(ae*zz2))/3.0); break; }
@@ -3885,7 +3885,7 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 						case 144: { { float d2=fabs(zx*zx/fmax(aa*aa,0.01)+zy*zy/fmax(ab*ab,0.01)-1.0); aux.DE*=(1.0+af*ac*native_exp(-ad*d2)); } break; }
 						case 145: { { float sp=zx*native_cos(aa*zy)+zy*native_cos(aa*zz2)+zz2*native_cos(aa*zx); aux.DE*=(1.0+af*ab*native_sin(ac*sp)); } break; }
 						case 146: { { float cl=native_sin(aa*length(z)+ab*r); aux.DE*=(1.0+af*ac*cl); } break; }
-						case 147: { { float it=double(i)/fmax(double(aa),1.0); aux.DE*=(1.0+af*ab*native_sin(ac*it*M_PI_F)); } break; }
+						case 147: { { float it=float(i)/fmax(float(aa),1.0); aux.DE*=(1.0+af*ab*native_sin(ac*it*M_PI_F)); } break; }
 						case 148: { { float gr=native_sin(aa*zx*zy/(r+1e-21))+native_cos(ab*zy*zz2/(r+1e-21)); aux.DE*=(1.0+af*ac*gr*0.5); } break; }
 						case 149: { { float pat=native_sin(aa*zx)*native_cos(ab*zy)*native_sin(ac*zz2)*native_cos(ad*r); aux.DE*=(1.0+af*ae*pat); } break; }
 						case 150: { { float comb=aa*native_sin(ab*r)+ac*native_cos(ad*atan2(zy,zx))+ae*native_sin(aff*acos(zz2/r)); aux.DE*=(1.0+af*comb/3.0); } break; }
@@ -3914,7 +3914,7 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 						case 173: { aux.DE *= fabs(aa); break; }
 						case 174: { aux.DE *= (1.0 + fabs(aa*M_PI_F/180.0) * ab); break; }
 						case 175: { aux.DE *= (1.0 + fabs(aa + ab + ac)); break; }
-						case 176: { aux.DE *= fmax(0.01, aa * double(i) / fmax(double(ab), 1.0)); break; }
+						case 176: { aux.DE *= fmax(0.01, aa * float(i) / fmax(float(ab), 1.0)); break; }
 						case 177: { { if(fabs(zx)>aa||fabs(zy)>aa||fabs(zz2)>aa) aux.DE*=ab; } break; }
 						case 178: { { float d=native_sqrt((zx-aa)*(zx-aa)+(zy-ab)*(zy-ab)+(zz2-ac)*(zz2-ac)); if(d<ad) aux.DE*=ae; } break; }
 						case 179: { { if(fabs(zx)<aa && fabs(zy)<aa) aux.DE*=ab; } break; }
@@ -3948,7 +3948,7 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 						case 207: { aux.DE *= (1.0 + aa / fmax(2.0 * ab * r, 1e-21)); break; }
 						case 208: { aux.DE *= (1.0 + aa * (zx*ab + zy*ac + zz2*ad)/(r+1e-21)); break; }
 						case 209: { { float corr=native_sin(aa*zx)*native_sin(aa*(-zx))+native_cos(ab*zy)*native_cos(ab*(-zy)); aux.DE*=(1.0+ac*fabs(corr)); } break; }
-						case 210: { aux.DE *= native_exp(-aa * ab * double(i) * 0.01); break; }
+						case 210: { aux.DE *= native_exp(-aa * ab * float(i) * 0.01); break; }
 						case 211: { { float ent=native_sin(aa*zx)*native_log(fabs(native_sin(aa*zx))+1e-21)+native_sin(ab*zy)*native_log(fabs(native_sin(ab*zy))+1e-21); aux.DE*=(1.0+ac*fabs(ent)*0.1); } break; }
 						case 212: { aux.DE *= (1.0 + aa / fmax(ab * ac, 1e-21)); break; }
 						case 213: { { float vg=(native_sin(aa*(zx+0.01))-native_sin(aa*zx))/0.01; aux.DE*=(1.0+ab*fabs(vg)); } break; }
@@ -3980,17 +3980,17 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 						case 239: { aux.DE /= fmax(0.01, 1.0 - aa / fmax(r, aa + 1e-21)); break; }
 						case 240: { { float jet=native_exp(-fabs(native_sqrt(zx*zx+zy*zy)-aa)/(fmax(ab,0.01))); aux.DE*=(1.0+ac*jet); } break; }
 						case 241: { { float halo=1.0/(1.0+native_pow(r/fmax(aa,0.01),2.0)); aux.DE*=(1.0+ab*halo); } break; }
-						case 242: { aux.DE *= native_exp(aa * ab * r); break; }
+						case 242: { aux.DE *= native_exp(fmin(aa * ab * r, 20.0f)); break; }
 						case 243: { { float cs2=native_log(fmax(fabs(native_sqrt(zx*zx+zy*zy)),1e-21)/fmax(aa,0.01)); aux.DE*=(1.0+ab*ac*cs2); } break; }
 						case 244: { aux.DE *= (1.0 + aa * native_tanh(fabs(zz2 - ab) / fmax(ac, 0.01))); break; }
 						case 245: { { float ylm=native_sin(aa*acos(zz2/r))*native_cos(ab*atan2(zy,zx)); aux.DE*=(1.0+ac*fabs(ylm)); } break; }
 						case 246: { aux.DE *= native_exp(aa * ab); break; }
-						case 247: { { float rh=aa*ab*native_exp(-ac*double(i)*0.01); aux.DE*=(1.0+rh); } break; }
+						case 247: { { float rh=aa*ab*native_exp(-ac*float(i)*0.01); aux.DE*=(1.0+rh); } break; }
 						case 248: { { float ns=aa*ab*native_sin(ac*r)/(1.0+ad*r); aux.DE*=(1.0+ns); } break; }
 						case 249: { { float rc=aa*native_exp(-ab/(fmax(ac*r,0.01))); aux.DE*=(1.0+rc); } break; }
 						case 250: { { float sf2=1.0+aa*r; aux.DE*=sf2*native_sqrt(fmax(0.01,ab*ac/(fmax(r,1e-21)))); } break; }
 						case 251: { { float sf2=fmax(0.01,1.0+aa*r); aux.DE/=sf2; } break; }
-						case 252: { aux.DE *= (1.0 + aa * (1.0 - native_exp(-double(i) * 0.01 / fmax(ab, 0.01)))); break; }
+						case 252: { aux.DE *= (1.0 + aa * (1.0 - native_exp(-float(i) * 0.01 / fmax(ab, 0.01)))); break; }
 						case 253: { { float bn=native_exp(-aa*rr)*ab; aux.DE*=(1.0+bn); } break; }
 						case 254: { { float fv=aa*native_exp(-ab*rr); aux.DE*=(1.0+fv); } break; }
 						case 255: { { float op=native_sin(aa*r)*native_sin(aa*r); aux.DE*=(1.0+ab*op); } break; }
@@ -4019,10 +4019,10 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 						case 278: { { float fw=native_exp(-aa*fabs(r-ab)*fabs(r-ab)*1000.0); aux.DE*=(1.0+ac*fw); } break; }
 						case 279: { { float ee=native_sin(aa*zx)*native_sin(aa*(-zx+ab)); aux.DE*=(1.0+ac*fabs(ee)); } break; }
 						case 280: { { float vol=r*r*r; aux.DE*=(1.0+aa*vol/(vol+ab+1e-21)); } break; }
-						case 281: { { float ly=native_exp(aa*double(i)*0.01); aux.DE*=(1.0+ab*fmin(ly,ac)); } break; }
-						case 282: { { float bv=fabs(zx-aa*native_sin(ab*zy))/(double(i)+1.0); aux.DE*=(1.0+ac*bv); } break; }
+						case 281: { { float ly=native_exp(aa*float(i)*0.01); aux.DE*=(1.0+ab*fmin(ly,ac)); } break; }
+						case 282: { { float bv=fabs(zx-aa*native_sin(ab*zy))/(float(i)+1.0); aux.DE*=(1.0+ac*bv); } break; }
 						case 283: { { float scr=native_log(fmax(aa,1.0))*ab*native_sin(ac*r); aux.DE*=(1.0+fabs(scr)*0.01); } break; }
-						case 284: { { float sff=native_sin(aa*double(i)*0.1)*native_sin(ab*double(i)*0.1); aux.DE*=(1.0+ac*fabs(sff)); } break; }
+						case 284: { { float sff=native_sin(aa*float(i)*0.1)*native_sin(ab*float(i)*0.1); aux.DE*=(1.0+ac*fabs(sff)); } break; }
 						case 285: { { float goe=native_sin(aa*r)*native_cos(ab*r)*native_sin(ac*r); aux.DE*=(1.0+ad*fabs(goe)); } break; }
 						case 286: { { float syk=native_sin(aa*zx)*native_sin(ab*zy)*native_sin(ac*zz2)*native_sin(ad*r); aux.DE*=(1.0+ae*fabs(syk)); } break; }
 						case 287: { { float bd2=native_sin(aa*r)*native_sin(aa*r); float ent=bd2*native_log(bd2+1e-21); aux.DE*=(1.0+ab*fabs(ent)); } break; }
@@ -4041,10 +4041,10 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 						case 300: { { float mi=native_sin(aa*r)*native_sin(ab*r); aux.DE*=(1.0+ac*mi*mi); } break; }
 					case 301: { float psi = native_sin(aa*r + ab*z.x); aux.DE *= (1.0 + af * psi*psi); break; }
 					case 302: { float psi_f = native_cos(aa*r); float psi_i = native_sin(ab*r); float overlap = psi_f*psi_i + 1e-21; float wv = (psi_f*native_sin(ac*z.x)) / overlap; aux.DE *= (1.0 + af * fabs(wv)); break; }
-					case 303: { float rate = fabs(aa); float variance = z.x*z.x + z.y*z.y; aux.DE *= (1.0 + af * exp(-rate * (double)i * 0.01 * variance)); break; }
-					case 304: { float E = aa*r; float t = (double)i * 0.01; aux.DE *= (1.0 + af * fabs(ab) * native_sin(E*t)*native_sin(E*t)); break; }
+					case 303: { float rate = fabs(aa); float variance = z.x*z.x + z.y*z.y; aux.DE *= (1.0 + af * native_exp(-rate * (float)i * 0.01 * variance)); break; }
+					case 304: { float E = aa*r; float t = (float)i * 0.01; aux.DE *= (1.0 + af * fabs(ab) * native_sin(E*t)*native_sin(E*t)); break; }
 					case 305: { float path1 = native_sin(aa*z.x + ab*z.y); float path2 = native_sin(ac*z.x - ab*z.y); aux.DE *= (1.0 + af * fabs(path1 - path2)); break; }
-					case 306: { float choice_time = fabs(aa) * 10.0; float theta = (double)i > choice_time ? 1.0 : 0.0; aux.DE *= (1.0 + af * ab * theta); break; }
+					case 306: { float choice_time = fabs(aa) * 10.0; float theta = (float)i > choice_time ? 1.0 : 0.0; aux.DE *= (1.0 + af * ab * theta); break; }
 					case 307: { float visibility = native_cos(aa*r)*native_cos(aa*r); float erased = native_sin(ab*z.x + ac*z.y); aux.DE *= (1.0 + af * visibility * erased*erased); break; }
 					case 308: { float source = native_sin(aa*z.x + ab*z.y + ac*z.z); float target = native_sin(aa*(z.x+ad) + ab*(z.y+ae) + ac*(z.z+aff)); float fidelity = source*target; aux.DE *= (1.0 + af * fabs(fidelity)); break; }
 					case 309: { float psi = native_sin(aa*r); float clone = native_sin(aa*r + ab*0.1); float fidelity = 1.0 - (psi-clone)*(psi-clone)*0.5; aux.DE *= (1.0 + af * fmax(fidelity, 0.0)); break; }
@@ -4052,21 +4052,21 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 					case 311: { float epr = native_sin(aa*z.x)*native_cos(ab*z.y) - native_cos(aa*z.x)*native_sin(ab*z.y); aux.DE *= (1.0 + af * fabs(epr)); break; }
 					case 312: { float v1 = native_sin(aa*z.x)*native_sin(aa*z.y); float v2 = native_cos(ab*z.y)*native_cos(ab*z.z); float violation = fabs(v1 + v2) - 1.0; aux.DE *= (1.0 + af * fmax(violation, 0.0)); break; }
 					case 313: { float ca = native_cos(aa*z.x); float cb = native_cos(ab*z.y); float corr = ca*cb + ca*native_sin(ab*z.y) + native_sin(aa*z.x)*cb - native_sin(aa*z.x)*native_sin(ab*z.y); aux.DE *= (1.0 + af * fabs(corr) * 0.25); break; }
-					case 314: { float S = 2.0*sqrt(2.0)*native_sin(aa*r)*native_cos(ab*r); float violation = fmax(fabs(S) - 2.0, 0.0); aux.DE *= (1.0 + af * violation); break; }
-					case 315: { float bound = 2.0*sqrt(2.0); float corr = bound * native_cos(aa*r) * native_sin(ab*z.x); aux.DE *= (1.0 + af * fabs(corr) / bound); break; }
-					case 316: { float t1 = native_sin(aa*(double)i*0.1); float t2 = native_sin(aa*((double)i+ab)*0.1); float temporal = t1*t2 + t1*native_sin(aa*((double)i+ac)*0.1); aux.DE *= (1.0 + af * fabs(temporal)); break; }
+					case 314: { float S = 2.0*native_sqrt(2.0)*native_sin(aa*r)*native_cos(ab*r); float violation = fmax(fabs(S) - 2.0, 0.0); aux.DE *= (1.0 + af * violation); break; }
+					case 315: { float bound = 2.0*native_sqrt(2.0); float corr = bound * native_cos(aa*r) * native_sin(ab*z.x); aux.DE *= (1.0 + af * fabs(corr) / bound); break; }
+					case 316: { float t1 = native_sin(aa*(float)i*0.1); float t2 = native_sin(aa*((float)i+ab)*0.1); float temporal = t1*t2 + t1*native_sin(aa*((float)i+ac)*0.1); aux.DE *= (1.0 + af * fabs(temporal)); break; }
 					case 317: { float rho = native_sin(aa*z.x)*native_sin(aa*z.x) + native_cos(ab*z.y)*native_cos(ab*z.y); float witness = rho - ac; aux.DE *= (1.0 + af * fmax(-witness, 0.0)); break; }
 					case 318: { float dpsi = aa*native_cos(aa*r + ab*z.x); float fisher = 4.0*dpsi*dpsi; aux.DE *= (1.0 + af * fisher / (1.0 + fisher)); break; }
-					case 319: { float F_Q = 4.0*(aa*native_cos(aa*r))*(aa*native_cos(aa*r)); float bound = 1.0/sqrt(fmax(ab*F_Q, 1e-21)); aux.DE *= (1.0 + af * bound); break; }
-					case 320: { float N = fmax(fabs(aa)*10.0, 1.0); float dphi = 1.0/(N*sqrt(fmax(fabs(ab), 1e-21))); float sql = 1.0/sqrt(N); float gain = (sql*sql)/(dphi*dphi+1e-21); aux.DE *= (1.0 + af * fmin(gain, 10.0) * native_sin(ac*r)*native_sin(ac*r)); break; }
-					case 321: { float T2 = fabs(aa) + 0.01; float sensitivity = 1.0/(ab*sqrt(T2)+1e-21); aux.DE *= (1.0 + af * native_sin(ac*r)*native_sin(ac*r) * fmin(sensitivity, 10.0)); break; }
-					case 322: { float lambda_r = fabs(aa)+0.1; float NA = fabs(ab)+0.1; float N_ph = fmax(fabs(ac)*10, 1.0); float res = lambda_r/(2.0*NA*sqrt(N_ph)); aux.DE *= (1.0 + af * native_sin(r/fmax(res,0.01))*native_sin(r/fmax(res,0.01))); break; }
+					case 319: { float F_Q = 4.0*(aa*native_cos(aa*r))*(aa*native_cos(aa*r)); float bound = 1.0/native_sqrt(fmax(ab*F_Q, 1e-21)); aux.DE *= (1.0 + af * bound); break; }
+					case 320: { float N = fmax(fabs(aa)*10.0, 1.0); float dphi = 1.0/(N*native_sqrt(fmax(fabs(ab), 1e-21))); float sql = 1.0/native_sqrt(N); float gain = (sql*sql)/(dphi*dphi+1e-21); aux.DE *= (1.0 + af * fmin(gain, 10.0) * native_sin(ac*r)*native_sin(ac*r)); break; }
+					case 321: { float T2 = fabs(aa) + 0.01; float sensitivity = 1.0/(ab*native_sqrt(T2)+1e-21); aux.DE *= (1.0 + af * native_sin(ac*r)*native_sin(ac*r) * fmin(sensitivity, 10.0)); break; }
+					case 322: { float lambda_r = fabs(aa)+0.1; float NA = fabs(ab)+0.1; float N_ph = fmax(fabs(ac)*10, 1.0); float res = lambda_r/(2.0*NA*native_sqrt(N_ph)); aux.DE *= (1.0 + af * native_sin(r/fmax(res,0.01))*native_sin(r/fmax(res,0.01))); break; }
 					case 323: { float N = fmax(fabs(aa)*5, 1.0); float pattern = native_sin(N*ab*z.x)*native_sin(N*ab*z.y); aux.DE *= (1.0 + af * pattern*pattern); break; }
-					case 324: { float snr_q = exp(-aa*r*r); float snr_c = exp(-ab*r*r); float advantage = snr_q/(snr_c+1e-21); aux.DE *= (1.0 + af * fmin(advantage, 10.0)); break; }
-					case 325: { float tau = fabs(aa)*r; float N_s = fmax(fabs(ab), 0.1); float N_i = fmax(fabs(ac), 0.1); float range_res = tau/(2.0*sqrt(N_s*N_i)+1e-21); aux.DE *= (1.0 + af * native_sin(range_res)*native_sin(range_res)); break; }
+					case 324: { float snr_q = native_exp(-aa*r*r); float snr_c = native_exp(-ab*r*r); float advantage = snr_q/(snr_c+1e-21); aux.DE *= (1.0 + af * fmin(advantage, 10.0)); break; }
+					case 325: { float tau = fabs(aa)*r; float N_s = fmax(fabs(ab), 0.1); float N_i = fmax(fabs(ac), 0.1); float range_res = tau/(2.0*native_sqrt(N_s*N_i)+1e-21); aux.DE *= (1.0 + af * native_sin(range_res)*native_sin(range_res)); break; }
 					case 326: { float omega_rot = aa*z.x + ab*z.y; float phase = ac*omega_rot; aux.DE *= (1.0 + af * native_sin(phase)*native_sin(phase)); break; }
 					case 327: { float g_eff = aa; float T = fabs(ab)+0.01; float phase = g_eff*T*T*ac; aux.DE *= (1.0 + af * native_cos(phase)*native_cos(phase)); break; }
-					case 328: { float omega0 = fabs(aa)*100.0+1.0; float tau_c = fabs(ab)+0.01; float stability = 1.0/(omega0*sqrt(tau_c*(double)(i+1)*0.01)+1e-21); aux.DE *= (1.0 + af * fmin(stability*ac, 5.0)); break; }
+					case 328: { float omega0 = fabs(aa)*100.0+1.0; float tau_c = fabs(ab)+0.01; float stability = 1.0/(omega0*native_sqrt(tau_c*(float)(i+1)*0.01)+1e-21); aux.DE *= (1.0 + af * fmin(stability*ac, 5.0)); break; }
 					case 329: { float B = aa*z.x + ab*z.y + ac*z.z; float sensitivity = native_sin(ad*B); aux.DE *= (1.0 + af * sensitivity*sensitivity); break; }
 					case 330: { float k_eff = aa; float T = fabs(ab)+0.01; float accel = k_eff*T*T*ac*r; aux.DE *= (1.0 + af * native_sin(accel)*native_sin(accel)); break; }
 					case 331: { float T_eff = fabs(aa)*r + 0.01; float C = fabs(ab)+0.1; float dE = fabs(ac)+0.01; float res = T_eff*T_eff/(C*dE); aux.DE *= (1.0 + af * fmin(res, 10.0)); break; }
@@ -4076,22 +4076,22 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 					case 335: { float torque = aa*z.x*z.y - ab*z.y*z.z; float thermal = fabs(ac)+0.01; aux.DE *= (1.0 + af * fabs(torque)/(thermal+fabs(torque))); break; }
 					case 336: { float E_field = aa*z.x + ab*z.y + ac*z.z; float rydberg = native_sin(ad*E_field*E_field); aux.DE *= (1.0 + af * rydberg*rydberg); break; }
 					case 337: { float V_jj = aa*native_sin(ab*r); float josephson = native_cos(ac*V_jj); aux.DE *= (1.0 + af * (1.0 - josephson*josephson)); break; }
-					case 338: { float tunnel = exp(-aa*fabs(r-ab)); float current = ac*tunnel; aux.DE *= (1.0 + af * fabs(current)); break; }
+					case 338: { float tunnel = native_exp(-aa*fabs(r-ab)); float current = ac*tunnel; aux.DE *= (1.0 + af * fabs(current)); break; }
 					case 339: { float n = floor(fabs(aa)*r*5.0+0.5); float R_H = 1.0/(fmax(n,1.0)*ab+1e-21); aux.DE *= (1.0 + af * fmin(R_H, 10.0)); break; }
-					case 340: { float C_q = aa*aa/(2.0*(fabs(ab)+0.01)); float charging = exp(-C_q*r*r); aux.DE *= (1.0 + af * charging); break; }
+					case 340: { float C_q = aa*aa/(2.0*(fabs(ab)+0.01)); float charging = native_exp(-C_q*r*r); aux.DE *= (1.0 + af * charging); break; }
 					case 341: { float flux = aa*z.x*z.y; float inductance = native_cos(ab*flux); aux.DE *= (1.0 + af * inductance*inductance); break; }
-					case 342: { float L_q = fabs(aa)+0.01; float C_q = fabs(ab)+0.01; float Z = sqrt(L_q/C_q); float match = 1.0/(1.0 + (Z-ac)*(Z-ac)); aux.DE *= (1.0 + af * match); break; }
-					case 343: { float omega = aa*r; float n_th = 1.0/(exp(fabs(ab)*omega+1e-21)-1.0+1e-21); float psd = omega*(n_th+0.5); aux.DE *= (1.0 + af * fmin(fabs(psd), 10.0)); break; }
-					case 344: { float dE = fabs(aa)*r; float tau = fmax(fabs(ab),0.01); float uncertainty = dE*tau; aux.DE *= (1.0 + af * exp(-uncertainty)); break; }
-					case 345: { float W = aa*r*r; float T_eff = fmax(fabs(ab), 0.01); float jarzynski = exp(-W/T_eff); aux.DE *= (1.0 + af * jarzynski); break; }
-					case 346: { float Q_heat = aa*r; float T_eff = fmax(fabs(ab), 0.01); float C = fmax(fabs(ac), 0.01); float fluct = Q_heat/(T_eff*T_eff*C+1e-21); aux.DE *= (1.0 + af * exp(-fabs(fluct))); break; }
-					case 347: { float sigma = fabs(aa)*r*r; float relax = fmax(fabs(ab), 0.01); float prod = sigma/relax; aux.DE *= (1.0 + af * (1.0 - exp(-prod))); break; }
-					case 348: { float W = aa*(z.x*z.x + z.y*z.y); float T_eff = fmax(fabs(ab), 0.01); float ratio = exp(-W/T_eff); aux.DE *= (1.0 + af * fmin(ratio, 10.0)); break; }
-					case 349: { float info = fabs(native_sin(aa*z.x)*native_cos(ab*z.y)); float work = ac*info*log(2.0); aux.DE *= (1.0 + af * fabs(work)/(1.0+fabs(work))); break; }
-					case 350: { float W = fabs(aa)*log(2.0)*native_sin(ab*r)*native_sin(ab*r); aux.DE *= (1.0 + af * W); break; }
+					case 342: { float L_q = fabs(aa)+0.01; float C_q = fabs(ab)+0.01; float Z = native_sqrt(L_q/C_q); float match = 1.0/(1.0 + (Z-ac)*(Z-ac)); aux.DE *= (1.0 + af * match); break; }
+					case 343: { float omega = aa*r; float n_th = 1.0/(native_exp(fabs(ab)*omega+1e-21)-1.0+1e-21); float psd = omega*(n_th+0.5); aux.DE *= (1.0 + af * fmin(fabs(psd), 10.0)); break; }
+					case 344: { float dE = fabs(aa)*r; float tau = fmax(fabs(ab),0.01); float uncertainty = dE*tau; aux.DE *= (1.0 + af * native_exp(-uncertainty)); break; }
+					case 345: { float W = aa*r*r; float T_eff = fmax(fabs(ab), 0.01); float jarzynski = native_exp(-W/T_eff); aux.DE *= (1.0 + af * jarzynski); break; }
+					case 346: { float Q_heat = aa*r; float T_eff = fmax(fabs(ab), 0.01); float C = fmax(fabs(ac), 0.01); float fluct = Q_heat/(T_eff*T_eff*C+1e-21); aux.DE *= (1.0 + af * native_exp(-fabs(fluct))); break; }
+					case 347: { float sigma = fabs(aa)*r*r; float relax = fmax(fabs(ab), 0.01); float prod = sigma/relax; aux.DE *= (1.0 + af * (1.0 - native_exp(-prod))); break; }
+					case 348: { float W = aa*(z.x*z.x + z.y*z.y); float T_eff = fmax(fabs(ab), 0.01); float ratio = native_exp(-W/T_eff); aux.DE *= (1.0 + af * fmin(ratio, 10.0)); break; }
+					case 349: { float info = fabs(native_sin(aa*z.x)*native_cos(ab*z.y)); float work = ac*info*native_log(2.0); aux.DE *= (1.0 + af * fabs(work)/(1.0+fabs(work))); break; }
+					case 350: { float W = fabs(aa)*native_log(2.0)*native_sin(ab*r)*native_sin(ab*r); aux.DE *= (1.0 + af * W); break; }
 					case 351: { float T_hot = fmax(fabs(aa)*r, 0.01); float T_cold = fmax(fabs(ab)*0.5, 0.001); float eff = 1.0 - T_cold/T_hot; float qcorr = native_sin(ac*r)*native_sin(ac*r); aux.DE *= (1.0 + af * fabs(eff) * qcorr); break; }
 					case 352: { float w_cold = fabs(aa)+0.1; float w_hot = fabs(ab)+0.2; float eff = 1.0 - w_cold/w_hot; float adiabatic = native_cos(ac*r)*native_cos(ac*r); aux.DE *= (1.0 + af * fabs(eff) * adiabatic); break; }
-					case 353: { float V_ratio = fmax(fabs(aa), 0.1)/fmax(fabs(ab), 0.1); float T_ratio = fmax(fabs(ac), 0.1)/fmax(fabs(ad), 0.1); float eff = log(V_ratio)/(log(T_ratio)+1e-21); aux.DE *= (1.0 + af * fmin(fabs(eff), 5.0) * native_sin(r)*native_sin(r)); break; }
+					case 353: { float V_ratio = fmax(fabs(aa), 0.1)/fmax(fabs(ab), 0.1); float T_ratio = fmax(fabs(ac), 0.1)/fmax(fabs(ad), 0.1); float eff = native_log(fmax(V_ratio,1e-21f))/(native_log(fmax(T_ratio,1e-21f))+1e-21f); aux.DE *= (1.0 + af * fmin(fabs(eff), 5.0) * native_sin(r)*native_sin(r)); break; }
 					case 354: { float gamma_g = 1.4; float ratio = fmax(fabs(aa), 0.1); float eff = 1.0 - (pow(ratio, gamma_g)-1.0)/(gamma_g*(ratio-1.0)+1e-21); aux.DE *= (1.0 + af * fabs(eff) * native_sin(ab*r)*native_sin(ab*r)); break; }
 					case 355: { float P_ratio = fmax(fabs(aa), 0.1); float gamma_g = 1.4; float eff = 1.0 - pow(1.0/P_ratio, (gamma_g-1.0)/gamma_g); aux.DE *= (1.0 + af * fabs(eff) * native_cos(ab*r)*native_cos(ab*r)); break; }
 					case 356: { float T_ratio = fmax(fabs(aa)+0.1, 0.01) / fmax(fabs(ab)+0.1, 0.01); float regen = fmin(fabs(ac), 1.0); float eff = (1.0 - 1.0/T_ratio) * regen; aux.DE *= (1.0 + af * fabs(eff)); break; }
@@ -4111,14 +4111,14 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 					case 370: { float Ss = aa; float gradT = ab*z.x+ac*z.y; float spin_pol = native_sin(ad*r); aux.DE *= (1.0 + af * fabs(Ss*gradT*spin_pol)); break; }
 					case 371: { float Bz = aa; float gradT = ab*z.x; float Ey = ac*gradT*Bz; aux.DE *= (1.0 + af * native_sin(Ey)*native_sin(Ey)); break; }
 					case 372: { float n_level = floor(fabs(aa)*r*5.0+0.5); float conductance = fmax(n_level,1.0)*ab; aux.DE *= (1.0 + af * fmin(fabs(conductance),10.0) * native_sin(ac*r)*native_sin(ac*r)); break; }
-					case 373: { float edge = exp(-aa*fabs(z.x)); float helical = native_sin(ab*z.y); aux.DE *= (1.0 + af * edge * helical*helical); break; }
+					case 373: { float edge = native_exp(-aa*fabs(z.x)); float helical = native_sin(ab*z.y); aux.DE *= (1.0 + af * edge * helical*helical); break; }
 					case 374: { float chern = floor(fabs(aa)*2.0+0.5); float mag_order = native_sin(ab*z.x)*native_sin(ab*z.y); aux.DE *= (1.0 + af * fabs(chern) * mag_order*mag_order); break; }
 					case 375: { float valley = native_sin(aa*z.x)*native_cos(ab*z.y) - native_cos(aa*z.x)*native_sin(ab*z.y); float broken_inv = native_sin(ac*r); aux.DE *= (1.0 + af * fabs(valley*broken_inv)); break; }
-					case 376: { float bulk_gap = fabs(aa); float surface = native_sin(ab*z.x)*native_sin(ab*z.y)*exp(-ac*fabs(z.z)); float k_F = ad*r; aux.DE *= (1.0 + af * bulk_gap*fabs(surface)*fmin(k_F,5.0)); break; }
-					case 377: { float kx = aa*z.x; float ky = ab*z.y; float kz = ac*z.z; float chirality = kx*kx + ky*ky - kz*kz; float fermi_arc = exp(-fabs(chirality)*ad); aux.DE *= (1.0 + af * fermi_arc); break; }
+					case 376: { float bulk_gap = fabs(aa); float surface = native_sin(ab*z.x)*native_sin(ab*z.y)*native_exp(-ac*fabs(z.z)); float k_F = ad*r; aux.DE *= (1.0 + af * bulk_gap*fabs(surface)*fmin(k_F,5.0)); break; }
+					case 377: { float kx = aa*z.x; float ky = ab*z.y; float kz = ac*z.z; float chirality = kx*kx + ky*ky - kz*kz; float fermi_arc = native_exp(-fabs(chirality)*ad); aux.DE *= (1.0 + af * fermi_arc); break; }
 					case 378: { float E_D = aa; float v_F = fabs(ab)+0.01; float k = ac*r; float cone = fabs(E_D)/(v_F*fmax(fabs(k),0.01)); aux.DE *= (1.0 + af * fmin(cone,10.0) * native_sin(r)*native_sin(r)); break; }
-					case 379: { float xi = fmax(fabs(aa),0.01); float L = fabs(ab)*r; float overlap = exp(-L/xi); float gap = fabs(ac); aux.DE *= (1.0 + af * overlap*gap); break; }
-					case 380: { float J = fabs(aa)+0.01; float alpha = fabs(ab)+0.01; float g = fabs(ac)+0.01; float gap = J*exp(-1.0/(alpha*g)); aux.DE *= (1.0 + af * gap * native_sin(ad*r)*native_sin(ad*r)); break; }
+					case 379: { float xi = fmax(fabs(aa),0.01); float L = fabs(ab)*r; float overlap = native_exp(-L/xi); float gap = fabs(ac); aux.DE *= (1.0 + af * overlap*gap); break; }
+					case 380: { float J = fabs(aa)+0.01; float alpha = fabs(ab)+0.01; float g = fabs(ac)+0.01; float gap = J*native_exp(-1.0/(alpha*g)); aux.DE *= (1.0 + af * gap * native_sin(ad*r)*native_sin(ad*r)); break; }
 					case 381: { float J = fabs(aa)+0.01; float h = fabs(ab)+0.01; float gap = fabs(J-h)/J; float crit_exp = fabs(ac)+0.5; aux.DE *= (1.0 + af * pow(fmax(gap,1e-10), crit_exp)); break; }
 					case 382: { float J = aa; float Si = native_sin(ab*z.x); float Sj = native_sin(ab*z.y); float coupling = J*Si*Sj; aux.DE *= (1.0 + af * fabs(coupling)); break; }
 					case 383: { float J = aa; float Sx = native_sin(ab*z.x)*native_cos(ac*z.y); float Sy = native_cos(ab*z.x)*native_sin(ac*z.y); float coupling = J*(Sx+Sy); aux.DE *= (1.0 + af * fabs(coupling)); break; }
@@ -4128,17 +4128,17 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 					case 387: { float W = aa; float X = ab; float Y = ac; float sigma = native_sin(ad*z.x)*native_sin(ad*z.y); float tau = native_cos(ad*z.x)*native_cos(ad*z.y); float v = W*sigma + X*tau + Y*sigma*tau; aux.DE *= (1.0 + af * fabs(v)); break; }
 					case 388: { float U = fabs(aa)+0.01; float t = fabs(ab)+0.01; float n_up = native_sin(ac*z.x)*native_sin(ac*z.x); float n_down = native_cos(ac*z.y)*native_cos(ac*z.y); float mott = U*n_up*n_down/t; aux.DE *= (1.0 + af * fmin(mott,10.0)); break; }
 					case 389: { float t = fabs(aa)+0.01; float J = ab; float hop = t*native_sin(ac*z.x)*native_cos(ac*z.y); float exchange = J*native_sin(ad*z.x)*native_sin(ad*z.y); aux.DE *= (1.0 + af * fabs(hop + exchange)); break; }
-					case 390: { float xi_loc = fmax(fabs(aa),0.01); float disorder = fabs(ab); float loc = exp(-r/xi_loc)*disorder; aux.DE *= (1.0 + af * loc); break; }
+					case 390: { float xi_loc = fmax(fabs(aa),0.01); float disorder = fabs(ab); float loc = native_exp(-r/xi_loc)*disorder; aux.DE *= (1.0 + af * loc); break; }
 					case 391: { float U = fabs(aa)+0.01; float U_c = fabs(ab)+0.01; float n = native_sin(ac*r)*0.5+0.5; float gap = (U/U_c)*(n-0.5)*(n-0.5); aux.DE *= (1.0 + af * fmin(gap*4.0,10.0)); break; }
 					case 392: { float alpha = aa; float u = ab; float k_F = ac; float gap = 2.0*fabs(alpha*u)*fabs(native_cos(2.0*k_F*z.x)); aux.DE *= (1.0 + af * fmin(gap,10.0)); break; }
-					case 393: { float J = fabs(aa)+0.01; float g = fabs(ab)+0.01; float gap = J*exp(-M_PI_F*J/(g*g)); float singlet = native_cos(ac*z.x)*native_cos(ac*z.y); aux.DE *= (1.0 + af * gap*singlet*singlet); break; }
-					case 394: { float J = fabs(aa)+0.01; float S = fmax(floor(fabs(ab)+1),1.0); float gap = J*exp(-M_PI_F*S); float string_order = native_sin(ac*r); aux.DE *= (1.0 + af * gap*string_order*string_order); break; }
+					case 393: { float J = fabs(aa)+0.01; float g = fabs(ab)+0.01; float gap = J*native_exp(-M_PI_F*J/(g*g)); float singlet = native_cos(ac*z.x)*native_cos(ac*z.y); aux.DE *= (1.0 + af * gap*singlet*singlet); break; }
+					case 394: { float J = fabs(aa)+0.01; float S = fmax(floor(fabs(ab)+1),1.0); float gap = J*native_exp(-M_PI_F*S); float string_order = native_sin(ac*r); aux.DE *= (1.0 + af * gap*string_order*string_order); break; }
 					case 395: { float J = fabs(aa)+0.01; float SiSj = native_sin(ab*z.x)*native_sin(ab*z.y); float SiSj2 = SiSj*SiSj; float aklt = J*(SiSj + SiSj2/3.0); aux.DE *= (1.0 + af * fabs(aklt)); break; }
 					case 396: { float J = fabs(aa)+0.01; float Av = native_sin(ab*z.x)*native_sin(ab*z.y); float Bp = native_cos(ac*z.x)*native_cos(ac*z.y); float toric = 4.0*J*(Av*Av + Bp*Bp); aux.DE *= (1.0 + af * fmin(toric,10.0)); break; }
 					case 397: { float F1 = native_sin(aa*z.x); float F2 = native_sin(ab*z.y); float F3 = native_cos(ac*z.x); float F4 = native_cos(ad*z.y); float wen = F1*F2*F3*F4; aux.DE *= (1.0 + af * fabs(wen)); break; }
 					case 398: { float sn = native_sin(aa*z.x+ab*z.y); float fusion = sn*sn; float F_sym = native_cos(ac*r)*native_cos(ac*r); float lw = fusion*F_sym; aux.DE *= (1.0 + af * lw); break; }
-					case 399: { float psi = native_sin(aa*z.x + ab*(double)i*0.1); float coin = native_cos(ac*z.y); float walker = psi*psi*coin*coin; aux.DE *= (1.0 + af * walker); break; }
-					case 400: { float rule = native_sin(aa*z.x)*native_sin(ab*z.y)*native_cos(ac*z.z); float evolution = native_cos(ad*(double)i*0.1); float qca = rule*evolution; aux.DE *= (1.0 + af * qca*qca); break; }
+					case 399: { float psi = native_sin(aa*z.x + ab*(float)i*0.1); float coin = native_cos(ac*z.y); float walker = psi*psi*coin*coin; aux.DE *= (1.0 + af * walker); break; }
+					case 400: { float rule = native_sin(aa*z.x)*native_sin(ab*z.y)*native_cos(ac*z.z); float evolution = native_cos(ad*(float)i*0.1); float qca = rule*evolution; aux.DE *= (1.0 + af * qca*qca); break; }
 					}
 				}
 
@@ -4159,17 +4159,17 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 					case 7: { float h = native_sin(z.x*nfq + z.y*nfq*1.3 + z.z*nfq*0.7)*43758.5453; h=h-floor(h); h = 6.0*h*h*h*h*h - 15.0*h*h*h*h + 10.0*h*h*h; aux.DE *= (1.0 + nf*h); break; }
 					case 8: { float p = na*z.x*nfq + nb*z.y*nfq + nc*z.z*nfq; float h = native_sin(p)*0.5+0.5; aux.DE *= (1.0 + nf*h*h); break; }
 					case 9: { float h1 = native_sin(z.x*nfq*12.9898)*43758.5453; h1=h1-floor(h1); float h2 = native_sin(z.y*nfq*78.233)*43758.5453; h2=h2-floor(h2); float h3 = native_sin(z.z*nfq*45.164)*43758.5453; h3=h3-floor(h3); aux.DE *= (1.0 + nf*(h1*h2*h3)); break; }
-					case 10: { float r = sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float h = native_sin(r*nfq)*43758.5453; h=h-floor(h); aux.DE *= (1.0 + nf*h); break; }
+					case 10: { float r = native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float h = native_sin(r*nfq)*43758.5453; h=h-floor(h); aux.DE *= (1.0 + nf*h); break; }
 					case 11: { float gx = native_sin(z.x*nfq*127.1+z.y*311.7)*2.0-1.0; float gy = native_sin(z.y*nfq*269.5+z.z*183.3)*2.0-1.0; float gz = native_sin(z.z*nfq*419.2+z.x*371.9)*2.0-1.0; float v = (gx*z.x+gy*z.y+gz*z.z)*nam; aux.DE *= (1.0 + nf*native_sin(v)); break; }
 					case 12: { float px = z.x*nfq; float py = z.y*nfq; float g1 = native_sin(floor(px)*127.1+floor(py)*311.7)*2.0-1.0; float g2 = native_sin((floor(px)+1)*127.1+floor(py)*311.7)*2.0-1.0; float t = px-floor(px); t = t*t*(3.0-2.0*t); float v = g1*(1.0-t)+g2*t; aux.DE *= (1.0 + nf*v); break; }
 					case 13: { float px = z.x*nfq; float py = z.y*nfq; float pz = z.z*nfq; float g = native_sin(px*127.1+py*311.7+pz*74.7)*2.0-1.0; float t = g*g*(3.0-2.0*g); aux.DE *= (1.0 + nf*t*nam); break; }
 					case 14: { float v = native_sin(z.x*nfq)*native_cos(z.y*nfq*1.3)*native_sin(z.z*nfq*0.7); aux.DE *= (1.0 + nf*v*nam); break; }
 					case 15: { float v1 = native_sin(z.x*nfq+z.y*nfq*0.5); float v2 = native_sin(z.y*nfq*1.3+z.z*nfq*0.7); float v3 = native_sin(z.z*nfq*0.9+z.x*nfq*1.1); aux.DE *= (1.0 + nf*(v1+v2+v3)/3.0); break; }
 					case 16: { float px = z.x*nfq; float h = native_sin(px*12.9898+z.y*nfq*78.233)*43758.5453; h=h-floor(h); float g = (h*2.0-1.0)*(px-floor(px)); aux.DE *= (1.0 + nf*g); break; }
-					case 17: { float r = sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float th = atan2(z.y,z.x); float v = native_sin(r*nfq+th*na)*nam; aux.DE *= (1.0 + nf*v); break; }
+					case 17: { float r = native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float th = atan2(z.y,z.x); float v = native_sin(r*nfq+th*na)*nam; aux.DE *= (1.0 + nf*v); break; }
 					case 18: { float v = native_sin(z.x*nfq)*native_sin(z.y*nfq)*native_sin(z.z*nfq); v = v*v*(3.0-2.0*v); aux.DE *= (1.0 + nf*v*nam); break; }
-					case 19: { float dx = native_sin(z.x*nfq*12.9898)*2.0-1.0; float dy = native_sin(z.y*nfq*78.233)*2.0-1.0; float dz = native_sin(z.z*nfq*45.164)*2.0-1.0; float v = sqrt(dx*dx+dy*dy+dz*dz); aux.DE *= (1.0 + nf*(v-1.0)*nam); break; }
-					case 20: { float r = sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float phi = atan2(z.y,z.x); float theta = acos(z.z/fmax(r,1e-21)); float v = native_sin(r*nfq)*native_cos(phi*na)*native_sin(theta*nb); aux.DE *= (1.0 + nf*v); break; }
+					case 19: { float dx = native_sin(z.x*nfq*12.9898)*2.0-1.0; float dy = native_sin(z.y*nfq*78.233)*2.0-1.0; float dz = native_sin(z.z*nfq*45.164)*2.0-1.0; float v = native_sqrt(dx*dx+dy*dy+dz*dz); aux.DE *= (1.0 + nf*(v-1.0)*nam); break; }
+					case 20: { float r = native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float phi = atan2(z.y,z.x); float theta = acos(z.z/fmax(r,1e-21)); float v = native_sin(r*nfq)*native_cos(phi*na)*native_sin(theta*nb); aux.DE *= (1.0 + nf*v); break; }
 					case 21: { float v=0, a=nam, f=nfq; for(int k=0;k<4;k++){ v += a*native_sin(z.x*f*12.9898+z.y*f*78.233+z.z*f*45.164); f*=2.0; a*=0.5; } aux.DE *= (1.0 + nf*v); break; }
 					case 22: { float v=0, a=nam, f=nfq; for(int k=0;k<6;k++){ float h=native_sin(z.x*f*127.1+z.y*f*311.7+z.z*f*74.7)*43758.5453; h=h-floor(h); v+=a*h; f*=2.0; a*=0.5; } aux.DE *= (1.0 + nf*v); break; }
 					case 23: { float v=0, a=nam, f=nfq; for(int k=0;k<5;k++){ float h=native_sin(z.x*f*127.1+z.y*f*311.7+z.z*f*74.7)*43758.5453; h=h-floor(h); v+=a*fabs(h*2.0-1.0); f*=2.0; a*=0.5; } aux.DE *= (1.0 + nf*v); break; }
@@ -4185,21 +4185,21 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 					case 33: { float v=0, w=1.0, f=nfq; for(int k=0;k<5;k++){ float h=native_sin(z.x*f*127.1+z.y*f*311.7+z.z*f*74.7)*43758.5453; h=h-floor(h); v+=w*h; w*=h; f*=2.0; } aux.DE *= (1.0 + nf*v*nam); break; }
 					case 34: { float v=1.0, f=nfq; for(int k=0;k<5;k++){ float h=native_sin(z.x*f*127.1+z.y*f*311.7+z.z*f*74.7)*43758.5453; h=h-floor(h); v*=(h*0.5+0.75); f*=2.0; } aux.DE *= (1.0 + nf*(v-1.0)*nam); break; }
 					case 35: { float v=0, a=nam, f=nfq; float px=z.x,py=z.y,pz=z.z; for(int k=0;k<5;k++){ float h=native_sin(px*f*127.1+py*f*311.7+pz*f*74.7)*43758.5453; h=h-floor(h); v+=a*h; px=fabs(px)*2.0-na; py=fabs(py)*2.0-nb; pz=fabs(pz)*2.0-nc; f*=2.0; a*=0.5; } aux.DE *= (1.0 + nf*v); break; }
-					case 36: { float md=1e10; for(int dx=-1;dx<=1;dx++) for(int dy=-1;dy<=1;dy++) for(int dz=-1;dz<=1;dz++){ float cx=floor(z.x*nfq)+dx+0.5; float cy=floor(z.y*nfq)+dy+0.5; float cz=floor(z.z*nfq)+dz+0.5; float h=native_sin(cx*127.1+cy*311.7+cz*74.7)*43758.5453; h=h-floor(h); cx+=h*0.5; float d=(z.x*nfq-cx)*(z.x*nfq-cx)+(z.y*nfq-cy)*(z.y*nfq-cy)+(z.z*nfq-cz)*(z.z*nfq-cz); if(d<md)md=d; } aux.DE *= (1.0 + nf*sqrt(md)*nam); break; }
-					case 37: { float md1=1e10,md2=1e10; for(int dx=-1;dx<=1;dx++) for(int dy=-1;dy<=1;dy++) for(int dz=-1;dz<=1;dz++){ float cx=floor(z.x*nfq)+dx; float cy=floor(z.y*nfq)+dy; float cz=floor(z.z*nfq)+dz; float h=native_sin(cx*127.1+cy*311.7+cz*74.7)*43758.5453; h=h-floor(h); cx+=h; float d=(z.x*nfq-cx)*(z.x*nfq-cx)+(z.y*nfq-cy)*(z.y*nfq-cy)+(z.z*nfq-cz)*(z.z*nfq-cz); if(d<md1){md2=md1;md1=d;}else if(d<md2)md2=d; } aux.DE *= (1.0 + nf*(sqrt(md2)-sqrt(md1))*nam); break; }
+					case 36: { float md=1e10; for(int dx=-1;dx<=1;dx++) for(int dy=-1;dy<=1;dy++) for(int dz=-1;dz<=1;dz++){ float cx=floor(z.x*nfq)+dx+0.5; float cy=floor(z.y*nfq)+dy+0.5; float cz=floor(z.z*nfq)+dz+0.5; float h=native_sin(cx*127.1+cy*311.7+cz*74.7)*43758.5453; h=h-floor(h); cx+=h*0.5; float d=(z.x*nfq-cx)*(z.x*nfq-cx)+(z.y*nfq-cy)*(z.y*nfq-cy)+(z.z*nfq-cz)*(z.z*nfq-cz); if(d<md)md=d; } aux.DE *= (1.0 + nf*native_sqrt(md)*nam); break; }
+					case 37: { float md1=1e10,md2=1e10; for(int dx=-1;dx<=1;dx++) for(int dy=-1;dy<=1;dy++) for(int dz=-1;dz<=1;dz++){ float cx=floor(z.x*nfq)+dx; float cy=floor(z.y*nfq)+dy; float cz=floor(z.z*nfq)+dz; float h=native_sin(cx*127.1+cy*311.7+cz*74.7)*43758.5453; h=h-floor(h); cx+=h; float d=(z.x*nfq-cx)*(z.x*nfq-cx)+(z.y*nfq-cy)*(z.y*nfq-cy)+(z.z*nfq-cz)*(z.z*nfq-cz); if(d<md1){md2=md1;md1=d;}else if(d<md2)md2=d; } aux.DE *= (1.0 + nf*(native_sqrt(md2)-native_sqrt(md1))*nam); break; }
 					case 38: { float md=1e10; for(int dx=-1;dx<=1;dx++) for(int dy=-1;dy<=1;dy++){ float cx=floor(z.x*nfq)+dx+0.5; float cy=floor(z.y*nfq)+dy+0.5; float h=native_sin(cx*127.1+cy*311.7)*43758.5453; h=h-floor(h); cx+=h*0.5; float d=fabs(z.x*nfq-cx)+fabs(z.y*nfq-cy); if(d<md)md=d; } aux.DE *= (1.0 + nf*md*nam); break; }
 					case 39: { float md=1e10; for(int dx=-1;dx<=1;dx++) for(int dy=-1;dy<=1;dy++) for(int dz=-1;dz<=1;dz++){ float cx=floor(z.x*nfq)+dx; float cy=floor(z.y*nfq)+dy; float cz=floor(z.z*nfq)+dz; float h=native_sin(cx*127.1+cy*311.7+cz*74.7)*43758.5453; h=h-floor(h); cx+=h; float d=fmax(fabs(z.x*nfq-cx),fmax(fabs(z.y*nfq-cy),fabs(z.z*nfq-cz))); if(d<md)md=d; } aux.DE *= (1.0 + nf*md*nam); break; }
-					case 40: { float md=1e10; for(int dx=-1;dx<=1;dx++) for(int dy=-1;dy<=1;dy++) for(int dz=-1;dz<=1;dz++){ float cx=floor(z.x*nfq)+dx; float cy=floor(z.y*nfq)+dy; float cz=floor(z.z*nfq)+dz; float h1=native_sin(cx*127.1+cy*311.7+cz*74.7)*43758.5453; h1=h1-floor(h1); float h2=native_sin(cx*269.5+cy*183.3+cz*346.9)*43758.5453; h2=h2-floor(h2); float h3=native_sin(cx*419.2+cy*371.9+cz*529.7)*43758.5453; h3=h3-floor(h3); float d=(z.x*nfq-cx-h1)*(z.x*nfq-cx-h1)+(z.y*nfq-cy-h2)*(z.y*nfq-cy-h2)+(z.z*nfq-cz-h3)*(z.z*nfq-cz-h3); if(d<md)md=d; } aux.DE *= (1.0 + nf*sqrt(md)*nam); break; }
+					case 40: { float md=1e10; for(int dx=-1;dx<=1;dx++) for(int dy=-1;dy<=1;dy++) for(int dz=-1;dz<=1;dz++){ float cx=floor(z.x*nfq)+dx; float cy=floor(z.y*nfq)+dy; float cz=floor(z.z*nfq)+dz; float h1=native_sin(cx*127.1+cy*311.7+cz*74.7)*43758.5453; h1=h1-floor(h1); float h2=native_sin(cx*269.5+cy*183.3+cz*346.9)*43758.5453; h2=h2-floor(h2); float h3=native_sin(cx*419.2+cy*371.9+cz*529.7)*43758.5453; h3=h3-floor(h3); float d=(z.x*nfq-cx-h1)*(z.x*nfq-cx-h1)+(z.y*nfq-cy-h2)*(z.y*nfq-cy-h2)+(z.z*nfq-cz-h3)*(z.z*nfq-cz-h3); if(d<md)md=d; } aux.DE *= (1.0 + nf*native_sqrt(md)*nam); break; }
 					case 41: { float md1=1e10,md2=1e10; for(int dx=-1;dx<=1;dx++) for(int dy=-1;dy<=1;dy++) for(int dz=-1;dz<=1;dz++){ float cx=floor(z.x*nfq)+dx; float cy=floor(z.y*nfq)+dy; float cz=floor(z.z*nfq)+dz; float h=native_sin(cx*127.1+cy*311.7+cz*74.7)*43758.5453; h=h-floor(h); cx+=h; float d=(z.x*nfq-cx)*(z.x*nfq-cx)+(z.y*nfq-cy)*(z.y*nfq-cy)+(z.z*nfq-cz)*(z.z*nfq-cz); if(d<md1){md2=md1;md1=d;}else if(d<md2)md2=d; } aux.DE *= (1.0 + nf*md1*md2*nam); break; }
-					case 42: { float md=1e10; float r=sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float th=atan2(z.y,z.x); for(int k=0;k<8;k++){ float a2=k*M_PI_F*2.0/8.0; float d=fabs(th-a2); if(d>M_PI_F)d=2.0*M_PI_F-d; if(d<md)md=d; } aux.DE *= (1.0 + nf*md*r*nam*nfq); break; }
-					case 43: { float v=0; for(int dx=-1;dx<=1;dx++) for(int dy=-1;dy<=1;dy++) for(int dz=-1;dz<=1;dz++){ float cx=floor(z.x*nfq)+dx; float cy=floor(z.y*nfq)+dy; float cz=floor(z.z*nfq)+dz; float h=native_sin(cx*127.1+cy*311.7+cz*74.7)*43758.5453; h=h-floor(h); float d=(z.x*nfq-cx-h)*(z.x*nfq-cx-h)+(z.y*nfq-cy-h)*(z.y*nfq-cy-h)+(z.z*nfq-cz-h)*(z.z*nfq-cz-h); v+=exp(-na*d); } aux.DE *= (1.0 + nf*(1.0-v)*nam); break; }
-					case 44: { float md=1e10; for(int dx=-1;dx<=1;dx++) for(int dy=-1;dy<=1;dy++) for(int dz=-1;dz<=1;dz++){ float cx=floor(z.x*nfq)+dx; float cy=floor(z.y*nfq)+dy; float cz=floor(z.z*nfq)+dz; float h=native_sin(cx*127.1+cy*311.7+cz*74.7)*43758.5453; h=h-floor(h); cx+=h; float d=sqrt((z.x*nfq-cx)*(z.x*nfq-cx)+(z.y*nfq-cy)*(z.y*nfq-cy)+(z.z*nfq-cz)*(z.z*nfq-cz)); if(d<md)md=d; } float v=native_sin(md*M_PI_F*na); aux.DE *= (1.0 + nf*v*nam); break; }
+					case 42: { float md=1e10; float r=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float th=atan2(z.y,z.x); for(int k=0;k<8;k++){ float a2=k*M_PI_F*2.0/8.0; float d=fabs(th-a2); if(d>M_PI_F)d=2.0*M_PI_F-d; if(d<md)md=d; } aux.DE *= (1.0 + nf*md*r*nam*nfq); break; }
+					case 43: { float v=0; for(int dx=-1;dx<=1;dx++) for(int dy=-1;dy<=1;dy++) for(int dz=-1;dz<=1;dz++){ float cx=floor(z.x*nfq)+dx; float cy=floor(z.y*nfq)+dy; float cz=floor(z.z*nfq)+dz; float h=native_sin(cx*127.1+cy*311.7+cz*74.7)*43758.5453; h=h-floor(h); float d=(z.x*nfq-cx-h)*(z.x*nfq-cx-h)+(z.y*nfq-cy-h)*(z.y*nfq-cy-h)+(z.z*nfq-cz-h)*(z.z*nfq-cz-h); v+=native_exp(-na*d); } aux.DE *= (1.0 + nf*(1.0-v)*nam); break; }
+					case 44: { float md=1e10; for(int dx=-1;dx<=1;dx++) for(int dy=-1;dy<=1;dy++) for(int dz=-1;dz<=1;dz++){ float cx=floor(z.x*nfq)+dx; float cy=floor(z.y*nfq)+dy; float cz=floor(z.z*nfq)+dz; float h=native_sin(cx*127.1+cy*311.7+cz*74.7)*43758.5453; h=h-floor(h); cx+=h; float d=native_sqrt((z.x*nfq-cx)*(z.x*nfq-cx)+(z.y*nfq-cy)*(z.y*nfq-cy)+(z.z*nfq-cz)*(z.z*nfq-cz)); if(d<md)md=d; } float v=native_sin(md*M_PI_F*na); aux.DE *= (1.0 + nf*v*nam); break; }
 					case 45: { float md=1e10,cd=0; for(int dx=-1;dx<=1;dx++) for(int dy=-1;dy<=1;dy++) for(int dz=-1;dz<=1;dz++){ float cx=floor(z.x*nfq)+dx; float cy=floor(z.y*nfq)+dy; float cz=floor(z.z*nfq)+dz; float h=native_sin(cx*127.1+cy*311.7+cz*74.7)*43758.5453; h=h-floor(h); cx+=h; float d=(z.x*nfq-cx)*(z.x*nfq-cx)+(z.y*nfq-cy)*(z.y*nfq-cy)+(z.z*nfq-cz)*(z.z*nfq-cz); if(d<md){md=d;cd=h;} } aux.DE *= (1.0 + nf*cd*nam); break; }
-					case 46: { float md1=1e10,md2=1e10,md3=1e10; for(int dx=-1;dx<=1;dx++) for(int dy=-1;dy<=1;dy++) for(int dz=-1;dz<=1;dz++){ float cx=floor(z.x*nfq)+dx; float cy=floor(z.y*nfq)+dy; float cz=floor(z.z*nfq)+dz; float h=native_sin(cx*127.1+cy*311.7+cz*74.7)*43758.5453; h=h-floor(h); cx+=h; float d=(z.x*nfq-cx)*(z.x*nfq-cx)+(z.y*nfq-cy)*(z.y*nfq-cy)+(z.z*nfq-cz)*(z.z*nfq-cz); if(d<md1){md3=md2;md2=md1;md1=d;}else if(d<md2){md3=md2;md2=d;}else if(d<md3)md3=d; } aux.DE *= (1.0 + nf*(sqrt(md3)-sqrt(md1))*nam); break; }
-					case 47: { float md=1e10; for(int dx=-1;dx<=1;dx++) for(int dy=-1;dy<=1;dy++){ float cx=floor(z.x*nfq)+dx; float cy=floor(z.y*nfq)+dy; float h=native_sin(cx*127.1+cy*311.7)*43758.5453; h=h-floor(h); cx+=h*na; float hy=native_sin(cx*269.5+cy*183.3)*43758.5453; hy=hy-floor(hy); cy+=hy*nb; float d=(z.x*nfq-cx)*(z.x*nfq-cx)+(z.y*nfq-cy)*(z.y*nfq-cy); if(d<md)md=d; } float v = native_sin(z.z*nfq)*0.5+0.5; aux.DE *= (1.0 + nf*(sqrt(md)+v*nc)*nam); break; }
-					case 48: { float md=1e10; for(int dx=-1;dx<=1;dx++) for(int dy=-1;dy<=1;dy++) for(int dz=-1;dz<=1;dz++){ float cx=floor(z.x*nfq)+dx; float cy=floor(z.y*nfq)+dy; float cz=floor(z.z*nfq)+dz; float h=native_sin(cx*127.1+cy*311.7+cz*74.7)*43758.5453; h=h-floor(h); cx+=h; float d=(z.x*nfq-cx)*(z.x*nfq-cx)+(z.y*nfq-cy)*(z.y*nfq-cy)+(z.z*nfq-cz)*(z.z*nfq-cz); if(d<md)md=d; } md=sqrt(md); float v=md-floor(md*na)/na; aux.DE *= (1.0 + nf*v*nam); break; }
-					case 49: { float v=0,a=nam,f=nfq; for(int k=0;k<4;k++){ float md=1e10; for(int dx=-1;dx<=1;dx++) for(int dy=-1;dy<=1;dy++){ float cx=floor(z.x*f)+dx; float cy=floor(z.y*f)+dy; float h=native_sin(cx*127.1+cy*311.7)*43758.5453; h=h-floor(h); cx+=h; float d=(z.x*f-cx)*(z.x*f-cx)+(z.y*f-cy)*(z.y*f-cy); if(d<md)md=d; } v+=a*sqrt(md); f*=2.0; a*=0.5; } aux.DE *= (1.0 + nf*v); break; }
-					case 50: { float md=1e10; int nn = (int)fmax(2.0, fmin(na*8.0, 20.0)); for(int dx=-1;dx<=1;dx++) for(int dy=-1;dy<=1;dy++) for(int dz=-1;dz<=1;dz++){ float cx=floor(z.x*nfq)+dx; float cy=floor(z.y*nfq)+dy; float cz=floor(z.z*nfq)+dz; for(int p=0;p<2;p++){ float h1=native_sin((cx+p*0.5)*127.1+cy*311.7+cz*74.7)*43758.5453; h1=h1-floor(h1); float h2=native_sin(cx*269.5+(cy+p*0.5)*183.3+cz*346.9)*43758.5453; h2=h2-floor(h2); float d=(z.x*nfq-cx-h1)*(z.x*nfq-cx-h1)+(z.y*nfq-cy-h2)*(z.y*nfq-cy-h2)+(z.z*nfq-cz)*(z.z*nfq-cz); if(d<md)md=d; } } aux.DE *= (1.0 + nf*sqrt(md)*nam); break; }
+					case 46: { float md1=1e10,md2=1e10,md3=1e10; for(int dx=-1;dx<=1;dx++) for(int dy=-1;dy<=1;dy++) for(int dz=-1;dz<=1;dz++){ float cx=floor(z.x*nfq)+dx; float cy=floor(z.y*nfq)+dy; float cz=floor(z.z*nfq)+dz; float h=native_sin(cx*127.1+cy*311.7+cz*74.7)*43758.5453; h=h-floor(h); cx+=h; float d=(z.x*nfq-cx)*(z.x*nfq-cx)+(z.y*nfq-cy)*(z.y*nfq-cy)+(z.z*nfq-cz)*(z.z*nfq-cz); if(d<md1){md3=md2;md2=md1;md1=d;}else if(d<md2){md3=md2;md2=d;}else if(d<md3)md3=d; } aux.DE *= (1.0 + nf*(native_sqrt(md3)-native_sqrt(md1))*nam); break; }
+					case 47: { float md=1e10; for(int dx=-1;dx<=1;dx++) for(int dy=-1;dy<=1;dy++){ float cx=floor(z.x*nfq)+dx; float cy=floor(z.y*nfq)+dy; float h=native_sin(cx*127.1+cy*311.7)*43758.5453; h=h-floor(h); cx+=h*na; float hy=native_sin(cx*269.5+cy*183.3)*43758.5453; hy=hy-floor(hy); cy+=hy*nb; float d=(z.x*nfq-cx)*(z.x*nfq-cx)+(z.y*nfq-cy)*(z.y*nfq-cy); if(d<md)md=d; } float v = native_sin(z.z*nfq)*0.5+0.5; aux.DE *= (1.0 + nf*(native_sqrt(md)+v*nc)*nam); break; }
+					case 48: { float md=1e10; for(int dx=-1;dx<=1;dx++) for(int dy=-1;dy<=1;dy++) for(int dz=-1;dz<=1;dz++){ float cx=floor(z.x*nfq)+dx; float cy=floor(z.y*nfq)+dy; float cz=floor(z.z*nfq)+dz; float h=native_sin(cx*127.1+cy*311.7+cz*74.7)*43758.5453; h=h-floor(h); cx+=h; float d=(z.x*nfq-cx)*(z.x*nfq-cx)+(z.y*nfq-cy)*(z.y*nfq-cy)+(z.z*nfq-cz)*(z.z*nfq-cz); if(d<md)md=d; } md=native_sqrt(md); float v=md-floor(md*na)/na; aux.DE *= (1.0 + nf*v*nam); break; }
+					case 49: { float v=0,a=nam,f=nfq; for(int k=0;k<4;k++){ float md=1e10; for(int dx=-1;dx<=1;dx++) for(int dy=-1;dy<=1;dy++){ float cx=floor(z.x*f)+dx; float cy=floor(z.y*f)+dy; float h=native_sin(cx*127.1+cy*311.7)*43758.5453; h=h-floor(h); cx+=h; float d=(z.x*f-cx)*(z.x*f-cx)+(z.y*f-cy)*(z.y*f-cy); if(d<md)md=d; } v+=a*native_sqrt(md); f*=2.0; a*=0.5; } aux.DE *= (1.0 + nf*v); break; }
+					case 50: { float md=1e10; int nn = (int)fmax(2.0, fmin(na*8.0, 20.0)); for(int dx=-1;dx<=1;dx++) for(int dy=-1;dy<=1;dy++) for(int dz=-1;dz<=1;dz++){ float cx=floor(z.x*nfq)+dx; float cy=floor(z.y*nfq)+dy; float cz=floor(z.z*nfq)+dz; for(int p=0;p<2;p++){ float h1=native_sin((cx+p*0.5)*127.1+cy*311.7+cz*74.7)*43758.5453; h1=h1-floor(h1); float h2=native_sin(cx*269.5+(cy+p*0.5)*183.3+cz*346.9)*43758.5453; h2=h2-floor(h2); float d=(z.x*nfq-cx-h1)*(z.x*nfq-cx-h1)+(z.y*nfq-cy-h2)*(z.y*nfq-cy-h2)+(z.z*nfq-cz)*(z.z*nfq-cz); if(d<md)md=d; } } aux.DE *= (1.0 + nf*native_sqrt(md)*nam); break; }
 					case 51: { float v=0, a=nam, f=nfq; for(int k=0;k<5;k++){ float h=native_sin(z.x*f*127.1+z.y*f*311.7+z.z*f*74.7)*43758.5453; h=h-floor(h); float r2=fabs(h*2.0-1.0); v+=a*(1.0-r2); f*=2.0; a*=0.5; } aux.DE *= (1.0 + nf*v*v); break; }
 					case 52: { float v=0,a=nam,f=nfq,w=1.0; for(int k=0;k<5;k++){ float h=native_sin(z.x*f*127.1+z.y*f*311.7+z.z*f*74.7)*43758.5453; h=h-floor(h); float r2=1.0-fabs(h*2.0-1.0); r2*=r2; v+=r2*a*w; w=fmin(r2*na, 1.0); f*=2.0; a*=0.5; } aux.DE *= (1.0 + nf*v); break; }
 					case 53: { float v=0,a=nam,f=nfq; for(int k=0;k<5;k++){ float h=native_sin(z.x*f+z.y*f*1.3+z.z*f*0.7); v+=a*fabs(h); f*=2.0; a*=0.5; } aux.DE *= (1.0 + nf*v); break; }
@@ -4208,7 +4208,7 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 					case 56: { float v=0,f=nfq; for(int k=0;k<5;k++){ float h=native_sin(z.x*f*127.1+z.y*f*311.7+z.z*f*74.7)*43758.5453; h=h-floor(h); v=fmax(v,h*nam/(1.0+k*0.5)); f*=2.0; } aux.DE *= (1.0 + nf*v); break; }
 					case 57: { float v=0,a=nam,f=nfq,prev=0; for(int k=0;k<5;k++){ float h=native_sin(z.x*f*127.1+z.y*f*311.7+z.z*f*74.7)*43758.5453; h=h-floor(h); float cur=fabs(h*2.0-1.0); v+=a*cur*prev; prev=cur; f*=2.0; a*=0.5; } aux.DE *= (1.0 + nf*v); break; }
 					case 58: { float v=0,a=nam,f=nfq; for(int k=0;k<5;k++){ float h1=native_sin(z.x*f+z.y*f*1.3)*0.5+0.5; float h2=native_sin(z.y*f*0.7+z.z*f*1.1)*0.5+0.5; float h3=native_sin(z.z*f*0.9+z.x*f*1.5)*0.5+0.5; v+=a*(h1+h2+h3)/3.0; f*=2.0; a*=0.5; } aux.DE *= (1.0 + nf*(v*2.0-1.0)); break; }
-					case 59: { float v=0,a=nam,f=nfq; for(int k=0;k<6;k++){ float r=sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float h=native_sin(r*f)*43758.5453; h=h-floor(h); v+=a*h; f*=2.0; a*=0.5; } aux.DE *= (1.0 + nf*v); break; }
+					case 59: { float v=0,a=nam,f=nfq; for(int k=0;k<6;k++){ float r=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float h=native_sin(r*f)*43758.5453; h=h-floor(h); v+=a*h; f*=2.0; a*=0.5; } aux.DE *= (1.0 + nf*v); break; }
 					case 60: { float v=0,a=nam,f=nfq; for(int k=0;k<5;k++){ float h=native_sin(z.x*f+z.y*f*1.3+z.z*f*0.7); float billow=fabs(h)*2.0-1.0; v+=a*billow; f*=2.0; a*=0.5; } aux.DE *= (1.0 + nf*v); break; }
 					case 61: { float v=0,a=nam,f=nfq; for(int k=0;k<5;k++){ float h=native_sin(z.x*f+z.y*f*0.7+z.z*f*1.3)*0.5+0.5; v+=a*pow(h, na); f*=2.0; a*=0.5; } aux.DE *= (1.0 + nf*v); break; }
 					case 62: { float v=0,a=nam,f=nfq; float px=z.x,py=z.y,pz=z.z; for(int k=0;k<5;k++){ float h=native_sin(px*f*127.1+py*f*311.7+pz*f*74.7)*43758.5453; h=h-floor(h); v+=a*fabs(h*2.0-1.0); float wx=native_sin(py*f*269.5)*na; float wy=native_sin(pz*f*183.3)*nb; float wz=native_sin(px*f*419.2)*nc; px+=wx; py+=wy; pz+=wz; f*=2.0; a*=0.5; } aux.DE *= (1.0 + nf*v); break; }
@@ -4217,11 +4217,11 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 					case 65: { float v=0,a=nam,f=nfq; for(int k=0;k<5;k++){ float h=native_sin(z.x*f*127.1+z.y*f*311.7+z.z*f*74.7+nd*i)*43758.5453; h=h-floor(h); v+=a*h; f*=2.0; a*=0.5; } aux.DE *= (1.0 + nf*v); break; }
 					case 66: { float wx=z.x+nam*native_sin(z.y*nfq); float wy=z.y+nam*native_sin(z.z*nfq); float wz=z.z+nam*native_sin(z.x*nfq); float h=native_sin(wx*127.1+wy*311.7+wz*74.7)*43758.5453; h=h-floor(h); aux.DE *= (1.0 + nf*h); break; }
 					case 67: { float wx=z.x+nam*native_sin(z.y*nfq+z.z*nfq*0.5); float wy=z.y+nam*native_sin(z.z*nfq*1.3+z.x*nfq*0.7); float wz=z.z+nam*native_sin(z.x*nfq*0.9+z.y*nfq*1.1); float wx2=wx+nb*native_sin(wy*nfq*2.0); float wy2=wy+nb*native_sin(wz*nfq*2.0); float wz2=wz+nb*native_sin(wx*nfq*2.0); float h=native_sin(wx2*127.1+wy2*311.7+wz2*74.7)*43758.5453; h=h-floor(h); aux.DE *= (1.0 + nf*h); break; }
-					case 68: { float r=sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float th=atan2(z.y,z.x)+nam*native_sin(r*nfq); float ph=acos(z.z/fmax(r,1e-21))+nb*native_cos(r*nfq*0.7); float h=native_sin(th*na+ph*nc)*0.5+0.5; aux.DE *= (1.0 + nf*h); break; }
+					case 68: { float r=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float th=atan2(z.y,z.x)+nam*native_sin(r*nfq); float ph=acos(z.z/fmax(r,1e-21))+nb*native_cos(r*nfq*0.7); float h=native_sin(th*na+ph*nc)*0.5+0.5; aux.DE *= (1.0 + nf*h); break; }
 					case 69: { float h1=native_sin(z.x*nfq*127.1+z.y*nfq*311.7)*43758.5453; h1=h1-floor(h1); float h2=native_sin(z.y*nfq*269.5+z.z*nfq*183.3)*43758.5453; h2=h2-floor(h2); float wx=z.x+(h1*2.0-1.0)*nam; float wy=z.y+(h2*2.0-1.0)*nam; float v=native_sin(wx*nfq*na+wy*nfq*nb); aux.DE *= (1.0 + nf*v); break; }
 					case 70: { float v=0,f=nfq,a=nam; float px=z.x,py=z.y,pz=z.z; for(int k=0;k<4;k++){ float h=native_sin(px*f*127.1+py*f*311.7+pz*f*74.7)*43758.5453; h=h-floor(h); v+=a*h; px+=native_sin(py*f*na)*nb; py+=native_sin(pz*f*na)*nb; pz+=native_sin(px*f*na)*nb; f*=2.0; a*=0.5; } aux.DE *= (1.0 + nf*v); break; }
 					case 71: { float wx=z.x+nam*native_sin(z.y*nfq)*native_cos(z.z*nfq*0.5); float wy=z.y+nam*native_cos(z.x*nfq*0.7)*native_sin(z.z*nfq); float v=native_sin(wx*na)*native_cos(wy*nb); aux.DE *= (1.0 + nf*v); break; }
-					case 72: { float r=sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float wr=r+nam*native_sin(r*nfq); float h=native_sin(wr*na*127.1)*43758.5453; h=h-floor(h); aux.DE *= (1.0 + nf*h); break; }
+					case 72: { float r=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float wr=r+nam*native_sin(r*nfq); float h=native_sin(wr*na*127.1)*43758.5453; h=h-floor(h); aux.DE *= (1.0 + nf*h); break; }
 					case 73: { float v=native_sin(z.x*nfq+nam*native_sin(z.y*nfq+nam*native_sin(z.z*nfq))); aux.DE *= (1.0 + nf*v); break; }
 					case 74: { float t=nd*i*0.01; float wx=z.x+nam*native_sin(z.y*nfq+t); float wy=z.y+nam*native_sin(z.z*nfq+t*1.3); float wz=z.z+nam*native_sin(z.x*nfq+t*0.7); float h=native_sin(wx*127.1+wy*311.7+wz*74.7)*43758.5453; h=h-floor(h); aux.DE *= (1.0 + nf*h); break; }
 					case 75: { float scale=nfq; float wx=z.x*scale; float wy=z.y*scale; float wz=z.z*scale; for(int k=0;k<3;k++){ wx=native_sin(wx*na+wy); wy=native_cos(wy*nb+wz); wz=native_sin(wz*nc+wx); } float h=native_sin(wx+wy+wz)*0.5+0.5; aux.DE *= (1.0 + nf*h*nam); break; }
@@ -4232,19 +4232,19 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 					case 80: { float wx=z.x+nam*native_sin(z.y*nfq)*native_sin(z.z*nfq*0.5); float wy=z.y+nam*native_sin(z.z*nfq*0.7)*native_sin(z.x*nfq); float wz=z.z+nam*native_sin(z.x*nfq*1.3)*native_sin(z.y*nfq*0.9); float v=native_sin(wx*na)*native_sin(wy*nb)*native_sin(wz*nc); aux.DE *= (1.0 + nf*v); break; }
 					case 81: { float s=(z.x+z.y+z.z)/3.0; float ix=floor(z.x+s); float iy=floor(z.y+s); float iz=floor(z.z+s); float t=(ix+iy+iz)/6.0; float x0=z.x-ix+t; float y0=z.y-iy+t; float z0=z.z-iz+t; float h=native_sin(ix*127.1+iy*311.7+iz*74.7)*43758.5453; h=h-floor(h); float v=fmax(0.0,0.6-x0*x0-y0*y0-z0*z0); v=v*v*v*v*h; aux.DE *= (1.0 + nf*v*nam*32.0); break; }
 					case 82: { float s=(z.x+z.y+z.z)*nfq/3.0; float v=native_sin(s*127.1)*43758.5453; v=v-floor(v); float v2=native_sin(s*269.5)*43758.5453; v2=v2-floor(v2); aux.DE *= (1.0 + nf*(v*na+v2*nb)*0.5*nam); break; }
-					case 83: { float skew=(z.x+z.y)*nfq*(sqrt(3.0)-1.0)/2.0; float ix=floor(z.x*nfq+skew); float iy=floor(z.y*nfq+skew); float unskew=(ix+iy)*(3.0-sqrt(3.0))/6.0; float x0=z.x*nfq-ix+unskew; float y0=z.y*nfq-iy+unskew; float h=native_sin(ix*127.1+iy*311.7)*43758.5453; h=h-floor(h); float t0=0.5-x0*x0-y0*y0; float v=t0>0?t0*t0*t0*t0*h:0; aux.DE *= (1.0 + nf*v*nam*70.0); break; }
+					case 83: { float skew=(z.x+z.y)*nfq*(native_sqrt(3.0)-1.0)/2.0; float ix=floor(z.x*nfq+skew); float iy=floor(z.y*nfq+skew); float unskew=(ix+iy)*(3.0-native_sqrt(3.0))/6.0; float x0=z.x*nfq-ix+unskew; float y0=z.y*nfq-iy+unskew; float h=native_sin(ix*127.1+iy*311.7)*43758.5453; h=h-floor(h); float t0=0.5-x0*x0-y0*y0; float v=t0>0?t0*t0*t0*t0*h:0; aux.DE *= (1.0 + nf*v*nam*70.0); break; }
 					case 84: { float v=0,f=nfq,a=nam; for(int k=0;k<5;k++){ float s=(z.x*f+z.y*f+z.z*f)/3.0; float h=native_sin(s*127.1+k*519.3)*43758.5453; h=h-floor(h); v+=a*h; f*=2.0; a*=0.5; } aux.DE *= (1.0 + nf*v); break; }
 					case 85: { float v=0,f=nfq,a=nam; for(int k=0;k<5;k++){ float s=(z.x*f+z.y*f+z.z*f)/3.0; float h=native_sin(s*127.1+k*519.3)*43758.5453; h=h-floor(h); v+=a*fabs(h*2.0-1.0); f*=2.0; a*=0.5; } aux.DE *= (1.0 + nf*v); break; }
 					case 86: { float v=0,f=nfq,a=nam; for(int k=0;k<5;k++){ float s=(z.x*f+z.y*f+z.z*f)/3.0; float h=native_sin(s*127.1+k*519.3)*43758.5453; h=h-floor(h); float ridge=1.0-fabs(h*2.0-1.0); ridge*=ridge; v+=a*ridge; f*=2.0; a*=0.5; } aux.DE *= (1.0 + nf*v); break; }
 					case 87: { float s=(z.x+z.y+z.z)*nfq; float v1=native_sin(s*na)*0.5+0.5; float v2=native_sin(s*nb+M_PI_F*0.5)*0.5+0.5; float v=v1*v2; aux.DE *= (1.0 + nf*v*nam); break; }
 					case 88: { float v=0; float px=z.x*nfq,py=z.y*nfq,pz=z.z*nfq; for(int k=0;k<4;k++){ float s=(px+py+pz)/3.0; float h=native_sin(s*127.1+k*91.7)*43758.5453; h=h-floor(h); v+=h*nam/(1.0+k); px+=native_sin(py)*na; py+=native_sin(pz)*nb; pz+=native_sin(px)*nc; } aux.DE *= (1.0 + nf*v*0.25); break; }
-					case 89: { float r=sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float th=atan2(z.y,z.x); float s=(r*nfq+th*na)/3.0; float h=native_sin(s*127.1)*43758.5453; h=h-floor(h); aux.DE *= (1.0 + nf*h*nam); break; }
+					case 89: { float r=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float th=atan2(z.y,z.x); float s=(r*nfq+th*na)/3.0; float h=native_sin(s*127.1)*43758.5453; h=h-floor(h); aux.DE *= (1.0 + nf*h*nam); break; }
 					case 90: { float v=0,f=nfq,a=nam; float cs=native_cos(nd*M_PI_F/180.0),sn=native_sin(nd*M_PI_F/180.0); float px=z.x,py=z.y; for(int k=0;k<5;k++){ float s=(px*f+py*f+z.z*f)/3.0; float h=native_sin(s*127.1+k*519.3)*43758.5453; h=h-floor(h); v+=a*h; float nx=px*cs-py*sn; py=px*sn+py*cs; px=nx; f*=2.0; a*=0.5; } aux.DE *= (1.0 + nf*v); break; }
-					case 91: { float vn=native_sin(z.x*nfq*127.1+z.y*nfq*311.7+z.z*nfq*74.7)*43758.5453; vn=vn-floor(vn); float md=1e10; for(int dx=-1;dx<=1;dx++) for(int dy=-1;dy<=1;dy++){ float cx=floor(z.x*nfq)+dx; float cy=floor(z.y*nfq)+dy; float h=native_sin(cx*127.1+cy*311.7)*43758.5453; h=h-floor(h); cx+=h; float d=(z.x*nfq-cx)*(z.x*nfq-cx)+(z.y*nfq-cy)*(z.y*nfq-cy); if(d<md)md=d; } aux.DE *= (1.0 + nf*(vn*na+sqrt(md)*nb)*nam); break; }
+					case 91: { float vn=native_sin(z.x*nfq*127.1+z.y*nfq*311.7+z.z*nfq*74.7)*43758.5453; vn=vn-floor(vn); float md=1e10; for(int dx=-1;dx<=1;dx++) for(int dy=-1;dy<=1;dy++){ float cx=floor(z.x*nfq)+dx; float cy=floor(z.y*nfq)+dy; float h=native_sin(cx*127.1+cy*311.7)*43758.5453; h=h-floor(h); cx+=h; float d=(z.x*nfq-cx)*(z.x*nfq-cx)+(z.y*nfq-cy)*(z.y*nfq-cy); if(d<md)md=d; } aux.DE *= (1.0 + nf*(vn*na+native_sqrt(md)*nb)*nam); break; }
 					case 92: { float v=0,f=nfq,a=nam; for(int k=0;k<5;k++){ float h=native_sin(z.x*f*127.1+z.y*f*311.7+z.z*f*74.7)*43758.5453; h=h-floor(h); v+=a*native_sin(h*M_PI_F*2.0*na); f*=2.0; a*=0.5; } aux.DE *= (1.0 + nf*v); break; }
 					case 93: { float t=nd*i*0.1; float v=0,f=nfq,a=nam; for(int k=0;k<5;k++){ float h=native_sin(z.x*f*127.1+z.y*f*311.7+z.z*f*74.7+t)*43758.5453; h=h-floor(h); v+=a*h; f*=2.0; a*=0.5; } aux.DE *= (1.0 + nf*v); break; }
 					case 94: { float v1=0,v2=0,f=nfq,a=nam; for(int k=0;k<4;k++){ float h=native_sin(z.x*f*127.1+z.y*f*311.7+z.z*f*74.7)*43758.5453; h=h-floor(h); v1+=a*h; v2+=a*fabs(h*2.0-1.0); f*=2.0; a*=0.5; } float blend=native_sin(z.x*na+z.y*nb)*0.5+0.5; aux.DE *= (1.0 + nf*(v1*blend+v2*(1.0-blend))); break; }
-					case 95: { float v=0,f=nfq,a=nam; for(int k=0;k<5;k++){ float h=native_sin(z.x*f*127.1+z.y*f*311.7+z.z*f*74.7)*43758.5453; h=h-floor(h); float erosion=exp(-na*h); v+=a*erosion; f*=2.0; a*=0.5; } aux.DE *= (1.0 + nf*v); break; }
+					case 95: { float v=0,f=nfq,a=nam; for(int k=0;k<5;k++){ float h=native_sin(z.x*f*127.1+z.y*f*311.7+z.z*f*74.7)*43758.5453; h=h-floor(h); float erosion=native_exp(-na*h); v+=a*erosion; f*=2.0; a*=0.5; } aux.DE *= (1.0 + nf*v); break; }
 					case 96: { float v=0,f=nfq; for(int k=0;k<5;k++){ float h=native_sin(z.x*f*127.1+z.y*f*311.7+z.z*f*74.7)*43758.5453; h=h-floor(h); float terrace=floor(h*na+0.5)/fmax(na,1e-21); v+=terrace/(1.0+k); f*=2.0; } aux.DE *= (1.0 + nf*v*nam*0.2); break; }
 					case 97: { float v=0,f=nfq,a=nam; for(int k=0;k<5;k++){ float h=native_sin(z.x*f*127.1+z.y*f*311.7+z.z*f*74.7)*43758.5453; h=h-floor(h); float swiss=fabs(h*2.0-1.0); swiss=1.0-swiss*swiss; v+=a*swiss; f*=2.0; a*=0.5; } aux.DE *= (1.0 + nf*v); break; }
 					case 98: { float v=0,f=nfq,a=nam; float px=z.x,py=z.y,pz=z.z; for(int k=0;k<5;k++){ float h=native_sin(px*f*127.1+py*f*311.7+pz*f*74.7)*43758.5453; h=h-floor(h); v+=a*h; float wx=native_sin(py*f*na)*nb*a; float wy=native_sin(pz*f*na)*nb*a; float wz=native_sin(px*f*na)*nb*a; px+=wx; py+=wy; pz+=wz; f*=2.0; a*=0.5; } aux.DE *= (1.0 + nf*v); break; }
@@ -4259,106 +4259,106 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 				float oa = mut->orbitParamA, ob = mut->orbitParamB, oc = mut->orbitParamC, od = mut->orbitParamD;
 				float of = mut->orbitFactor;
 				switch(mut->orbitTrapType) {
-					case 1: { float d = sqrt((z.x-oa)*(z.x-oa)+(z.y-ob)*(z.y-ob)+(z.z-oc)*(z.z-oc)); aux.DE *= (1.0 + of*exp(-od*d)); break; }
-					case 2: { float d = fabs(z.x-oa)+fabs(z.y-ob)+fabs(z.z-oc); aux.DE *= (1.0 + of*exp(-od*d)); break; }
-					case 3: { float d = fmax(fabs(z.x-oa),fmax(fabs(z.y-ob),fabs(z.z-oc))); aux.DE *= (1.0 + of*exp(-od*d)); break; }
-					case 4: { float d1=sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float d2=sqrt((z.x-oa)*(z.x-oa)+(z.y-ob)*(z.y-ob)+(z.z-oc)*(z.z-oc)); aux.DE *= (1.0 + of*exp(-od*fmin(d1,d2))); break; }
-					case 5: { float d=sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float ring=fabs(d-oa); aux.DE *= (1.0 + of*exp(-od*ring)); break; }
-					case 6: { float dx=z.x-oa*round(z.x/fmax(oa,1e-21)); float dy=z.y-ob*round(z.y/fmax(ob,1e-21)); float dz=z.z-oc*round(z.z/fmax(oc,1e-21)); float d=sqrt(dx*dx+dy*dy+dz*dz); aux.DE *= (1.0 + of*exp(-od*d)); break; }
-					case 7: { float d=sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float shell=fabs(d-oa); float shell2=fabs(d-ob); aux.DE *= (1.0 + of*exp(-od*fmin(shell,shell2))); break; }
-					case 8: { float ph=atan2(z.y,z.x); float r=sqrt(z.x*z.x+z.y*z.y); float spiral_r=oa+ob*ph/(2.0*M_PI_F); float d=fabs(r-spiral_r); aux.DE *= (1.0 + of*exp(-od*d)); break; }
-					case 9: { float d=sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float v=native_sin(d*oa*M_PI_F)*0.5+0.5; aux.DE *= (1.0 + of*v); break; }
-					case 10: { int nn=(int)fmax(2,fmin(oa*6,12)); float md=1e10; for(int k=0;k<nn;k++){ float ang=k*2.0*M_PI_F/nn; float cx=ob*native_cos(ang); float cy=ob*native_sin(ang); float d=(z.x-cx)*(z.x-cx)+(z.y-cy)*(z.y-cy)+z.z*z.z; if(d<md)md=d; } aux.DE *= (1.0 + of*exp(-od*sqrt(md))); break; }
-					case 11: { float d=z.x*z.x/(oa*oa+1e-21)+z.y*z.y/(ob*ob+1e-21)+z.z*z.z/(oc*oc+1e-21); d=fabs(sqrt(d)-1.0); aux.DE *= (1.0 + of*exp(-od*d)); break; }
-					case 12: { float r=sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float th=atan2(z.y,z.x); float d=fabs(r-oa*(1.0+ob*native_cos(oc*th))); aux.DE *= (1.0 + of*exp(-od*d)); break; }
-					case 13: { float r2=z.x*z.x+z.y*z.y+z.z*z.z; float inv_r=oa*oa/fmax(r2,1e-21); float d=fabs(inv_r-1.0)*sqrt(r2); aux.DE *= (1.0 + of*exp(-od*d)); break; }
-					case 14: { float d=sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float s=native_sin(d*oa); float c=native_cos(d*ob); aux.DE *= (1.0 + of*(s*s+c*c*0.5)*exp(-od*d)); break; }
-					case 15: { float d=fabs(z.x*oa+z.y*ob+z.z*oc)/fmax(sqrt(oa*oa+ob*ob+oc*oc),1e-21); aux.DE *= (1.0 + of*exp(-od*d)); break; }
-					case 16: { float d=sqrt(z.y*z.y+z.z*z.z); aux.DE *= (1.0 + of*exp(-od*d)); break; }
-					case 17: { float d=sqrt(z.x*z.x+z.z*z.z); aux.DE *= (1.0 + of*exp(-od*d)); break; }
-					case 18: { float d=sqrt(z.x*z.x+z.y*z.y); aux.DE *= (1.0 + of*exp(-od*d)); break; }
-					case 19: { float d=fabs(z.x*oa+z.y*ob+z.z*oc-od); aux.DE *= (1.0 + of*exp(-d)); break; }
-					case 20: { float d=fmin(fabs(z.x),fmin(fabs(z.y),fabs(z.z))); aux.DE *= (1.0 + of*exp(-od*d)); break; }
-					case 21: { float d1=fabs(z.x); float d2=fabs(z.y); float d3=fabs(z.z); aux.DE *= (1.0 + of*exp(-od*fmin(d1,d2))*exp(-od*d3)); break; }
-					case 22: { float d=fmin(sqrt(z.x*z.x+z.y*z.y),sqrt(z.y*z.y+z.z*z.z)); d=fmin(d,sqrt(z.x*z.x+z.z*z.z)); aux.DE *= (1.0 + of*exp(-od*d)); break; }
-					case 23: { float d1=fabs(z.x-oa); float d2=fabs(z.y-ob); float d3=fabs(z.z-oc); float d=d1*d2*d3; aux.DE *= (1.0 + of*exp(-od*d)); break; }
-					case 24: { float cs=native_cos(oa*M_PI_F/180.0),sn=native_sin(oa*M_PI_F/180.0); float rx=z.x*cs-z.y*sn; float ry=z.x*sn+z.y*cs; float d=fabs(ry); aux.DE *= (1.0 + of*exp(-od*d)); break; }
-					case 25: { float d=fmin(fabs(z.x),fabs(z.y)); aux.DE *= (1.0 + of*exp(-od*d)); break; }
-					case 26: { float d1=fabs(z.y-oa*z.x); float d2=fabs(z.y+oa*z.x); aux.DE *= (1.0 + of*exp(-od*fmin(d1,d2))); break; }
-					case 27: { float ph=atan2(z.y,z.x); int n=(int)fmax(3,fmin(oa,12)); float seg=2.0*M_PI_F/n; float sph=fmod(ph+M_PI_F,seg)-seg*0.5; float r=sqrt(z.x*z.x+z.y*z.y); float d=fabs(r*native_sin(sph)); aux.DE *= (1.0 + of*exp(-od*d)); break; }
-					case 28: { float d1=fabs(z.x*native_sin(oa*M_PI_F/180.0)-z.y*native_cos(oa*M_PI_F/180.0)); float d2=fabs(z.x*native_sin(ob*M_PI_F/180.0)-z.y*native_cos(ob*M_PI_F/180.0)); aux.DE *= (1.0 + of*exp(-od*(d1+d2))); break; }
-					case 29: { float d=fabs(z.z-oa*native_sin(ob*z.x)*native_cos(oc*z.y)); aux.DE *= (1.0 + of*exp(-od*d)); break; }
-					case 30: { float r=sqrt(z.x*z.x+z.y*z.y); float d=fabs(z.z-oa*native_sin(ob*r)); aux.DE *= (1.0 + of*exp(-od*d)); break; }
-					case 31: { float r=sqrt(z.x*z.x+z.y*z.y); float d=fabs(r-oa); aux.DE *= (1.0 + of*exp(-od*d)); break; }
-					case 32: { float r=sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float d=fabs(r-oa); aux.DE *= (1.0 + of*exp(-od*d)); break; }
-					case 33: { float r=sqrt(z.x*z.x+z.y*z.y); float d=sqrt((r-oa)*(r-oa)+z.z*z.z)-ob; aux.DE *= (1.0 + of*exp(-od*fabs(d))); break; }
-					case 34: { float r=sqrt(z.x*z.x+z.y*z.y); float th=atan2(z.y,z.x); float sf2=pow(fabs(native_cos(oa*th/4.0)),ob)+pow(fabs(native_sin(oa*th/4.0)),ob); float sr=oc*pow(sf2,-1.0/fmax(ob,1e-21)); float d=fabs(r-sr); aux.DE *= (1.0 + of*exp(-od*d)); break; }
-					case 35: { float ph=atan2(z.y,z.x); float r=sqrt(z.x*z.x+z.y*z.y); int n=(int)fmax(3,fmin(oa,12)); float star_r=ob*(1.0+oc*native_cos(n*ph)); float d=fabs(r-star_r); aux.DE *= (1.0 + of*exp(-od*d)); break; }
-					case 36: { float r=sqrt(z.x*z.x+z.y*z.y); float ph=atan2(z.y,z.x); float lemnR=oa*oa*native_cos(2.0*ph); float d=fabs(r*r-lemnR); aux.DE *= (1.0 + of*exp(-od*d*0.5)); break; }
-					case 37: { float r=sqrt(z.x*z.x+z.y*z.y); float ph=atan2(z.y,z.x); float rose_r=oa*native_sin(ob*ph); float d=fabs(r-fabs(rose_r)); aux.DE *= (1.0 + of*exp(-od*d)); break; }
-					case 38: { float ph=atan2(z.y,z.x); float r=sqrt(z.x*z.x+z.y*z.y); float spiral_r=oa*exp(ob*ph); float d=fabs(r-spiral_r); aux.DE *= (1.0 + of*exp(-od*d)); break; }
-					case 39: { float r=sqrt(z.x*z.x+z.y*z.y); float ph=atan2(z.y,z.x); float heart_r=oa*(1.0-native_sin(ph)); float d=fabs(r-heart_r); aux.DE *= (1.0 + of*exp(-od*d)); break; }
-					case 40: { float d1=sqrt(z.x*z.x+z.y*z.y)-oa; float d2=sqrt(z.y*z.y+z.z*z.z)-oa; float d3=sqrt(z.x*z.x+z.z*z.z)-oa; float d=fmin(fabs(d1),fmin(fabs(d2),fabs(d3))); aux.DE *= (1.0 + of*exp(-od*d)); break; }
-					case 41: { float r=sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float d1=fabs(r-oa); float d2=fabs(r-ob); aux.DE *= (1.0 + of*exp(-od*d1)*exp(-od*d2)); break; }
-					case 42: { float r=sqrt(z.x*z.x+z.y*z.y); float d=r*r-(oa*z.x+ob*z.y); d=fabs(d)/fmax(r+1e-21, 1e-21); aux.DE *= (1.0 + of*exp(-od*d)); break; }
-					case 43: { float ex=z.x*z.x/(oa*oa+1e-21); float ey=z.y*z.y/(ob*ob+1e-21); float d=fabs(ex+ey-1.0)*sqrt(oa*oa+ob*ob); aux.DE *= (1.0 + of*exp(-od*d)); break; }
-					case 44: { float r=sqrt(z.x*z.x+z.y*z.y); float t2=sqrt((r-oa)*(r-oa)+z.z*z.z); float d=fabs(t2-ob)+fabs(z.z)*oc; aux.DE *= (1.0 + of*exp(-od*d)); break; }
-					case 45: { float r=sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float ph=atan2(z.y,z.x); float th=acos(z.z/fmax(r,1e-21)); float d=fabs(r-oa*(1.0+ob*native_sin(oc*ph)*native_cos(od*th))); aux.DE *= (1.0 + of*exp(-d)); break; }
-					case 46: { float d=fabs(z.x*z.x+z.y*z.y-oa*z.z*z.z); d=sqrt(d); aux.DE *= (1.0 + of*exp(-od*d)); break; }
-					case 47: { float d=fabs(z.x*z.x/fmax(oa*oa,1e-21)+z.y*z.y/fmax(ob*ob,1e-21)-z.z*z.z/fmax(oc*oc,1e-21)-1.0); aux.DE *= (1.0 + of*exp(-od*d)); break; }
-					case 48: { float r=sqrt(z.x*z.x+z.y*z.y); float ph=atan2(z.y,z.x); float cyl_r=oa+ob*native_sin(oc*z.z)*native_cos(od*ph); float d=fabs(r-cyl_r); aux.DE *= (1.0 + of*exp(-d)); break; }
-					case 49: { float d1=fabs(fmax(fabs(z.x),fabs(z.y))-oa); float d2=fabs(fmax(fabs(z.y),fabs(z.z))-oa); float d3=fabs(fmax(fabs(z.x),fabs(z.z))-oa); float d=fmin(d1,fmin(d2,d3)); aux.DE *= (1.0 + of*exp(-od*d)); break; }
-					case 50: { float dx=fabs(fabs(z.x)-oa); float dy=fabs(fabs(z.y)-oa); float dz=fabs(fabs(z.z)-oa); float d=dx+dy+dz; aux.DE *= (1.0 + of*exp(-od*d)); break; }
-					case 51: { float d1=fabs(z.x); float d2=fabs(z.y); float d=fmin(d1,d2); aux.DE *= (1.0 + of*exp(-od*d)); break; }
-					case 52: { float d1=fmin(fabs(z.x),fabs(z.y)); float d2=fabs(z.z); aux.DE *= (1.0 + of*exp(-od*(d1+d2*oa))); break; }
-					case 53: { float gx=fabs(z.x-oa*round(z.x/fmax(oa,1e-21))); float gy=fabs(z.y-ob*round(z.y/fmax(ob,1e-21))); float d=fmin(gx,gy); aux.DE *= (1.0 + of*exp(-od*d)); break; }
-					case 54: { float gx=fabs(z.x-oa*round(z.x/fmax(oa,1e-21))); float gy=fabs(z.y-oa*round(z.y/fmax(oa,1e-21))); float gz=fabs(z.z-oa*round(z.z/fmax(oa,1e-21))); float d=fmin(gx,fmin(gy,gz)); aux.DE *= (1.0 + of*exp(-od*d)); break; }
-					case 55: { float cs=native_cos(oa*M_PI_F/180.0),sn=native_sin(oa*M_PI_F/180.0); float rx=z.x*cs-z.y*sn; float ry=z.x*sn+z.y*cs; float d=fmin(fabs(rx),fabs(ry)); aux.DE *= (1.0 + of*exp(-od*d)); break; }
-					case 56: { float ph=atan2(z.y,z.x); int n=(int)fmax(3,fmin(oa,16)); float d=sqrt(z.x*z.x+z.y*z.y)*fabs(native_sin(n*ph*0.5)); aux.DE *= (1.0 + of*exp(-od*d)); break; }
-					case 57: { float d1=fabs(z.x-z.y); float d2=fabs(z.x+z.y); float d=fmin(d1,d2)*0.7071; aux.DE *= (1.0 + of*exp(-od*d)); break; }
-					case 58: { float gx=oa>0.001?fabs(native_sin(z.x*M_PI_F/oa)):fabs(z.x); float gy=ob>0.001?fabs(native_sin(z.y*M_PI_F/ob)):fabs(z.y); float d=gx*gy; aux.DE *= (1.0 + of*exp(-od*d)); break; }
-					case 59: { float d1=fmin(fabs(z.x-oa),fabs(z.x+oa)); float d2=fmin(fabs(z.y-ob),fabs(z.y+ob)); float d3=fmin(fabs(z.z-oc),fabs(z.z+oc)); float d=fmin(d1,fmin(d2,d3)); aux.DE *= (1.0 + of*exp(-od*d)); break; }
-					case 60: { float r=sqrt(z.x*z.x+z.y*z.y); float ph=atan2(z.y,z.x); int n=(int)fmax(3,fmin(oa,16)); float seg=2.0*M_PI_F/n; float sph=fmod(ph+M_PI_F+seg*0.5,seg)-seg*0.5; float d=r*fabs(native_sin(sph)); aux.DE *= (1.0 + of*exp(-od*d)); break; }
-					case 61: { float d=fabs(z.x*z.x-z.y*z.y-oa*oa); aux.DE *= (1.0 + of*exp(-od*d)); break; }
-					case 62: { float hx=z.x*2.0/3.0+z.y/3.0; float hy=z.y*2.0/sqrt(3.0); float d=fmin(fabs(hx-round(hx)),fabs(hy-round(hy)))*oa; aux.DE *= (1.0 + of*exp(-od*d)); break; }
+					case 1: { float d = native_sqrt((z.x-oa)*(z.x-oa)+(z.y-ob)*(z.y-ob)+(z.z-oc)*(z.z-oc)); aux.DE *= (1.0 + of*native_exp(-od*d)); break; }
+					case 2: { float d = fabs(z.x-oa)+fabs(z.y-ob)+fabs(z.z-oc); aux.DE *= (1.0 + of*native_exp(-od*d)); break; }
+					case 3: { float d = fmax(fabs(z.x-oa),fmax(fabs(z.y-ob),fabs(z.z-oc))); aux.DE *= (1.0 + of*native_exp(-od*d)); break; }
+					case 4: { float d1=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float d2=native_sqrt((z.x-oa)*(z.x-oa)+(z.y-ob)*(z.y-ob)+(z.z-oc)*(z.z-oc)); aux.DE *= (1.0 + of*native_exp(-od*fmin(d1,d2))); break; }
+					case 5: { float d=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float ring=fabs(d-oa); aux.DE *= (1.0 + of*native_exp(-od*ring)); break; }
+					case 6: { float dx=z.x-oa*round(z.x/fmax(oa,1e-21)); float dy=z.y-ob*round(z.y/fmax(ob,1e-21)); float dz=z.z-oc*round(z.z/fmax(oc,1e-21)); float d=native_sqrt(dx*dx+dy*dy+dz*dz); aux.DE *= (1.0 + of*native_exp(-od*d)); break; }
+					case 7: { float d=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float shell=fabs(d-oa); float shell2=fabs(d-ob); aux.DE *= (1.0 + of*native_exp(-od*fmin(shell,shell2))); break; }
+					case 8: { float ph=atan2(z.y,z.x); float r=native_sqrt(z.x*z.x+z.y*z.y); float spiral_r=oa+ob*ph/(2.0*M_PI_F); float d=fabs(r-spiral_r); aux.DE *= (1.0 + of*native_exp(-od*d)); break; }
+					case 9: { float d=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float v=native_sin(d*oa*M_PI_F)*0.5+0.5; aux.DE *= (1.0 + of*v); break; }
+					case 10: { int nn=(int)fmax(2,fmin(oa*6,12)); float md=1e10; for(int k=0;k<nn;k++){ float ang=k*2.0*M_PI_F/nn; float cx=ob*native_cos(ang); float cy=ob*native_sin(ang); float d=(z.x-cx)*(z.x-cx)+(z.y-cy)*(z.y-cy)+z.z*z.z; if(d<md)md=d; } aux.DE *= (1.0 + of*native_exp(-od*native_sqrt(md))); break; }
+					case 11: { float d=z.x*z.x/(oa*oa+1e-21)+z.y*z.y/(ob*ob+1e-21)+z.z*z.z/(oc*oc+1e-21); d=fabs(native_sqrt(d)-1.0); aux.DE *= (1.0 + of*native_exp(-od*d)); break; }
+					case 12: { float r=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float th=atan2(z.y,z.x); float d=fabs(r-oa*(1.0+ob*native_cos(oc*th))); aux.DE *= (1.0 + of*native_exp(-od*d)); break; }
+					case 13: { float r2=z.x*z.x+z.y*z.y+z.z*z.z; float inv_r=oa*oa/fmax(r2,1e-21); float d=fabs(inv_r-1.0)*native_sqrt(r2); aux.DE *= (1.0 + of*native_exp(-od*d)); break; }
+					case 14: { float d=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float s=native_sin(d*oa); float c=native_cos(d*ob); aux.DE *= (1.0 + of*(s*s+c*c*0.5)*native_exp(-od*d)); break; }
+					case 15: { float d=fabs(z.x*oa+z.y*ob+z.z*oc)/fmax(native_sqrt(oa*oa+ob*ob+oc*oc),1e-21); aux.DE *= (1.0 + of*native_exp(-od*d)); break; }
+					case 16: { float d=native_sqrt(z.y*z.y+z.z*z.z); aux.DE *= (1.0 + of*native_exp(-od*d)); break; }
+					case 17: { float d=native_sqrt(z.x*z.x+z.z*z.z); aux.DE *= (1.0 + of*native_exp(-od*d)); break; }
+					case 18: { float d=native_sqrt(z.x*z.x+z.y*z.y); aux.DE *= (1.0 + of*native_exp(-od*d)); break; }
+					case 19: { float d=fabs(z.x*oa+z.y*ob+z.z*oc-od); aux.DE *= (1.0 + of*native_exp(-d)); break; }
+					case 20: { float d=fmin(fabs(z.x),fmin(fabs(z.y),fabs(z.z))); aux.DE *= (1.0 + of*native_exp(-od*d)); break; }
+					case 21: { float d1=fabs(z.x); float d2=fabs(z.y); float d3=fabs(z.z); aux.DE *= (1.0 + of*native_exp(-od*fmin(d1,d2))*native_exp(-od*d3)); break; }
+					case 22: { float d=fmin(native_sqrt(z.x*z.x+z.y*z.y),native_sqrt(z.y*z.y+z.z*z.z)); d=fmin(d,native_sqrt(z.x*z.x+z.z*z.z)); aux.DE *= (1.0 + of*native_exp(-od*d)); break; }
+					case 23: { float d1=fabs(z.x-oa); float d2=fabs(z.y-ob); float d3=fabs(z.z-oc); float d=d1*d2*d3; aux.DE *= (1.0 + of*native_exp(-od*d)); break; }
+					case 24: { float cs=native_cos(oa*M_PI_F/180.0),sn=native_sin(oa*M_PI_F/180.0); float rx=z.x*cs-z.y*sn; float ry=z.x*sn+z.y*cs; float d=fabs(ry); aux.DE *= (1.0 + of*native_exp(-od*d)); break; }
+					case 25: { float d=fmin(fabs(z.x),fabs(z.y)); aux.DE *= (1.0 + of*native_exp(-od*d)); break; }
+					case 26: { float d1=fabs(z.y-oa*z.x); float d2=fabs(z.y+oa*z.x); aux.DE *= (1.0 + of*native_exp(-od*fmin(d1,d2))); break; }
+					case 27: { float ph=atan2(z.y,z.x); int n=(int)fmax(3,fmin(oa,12)); float seg=2.0*M_PI_F/n; float sph=fmod(ph+M_PI_F,seg)-seg*0.5; float r=native_sqrt(z.x*z.x+z.y*z.y); float d=fabs(r*native_sin(sph)); aux.DE *= (1.0 + of*native_exp(-od*d)); break; }
+					case 28: { float d1=fabs(z.x*native_sin(oa*M_PI_F/180.0)-z.y*native_cos(oa*M_PI_F/180.0)); float d2=fabs(z.x*native_sin(ob*M_PI_F/180.0)-z.y*native_cos(ob*M_PI_F/180.0)); aux.DE *= (1.0 + of*native_exp(-od*(d1+d2))); break; }
+					case 29: { float d=fabs(z.z-oa*native_sin(ob*z.x)*native_cos(oc*z.y)); aux.DE *= (1.0 + of*native_exp(-od*d)); break; }
+					case 30: { float r=native_sqrt(z.x*z.x+z.y*z.y); float d=fabs(z.z-oa*native_sin(ob*r)); aux.DE *= (1.0 + of*native_exp(-od*d)); break; }
+					case 31: { float r=native_sqrt(z.x*z.x+z.y*z.y); float d=fabs(r-oa); aux.DE *= (1.0 + of*native_exp(-od*d)); break; }
+					case 32: { float r=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float d=fabs(r-oa); aux.DE *= (1.0 + of*native_exp(-od*d)); break; }
+					case 33: { float r=native_sqrt(z.x*z.x+z.y*z.y); float d=native_sqrt((r-oa)*(r-oa)+z.z*z.z)-ob; aux.DE *= (1.0 + of*native_exp(-od*fabs(d))); break; }
+					case 34: { float r=native_sqrt(z.x*z.x+z.y*z.y); float th=atan2(z.y,z.x); float sf2=pow(fabs(native_cos(oa*th/4.0)),ob)+pow(fabs(native_sin(oa*th/4.0)),ob); float sr=oc*pow(sf2,-1.0/fmax(ob,1e-21)); float d=fabs(r-sr); aux.DE *= (1.0 + of*native_exp(-od*d)); break; }
+					case 35: { float ph=atan2(z.y,z.x); float r=native_sqrt(z.x*z.x+z.y*z.y); int n=(int)fmax(3,fmin(oa,12)); float star_r=ob*(1.0+oc*native_cos(n*ph)); float d=fabs(r-star_r); aux.DE *= (1.0 + of*native_exp(-od*d)); break; }
+					case 36: { float r=native_sqrt(z.x*z.x+z.y*z.y); float ph=atan2(z.y,z.x); float lemnR=oa*oa*native_cos(2.0*ph); float d=fabs(r*r-lemnR); aux.DE *= (1.0 + of*native_exp(-od*d*0.5)); break; }
+					case 37: { float r=native_sqrt(z.x*z.x+z.y*z.y); float ph=atan2(z.y,z.x); float rose_r=oa*native_sin(ob*ph); float d=fabs(r-fabs(rose_r)); aux.DE *= (1.0 + of*native_exp(-od*d)); break; }
+					case 38: { float ph=atan2(z.y,z.x); float r=native_sqrt(z.x*z.x+z.y*z.y); float spiral_r=oa*native_exp(ob*ph); float d=fabs(r-spiral_r); aux.DE *= (1.0 + of*native_exp(-od*d)); break; }
+					case 39: { float r=native_sqrt(z.x*z.x+z.y*z.y); float ph=atan2(z.y,z.x); float heart_r=oa*(1.0-native_sin(ph)); float d=fabs(r-heart_r); aux.DE *= (1.0 + of*native_exp(-od*d)); break; }
+					case 40: { float d1=native_sqrt(z.x*z.x+z.y*z.y)-oa; float d2=native_sqrt(z.y*z.y+z.z*z.z)-oa; float d3=native_sqrt(z.x*z.x+z.z*z.z)-oa; float d=fmin(fabs(d1),fmin(fabs(d2),fabs(d3))); aux.DE *= (1.0 + of*native_exp(-od*d)); break; }
+					case 41: { float r=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float d1=fabs(r-oa); float d2=fabs(r-ob); aux.DE *= (1.0 + of*native_exp(-od*d1)*native_exp(-od*d2)); break; }
+					case 42: { float r=native_sqrt(z.x*z.x+z.y*z.y); float d=r*r-(oa*z.x+ob*z.y); d=fabs(d)/fmax(r+1e-21, 1e-21); aux.DE *= (1.0 + of*native_exp(-od*d)); break; }
+					case 43: { float ex=z.x*z.x/(oa*oa+1e-21); float ey=z.y*z.y/(ob*ob+1e-21); float d=fabs(ex+ey-1.0)*native_sqrt(oa*oa+ob*ob); aux.DE *= (1.0 + of*native_exp(-od*d)); break; }
+					case 44: { float r=native_sqrt(z.x*z.x+z.y*z.y); float t2=native_sqrt((r-oa)*(r-oa)+z.z*z.z); float d=fabs(t2-ob)+fabs(z.z)*oc; aux.DE *= (1.0 + of*native_exp(-od*d)); break; }
+					case 45: { float r=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float ph=atan2(z.y,z.x); float th=acos(z.z/fmax(r,1e-21)); float d=fabs(r-oa*(1.0+ob*native_sin(oc*ph)*native_cos(od*th))); aux.DE *= (1.0 + of*native_exp(-d)); break; }
+					case 46: { float d=fabs(z.x*z.x+z.y*z.y-oa*z.z*z.z); d=native_sqrt(d); aux.DE *= (1.0 + of*native_exp(-od*d)); break; }
+					case 47: { float d=fabs(z.x*z.x/fmax(oa*oa,1e-21)+z.y*z.y/fmax(ob*ob,1e-21)-z.z*z.z/fmax(oc*oc,1e-21)-1.0); aux.DE *= (1.0 + of*native_exp(-od*d)); break; }
+					case 48: { float r=native_sqrt(z.x*z.x+z.y*z.y); float ph=atan2(z.y,z.x); float cyl_r=oa+ob*native_sin(oc*z.z)*native_cos(od*ph); float d=fabs(r-cyl_r); aux.DE *= (1.0 + of*native_exp(-d)); break; }
+					case 49: { float d1=fabs(fmax(fabs(z.x),fabs(z.y))-oa); float d2=fabs(fmax(fabs(z.y),fabs(z.z))-oa); float d3=fabs(fmax(fabs(z.x),fabs(z.z))-oa); float d=fmin(d1,fmin(d2,d3)); aux.DE *= (1.0 + of*native_exp(-od*d)); break; }
+					case 50: { float dx=fabs(fabs(z.x)-oa); float dy=fabs(fabs(z.y)-oa); float dz=fabs(fabs(z.z)-oa); float d=dx+dy+dz; aux.DE *= (1.0 + of*native_exp(-od*d)); break; }
+					case 51: { float d1=fabs(z.x); float d2=fabs(z.y); float d=fmin(d1,d2); aux.DE *= (1.0 + of*native_exp(-od*d)); break; }
+					case 52: { float d1=fmin(fabs(z.x),fabs(z.y)); float d2=fabs(z.z); aux.DE *= (1.0 + of*native_exp(-od*(d1+d2*oa))); break; }
+					case 53: { float gx=fabs(z.x-oa*round(z.x/fmax(oa,1e-21))); float gy=fabs(z.y-ob*round(z.y/fmax(ob,1e-21))); float d=fmin(gx,gy); aux.DE *= (1.0 + of*native_exp(-od*d)); break; }
+					case 54: { float gx=fabs(z.x-oa*round(z.x/fmax(oa,1e-21))); float gy=fabs(z.y-oa*round(z.y/fmax(oa,1e-21))); float gz=fabs(z.z-oa*round(z.z/fmax(oa,1e-21))); float d=fmin(gx,fmin(gy,gz)); aux.DE *= (1.0 + of*native_exp(-od*d)); break; }
+					case 55: { float cs=native_cos(oa*M_PI_F/180.0),sn=native_sin(oa*M_PI_F/180.0); float rx=z.x*cs-z.y*sn; float ry=z.x*sn+z.y*cs; float d=fmin(fabs(rx),fabs(ry)); aux.DE *= (1.0 + of*native_exp(-od*d)); break; }
+					case 56: { float ph=atan2(z.y,z.x); int n=(int)fmax(3,fmin(oa,16)); float d=native_sqrt(z.x*z.x+z.y*z.y)*fabs(native_sin(n*ph*0.5)); aux.DE *= (1.0 + of*native_exp(-od*d)); break; }
+					case 57: { float d1=fabs(z.x-z.y); float d2=fabs(z.x+z.y); float d=fmin(d1,d2)*0.7071; aux.DE *= (1.0 + of*native_exp(-od*d)); break; }
+					case 58: { float gx=oa>0.001?fabs(native_sin(z.x*M_PI_F/oa)):fabs(z.x); float gy=ob>0.001?fabs(native_sin(z.y*M_PI_F/ob)):fabs(z.y); float d=gx*gy; aux.DE *= (1.0 + of*native_exp(-od*d)); break; }
+					case 59: { float d1=fmin(fabs(z.x-oa),fabs(z.x+oa)); float d2=fmin(fabs(z.y-ob),fabs(z.y+ob)); float d3=fmin(fabs(z.z-oc),fabs(z.z+oc)); float d=fmin(d1,fmin(d2,d3)); aux.DE *= (1.0 + of*native_exp(-od*d)); break; }
+					case 60: { float r=native_sqrt(z.x*z.x+z.y*z.y); float ph=atan2(z.y,z.x); int n=(int)fmax(3,fmin(oa,16)); float seg=2.0*M_PI_F/n; float sph=fmod(ph+M_PI_F+seg*0.5,seg)-seg*0.5; float d=r*fabs(native_sin(sph)); aux.DE *= (1.0 + of*native_exp(-od*d)); break; }
+					case 61: { float d=fabs(z.x*z.x-z.y*z.y-oa*oa); aux.DE *= (1.0 + of*native_exp(-od*d)); break; }
+					case 62: { float hx=z.x*2.0/3.0+z.y/3.0; float hy=z.y*2.0/native_sqrt(3.0); float d=fmin(fabs(hx-round(hx)),fabs(hy-round(hy)))*oa; aux.DE *= (1.0 + of*native_exp(-od*d)); break; }
 					case 63: { float d=native_sin(z.x*oa*M_PI_F)*native_sin(z.y*ob*M_PI_F)*native_sin(z.z*oc*M_PI_F); aux.DE *= (1.0 + of*fabs(d)); break; }
-					case 64: { float r=sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float ph=atan2(z.y,z.x); float th=acos(z.z/fmax(r,1e-21)); float d=fabs(native_sin(oa*ph)*native_sin(ob*th))*r; aux.DE *= (1.0 + of*exp(-od*d)); break; }
-					case 65: { float gx=fabs(z.x-oa*round(z.x/fmax(oa,1e-21))); float gy=fabs(z.y-ob*round(z.y/fmax(ob,1e-21))); float d=sqrt(gx*gx+gy*gy); aux.DE *= (1.0 + of*exp(-od*d)); break; }
-					case 66: { float d=sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float w=exp(-oa*(double)i); aux.DE *= (1.0 + of*exp(-od*d)*w); break; }
-					case 67: { float d=sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float phase=native_sin(ob*(double)i*M_PI_F/180.0)*0.5+0.5; aux.DE *= (1.0 + of*exp(-od*d)*phase); break; }
-					case 68: { float d=sqrt((z.x-oa*native_sin(ob*i))*(z.x-oa*native_sin(ob*i))+(z.y-oa*native_cos(ob*i))*(z.y-oa*native_cos(ob*i))+z.z*z.z); aux.DE *= (1.0 + of*exp(-od*d)); break; }
-					case 69: { float d=sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float trap_r=oa+ob*(double)i; float ring=fabs(d-trap_r); aux.DE *= (1.0 + of*exp(-od*ring)); break; }
-					case 70: { float d=sqrt(z.x*z.x+z.y*z.y+z.z*z.z); if(d < oa) { aux.DE *= (1.0 + of*exp(-od*(oa-d))); } break; }
-					case 71: { float d=fabs(z.x)+fabs(z.y)+fabs(z.z); float w = (i%2==0) ? 1.0 : -0.5; aux.DE *= (1.0 + of*w*exp(-od*d)); break; }
-					case 72: { float d=sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float v=native_sin(d*oa+ob*(double)i); aux.DE *= (1.0 + of*v*v); break; }
-					case 73: { float r=sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float prevR=in->point.Length(); float dr=fabs(r-prevR); aux.DE *= (1.0 + of*exp(-od*dr)); break; }
-					case 74: { float d=sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float n=fmax(1.0,oa*10.0); float trap=fabs(d-round(d*n)/n)*n; aux.DE *= (1.0 + of*exp(-od*trap)); break; }
-					case 75: { float d=sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float v=1.0/(1.0+exp(-oa*(d-ob))); aux.DE *= (1.0 + of*(v-0.5)*2.0); break; }
-					case 76: { float d=sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float decay=exp(-oa*d); float osc=native_sin(ob*d+oc*(double)i); aux.DE *= (1.0 + of*decay*osc); break; }
-					case 77: { float d=fabs(z.x*z.y)+fabs(z.y*z.z)+fabs(z.z*z.x); aux.DE *= (1.0 + of*exp(-od*d)); break; }
-					case 78: { float d=z.x*z.x+z.y*z.y+z.z*z.z; float v=exp(-oa*d)*native_sin(ob*sqrt(d)); aux.DE *= (1.0 + of*v); break; }
-					case 79: { float r=sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float ph=atan2(z.y,z.x); float d=fabs(r-oa)*fabs(native_sin(ob*ph)); aux.DE *= (1.0 + of*exp(-od*d)); break; }
-					case 80: { float d=sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float cs=native_cos(oa*(double)i*M_PI_F/180.0); float sn=native_sin(oa*(double)i*M_PI_F/180.0); float rd=fabs((z.x*cs-z.y*sn)); aux.DE *= (1.0 + of*exp(-od*rd)); break; }
-					case 81: { float d=fabs(z.x*z.x+z.y*z.y-oa*oa*z.z); aux.DE *= (1.0 + of*exp(-od*d)); break; }
-					case 82: { float r=sqrt(z.x*z.x+z.y*z.y); float ph=atan2(z.y,z.x); float d=fabs(r-oa*fabs(native_cos(ob*ph/2.0))); aux.DE *= (1.0 + of*exp(-od*d)); break; }
-					case 83: { float mx=fabs(z.x); float my=fabs(z.y); float mz=fabs(z.z); if(mx<my){float t=mx;mx=my;my=t;} if(mx<mz){float t=mx;mx=mz;mz=t;} float d=mx-oa; aux.DE *= (1.0 + of*exp(-od*fabs(d))); break; }
-					case 84: { float d1=sqrt(z.x*z.x+z.y*z.y)-oa; float d2=fabs(z.z)-ob; float d=sqrt(fmax(d1,0.0)*fmax(d1,0.0)+fmax(d2,0.0)*fmax(d2,0.0))+fmin(fmax(d1,d2),0.0); aux.DE *= (1.0 + of*exp(-od*fabs(d))); break; }
-					case 85: { float r=sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float ph=atan2(z.y,z.x); float th=acos(z.z/fmax(r,1e-21)); int nph=(int)fmax(2,oa*4); int nth=(int)fmax(2,ob*4); float dph=fabs(native_sin(nph*ph*0.5)); float dth=fabs(native_sin(nth*th*0.5)); float d=r*dph*dth; aux.DE *= (1.0 + of*exp(-od*d)); break; }
+					case 64: { float r=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float ph=atan2(z.y,z.x); float th=acos(z.z/fmax(r,1e-21)); float d=fabs(native_sin(oa*ph)*native_sin(ob*th))*r; aux.DE *= (1.0 + of*native_exp(-od*d)); break; }
+					case 65: { float gx=fabs(z.x-oa*round(z.x/fmax(oa,1e-21))); float gy=fabs(z.y-ob*round(z.y/fmax(ob,1e-21))); float d=native_sqrt(gx*gx+gy*gy); aux.DE *= (1.0 + of*native_exp(-od*d)); break; }
+					case 66: { float d=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float w=native_exp(-oa*(float)i); aux.DE *= (1.0 + of*native_exp(-od*d)*w); break; }
+					case 67: { float d=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float phase=native_sin(ob*(float)i*M_PI_F/180.0)*0.5+0.5; aux.DE *= (1.0 + of*native_exp(-od*d)*phase); break; }
+					case 68: { float d=native_sqrt((z.x-oa*native_sin(ob*i))*(z.x-oa*native_sin(ob*i))+(z.y-oa*native_cos(ob*i))*(z.y-oa*native_cos(ob*i))+z.z*z.z); aux.DE *= (1.0 + of*native_exp(-od*d)); break; }
+					case 69: { float d=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float trap_r=oa+ob*(float)i; float ring=fabs(d-trap_r); aux.DE *= (1.0 + of*native_exp(-od*ring)); break; }
+					case 70: { float d=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); if(d < oa) { aux.DE *= (1.0 + of*native_exp(-od*(oa-d))); } break; }
+					case 71: { float d=fabs(z.x)+fabs(z.y)+fabs(z.z); float w = (i%2==0) ? 1.0 : -0.5; aux.DE *= (1.0 + of*w*native_exp(-od*d)); break; }
+					case 72: { float d=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float v=native_sin(d*oa+ob*(float)i); aux.DE *= (1.0 + of*v*v); break; }
+					case 73: { float r=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float prevR=in->point.Length(); float dr=fabs(r-prevR); aux.DE *= (1.0 + of*native_exp(-od*dr)); break; }
+					case 74: { float d=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float n=fmax(1.0,oa*10.0); float trap=fabs(d-round(d*n)/n)*n; aux.DE *= (1.0 + of*native_exp(-od*trap)); break; }
+					case 75: { float d=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float v=1.0/(1.0+native_exp(-oa*(d-ob))); aux.DE *= (1.0 + of*(v-0.5)*2.0); break; }
+					case 76: { float d=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float decay=native_exp(-oa*d); float osc=native_sin(ob*d+oc*(float)i); aux.DE *= (1.0 + of*decay*osc); break; }
+					case 77: { float d=fabs(z.x*z.y)+fabs(z.y*z.z)+fabs(z.z*z.x); aux.DE *= (1.0 + of*native_exp(-od*d)); break; }
+					case 78: { float d=z.x*z.x+z.y*z.y+z.z*z.z; float v=native_exp(-oa*d)*native_sin(ob*native_sqrt(d)); aux.DE *= (1.0 + of*v); break; }
+					case 79: { float r=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float ph=atan2(z.y,z.x); float d=fabs(r-oa)*fabs(native_sin(ob*ph)); aux.DE *= (1.0 + of*native_exp(-od*d)); break; }
+					case 80: { float d=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float cs=native_cos(oa*(float)i*M_PI_F/180.0); float sn=native_sin(oa*(float)i*M_PI_F/180.0); float rd=fabs((z.x*cs-z.y*sn)); aux.DE *= (1.0 + of*native_exp(-od*rd)); break; }
+					case 81: { float d=fabs(z.x*z.x+z.y*z.y-oa*oa*z.z); aux.DE *= (1.0 + of*native_exp(-od*d)); break; }
+					case 82: { float r=native_sqrt(z.x*z.x+z.y*z.y); float ph=atan2(z.y,z.x); float d=fabs(r-oa*fabs(native_cos(ob*ph/2.0))); aux.DE *= (1.0 + of*native_exp(-od*d)); break; }
+					case 83: { float mx=fabs(z.x); float my=fabs(z.y); float mz=fabs(z.z); if(mx<my){float t=mx;mx=my;my=t;} if(mx<mz){float t=mx;mx=mz;mz=t;} float d=mx-oa; aux.DE *= (1.0 + of*native_exp(-od*fabs(d))); break; }
+					case 84: { float d1=native_sqrt(z.x*z.x+z.y*z.y)-oa; float d2=fabs(z.z)-ob; float d=native_sqrt(fmax(d1,0.0)*fmax(d1,0.0)+fmax(d2,0.0)*fmax(d2,0.0))+fmin(fmax(d1,d2),0.0); aux.DE *= (1.0 + of*native_exp(-od*fabs(d))); break; }
+					case 85: { float r=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float ph=atan2(z.y,z.x); float th=acos(z.z/fmax(r,1e-21)); int nph=(int)fmax(2,oa*4); int nth=(int)fmax(2,ob*4); float dph=fabs(native_sin(nph*ph*0.5)); float dth=fabs(native_sin(nth*th*0.5)); float d=r*dph*dth; aux.DE *= (1.0 + of*native_exp(-od*d)); break; }
 					case 86: { float d=fabs(native_sin(z.x*oa)*native_sin(z.y*ob)*native_sin(z.z*oc)); aux.DE *= (1.0 + of*d); break; }
-					case 87: { float d1=sqrt(z.x*z.x+z.y*z.y+z.z*z.z)-oa; float d2=fmax(fabs(z.x),fmax(fabs(z.y),fabs(z.z)))-ob; float d=fmax(d1,-d2); aux.DE *= (1.0 + of*exp(-od*fabs(d))); break; }
-					case 88: { float r=sqrt(z.x*z.x+z.y*z.y); float d=sqrt((r-oa)*(r-oa)+z.z*z.z); float knot=fabs(d-ob*fabs(native_sin(oc*atan2(z.z,r-oa)))); aux.DE *= (1.0 + of*exp(-od*knot)); break; }
-					case 89: { float d=pow(fabs(z.x),oa)+pow(fabs(z.y),oa)+pow(fabs(z.z),oa); d=pow(d,1.0/fmax(oa,1e-21))-ob; aux.DE *= (1.0 + of*exp(-od*fabs(d))); break; }
-					case 90: { float r=sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float th=atan2(z.y,z.x); float d=fabs(r-oa*(native_sin(ob*th)*native_sin(ob*th)+oc)); aux.DE *= (1.0 + of*exp(-od*d)); break; }
-					case 91: { float d1=sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float d2=sqrt((z.x-oa)*(z.x-oa)+(z.y-ob)*(z.y-ob)+(z.z-oc)*(z.z-oc)); float d=fabs(d1-d2); aux.DE *= (1.0 + of*exp(-od*d)); break; }
-					case 92: { float d=fabs(z.x*z.y*z.z); d=pow(d,1.0/3.0); aux.DE *= (1.0 + of*exp(-od*d)); break; }
-					case 93: { float r=sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float ph=atan2(z.y,z.x); float clover=oa*fabs(native_sin(ob*ph)); float d=fabs(r-clover); aux.DE *= (1.0 + of*exp(-od*d)); break; }
-					case 94: { float d1=fabs(z.x)-oa; float d2=fabs(z.y)-ob; float d3=fabs(z.z)-oc; float outside=sqrt(fmax(d1,0.0)*fmax(d1,0.0)+fmax(d2,0.0)*fmax(d2,0.0)+fmax(d3,0.0)*fmax(d3,0.0)); float inside=fmin(fmax(d1,fmax(d2,d3)),0.0); float d=outside+inside; aux.DE *= (1.0 + of*exp(-od*fabs(d))); break; }
-					case 95: { float md=1e10; for(int k=0;k<(int)fmax(2,fmin(oa*4,8));k++){ float ang=k*2.0*M_PI_F/fmax(oa*4,2); float cx=ob*native_cos(ang); float cy=ob*native_sin(ang); for(int j=0;j<(int)fmax(2,fmin(oc*4,8));j++){ float az=j*2.0*M_PI_F/fmax(oc*4,2); float cz=od*native_sin(az); float d=(z.x-cx)*(z.x-cx)+(z.y-cy)*(z.y-cy)+(z.z-cz)*(z.z-cz); if(d<md)md=d; }} aux.DE *= (1.0 + of*exp(-sqrt(md))); break; }
-					case 96: { float r=sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float d=native_sin(r*oa)*native_sin(z.x*ob)*native_sin(z.y*oc); aux.DE *= (1.0 + of*fabs(d)); break; }
-					case 97: { float r=sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float ph=atan2(z.y,z.x); float th=acos(z.z/fmax(r,1e-21)); float Y=native_sin(th)*native_cos(oa*ph); float d=fabs(r-ob*(1.0+oc*Y)); aux.DE *= (1.0 + of*exp(-od*d)); break; }
-					case 98: { float d=0; for(int k=1;k<=(int)fmax(1,fmin(oa*4,6));k++){ float rk=ob*(double)k; float dk=fabs(sqrt(z.x*z.x+z.y*z.y+z.z*z.z)-rk); d+=exp(-oc*dk); } aux.DE *= (1.0 + of*d/(oa*4+1e-21)); break; }
-					case 99: { float r=sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float d=fabs(r-oa); float v=exp(-ob*d)*native_cos(oc*d); z.x += of*v*z.x/fmax(r,1e-21)*0.01; z.y += of*v*z.y/fmax(r,1e-21)*0.01; z.z += of*v*z.z/fmax(r,1e-21)*0.01; aux.DE *= (1.0 + of*fabs(v)*0.1); break; }
-					case 100: { float d1=sqrt(z.x*z.x+z.y*z.y+z.z*z.z)-oa; float d2=sqrt((z.x-ob)*(z.x-ob)+z.y*z.y+z.z*z.z)-oc; float d=fmin(fabs(d1),fabs(d2)); float blend=native_sin(z.x*od+z.y*od)*0.5+0.5; aux.DE *= (1.0 + of*(d1*(1.0-blend)+d2*blend)*exp(-d)); break; }
+					case 87: { float d1=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z)-oa; float d2=fmax(fabs(z.x),fmax(fabs(z.y),fabs(z.z)))-ob; float d=fmax(d1,-d2); aux.DE *= (1.0 + of*native_exp(-od*fabs(d))); break; }
+					case 88: { float r=native_sqrt(z.x*z.x+z.y*z.y); float d=native_sqrt((r-oa)*(r-oa)+z.z*z.z); float knot=fabs(d-ob*fabs(native_sin(oc*atan2(z.z,r-oa)))); aux.DE *= (1.0 + of*native_exp(-od*knot)); break; }
+					case 89: { float d=pow(fabs(z.x),oa)+pow(fabs(z.y),oa)+pow(fabs(z.z),oa); d=pow(d,1.0/fmax(oa,1e-21))-ob; aux.DE *= (1.0 + of*native_exp(-od*fabs(d))); break; }
+					case 90: { float r=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float th=atan2(z.y,z.x); float d=fabs(r-oa*(native_sin(ob*th)*native_sin(ob*th)+oc)); aux.DE *= (1.0 + of*native_exp(-od*d)); break; }
+					case 91: { float d1=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float d2=native_sqrt((z.x-oa)*(z.x-oa)+(z.y-ob)*(z.y-ob)+(z.z-oc)*(z.z-oc)); float d=fabs(d1-d2); aux.DE *= (1.0 + of*native_exp(-od*d)); break; }
+					case 92: { float d=fabs(z.x*z.y*z.z); d=pow(d,1.0/3.0); aux.DE *= (1.0 + of*native_exp(-od*d)); break; }
+					case 93: { float r=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float ph=atan2(z.y,z.x); float clover=oa*fabs(native_sin(ob*ph)); float d=fabs(r-clover); aux.DE *= (1.0 + of*native_exp(-od*d)); break; }
+					case 94: { float d1=fabs(z.x)-oa; float d2=fabs(z.y)-ob; float d3=fabs(z.z)-oc; float outside=native_sqrt(fmax(d1,0.0)*fmax(d1,0.0)+fmax(d2,0.0)*fmax(d2,0.0)+fmax(d3,0.0)*fmax(d3,0.0)); float inside=fmin(fmax(d1,fmax(d2,d3)),0.0); float d=outside+inside; aux.DE *= (1.0 + of*native_exp(-od*fabs(d))); break; }
+					case 95: { float md=1e10; for(int k=0;k<(int)fmax(2,fmin(oa*4,8));k++){ float ang=k*2.0*M_PI_F/fmax(oa*4,2); float cx=ob*native_cos(ang); float cy=ob*native_sin(ang); for(int j=0;j<(int)fmax(2,fmin(oc*4,8));j++){ float az=j*2.0*M_PI_F/fmax(oc*4,2); float cz=od*native_sin(az); float d=(z.x-cx)*(z.x-cx)+(z.y-cy)*(z.y-cy)+(z.z-cz)*(z.z-cz); if(d<md)md=d; }} aux.DE *= (1.0 + of*native_exp(-native_sqrt(md))); break; }
+					case 96: { float r=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float d=native_sin(r*oa)*native_sin(z.x*ob)*native_sin(z.y*oc); aux.DE *= (1.0 + of*fabs(d)); break; }
+					case 97: { float r=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float ph=atan2(z.y,z.x); float th=acos(z.z/fmax(r,1e-21)); float Y=native_sin(th)*native_cos(oa*ph); float d=fabs(r-ob*(1.0+oc*Y)); aux.DE *= (1.0 + of*native_exp(-od*d)); break; }
+					case 98: { float d=0; for(int k=1;k<=(int)fmax(1,fmin(oa*4,6));k++){ float rk=ob*(float)k; float dk=fabs(native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z)-rk); d+=native_exp(-oc*dk); } aux.DE *= (1.0 + of*d/(oa*4+1e-21)); break; }
+					case 99: { float r=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float d=fabs(r-oa); float v=native_exp(-ob*d)*native_cos(oc*d); z.x += of*v*z.x/fmax(r,1e-21)*0.01; z.y += of*v*z.y/fmax(r,1e-21)*0.01; z.z += of*v*z.z/fmax(r,1e-21)*0.01; aux.DE *= (1.0 + of*fabs(v)*0.1); break; }
+					case 100: { float d1=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z)-oa; float d2=native_sqrt((z.x-ob)*(z.x-ob)+z.y*z.y+z.z*z.z)-oc; float d=fmin(fabs(d1),fabs(d2)); float blend=native_sin(z.x*od+z.y*od)*0.5+0.5; aux.DE *= (1.0 + of*(d1*(1.0-blend)+d2*blend)*native_exp(-d)); break; }
 				}
 			}
 
@@ -4368,106 +4368,106 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 				float tf = mut->torusFactor;
 				float ta = mut->torusParamA, tb = mut->torusParamB, tc = mut->torusParamC, td = mut->torusParamD;
 				switch(mut->torusType) {
-					case 1: { float k = ta; float DE0 = tb; aux.DE = 1.0/(1.0 + exp(-k*(aux.DE - DE0))); break; }
-					case 2: { float DE0 = ta; float sigma = fmax(fabs(tb), 0.01); aux.DE *= exp(-(aux.DE-DE0)*(aux.DE-DE0)/(sigma*sigma)); break; }
+					case 1: { float k = ta; float DE0 = tb; aux.DE = 1.0/(1.0 + native_exp(-k*(aux.DE - DE0))); break; }
+					case 2: { float DE0 = ta; float sigma = fmax(fabs(tb), 0.01); aux.DE *= native_exp(-(aux.DE-DE0)*(aux.DE-DE0)/(sigma*sigma)); break; }
 					case 3: { float threshold = ta; float DE_max = fabs(tb)+1.0; float DE_min = fabs(tc)*0.01; aux.DE = (aux.DE > threshold) ? DE_max : DE_min; break; }
 					case 4: { float b1=ta, b2=tb; float d1=fabs(tc),d2=fabs(td); if(aux.DE<b1) aux.DE=d1; else if(aux.DE<b2) aux.DE=d2; break; }
 					case 5: { float h = native_sin(z.x*127.1+z.y*311.7+z.z*74.7)*43758.5453; h=h-floor(h); aux.DE += tf*(h*2.0-1.0)*ta; break; }
-					case 6: { float jx=z.x*z.x-z.y*z.y+ta; float jy=2.0*z.x*z.y+tb; float julia_mag=sqrt(jx*jx+jy*jy); aux.DE *= (1.0 + tf*0.1*julia_mag); break; }
-					case 7: { aux.DE *= (1.0 + tf*0.1*native_sin(ta*(double)i*0.1)); break; }
+					case 6: { float jx=z.x*z.x-z.y*z.y+ta; float jy=2.0*z.x*z.y+tb; float julia_mag=native_sqrt(jx*jx+jy*jy); aux.DE *= (1.0 + tf*0.1*julia_mag); break; }
+					case 7: { aux.DE *= (1.0 + tf*0.1*native_sin(ta*(float)i*0.1)); break; }
 					case 8: { float alpha=fmin(fmax(ta,0.01),0.99); aux.DE = alpha*aux.DE + (1.0-alpha)*tb; break; }
 					case 9: { float h1=native_sin(ta*z.x+tb*z.y+tc*z.z); float h2=native_sin(td*h1+ta*aux.DE); aux.DE *= (1.0 + tf*h2); break; }
 					case 10: { float v=0,f=ta,a=1.0; for(int k=0;k<4;k++){float h=native_sin(z.x*f*127.1+z.y*f*311.7+z.z*f*74.7)*43758.5453;h=h-floor(h);v+=a*h;f*=2.0;a*=0.5;} aux.DE *= (1.0 + tf*0.1*v); break; }
-					case 11: { float speed = sqrt(z.x*z.x+z.y*z.y+z.z*z.z); aux.DE /= (1.0 + tf*speed*ta); break; }
+					case 11: { float speed = native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); aux.DE /= (1.0 + tf*speed*ta); break; }
 					case 12: { float sc = fabs(ta) + 0.01; aux.DE *= sc; break; }
 					case 13: { float angle = atan2(z.y,z.x); aux.DE *= (1.0 + tf*fabs(angle)*ta/(M_PI_F)); break; }
 					case 14: { float shear = fabs(z.x*z.y*ta) + fabs(z.y*z.z*tb) + fabs(z.z*z.x*tc); aux.DE *= (1.0 + tf*shear); break; }
-					case 15: { float progress = (double)i / fmax((double)(i+10), 1.0); aux.DE *= (1.0 + tf*(1.0-progress)*ta); break; }
+					case 15: { float progress = (float)i / fmax((float)(i+10), 1.0); aux.DE *= (1.0 + tf*(1.0-progress)*ta); break; }
 					case 16: { float box = fmax(fabs(z.x),fmax(fabs(z.y),fabs(z.z))); if(box > fabs(ta)) aux.DE *= (1.0 + tf*tb); break; }
-					case 17: { float d = sqrt((z.x-ta)*(z.x-ta)+(z.y-tb)*(z.y-tb)+(z.z-tc)*(z.z-tc)); if(d < fabs(td)) aux.DE *= (1.0 + tf); break; }
+					case 17: { float d = native_sqrt((z.x-ta)*(z.x-ta)+(z.y-tb)*(z.y-tb)+(z.z-tc)*(z.z-tc)); if(d < fabs(td)) aux.DE *= (1.0 + tf); break; }
 					case 18: { float w = fabs(ta)+0.01; if(fabs(z.x)<w && fabs(z.y)<w) aux.DE *= (1.0 + tf*tb); break; }
 					case 19: { float intensity = native_sin(z.x*ta)*native_sin(z.y*tb)*native_sin(z.z*tc); aux.DE *= (1.0 + tf*0.1*intensity*intensity); break; }
-					case 20: { float ao = 1.0/(1.0 + (double)i*ta*0.01); aux.DE *= (1.0 - tf*ao*fabs(tb)); break; }
+					case 20: { float ao = 1.0/(1.0 + (float)i*ta*0.01); aux.DE *= (1.0 - tf*ao*fabs(tb)); break; }
 					case 21: { float gi = native_sin(z.x*ta+z.y*tb)*0.5+0.5; aux.DE /= (1.0 + tf*gi*fabs(tc)); break; }
-					case 22: { float depth = sqrt(z.x*z.x+z.y*z.y+z.z*z.z); aux.DE *= (1.0 + tf*ta*depth); break; }
+					case 22: { float depth = native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); aux.DE *= (1.0 + tf*ta*depth); break; }
 					case 23: { float light_accum = native_sin(z.x*ta)*native_sin(z.y*ta)*0.5+0.5; aux.DE /= (1.0 + tf*light_accum*tb); break; }
-					case 24: { float ss_depth = exp(-fabs(ta)*sqrt(z.x*z.x+z.y*z.y+z.z*z.z)); aux.DE *= (1.0 + tf*ss_depth*tb); break; }
+					case 24: { float ss_depth = native_exp(-fabs(ta)*native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z)); aux.DE *= (1.0 + tf*ss_depth*tb); break; }
 					case 25: { float wl_diff = fabs(z.x*ta - tb); aux.DE *= (1.0 + tf*tc*wl_diff); break; }
 					case 26: { float caustic = native_sin(z.x*ta*10.0)*native_sin(z.y*tb*10.0); aux.DE *= (1.0 + tf*caustic*caustic*tc); break; }
-					case 27: { float r = sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float view_dot = z.z/fmax(r,1e-21); float fresnel = pow(fmax(1.0-fabs(view_dot),0.0), ta); aux.DE *= (1.0 + tf*fresnel*tb); break; }
-					case 28: { float thin_film = native_sin(ta*sqrt(z.x*z.x+z.y*z.y+z.z*z.z)*M_PI_F*2.0); aux.DE *= (1.0 + tf*thin_film*thin_film*tb); break; }
-					case 29: { float tangent_dot = fabs(z.x*native_cos(ta)+z.y*native_sin(ta))/fmax(sqrt(z.x*z.x+z.y*z.y),1e-21); aux.DE *= (1.0 + tf*tangent_dot*tb); break; }
-					case 30: { float subdiv = fmax(1.0, floor(ta*(double)i*0.1+1.0)); aux.DE /= subdiv*tf+1.0; break; }
-					case 31: { float dist = sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float lod = fmin(dist*ta, tb); aux.DE *= (1.0 + tf*lod); break; }
+					case 27: { float r = native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float view_dot = z.z/fmax(r,1e-21); float fresnel = pow(fmax(1.0-fabs(view_dot),0.0), ta); aux.DE *= (1.0 + tf*fresnel*tb); break; }
+					case 28: { float thin_film = native_sin(ta*native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z)*M_PI_F*2.0); aux.DE *= (1.0 + tf*thin_film*thin_film*tb); break; }
+					case 29: { float tangent_dot = fabs(z.x*native_cos(ta)+z.y*native_sin(ta))/fmax(native_sqrt(z.x*z.x+z.y*z.y),1e-21); aux.DE *= (1.0 + tf*tangent_dot*tb); break; }
+					case 30: { float subdiv = fmax(1.0, floor(ta*(float)i*0.1+1.0)); aux.DE /= subdiv*tf+1.0; break; }
+					case 31: { float dist = native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float lod = fmin(dist*ta, tb); aux.DE *= (1.0 + tf*lod); break; }
 					case 32: { float edge = fabs(z.x-round(z.x*ta)/fmax(ta,1e-21)) + fabs(z.y-round(z.y*ta)/fmax(ta,1e-21)); aux.DE *= (1.0 + tf*edge*tb); break; }
 					case 33: { float h = native_sin(z.x*ta*10.0)*native_sin(z.y*tb*10.0)*native_sin(z.z*tc*10.0); aux.DE += tf*h*td; break; }
 					case 34: { float perturb = native_sin(z.x*ta*20.0)*native_cos(z.y*tb*20.0)*native_sin(z.z*tc*20.0); aux.DE *= (1.0 + tf*perturb*td); break; }
 					case 35: { float depth = native_sin(z.x*ta+z.y*tb)*0.5+0.5; aux.DE *= (1.0 + tf*depth*tc); break; }
 					case 36: { float n = fmax(fabs(ta), 0.1); aux.DE /= n; break; }
-					case 37: { float dist = sqrt(z.x*z.x+z.y*z.y+z.z*z.z); aux.DE *= exp(-tf*fabs(ta)*dist); break; }
-					case 38: { float cos_th = z.z/fmax(sqrt(z.x*z.x+z.y*z.y+z.z*z.z),1e-21); float phase = (1.0-ta*ta)/(1.0+ta*ta-2.0*ta*cos_th+1e-21); aux.DE *= (1.0 + tf*phase*tb); break; }
+					case 37: { float dist = native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); aux.DE *= native_exp(-tf*fabs(ta)*dist); break; }
+					case 38: { float cos_th = z.z/fmax(native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z),1e-21); float phase = (1.0-ta*ta)/(1.0+ta*ta-2.0*ta*cos_th+1e-21); aux.DE *= (1.0 + tf*phase*tb); break; }
 					case 39: { float emission = native_sin(z.x*ta)*native_sin(z.y*ta)*native_sin(z.z*ta); emission = emission*emission; aux.DE /= (1.0 + tf*emission*tb); break; }
-					case 40: { float r2d = sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float theta = atan2(z.z,r2d-ta); float twist = native_sin(tb*phi + tc*theta); aux.DE *= (1.0 + tf*twist*twist); break; }
+					case 40: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float theta = atan2(z.z,r2d-ta); float twist = native_sin(tb*phi + tc*theta); aux.DE *= (1.0 + tf*twist*twist); break; }
 					case 41: { float R = fabs(ta)+0.1; float r_min = fabs(tb)+0.01; float ratio = R/r_min; aux.DE *= (1.0 + tf*ratio*0.1); break; }
 					case 42: { float R = fabs(ta)+0.1; float r_min = fabs(tb)+0.01; float ratio = r_min/R; aux.DE *= (1.0 + tf*ratio); break; }
 					case 43: { float phi = atan2(z.y,z.x); float revolutions = ta*phi/(2.0*M_PI_F); aux.DE *= (1.0 + tf*native_sin(revolutions*2.0*M_PI_F)*tb); break; }
-					case 44: { float r2 = z.x*z.x+z.y*z.y+z.z*z.z+1e-21; float w = native_sin(ta*r2); float hopf = native_cos(tb*atan2(z.y,z.x))*native_sin(tc*acos(z.z/sqrt(r2))); aux.DE *= (1.0 + tf*w*hopf); break; }
-					case 45: { float r2d = sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float helix_r = ta + tb*native_sin(tc*phi); float d = fabs(r2d - helix_r); aux.DE *= (1.0 + tf*exp(-td*d)); break; }
-					case 46: { float phi = atan2(z.y,z.x); float half_twist = native_sin(phi*0.5); float r2d = sqrt(z.x*z.x+z.y*z.y); float torus_d = fabs(r2d-ta); aux.DE *= (1.0 + tf*half_twist*half_twist*exp(-tb*torus_d)); break; }
-					case 47: { float phi = atan2(z.y,z.x); float R = ta; float r_k = tb*(1.0+0.5*native_cos(phi)); float r2d = sqrt(z.x*z.x+z.y*z.y); float d = fabs(r2d-R) + fabs(z.z)*r_k; aux.DE *= (1.0 + tf*exp(-tc*d)); break; }
+					case 44: { float r2 = z.x*z.x+z.y*z.y+z.z*z.z+1e-21; float w = native_sin(ta*r2); float hopf = native_cos(tb*atan2(z.y,z.x))*native_sin(tc*acos(z.z/native_sqrt(r2))); aux.DE *= (1.0 + tf*w*hopf); break; }
+					case 45: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float helix_r = ta + tb*native_sin(tc*phi); float d = fabs(r2d - helix_r); aux.DE *= (1.0 + tf*native_exp(-td*d)); break; }
+					case 46: { float phi = atan2(z.y,z.x); float half_twist = native_sin(phi*0.5); float r2d = native_sqrt(z.x*z.x+z.y*z.y); float torus_d = fabs(r2d-ta); aux.DE *= (1.0 + tf*half_twist*half_twist*native_exp(-tb*torus_d)); break; }
+					case 47: { float phi = atan2(z.y,z.x); float R = ta; float r_k = tb*(1.0+0.5*native_cos(phi)); float r2d = native_sqrt(z.x*z.x+z.y*z.y); float d = fabs(r2d-R) + fabs(z.z)*r_k; aux.DE *= (1.0 + tf*native_exp(-tc*d)); break; }
 					case 48: { float phi = atan2(z.y,z.x); float genus = fmax(floor(fabs(ta)*3+1),1.0); float fiber = native_sin(genus*phi)*native_cos(tb*z.z); aux.DE *= (1.0 + tf*fiber*fiber*tc); break; }
-					case 49: { float phi = atan2(z.y,z.x); float wrapping = floor(fabs(ta)*4+2); float companion = native_sin(wrapping*phi)*tb; float r2d = sqrt(z.x*z.x+z.y*z.y); float d = fabs(r2d-tc-companion); aux.DE *= (1.0 + tf*exp(-td*d)); break; }
-					case 50: { float r2d = sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float neg_curv = native_sin(ta*phi)*native_sin(tb*z.z)*exp(-tc*fabs(r2d-td)); aux.DE *= (1.0 + tf*neg_curv*neg_curv); break; }
-					case 51: { float phi = atan2(z.y,z.x); float r2d = sqrt(z.x*z.x+z.y*z.y); float p=fmax(floor(fabs(ta)*3+2),2.0); float q=fmax(floor(fabs(tb)*3+3),3.0); float knot_r = tc + td*native_cos(q*phi); float knot_z2 = td*native_sin(q*phi); float d = sqrt((r2d-knot_r)*(r2d-knot_r)+(z.z-knot_z2)*(z.z-knot_z2)); aux.DE *= (1.0 + tf*exp(-d*5.0)); break; }
-					case 52: { float phi = atan2(z.y,z.x); float r2d = sqrt(z.x*z.x+z.y*z.y); float trefoil_r = ta*(2.0+native_cos(3.0*phi)); float trefoil_z = ta*native_sin(3.0*phi); float d = sqrt((r2d-trefoil_r)*(r2d-trefoil_r)+(z.z-trefoil_z)*(z.z-trefoil_z)); aux.DE *= (1.0 + tf*exp(-tb*d)); break; }
-					case 53: { float phi = atan2(z.y,z.x); float r2d = sqrt(z.x*z.x+z.y*z.y); float cinquefoil_r = ta*(2.0+native_cos(5.0*phi)); float cinquefoil_z = ta*native_sin(5.0*phi); float d = sqrt((r2d-cinquefoil_r)*(r2d-cinquefoil_r)+(z.z-cinquefoil_z)*(z.z-cinquefoil_z)); aux.DE *= (1.0 + tf*exp(-tb*d)); break; }
-					case 54: { float phi = atan2(z.y,z.x); float r2d = sqrt(z.x*z.x+z.y*z.y); float fig8_r = ta*(2.0+native_cos(2.0*phi)); float fig8_z = ta*native_sin(4.0*phi)*0.5; float d = sqrt((r2d-fig8_r)*(r2d-fig8_r)+(z.z-fig8_z)*(z.z-fig8_z)); aux.DE *= (1.0 + tf*exp(-tb*d)); break; }
-					case 55: { float t2 = atan2(z.y,z.x)*ta; float r2d = sqrt(z.x*z.x+z.y*z.y); float lissajous_r = tb*(2.0+native_sin(3.0*t2)*native_cos(2.0*t2)); float d = fabs(r2d-lissajous_r)+fabs(z.z)*tc; aux.DE *= (1.0 + tf*exp(-d*td)); break; }
-					case 56: { float r2d = sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float theta = atan2(z.z,r2d-ta); float bump = native_sin(tb*phi)*native_sin(tc*theta); aux.DE *= (1.0 + tf*bump*bump*td); break; }
-					case 57: { float r2d = sqrt(z.x*z.x+z.y*z.y); float R = ta; float r = tb; float torus_d = sqrt((r2d-R)*(r2d-R)+z.z*z.z)-r; float corrugation = native_sin(tc*atan2(z.y,z.x)*10.0)*td; aux.DE *= (1.0 + tf*exp(-(torus_d-corrugation)*(torus_d-corrugation))); break; }
-					case 58: { float r2d = sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float wave_R = ta + tb*native_sin(tc*phi)*native_sin(td*z.z); float d = fabs(r2d-wave_R); aux.DE *= (1.0 + tf*exp(-d*5.0)); break; }
-					case 59: { float r2d = sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float spiral_R = ta + tb*phi/(2.0*M_PI_F); float d = fabs(r2d-spiral_R)+fabs(z.z)*tc; aux.DE *= (1.0 + tf*exp(-d*td)); break; }
-					case 60: { float r2d = sqrt(z.x*z.x+z.y*z.y); float star_n = fmax(floor(fabs(ta)*5+3),3.0); float phi = atan2(z.y,z.x); float star_R = tb*(1.0+tc*native_cos(star_n*phi)); float d = fabs(r2d-star_R)+fabs(z.z)*td; aux.DE *= (1.0 + tf*exp(-d*5.0)); break; }
-					case 61: { float r2d = sqrt(z.x*z.x+z.y*z.y); float R = ta; float r = tb; float torus_d = sqrt((r2d-R)*(r2d-R)+z.z*z.z)-r; float fracture = native_sin(z.x*tc*20.0)*native_sin(z.y*tc*20.0)*td; aux.DE *= (1.0 + tf*exp(-fabs(torus_d)*5.0)*(1.0+fracture)); break; }
-					case 62: { float r2d = sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float egg_R = ta*(1.0+tb*native_sin(phi)); float d = sqrt((r2d-egg_R)*(r2d-egg_R)+z.z*z.z)-tc; aux.DE *= (1.0 + tf*exp(-fabs(d)*td)); break; }
-					case 63: { float r2d = sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float gear_n = fmax(floor(fabs(ta)*8+4),4.0); float gear_R = tb*(1.0+tc*fmax(native_cos(gear_n*phi)-0.5,0.0)); float d = fabs(r2d-gear_R); aux.DE *= (1.0 + tf*exp(-d*td*10.0)); break; }
-					case 64: { float r2d = sqrt(z.x*z.x+z.y*z.y); float R = ta; float r = tb; float torus_d = sqrt((r2d-R)*(r2d-R)+z.z*z.z)-r; float erosion = native_sin(z.x*tc*5.0)*native_sin(z.y*tc*5.0)*native_sin(z.z*tc*5.0); aux.DE *= (1.0 + tf*exp(-fabs(torus_d)*5.0)*fabs(erosion)*td); break; }
-					case 65: { float r2d = sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float theta = atan2(z.z,r2d-ta); float superformula = pow(fabs(native_cos(tb*theta/4.0)),tc)+pow(fabs(native_sin(tb*theta/4.0)),tc); float sf_r = td*pow(superformula,-1.0/fmax(tc,0.01)); float d = sqrt((r2d-ta)*(r2d-ta)+z.z*z.z)-sf_r; aux.DE *= (1.0 + tf*exp(-fabs(d)*5.0)); break; }
-					case 66: { float r2d = sqrt(z.x*z.x+z.y*z.y); float R = ta; float gravity = 1.0/fmax((r2d-R)*(r2d-R)+z.z*z.z+0.01, 0.01); aux.DE *= (1.0 + tf*fmin(gravity*tb,10.0)); break; }
-					case 67: { float r2d = sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float B_field = ta*native_sin(tb*phi)/(fmax(fabs(r2d-tc),0.01)); aux.DE *= (1.0 + tf*fmin(fabs(B_field),10.0)*td); break; }
-					case 68: { float r2d = sqrt(z.x*z.x+z.y*z.y); float vortex = ta*exp(-tb*((r2d-tc)*(r2d-tc)+z.z*z.z)); float circulation = native_sin(td*atan2(z.y,z.x)); aux.DE *= (1.0 + tf*vortex*circulation); break; }
-					case 69: { float r2d = sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float plasma = native_sin(ta*r2d)*native_cos(tb*phi)*native_sin(tc*z.z); float temperature = exp(-td*sqrt((r2d-1.0)*(r2d-1.0)+z.z*z.z)); aux.DE *= (1.0 + tf*plasma*temperature); break; }
-					case 70: { float r2d = sqrt(z.x*z.x+z.y*z.y); float R = ta; float charge = tb/fmax(sqrt((r2d-R)*(r2d-R)+z.z*z.z),0.01); float screen = exp(-tc*sqrt((r2d-R)*(r2d-R)+z.z*z.z)); aux.DE *= (1.0 + tf*charge*screen*td); break; }
-					case 71: { float r2d = sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float wave1 = native_sin(ta*phi + tb*z.z); float wave2 = native_sin(tc*phi - tb*z.z); float interference = (wave1+wave2)*(wave1+wave2)*0.25; aux.DE *= (1.0 + tf*interference*td); break; }
-					case 72: { float r2d = sqrt(z.x*z.x+z.y*z.y); float R = ta; float thermal = exp(-tb*((r2d-R)*(r2d-R)+z.z*z.z)); float fluctuation = native_sin(tc*z.x)*native_sin(tc*z.y)*native_sin(tc*z.z); aux.DE *= (1.0 + tf*thermal*(1.0+td*fluctuation)); break; }
-					case 73: { float r2d = sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); int modes = (int)fmax(2,fmin(ta*5,10)); float v = 0; for(int m=1;m<=modes;m++) v+=native_sin(m*phi*tb)*native_cos(m*z.z*tc)/m; aux.DE *= (1.0 + tf*v*v*td); break; }
-					case 74: { float r2d = sqrt(z.x*z.x+z.y*z.y); float R = ta; float diffusion = 1.0/(1.0 + tb*(double)i*0.01); float concentration = exp(-tc*fabs(r2d-R))*diffusion; aux.DE *= (1.0 + tf*concentration*td); break; }
-					case 75: { float r2d = sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float reaction = native_sin(ta*phi)*native_sin(tb*z.z); float diffuse = exp(-tc*((r2d-td)*(r2d-td))); float rd = reaction*diffuse; aux.DE *= (1.0 + tf*rd*rd); break; }
-					case 76: { float r2d = sqrt(z.x*z.x+z.y*z.y); float d1 = sqrt((r2d-ta)*(r2d-ta)+z.z*z.z)-tb; float d2 = sqrt((r2d-tc)*(r2d-tc)+z.z*z.z)-td; aux.DE *= (1.0 + tf*exp(-fmin(d1*d1,d2*d2)*5.0)); break; }
-					case 77: { float r2d = sqrt(z.x*z.x+z.y*z.y); float ryz = sqrt(z.y*z.y+z.z*z.z); float d1 = sqrt((r2d-ta)*(r2d-ta)+z.z*z.z)-tb; float d2 = sqrt((ryz-ta)*(ryz-ta)+z.x*z.x)-tb; aux.DE *= (1.0 + tf*exp(-fmin(d1*d1,d2*d2)*tc)); break; }
-					case 78: { float r2d = sqrt(z.x*z.x+z.y*z.y); float rxz = sqrt(z.x*z.x+z.z*z.z); float ryz = sqrt(z.y*z.y+z.z*z.z); float d1=fabs(sqrt((r2d-ta)*(r2d-ta)+z.z*z.z)-tb); float d2=fabs(sqrt((rxz-ta)*(rxz-ta)+z.y*z.y)-tb); float d3=fabs(sqrt((ryz-ta)*(ryz-ta)+z.x*z.x)-tb); aux.DE *= (1.0 + tf*exp(-fmin(d1,fmin(d2,d3))*tc)); break; }
-					case 79: { float phi = atan2(z.y,z.x); float r2d = sqrt(z.x*z.x+z.y*z.y); int n = (int)fmax(2,fmin(ta*4,8)); float md = 1e10; for(int k=0;k<n;k++){ float ang = k*2.0*M_PI_F/n; float cx = tb*native_cos(ang); float cy = tb*native_sin(ang); float d = sqrt((z.x-cx)*(z.x-cx)+(z.y-cy)*(z.y-cy)+z.z*z.z)-tc; if(fabs(d)<md) md=fabs(d); } aux.DE *= (1.0 + tf*exp(-md*td)); break; }
-					case 80: { float r2d = sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float R_var = ta + tb*native_sin(tc*phi); float torus_d = sqrt((r2d-R_var)*(r2d-R_var)+z.z*z.z)-td; aux.DE *= (1.0 + tf*exp(-torus_d*torus_d*5.0)); break; }
-					case 81: { float r2d = sqrt(z.x*z.x+z.y*z.y); float d1 = sqrt((r2d-ta)*(r2d-ta)+z.z*z.z)-tb; float d2 = sqrt((r2d-ta)*(r2d-ta)+(z.z-tc)*(z.z-tc))-tb; aux.DE *= (1.0 + tf*exp(-fmin(fabs(d1),fabs(d2))*td)); break; }
-					case 82: { float r2d = sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float R1 = ta; float r1 = tb; float R2 = tc; float r2 = td; float d1 = sqrt((r2d-R1)*(r2d-R1)+z.z*z.z)-r1; float d2 = sqrt((r2d-R2)*(r2d-R2)+z.z*z.z)-r2; float smooth = -log(exp(-d1*5.0)+exp(-d2*5.0)+1e-21)/5.0; aux.DE *= (1.0 + tf*exp(-smooth*smooth)); break; }
-					case 83: { float r2d = sqrt(z.x*z.x+z.y*z.y); float torus_d = sqrt((r2d-ta)*(r2d-ta)+z.z*z.z)-tb; float sphere_d = sqrt(z.x*z.x+z.y*z.y+z.z*z.z)-tc; float d = fmax(torus_d, -sphere_d); aux.DE *= (1.0 + tf*exp(-fabs(d)*td)); break; }
-					case 84: { float r2d = sqrt(z.x*z.x+z.y*z.y); float torus_d = sqrt((r2d-ta)*(r2d-ta)+z.z*z.z)-tb; float box_d = fmax(fabs(z.x)-tc,fmax(fabs(z.y)-tc,fabs(z.z)-td))-0.0; float d = fmax(torus_d,box_d); aux.DE *= (1.0 + tf*exp(-fabs(d)*5.0)); break; }
-					case 85: { float r2d = sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float inner_r = tb*(1.0+tc*native_sin(td*phi)); float torus_d = sqrt((r2d-ta)*(r2d-ta)+z.z*z.z)-inner_r; aux.DE *= (1.0 + tf*exp(-torus_d*torus_d*5.0)); break; }
-					case 86: { float r2d = sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float flow = native_sin(ta*phi-(double)i*tb*0.1); float torus_d = sqrt((r2d-tc)*(r2d-tc)+z.z*z.z)-td; aux.DE *= (1.0 + tf*flow*flow*exp(-fabs(torus_d)*5.0)); break; }
-					case 87: { float r2d = sqrt(z.x*z.x+z.y*z.y); float omega = ta*(double)i*0.01; float R_t = tb*(1.0+tc*native_sin(omega)); float torus_d = sqrt((r2d-R_t)*(r2d-R_t)+z.z*z.z)-td; aux.DE *= (1.0 + tf*exp(-torus_d*torus_d*5.0)); break; }
-					case 88: { float r2d = sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float stretch = 1.0 + ta*native_sin(tb*phi); float torus_d = sqrt((r2d-tc*stretch)*(r2d-tc*stretch)+z.z*z.z)-td/stretch; aux.DE *= (1.0 + tf*exp(-torus_d*torus_d*5.0)); break; }
-					case 89: { float r2d = sqrt(z.x*z.x+z.y*z.y); float phase = ta*(double)i*0.1; float wobble_z = tb*native_sin(phase); float torus_d = sqrt((r2d-tc)*(r2d-tc)+(z.z-wobble_z)*(z.z-wobble_z))-td; aux.DE *= (1.0 + tf*exp(-torus_d*torus_d*5.0)); break; }
-					case 90: { float r2d = sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float pulse = exp(-ta*((double)i*0.1-tb)*((double)i*0.1-tb)); float torus_d = sqrt((r2d-tc)*(r2d-tc)+z.z*z.z)-td*(1.0+pulse); aux.DE *= (1.0 + tf*exp(-torus_d*torus_d*5.0)); break; }
-					case 91: { float r2d = sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float bifurcation = ta*native_sin(tb*phi)*native_sin(tc*phi*2.0); float torus_d = sqrt((r2d-td-bifurcation)*(r2d-td-bifurcation)+z.z*z.z)-0.3; aux.DE *= (1.0 + tf*exp(-torus_d*torus_d*5.0)); break; }
-					case 92: { float r2d = sqrt(z.x*z.x+z.y*z.y); float chaos = native_sin(ta*z.x)*native_cos(tb*z.y)*native_sin(tc*z.z); float torus_d = sqrt((r2d-td)*(r2d-td)+z.z*z.z)-fabs(chaos)*0.5; aux.DE *= (1.0 + tf*exp(-torus_d*torus_d*5.0)); break; }
-					case 93: { float r2d = sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float soliton = 1.0/cosh(ta*(r2d-tb)); float torus_phase = native_sin(tc*phi+td*z.z); aux.DE *= (1.0 + tf*soliton*torus_phase*torus_phase); break; }
-					case 94: { float r2d = sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float breather = native_sin(ta*(double)i*0.1)*native_sin(tb*phi)/cosh(tc*(r2d-td)); aux.DE *= (1.0 + tf*breather*breather); break; }
-					case 95: { float r2d = sqrt(z.x*z.x+z.y*z.y); float torus_d = sqrt((r2d-ta)*(r2d-ta)+z.z*z.z)-tb; float damping = exp(-tc*(double)i*0.01); aux.DE *= (1.0 + tf*native_sin(torus_d*td*10.0)*damping); break; }
-					case 96: { float r2d = sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float theta = atan2(z.z,r2d-ta); float villarceau = native_sin(phi+theta*tb)*native_sin(phi-theta*tb); aux.DE *= (1.0 + tf*villarceau*villarceau*tc); break; }
-					case 97: { float r2d = sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float dupin = ta*(1.0+tb*native_cos(phi))*(1.0+tc*native_cos(atan2(z.z,r2d-ta))); float d = fabs(sqrt((r2d-ta)*(r2d-ta)+z.z*z.z)-dupin*0.3); aux.DE *= (1.0 + tf*exp(-d*td)); break; }
-					case 98: { float r2d = sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float theta = atan2(z.z,r2d-ta); float clifford_r = ta*(native_cos(tb*phi)*native_cos(tc*theta)); float clifford_d = fabs(sqrt(z.x*z.x+z.y*z.y+z.z*z.z)-fabs(clifford_r)); aux.DE *= (1.0 + tf*exp(-clifford_d*td)); break; }
-					case 99: { float r2d = sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float lawson_r = ta*native_cos(tb*phi)*native_cos(tc*z.z); float d = fabs(r2d-fabs(lawson_r)-td); aux.DE *= (1.0 + tf*exp(-d*5.0)); break; }
-					case 100: { float r2d = sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float theta = atan2(z.z,r2d-ta); float p=fmax(ta,0.1); float q=fmax(tb,0.1); float torus_knot_r = tc*(2.0+native_cos(q/p*phi)); float torus_knot_z = tc*native_sin(q/p*phi); float d = sqrt((r2d-torus_knot_r)*(r2d-torus_knot_r)+(z.z-torus_knot_z)*(z.z-torus_knot_z))-td; aux.DE *= (1.0 + tf*exp(-fabs(d)*5.0)); break; }
+					case 49: { float phi = atan2(z.y,z.x); float wrapping = floor(fabs(ta)*4+2); float companion = native_sin(wrapping*phi)*tb; float r2d = native_sqrt(z.x*z.x+z.y*z.y); float d = fabs(r2d-tc-companion); aux.DE *= (1.0 + tf*native_exp(-td*d)); break; }
+					case 50: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float neg_curv = native_sin(ta*phi)*native_sin(tb*z.z)*native_exp(-tc*fabs(r2d-td)); aux.DE *= (1.0 + tf*neg_curv*neg_curv); break; }
+					case 51: { float phi = atan2(z.y,z.x); float r2d = native_sqrt(z.x*z.x+z.y*z.y); float p=fmax(floor(fabs(ta)*3+2),2.0); float q=fmax(floor(fabs(tb)*3+3),3.0); float knot_r = tc + td*native_cos(q*phi); float knot_z2 = td*native_sin(q*phi); float d = native_sqrt((r2d-knot_r)*(r2d-knot_r)+(z.z-knot_z2)*(z.z-knot_z2)); aux.DE *= (1.0 + tf*native_exp(-d*5.0)); break; }
+					case 52: { float phi = atan2(z.y,z.x); float r2d = native_sqrt(z.x*z.x+z.y*z.y); float trefoil_r = ta*(2.0+native_cos(3.0*phi)); float trefoil_z = ta*native_sin(3.0*phi); float d = native_sqrt((r2d-trefoil_r)*(r2d-trefoil_r)+(z.z-trefoil_z)*(z.z-trefoil_z)); aux.DE *= (1.0 + tf*native_exp(-tb*d)); break; }
+					case 53: { float phi = atan2(z.y,z.x); float r2d = native_sqrt(z.x*z.x+z.y*z.y); float cinquefoil_r = ta*(2.0+native_cos(5.0*phi)); float cinquefoil_z = ta*native_sin(5.0*phi); float d = native_sqrt((r2d-cinquefoil_r)*(r2d-cinquefoil_r)+(z.z-cinquefoil_z)*(z.z-cinquefoil_z)); aux.DE *= (1.0 + tf*native_exp(-tb*d)); break; }
+					case 54: { float phi = atan2(z.y,z.x); float r2d = native_sqrt(z.x*z.x+z.y*z.y); float fig8_r = ta*(2.0+native_cos(2.0*phi)); float fig8_z = ta*native_sin(4.0*phi)*0.5; float d = native_sqrt((r2d-fig8_r)*(r2d-fig8_r)+(z.z-fig8_z)*(z.z-fig8_z)); aux.DE *= (1.0 + tf*native_exp(-tb*d)); break; }
+					case 55: { float t2 = atan2(z.y,z.x)*ta; float r2d = native_sqrt(z.x*z.x+z.y*z.y); float lissajous_r = tb*(2.0+native_sin(3.0*t2)*native_cos(2.0*t2)); float d = fabs(r2d-lissajous_r)+fabs(z.z)*tc; aux.DE *= (1.0 + tf*native_exp(-d*td)); break; }
+					case 56: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float theta = atan2(z.z,r2d-ta); float bump = native_sin(tb*phi)*native_sin(tc*theta); aux.DE *= (1.0 + tf*bump*bump*td); break; }
+					case 57: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float R = ta; float r = tb; float torus_d = native_sqrt((r2d-R)*(r2d-R)+z.z*z.z)-r; float corrugation = native_sin(tc*atan2(z.y,z.x)*10.0)*td; aux.DE *= (1.0 + tf*native_exp(-(torus_d-corrugation)*(torus_d-corrugation))); break; }
+					case 58: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float wave_R = ta + tb*native_sin(tc*phi)*native_sin(td*z.z); float d = fabs(r2d-wave_R); aux.DE *= (1.0 + tf*native_exp(-d*5.0)); break; }
+					case 59: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float spiral_R = ta + tb*phi/(2.0*M_PI_F); float d = fabs(r2d-spiral_R)+fabs(z.z)*tc; aux.DE *= (1.0 + tf*native_exp(-d*td)); break; }
+					case 60: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float star_n = fmax(floor(fabs(ta)*5+3),3.0); float phi = atan2(z.y,z.x); float star_R = tb*(1.0+tc*native_cos(star_n*phi)); float d = fabs(r2d-star_R)+fabs(z.z)*td; aux.DE *= (1.0 + tf*native_exp(-d*5.0)); break; }
+					case 61: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float R = ta; float r = tb; float torus_d = native_sqrt((r2d-R)*(r2d-R)+z.z*z.z)-r; float fracture = native_sin(z.x*tc*20.0)*native_sin(z.y*tc*20.0)*td; aux.DE *= (1.0 + tf*native_exp(-fabs(torus_d)*5.0)*(1.0+fracture)); break; }
+					case 62: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float egg_R = ta*(1.0+tb*native_sin(phi)); float d = native_sqrt((r2d-egg_R)*(r2d-egg_R)+z.z*z.z)-tc; aux.DE *= (1.0 + tf*native_exp(-fabs(d)*td)); break; }
+					case 63: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float gear_n = fmax(floor(fabs(ta)*8+4),4.0); float gear_R = tb*(1.0+tc*fmax(native_cos(gear_n*phi)-0.5,0.0)); float d = fabs(r2d-gear_R); aux.DE *= (1.0 + tf*native_exp(-d*td*10.0)); break; }
+					case 64: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float R = ta; float r = tb; float torus_d = native_sqrt((r2d-R)*(r2d-R)+z.z*z.z)-r; float erosion = native_sin(z.x*tc*5.0)*native_sin(z.y*tc*5.0)*native_sin(z.z*tc*5.0); aux.DE *= (1.0 + tf*native_exp(-fabs(torus_d)*5.0)*fabs(erosion)*td); break; }
+					case 65: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float theta = atan2(z.z,r2d-ta); float superformula = pow(fabs(native_cos(tb*theta/4.0)),tc)+pow(fabs(native_sin(tb*theta/4.0)),tc); float sf_r = td*pow(superformula,-1.0/fmax(tc,0.01)); float d = native_sqrt((r2d-ta)*(r2d-ta)+z.z*z.z)-sf_r; aux.DE *= (1.0 + tf*native_exp(-fabs(d)*5.0)); break; }
+					case 66: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float R = ta; float gravity = 1.0/fmax((r2d-R)*(r2d-R)+z.z*z.z+0.01, 0.01); aux.DE *= (1.0 + tf*fmin(gravity*tb,10.0)); break; }
+					case 67: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float B_field = ta*native_sin(tb*phi)/(fmax(fabs(r2d-tc),0.01)); aux.DE *= (1.0 + tf*fmin(fabs(B_field),10.0)*td); break; }
+					case 68: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float vortex = ta*native_exp(-tb*((r2d-tc)*(r2d-tc)+z.z*z.z)); float circulation = native_sin(td*atan2(z.y,z.x)); aux.DE *= (1.0 + tf*vortex*circulation); break; }
+					case 69: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float plasma = native_sin(ta*r2d)*native_cos(tb*phi)*native_sin(tc*z.z); float temperature = native_exp(-td*native_sqrt((r2d-1.0)*(r2d-1.0)+z.z*z.z)); aux.DE *= (1.0 + tf*plasma*temperature); break; }
+					case 70: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float R = ta; float charge = tb/fmax(native_sqrt((r2d-R)*(r2d-R)+z.z*z.z),0.01); float screen = native_exp(-tc*native_sqrt((r2d-R)*(r2d-R)+z.z*z.z)); aux.DE *= (1.0 + tf*charge*screen*td); break; }
+					case 71: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float wave1 = native_sin(ta*phi + tb*z.z); float wave2 = native_sin(tc*phi - tb*z.z); float interference = (wave1+wave2)*(wave1+wave2)*0.25; aux.DE *= (1.0 + tf*interference*td); break; }
+					case 72: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float R = ta; float thermal = native_exp(-tb*((r2d-R)*(r2d-R)+z.z*z.z)); float fluctuation = native_sin(tc*z.x)*native_sin(tc*z.y)*native_sin(tc*z.z); aux.DE *= (1.0 + tf*thermal*(1.0+td*fluctuation)); break; }
+					case 73: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); int modes = (int)fmax(2,fmin(ta*5,10)); float v = 0; for(int m=1;m<=modes;m++) v+=native_sin(m*phi*tb)*native_cos(m*z.z*tc)/m; aux.DE *= (1.0 + tf*v*v*td); break; }
+					case 74: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float R = ta; float diffusion = 1.0/(1.0 + tb*(float)i*0.01); float concentration = native_exp(-tc*fabs(r2d-R))*diffusion; aux.DE *= (1.0 + tf*concentration*td); break; }
+					case 75: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float reaction = native_sin(ta*phi)*native_sin(tb*z.z); float diffuse = native_exp(-tc*((r2d-td)*(r2d-td))); float rd = reaction*diffuse; aux.DE *= (1.0 + tf*rd*rd); break; }
+					case 76: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float d1 = native_sqrt((r2d-ta)*(r2d-ta)+z.z*z.z)-tb; float d2 = native_sqrt((r2d-tc)*(r2d-tc)+z.z*z.z)-td; aux.DE *= (1.0 + tf*native_exp(-fmin(d1*d1,d2*d2)*5.0)); break; }
+					case 77: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float ryz = native_sqrt(z.y*z.y+z.z*z.z); float d1 = native_sqrt((r2d-ta)*(r2d-ta)+z.z*z.z)-tb; float d2 = native_sqrt((ryz-ta)*(ryz-ta)+z.x*z.x)-tb; aux.DE *= (1.0 + tf*native_exp(-fmin(d1*d1,d2*d2)*tc)); break; }
+					case 78: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float rxz = native_sqrt(z.x*z.x+z.z*z.z); float ryz = native_sqrt(z.y*z.y+z.z*z.z); float d1=fabs(native_sqrt((r2d-ta)*(r2d-ta)+z.z*z.z)-tb); float d2=fabs(native_sqrt((rxz-ta)*(rxz-ta)+z.y*z.y)-tb); float d3=fabs(native_sqrt((ryz-ta)*(ryz-ta)+z.x*z.x)-tb); aux.DE *= (1.0 + tf*native_exp(-fmin(d1,fmin(d2,d3))*tc)); break; }
+					case 79: { float phi = atan2(z.y,z.x); float r2d = native_sqrt(z.x*z.x+z.y*z.y); int n = (int)fmax(2,fmin(ta*4,8)); float md = 1e10; for(int k=0;k<n;k++){ float ang = k*2.0*M_PI_F/n; float cx = tb*native_cos(ang); float cy = tb*native_sin(ang); float d = native_sqrt((z.x-cx)*(z.x-cx)+(z.y-cy)*(z.y-cy)+z.z*z.z)-tc; if(fabs(d)<md) md=fabs(d); } aux.DE *= (1.0 + tf*native_exp(-md*td)); break; }
+					case 80: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float R_var = ta + tb*native_sin(tc*phi); float torus_d = native_sqrt((r2d-R_var)*(r2d-R_var)+z.z*z.z)-td; aux.DE *= (1.0 + tf*native_exp(-torus_d*torus_d*5.0)); break; }
+					case 81: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float d1 = native_sqrt((r2d-ta)*(r2d-ta)+z.z*z.z)-tb; float d2 = native_sqrt((r2d-ta)*(r2d-ta)+(z.z-tc)*(z.z-tc))-tb; aux.DE *= (1.0 + tf*native_exp(-fmin(fabs(d1),fabs(d2))*td)); break; }
+					case 82: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float R1 = ta; float r1 = tb; float R2 = tc; float r2 = td; float d1 = native_sqrt((r2d-R1)*(r2d-R1)+z.z*z.z)-r1; float d2 = native_sqrt((r2d-R2)*(r2d-R2)+z.z*z.z)-r2; float smooth = -native_log(fmax(native_exp(-d1*5.0f)+native_exp(-d2*5.0f),1e-21f))/5.0f; aux.DE *= (1.0 + tf*native_exp(-smooth*smooth)); break; }
+					case 83: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float torus_d = native_sqrt((r2d-ta)*(r2d-ta)+z.z*z.z)-tb; float sphere_d = native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z)-tc; float d = fmax(torus_d, -sphere_d); aux.DE *= (1.0 + tf*native_exp(-fabs(d)*td)); break; }
+					case 84: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float torus_d = native_sqrt((r2d-ta)*(r2d-ta)+z.z*z.z)-tb; float box_d = fmax(fabs(z.x)-tc,fmax(fabs(z.y)-tc,fabs(z.z)-td))-0.0; float d = fmax(torus_d,box_d); aux.DE *= (1.0 + tf*native_exp(-fabs(d)*5.0)); break; }
+					case 85: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float inner_r = tb*(1.0+tc*native_sin(td*phi)); float torus_d = native_sqrt((r2d-ta)*(r2d-ta)+z.z*z.z)-inner_r; aux.DE *= (1.0 + tf*native_exp(-torus_d*torus_d*5.0)); break; }
+					case 86: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float flow = native_sin(ta*phi-(float)i*tb*0.1); float torus_d = native_sqrt((r2d-tc)*(r2d-tc)+z.z*z.z)-td; aux.DE *= (1.0 + tf*flow*flow*native_exp(-fabs(torus_d)*5.0)); break; }
+					case 87: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float omega = ta*(float)i*0.01; float R_t = tb*(1.0+tc*native_sin(omega)); float torus_d = native_sqrt((r2d-R_t)*(r2d-R_t)+z.z*z.z)-td; aux.DE *= (1.0 + tf*native_exp(-torus_d*torus_d*5.0)); break; }
+					case 88: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float stretch = 1.0 + ta*native_sin(tb*phi); float torus_d = native_sqrt((r2d-tc*stretch)*(r2d-tc*stretch)+z.z*z.z)-td/stretch; aux.DE *= (1.0 + tf*native_exp(-torus_d*torus_d*5.0)); break; }
+					case 89: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float phase = ta*(float)i*0.1; float wobble_z = tb*native_sin(phase); float torus_d = native_sqrt((r2d-tc)*(r2d-tc)+(z.z-wobble_z)*(z.z-wobble_z))-td; aux.DE *= (1.0 + tf*native_exp(-torus_d*torus_d*5.0)); break; }
+					case 90: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float pulse = native_exp(-ta*((float)i*0.1-tb)*((float)i*0.1-tb)); float torus_d = native_sqrt((r2d-tc)*(r2d-tc)+z.z*z.z)-td*(1.0+pulse); aux.DE *= (1.0 + tf*native_exp(-torus_d*torus_d*5.0)); break; }
+					case 91: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float bifurcation = ta*native_sin(tb*phi)*native_sin(tc*phi*2.0); float torus_d = native_sqrt((r2d-td-bifurcation)*(r2d-td-bifurcation)+z.z*z.z)-0.3; aux.DE *= (1.0 + tf*native_exp(-torus_d*torus_d*5.0)); break; }
+					case 92: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float chaos = native_sin(ta*z.x)*native_cos(tb*z.y)*native_sin(tc*z.z); float torus_d = native_sqrt((r2d-td)*(r2d-td)+z.z*z.z)-fabs(chaos)*0.5; aux.DE *= (1.0 + tf*native_exp(-torus_d*torus_d*5.0)); break; }
+					case 93: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float soliton = 1.0/cosh(ta*(r2d-tb)); float torus_phase = native_sin(tc*phi+td*z.z); aux.DE *= (1.0 + tf*soliton*torus_phase*torus_phase); break; }
+					case 94: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float breather = native_sin(ta*(float)i*0.1)*native_sin(tb*phi)/cosh(tc*(r2d-td)); aux.DE *= (1.0 + tf*breather*breather); break; }
+					case 95: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float torus_d = native_sqrt((r2d-ta)*(r2d-ta)+z.z*z.z)-tb; float damping = native_exp(-tc*(float)i*0.01); aux.DE *= (1.0 + tf*native_sin(torus_d*td*10.0)*damping); break; }
+					case 96: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float theta = atan2(z.z,r2d-ta); float villarceau = native_sin(phi+theta*tb)*native_sin(phi-theta*tb); aux.DE *= (1.0 + tf*villarceau*villarceau*tc); break; }
+					case 97: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float dupin = ta*(1.0+tb*native_cos(phi))*(1.0+tc*native_cos(atan2(z.z,r2d-ta))); float d = fabs(native_sqrt((r2d-ta)*(r2d-ta)+z.z*z.z)-dupin*0.3); aux.DE *= (1.0 + tf*native_exp(-d*td)); break; }
+					case 98: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float theta = atan2(z.z,r2d-ta); float clifford_r = ta*(native_cos(tb*phi)*native_cos(tc*theta)); float clifford_d = fabs(native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z)-fabs(clifford_r)); aux.DE *= (1.0 + tf*native_exp(-clifford_d*td)); break; }
+					case 99: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float lawson_r = ta*native_cos(tb*phi)*native_cos(tc*z.z); float d = fabs(r2d-fabs(lawson_r)-td); aux.DE *= (1.0 + tf*native_exp(-d*5.0)); break; }
+					case 100: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float theta = atan2(z.z,r2d-ta); float p=fmax(ta,0.1); float q=fmax(tb,0.1); float torus_knot_r = tc*(2.0+native_cos(q/p*phi)); float torus_knot_z = tc*native_sin(q/p*phi); float d = native_sqrt((r2d-torus_knot_r)*(r2d-torus_knot_r)+(z.z-torus_knot_z)*(z.z-torus_knot_z))-td; aux.DE *= (1.0 + tf*native_exp(-fabs(d)*5.0)); break; }
 				}
 			}
 
@@ -4646,15 +4646,15 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 					}
 					case fractalColoringCl_Cylinder:
 					{
-						float distFromAxis = sqrt(colorZ.x * colorZ.x + colorZ.y * colorZ.y);
+						float distFromAxis = native_sqrt(colorZ.x * colorZ.x + colorZ.y * colorZ.y);
 						len = fabs(distFromAxis - fractalColoring->sphereRadius);
 						break;
 					}
 					case fractalColoringCl_Torus:
 					{
 						float majorR = fractalColoring->sphereRadius;
-						float distXY = sqrt(colorZ.x * colorZ.x + colorZ.y * colorZ.y) - majorR;
-						len = sqrt(distXY * distXY + colorZ.z * colorZ.z);
+						float distXY = native_sqrt(colorZ.x * colorZ.x + colorZ.y * colorZ.y) - majorR;
+						len = native_sqrt(distXY * distXY + colorZ.z * colorZ.z);
 						break;
 					}
 					case fractalColoringCl_None:
@@ -4779,7 +4779,7 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 							contribution = max(1.0f - distance * 0.1f, 0.0f);
 							break;
 						case 4: // fakeLightsDecayExp
-							contribution = exp(-distance);
+							contribution = native_exp(-distance);
 							break;
 						default: // fakeLightsDecay1R2 (case 0)
 							contribution = 1.0f / (distance * distance + 1e-30f);
@@ -4844,7 +4844,7 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 						case 3: // fractalizeShapeLine
 						{
 							// Line along Z axis by default (user can rotate with texture rotation)
-							float distFromLine = sqrt(zz.x * zz.x + zz.y * zz.y);
+							float distFromLine = native_sqrt(zz.x * zz.x + zz.y * zz.y);
 							if (distFromLine < size)
 							{
 								trapHit = true;
@@ -4861,7 +4861,7 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 						}
 						case 5: // fractalizeShapeCylinder
 						{
-							float distFromAxis = sqrt(zz.x * zz.x + zz.y * zz.y);
+							float distFromAxis = native_sqrt(zz.x * zz.x + zz.y * zz.y);
 							if (distFromAxis < size && fabs(zz.z) < size * 2.0f)
 							{
 								trapHit = true;
@@ -4872,8 +4872,8 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 						{
 							float majorR = size;
 							float minorR = size * 0.4f;
-							float distXY = sqrt(zz.x * zz.x + zz.y * zz.y) - majorR;
-							float distTorus = sqrt(distXY * distXY + zz.z * zz.z);
+							float distXY = native_sqrt(zz.x * zz.x + zz.y * zz.y) - majorR;
+							float distTorus = native_sqrt(distXY * distXY + zz.z * zz.z);
 							if (distTorus < minorR)
 							{
 								trapHit = true;
@@ -4883,7 +4883,7 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 						case 7: // fractalizeShapeSpiral
 						{
 							float angle = atan2(zz.y, zz.x);
-							float r = sqrt(zz.x * zz.x + zz.y * zz.y);
+							float r = native_sqrt(zz.x * zz.x + zz.y * zz.y);
 							float spiralR = size * (angle + M_PI_F) / (2.0f * M_PI_F);
 							float spiralDist = fmod(fabs(r - spiralR), size);
 							if (spiralDist > size * 0.5f) spiralDist = size - spiralDist;

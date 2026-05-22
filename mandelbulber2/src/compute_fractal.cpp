@@ -2241,7 +2241,7 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 						case 48: { double cle=ja*sin(jfreq*atan2(zy,zx))*exp(-jb*r); aux.DE*=(1.0+jf*cle); break; }
 						case 49: { double sle=ja*zy/(fmax(1e-10,rr))*exp(-jb*fabs(zx)); aux.DE*=(1.0+jf*sle); break; }
 						case 50: { double gff=ja*cos(jfreq*zx)*cos(jfreq*zy)/fmax(1e-10,r); aux.DE*=(1.0+jf*gff); break; }
-						case 51: { double lqg=ja*exp(jb*sin(jfreq*r+jph)); aux.DE*=(1.0+jf*lqg/fmax(1e-10,r)); break; }
+						case 51: { double lqg=ja*exp(fmin(jb*sin(jfreq*r+jph),20.0)); aux.DE*=(1.0+jf*lqg/fmax(1e-10,r)); break; }
 						case 52: { double bm=ja*sqrt(fmax(0.0,rr-jb*jb))/fmax(1e-10,rr); aux.DE*=(1.0+jf*bm); break; }
 						case 53: { double pm2=ja*(2.0-fabs(zx)+fabs(zy)-fabs(zz2))/fmax(1e-10,r); aux.DE*=(1.0+jf*tanh(pm2)); break; }
 						case 54: { double tt=ja*(zx*zy+zy*zz2+zz2*zx)/fmax(1e-10,rr*r); aux.DE*=(1.0+jf*tt); break; }
@@ -3102,7 +3102,7 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 						case 239: { aux.DE /= fmax(0.01, 1.0 - aa / fmax(r, aa + 1e-21)); break; }
 						case 240: { { double jet=exp(-fabs(sqrt(zx*zx+zy*zy)-aa)/(fmax(ab,0.01))); aux.DE*=(1.0+ac*jet); } break; }
 						case 241: { { double halo=1.0/(1.0+pow(r/fmax(aa,0.01),2.0)); aux.DE*=(1.0+ab*halo); } break; }
-						case 242: { aux.DE *= exp(aa * ab * r); break; }
+						case 242: { aux.DE *= exp(fmin(aa * ab * r, 20.0)); break; }
 						case 243: { { double cs2=log(fmax(fabs(sqrt(zx*zx+zy*zy)),1e-21)/fmax(aa,0.01)); aux.DE*=(1.0+ab*ac*cs2); } break; }
 						case 244: { aux.DE *= (1.0 + aa * tanh(fabs(zz2 - ab) / fmax(ac, 0.01))); break; }
 						case 245: { { double ylm=sin(aa*acos(zz2/r))*cos(ab*atan2(zy,zx)); aux.DE*=(1.0+ac*fabs(ylm)); } break; }
@@ -3213,7 +3213,7 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 						case 350: { double W = fabs(aa)*log(2.0)*sin(ab*r)*sin(ab*r); aux.DE *= (1.0 + af * W); break; }
 						case 351: { double T_hot = fmax(fabs(aa)*r, 0.01); double T_cold = fmax(fabs(ab)*0.5, 0.001); double eff = 1.0 - T_cold/T_hot; double qcorr = sin(ac*r)*sin(ac*r); aux.DE *= (1.0 + af * fabs(eff) * qcorr); break; }
 						case 352: { double w_cold = fabs(aa)+0.1; double w_hot = fabs(ab)+0.2; double eff = 1.0 - w_cold/w_hot; double adiabatic = cos(ac*r)*cos(ac*r); aux.DE *= (1.0 + af * fabs(eff) * adiabatic); break; }
-						case 353: { double V_ratio = fmax(fabs(aa), 0.1)/fmax(fabs(ab), 0.1); double T_ratio = fmax(fabs(ac), 0.1)/fmax(fabs(ad), 0.1); double eff = log(V_ratio)/(log(T_ratio)+1e-21); aux.DE *= (1.0 + af * fmin(fabs(eff), 5.0) * sin(r)*sin(r)); break; }
+						case 353: { double V_ratio = fmax(fabs(aa), 0.1)/fmax(fabs(ab), 0.1); double T_ratio = fmax(fabs(ac), 0.1)/fmax(fabs(ad), 0.1); double eff = log(fmax(V_ratio,1e-21))/(log(fmax(T_ratio,1e-21))+1e-21); aux.DE *= (1.0 + af * fmin(fabs(eff), 5.0) * sin(r)*sin(r)); break; }
 						case 354: { double gamma_g = 1.4; double ratio = fmax(fabs(aa), 0.1); double eff = 1.0 - (pow(ratio, gamma_g)-1.0)/(gamma_g*(ratio-1.0)+1e-21); aux.DE *= (1.0 + af * fabs(eff) * sin(ab*r)*sin(ab*r)); break; }
 						case 355: { double P_ratio = fmax(fabs(aa), 0.1); double gamma_g = 1.4; double eff = 1.0 - pow(1.0/P_ratio, (gamma_g-1.0)/gamma_g); aux.DE *= (1.0 + af * fabs(eff) * cos(ab*r)*cos(ab*r)); break; }
 						case 356: { double T_ratio = fmax(fabs(aa)+0.1, 0.01) / fmax(fabs(ab)+0.1, 0.01); double regen = fmin(fabs(ac), 1.0); double eff = (1.0 - 1.0/T_ratio) * regen; aux.DE *= (1.0 + af * fabs(eff)); break; }
@@ -3571,7 +3571,7 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 						case 79: { double phi = atan2(z.y,z.x); double r2d = sqrt(z.x*z.x+z.y*z.y); int n = (int)fmax(2,fmin(ta*4,8)); double md = 1e10; for(int k=0;k<n;k++){ double ang = k*2.0*M_PI/n; double cx = tb*cos(ang); double cy = tb*sin(ang); double d = sqrt((z.x-cx)*(z.x-cx)+(z.y-cy)*(z.y-cy)+z.z*z.z)-tc; if(fabs(d)<md) md=fabs(d); } aux.DE *= (1.0 + tf*exp(-md*td)); break; }
 						case 80: { double r2d = sqrt(z.x*z.x+z.y*z.y); double phi = atan2(z.y,z.x); double R_var = ta + tb*sin(tc*phi); double torus_d = sqrt((r2d-R_var)*(r2d-R_var)+z.z*z.z)-td; aux.DE *= (1.0 + tf*exp(-torus_d*torus_d*5.0)); break; }
 						case 81: { double r2d = sqrt(z.x*z.x+z.y*z.y); double d1 = sqrt((r2d-ta)*(r2d-ta)+z.z*z.z)-tb; double d2 = sqrt((r2d-ta)*(r2d-ta)+(z.z-tc)*(z.z-tc))-tb; aux.DE *= (1.0 + tf*exp(-fmin(fabs(d1),fabs(d2))*td)); break; }
-						case 82: { double r2d = sqrt(z.x*z.x+z.y*z.y); double phi = atan2(z.y,z.x); double R1 = ta; double r1 = tb; double R2 = tc; double r2 = td; double d1 = sqrt((r2d-R1)*(r2d-R1)+z.z*z.z)-r1; double d2 = sqrt((r2d-R2)*(r2d-R2)+z.z*z.z)-r2; double smooth = -log(exp(-d1*5.0)+exp(-d2*5.0)+1e-21)/5.0; aux.DE *= (1.0 + tf*exp(-smooth*smooth)); break; }
+						case 82: { double r2d = sqrt(z.x*z.x+z.y*z.y); double phi = atan2(z.y,z.x); double R1 = ta; double r1 = tb; double R2 = tc; double r2 = td; double d1 = sqrt((r2d-R1)*(r2d-R1)+z.z*z.z)-r1; double d2 = sqrt((r2d-R2)*(r2d-R2)+z.z*z.z)-r2; double smooth = -log(fmax(exp(-d1*5.0)+exp(-d2*5.0),1e-21))/5.0; aux.DE *= (1.0 + tf*exp(-smooth*smooth)); break; }
 						case 83: { double r2d = sqrt(z.x*z.x+z.y*z.y); double torus_d = sqrt((r2d-ta)*(r2d-ta)+z.z*z.z)-tb; double sphere_d = sqrt(z.x*z.x+z.y*z.y+z.z*z.z)-tc; double d = fmax(torus_d, -sphere_d); aux.DE *= (1.0 + tf*exp(-fabs(d)*td)); break; }
 						case 84: { double r2d = sqrt(z.x*z.x+z.y*z.y); double torus_d = sqrt((r2d-ta)*(r2d-ta)+z.z*z.z)-tb; double box_d = fmax(fabs(z.x)-tc,fmax(fabs(z.y)-tc,fabs(z.z)-td))-0.0; double d = fmax(torus_d,box_d); aux.DE *= (1.0 + tf*exp(-fabs(d)*5.0)); break; }
 						case 85: { double r2d = sqrt(z.x*z.x+z.y*z.y); double phi = atan2(z.y,z.x); double inner_r = tb*(1.0+tc*sin(td*phi)); double torus_d = sqrt((r2d-ta)*(r2d-ta)+z.z*z.z)-inner_r; aux.DE *= (1.0 + tf*exp(-torus_d*torus_d*5.0)); break; }
