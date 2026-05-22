@@ -21,6 +21,11 @@
 | 100 Jos Leys DE (V1-V100) | ✅ Klaar | CPU + GPU + UI + Iteratie |
 | 100 Pseudokleinian DE (V1-V100) | ✅ Klaar | CPU + GPU + UI + Iteratie |
 | 200 Mandelbox Math (V1-V200) | ✅ Klaar | CPU + GPU + UI + Iteratie |
+| 100 Warp Distortion (V1-V100) | ✅ Klaar | CPU + GPU + UI + Iteratie |
+| 100 Symmetry/Kaleidoscope (V1-V100) | ✅ Klaar | CPU + GPU + UI + Iteratie |
+| 300 Abox DE (V1-V300) | ✅ Klaar | CPU + GPU + UI + Iteratie |
+
+**Totaal transformaties: 1000** (50 inv + 50 clip + 100 JL + 100 PK + 200 MB + 100 WD + 100 SK + 300 AB)
 
 ---
 
@@ -214,4 +219,13 @@ Globale "Iter Range" (iterationStart/iterationStop) is de master gate — per-se
 
 ---
 
-*Laatst bijgewerkt: 2026-05-20 — Sessie 7*
+### ISSUE-011: CVector4/CVector3 type mismatch in Symmetry system
+- **Datum:** Sessie 8
+- **Symptoom:** `no match for operator-= (operand types CVector4 and CVector3)`
+- **Root Cause:** `z` is CVector4, maar gegenereerde code gebruikte `z -= CVector3(a,b,c)` patronen (Sierpinski/IFS-achtige operaties)
+- **Fix:** Alle `z -= CVector3(a,b,c)*expr` vervangen door component-wise `z.x -= a*expr; z.y -= b*expr; z.z -= c*expr;`
+- **Les:** In Mandelbulber is `z` altijd CVector4 (4D). Gebruik nooit CVector3 assignment met z. Altijd component-wise bewerkingen.
+
+---
+
+*Laatst bijgewerkt: 2026-05-20 — Sessie 8*
