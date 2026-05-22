@@ -287,6 +287,8 @@ void cTabFractal::slotChangedComboFractal(int indexInComboBox)
 		parentDockFractal->SetTabText(
 			tabIndex, QString("#%1: %2").arg(tabIndex + 1).arg(fullFormulaName));
 	}
+
+	UpdateMutationFieldVisibility(index);
 }
 
 void cTabFractal::FormulaTransformSetVisible(bool visible) const
@@ -516,6 +518,73 @@ void cTabFractal::UpdateWeightWidgetsVisibility(int mode, bool separateComponent
 void cTabFractal::MaterialSetVisible(bool visible) const
 {
 	ui->groupBox_material_fractal->setVisible(visible);
+}
+
+void cTabFractal::SetMutationWidgetsEnabled(const QStringList &names, bool enabled) const
+{
+	for (const QString &name : names)
+	{
+		QWidget *w = ui->groupCheck_mutation_enabled->findChild<QWidget *>(name);
+		if (w) w->setEnabled(enabled);
+	}
+}
+
+void cTabFractal::UpdateMutationFieldVisibility(int formulaIndex) const
+{
+	if (formulaIndex <= 0 || formulaIndex >= newFractalList.size()) return;
+
+	fractal::enumDEType deType = newFractalList[formulaIndex]->getDeType();
+	fractal::enumCPixelAddition cPixel = newFractalList[formulaIndex]->getCpixelAddition();
+	QString internalName = newFractalList[formulaIndex]->getInternalName();
+	bool isTransform = internalName.startsWith("transf_");
+
+	// DE tweak: only useful for analytic DE formulas
+	bool hasDeTweak = (deType == fractal::analyticDEType);
+	QString idx = "_" + QString::number(tabIndex + 1);
+	QStringList deTweakWidgets = {
+		"comboBox_mutation_de_tweak" + idx,
+		"spinbox_mutation_de_scale" + idx,
+		"spinbox_mutation_de_tweak_p1" + idx,
+		"spinbox_mutation_de_tweak_p2" + idx,
+		"label_mutation_de_tweak" + idx,
+		"label_mutation_de_scale" + idx,
+		"label_mutation_de_tweak_p1" + idx,
+		"label_mutation_de_tweak_p2" + idx
+	};
+	SetMutationWidgetsEnabled(deTweakWidgets, hasDeTweak);
+
+	// Julia injection: less useful for transforms and formulas that already handle c-pixel
+	bool juliaUseful = !isTransform && (cPixel != fractal::cpixelAlreadyHas);
+	QStringList juliaWidgets = {
+		"comboBox_mutation_julia_injection" + idx,
+		"comboBox_mutation_julia_start" + idx,
+		"comboBox_mutation_julia_c_transform" + idx,
+		"comboBox_mutation_julia_dynamic" + idx,
+		"comboBox_mutation_julia_multi" + idx,
+		"spinbox_mutation_julia_c_mul" + idx,
+		"spinbox_mutation_julia_c_power" + idx,
+		"spinbox_mutation_julia_c_radius" + idx,
+		"spinbox_mutation_julia_pulse_freq" + idx,
+		"spinbox_mutation_julia_absorb" + idx,
+		"label_mutation_julia_injection" + idx,
+		"label_mutation_julia_start" + idx,
+		"label_mutation_julia_c_transform" + idx,
+		"label_mutation_julia_dynamic" + idx,
+		"label_mutation_julia_multi" + idx,
+		"label_mutation_julia_c_mul" + idx,
+		"label_mutation_julia_c_power" + idx,
+		"label_mutation_julia_c_radius" + idx,
+		"label_mutation_julia_pulse_freq" + idx,
+		"label_mutation_julia_absorb" + idx
+	};
+	SetMutationWidgetsEnabled(juliaWidgets, juliaUseful);
+
+	// Orbit trap: less useful for transforms
+	QStringList orbitWidgets = {
+		"comboBox_mutation_orbit_trap" + idx,
+		"label_mutation_orbit_trap" + idx
+	};
+	SetMutationWidgetsEnabled(orbitWidgets, !isTransform);
 }
 
 void cTabFractal::FrameIterationFormulaSetEnabled(bool enabled) const
