@@ -37,7 +37,7 @@
 	&& (defined(USE_PERLIN_NOISE_COLOR) || defined(USE_PERLIN_NOISE_LUMINOSITY) \
 			|| defined(USE_PERLIN_NOISE_TRANSPARENCY_COLOR)                         \
 			|| defined(USE_PERLIN_NOISE_TRANSPARENCY_ALPHA) || defined(USE_PERLIN_NOISE_REFLECTANCE))
-void PerlinNoiseForShaders(__global const sClInConstants *consts, sClCalcParams *calcParam,
+void PerlinNoiseForShaders(__constant sClInConstants *consts, sClCalcParams *calcParam,
 	sShaderInputDataCl *shaderInputData, sRenderData *renderData, float3 point)
 {
 	if (shaderInputData->material->perlinNoiseEnable)

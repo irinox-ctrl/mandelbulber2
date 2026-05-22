@@ -92,13 +92,13 @@ typedef enum
 	calcModeCubeOrbitTrap = 6
 } enumCalculationModeCl;
 
-float4 DummyIteration(float4 z, __global const sFractalCl *fractal, sExtendedAuxCl *aux)
+float4 DummyIteration(float4 z, __constant sFractalCl *fractal, sExtendedAuxCl *aux)
 {
 	aux->r = -1.0f; // signal for main loop to break;
 	return 0.0f;
 }
 
-formulaOut Fractal(__global const sClInConstants *consts, float3 point, sClCalcParams *calcParam,
+formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParams *calcParam,
 	enumCalculationModeCl mode, __global sMaterialCl *material, int forcedFormulaIndex)
 {
 	// begin
@@ -177,9 +177,9 @@ formulaOut Fractal(__global const sClInConstants *consts, float3 point, sClCalcP
 	aux.temp1000 = 1000.0f;
 
 	int sequence = 0;
-	__global const sFractalCl *fractal;
+	__constant sFractalCl *fractal;
 
-	__global const sFractalCl *defaultFractal = &consts->fractal[fractalIndex];
+	__constant sFractalCl *defaultFractal = &consts->fractal[fractalIndex];
 
 	__global sFractalColoringCl *fractalColoring = (material) ? &material->fractalColoring : NULL;
 

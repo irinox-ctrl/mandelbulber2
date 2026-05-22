@@ -105,7 +105,7 @@ float3 ReflectionVector(const float3 normal, const float3 incident)
 }
 #endif
 
-void RayMarching(sRayMarchingIn in, sRayMarchingOut *out, __global const sClInConstants *consts,
+void RayMarching(sRayMarchingIn in, sRayMarchingOut *out, __constant sClInConstants *consts,
 	sRenderData *renderData, int *randomSeed)
 {
 	bool found = false;
@@ -226,7 +226,7 @@ void RayMarching(sRayMarchingIn in, sRayMarchingOut *out, __global const sClInCo
 }
 
 sRayRecursionOut RayRecursion(sRayRecursionIn in, sRenderData *renderData,
-	__global const sClInConstants *consts, image2d_t image2dBackground, int *randomSeed)
+	__constant sClInConstants *consts, image2d_t image2dBackground, int *randomSeed)
 {
 	int rayIndex = 0; // level of recursion
 

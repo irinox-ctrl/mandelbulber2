@@ -65,7 +65,7 @@
 #define FORMULA_ITER_9 DummyIteration
 #endif /*FORMULA_ITER_9*/
 
-float4 DummyIteration(float4 z, __global const sFractalCl *fractal, sExtendedAuxCl *aux)
+float4 DummyIteration(float4 z, __constant sFractalCl *fractal, sExtendedAuxCl *aux)
 {
 	aux->r = -1.0f; // signal for main loop to break;
 	return 0.0f;
@@ -147,7 +147,7 @@ float3 GetColorFromGradient(float position, bool smooth, int gradientSize,
 }
 
 //------------------ MAIN RENDER FUNCTION --------------------
-kernel void Nebula(__global float4 *inOutImage, __global const sClInConstants *consts,
+kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *consts,
 	__global char *inBuff, int4 randomInt4)
 {
 	const ulong index = get_global_id(0);
@@ -303,8 +303,8 @@ kernel void Nebula(__global float4 *inOutImage, __global const sClInConstants *c
 	aux.temp1000 = 1000.0f;
 
 	int sequence = 0;
-	__global const sFractalCl *fractal;
-	__global const sFractalCl *defaultFractal = &consts->fractal[fractalIndex];
+	__constant sFractalCl *fractal;
+	__constant sFractalCl *defaultFractal = &consts->fractal[fractalIndex];
 
 	float4 zHistory[MAX_ITERATIONS];
 

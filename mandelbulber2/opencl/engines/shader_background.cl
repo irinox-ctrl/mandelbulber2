@@ -36,7 +36,7 @@ __constant sampler_t sampler = CLK_NORMALIZED_COORDS_TRUE | CLK_ADDRESS_REPEAT |
 
 //-------------- background shaders ---------------
 
-float3 BackgroundShader(__global const sClInConstants *consts, sRenderData *renderData,
+float3 BackgroundShader(__constant sClInConstants *consts, sRenderData *renderData,
 	image2d_t image2dBackground, sShaderInputDataCl *input)
 {
 	float3 pixel;

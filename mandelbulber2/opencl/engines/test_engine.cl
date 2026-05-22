@@ -34,7 +34,7 @@
 
 #define MAX_RAYMARCHING 5000
 
-float3 NormalVector(__global const sClInConstants *consts, float3 point, float mainDistance,
+float3 NormalVector(__constant sClInConstants *consts, float3 point, float mainDistance,
 	float distThresh, sClCalcParams *calcParam)
 {
 	float delta = distThresh;
@@ -48,7 +48,7 @@ float3 NormalVector(__global const sClInConstants *consts, float3 point, float m
 
 //------------------ MAIN RENDER FUNCTION --------------------
 kernel void fractal3D(__global sClPixel *out, __global sClInBuff *inBuff,
-	__global const sClInConstants *consts, int Gcl_offset)
+	__constant sClInConstants *consts, int Gcl_offset)
 {
 	int cl_offset = Gcl_offset;
 

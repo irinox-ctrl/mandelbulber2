@@ -563,7 +563,7 @@ float3 ApplyBlendMode(float3 base, float3 blend, float opacity, int mode)
 	return base * (1.0f - opacity) + out * opacity;
 }
 
-float3 SurfaceColor(__global const sClInConstants *consts, sRenderData *renderData,
+float3 SurfaceColor(__constant sClInConstants *consts, sRenderData *renderData,
 	sShaderInputDataCl *input, sClCalcParams *calcParams, sClGradientsCollection *gradients)
 {
 	float3 out;

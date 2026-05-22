@@ -34,7 +34,7 @@
 
 #ifdef AUX_LIGHTS
 #if defined(SHADOWS) || defined(VOLUMETRIC_LIGHTS)
-float3 AuxShadow(__global const sClInConstants *consts, sRenderData *renderData,
+float3 AuxShadow(__constant sClInConstants *consts, sRenderData *renderData,
 	sShaderInputDataCl *input, __global sLightCl *light, float distance, float3 lightVector,
 	sClCalcParams *calcParam, float intensity)
 {

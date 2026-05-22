@@ -32,7 +32,7 @@
  * Normal vector calculation for opencl
  */
 
-float3 NormalVector(__global const sClInConstants *consts, sRenderData *renderData, float3 point,
+float3 NormalVector(__constant sClInConstants *consts, sRenderData *renderData, float3 point,
 	float mainDistance, float distThresh, float invertMode, sClCalcParams *calcParam)
 {
 #ifndef SLOW_SHADING

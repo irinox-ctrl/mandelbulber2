@@ -91,7 +91,7 @@ static inline float SingleTrapFalloffGPU(float distance, float falloff_radius)
 }
 
 /* Full evaluation — returns RGB contribution */
-float3 SingleTrapLightShaderGPU(__global const sClInConstants *consts, float3 point)
+float3 SingleTrapLightShaderGPU(__constant sClInConstants *consts, float3 point)
 {
 	__global const sClSingleTrapLight *light = &consts->params.singleTrapLight0;
 

@@ -271,7 +271,7 @@ float SingleTrapLightDistanceCl(float3 point, __global const sSingleTrapLightLay
 	return dist / layer->thickness;
 }
 
-float3 SingleTrapLightsShader(__global const sClInConstants *consts, sShaderInputDataCl *input,
+float3 SingleTrapLightsShader(__constant sClInConstants *consts, sShaderInputDataCl *input,
 	sClCalcParams *calcParam)
 {
 	float3 result = 0.0f;

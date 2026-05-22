@@ -34,7 +34,7 @@
 
 #ifdef MONTE_CARLO_DOF
 
-inline void MonteCarloDOF(float3 *startRay, float3 *viewVector, __global const sClInConstants *consts,
+inline void MonteCarloDOF(float3 *startRay, float3 *viewVector, __constant sClInConstants *consts,
 	matrix33 mRot, int *randomSeed)
 {
 #ifdef PERSP_THREE_POINT

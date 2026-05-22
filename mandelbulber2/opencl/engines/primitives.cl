@@ -705,7 +705,7 @@ float PrimitiveEllipsoid(__global sPrimitiveCl *primitive, float3 _point)
 }
 #endif
 
-float TotalDistanceToPrimitives(__global const sClInConstants *consts, sRenderData *renderData,
+float TotalDistanceToPrimitives(__constant sClInConstants *consts, sRenderData *renderData,
 	float3 point, float fractalDistance, float detailSize, bool normalCalculationMode,
 	int *closestObjectId, int objectIdForVolumetrics)
 {

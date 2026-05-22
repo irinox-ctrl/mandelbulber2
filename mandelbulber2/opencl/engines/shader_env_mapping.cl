@@ -34,7 +34,7 @@
 
 #ifdef USE_ENV_MAPPING
 float3 EnvMappingShader(
-	__global const sClInConstants *consts, sRenderData *renderData, sShaderInputDataCl *input)
+	__constant sClInConstants *consts, sRenderData *renderData, sShaderInputDataCl *input)
 {
 	float3 envReflect;
 

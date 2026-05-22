@@ -33,7 +33,7 @@
  */
 
 #ifdef FAKE_LIGHTS
-float3 FakeLightsShader(__global const sClInConstants *consts, sShaderInputDataCl *input,
+float3 FakeLightsShader(__constant sClInConstants *consts, sShaderInputDataCl *input,
 	sClCalcParams *calcParams, float3 surfaceColor, sClGradientsCollection *gradients,
 	float3 *specularOut)
 {

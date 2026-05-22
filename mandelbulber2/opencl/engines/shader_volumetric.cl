@@ -35,7 +35,7 @@
 #ifdef FULL_ENGINE
 
 #ifdef RAYLEIGH_SCATTERING
-void RayleighScattering(__global const sClInConstants *consts, float3 lightVectorTemp,
+void RayleighScattering(__constant sClInConstants *consts, float3 lightVectorTemp,
 	sShaderInputDataCl *input, float3 *raleighScatteringRGB, float3 *mieScatteringRGB)
 {
 	if (consts->params.rayleighScatteringBlue > 0.0f)
@@ -60,7 +60,7 @@ void RayleighScattering(__global const sClInConstants *consts, float3 lightVecto
 #endif // RAYLEIGH_SCATTERING
 
 //------------ Volumetric shader ----------------
-float4 VolumetricShader(__global const sClInConstants *consts, sRenderData *renderData,
+float4 VolumetricShader(__constant sClInConstants *consts, sRenderData *renderData,
 	sShaderInputDataCl *input, sClCalcParams *calcParam, image2d_t image2dBackground, float4 oldPixel,
 	float *opacityOut)
 {

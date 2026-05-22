@@ -40,7 +40,7 @@ int GetInteger(int byte, __global char *array)
 
 //------------------ MAIN RENDER FUNCTION --------------------
 kernel void fractal3D(__global float *outDistance, __global char *inBuff,
-	__global const sClInConstants *consts, float3 point)
+	__constant sClInConstants *consts, float3 point)
 {
 	//-------- decode data file ----------------
 	// main offset for materials

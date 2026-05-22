@@ -1223,7 +1223,7 @@ float3 PatternLineTrapGradientRgbCl(float t, float3 c0, float3 c1, float3 c2)
 	return c1 * (1.0f - tt) + c2 * tt;
 }
 
-float3 PatternLineTrapsShader(__global const sClInConstants *consts, float3 point,
+float3 PatternLineTrapsShader(__constant sClInConstants *consts, float3 point,
 	sShaderInputDataCl *input, sClGradientsCollection *gradients)
 {
 	float3 result = 0.0f;

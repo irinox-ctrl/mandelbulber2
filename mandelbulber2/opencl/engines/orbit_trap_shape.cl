@@ -91,7 +91,7 @@ static inline float ApollonianDist(float3 p, float size)
 }
 
 // Apply universal shape modifiers to delta
-static inline float3 ApplyShapeModifiers(float3 delta, __global const sClInConstants *consts)
+static inline float3 ApplyShapeModifiers(float3 delta, __constant sClInConstants *consts)
 {
 	// 1. Fold symmetry (radial folding in XY plane)
 	int fold = consts->params.common.fakeLightsShapeFoldSymmetry;
@@ -188,7 +188,7 @@ static inline float3 ApplyShapeModifiers(float3 delta, __global const sClInConst
 	return delta;
 }
 
-float OrbitTrapShapeDistance(float4 z4, __global const sClInConstants *consts, sClCalcParams *calcParams)
+float OrbitTrapShapeDistance(float4 z4, __constant sClInConstants *consts, sClCalcParams *calcParams)
 {
 	float dist = 0.0f;
 	float3 z = z4.xyz;
