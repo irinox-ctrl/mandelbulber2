@@ -34,7 +34,7 @@
 
 //------------- Iridescence shader -------------
 #ifdef USE_IRIDESCENCE
-float3 IridescenceShader(__constant sClInConstants *consts, sRenderData *renderData,
+float3 IridescenceShader(__global const sClInConstants *consts, sRenderData *renderData,
 	sShaderInputDataCl *input, sClCalcParams *calcParam)
 {
 	float3 rainbowColor = 1.0f;

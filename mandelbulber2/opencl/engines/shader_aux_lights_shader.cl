@@ -34,7 +34,7 @@
 
 #ifdef AUX_LIGHTS
 
-float3 AuxLightsShader(__constant sClInConstants *consts, sRenderData *renderData,
+float3 AuxLightsShader(__global const sClInConstants *consts, sRenderData *renderData,
 	sShaderInputDataCl *input, sClCalcParams *calcParam, float3 surfaceColor,
 	sClGradientsCollection *gradients, float3 *specularOut, float3 *outShadow)
 {

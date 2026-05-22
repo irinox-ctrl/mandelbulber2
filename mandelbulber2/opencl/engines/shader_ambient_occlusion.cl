@@ -33,7 +33,7 @@
  */
 
 #ifdef AO_MODE_MULTIPLE_RAYS
-float3 AmbientOcclusion(__constant sClInConstants *consts, sRenderData *renderData,
+float3 AmbientOcclusion(__global const sClInConstants *consts, sRenderData *renderData,
 	sShaderInputDataCl *input, sClCalcParams *calcParam)
 {
 	float3 AO = 0.0f;

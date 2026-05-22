@@ -332,7 +332,7 @@ bool cOpenClEngineRenderNebula::AssignParametersToKernelAdditional(
 	int err =
 		clKernels.at(deviceIndex)
 			->setArg(argIterator++,
-				*inCLConstBuffer[deviceIndex]); // input inOut in constant memory (faster than global)
+				*inCLConstBuffer[deviceIndex]); // input data in global read-only memory
 
 	if (!checkErr(err, "kernel->setArg(2, *inCLConstBuffer)"))
 	{

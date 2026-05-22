@@ -15,7 +15,7 @@
  * http://www.fractalforums.com/mandelbulb-3d/custom-formulas-and-transforms-release-t17106/
  */
 
-REAL4 AmazingSurfIteration(REAL4 z, __constant sFractalCl *fractal, sExtendedAuxCl *aux)
+REAL4 AmazingSurfIteration(REAL4 z, __global const sFractalCl *fractal, sExtendedAuxCl *aux)
 {
 	// update aux->actualScale
 	aux->actualScale =

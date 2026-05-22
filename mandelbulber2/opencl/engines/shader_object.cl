@@ -32,7 +32,7 @@
  * calculation of surface shader
  */
 
-float3 ObjectShader(__constant sClInConstants *consts, sRenderData *renderData,
+float3 ObjectShader(__global const sClInConstants *consts, sRenderData *renderData,
 	sShaderInputDataCl *input, sClCalcParams *calcParam, float3 *outSurfaceColor, float3 *outSpecular,
 	float3 *iridescenceOut, float3 *outShadow, float3 *outLuminosityEmissive, float *alphaOut,
 	sClGradientsCollection *gradients)

@@ -33,7 +33,7 @@
  */
 
 #ifdef CLOUDS
-float CloudOpacity(__constant sClInConstants *consts, __global uchar *perlinNoiseSeeds,
+float CloudOpacity(__global const sClInConstants *consts, __global uchar *perlinNoiseSeeds,
 	float3 point, float distance, float detailSize, float *distanceOut)
 {
 	float h = 1.0f; // height factor

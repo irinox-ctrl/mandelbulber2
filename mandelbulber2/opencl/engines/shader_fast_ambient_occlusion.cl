@@ -33,7 +33,7 @@
  */
 
 #ifdef AO_MODE_FAST
-float3 FastAmbientOcclusion(__constant sClInConstants *consts, sRenderData *renderData,
+float3 FastAmbientOcclusion(__global const sClInConstants *consts, sRenderData *renderData,
 	sShaderInputDataCl *input, sClCalcParams *calcParam)
 {
 	// reference Iñigo Quilez –iq/rgba:

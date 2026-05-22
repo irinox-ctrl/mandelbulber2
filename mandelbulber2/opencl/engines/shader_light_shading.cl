@@ -427,7 +427,7 @@ float CalculateLightCone(__global sLightCl *light, sRenderData *renderData, floa
 	return intensity;
 }
 
-float3 LightShading(__constant sClInConstants *consts, sRenderData *renderData,
+float3 LightShading(__global const sClInConstants *consts, sRenderData *renderData,
 	sShaderInputDataCl *input, sClCalcParams *calcParam, float3 surfaceColor,
 	__global sLightCl *light, sClGradientsCollection *gradients, float3 *outSpecular,
 	float3 *outShadow)

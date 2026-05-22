@@ -169,7 +169,6 @@ void cOpenClEngineRenderFractal::CreateListOfIncludes(const QStringList &clHeade
 	const QString &openclPathSlash, std::shared_ptr<const cParameterContainer> params,
 	const QString &openclEnginePath, QByteArray &programEngine)
 {
-	std::cerr << "DEBUG CreateListOfIncludes: renderEngineMode=" << renderEngineMode << " clRenderEngineTypeFull=" << clRenderEngineTypeFull << "\n";
 	// common includes
 	for (int i = 0; i < clHeaderFiles.size(); i++)
 	{
@@ -2453,7 +2452,7 @@ bool cOpenClEngineRenderFractal::AssignParametersToKernelAdditional(
 
 	err = clKernels.at(deviceIndex)
 					->setArg(argIterator++,
-						*inCLConstBuffer[deviceIndex]); // input inOut in constant memory (faster than global)
+						*inCLConstBuffer[deviceIndex]); // input data in global read-only memory
 	if (!checkErr(err, "kernel->setArg(2, *inCLConstBuffer)"))
 	{
 		emit showErrorMessage(
@@ -2466,7 +2465,7 @@ bool cOpenClEngineRenderFractal::AssignParametersToKernelAdditional(
 	{
 		err = clKernels.at(deviceIndex)
 						->setArg(argIterator++,
-							*inCLConstMeshExportBuffer[deviceIndex]); // input inOut in constant memory (faster
+							*inCLConstMeshExportBuffer[deviceIndex]); // input data in global read-only memory
 																												// than global)
 		if (!checkErr(err, "kernel->setArg(3, *inCLConstMeshExportBuffer)"))
 		{
@@ -2482,7 +2481,7 @@ bool cOpenClEngineRenderFractal::AssignParametersToKernelAdditional(
 		err =
 			clKernels.at(deviceIndex)
 				->setArg(argIterator++,
-					*backgroundImage2D[deviceIndex]); // input data in constant memory (faster than global)
+					*backgroundImage2D[deviceIndex]); // input data in read-only memory
 		if (!checkErr(err, "kernel->setArg(3, *backgroundImage2D)"))
 		{
 			emit showErrorMessage(

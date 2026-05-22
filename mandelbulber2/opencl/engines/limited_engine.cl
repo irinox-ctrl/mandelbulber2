@@ -43,7 +43,7 @@ int GetInteger(int byte, __global char *array)
 
 //------------------ MAIN RENDER FUNCTION --------------------
 kernel void fractal3D(__global sClPixel *out, __global char *inBuff,
-	__constant sClInConstants *consts, image2d_t image2dBackground, __global uchar *perlinNoiseSeeds,
+	__global const sClInConstants *consts, image2d_t image2dBackground, __global uchar *perlinNoiseSeeds,
 	int initRandomSeed)
 {
 	// get actual pixel

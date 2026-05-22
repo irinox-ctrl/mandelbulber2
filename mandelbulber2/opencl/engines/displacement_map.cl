@@ -67,7 +67,7 @@ float DisplacementMap(
 #endif // USE_TEXTURES
 
 #ifdef FRACTALIZE_TEXTURE
-float3 FractalizeTexture(float3 point, __constant sClInConstants *consts, sClCalcParams *calcParams,
+float3 FractalizeTexture(float3 point, __global const sClInConstants *consts, sClCalcParams *calcParams,
 	sRenderData *renderData, int objectId, float *reduceDisplacement)
 {
 	int forcedFormulaIndex = objectId;

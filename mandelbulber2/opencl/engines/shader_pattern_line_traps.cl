@@ -1223,7 +1223,7 @@ float3 PatternLineTrapGradientRgbCl(float t, float3 c0, float3 c1, float3 c2)
 	return c1 * (1.0f - tt) + c2 * tt;
 }
 
-float3 PatternLineTrapsShader(__constant sClInConstants *consts, float3 point,
+float3 PatternLineTrapsShader(__global const sClInConstants *consts, float3 point,
 	sShaderInputDataCl *input, sClGradientsCollection *gradients)
 {
 	float3 result = 0.0f;
@@ -1233,7 +1233,7 @@ float3 PatternLineTrapsShader(__constant sClInConstants *consts, float3 point,
 	for (int i = 0; i < PATTERN_LINE_TRAP_COUNT; i++)
 	{
 		if (soloL > 0 && soloL != i + 1) continue;
-		__constant sPatternLineTrapLayerCl *layer = &consts->params.patternLineTraps.layers[i];
+		__global const sPatternLineTrapLayerCl *layer = &consts->params.patternLineTraps.layers[i];
 		if (!layer->enabled) continue;
 
 		sPatternLineTrapLayerCl effLayer = *layer;

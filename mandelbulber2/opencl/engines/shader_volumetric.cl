@@ -35,7 +35,7 @@
 #ifdef FULL_ENGINE
 
 #ifdef RAYLEIGH_SCATTERING
-void RayleighScattering(__constant sClInConstants *consts, float3 lightVectorTemp,
+void RayleighScattering(__global const sClInConstants *consts, float3 lightVectorTemp,
 	sShaderInputDataCl *input, float3 *raleighScatteringRGB, float3 *mieScatteringRGB)
 {
 	if (consts->params.rayleighScatteringBlue > 0.0f)
@@ -60,7 +60,7 @@ void RayleighScattering(__constant sClInConstants *consts, float3 lightVectorTem
 #endif // RAYLEIGH_SCATTERING
 
 //------------ Volumetric shader ----------------
-float4 VolumetricShader(__constant sClInConstants *consts, sRenderData *renderData,
+float4 VolumetricShader(__global const sClInConstants *consts, sRenderData *renderData,
 	sShaderInputDataCl *input, sClCalcParams *calcParam, image2d_t image2dBackground, float4 oldPixel,
 	float *opacityOut)
 {
@@ -753,7 +753,7 @@ float4 VolumetricShader(__constant sClInConstants *consts, sRenderData *renderDa
 			int layerCount = 0;
 			for (int i = 0; i < consts->params.singleTrapLights.activeLayerCount; i++)
 			{
-				__constant sSingleTrapLightLayerCl *layer = &consts->params.singleTrapLights.layers[i];
+				__global const sSingleTrapLightLayerCl *layer = &consts->params.singleTrapLights.layers[i];
 				if (!layer->enabled) continue;
 				if (soloL > 0 && soloL != i + 1) continue;
 

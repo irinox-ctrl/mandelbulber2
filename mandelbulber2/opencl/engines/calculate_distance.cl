@@ -36,7 +36,7 @@
 #define MANDELBULBER2_OPENCL_ENGINES_CALCULATE_DISTANCE_CL_
 
 // calculation of distance where ray-marching stops
-float CalcDistThresh(float3 point, __constant sClInConstants *consts)
+float CalcDistThresh(float3 point, __global const sClInConstants *consts)
 {
 	float distThresh;
 	if (consts->params.common.iterThreshMode)
@@ -67,7 +67,7 @@ float CalcDistThresh(float3 point, __constant sClInConstants *consts)
 }
 
 // calculation of "voxel" size
-float CalcDelta(float3 point, __constant sClInConstants *consts)
+float CalcDelta(float3 point, __global const sClInConstants *consts)
 {
 	float delta;
 	delta = length(consts->params.camera - point) * consts->params.resolution * consts->params.fov;
@@ -81,10 +81,10 @@ float CalcDelta(float3 point, __constant sClInConstants *consts)
 }
 
 #ifdef BOOLEAN_OPERATORS
-formulaOut CalculateDistanceSimple(__constant sClInConstants *consts, float3 point,
+formulaOut CalculateDistanceSimple(__global const sClInConstants *consts, float3 point,
 	sClCalcParams *calcParam, sRenderData *renderData, int forcedFormulaIndex)
 #else
-formulaOut CalculateDistance(__constant sClInConstants *consts, float3 point,
+formulaOut CalculateDistance(__global const sClInConstants *consts, float3 point,
 	sClCalcParams *calcParam, sRenderData *renderData)
 #endif
 {
@@ -340,7 +340,7 @@ formulaOut CalculateDistance(__constant sClInConstants *consts, float3 point,
 //------------------------- Calculate distance for Booleans -------------------
 
 #ifdef BOOLEAN_OPERATORS
-formulaOut CalculateDistance(__constant sClInConstants *consts, float3 point,
+formulaOut CalculateDistance(__global const sClInConstants *consts, float3 point,
 	sClCalcParams *calcParam, sRenderData *renderData)
 {
 	formulaOut out;

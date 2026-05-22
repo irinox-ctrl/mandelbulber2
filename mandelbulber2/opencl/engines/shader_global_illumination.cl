@@ -33,7 +33,7 @@
  */
 
 #if defined(MONTE_CARLO_DOF_GLOBAL_ILLUMINATION) && defined(FULL_ENGINE)
-float3 GlobalIlumination(__constant sClInConstants *consts, sRenderData *renderData,
+float3 GlobalIlumination(__global const sClInConstants *consts, sRenderData *renderData,
 	sShaderInputDataCl *input, sClCalcParams *calcParam, image2d_t image2dBackground,
 	float3 objectColor, bool volumetricMode)
 {

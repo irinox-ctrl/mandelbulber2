@@ -65,7 +65,7 @@
 #define FORMULA_ITER_9 DummyIteration
 #endif /*FORMULA_ITER_9*/
 
-float4 DummyIteration(float4 z, __constant sFractalCl *fractal, sExtendedAuxCl *aux)
+float4 DummyIteration(float4 z, __global const sFractalCl *fractal, sExtendedAuxCl *aux)
 {
 	aux->r = -1.0f; // signal for main loop to break;
 	return 0.0f;
@@ -147,7 +147,7 @@ float3 GetColorFromGradient(float position, bool smooth, int gradientSize,
 }
 
 //------------------ MAIN RENDER FUNCTION --------------------
-kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *consts,
+kernel void Nebula(__global float4 *inOutImage, __global const sClInConstants *consts,
 	__global char *inBuff, int4 randomInt4)
 {
 	const ulong index = get_global_id(0);
@@ -303,14 +303,14 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 	aux.temp1000 = 1000.0f;
 
 	int sequence = 0;
-	__constant sFractalCl *fractal;
-	__constant sFractalCl *defaultFractal = &consts->fractal[fractalIndex];
+	__global const sFractalCl *fractal;
+	__global const sFractalCl *defaultFractal = &consts->fractal[fractalIndex];
 
 	float4 zHistory[MAX_ITERATIONS];
 
 	// v7.5 — Julia start mode (z₀ override, GPU Nebula)
 	{
-		__constant sClFormulaMutationParams *jm0 = &consts->sequence.mutationParams[0];
+		__global const sClFormulaMutationParams *jm0 = &consts->sequence.mutationParams[0];
 		if (jm0->enabled && jm0->juliaStart != 0)
 		{
 			if (jm0->juliaStart == 1) z = aux.const_c;
@@ -355,7 +355,7 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 		if (consts->sequence.isHybrid)
 		{
 			int deFunc = consts->sequence.DEFunctionType[sequence];
-			__constant sClFormulaWeightParams *wp = &consts->sequence.weightParams[sequence];
+			__global const sClFormulaWeightParams *wp = &consts->sequence.weightParams[sequence];
 			int weightMode = wp->mode;
 
 			if (deFunc == 0 && weightMode == 7)
@@ -550,7 +550,7 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 			&& i < consts->sequence.mutationParams[sequence].iterationStop;
 		if (mutationActive)
 		{
-			__constant sClFormulaMutationParams *mut = &consts->sequence.mutationParams[sequence];
+			__global const sClFormulaMutationParams *mut = &consts->sequence.mutationParams[sequence];
 			if (mut->preAbsX) z.x = fabs(z.x);
 			if (mut->preAbsY) z.y = fabs(z.y);
 			if (mut->preAbsZ) z.z = fabs(z.z);
@@ -1612,7 +1612,7 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 		// v7.5 — Julia pre-fold injection (GPU Nebula)
 		if (mutationActive && consts->sequence.mutationParams[sequence].juliaInjection != 0)
 		{
-			__constant sClFormulaMutationParams *jm = &consts->sequence.mutationParams[sequence];
+			__global const sClFormulaMutationParams *jm = &consts->sequence.mutationParams[sequence];
 			float4 juliaC = aux.const_c * jm->juliaCMul;
 			if (jm->juliaCTransform == 1) {
 				float cLen = length(juliaC);
@@ -1742,7 +1742,7 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 			|| consts->sequence.mutationParams[sequence].juliaInjection == 3
 			|| consts->sequence.mutationParams[sequence].juliaInjection == 4))
 		{
-			__constant sClFormulaMutationParams *jm = &consts->sequence.mutationParams[sequence];
+			__global const sClFormulaMutationParams *jm = &consts->sequence.mutationParams[sequence];
 			float4 juliaC = aux.const_c * jm->juliaCMul;
 			if (jm->juliaCTransform == 1) {
 				float cLen = length(juliaC);
@@ -1759,7 +1759,7 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 		// -------------- Formula Mutation post-processing (GPU Nebula) ---------------
 		if (mutationActive)
 		{
-			__constant sClFormulaMutationParams *mut = &consts->sequence.mutationParams[sequence];
+			__global const sClFormulaMutationParams *mut = &consts->sequence.mutationParams[sequence];
 
 			// Fold injection (post or both)
 			if (mut->foldType != 0 && (mut->foldPosition == 1 || mut->foldPosition == 2))
@@ -2050,7 +2050,7 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 		// Apply weight blending in hybrid mode
 		if (consts->sequence.isHybrid && effectiveWeight < 1.0f)
 		{
-			__constant sClFormulaWeightParams *wp = &consts->sequence.weightParams[sequence];
+			__global const sClFormulaWeightParams *wp = &consts->sequence.weightParams[sequence];
 			bool isPKFormula = (consts->sequence.DEFunctionType[sequence] == pseudoKleinianDEFunction);
 			float blendCurve = wp->componentBlendCurve;
 			if (wp->separateComponents)

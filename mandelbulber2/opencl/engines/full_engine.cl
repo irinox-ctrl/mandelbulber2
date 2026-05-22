@@ -42,7 +42,7 @@ int GetInteger(int byte, __global char *array)
 
 //------------------ MAIN RENDER FUNCTION --------------------
 kernel void fractal3D(__global sClPixel *out, __global char *inBuff, __global char *inTextureBuff,
-	__constant sClInConstants *consts, image2d_t image2dBackground, __global uchar *perlinNoiseSeeds,
+	__global const sClInConstants *consts, image2d_t image2dBackground, __global uchar *perlinNoiseSeeds,
 	int initRandomSeed, float2 antiAliasingOffset, cl_int sequenceSize, cl_int jobWidth,
 	__global cl_int *inPixelSequence)
 {
