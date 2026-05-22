@@ -18,7 +18,9 @@
 | 50 Clips | ✅ Code klaar | CPU + GPU, nog niet getest op RTX 5090 |
 | GPU rendering fix (cache) | ✅ Fix gepusht | Wacht op user test |
 | Visuele verificatie inversies/clips | ⏳ Wachtend | Na GPU fix bevestiging |
-| Uitbreiding / verfijning | 🔲 Nog niet | ~80% resterend werk |
+| 100 Jos Leys DE (V1-V100) | ✅ Klaar | CPU + GPU + UI + Iteratie |
+| 100 Pseudokleinian DE (V1-V100) | ✅ Klaar | CPU + GPU + UI + Iteratie |
+| 200 Mandelbox Math (V1-V200) | ✅ Klaar | CPU + GPU + UI + Iteratie |
 
 ---
 
@@ -186,9 +188,30 @@ Elke mutation sectie heeft een eigen Start/Stop range:
 | DE/Output | deIterStart, deIterStop | 0 - 10000 |
 | Inversion | invIterStart, invIterStop | 0 - 10000 |
 | Clip | clipIterStart, clipIterStop | 0 - 10000 |
+| Jos Leys DE | josIterStart, josIterStop | 0 - 10000 |
+| Pseudokleinian DE | pkIterStart, pkIterStop | 0 - 10000 |
+| Mandelbox Math | mbIterStart, mbIterStop | 0 - 10000 |
 
 Globale "Iter Range" (iterationStart/iterationStop) is de master gate — per-sectie ranges werken alleen BINNEN de globale range.
 
 ---
 
-*Laatst bijgewerkt: 2026-05-22 — Sessie 5*
+### ISSUE-009: `frac()` niet beschikbaar in C++
+- **Datum:** Sessie 7
+- **Symptoom:** Compilatiefout `frac was not declared in this scope`
+- **Root Cause:** `frac()` is een GLSL/HLSL functie, niet beschikbaar in standaard C++
+- **Fix:** Alle `frac(x)` vervangen door `(x - floor(x))` in CPU code
+- **Les:** Altijd `floor()`-gebaseerde fractional part gebruiken in C++ code
+
+---
+
+### ISSUE-010: `extendedAux` niet beschikbaar in mutation scope
+- **Datum:** Sessie 7
+- **Symptoom:** Compilatiefout `extendedAux was not declared in this scope`
+- **Root Cause:** `extendedAux` is lokaal in formule code, niet beschikbaar in mutation sectie
+- **Fix:** `extendedAux.c_formula.Length()` vervangen door `in.point.Length()`
+- **Les:** In mutation code alleen `z`, `aux`, `in`, en `mut` gebruiken
+
+---
+
+*Laatst bijgewerkt: 2026-05-20 — Sessie 7*
