@@ -259,6 +259,33 @@ inline QString VerifyConstantBuffer(const sClInConstants *buffer)
 	out << "║ Mutation params: " << activeMutations << " active, "
 		<< zeroMutations << " disabled\n";
 
+	// Dump mutation param values for first slot (diagnostic)
+	{
+		const auto &m = buffer->sequence.mutationParams[0];
+		out << "╠══════════════════════════════════════════════════════════════╣\n";
+		out << "║ MUTATION SLOT 0 DETAIL:\n";
+		out << "║   enabled=" << m.enabled
+			<< "  foldType=" << m.foldType
+			<< "  warpType=" << m.warpType
+			<< "  mathType=" << m.mathType << "\n";
+		out << "║   foldPos=" << m.foldPosition
+			<< "  foldLimit=" << m.foldLimit
+			<< "  foldValue=" << m.foldValue << "\n";
+		out << "║   swizzle=" << m.swizzle
+			<< "  preScale=" << m.preScale
+			<< "  postScale=" << m.postScale << "\n";
+		out << "║   warpFreq=" << m.warpFrequency
+			<< "  warpAmp=" << m.warpAmplitude << "\n";
+		out << "║   mathP1=" << m.mathP1
+			<< "  mathMix=" << m.mathMix
+			<< "  zMix=" << m.zMix << "\n";
+		out << "║   iterStart=" << m.iterationStart
+			<< "  iterStop=" << m.iterationStop << "\n";
+		out << "║   juliaInj=" << m.juliaInjection
+			<< "  deScale=" << m.deScale
+			<< "  deTweak=" << m.deTweak << "\n";
+	}
+
 	// Verify fractal sequence
 	out << "║ Hybrid mode: " << (buffer->sequence.isHybrid ? "YES" : "NO") << "\n";
 
