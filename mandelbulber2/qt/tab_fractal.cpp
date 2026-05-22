@@ -822,6 +822,48 @@ void cTabFractal::slotPressedButtonMutationReset()
 	setI("mutation_mb_iter_start", 0);
 	setI("mutation_mb_iter_stop", 10000);
 
+	// Warp Distortion reset
+	setI("mutation_warp_dist_type", 0);
+	setD("mutation_wd_factor", 1.0);
+	setD("mutation_wd_param_a", 1.0);
+	setD("mutation_wd_param_b", 1.0);
+	setD("mutation_wd_param_c", 1.0);
+	setD("mutation_wd_param_d", 1.0);
+	setD("mutation_wd_freq", 1.0);
+	setD("mutation_wd_amp", 0.5);
+	setD("mutation_wd_scale", 1.0);
+	setD("mutation_wd_phase", 0.0);
+	setI("mutation_wd_iter_start", 0);
+	setI("mutation_wd_iter_stop", 10000);
+
+	// Symmetry/Kaleidoscope reset
+	setI("mutation_sym_kal_type", 0);
+	setD("mutation_sk_factor", 1.0);
+	setD("mutation_sk_param_a", 1.0);
+	setD("mutation_sk_param_b", 1.0);
+	setD("mutation_sk_param_c", 1.0);
+	setD("mutation_sk_param_d", 1.0);
+	setD("mutation_sk_freq", 1.0);
+	setD("mutation_sk_amp", 0.5);
+	setD("mutation_sk_angle", 60.0);
+	setD("mutation_sk_offset", 0.0);
+	setI("mutation_sk_iter_start", 0);
+	setI("mutation_sk_iter_stop", 10000);
+
+	// Abox DE reset
+	setI("mutation_abox_type", 0);
+	setD("mutation_ab_factor", 1.0);
+	setD("mutation_ab_param_a", 1.0);
+	setD("mutation_ab_param_b", 1.0);
+	setD("mutation_ab_param_c", 1.0);
+	setD("mutation_ab_param_d", 1.0);
+	setD("mutation_ab_param_e", 1.0);
+	setD("mutation_ab_param_f", 1.0);
+	setD("mutation_ab_param_g", 1.0);
+	setD("mutation_ab_param_h", 0.0);
+	setI("mutation_ab_iter_start", 0);
+	setI("mutation_ab_iter_stop", 10000);
+
 	// Write defaults back to UI widgets
 	SynchronizeInterface(params, qInterface::write);
 }

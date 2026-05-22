@@ -310,6 +310,26 @@ typedef struct
 	cl_float mbParamA, mbParamB, mbParamC, mbParamD;
 	cl_float mbParamE, mbParamF, mbParamG, mbParamH;
 	cl_int mbIterStart, mbIterStop;
+	// v7.9 — Warp Distortion system (100 types)
+	cl_int warpDistType;
+	cl_float wdFactor;
+	cl_float wdParamA, wdParamB, wdParamC, wdParamD;
+	cl_float wdFreq, wdAmp;
+	cl_float wdScale, wdPhase;
+	cl_int wdIterStart, wdIterStop;
+	// v7.9 — Symmetry/Kaleidoscope system (100 types)
+	cl_int symKalType;
+	cl_float skFactor;
+	cl_float skParamA, skParamB, skParamC, skParamD;
+	cl_float skFreq, skAmp;
+	cl_float skAngle, skOffset;
+	cl_int skIterStart, skIterStop;
+	// v7.9 — Abox DE system (300 types)
+	cl_int aboxType;
+	cl_float abFactor;
+	cl_float abParamA, abParamB, abParamC, abParamD;
+	cl_float abParamE, abParamF, abParamG, abParamH;
+	cl_int abIterStart, abIterStop;
 	// Pre-computed rotation matrices
 	matrix33 preRotMatrix;
 	matrix33 postRotMatrix;

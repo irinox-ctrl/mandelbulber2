@@ -398,6 +398,48 @@ void InitParams(std::shared_ptr<cParameterContainer> par)
 		par->addParam("mutation_mb_iter_start", i, 0, 0, 10000, morphAkima, paramStandard);
 		par->addParam("mutation_mb_iter_stop", i, 10000, 0, 10000, morphAkima, paramStandard);
 
+		// v7.9 — Warp Distortion system (100 types)
+		par->addParam("mutation_warp_dist_type", i, 0, 0, 100, morphAkima, paramStandard);
+		par->addParam("mutation_wd_factor", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_wd_param_a", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_wd_param_b", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_wd_param_c", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_wd_param_d", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_wd_freq", i, 1.0, 0.001, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_wd_amp", i, 0.5, -10.0, 10.0, morphAkima, paramStandard);
+		par->addParam("mutation_wd_scale", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_wd_phase", i, 0.0, -360.0, 360.0, morphAkima, paramStandard);
+		par->addParam("mutation_wd_iter_start", i, 0, 0, 10000, morphAkima, paramStandard);
+		par->addParam("mutation_wd_iter_stop", i, 10000, 0, 10000, morphAkima, paramStandard);
+
+		// v7.9 — Symmetry/Kaleidoscope system (100 types)
+		par->addParam("mutation_sym_kal_type", i, 0, 0, 100, morphAkima, paramStandard);
+		par->addParam("mutation_sk_factor", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_sk_param_a", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_sk_param_b", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_sk_param_c", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_sk_param_d", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_sk_freq", i, 1.0, 0.001, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_sk_amp", i, 0.5, -10.0, 10.0, morphAkima, paramStandard);
+		par->addParam("mutation_sk_angle", i, 60.0, 0.0, 360.0, morphAkima, paramStandard);
+		par->addParam("mutation_sk_offset", i, 0.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_sk_iter_start", i, 0, 0, 10000, morphAkima, paramStandard);
+		par->addParam("mutation_sk_iter_stop", i, 10000, 0, 10000, morphAkima, paramStandard);
+
+		// v7.9 — Abox DE system (300 types)
+		par->addParam("mutation_abox_type", i, 0, 0, 300, morphAkima, paramStandard);
+		par->addParam("mutation_ab_factor", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_ab_param_a", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_ab_param_b", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_ab_param_c", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_ab_param_d", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_ab_param_e", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_ab_param_f", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_ab_param_g", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_ab_param_h", i, 0.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_ab_iter_start", i, 0, 0, 10000, morphAkima, paramStandard);
+		par->addParam("mutation_ab_iter_stop", i, 10000, 0, 10000, morphAkima, paramStandard);
+
 		par->addParam("julia_mode", i, false, morphLinear, paramStandard);
 		par->addParam("julia_c", i, CVector3(0.0, 0.0, 0.0), morphAkima, paramStandard);
 		par->addParam(

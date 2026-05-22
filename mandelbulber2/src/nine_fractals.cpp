@@ -377,6 +377,48 @@ cNineFractals::cNineFractals(std::shared_ptr<const cFractalContainer> par,
 		mutationParams[i].mbIterStart = generalPar->Get<int>("mutation_mb_iter_start", i + 1);
 		mutationParams[i].mbIterStop = generalPar->Get<int>("mutation_mb_iter_stop", i + 1);
 
+		// v7.9 — Warp Distortion system
+		mutationParams[i].warpDistType = generalPar->Get<int>("mutation_warp_dist_type", i + 1);
+		mutationParams[i].wdFactor = generalPar->Get<double>("mutation_wd_factor", i + 1);
+		mutationParams[i].wdParamA = generalPar->Get<double>("mutation_wd_param_a", i + 1);
+		mutationParams[i].wdParamB = generalPar->Get<double>("mutation_wd_param_b", i + 1);
+		mutationParams[i].wdParamC = generalPar->Get<double>("mutation_wd_param_c", i + 1);
+		mutationParams[i].wdParamD = generalPar->Get<double>("mutation_wd_param_d", i + 1);
+		mutationParams[i].wdFreq = generalPar->Get<double>("mutation_wd_freq", i + 1);
+		mutationParams[i].wdAmp = generalPar->Get<double>("mutation_wd_amp", i + 1);
+		mutationParams[i].wdScale = generalPar->Get<double>("mutation_wd_scale", i + 1);
+		mutationParams[i].wdPhase = generalPar->Get<double>("mutation_wd_phase", i + 1);
+		mutationParams[i].wdIterStart = generalPar->Get<int>("mutation_wd_iter_start", i + 1);
+		mutationParams[i].wdIterStop = generalPar->Get<int>("mutation_wd_iter_stop", i + 1);
+
+		// v7.9 — Symmetry/Kaleidoscope system
+		mutationParams[i].symKalType = generalPar->Get<int>("mutation_sym_kal_type", i + 1);
+		mutationParams[i].skFactor = generalPar->Get<double>("mutation_sk_factor", i + 1);
+		mutationParams[i].skParamA = generalPar->Get<double>("mutation_sk_param_a", i + 1);
+		mutationParams[i].skParamB = generalPar->Get<double>("mutation_sk_param_b", i + 1);
+		mutationParams[i].skParamC = generalPar->Get<double>("mutation_sk_param_c", i + 1);
+		mutationParams[i].skParamD = generalPar->Get<double>("mutation_sk_param_d", i + 1);
+		mutationParams[i].skFreq = generalPar->Get<double>("mutation_sk_freq", i + 1);
+		mutationParams[i].skAmp = generalPar->Get<double>("mutation_sk_amp", i + 1);
+		mutationParams[i].skAngle = generalPar->Get<double>("mutation_sk_angle", i + 1);
+		mutationParams[i].skOffset = generalPar->Get<double>("mutation_sk_offset", i + 1);
+		mutationParams[i].skIterStart = generalPar->Get<int>("mutation_sk_iter_start", i + 1);
+		mutationParams[i].skIterStop = generalPar->Get<int>("mutation_sk_iter_stop", i + 1);
+
+		// v7.9 — Abox DE system
+		mutationParams[i].aboxType = generalPar->Get<int>("mutation_abox_type", i + 1);
+		mutationParams[i].abFactor = generalPar->Get<double>("mutation_ab_factor", i + 1);
+		mutationParams[i].abParamA = generalPar->Get<double>("mutation_ab_param_a", i + 1);
+		mutationParams[i].abParamB = generalPar->Get<double>("mutation_ab_param_b", i + 1);
+		mutationParams[i].abParamC = generalPar->Get<double>("mutation_ab_param_c", i + 1);
+		mutationParams[i].abParamD = generalPar->Get<double>("mutation_ab_param_d", i + 1);
+		mutationParams[i].abParamE = generalPar->Get<double>("mutation_ab_param_e", i + 1);
+		mutationParams[i].abParamF = generalPar->Get<double>("mutation_ab_param_f", i + 1);
+		mutationParams[i].abParamG = generalPar->Get<double>("mutation_ab_param_g", i + 1);
+		mutationParams[i].abParamH = generalPar->Get<double>("mutation_ab_param_h", i + 1);
+		mutationParams[i].abIterStart = generalPar->Get<int>("mutation_ab_iter_start", i + 1);
+		mutationParams[i].abIterStop = generalPar->Get<int>("mutation_ab_iter_stop", i + 1);
+
 		// Smart defaults: PK/JK formulas get Möbius (Bilinear) math preset
 		fractal::enumFractalFormula f = fractals[i]->formula;
 		bool isPKJK = (f == fractal::pseudoKleinian || f == fractal::pseudoKleinian4d
@@ -1397,6 +1439,49 @@ void cNineFractals::CopyToOpenclData(sClFractalSequence *sequence) const
 		sequence->mutationParams[i].mbParamH = mutationParams[i].mbParamH;
 		sequence->mutationParams[i].mbIterStart = mutationParams[i].mbIterStart;
 		sequence->mutationParams[i].mbIterStop = mutationParams[i].mbIterStop;
+
+		// v7.9 — Warp Distortion system
+		sequence->mutationParams[i].warpDistType = mutationParams[i].warpDistType;
+		sequence->mutationParams[i].wdFactor = mutationParams[i].wdFactor;
+		sequence->mutationParams[i].wdParamA = mutationParams[i].wdParamA;
+		sequence->mutationParams[i].wdParamB = mutationParams[i].wdParamB;
+		sequence->mutationParams[i].wdParamC = mutationParams[i].wdParamC;
+		sequence->mutationParams[i].wdParamD = mutationParams[i].wdParamD;
+		sequence->mutationParams[i].wdFreq = mutationParams[i].wdFreq;
+		sequence->mutationParams[i].wdAmp = mutationParams[i].wdAmp;
+		sequence->mutationParams[i].wdScale = mutationParams[i].wdScale;
+		sequence->mutationParams[i].wdPhase = mutationParams[i].wdPhase;
+		sequence->mutationParams[i].wdIterStart = mutationParams[i].wdIterStart;
+		sequence->mutationParams[i].wdIterStop = mutationParams[i].wdIterStop;
+
+		// v7.9 — Symmetry/Kaleidoscope system
+		sequence->mutationParams[i].symKalType = mutationParams[i].symKalType;
+		sequence->mutationParams[i].skFactor = mutationParams[i].skFactor;
+		sequence->mutationParams[i].skParamA = mutationParams[i].skParamA;
+		sequence->mutationParams[i].skParamB = mutationParams[i].skParamB;
+		sequence->mutationParams[i].skParamC = mutationParams[i].skParamC;
+		sequence->mutationParams[i].skParamD = mutationParams[i].skParamD;
+		sequence->mutationParams[i].skFreq = mutationParams[i].skFreq;
+		sequence->mutationParams[i].skAmp = mutationParams[i].skAmp;
+		sequence->mutationParams[i].skAngle = mutationParams[i].skAngle;
+		sequence->mutationParams[i].skOffset = mutationParams[i].skOffset;
+		sequence->mutationParams[i].skIterStart = mutationParams[i].skIterStart;
+		sequence->mutationParams[i].skIterStop = mutationParams[i].skIterStop;
+
+		// v7.9 — Abox DE system
+		sequence->mutationParams[i].aboxType = mutationParams[i].aboxType;
+		sequence->mutationParams[i].abFactor = mutationParams[i].abFactor;
+		sequence->mutationParams[i].abParamA = mutationParams[i].abParamA;
+		sequence->mutationParams[i].abParamB = mutationParams[i].abParamB;
+		sequence->mutationParams[i].abParamC = mutationParams[i].abParamC;
+		sequence->mutationParams[i].abParamD = mutationParams[i].abParamD;
+		sequence->mutationParams[i].abParamE = mutationParams[i].abParamE;
+		sequence->mutationParams[i].abParamF = mutationParams[i].abParamF;
+		sequence->mutationParams[i].abParamG = mutationParams[i].abParamG;
+		sequence->mutationParams[i].abParamH = mutationParams[i].abParamH;
+		sequence->mutationParams[i].abIterStart = mutationParams[i].abIterStart;
+		sequence->mutationParams[i].abIterStop = mutationParams[i].abIterStop;
+
 		// Copy rotation matrices using matrix33 type
 		if (mutationParams[i].enabled)
 		{

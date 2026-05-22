@@ -484,6 +484,29 @@ struct sFormulaMutationParams
 	double mbParamE, mbParamF, mbParamG, mbParamH;
 	int mbIterStart, mbIterStop;
 
+	// v7.9 — Warp Distortion system (100 types)
+	int warpDistType;
+	double wdFactor;
+	double wdParamA, wdParamB, wdParamC, wdParamD;
+	double wdFreq, wdAmp;
+	double wdScale, wdPhase;
+	int wdIterStart, wdIterStop;
+
+	// v7.9 — Symmetry/Kaleidoscope system (100 types)
+	int symKalType;
+	double skFactor;
+	double skParamA, skParamB, skParamC, skParamD;
+	double skFreq, skAmp;
+	double skAngle, skOffset;
+	int skIterStart, skIterStop;
+
+	// v7.9 — Abox DE system (300 types)
+	int aboxType;
+	double abFactor;
+	double abParamA, abParamB, abParamC, abParamD;
+	double abParamE, abParamF, abParamG, abParamH;
+	int abIterStart, abIterStop;
+
 	// Pre-computed rotation matrices (filled in constructor)
 	CRotationMatrix preRotMatrix;
 	CRotationMatrix postRotMatrix;

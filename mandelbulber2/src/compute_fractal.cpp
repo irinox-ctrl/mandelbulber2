@@ -2622,6 +2622,548 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 					}
 				}
 
+				// v7.9 — Warp Distortion system (per-section iteration range)
+				if (i >= mut.wdIterStart && i < mut.wdIterStop && mut.warpDistType != 0)
+				{
+					double wf = mut.wdFactor;
+					double wa = mut.wdParamA, wb = mut.wdParamB, wc = mut.wdParamC, wd = mut.wdParamD;
+					double wfq = mut.wdFreq, wam = mut.wdAmp;
+					double wsc = mut.wdScale, wph = mut.wdPhase * M_PI / 180.0;
+					double zx = z.x, zy = z.y, zz2 = z.z;
+					double r = sqrt(zx*zx + zy*zy + zz2*zz2 + 1e-21);
+					switch(mut.warpDistType)
+					{
+						case 1: { z.x += wf*wam*sin(wfq*zy + wph); aux.DE *= (1.0 + fabs(wf*wam*wfq*cos(wfq*zy + wph))); break; }
+						case 2: { z.y += wf*wam*sin(wfq*zz2 + wph); aux.DE *= (1.0 + fabs(wf*wam*wfq*cos(wfq*zz2 + wph))); break; }
+						case 3: { z.z += wf*wam*sin(wfq*zx + wph); aux.DE *= (1.0 + fabs(wf*wam*wfq*cos(wfq*zx + wph))); break; }
+						case 4: { z.x += wf*wam*sin(wfq*zy + wph); z.y += wf*wam*sin(wfq*zz2 + wph); z.z += wf*wam*sin(wfq*zx + wph); aux.DE *= (1.0 + 3.0*fabs(wf*wam*wfq)); break; }
+						case 5: { z.x += wf*wam*cos(wfq*zy + wph)*sin(wfq*zz2); aux.DE *= (1.0 + fabs(wf*wam*wfq)); break; }
+						case 6: { double ph = atan2(zy, zx); z.x += wf*wam*sin(wfq*ph + wph); z.y += wf*wam*cos(wfq*ph + wph); aux.DE *= (1.0 + fabs(wf*wam*wfq)); break; }
+						case 7: { double ph = atan2(zy, zx); double th = acos(zz2/r); z.x += wf*wam*sin(wfq*th + wph)*cos(ph); z.y += wf*wam*sin(wfq*th + wph)*sin(ph); z.z += wf*wam*cos(wfq*th + wph); aux.DE *= (1.0 + fabs(wf*wam*wfq)); break; }
+						case 8: { z.x += wf*wam*sin(wfq*zy + wph)*cos(wfq*zz2); z.y += wf*wam*sin(wfq*zz2 + wph)*cos(wfq*zx); z.z += wf*wam*sin(wfq*zx + wph)*cos(wfq*zy); aux.DE *= (1.0 + 3.0*fabs(wf*wam*wfq)); break; }
+						case 9: { z.x += wf*wam*sin(wfq*zx + wph); z.y += wf*wb*sin(wfq*zy + wph); z.z += wf*wc*sin(wfq*zz2 + wph); aux.DE *= (1.0 + fabs(wf*(wam+wb+wc)*wfq/3.0)); break; }
+						case 10: { double d = wf*wam*sin(wfq*r + wph); z.x += d*zx/r; z.y += d*zy/r; z.z += d*zz2/r; aux.DE *= (1.0 + fabs(wf*wam*wfq)); break; }
+						case 11: { z.x += wf*wam*sin(wfq*sin(wa*zy) + wph); aux.DE *= (1.0 + fabs(wf*wam*wfq)); break; }
+						case 12: { z.y += wf*wam*sin(wfq*cos(wa*zz2) + wph); aux.DE *= (1.0 + fabs(wf*wam*wfq)); break; }
+						case 13: { z.z += wf*wam*cos(wfq*sin(wa*zx) + wph); aux.DE *= (1.0 + fabs(wf*wam*wfq)); break; }
+						case 14: { double d1 = sin(wfq*zx+wph); double d2 = sin(wa*zy+wb); z.x += wf*wam*sin(wfq*d1+d2); z.y += wf*wam*cos(wa*d1-d2); aux.DE *= (1.0 + 2.0*fabs(wf*wam*wfq)); break; }
+						case 15: { z.x += wf*wam*sin(wfq*(zx*zy) + wph); z.y += wf*wam*cos(wfq*(zy*zz2) + wph); z.z += wf*wam*sin(wfq*(zz2*zx) + wph); aux.DE *= (1.0 + 3.0*fabs(wf*wam*wfq)); break; }
+						case 16: { double n1 = sin(wfq*zx+wa*zy); double n2 = sin(wa*zy+wb*zz2); z.x += wf*wam*sin(wfq*n1+wph); z.y += wf*wam*sin(wfq*n2+wph); aux.DE *= (1.0 + 2.0*fabs(wf*wam*wfq)); break; }
+						case 17: { double n1 = cos(wfq*zx)*sin(wa*zy); double n2 = cos(wa*zy)*sin(wb*zz2); double n3 = cos(wb*zz2)*sin(wfq*zx); z.x += wf*wam*n1; z.y += wf*wam*n2; z.z += wf*wam*n3; aux.DE *= (1.0 + 3.0*fabs(wf*wam)); break; }
+						case 18: { z.x += wf*wam*sin(wfq*zy*zz2/(r+1e-21) + wph); aux.DE *= (1.0 + fabs(wf*wam*wfq)); break; }
+						case 19: { double t = wfq*r+wph; z.x += wf*wam*sin(t)*cos(wa*zy); z.y += wf*wam*cos(t)*sin(wa*zz2); z.z += wf*wam*sin(t)*cos(wa*zx); aux.DE *= (1.0 + 3.0*fabs(wf*wam)); break; }
+						case 20: { double q = sin(wfq*zx+wph)+sin(wa*zy+wb)+sin(wc*zz2+wd); z.x += wf*wam*sin(q); z.y += wf*wam*cos(q); z.z += wf*wam*sin(q+M_PI*0.5); aux.DE *= (1.0 + 3.0*fabs(wf*wam)); break; }
+						case 21: { { double v=0; for(int o=0;o<4;o++){double f=wfq*pow(2.0,o); v+=sin(f*zx+wph)*cos(f*zy)/pow(2.0,o);} z.x+=wf*wam*v; aux.DE*=(1.0+fabs(wf*wam*wfq*4.0)); } break; }
+						case 22: { { double v=0; for(int o=0;o<4;o++){double f=wfq*pow(2.0,o); v+=sin(f*zy+wph)*cos(f*zz2)/pow(2.0,o);} z.y+=wf*wam*v; aux.DE*=(1.0+fabs(wf*wam*wfq*4.0)); } break; }
+						case 23: { { double v=0; for(int o=0;o<4;o++){double f=wfq*pow(2.0,o); v+=sin(f*zz2+wph)*cos(f*zx)/pow(2.0,o);} z.z+=wf*wam*v; aux.DE*=(1.0+fabs(wf*wam*wfq*4.0)); } break; }
+						case 24: { { double vx=0,vy=0,vz=0; for(int o=0;o<4;o++){double f=wfq*pow(2.0,o); double a=1.0/pow(2.0,o); vx+=sin(f*zy+wph)*a; vy+=sin(f*zz2+wph)*a; vz+=sin(f*zx+wph)*a;} z.x+=wf*wam*vx; z.y+=wf*wam*vy; z.z+=wf*wam*vz; aux.DE*=(1.0+3.0*fabs(wf*wam*wfq*4.0)); } break; }
+						case 25: { { double vx=0,vy=0,vz=0; for(int o=0;o<int(wa);o++){double f=wfq*pow(wb,o); double a=1.0/pow(wb,o); vx+=sin(f*zy+o*wph)*a; vy+=sin(f*zz2+o*wph)*a; vz+=sin(f*zx+o*wph)*a;} z.x+=wf*wam*vx; z.y+=wf*wam*vy; z.z+=wf*wam*vz; aux.DE*=(1.0+3.0*fabs(wf*wam)); } break; }
+						case 26: { { double v=0; for(int o=0;o<4;o++){double f=wfq*pow(2.0,o); v+=fabs(sin(f*zx+wph))*cos(f*zy)/pow(2.0,o);} z.x+=wf*wam*v; aux.DE*=(1.0+fabs(wf*wam*wfq*4.0)); } break; }
+						case 27: { { double vx=0,vy=0; for(int o=0;o<4;o++){double f=wfq*pow(2.0,o); vx+=sin(f*zy+wph)*cos(f*zz2)/pow(2.0,o); vy+=cos(f*zx+wph)*sin(f*zz2)/pow(2.0,o);} z.x+=wf*wam*vx; z.y+=wf*wam*vy; aux.DE*=(1.0+2.0*fabs(wf*wam*wfq*4.0)); } break; }
+						case 28: { { double v=0; for(int o=0;o<6;o++){double f=wfq*pow(2.0,o); v+=sin(f*r+wph)/pow(2.0,o);} double d=wf*wam*v; z.x+=d*zx/r; z.y+=d*zy/r; z.z+=d*zz2/r; aux.DE*=(1.0+fabs(wf*wam*wfq*6.0)); } break; }
+						case 29: { { double vx=0,vy=0,vz=0; for(int o=0;o<4;o++){double f=wfq*pow(2.0,o); double p=wph+o*M_PI*0.25; vx+=sin(f*zy+p)*cos(f*zz2+p)/pow(2.0,o); vy+=sin(f*zz2+p)*cos(f*zx+p)/pow(2.0,o); vz+=sin(f*zx+p)*cos(f*zy+p)/pow(2.0,o);} z.x+=wf*wam*vx; z.y+=wf*wam*vy; z.z+=wf*wam*vz; aux.DE*=(1.0+3.0*fabs(wf*wam*wfq*4.0)); } break; }
+						case 30: { { double ph2=atan2(zy,zx); double th=acos(zz2/r); double v=0; for(int o=0;o<4;o++){double f=wfq*pow(2.0,o); v+=sin(f*th+wph)*cos(f*ph2)/pow(2.0,o);} double d=wf*wam*v; z.x+=d*sin(th)*cos(ph2); z.y+=d*sin(th)*sin(ph2); z.z+=d*cos(th); aux.DE*=(1.0+fabs(wf*wam*wfq*4.0)); } break; }
+						case 31: { z.x += wf*wam*(cos(wfq*zy+wph)-cos(wfq*zz2+wph)); z.y += wf*wam*(cos(wfq*zz2+wph)-cos(wfq*zx+wph)); z.z += wf*wam*(cos(wfq*zx+wph)-cos(wfq*zy+wph)); aux.DE *= (1.0 + 3.0*fabs(wf*wam*wfq)); break; }
+						case 32: { { double cx=-wfq*cos(wfq*zy+wph); double cy=-wfq*cos(wfq*zz2+wph); double cz=-wfq*cos(wfq*zx+wph); z.x+=wf*wam*(cy-cz); z.y+=wf*wam*(cz-cx); z.z+=wf*wam*(cx-cy); aux.DE*=(1.0+3.0*fabs(wf*wam*wfq)); } break; }
+						case 33: { z.x += wf*wam*sin(wfq*zy+wph)*sin(wa*zz2); z.y += -wf*wam*sin(wfq*zx+wph)*sin(wa*zz2); aux.DE *= (1.0 + 2.0*fabs(wf*wam*wfq)); break; }
+						case 34: { z.x += wf*wam*sin(wfq*zz2+wph); z.z += -wf*wam*sin(wfq*zx+wph); aux.DE *= (1.0 + 2.0*fabs(wf*wam*wfq)); break; }
+						case 35: { z.y += wf*wam*sin(wfq*zx+wph); z.x += -wf*wam*sin(wfq*zy+wph); aux.DE *= (1.0 + 2.0*fabs(wf*wam*wfq)); break; }
+						case 36: { { double dx=wf*wam*wfq*cos(wfq*zy+wph); double dy=wf*wam*wa*cos(wa*zz2+wph); double dz=wf*wam*wfq*cos(wfq*zx+wph); z.x+=dy-dz; z.y+=dz-dx; z.z+=dx-dy; aux.DE*=(1.0+3.0*fabs(wf*wam*wfq)); } break; }
+						case 37: { { double psi=wf*wam*sin(wfq*zx+wph)*cos(wa*zy)*sin(wb*zz2); z.x+=wf*wam*wa*sin(wfq*zx)*cos(wa*zy); z.y+=-wf*wam*wfq*cos(wfq*zx)*sin(wa*zy); aux.DE*=(1.0+2.0*fabs(wf*wam*wfq)); } break; }
+						case 38: { { double u=wf*wam*sin(wfq*r+wph); z.x+=u*(-zy/r); z.y+=u*(zx/r); aux.DE*=(1.0+fabs(wf*wam*wfq)); } break; }
+						case 39: { { double u=wf*wam*sin(wfq*zz2+wph); z.x+=u*(-zy/(sqrt(zx*zx+zy*zy)+1e-21)); z.y+=u*(zx/(sqrt(zx*zx+zy*zy)+1e-21)); aux.DE*=(1.0+fabs(wf*wam*wfq)); } break; }
+						case 40: { { double ph2=atan2(zy,zx); double u=wf*wam*sin(wfq*ph2+wph); z.z+=u; aux.DE*=(1.0+fabs(wf*wam*wfq)); } break; }
+						case 41: { { double th=wf*wfq*zz2+wph; double cs=cos(th),sn=sin(th); double nx=zx*cs-zy*sn; z.y=zx*sn+zy*cs; z.x=nx; aux.DE*=(1.0+fabs(wf*wfq*wam)); } break; }
+						case 42: { { double th=wf*wfq*zx+wph; double cs=cos(th),sn=sin(th); double ny=zy*cs-zz2*sn; z.z=zy*sn+zz2*cs; z.y=ny; aux.DE*=(1.0+fabs(wf*wfq*wam)); } break; }
+						case 43: { { double th=wf*wfq*zy+wph; double cs=cos(th),sn=sin(th); double nx=zx*cs-zz2*sn; z.z=zx*sn+zz2*cs; z.x=nx; aux.DE*=(1.0+fabs(wf*wfq*wam)); } break; }
+						case 44: { { double th=wf*wfq*r+wph; double cs=cos(th),sn=sin(th); double nx=zx*cs-zy*sn; z.y=zx*sn+zy*cs; z.x=nx; aux.DE*=(1.0+fabs(wf*wfq*wam)); } break; }
+						case 45: { { double a1=wf*wa*sin(wfq*zz2+wph); double cs=cos(a1),sn=sin(a1); double nx=zx*cs-zy*sn; z.y=zx*sn+zy*cs; z.x=nx; double a2=wf*wb*sin(wfq*zx+wph); cs=cos(a2); sn=sin(a2); double ny=zy*cs-zz2*sn; z.z=zy*sn+zz2*cs; z.y=ny; aux.DE*=(1.0+fabs(wf*(wa+wb)*wfq)); } break; }
+						case 46: { { double ph2=atan2(zy,zx)+wf*wam*sin(wfq*zz2+wph); double rxy=sqrt(zx*zx+zy*zy); z.x=rxy*cos(ph2); z.y=rxy*sin(ph2); aux.DE*=(1.0+fabs(wf*wam*wfq)); } break; }
+						case 47: { { double th=acos(zz2/r)+wf*wam*sin(wfq*r+wph); double ph2=atan2(zy,zx); z.x=r*sin(th)*cos(ph2); z.y=r*sin(th)*sin(ph2); z.z=r*cos(th); aux.DE*=(1.0+fabs(wf*wam*wfq)); } break; }
+						case 48: { { double a=wf*wam*zz2*wfq; double cs=cos(a),sn=sin(a); double nx=zx*cs-zy*sn; z.y=zx*sn+zy*cs; z.x=nx; z.z+=wf*wb*sin(wfq*r+wph); aux.DE*=(1.0+fabs(wf*(wam+wb)*wfq)); } break; }
+						case 49: { { double a=wf*wam*sin(wfq*zz2+wph); z.x=zx*cos(a)-zy*sin(a)+wf*wb*sin(wfq*zy); z.y=zx*sin(a)+zy*cos(a)+wf*wc*cos(wfq*zz2); z.z+=wf*wd*sin(wfq*zx+wph); aux.DE*=(1.0+fabs(wf*(wam+wb+wc+wd)*wfq/4.0)); } break; }
+						case 50: { { double t=wf*wfq*log(r+1e-21)+wph; double cs=cos(t),sn=sin(t); double nx=zx*cs-zy*sn; z.y=zx*sn+zy*cs; z.x=nx; aux.DE*=(1.0+fabs(wf*wfq/(r+1e-21))); } break; }
+						case 51: { { double d=wf*wam*sin(wfq*r+wph); z*=(1.0+d/r); aux.DE*=(1.0+fabs(d/r)); } break; }
+						case 52: { { double d=wf*wam/(1.0+exp(-wfq*(r-wa))); z*=(1.0+d); aux.DE*=(1.0+fabs(d)); } break; }
+						case 53: { { double d=wf*wam*exp(-wfq*r*r); z*=(1.0+d); aux.DE*=(1.0+fabs(d)); } break; }
+						case 54: { { double d=wf*wam*exp(-wfq*fabs(r-wa)); z*=(1.0+d); aux.DE*=(1.0+fabs(d)); } break; }
+						case 55: { { double d=wf*wam*(sin(wfq*r+wph)+sin(wa*r+wb))*0.5; z*=(1.0+d/r); aux.DE*=(1.0+fabs(d/r)); } break; }
+						case 56: { { double rxy=sqrt(zx*zx+zy*zy+1e-21); double d=wf*wam*sin(wfq*rxy+wph); z.x+=d*zx/rxy; z.y+=d*zy/rxy; aux.DE*=(1.0+fabs(wf*wam*wfq)); } break; }
+						case 57: { { double d=wf*wam*sin(wfq*zz2+wph)*exp(-wa*sqrt(zx*zx+zy*zy)); z.x+=d*zx/r; z.y+=d*zy/r; z.z+=d*zz2/r; aux.DE*=(1.0+fabs(d)); } break; }
+						case 58: { { double ph2=atan2(zy,zx); double th=acos(zz2/r); double d=wf*wam*sin(wfq*ph2*wa+wph)*sin(wb*th); z.x+=d*sin(th)*cos(ph2); z.y+=d*sin(th)*sin(ph2); z.z+=d*cos(th); aux.DE*=(1.0+fabs(wf*wam)); } break; }
+						case 59: { { double nr=r+wf*wam*sin(wfq*r+wph); z*=(nr/r); aux.DE*=(nr/r); } break; }
+						case 60: { { double f2=1.0+wf*wam*sin(wfq*r+wph)/(r+1e-21); z*=f2; aux.DE*=fabs(f2); } break; }
+						case 61: { z.x += wf*wam*sin(wfq*floor(zy*wa)/wa + wph); aux.DE *= (1.0 + fabs(wf*wam*wfq)); break; }
+						case 62: { z.y += wf*wam*sin(wfq*floor(zz2*wa)/wa + wph); aux.DE *= (1.0 + fabs(wf*wam*wfq)); break; }
+						case 63: { z.z += wf*wam*sin(wfq*floor(zx*wa)/wa + wph); aux.DE *= (1.0 + fabs(wf*wam*wfq)); break; }
+						case 64: { { double gx=floor(zx*wa+0.5)/wa; double gy=floor(zy*wa+0.5)/wa; z.x+=wf*wam*sin(wfq*gy+wph); z.y+=wf*wam*cos(wfq*gx+wph); aux.DE*=(1.0+2.0*fabs(wf*wam*wfq)); } break; }
+						case 65: { { double fx=zx-floor(zx*wa)/wa; double fy=zy-floor(zy*wa)/wa; z.x+=wf*wam*sin(wfq*fx*M_PI*2.0+wph); z.y+=wf*wam*sin(wfq*fy*M_PI*2.0+wph); aux.DE*=(1.0+2.0*fabs(wf*wam*wfq)); } break; }
+						case 66: { { double d=zx*wa-floor(zx*wa+0.5); z.x+=wf*wam*d*sin(wfq*zy+wph); aux.DE*=(1.0+fabs(wf*wam*wfq)); } break; }
+						case 67: { { double d=sin(wfq*zx+wph)*sin(wa*zy+wb)*sin(wc*zz2+wd); z.x+=wf*wam*d; z.y+=wf*wam*d; z.z+=wf*wam*d; aux.DE*=(1.0+3.0*fabs(wf*wam)); } break; }
+						case 68: { { double d=wf*wam*sin(wfq*(zx+zy+zz2)+wph); z.x+=d; z.y+=d; z.z+=d; aux.DE*=(1.0+3.0*fabs(wf*wam*wfq)); } break; }
+						case 69: { { double d=wf*wam*sin(wfq*(zx*zy+zy*zz2+zz2*zx)/(r*r+1e-21)+wph); z.x+=d; z.y+=d; z.z+=d; aux.DE*=(1.0+3.0*fabs(wf*wam*wfq)); } break; }
+						case 70: { { double v=wf*wam*cos(wfq*zx+wph)*cos(wa*zy+wb)*cos(wc*zz2+wd); z.x+=v*sin(wfq*zy); z.y+=v*sin(wa*zz2); z.z+=v*sin(wc*zx); aux.DE*=(1.0+3.0*fabs(wf*wam)); } break; }
+						case 71: { { double d=wf*wam*exp(-wfq*(zx*zx+zy*zy)); z.z+=d; aux.DE*=(1.0+fabs(d)); } break; }
+						case 72: { { double d=wf*wam*exp(-wfq*r)*sin(wa*r+wph); z.x+=d*zx/r; z.y+=d*zy/r; z.z+=d*zz2/r; aux.DE*=(1.0+fabs(d)); } break; }
+						case 73: { { double d=wf*wam*exp(-wfq*fabs(zz2))*sin(wa*sqrt(zx*zx+zy*zy)+wph); z.z+=d; aux.DE*=(1.0+fabs(d)); } break; }
+						case 74: { { double d=wf*wam/(1.0+wfq*(zx*zx+zy*zy+zz2*zz2)); z.x+=d*sin(wa*zy+wph); z.y+=d*cos(wa*zz2+wph); aux.DE*=(1.0+2.0*fabs(d*wa)); } break; }
+						case 75: { { z *= (1.0 + wf*wam*pow(fabs(sin(wfq*r+wph)), wa)); aux.DE *= (1.0 + fabs(wf*wam)); } break; }
+						case 76: { { double p=wf*wam*pow(r+1e-21, wa-1.0)*sin(wfq*r+wph); z.x+=p*zx; z.y+=p*zy; z.z+=p*zz2; aux.DE*=(1.0+fabs(p*r)); } break; }
+						case 77: { { double d=wf*wam*tanh(wfq*(r-wa)); z*=(1.0+d); aux.DE*=(1.0+fabs(d)); } break; }
+						case 78: { { double d=wf*wam*log(1.0+wfq*r)*sin(wa*r+wph)/(r+1e-21); z.x+=d*zx; z.y+=d*zy; z.z+=d*zz2; aux.DE*=(1.0+fabs(d*r)); } break; }
+						case 79: { { double d=wf*wam*sin(wfq*log(r+1e-21)+wph); z*=(1.0+d/r); aux.DE*=(1.0+fabs(d/r)); } break; }
+						case 80: { { double sg=1.0/(1.0+exp(-wfq*(r-wa))); z*=(1.0+wf*wam*(2.0*sg-1.0)); aux.DE*=(1.0+fabs(wf*wam*(2.0*sg-1.0))); } break; }
+						case 81: { { double rxy=sqrt(zx*zx+zy*zy+1e-21); double d=wf*wam*sin(wfq*rxy+wph); z.z+=d; aux.DE*=(1.0+fabs(wf*wam*wfq)); } break; }
+						case 82: { { double rxy=sqrt(zx*zx+zy*zy+1e-21); double d=wf*wam*sin(wfq*zz2+wph); z.x+=d*zx/rxy; z.y+=d*zy/rxy; aux.DE*=(1.0+fabs(wf*wam*wfq)); } break; }
+						case 83: { { double rxy=sqrt(zx*zx+zy*zy+1e-21); double rt=rxy-wa; double dt=sqrt(rt*rt+zz2*zz2); double d=wf*wam*sin(wfq*dt+wph); z.x+=d*(rt/dt)*(zx/rxy); z.y+=d*(rt/dt)*(zy/rxy); z.z+=d*(zz2/dt); aux.DE*=(1.0+fabs(wf*wam*wfq)); } break; }
+						case 84: { { double ph2=atan2(zy,zx); double d=wf*wam*sin(wfq*ph2*wa+wph); z.z+=d; aux.DE*=(1.0+fabs(wf*wam*wfq)); } break; }
+						case 85: { { double ph2=atan2(zy,zx); double rxy=sqrt(zx*zx+zy*zy+1e-21); z.x+=-wf*wam*sin(ph2)*sin(wfq*zz2+wph); z.y+=wf*wam*cos(ph2)*sin(wfq*zz2+wph); aux.DE*=(1.0+fabs(wf*wam*wfq)); } break; }
+						case 86: { { double rxy=sqrt(zx*zx+zy*zy+1e-21); double d=wf*wam*sin(wfq*rxy+wph)*cos(wa*zz2); z.x+=d*zx/rxy; z.y+=d*zy/rxy; z.z+=wf*wam*cos(wfq*rxy+wph)*sin(wa*zz2); aux.DE*=(1.0+2.0*fabs(wf*wam*wfq)); } break; }
+						case 87: { { double rxy=sqrt(zx*zx+zy*zy+1e-21); double ph2=atan2(zy,zx)+wf*wam*sin(wfq*zz2+wph)/rxy; z.x=rxy*cos(ph2); z.y=rxy*sin(ph2); aux.DE*=(1.0+fabs(wf*wam*wfq/rxy)); } break; }
+						case 88: { { double rxy=sqrt(zx*zx+zy*zy+1e-21); double ph2=atan2(zy,zx); double nr=rxy+wf*wam*sin(wfq*zz2+wph)*sin(wa*ph2); z.x=nr*cos(ph2); z.y=nr*sin(ph2); aux.DE*=(1.0+fabs(wf*wam*wfq)); } break; }
+						case 89: { { double rxy=sqrt(zx*zx+zy*zy+1e-21); z.z+=wf*wam*sin(wfq*rxy+wph)*cos(wa*atan2(zy,zx)); aux.DE*=(1.0+fabs(wf*wam*wfq)); } break; }
+						case 90: { { double rxy=sqrt(zx*zx+zy*zy+1e-21); double rt=rxy-wa; double ang=atan2(zz2,rt); double d=wf*wam*sin(wfq*ang+wph); z.x+=d*(zx/rxy); z.y+=d*(zy/rxy); aux.DE*=(1.0+fabs(wf*wam*wfq)); } break; }
+						case 91: { { double a=wf*wa; double b=wf*wb; z.x=zx+a*sin(wfq*zy); z.y=zy+b*sin(wfq*zx); aux.DE*=(1.0+fabs((a+b)*wfq)); } break; }
+						case 92: { { double k=wf*wam; z.x=zx+k*zy; z.y=zy+k*sin(wfq*zx+wph); aux.DE*=(1.0+fabs(k*wfq)); } break; }
+						case 93: { { z.x=r*cos(wfq*zy/r+wph); z.y=r*sin(wfq*zy/r+wph); aux.DE*=(1.0+fabs(wf*wam*wfq/r)); } break; }
+						case 94: { { double nr=r+wf*wam*sin(wfq*atan2(zy,zx)*wa+wph); z*=(nr/r); aux.DE*=(nr/r); } break; }
+						case 95: { { double th=wf*wam/(r*r+1e-10); double cs=cos(th),sn=sin(th); double nx=zx*cs-zy*sn; z.y=zx*sn+zy*cs; z.x=nx; aux.DE*=(1.0+fabs(wf*wam*2.0*r/((r*r+1e-10)*(r*r+1e-10)))); } break; }
+						case 96: { { double denom=zx*zx+zy*zy+1e-21; z.x=wf*wam*zx/denom+wsc*sin(wfq*zy+wph); z.y=-wf*wam*zy/denom+wsc*cos(wfq*zx+wph); aux.DE*=(1.0+fabs(wf*wam/denom)+fabs(wsc*wfq)); } break; }
+						case 97: { { double a1=wfq; double a2=wa; z.x=zx*cos(a1*zy)-zy*sin(a1*zy)+wf*wam*sin(a2*zz2+wph); z.y=zx*sin(a1*zy)+zy*cos(a1*zy)+wf*wam*cos(a2*zz2+wph); aux.DE*=(1.0+fabs(wf*wam*a1)+fabs(wf*wam*a2)); } break; }
+						case 98: { { double lx=wf*wam*sin(wfq*zy+wph)*(1.0-exp(-wa*r)); double ly=wf*wb*sin(wfq*zz2+wph)*(1.0-exp(-wa*r)); double lz=wf*wc*sin(wfq*zx+wph)*(1.0-exp(-wa*r)); z.x+=lx; z.y+=ly; z.z+=lz; aux.DE*=(1.0+fabs(wf*(wam+wb+wc)*wfq/3.0)); } break; }
+						case 99: { { double t=wfq*r+wph; double d=wf*wam*sin(t)*sin(wa*t); z.x+=d*zx/r; z.y+=d*zy/r; z.z+=d*zz2/r; aux.DE*=(1.0+fabs(d)); } break; }
+						case 100: { { double d=wf*wam*(sin(wfq*zx+wph)+sin(wa*zy+wb)+sin(wc*zz2+wd)); z*=(1.0+d/(3.0*r)); aux.DE*=(1.0+fabs(d/(3.0*r))); } break; }
+					}
+				}
+
+				// v7.9 — Symmetry/Kaleidoscope system (per-section iteration range)
+				if (i >= mut.skIterStart && i < mut.skIterStop && mut.symKalType != 0)
+				{
+					double sf = mut.skFactor;
+					double sa = mut.skParamA, sb = mut.skParamB, sc = mut.skParamC, sd = mut.skParamD;
+					double sfq = mut.skFreq, sam = mut.skAmp;
+					double sang = mut.skAngle * M_PI / 180.0, soff = mut.skOffset;
+					double zx = z.x, zy = z.y, zz2 = z.z;
+					double r = sqrt(zx*zx + zy*zy + zz2*zz2 + 1e-21);
+					switch(mut.symKalType)
+					{
+						case 1: { z.x = fabs(z.x); break; }
+						case 2: { z.y = fabs(z.y); break; }
+						case 3: { z.z = fabs(z.z); break; }
+						case 4: { z.x = fabs(z.x); z.y = fabs(z.y); break; }
+						case 5: { z.x = fabs(z.x); z.y = fabs(z.y); z.z = fabs(z.z); break; }
+						case 6: { if(z.x < 0) z.x = -z.x - soff; else z.x = z.x + soff; break; }
+						case 7: { if(z.y < 0) z.y = -z.y - soff; else z.y = z.y + soff; break; }
+						case 8: { if(z.x + z.y < 0) { double t = z.x; z.x = -z.y; z.y = -t; } break; }
+						case 9: { if(z.x - z.y < 0) { double t = z.x; z.x = z.y; z.y = t; } break; }
+						case 10: { if(z.x + z.z < 0) { double t = z.x; z.x = -z.z; z.z = -t; } break; }
+						case 11: { { double ang2 = atan2(zy, zx); double n = fmax(1.0, sa); double sector = 2.0*M_PI/n; ang2 = fmod(ang2 + 10.0*M_PI, sector) - sector*0.5; double rxy = sqrt(zx*zx+zy*zy); z.x = rxy*cos(ang2); z.y = rxy*sin(ang2); } break; }
+						case 12: { { double ang2 = atan2(zy, zx); double n = 3.0; double sector = 2.0*M_PI/n; ang2 = fmod(ang2 + 10.0*M_PI, sector) - sector*0.5; double rxy = sqrt(zx*zx+zy*zy); z.x = rxy*cos(ang2); z.y = rxy*sin(ang2); } break; }
+						case 13: { { double ang2 = atan2(zy, zx); double n = 4.0; double sector = 2.0*M_PI/n; ang2 = fmod(ang2 + 10.0*M_PI, sector) - sector*0.5; double rxy = sqrt(zx*zx+zy*zy); z.x = rxy*cos(ang2); z.y = rxy*sin(ang2); } break; }
+						case 14: { { double ang2 = atan2(zy, zx); double n = 5.0; double sector = 2.0*M_PI/n; ang2 = fmod(ang2 + 10.0*M_PI, sector) - sector*0.5; double rxy = sqrt(zx*zx+zy*zy); z.x = rxy*cos(ang2); z.y = rxy*sin(ang2); } break; }
+						case 15: { { double ang2 = atan2(zy, zx); double n = 6.0; double sector = 2.0*M_PI/n; ang2 = fmod(ang2 + 10.0*M_PI, sector) - sector*0.5; double rxy = sqrt(zx*zx+zy*zy); z.x = rxy*cos(ang2); z.y = rxy*sin(ang2); } break; }
+						case 16: { { double ang2 = atan2(zy, zx); double n = 8.0; double sector = 2.0*M_PI/n; ang2 = fmod(ang2 + 10.0*M_PI, sector) - sector*0.5; double rxy = sqrt(zx*zx+zy*zy); z.x = rxy*cos(ang2); z.y = rxy*sin(ang2); } break; }
+						case 17: { { double ang2 = atan2(zy, zx); double n = 12.0; double sector = 2.0*M_PI/n; ang2 = fmod(ang2 + 10.0*M_PI, sector) - sector*0.5; double rxy = sqrt(zx*zx+zy*zy); z.x = rxy*cos(ang2); z.y = rxy*sin(ang2); } break; }
+						case 18: { { double ang2 = atan2(zz2, zx); double n = fmax(1.0, sa); double sector = 2.0*M_PI/n; ang2 = fmod(ang2 + 10.0*M_PI, sector) - sector*0.5; double rxz = sqrt(zx*zx+zz2*zz2); z.x = rxz*cos(ang2); z.z = rxz*sin(ang2); } break; }
+						case 19: { { double ang2 = atan2(zz2, zy); double n = fmax(1.0, sa); double sector = 2.0*M_PI/n; ang2 = fmod(ang2 + 10.0*M_PI, sector) - sector*0.5; double ryz = sqrt(zy*zy+zz2*zz2); z.y = ryz*cos(ang2); z.z = ryz*sin(ang2); } break; }
+						case 20: { { double ang2 = atan2(zy, zx); double n = fmax(1.0, sa); double sector = 2.0*M_PI/n; ang2 = fmod(ang2 + 10.0*M_PI, sector); if(fmod(floor(ang2/sector), 2.0) > 0.5) ang2 = sector - fmod(ang2, sector); else ang2 = fmod(ang2, sector); ang2 -= sector*0.5; double rxy = sqrt(zx*zx+zy*zy); z.x = rxy*cos(ang2); z.y = rxy*sin(ang2); } break; }
+						case 21: { { double cs = cos(sang), sn = sin(sang); double nx = zx*cs - zy*sn; z.y = zx*sn + zy*cs; z.x = fabs(nx); } break; }
+						case 22: { { double cs = cos(sang), sn = sin(sang); z.x = fabs(zx); double nx = zx*cs - zy*sn; z.y = zx*sn + zy*cs; z.x = nx; z.x = fabs(z.x); } break; }
+						case 23: { { if(z.x + z.y < soff) { double t = z.x; z.x = -z.y; z.y = -t; } double cs = cos(sang), sn = sin(sang); double nx = zx*cs - zy*sn; z.y = zx*sn + zy*cs; z.x = nx; } break; }
+						case 24: { { z.x = fabs(z.x); z.y = fabs(z.y); double cs = cos(sang), sn = sin(sang); double nx = z.x*cs - z.y*sn; z.y = z.x*sn + z.y*cs; z.x = nx; z.x = fabs(z.x); } break; }
+						case 25: { { z.x = fabs(z.x) + soff; z.y = fabs(z.y) + soff; double cs = cos(sang), sn = sin(sang); double nx = z.x*cs - z.y*sn; z.y = z.x*sn + z.y*cs; z.x = nx; } break; }
+						case 26: { { for(int k=0; k<int(sa); k++) { z.x = fabs(z.x); z.y = fabs(z.y); double cs = cos(sang), sn = sin(sang); double nx = z.x*cs - z.y*sn; z.y = z.x*sn + z.y*cs; z.x = nx; } } break; }
+						case 27: { { for(int k=0; k<int(sa); k++) { z.x = fabs(z.x); z.y = fabs(z.y); z.z = fabs(z.z); double cs = cos(sang+k*sb), sn = sin(sang+k*sb); double nx = z.x*cs - z.y*sn; z.y = z.x*sn + z.y*cs; z.x = nx; } } break; }
+						case 28: { { double cs1 = cos(sang), sn1 = sin(sang); double nx = zx*cs1 - zy*sn1; z.y = zx*sn1 + zy*cs1; z.x = nx; z.x = fabs(z.x); double cs2 = cos(-sang), sn2 = sin(-sang); nx = z.x*cs2 - z.y*sn2; z.y = z.x*sn2 + z.y*cs2; z.x = nx; } break; }
+						case 29: { { z.x = fabs(z.x); if(z.x - z.y < 0) { double t = z.x; z.x = z.y; z.y = t; } z.y = fabs(z.y); double cs = cos(sang), sn = sin(sang); double nx = z.x*cs - z.z*sn; z.z = z.x*sn + z.z*cs; z.x = nx; } break; }
+						case 30: { { double n = fmax(2.0, sa); for(int k=0; k<int(n); k++) { double a = k * 2.0*M_PI/n; double cs = cos(a), sn = sin(a); double d = z.x*cs + z.y*sn; if(d < 0) { z.x -= 2.0*d*cs; z.y -= 2.0*d*sn; } } } break; }
+						case 31: { { z.x = fabs(z.x); z.y = fabs(z.y); if(z.y > z.x) { double t=z.x; z.x=z.y; z.y=t; } z.x -= sa; z.y -= sb; } break; }
+						case 32: { { z.x = fabs(z.x); z.y = fabs(z.y); z.z = fabs(z.z); if(z.y > z.x) { double t=z.x; z.x=z.y; z.y=t; } if(z.z > z.x) { double t=z.x; z.x=z.z; z.z=t; } if(z.z > z.y) { double t=z.y; z.y=z.z; z.z=t; } z.x -= sa; z.y -= sb; z.z -= sc; } break; }
+						case 33: { { z.x = fabs(z.x); z.y = fabs(z.y); z.z = fabs(z.z); if(z.x - z.y < 0) { double t=z.x; z.x=z.y; z.y=t; } if(z.x - z.z < 0) { double t=z.x; z.x=z.z; z.z=t; } if(z.y - z.z < 0) { double t=z.y; z.y=z.z; z.z=t; } z.x -= sa; z.y -= sb; z.z -= sc; double cs = cos(sang), sn = sin(sang); double nx = z.x*cs - z.y*sn; z.y = z.x*sn + z.y*cs; z.x = nx; } break; }
+						case 34: { { z.x = fabs(z.x); z.y = fabs(z.y); double d = z.x*cos(sang) + z.y*sin(sang); if(d < 0) { z.x -= 2.0*d*cos(sang); z.y -= 2.0*d*sin(sang); } z.x -= sa; z.y -= sb; z.z -= 0; } break; }
+						case 35: { { z.x = fabs(z.x); z.y = fabs(z.y); z.z = fabs(z.z); z.x -= sa; z.y -= sb; z.z -= sc; if(z.y > z.x) { double t=z.x; z.x=z.y; z.y=t; } if(z.z > z.x) { double t=z.x; z.x=z.z; z.z=t; } if(z.z > z.y) { double t=z.y; z.y=z.z; z.z=t; } } break; }
+						case 36: { { double d = 2.0*fmax(0.0, z.x*cos(sang) + z.y*sin(sang)); z.x -= d*cos(sang); z.y -= d*sin(sang); z.x = fabs(z.x); } break; }
+						case 37: { { z.x = fabs(z.x); z.y = fabs(z.y); double a = sang; for(int k=0; k<3; k++) { double d = 2.0*fmin(0.0, z.x*cos(a) + z.y*sin(a)); z.x -= d*cos(a); z.y -= d*sin(a); a += M_PI/3.0; } z.x -= sa; z.y -= sb; z.z -= 0; } break; }
+						case 38: { { for(int k=0; k<int(fmax(1,sa)); k++) { z.x = fabs(z.x); z.y = fabs(z.y); z.z = fabs(z.z); z.x -= sb; z.y -= sc; z.z -= sd; if(z.y > z.x) { double t=z.x; z.x=z.y; z.y=t; } if(z.z > z.x) { double t=z.x; z.x=z.z; z.z=t; } if(z.z > z.y) { double t=z.y; z.y=z.z; z.z=t; } z *= sf; aux.DE *= fabs(sf); } } break; }
+						case 39: { { for(int k=0; k<int(fmax(1,sa)); k++) { double cs = cos(sang+k*sb), sn = sin(sang+k*sb); double d = z.x*cs + z.y*sn; if(d < 0) { z.x -= 2.0*d*cs; z.y -= 2.0*d*sn; } z.x = fabs(z.x) - sc; z.y = fabs(z.y) - sd; } } break; }
+						case 40: { { z.x = fabs(z.x); z.y = fabs(z.y); z.z = fabs(z.z); z.x = z.x - sa*round(z.x/fmax(sa,1e-21)); z.y = z.y - sb*round(z.y/fmax(sb,1e-21)); z.z = z.z - sc*round(z.z/fmax(sc,1e-21)); } break; }
+						case 41: { { z.x = fabs(z.x); z.y = fabs(z.y); z.z = fabs(z.z); if(z.x - z.y < 0) { double t=z.x; z.x=z.y; z.y=t; } if(z.x - z.z < 0) { double t=z.x; z.x=z.z; z.z=t; } if(z.y - z.z < 0) { double t=z.y; z.y=z.z; z.z=t; } z *= sf; { double _cF=(sf-1.0); z.x -= sa*_cF; z.y -= sb*_cF; z.z -= sc*_cF; }; aux.DE = aux.DE * fabs(sf) + 1.0; } break; }
+						case 42: { { if(z.x + z.y < 0) { double t=-z.y; z.y=-z.x; z.x=t; } if(z.x + z.z < 0) { double t=-z.z; z.z=-z.x; z.x=t; } if(z.y + z.z < 0) { double t=-z.z; z.z=-z.y; z.y=t; } z *= sf; { double _cF=(sf-1.0); z.x -= sa*_cF; z.y -= sb*_cF; z.z -= sc*_cF; }; aux.DE = aux.DE * fabs(sf) + 1.0; } break; }
+						case 43: { { z.x = fabs(z.x); z.y = fabs(z.y); if(z.x - z.y < 0) { double t=z.x; z.x=z.y; z.y=t; } z.x -= sa; z *= sf; z.x += sa; aux.DE = aux.DE * fabs(sf) + 1.0; } break; }
+						case 44: { { z.x = fabs(z.x); z.y = fabs(z.y); z.z = fabs(z.z); if(z.x - z.y < 0) { double t=z.x; z.x=z.y; z.y=t; } if(z.x - z.z < 0) { double t=z.x; z.x=z.z; z.z=t; } if(z.y - z.z < 0) { double t=z.y; z.y=z.z; z.z=t; } z.z -= 0.5*sc*(sf-1.0)/sf; z.z = fabs(z.z); z.z += 0.5*sc*(sf-1.0)/sf; z *= sf; { double _cF=(sf-1.0); z.x -= sa*_cF; z.y -= sb*_cF; z.z -= sc*_cF; }; aux.DE = aux.DE*fabs(sf)+1.0; } break; }
+						case 45: { { z.x = fabs(z.x); z.y = fabs(z.y); z.z = fabs(z.z); double t; if(z.x-z.y<0){t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0){t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0){t=z.y;z.y=z.z;z.z=t;} z *= sf; double _f45=(sf-1.0)*sa; z.x -= _f45; z.y -= _f45; z.z -= _f45; aux.DE=aux.DE*fabs(sf)+1.0; z.x=fabs(z.x); z.y=fabs(z.y); } break; }
+						case 46: { { z.x = fabs(z.x); z.y = fabs(z.y); z.z = fabs(z.z); double d1 = z.x - z.y; double d2 = z.y - z.z; if(d1 < 0){double t=z.x;z.x=z.y;z.y=t;} if(d2 < 0){double t=z.y;z.y=z.z;z.z=t;} if(z.x-z.y < 0){double t=z.x;z.x=z.y;z.y=t;} z.x -= sa; z.y -= sb; z.z -= sc; z *= sf; z.x += sa; z.y += sb; z.z += sc; aux.DE = aux.DE*fabs(sf)+1.0; } break; }
+						case 47: { { z.x = sa - fabs(z.x - sa); z.y = sb - fabs(z.y - sb); z.z = sc - fabs(z.z - sc); } break; }
+						case 48: { { z.x = fabs(z.x); z.y = fabs(z.y); z.z = fabs(z.z); if(z.x>sa) z.x=2.0*sa-z.x; if(z.y>sb) z.y=2.0*sb-z.y; if(z.z>sc) z.z=2.0*sc-z.z; } break; }
+						case 49: { { double p=sa; z.x = z.x - p*floor(z.x/p+0.5); z.y = z.y - p*floor(z.y/p+0.5); z.z = z.z - p*floor(z.z/p+0.5); } break; }
+						case 50: { { double px=sa, py=sb; z.x = z.x - px*floor(z.x/px+0.5); z.y = z.y - py*floor(z.y/py+0.5); } break; }
+						case 51: { { double ph2=atan2(zy,zx); double n=fmax(1.0,sa); double s=2.0*M_PI/n; ph2=fmod(ph2+10.0*M_PI,s)-s*0.5; double rxy=sqrt(zx*zx+zy*zy); z.x=rxy*cos(ph2); z.y=rxy*sin(ph2); z.z=fabs(z.z); } break; }
+						case 52: { { double ph2=atan2(zy,zx); double th=acos(zz2/r); double n=fmax(1.0,sa); double sp=2.0*M_PI/n; ph2=fmod(ph2+10.0*M_PI,sp)-sp*0.5; double m=fmax(1.0,sb); double st=M_PI/m; th=fmod(th+10.0*M_PI,st); z.x=r*sin(th)*cos(ph2); z.y=r*sin(th)*sin(ph2); z.z=r*cos(th); } break; }
+						case 53: { { double ph2=atan2(zy,zx)+sang; double rxy=sqrt(zx*zx+zy*zy); z.x=rxy*cos(ph2); z.y=rxy*sin(ph2); z.z=fabs(zz2); } break; }
+						case 54: { { double rxy=sqrt(zx*zx+zy*zy); if(rxy>sa) { double f=sa/rxy; z.x*=f; z.y*=f; } } break; }
+						case 55: { { if(r>sa) z*=sa/r; } break; }
+						case 56: { { if(r<sa) z*=sa*sa/(r*r); else if(r<sb) z*=sa*sa/(r*r); } break; }
+						case 57: { { double rr=r*r; if(rr<sa*sa) z*=sb*sb/(sa*sa); else if(rr<sb*sb) z*=sb*sb/rr; } break; }
+						case 58: { { double th=acos(zz2/r); double n=fmax(1.0,sa); double st=M_PI/n; th=fmod(th+10.0*M_PI,st); z.x=r*sin(th)*cos(atan2(zy,zx)); z.y=r*sin(th)*sin(atan2(zy,zx)); z.z=r*cos(th); } break; }
+						case 59: { { double p=sa; z.x=z.x-p*round(z.x/p); z.y=z.y-p*round(z.y/p); z.z=z.z-p*round(z.z/p); } break; }
+						case 60: { { z.x=fabs(z.x)-sa; z.y=fabs(z.y)-sb; z.z=fabs(z.z)-sc; if(z.x<0) z.x=-z.x; if(z.y<0) z.y=-z.y; if(z.z<0) z.z=-z.z; } break; }
+						case 61: { { double px=fmax(sa,0.01); z.x=z.x-px*floor(z.x/px); z.y=fabs(z.y); } break; }
+						case 62: { { double px=fmax(sa,0.01), py=fmax(sb,0.01); z.x=z.x-px*floor(z.x/px); z.y=z.y-py*floor(z.y/py); } break; }
+						case 63: { { double px=fmax(sa,0.01), py=fmax(sb,0.01); z.x=z.x-px*floor(z.x/px); z.y=z.y-py*floor(z.y/py); z.x=fabs(z.x-px*0.5); } break; }
+						case 64: { { double px=fmax(sa,0.01), py=fmax(sb,0.01); double ix=floor(z.x/px); z.x=z.x-px*ix; z.y=z.y-py*floor(z.y/py); if(fmod(ix,2.0)>0.5) z.x=px-z.x; } break; }
+						case 65: { { double p=fmax(sa,0.01); double a60=M_PI/3.0; double ux=p, uy=0; double vx=p*cos(a60), vy=p*sin(a60); double det=ux*vy-uy*vx; double ix=floor((z.x*vy-z.y*vx)/det+0.5); double iy=floor((z.y*ux-z.x*uy)/det+0.5); z.x-=ix*ux+iy*vx; z.y-=ix*uy+iy*vy; } break; }
+						case 66: { { double px=fmax(sa,0.01), py=fmax(sb,0.01), pz=fmax(sc,0.01); z.x=z.x-px*floor(z.x/px); z.y=z.y-py*floor(z.y/py); z.z=z.z-pz*floor(z.z/pz); } break; }
+						case 67: { { double px=fmax(sa,0.01), py=fmax(sb,0.01), pz=fmax(sc,0.01); z.x=z.x-px*round(z.x/px); z.y=z.y-py*round(z.y/py); z.z=z.z-pz*round(z.z/pz); z.x=fabs(z.x); z.y=fabs(z.y); z.z=fabs(z.z); } break; }
+						case 68: { { double p=fmax(sa,0.01); z.x=z.x-p*round(z.x/p); z.y=z.y-p*round(z.y/p); z.z=z.z-p*round(z.z/p); double cs=cos(sang),sn=sin(sang); double nx=z.x*cs-z.y*sn; z.y=z.x*sn+z.y*cs; z.x=nx; } break; }
+						case 69: { { double p=fmax(sa,0.01); double ix=round(z.x/p); double iy=round(z.y/p); z.x-=ix*p; z.y-=iy*p; double a=sang*(ix+iy); double cs=cos(a),sn=sin(a); double nx=z.x*cs-z.y*sn; z.y=z.x*sn+z.y*cs; z.x=nx; } break; }
+						case 70: { { double p=fmax(sa,0.01); z.x=z.x-p*floor(z.x/p+0.5); z.y=z.y-p*floor(z.y/p+0.5); double cs=cos(sang),sn=sin(sang); if(z.x+z.y>0) { double nx=z.x*cs-z.y*sn; z.y=z.x*sn+z.y*cs; z.x=nx; } } break; }
+						case 71: { if(z.x*z.y > 0) { double t=z.x; z.x=z.y; z.y=t; } break; }
+						case 72: { if(z.x*z.y < 0) { z.x = fabs(z.x); z.y = fabs(z.y); } break; }
+						case 73: { if(r < sa) { z *= sf; aux.DE *= fabs(sf); } else { z.x = fabs(z.x); z.y = fabs(z.y); } break; }
+						case 74: { if(fmod(double(i), sa) < sb) { z.x = fabs(z.x); z.y = fabs(z.y); z.z = fabs(z.z); } break; }
+						case 75: { { double d = z.x*cos(sang) + z.y*sin(sang); if(d < soff) { z.x -= 2.0*(d-soff)*cos(sang); z.y -= 2.0*(d-soff)*sin(sang); } } break; }
+						case 76: { { double d1 = z.x*cos(sang)+z.y*sin(sang); if(d1<0){z.x-=2.0*d1*cos(sang);z.y-=2.0*d1*sin(sang);} double a2=sang+M_PI/fmax(1.0,sa); double d2=z.x*cos(a2)+z.y*sin(a2); if(d2<0){z.x-=2.0*d2*cos(a2);z.y-=2.0*d2*sin(a2);} } break; }
+						case 77: { { for(int k=0;k<int(fmax(1,sa));k++){ z.x=fabs(z.x)-sb; z.y=fabs(z.y)-sc; if(z.x<z.y){double t=z.x;z.x=z.y;z.y=t;} } } break; }
+						case 78: { { z.x=fabs(z.x); z.y=fabs(z.y); z.z=fabs(z.z); double m=fmax(fmax(z.x,z.y),z.z); if(m==z.y){double t=z.x;z.x=z.y;z.y=t;} if(m==z.z){double t=z.x;z.x=z.z;z.z=t;} } break; }
+						case 79: { { z.x = sa*floor(z.x/fmax(sa,0.01)+0.5)*2.0-z.x; z.y = sb*floor(z.y/fmax(sb,0.01)+0.5)*2.0-z.y; } break; }
+						case 80: { { double a=sang; for(int k=0;k<3;k++){ z.x=fabs(z.x); double d=z.x*cos(a)+z.y*sin(a); if(d<0){z.x-=2.0*d*cos(a);z.y-=2.0*d*sin(a);} a+=M_PI/3.0*sf; } } break; }
+						case 81: { { double n=fmax(2.0,sa+sb*sin(sfq*i)); double ang2=atan2(zy,zx); double s=2.0*M_PI/n; ang2=fmod(ang2+10.0*M_PI,s)-s*0.5; double rxy=sqrt(zx*zx+zy*zy); z.x=rxy*cos(ang2); z.y=rxy*sin(ang2); } break; }
+						case 82: { { double a=sang+sam*sin(sfq*i); double cs=cos(a),sn=sin(a); z.x=fabs(z.x); double nx=z.x*cs-z.y*sn; z.y=z.x*sn+z.y*cs; z.x=nx; } break; }
+						case 83: { { double d=sf*sam*sin(sfq*r+sang); z.x=fabs(z.x)+d; z.y=fabs(z.y)+d; z.z=fabs(z.z)+d; aux.DE*=(1.0+fabs(d)/r); } break; }
+						case 84: { { double n=fmax(2.0,sa); double ang2=atan2(zy,zx); double s=2.0*M_PI/n; ang2=fmod(ang2+10.0*M_PI+sam*sin(sfq*i),s)-s*0.5; double rxy=sqrt(zx*zx+zy*zy); z.x=rxy*cos(ang2); z.y=rxy*sin(ang2); } break; }
+						case 85: { { z.x=fabs(z.x); z.y=fabs(z.y); z.z=fabs(z.z); z *= sf + sam*sin(sfq*i); aux.DE *= fabs(sf + sam*sin(sfq*i)); { double _cF=(sf-1.0); z.x -= sa*_cF; z.y -= sb*_cF; z.z -= sc*_cF; }; } break; }
+						case 86: { { if(i%2==0){z.x=fabs(z.x);z.y=fabs(z.y);} else{double cs=cos(sang),sn=sin(sang);double nx=z.x*cs-z.y*sn;z.y=z.x*sn+z.y*cs;z.x=nx;} } break; }
+						case 87: { { double rr=z.x*z.x+z.y*z.y+z.z*z.z; if(rr<sa*sa){z*=sb*sb/(sa*sa);aux.DE*=sb*sb/(sa*sa);} else if(rr<sb*sb){z*=sb*sb/rr;aux.DE*=sb*sb/rr;} z.x=fabs(z.x); z.y=fabs(z.y); } break; }
+						case 88: { { if(z.x+z.y<0){double t=-z.y;z.y=-z.x;z.x=t;} if(z.x+z.z<0){double t=-z.z;z.z=-z.x;z.x=t;} z *= sf; { double _cF=(sf-1.0); z.x -= sa*_cF; z.y -= sb*_cF; z.z -= sc*_cF; }; aux.DE=aux.DE*fabs(sf)+1.0; if(z.y-z.z<0){double t=z.y;z.y=z.z;z.z=t;} } break; }
+						case 89: { { z.x=fabs(z.x)-sa; z.y=fabs(z.y)-sb; if(z.x<z.y){double t=z.x;z.x=z.y;z.y=t;} double rr=z.x*z.x+z.y*z.y+z.z*z.z; if(rr<sc*sc){double m=sd*sd/(sc*sc);z*=m;aux.DE*=m;} else if(rr<sd*sd){double m=sd*sd/rr;z*=m;aux.DE*=m;} } break; }
+						case 90: { { double p=fmax(sa,0.01); z.x=z.x-p*round(z.x/p); z.y=z.y-p*round(z.y/p); z.x=fabs(z.x); z.y=fabs(z.y); if(z.x<z.y){double t=z.x;z.x=z.y;z.y=t;} z *= sf; aux.DE *= fabs(sf); { double _cF=(sf-1.0); z.x -= sb*_cF; z.y -= sc*_cF; z.z -= 0*_cF; }; } break; }
+						case 91: { { z.x=fabs(z.x)-sa; z.y=fabs(z.y)-sb; z.z=fabs(z.z)-sc; if(z.x<z.y){double t=z.x;z.x=z.y;z.y=t;} if(z.x<z.z){double t=z.x;z.x=z.z;z.z=t;} if(z.y<z.z){double t=z.y;z.y=z.z;z.z=t;} z*=sf; aux.DE*=fabs(sf); z.x += sa; z.y += sb; z.z += sc; } break; }
+						case 92: { { double cs=cos(sang),sn=sin(sang); z.x=fabs(z.x); z.y=fabs(z.y); double d=z.x*sn+z.y*cs; if(d<0){z.x-=2.0*d*sn;z.y-=2.0*d*cs;} z.x-=sa; z.y-=sb; z*=sf; z.x+=sa; z.y+=sb; aux.DE=aux.DE*fabs(sf)+1.0; } break; }
+						case 93: { { z.x=fabs(z.x); z.y=fabs(z.y); z.z=fabs(z.z); if(z.x-z.y<0){double t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0){double t=z.x;z.x=z.z;z.z=t;} z*=sf; z.x-=sa*(sf-1.0); z.y-=sb*(sf-1.0); z.z-=sc*(sf-1.0); double rr=z.x*z.x+z.y*z.y+z.z*z.z; if(rr<sd*sd){z*=sd*sd/rr;aux.DE*=sd*sd/rr;} aux.DE=aux.DE*fabs(sf)+1.0; } break; }
+						case 94: { { for(int k=0;k<int(fmax(1,sa));k++){ z.x=fabs(z.x); z.y=fabs(z.y); z.z=fabs(z.z); if(z.x-z.y<0){double t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0){double t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0){double t=z.y;z.y=z.z;z.z=t;} z.x-=sb; z.y-=sc; z.z-=sd; double cs=cos(sang+k*sfq),sn=sin(sang+k*sfq); double nx=z.x*cs-z.y*sn; z.y=z.x*sn+z.y*cs; z.x=nx; z.x+=sb; z.y+=sc; z.z+=sd; } } break; }
+						case 95: { { double n=fmax(2.0,sa); for(int k=0;k<int(n);k++){ double a=k*M_PI/n; double d=z.x*cos(a)+z.y*sin(a); if(d<0){z.x-=2.0*d*cos(a);z.y-=2.0*d*sin(a);} } z.z=fabs(z.z); } break; }
+						case 96: { { z=fabs(z); if(z.x<z.y){double t=z.x;z.x=z.y;z.y=t;} if(z.x<z.z){double t=z.x;z.x=z.z;z.z=t;} if(z.y<z.z){double t=z.y;z.y=z.z;z.z=t;} z.x -= sa; z.y -= sb; z.z -= sc; double rr=z.x*z.x+z.y*z.y+z.z*z.z; if(rr<sd*sd){double m=sf*sf/fmax(rr,1e-21);z*=m;aux.DE*=m;} z*=sf;aux.DE*=fabs(sf); z.x += sa; z.y += sb; z.z += sc; } break; }
+						case 97: { { double a=2.0*M_PI/fmax(1.0,sa); double cs=cos(a),sn=sin(a); z.x=fabs(z.x); z.y=fabs(z.y); double d=z.x*sn+z.y*cs-soff; if(d>0){z.x-=d*sn;z.y-=d*cs;} z.x-=sb; z*=sf; z.x+=sb; aux.DE=aux.DE*fabs(sf)+1.0; } break; }
+						case 98: { { z.x=fabs(z.x); z.y=fabs(z.y); z.z=fabs(z.z); double d=2.0*fmin(0.0,z.x+z.y+z.z-sa); z.x-=d/3.0; z.y-=d/3.0; z.z-=d/3.0; } break; }
+						case 99: { { z.x=fabs(z.x); z.y=fabs(z.y); z.z=fabs(z.z); if(z.x-z.y<0){double t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0){double t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0){double t=z.y;z.y=z.z;z.z=t;} z.z-=0.5*sa; z.z=-fabs(z.z)+0.5*sa; double cs=cos(sang),sn=sin(sang); double nx=z.x*cs-z.y*sn; z.y=z.x*sn+z.y*cs; z.x=nx; } break; }
+						case 100: { { z.x=fabs(z.x)-sa; z.y=fabs(z.y)-sb; z.z=fabs(z.z)-sc; if(z.x<z.y){double t=z.x;z.x=z.y;z.y=t;} if(z.x<z.z){double t=z.x;z.x=z.z;z.z=t;} if(z.y<z.z){double t=z.y;z.y=z.z;z.z=t;} double rr=z.x*z.x+z.y*z.y+z.z*z.z; if(rr<sd*sd){double m=sf*sf/fmax(rr,1e-21);z*=m;aux.DE*=m;} z*=sf; aux.DE=aux.DE*fabs(sf)+1.0; { double _cF=(1.0-sf); z.x += sa*_cF; z.y += sb*_cF; z.z += sc*_cF; }; } break; }
+					}
+				}
+
+				// v7.9 — Abox DE system (per-section iteration range)
+				if (i >= mut.abIterStart && i < mut.abIterStop && mut.aboxType != 0)
+				{
+					double af = mut.abFactor;
+					double aa = mut.abParamA, ab = mut.abParamB, ac = mut.abParamC, ad = mut.abParamD;
+					double ae = mut.abParamE, aff = mut.abParamF, ag = mut.abParamG, ah = mut.abParamH;
+					double zx = z.x, zy = z.y, zz2 = z.z;
+					double r = sqrt(zx*zx + zy*zy + zz2*zz2 + 1e-21);
+					double rr = r*r;
+					switch(mut.aboxType)
+					{
+						case 1: { aux.DE *= (1.0 + af * aa); break; }
+						case 2: { aux.DE *= (1.0 + af * aa * sin(ab * r)); break; }
+						case 3: { aux.DE *= (1.0 + af * aa * cos(ab * r)); break; }
+						case 4: { aux.DE *= (1.0 + af * aa * exp(-ab * r)); break; }
+						case 5: { aux.DE *= (1.0 + af * aa * exp(-ab * rr)); break; }
+						case 6: { aux.DE *= (1.0 + af * aa * log(1.0 + ab * r)); break; }
+						case 7: { aux.DE *= (1.0 + af * aa * tanh(ab * r)); break; }
+						case 8: { aux.DE *= (1.0 + af * aa * sin(ab * zx) * cos(ac * zy)); break; }
+						case 9: { aux.DE *= (1.0 + af * aa * sin(ab * zy) * cos(ac * zz2)); break; }
+						case 10: { aux.DE *= (1.0 + af * aa * sin(ab * zz2) * cos(ac * zx)); break; }
+						case 11: { aux.DE *= (1.0 + af * aa * (sin(ab*zx) + sin(ac*zy) + sin(ad*zz2)) / 3.0); break; }
+						case 12: { aux.DE *= (1.0 + af * aa / (1.0 + ab * rr)); break; }
+						case 13: { aux.DE *= (1.0 + af * aa * pow(r, ab - 1.0)); break; }
+						case 14: { aux.DE *= (1.0 + af * aa * fabs(sin(ab * r))); break; }
+						case 15: { aux.DE *= (1.0 + af * aa * (1.0 - exp(-ab * r))); break; }
+						case 16: { { double sg = 1.0/(1.0+exp(-aa*(r-ab))); aux.DE *= (1.0 + af * sg); } break; }
+						case 17: { aux.DE *= (1.0 + af * aa * sin(ab*zx)*sin(ac*zy)*sin(ad*zz2)); break; }
+						case 18: { aux.DE *= (1.0 + af * aa * cos(ab*zx)*cos(ac*zy)*cos(ad*zz2)); break; }
+						case 19: { aux.DE *= (1.0 + af * aa * sin(ab*r+ac*atan2(zy,zx))); break; }
+						case 20: { aux.DE *= (1.0 + af * aa * sin(ab*r)*cos(ac*acos(zz2/r))); break; }
+						case 21: { { double v = 0; for(int o=0;o<4;o++) v += sin(ab*pow(2.0,o)*r)/(pow(2.0,o)); aux.DE *= (1.0 + af * aa * v); } break; }
+						case 22: { aux.DE *= (1.0 + af * aa * (zx*zy+zy*zz2+zz2*zx)/(rr+1e-21)); break; }
+						case 23: { aux.DE *= (1.0 + af * aa * fabs(zx*zy*zz2)/(r*r*r+1e-21)); break; }
+						case 24: { aux.DE *= (1.0 + af * aa * sin(ab*(zx*zx-zy*zy)/(rr+1e-21))); break; }
+						case 25: { aux.DE *= (1.0 + af * aa * atan2(sqrt(zx*zx+zy*zy), zz2) / M_PI); break; }
+						case 26: { { double rr2=rr; if(rr2<aa*aa) { double m=ab*ab/fmax(rr2,1e-21); aux.DE*=m; } aux.DE*=(1.0+af*0.1); } break; }
+						case 27: { { double rr2=rr; double mR2=aa*aa; double fR2=ab*ab; if(rr2<mR2) aux.DE*=fR2/mR2; else if(rr2<fR2) aux.DE*=fR2/rr2; } break; }
+						case 28: { aux.DE *= (1.0 + af * aa * exp(-ab*(r-ac)*(r-ac))); break; }
+						case 29: { aux.DE *= (1.0 + af * aa * (1.0/(1.0+exp(-ab*(r-ac))) - 0.5)); break; }
+						case 30: { aux.DE *= (1.0 + af * aa * sin(ab*r)*exp(-ac*r)); break; }
+						case 31: { aux.DE *= (1.0 + af * aa * fabs(sin(ab*r+ac))*exp(-ad*r)); break; }
+						case 32: { { double s = aa * sin(ab*r+ac*atan2(zy,zx)) * exp(-ad*r); aux.DE *= (1.0 + af*s); } break; }
+						case 33: { aux.DE *= (1.0 + af * aa * tanh(ab*(r-ac))); break; }
+						case 34: { aux.DE *= (1.0 + af * aa * sin(ab*log(r+1e-21))); break; }
+						case 35: { aux.DE *= (1.0 + af * aa * cos(ab*log(r+1e-21)+ac)); break; }
+						case 36: { { double ph=atan2(zy,zx); double th=acos(zz2/r); aux.DE*=(1.0+af*aa*sin(ab*ph)*sin(ac*th)); } break; }
+						case 37: { { double ph=atan2(zy,zx); aux.DE*=(1.0+af*aa*cos(ab*ph+ac*r)); } break; }
+						case 38: { aux.DE *= fmax(0.01, 1.0 + af * aa * sin(ab*r) * cos(ac*r)); break; }
+						case 39: { { double d=r-aa; aux.DE*=(1.0+af*ab*exp(-ac*d*d)); } break; }
+						case 40: { aux.DE *= (1.0 + af * aa * sin(ab*r) / (r+1e-21)); break; }
+						case 41: { { double n=sin(aa*zx)*sin(ab*zy)*sin(ac*zz2); aux.DE*=(1.0+af*ad*n); } break; }
+						case 42: { { double rxy=sqrt(zx*zx+zy*zy+1e-21); aux.DE*=(1.0+af*aa*sin(ab*rxy+ac*zz2)); } break; }
+						case 43: { aux.DE *= (1.0 + af * aa * cos(ab*zx+ac*zy+ad*zz2)); break; }
+						case 44: { { double v=aa*sin(ab*r)+ac*cos(ad*r); aux.DE*=(1.0+af*v*0.5); } break; }
+						case 45: { aux.DE *= fmax(0.01, 1.0 + af * aa * pow(fabs(sin(ab*r)), ac)); break; }
+						case 46: { aux.DE *= (1.0 + af * aa * sin(ab*r*r/(r+1e-21))); break; }
+						case 47: { { double f=aa+ab*sin(ac*i); aux.DE*=(1.0+af*f); } break; }
+						case 48: { { double rr2=rr; double minR=aa; double fixR=ab; if(rr2<minR*minR){double m=fixR*fixR/(minR*minR);aux.DE*=m;} else if(rr2<fixR*fixR){double m=fixR*fixR/rr2;aux.DE*=m;} aux.DE*=(1.0+af*ac*sin(ad*r)); } break; }
+						case 49: { aux.DE *= (1.0 + af * aa * (sin(ab*r) + cos(ac*r*r/(r+1e-21))) * 0.5); break; }
+						case 50: { { double d=fabs(r-aa); double ring=exp(-ab*d*d); aux.DE*=(1.0+af*ac*ring); } break; }
+						case 51: { aux.DE *= fabs(aa); break; }
+						case 52: { aux.DE *= fabs(aa + ab*sin(ac*i)); break; }
+						case 53: { aux.DE *= fabs(aa * pow(ab, ac)); break; }
+						case 54: { aux.DE *= fabs(aa + ab * r); break; }
+						case 55: { aux.DE *= fmax(0.01, fabs(aa + ab * sin(ac * r))); break; }
+						case 56: { aux.DE *= fabs(aa + ab * exp(-ac * i)); break; }
+						case 57: { aux.DE *= fabs(aa + ab * log(1.0 + ac * i)); break; }
+						case 58: { { double golden=1.6180339887; aux.DE*=fabs(aa+ab*pow(golden,ac*i-ad)); } break; }
+						case 59: { aux.DE *= fabs(aa + ab * sin(ac * i) * cos(ad * r)); break; }
+						case 60: { { double s=aa+ab*tanh(ac*(i-ad)); aux.DE*=fabs(s); } break; }
+						case 61: { aux.DE *= fmax(0.01, fabs(aa + ab * fmod(double(i) * ac, ad))); break; }
+						case 62: { aux.DE *= fabs(aa + ab / (1.0 + ac * i)); break; }
+						case 63: { { double ph=atan2(zy,zx); aux.DE*=fabs(aa+ab*sin(ac*ph)); } break; }
+						case 64: { aux.DE *= fabs(aa + ab * (zx*zx - zy*zy) / (rr + 1e-21)); break; }
+						case 65: { aux.DE *= fabs(aa + ab * sin(ac * i * M_PI / ad)); break; }
+						case 66: { { double s=aa*(1.0+ab*sin(ac*double(i))); aux.DE*=fabs(s); } break; }
+						case 67: { aux.DE *= fabs(aa + ab * fabs(sin(ac * r + ad * i))); break; }
+						case 68: { { double s=aa+ab*cos(ac*r)*sin(ad*i*0.1); aux.DE*=fabs(s); } break; }
+						case 69: { aux.DE *= fabs(aa + ab * (sin(ac*zx)+sin(ad*zy)+sin(ae*zz2))/3.0); break; }
+						case 70: { { double rat=aa/fmax(ab,1e-21); double s=pow(fabs(rat),ac); aux.DE*=s; } break; }
+						case 71: { aux.DE *= fmax(0.01, fabs(aa * exp(-ab * fabs(sin(ac * r))))); break; }
+						case 72: { { double s=aa+ab*pow(fabs(sin(ac*r)),ad); aux.DE*=fabs(s); } break; }
+						case 73: { aux.DE *= fabs(aa + ab * tanh(ac * sin(ad * r))); break; }
+						case 74: { { double mix=0.5+0.5*sin(ac*i); double s=aa*(1.0-mix)+ab*mix; aux.DE*=fabs(s); } break; }
+						case 75: { aux.DE *= fabs(aa + ab * sin(ac * r) * log(1.0 + ad * r)); break; }
+						case 76: { { double a=aa*M_PI/180.0; aux.DE*=(1.0+af*fabs(sin(a))); } break; }
+						case 77: { { double a=aa*M_PI/180.0+ab*sin(ac*i); aux.DE*=(1.0+af*fabs(sin(a))); } break; }
+						case 78: { aux.DE *= (1.0 + af * aa * sin(ab*atan2(zy,zx))); break; }
+						case 79: { aux.DE *= (1.0 + af * aa * cos(ab*atan2(zy,zx)+ac*acos(zz2/r))); break; }
+						case 80: { { double ph=atan2(zy,zx); double n=fmax(1.0,aa); double s=2.0*M_PI/n; double sector=fmod(ph+10.0*M_PI,s)/s; aux.DE*=(1.0+af*ab*sin(M_PI*sector)); } break; }
+						case 81: { aux.DE *= (1.0 + af * aa * fabs(sin(ab * atan2(zz2, sqrt(zx*zx+zy*zy+1e-21))))); break; }
+						case 82: { { double q1=zx*cos(aa)-zy*sin(aa); double q2=zx*sin(aa)+zy*cos(aa); aux.DE*=(1.0+af*ab*sin(ac*q1)*cos(ad*q2)); } break; }
+						case 83: { aux.DE *= (1.0 + af * aa * cos(ab * (zx+zy+zz2))); break; }
+						case 84: { { double cs=cos(aa*M_PI/180.0),sn=sin(aa*M_PI/180.0); double rxy=sqrt(zx*zx+zy*zy+1e-21); double nph=atan2(zy,zx)+ab*sin(ac*rxy); aux.DE*=(1.0+af*ad*sin(ae*nph)); } break; }
+						case 85: { aux.DE *= (1.0 + af * aa * sin(ab*(zx*zy+zy*zz2+zz2*zx)/(rr+1e-21))); break; }
+						case 86: { { double gld=aa*0.618033988749895; aux.DE*=(1.0+af*ab*sin(ac*gld*i)); } break; }
+						case 87: { aux.DE *= (1.0 + af * aa * sin(ab*r+ac*atan2(zy,zx)+ad*i*0.1)); break; }
+						case 88: { { double sw=fabs(zx)>fabs(zy)?zx:zy; aux.DE*=(1.0+af*aa*sin(ab*sw)); } break; }
+						case 89: { aux.DE *= (1.0 + af * aa * cos(ab*zx*zy/(r+1e-21))); break; }
+						case 90: { { double fld=aa*(fabs(zx)+fabs(zy)+fabs(zz2)); aux.DE*=(1.0+af*ab*sin(fld)); } break; }
+						case 91: { aux.DE *= (1.0 + af * aa * sin(ab*i) * cos(ac*r) * sin(ad*atan2(zy,zx))); break; }
+						case 92: { { double sym=fabs(zx-zy)+fabs(zy-zz2)+fabs(zz2-zx); aux.DE*=(1.0+af*aa*sin(ab*sym)); } break; }
+						case 93: { aux.DE *= (1.0 + af * aa * tanh(ab*sin(ac*atan2(zy,zx)))); break; }
+						case 94: { { double det=zx*zy-zy*zz2+zz2*zx; aux.DE*=(1.0+af*aa*sin(ab*det/(rr+1e-21))); } break; }
+						case 95: { aux.DE *= (1.0 + af * aa * sin(ab*r) * sin(ac*atan2(zy,zx)+ad*acos(zz2/r))); break; }
+						case 96: { { double tw=aa*zz2+ab; double cs=cos(tw),sn=sin(tw); aux.DE*=(1.0+af*ac*fabs(sn)); } break; }
+						case 97: { aux.DE *= (1.0 + af * aa * fabs(sin(ab*zx))*fabs(sin(ac*zy))*fabs(sin(ad*zz2))); break; }
+						case 98: { { double mir=fmin(fabs(zx),fmin(fabs(zy),fabs(zz2))); aux.DE*=(1.0+af*aa*sin(ab*mir)); } break; }
+						case 99: { { double mx=fmax(fabs(zx),fmax(fabs(zy),fabs(zz2))); aux.DE*=(1.0+af*aa*cos(ab*mx)); } break; }
+						case 100: { aux.DE *= (1.0 + af * aa * sin(ab*r+ac*sin(ad*r))); break; }
+						case 101: { { double w=aa*sin(ab*r); aux.DE*=(1.0+af*ac*fabs(w)); } break; }
+						case 102: { { double r4=sqrt(rr+aa*aa*sin(ab*r)*sin(ab*r)); aux.DE*=(1.0+af*ac*(r4-r)/(r+1e-21)); } break; }
+						case 103: { { double w=aa*cos(ab*zx+ac*zy); aux.DE*=(1.0+af*ad*w*w); } break; }
+						case 104: { { double w=aa*sin(ab*i*0.1); double r4=sqrt(rr+w*w); aux.DE*=(1.0+af*ac*sin(ad*r4)); } break; }
+						case 105: { aux.DE *= (1.0 + af * aa * sin(ab*(zx*zx+zy*zy-zz2*zz2)/(rr+1e-21))); break; }
+						case 106: { { double w=aa*sin(ab*r+ac*i*0.1); aux.DE*=(1.0+af*ad*exp(-ae*w*w)); } break; }
+						case 107: { { double q=zx*zx-zy*zy; double s=2.0*zx*zy; aux.DE*=(1.0+af*aa*sin(ab*q/(rr+1e-21))*cos(ac*s/(rr+1e-21))); } break; }
+						case 108: { aux.DE *= (1.0 + af * aa * sin(ab*(zx*zy+ac*zz2))); break; }
+						case 109: { { double hd=sin(aa*zx)*cos(ab*zy)+sin(ac*zy)*cos(ad*zz2)+sin(ae*zz2)*cos(aff*zx); aux.DE*=(1.0+af*ag*hd/3.0); } break; }
+						case 110: { { double cr=zx*zx+zy*zy; double ci=2.0*zx*zy; double r4=sqrt(cr*cr+ci*ci+zz2*zz2); aux.DE*=(1.0+af*aa*sin(ab*r4)); } break; }
+						case 111: { aux.DE *= (1.0 + af * aa * tanh(ab*(zx*zx+zy*zy-zz2*zz2))); break; }
+						case 112: { aux.DE *= (1.0 + af * aa * sin(ab*zx+ac) * sin(ad*zy+ae) * cos(aff*zz2)); break; }
+						case 113: { { double p=aa*zx*zy*zz2/(r*r*r+1e-21); aux.DE*=(1.0+af*ab*sin(ac*p)); } break; }
+						case 114: { { double s1=sin(aa*r),s2=sin(ab*r); double w=s1*s1-s2*s2; aux.DE*=(1.0+af*ac*w); } break; }
+						case 115: { aux.DE *= (1.0 + af * aa * cos(ab*r*r/(r+1e-21)+ac*sin(ad*r))); break; }
+						case 116: { { double w=aa*sin(ab*(zx+zy+zz2))+ac*cos(ad*(zx-zy+zz2)); aux.DE*=(1.0+af*w*0.5); } break; }
+						case 117: { aux.DE *= (1.0 + af * aa * sin(ab*zx*zx/(rr+1e-21)+ac*zy*zy/(rr+1e-21))); break; }
+						case 118: { { double v=aa*sin(ab*r)+ac*sin(ad*r)+ae*sin(aff*r); aux.DE*=(1.0+af*v/3.0); } break; }
+						case 119: { aux.DE *= (1.0 + af * aa * exp(-ab*fabs(zx*zy*zz2)/(r*r*r+1e-21))); break; }
+						case 120: { { double w=aa+ab*sin(ac*r+ad*sin(ae*r)); aux.DE*=(1.0+af*w); } break; }
+						case 121: { aux.DE *= (1.0 + af * aa * sin(ab*(r - floor(r*ac)/ac))); break; }
+						case 122: { { double ph4=atan2(zz2,sqrt(zx*zx+zy*zy+1e-21)); aux.DE*=(1.0+af*aa*sin(ab*ph4+ac*r)); } break; }
+						case 123: { aux.DE *= (1.0 + af * aa * fabs(sin(ab*r)*cos(ac*r)*sin(ad*r))); break; }
+						case 124: { { double v=aa*sin(ab*zx)*cos(ac*zx)+ad*sin(ae*zy)*cos(aff*zy); aux.DE*=(1.0+af*v*0.5); } break; }
+						case 125: { aux.DE *= (1.0 + af * aa * (sin(ab*r)+sin(ac*r)+sin(ad*r)+sin(ae*r))/4.0); break; }
+						case 126: { aux.DE *= (1.0 + af * aa * fabs(zx)/(r+1e-21)); break; }
+						case 127: { aux.DE *= (1.0 + af * aa * fabs(zy)/(r+1e-21)); break; }
+						case 128: { aux.DE *= (1.0 + af * aa * fabs(zz2)/(r+1e-21)); break; }
+						case 129: { { double orb=fmin(fabs(zx),fmin(fabs(zy),fabs(zz2))); aux.DE*=(1.0+af*aa*sin(ab*orb)); } break; }
+						case 130: { { double orb=fmax(fabs(zx),fmax(fabs(zy),fabs(zz2))); aux.DE*=(1.0+af*aa*cos(ab*orb)); } break; }
+						case 131: { { double orb=sqrt(zx*zx+zy*zy); aux.DE*=(1.0+af*aa*sin(ab*orb)); } break; }
+						case 132: { { double dt=fabs(sqrt(zx*zx+zy*zy)-aa); aux.DE*=(1.0+af*ab*exp(-ac*dt*dt)); } break; }
+						case 133: { { double ds=fmax(fabs(zx)-aa,fabs(zy)-ab); ds=fmax(ds,fabs(zz2)-ac); aux.DE*=(1.0+af*ad*exp(-ae*ds*ds)); } break; }
+						case 134: { { double dp=fabs(zx*cos(aa)+zy*sin(aa)-ab); aux.DE*=(1.0+af*ac*exp(-ad*dp*dp)); } break; }
+						case 135: { { double dl=fabs(zx-aa*zy-ab); aux.DE*=(1.0+af*ac*exp(-ad*dl*dl)); } break; }
+						case 136: { { double c=fabs(sin(aa*zx)+sin(ab*zy)+sin(ac*zz2))/3.0; aux.DE*=(1.0+af*ad*c); } break; }
+						case 137: { { double c=fabs(sin(aa*r)*cos(ab*atan2(zy,zx))); aux.DE*=(1.0+af*ac*c); } break; }
+						case 138: { { double c=fabs(zx*zy+zy*zz2+zz2*zx)/(rr+1e-21); aux.DE*=(1.0+af*aa*c); } break; }
+						case 139: { { double h=atan2(zy,zx)/(2.0*M_PI)+0.5; aux.DE*=(1.0+af*aa*sin(ab*h*M_PI*2.0)); } break; }
+						case 140: { { double s=r/(r+aa); aux.DE*=(1.0+af*ab*s); } break; }
+						case 141: { { double v=sin(aa*zx)*sin(ab*zy)+sin(ac*zy)*sin(ad*zz2); aux.DE*=(1.0+af*ae*v*0.5); } break; }
+						case 142: { { double orb=fabs(zx-floor(zx*aa)/aa)*fabs(zy-floor(zy*ab)/ab); aux.DE*=(1.0+af*ac*sin(ad*orb)); } break; }
+						case 143: { aux.DE *= (1.0 + af * aa * sin(ab * (fabs(zx)+fabs(zy)+fabs(zz2)))); break; }
+						case 144: { { double d2=fabs(zx*zx/fmax(aa*aa,0.01)+zy*zy/fmax(ab*ab,0.01)-1.0); aux.DE*=(1.0+af*ac*exp(-ad*d2)); } break; }
+						case 145: { { double sp=zx*cos(aa*zy)+zy*cos(aa*zz2)+zz2*cos(aa*zx); aux.DE*=(1.0+af*ab*sin(ac*sp)); } break; }
+						case 146: { { double cl=sin(aa*in.point.Length()+ab*r); aux.DE*=(1.0+af*ac*cl); } break; }
+						case 147: { { double it=double(i)/fmax(double(aa),1.0); aux.DE*=(1.0+af*ab*sin(ac*it*M_PI)); } break; }
+						case 148: { { double gr=sin(aa*zx*zy/(r+1e-21))+cos(ab*zy*zz2/(r+1e-21)); aux.DE*=(1.0+af*ac*gr*0.5); } break; }
+						case 149: { { double pat=sin(aa*zx)*cos(ab*zy)*sin(ac*zz2)*cos(ad*r); aux.DE*=(1.0+af*ae*pat); } break; }
+						case 150: { { double comb=aa*sin(ab*r)+ac*cos(ad*atan2(zy,zx))+ae*sin(aff*acos(zz2/r)); aux.DE*=(1.0+af*comb/3.0); } break; }
+						case 151: { { double de=aa*r*log(r+1e-21)/fmax(ab,0.01); aux.DE*=(1.0+af*de/(r+1e-21)); } break; }
+						case 152: { aux.DE *= fmax(0.01, 1.0 + af * aa * r * sin(ab*log(r+1e-21)+ac)); break; }
+						case 153: { { double lip=aa*fmin(1.0,ab/fmax(r,1e-21)); aux.DE*=(1.0+af*lip); } break; }
+						case 154: { aux.DE *= (1.0 + af * aa * exp(-ab*r) * sin(ac*r+ad)); break; }
+						case 155: { { double bess=sin(aa*r)/(aa*r+1e-21); aux.DE*=(1.0+af*ab*bess); } break; }
+						case 156: { { double cheb=cos(aa*acos(fmin(1.0,fmax(-1.0,zz2/r)))); aux.DE*=(1.0+af*ab*cheb); } break; }
+						case 157: { { double leg=(3.0*(zz2/r)*(zz2/r)-1.0)*0.5; aux.DE*=(1.0+af*aa*leg); } break; }
+						case 158: { { double herm=(4.0*(zz2/r)*(zz2/r)-2.0)*exp(-(zz2/r)*(zz2/r)*0.5); aux.DE*=(1.0+af*aa*ab*herm); } break; }
+						case 159: { { double lag=1.0-aa*r+aa*aa*r*r*0.5; aux.DE*=(1.0+af*ab*lag*exp(-ac*r)); } break; }
+						case 160: { aux.DE *= (1.0 + af * aa * sin(ab*r+ac) * sin(ad*r+ae) * sin(aff*r+ag)); break; }
+						case 161: { { double gr=aa*r*exp(-ab*r*r)*sin(ac*r); aux.DE*=(1.0+af*gr); } break; }
+						case 162: { aux.DE *= (1.0 + af * aa * sin(ab*r) * tanh(ac*r)); break; }
+						case 163: { { double sg=1.0/(1.0+exp(-aa*(r-ab))); aux.DE*=(1.0+af*ac*sg*(1.0-sg)); } break; }
+						case 164: { { double gau=exp(-aa*(r-ab)*(r-ab)); aux.DE*=(1.0+af*ac*gau); } break; }
+						case 165: { { double stp=(r>aa)?ab:ac; aux.DE*=(1.0+af*stp); } break; }
+						case 166: { { double bnd=aa*sin(floor(r*ab)*M_PI/ab); aux.DE*=(1.0+af*bnd); } break; }
+						case 167: { { double v=0; for(int o=0;o<4;o++){v+=sin(aa*pow(2.0,o)*r+ab*o)/(pow(2.0,o));} aux.DE*=(1.0+af*ac*v); } break; }
+						case 168: { { double jc=aa*sin(ab*r)+ac*sin(ad*atan2(zy,zx)); aux.DE*=(1.0+af*jc*0.5); } break; }
+						case 169: { { double tmp=aa+ab*sin(ac*r)*cos(ad*i*0.1); aux.DE*=(1.0+af*tmp); } break; }
+						case 170: { { double fb=0; double prev=aa; double curr=ab; for(int k=0;k<6;k++){double nxt=prev+curr; fb+=sin(nxt*r)/(nxt+1.0); prev=curr; curr=nxt;} aux.DE*=(1.0+af*ac*fb); } break; }
+						case 171: { { double orb=r; double v=aa*sin(ab*orb)+ac*cos(ad*orb*orb/(r+1e-21)); aux.DE*=(1.0+af*v); } break; }
+						case 172: { aux.DE *= (1.0 + af * aa * fabs(sin(ab*r)) * fabs(cos(ac*r))); break; }
+						case 173: { aux.DE *= fabs(aa); break; }
+						case 174: { aux.DE *= (1.0 + fabs(aa*M_PI/180.0) * ab); break; }
+						case 175: { aux.DE *= (1.0 + fabs(aa + ab + ac)); break; }
+						case 176: { aux.DE *= fmax(0.01, aa * double(i) / fmax(double(ab), 1.0)); break; }
+						case 177: { { if(fabs(zx)>aa||fabs(zy)>aa||fabs(zz2)>aa) aux.DE*=ab; } break; }
+						case 178: { { double d=sqrt((zx-aa)*(zx-aa)+(zy-ab)*(zy-ab)+(zz2-ac)*(zz2-ac)); if(d<ad) aux.DE*=ae; } break; }
+						case 179: { { if(fabs(zx)<aa && fabs(zy)<aa) aux.DE*=ab; } break; }
+						case 180: { aux.DE *= (1.0 + 0.1 * aa * fabs(sin(ab*r))); break; }
+						case 181: { aux.DE *= (1.0 - aa * ab * exp(-ac*r)); break; }
+						case 182: { aux.DE /= fmax(0.01, 1.0 + aa * ab); break; }
+						case 183: { aux.DE *= (1.0 + aa * ab * r); break; }
+						case 184: { aux.DE /= fmax(0.01, 1.0 + aa * ab * sin(ac*r)); break; }
+						case 185: { aux.DE *= (1.0 + aa * ab * r); break; }
+						case 186: { aux.DE *= (1.0 + aa * fabs(ab - 550.0) * 0.001); break; }
+						case 187: { aux.DE *= (1.0 + aa * fabs(sin(ab*zx)*cos(ac*zy))); break; }
+						case 188: { { double fr=pow(fabs(1.0-fabs(zz2)/r),5.0); aux.DE*=(1.0+aa*fr); } break; }
+						case 189: { { double tf=sin(aa*r+ab)*cos(ac*r); aux.DE*=(1.0+ad*fabs(tf)); } break; }
+						case 190: { { double an=fabs(zx*aa+zy*ab+zz2*ac)/(r+1e-21); aux.DE*=(1.0+ad*an); } break; }
+						case 191: { aux.DE /= fmax(0.01, 1.0 + aa * ab); break; }
+						case 192: { aux.DE *= (1.0 + aa * exp(-ab * r)); break; }
+						case 193: { aux.DE *= (1.0 + aa * ab * r); break; }
+						case 194: { aux.DE += aa * ab * sin(ac*zx)*cos(ad*zy); break; }
+						case 195: { aux.DE *= (1.0 + aa * ab * sin(ac*zx+ad*zy+ae*zz2)); break; }
+						case 196: { aux.DE *= fmax(0.01, aa * ab / fmax(ac, 0.01)); break; }
+						case 197: { aux.DE /= fmax(0.01, aa); break; }
+						case 198: { aux.DE *= exp(-aa * ab * r); break; }
+						case 199: { aux.DE *= (1.0 + aa * ab * (1.0 + ac*cos(ad*atan2(zy,zx)))); break; }
+						case 200: { aux.DE /= fmax(0.01, 1.0 + aa * ab); break; }
+						case 201: { { double curl=sin(aa*zy+ab*zz2)-sin(aa*zz2+ab*zx); aux.DE*=(1.0+ac*fabs(curl)); } break; }
+						case 202: { { double grad=(zx*aa+zy*ab+zz2*ac)/(rr+1e-21); aux.DE/=fmax(0.01,1.0+ad*fabs(grad)); } break; }
+						case 203: { aux.DE *= (1.0 + aa * ab / fmax(rr, 1e-21)); break; }
+						case 204: { { double v2=aa*aa; double c2=ab*ab; aux.DE*=sqrt(fmax(0.01,1.0-v2/fmax(c2,1e-21))); } break; }
+						case 205: { aux.DE *= exp(-aa * fabs(r - ab)); break; }
+						case 206: { { double psi=sin(aa*zx)*sin(ab*zy)*sin(ac*zz2); aux.DE*=fmax(0.01,psi*psi); } break; }
+						case 207: { aux.DE *= (1.0 + aa / fmax(2.0 * ab * r, 1e-21)); break; }
+						case 208: { aux.DE *= (1.0 + aa * (zx*ab + zy*ac + zz2*ad)/(r+1e-21)); break; }
+						case 209: { { double corr=sin(aa*zx)*sin(aa*(-zx))+cos(ab*zy)*cos(ab*(-zy)); aux.DE*=(1.0+ac*fabs(corr)); } break; }
+						case 210: { aux.DE *= exp(-aa * ab * double(i) * 0.01); break; }
+						case 211: { { double ent=sin(aa*zx)*log(fabs(sin(aa*zx))+1e-21)+sin(ab*zy)*log(fabs(sin(ab*zy))+1e-21); aux.DE*=(1.0+ac*fabs(ent)*0.1); } break; }
+						case 212: { aux.DE *= (1.0 + aa / fmax(ab * ac, 1e-21)); break; }
+						case 213: { { double vg=(sin(aa*(zx+0.01))-sin(aa*zx))/0.01; aux.DE*=(1.0+ab*fabs(vg)); } break; }
+						case 214: { { double curv=(sin(aa*zx+0.01)+sin(aa*zx-0.01)-2.0*sin(aa*zx))/0.0001; aux.DE*=(1.0+ab*fabs(curv)); } break; }
+						case 215: { aux.DE *= (1.0 + aa * cos(ab) / fmax(ac, 0.01)); break; }
+						case 216: { { double cg=(sin(aa*(zx+0.01))-sin(aa*zx))/0.01; aux.DE*=(1.0+ab*fabs(cg)); } break; }
+						case 217: { { double lap=sin(aa*(zx+0.01))+sin(aa*(zx-0.01))-2.0*sin(aa*zx); aux.DE+=ab*lap; } break; }
+						case 218: { { double adv=(sin(aa*zx)-sin(aa*(zx-0.01)))/0.01; aux.DE*=(1.0+ab*fabs(adv)); } break; }
+						case 219: { { double v=0; for(int o=0;o<4;o++){v+=sin(aa*pow(2.0,o)*r)/pow(2.0,o);} aux.DE*=(1.0+ab*fabs(v)); } break; }
+						case 220: { { double sh=(r>aa)?ab:0.0; aux.DE*=(1.0+ac*sh); } break; }
+						case 221: { { double dw=aa-ab; double bw=ac*0.5; double q=ad/fmax(sqrt(dw*dw+bw*bw),1e-21); aux.DE*=(1.0+af*q); } break; }
+						case 222: { aux.DE *= (1.0 + aa * cos(ab * r + ac)); break; }
+						case 223: { aux.DE *= (1.0 + aa / fmax(ab, 1e-21) * cos(ac)); break; }
+						case 224: { aux.DE *= (1.0 + aa * cos(2.0 * ab * atan2(zy, zx))); break; }
+						case 225: { aux.DE *= (1.0 + aa * fabs(sin(2.0 * ab * atan2(zz2, sqrt(zx*zx+zy*zy+1e-21))))); break; }
+						case 226: { aux.DE *= (1.0 + aa * ab * ac); break; }
+						case 227: { { double lp=fmod(r*aa, ab); aux.DE*=(1.0+ac*sin(M_PI*lp/fmax(ab,0.01))); } break; }
+						case 228: { { double skin=exp(-fabs(zz2)*aa/fmax(ab,0.01)); aux.DE*=(1.0+ac*skin); } break; }
+						case 229: { aux.DE *= (1.0 + aa * fabs(ab)); break; }
+						case 230: { { double wn=floor(atan2(zy,zx)*aa/(2.0*M_PI)+0.5); aux.DE*=(1.0+ab*fabs(wn)); } break; }
+						case 231: { { double tc=floor(atan2(zy,zx)*aa/(2.0*M_PI)+0.5); aux.DE*=(1.0+ab*fabs(tc)*sin(ac*r)); } break; }
+						case 232: { { double vort=fabs(-aa*zy/(rr+1e-21)-(-ab*zx/(rr+1e-21))); aux.DE*=(1.0+ac*vort); } break; }
+						case 233: { { double sw=1.0/cosh(aa*fabs(r-ab)); aux.DE*=(1.0+ac*sw); } break; }
+						case 234: { { double inst=exp(-aa*(rr+1e-21)); aux.DE*=(1.0+ab*inst); } break; }
+						case 235: { aux.DE *= (1.0 + aa / fmax(r, 1e-21)); break; }
+						case 236: { { double sl=fabs(sqrt(zx*zx+zy*zy)); aux.DE*=(1.0+aa*log(sl+1e-21)*ab); } break; }
+						case 237: { { double bd=exp(-aa*fabs(zz2-ab)); aux.DE*=(1.0+ac*bd); } break; }
+						case 238: { { double wh=exp(-(r-aa)*(r-aa)/(fmax(ab*ab,0.01))); aux.DE*=(1.0+ac*wh); } break; }
+						case 239: { aux.DE /= fmax(0.01, 1.0 - aa / fmax(r, aa + 1e-21)); break; }
+						case 240: { { double jet=exp(-fabs(sqrt(zx*zx+zy*zy)-aa)/(fmax(ab,0.01))); aux.DE*=(1.0+ac*jet); } break; }
+						case 241: { { double halo=1.0/(1.0+pow(r/fmax(aa,0.01),2.0)); aux.DE*=(1.0+ab*halo); } break; }
+						case 242: { aux.DE *= exp(aa * ab * r); break; }
+						case 243: { { double cs2=log(fmax(fabs(sqrt(zx*zx+zy*zy)),1e-21)/fmax(aa,0.01)); aux.DE*=(1.0+ab*ac*cs2); } break; }
+						case 244: { aux.DE *= (1.0 + aa * tanh(fabs(zz2 - ab) / fmax(ac, 0.01))); break; }
+						case 245: { { double ylm=sin(aa*acos(zz2/r))*cos(ab*atan2(zy,zx)); aux.DE*=(1.0+ac*fabs(ylm)); } break; }
+						case 246: { aux.DE *= exp(aa * ab); break; }
+						case 247: { { double rh=aa*ab*exp(-ac*double(i)*0.01); aux.DE*=(1.0+rh); } break; }
+						case 248: { { double ns=aa*ab*sin(ac*r)/(1.0+ad*r); aux.DE*=(1.0+ns); } break; }
+						case 249: { { double rc=aa*exp(-ab/(fmax(ac*r,0.01))); aux.DE*=(1.0+rc); } break; }
+						case 250: { { double sf2=1.0+aa*r; aux.DE*=sf2*sqrt(fmax(0.01,ab*ac/(fmax(r,1e-21)))); } break; }
+						case 251: { { double sf2=fmax(0.01,1.0+aa*r); aux.DE/=sf2; } break; }
+						case 252: { aux.DE *= (1.0 + aa * (1.0 - exp(-double(i) * 0.01 / fmax(ab, 0.01)))); break; }
+						case 253: { { double bn=exp(-aa*rr)*ab; aux.DE*=(1.0+bn); } break; }
+						case 254: { { double fv=aa*exp(-ab*rr); aux.DE*=(1.0+fv); } break; }
+						case 255: { { double op=sin(aa*r)*sin(aa*r); aux.DE*=(1.0+ab*op); } break; }
+						case 256: { { double d=fabs(r-aa); aux.DE*=fmax(0.01,pow(d+1e-21,-ab)); } break; }
+						case 257: { aux.DE *= (1.0 + aa * log(fmax(ab, 0.01) / fmax(r, 1e-21))); break; }
+						case 258: { { double div=(sin(aa*(zx+0.01))-sin(aa*zx))/0.01; aux.DE*=(1.0+ab*fabs(div)); } break; }
+						case 259: { { double vev=aa*r*r; aux.DE*=(1.0+ab*vev); } break; }
+						case 260: { { double grd=(sin(aa*(r+0.01))-sin(aa*r))/0.01; aux.DE*=(1.0+ab*fabs(grd)); } break; }
+						case 261: { aux.DE *= (1.0 + aa * ab * rr); break; }
+						case 262: { { double a2=sin(aa*zx)*sin(aa*zx)+sin(ab*zy)*sin(ab*zy); aux.DE*=(1.0+ac*ad*a2); } break; }
+						case 263: { { double psi2=sin(aa*r)*sin(aa*r); aux.DE*=(1.0+ab*psi2); } break; }
+						case 264: { { double phi=sin(aa*r); aux.DE*=(1.0+ab*phi*phi+ac*phi*phi*phi*phi); } break; }
+						case 265: { { double tmn=(zx*zx+zy*zy+zz2*zz2)/(rr+1e-21); aux.DE*=(1.0+aa*ab*tmn); } break; }
+						case 266: { { double sp=sin(aa*zx)*cos(ab*zy); aux.DE*=(1.0+ac*fabs(sp)); } break; }
+						case 267: { { double rs=sin(aa*r)*fabs(cos(ab*atan2(zy,zx))); aux.DE*=(1.0+ac*rs*rs); } break; }
+						case 268: { { double kr=sin(aa*zx)*sin(ab*zy)-cos(aa*zx)*cos(ab*zy); aux.DE*=(1.0+ac*kr*kr); } break; }
+						case 269: { { double gv=sin(aa*r)*sin(ab*r); aux.DE*=(1.0+ac*gv*gv); } break; }
+						case 270: { { double xs=fabs(sin(aa*r)-zx); aux.DE*=(1.0+ab*xs*xs); } break; }
+						case 271: { { double m5=sin(aa*r)*sin(ab*r)*sin(ac*r); aux.DE*=(1.0+ad*m5*m5); } break; }
+						case 272: { { double wf2=exp(-aa*fabs(zz2)); aux.DE*=(1.0+ab*ac*wf2); } break; }
+						case 273: { { double kk=sin(aa*r/fmax(ab,0.01))*sin(ac*r/fmax(ab,0.01)); aux.DE*=(1.0+ad*kk); } break; }
+						case 274: { aux.DE *= exp(-aa * fabs(zz2 - ab)); break; }
+						case 275: { { double av=r>1e-21?(fabs(zx)+fabs(zy)+fabs(zz2))/(r):1.0; aux.DE*=(1.0+aa*ab*av); } break; }
+						case 276: { { double cf=1.0/(1.0+aa*rr); aux.DE*=(1.0+ab*cf); } break; }
+						case 277: { { double ms=fmin(fabs(zx),fmin(fabs(zy),fabs(zz2))); aux.DE*=(1.0+aa*ms); } break; }
+						case 278: { { double fw=exp(-aa*fabs(r-ab)*fabs(r-ab)*1000.0); aux.DE*=(1.0+ac*fw); } break; }
+						case 279: { { double ee=sin(aa*zx)*sin(aa*(-zx+ab)); aux.DE*=(1.0+ac*fabs(ee)); } break; }
+						case 280: { { double vol=r*r*r; aux.DE*=(1.0+aa*vol/(vol+ab+1e-21)); } break; }
+						case 281: { { double ly=exp(aa*double(i)*0.01); aux.DE*=(1.0+ab*fmin(ly,ac)); } break; }
+						case 282: { { double bv=fabs(zx-aa*sin(ab*zy))/(double(i)+1.0); aux.DE*=(1.0+ac*bv); } break; }
+						case 283: { { double scr=log(fmax(aa,1.0))*ab*sin(ac*r); aux.DE*=(1.0+fabs(scr)*0.01); } break; }
+						case 284: { { double sff=sin(aa*double(i)*0.1)*sin(ab*double(i)*0.1); aux.DE*=(1.0+ac*fabs(sff)); } break; }
+						case 285: { { double goe=sin(aa*r)*cos(ab*r)*sin(ac*r); aux.DE*=(1.0+ad*fabs(goe)); } break; }
+						case 286: { { double syk=sin(aa*zx)*sin(ab*zy)*sin(ac*zz2)*sin(ad*r); aux.DE*=(1.0+ae*fabs(syk)); } break; }
+						case 287: { { double bd2=sin(aa*r)*sin(aa*r); double ent=bd2*log(bd2+1e-21); aux.DE*=(1.0+ab*fabs(ent)); } break; }
+						case 288: { { double ml=floor(log(r+1e-21)/log(fmax(aa,1.01))); aux.DE*=(1.0+ab*sin(ac*ml)); } break; }
+						case 289: { { double cd=floor(r*aa); double le=exp(-ab*cd); aux.DE*=(1.0+ac*le); } break; }
+						case 290: { { double wn2=floor(atan2(zy,zx)*aa/(2.0*M_PI)+0.5); aux.DE*=(1.0+ab*sin(ac*wn2)); } break; }
+						case 291: { { double sw2=floor(zx*aa+0.5)*floor(zy*ab+0.5); aux.DE*=(1.0+ac*sin(ad*sw2)); } break; }
+						case 292: { { double cc=floor(r*aa)*3.0; aux.DE*=(1.0+ab*sin(ac*cc)); } break; }
+						case 293: { { double pc=fmod(floor(r*aa),ab); aux.DE*=(1.0+ac*sin(ad*pc)); } break; }
+						case 294: { { double ce=sin(aa*zx)*cos(ab*zy)*sin(ac*zz2); aux.DE*=(1.0+ad*fabs(ce)); } break; }
+						case 295: { { double ev=sin(aa*r)*sin(aa*r)+cos(ab*r)*cos(ab*r); aux.DE*=(1.0+ac*ev*0.5); } break; }
+						case 296: { { double sgn=sin(aa*r)>0?1.0:-1.0; double mc=exp(-ab*rr)*sgn; aux.DE*=(1.0+ac*fabs(mc)); } break; }
+						case 297: { { double pur=sin(aa*r)*sin(aa*r); aux.DE*=(1.0+ab*pur*pur); } break; }
+						case 298: { { double wig=sin(aa*zx)*cos(ab*zy); aux.DE*=(1.0+ac*fabs(wig)); } break; }
+						case 299: { { double hus=exp(-aa*(zx*zx+zy*zy))*sin(ab*r); aux.DE*=(1.0+ac*fabs(hus)); } break; }
+						case 300: { { double mi=sin(aa*r)*sin(ab*r); aux.DE*=(1.0+ac*mi*mi); } break; }
+					}
+				}
+
 
 				// DE tweak + DE scale (per-section iteration range)
 				if (i >= mut.deIterStart && i < mut.deIterStop)
