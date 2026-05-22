@@ -369,6 +369,10 @@ void cTabFractal::ConnectSignals()
 	connect(ui->checkBox_weight_separate_components, SIGNAL(stateChanged(int)), this,
 		SLOT(slotChangedSeparateComponents(int)));
 
+	// Mutation reset button
+	connect(ui->pushButton_mutation_reset, &QPushButton::clicked, this,
+		&cTabFractal::slotPressedButtonMutationReset);
+
 	// Set initial visibility (mode 0 = Static)
 	UpdateWeightWidgetsVisibility(0, false);
 }
@@ -566,6 +570,84 @@ void cTabFractal::slotPressedButtonIFSDefaultsReset() const
 void cTabFractal::slotPressedButtonResetFormula() const
 {
 	gMainInterface->ResetFormula(tabIndex);
+}
+
+void cTabFractal::slotPressedButtonMutationReset()
+{
+	int idx = tabIndex + 1;
+	// Reset all mutation params to defaults for this slot
+	params->Set("mutation_enabled_" + QString::number(idx), false);
+	ui->groupCheck_mutation_enabled->setChecked(false);
+
+	auto setD = [&](const QString &name, double val) {
+		params->Set(name + "_" + QString::number(idx), val);
+	};
+	auto setI = [&](const QString &name, int val) {
+		params->Set(name + "_" + QString::number(idx), val);
+	};
+	auto setB = [&](const QString &name, bool val) {
+		params->Set(name + "_" + QString::number(idx), val);
+	};
+
+	// Pre-transform
+	setD("mutation_pre_rotation_ax", 0.0);
+	setD("mutation_pre_rotation_ay", 0.0);
+	setD("mutation_pre_rotation_az", 0.0);
+	setD("mutation_pre_scale", 1.0);
+	setD("mutation_pre_offset_ax", 0.0);
+	setD("mutation_pre_offset_ay", 0.0);
+	setD("mutation_pre_offset_az", 0.0);
+	setB("mutation_pre_abs_ax", false);
+	setB("mutation_pre_abs_ay", false);
+	setB("mutation_pre_abs_az", false);
+	// Post-transform
+	setD("mutation_post_rotation_ax", 0.0);
+	setD("mutation_post_rotation_ay", 0.0);
+	setD("mutation_post_rotation_az", 0.0);
+	setD("mutation_post_scale", 1.0);
+	setD("mutation_post_offset_ax", 0.0);
+	setD("mutation_post_offset_ay", 0.0);
+	setD("mutation_post_offset_az", 0.0);
+	// Types
+	setI("mutation_swizzle", 0);
+	setI("mutation_fold_type", 0);
+	setI("mutation_fold_position", 0);
+	setD("mutation_fold_limit", 1.0);
+	setD("mutation_fold_value", 2.0);
+	setI("mutation_kaleidoscope_sides", 6);
+	setI("mutation_warp_type", 0);
+	setD("mutation_warp_frequency", 1.0);
+	setD("mutation_warp_amplitude", 0.0);
+	setI("mutation_math_type", 0);
+	setD("mutation_math_p1", 2.0);
+	setD("mutation_math_p2", 0.0);
+	setD("mutation_math_p3", 0.0);
+	setD("mutation_math_p4", 0.0);
+	setD("mutation_math_p5", 0.0);
+	setD("mutation_math_p6", 0.0);
+	setD("mutation_math_p7", 0.0);
+	setD("mutation_math_p8", 0.0);
+	setD("mutation_math_mix", 1.0);
+	// Output
+	setD("mutation_z_mix", 1.0);
+	setD("mutation_de_scale", 1.0);
+	setI("mutation_de_tweak", 0);
+	setI("mutation_orbit_trap", 0);
+	// Iterations
+	setI("mutation_iteration_start", 0);
+	setI("mutation_iteration_stop", 250);
+	// Julia
+	setI("mutation_julia_injection", 0);
+	setI("mutation_julia_start", 0);
+	setI("mutation_julia_c_transform", 0);
+	setI("mutation_julia_dynamic", 0);
+	setI("mutation_julia_multi", 0);
+	setD("mutation_julia_c_mul", 1.0);
+	setD("mutation_julia_c_power", 1.0);
+	setD("mutation_julia_c_radius", 1.0);
+
+	// Write defaults back to UI widgets
+	SynchronizeInterface(params, qInterface::write);
 }
 
 void cTabFractal::slotPressedButtonNavi()

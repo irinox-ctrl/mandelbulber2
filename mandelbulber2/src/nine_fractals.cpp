@@ -153,23 +153,23 @@ cNineFractals::cNineFractals(std::shared_ptr<const cFractalContainer> par,
 
 		// Formula Mutation parameters
 		mutationParams[i].enabled = generalPar->Get<bool>("mutation_enabled", i + 1);
-		mutationParams[i].preRotX = generalPar->Get<double>("mutation_pre_rotation_x", i + 1);
-		mutationParams[i].preRotY = generalPar->Get<double>("mutation_pre_rotation_y", i + 1);
-		mutationParams[i].preRotZ = generalPar->Get<double>("mutation_pre_rotation_z", i + 1);
+		mutationParams[i].preRotX = generalPar->Get<double>("mutation_pre_rotation_ax", i + 1);
+		mutationParams[i].preRotY = generalPar->Get<double>("mutation_pre_rotation_ay", i + 1);
+		mutationParams[i].preRotZ = generalPar->Get<double>("mutation_pre_rotation_az", i + 1);
 		mutationParams[i].preScale = generalPar->Get<double>("mutation_pre_scale", i + 1);
-		mutationParams[i].preOffsetX = generalPar->Get<double>("mutation_pre_offset_x", i + 1);
-		mutationParams[i].preOffsetY = generalPar->Get<double>("mutation_pre_offset_y", i + 1);
-		mutationParams[i].preOffsetZ = generalPar->Get<double>("mutation_pre_offset_z", i + 1);
-		mutationParams[i].preAbsX = generalPar->Get<bool>("mutation_pre_abs_x", i + 1);
-		mutationParams[i].preAbsY = generalPar->Get<bool>("mutation_pre_abs_y", i + 1);
-		mutationParams[i].preAbsZ = generalPar->Get<bool>("mutation_pre_abs_z", i + 1);
-		mutationParams[i].postRotX = generalPar->Get<double>("mutation_post_rotation_x", i + 1);
-		mutationParams[i].postRotY = generalPar->Get<double>("mutation_post_rotation_y", i + 1);
-		mutationParams[i].postRotZ = generalPar->Get<double>("mutation_post_rotation_z", i + 1);
+		mutationParams[i].preOffsetX = generalPar->Get<double>("mutation_pre_offset_ax", i + 1);
+		mutationParams[i].preOffsetY = generalPar->Get<double>("mutation_pre_offset_ay", i + 1);
+		mutationParams[i].preOffsetZ = generalPar->Get<double>("mutation_pre_offset_az", i + 1);
+		mutationParams[i].preAbsX = generalPar->Get<bool>("mutation_pre_abs_ax", i + 1);
+		mutationParams[i].preAbsY = generalPar->Get<bool>("mutation_pre_abs_ay", i + 1);
+		mutationParams[i].preAbsZ = generalPar->Get<bool>("mutation_pre_abs_az", i + 1);
+		mutationParams[i].postRotX = generalPar->Get<double>("mutation_post_rotation_ax", i + 1);
+		mutationParams[i].postRotY = generalPar->Get<double>("mutation_post_rotation_ay", i + 1);
+		mutationParams[i].postRotZ = generalPar->Get<double>("mutation_post_rotation_az", i + 1);
 		mutationParams[i].postScale = generalPar->Get<double>("mutation_post_scale", i + 1);
-		mutationParams[i].postOffsetX = generalPar->Get<double>("mutation_post_offset_x", i + 1);
-		mutationParams[i].postOffsetY = generalPar->Get<double>("mutation_post_offset_y", i + 1);
-		mutationParams[i].postOffsetZ = generalPar->Get<double>("mutation_post_offset_z", i + 1);
+		mutationParams[i].postOffsetX = generalPar->Get<double>("mutation_post_offset_ax", i + 1);
+		mutationParams[i].postOffsetY = generalPar->Get<double>("mutation_post_offset_ay", i + 1);
+		mutationParams[i].postOffsetZ = generalPar->Get<double>("mutation_post_offset_az", i + 1);
 		mutationParams[i].swizzle =
 			enumMutationSwizzle(generalPar->Get<int>("mutation_swizzle", i + 1));
 		mutationParams[i].foldType =

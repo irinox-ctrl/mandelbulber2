@@ -89,6 +89,7 @@ private slots:
 	void slotPressedButtonNavi();
 	void slotChangedWeightMode(int mode);
 	void slotChangedSeparateComponents(int state);
+	void slotPressedButtonMutationReset();
 
 	// IFS
 	void slotPressedButtonIFSDefaultsDodecahedron() const;

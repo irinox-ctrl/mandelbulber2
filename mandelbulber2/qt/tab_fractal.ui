@@ -1382,7 +1382,7 @@ Static: Fixed weight (simple). Iteration: Weight changes over iterations (morphi
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QLabel" name="label_mutation_pre_rot_x">
+       <widget class="QLabel" name="label_mutation_pre_rot_ax">
         <property name="text">
          <string>X:</string>
         </property>
@@ -1392,7 +1392,7 @@ Static: Fixed weight (simple). Iteration: Weight changes over iterations (morphi
        </widget>
       </item>
       <item row="0" column="2">
-       <widget class="MyDoubleSpinBox" name="spinbox_mutation_pre_rotation_x">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_pre_rotation_ax">
         <property name="decimals">
          <number>2</number>
         </property>
@@ -1408,7 +1408,7 @@ Static: Fixed weight (simple). Iteration: Weight changes over iterations (morphi
        </widget>
       </item>
       <item row="0" column="3">
-       <widget class="QLabel" name="label_mutation_pre_rot_y">
+       <widget class="QLabel" name="label_mutation_pre_rot_ay">
         <property name="text">
          <string>Y:</string>
         </property>
@@ -1418,7 +1418,7 @@ Static: Fixed weight (simple). Iteration: Weight changes over iterations (morphi
        </widget>
       </item>
       <item row="0" column="4">
-       <widget class="MyDoubleSpinBox" name="spinbox_mutation_pre_rotation_y">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_pre_rotation_ay">
         <property name="decimals">
          <number>2</number>
         </property>
@@ -1434,7 +1434,7 @@ Static: Fixed weight (simple). Iteration: Weight changes over iterations (morphi
        </widget>
       </item>
       <item row="0" column="5">
-       <widget class="QLabel" name="label_mutation_pre_rot_z">
+       <widget class="QLabel" name="label_mutation_pre_rot_az">
         <property name="text">
          <string>Z:</string>
         </property>
@@ -1444,7 +1444,7 @@ Static: Fixed weight (simple). Iteration: Weight changes over iterations (morphi
        </widget>
       </item>
       <item row="0" column="6">
-       <widget class="MyDoubleSpinBox" name="spinbox_mutation_pre_rotation_z">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_pre_rotation_az">
         <property name="decimals">
          <number>2</number>
         </property>
@@ -1495,7 +1495,7 @@ Static: Fixed weight (simple). Iteration: Weight changes over iterations (morphi
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="QLabel" name="label_mutation_preoff_x">
+       <widget class="QLabel" name="label_mutation_preoff_ax">
         <property name="text">
          <string>X:</string>
         </property>
@@ -1505,7 +1505,7 @@ Static: Fixed weight (simple). Iteration: Weight changes over iterations (morphi
        </widget>
       </item>
       <item row="2" column="2">
-       <widget class="MyDoubleSpinBox" name="spinbox_mutation_pre_offset_x">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_pre_offset_ax">
         <property name="decimals">
          <number>4</number>
         </property>
@@ -1521,7 +1521,7 @@ Static: Fixed weight (simple). Iteration: Weight changes over iterations (morphi
        </widget>
       </item>
       <item row="2" column="3">
-       <widget class="QLabel" name="label_mutation_preoff_y">
+       <widget class="QLabel" name="label_mutation_preoff_ay">
         <property name="text">
          <string>Y:</string>
         </property>
@@ -1531,7 +1531,7 @@ Static: Fixed weight (simple). Iteration: Weight changes over iterations (morphi
        </widget>
       </item>
       <item row="2" column="4">
-       <widget class="MyDoubleSpinBox" name="spinbox_mutation_pre_offset_y">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_pre_offset_ay">
         <property name="decimals">
          <number>4</number>
         </property>
@@ -1547,7 +1547,7 @@ Static: Fixed weight (simple). Iteration: Weight changes over iterations (morphi
        </widget>
       </item>
       <item row="2" column="5">
-       <widget class="QLabel" name="label_mutation_preoff_z">
+       <widget class="QLabel" name="label_mutation_preoff_az">
         <property name="text">
          <string>Z:</string>
         </property>
@@ -1557,7 +1557,7 @@ Static: Fixed weight (simple). Iteration: Weight changes over iterations (morphi
        </widget>
       </item>
       <item row="2" column="6">
-       <widget class="MyDoubleSpinBox" name="spinbox_mutation_pre_offset_z">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_pre_offset_az">
         <property name="decimals">
          <number>4</number>
         </property>
@@ -1581,21 +1581,21 @@ Static: Fixed weight (simple). Iteration: Weight changes over iterations (morphi
        </widget>
       </item>
       <item row="3" column="1" colspan="2">
-       <widget class="MyCheckBox" name="checkBox_mutation_pre_abs_x">
+       <widget class="MyCheckBox" name="checkBox_mutation_pre_abs_ax">
         <property name="text">
          <string>X</string>
         </property>
        </widget>
       </item>
       <item row="3" column="3" colspan="2">
-       <widget class="MyCheckBox" name="checkBox_mutation_pre_abs_y">
+       <widget class="MyCheckBox" name="checkBox_mutation_pre_abs_ay">
         <property name="text">
          <string>Y</string>
         </property>
        </widget>
       </item>
       <item row="3" column="5" colspan="2">
-       <widget class="MyCheckBox" name="checkBox_mutation_pre_abs_z">
+       <widget class="MyCheckBox" name="checkBox_mutation_pre_abs_az">
         <property name="text">
          <string>Z</string>
         </property>
@@ -1610,7 +1610,7 @@ Static: Fixed weight (simple). Iteration: Weight changes over iterations (morphi
        </widget>
       </item>
       <item row="4" column="1">
-       <widget class="QLabel" name="label_mutation_post_rot_x">
+       <widget class="QLabel" name="label_mutation_post_rot_ax">
         <property name="text">
          <string>X:</string>
         </property>
@@ -1620,7 +1620,7 @@ Static: Fixed weight (simple). Iteration: Weight changes over iterations (morphi
        </widget>
       </item>
       <item row="4" column="2">
-       <widget class="MyDoubleSpinBox" name="spinbox_mutation_post_rotation_x">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_post_rotation_ax">
         <property name="decimals">
          <number>2</number>
         </property>
@@ -1636,7 +1636,7 @@ Static: Fixed weight (simple). Iteration: Weight changes over iterations (morphi
        </widget>
       </item>
       <item row="4" column="3">
-       <widget class="QLabel" name="label_mutation_post_rot_y">
+       <widget class="QLabel" name="label_mutation_post_rot_ay">
         <property name="text">
          <string>Y:</string>
         </property>
@@ -1646,7 +1646,7 @@ Static: Fixed weight (simple). Iteration: Weight changes over iterations (morphi
        </widget>
       </item>
       <item row="4" column="4">
-       <widget class="MyDoubleSpinBox" name="spinbox_mutation_post_rotation_y">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_post_rotation_ay">
         <property name="decimals">
          <number>2</number>
         </property>
@@ -1662,7 +1662,7 @@ Static: Fixed weight (simple). Iteration: Weight changes over iterations (morphi
        </widget>
       </item>
       <item row="4" column="5">
-       <widget class="QLabel" name="label_mutation_post_rot_z">
+       <widget class="QLabel" name="label_mutation_post_rot_az">
         <property name="text">
          <string>Z:</string>
         </property>
@@ -1672,7 +1672,7 @@ Static: Fixed weight (simple). Iteration: Weight changes over iterations (morphi
        </widget>
       </item>
       <item row="4" column="6">
-       <widget class="MyDoubleSpinBox" name="spinbox_mutation_post_rotation_z">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_post_rotation_az">
         <property name="decimals">
          <number>2</number>
         </property>
@@ -1723,7 +1723,7 @@ Static: Fixed weight (simple). Iteration: Weight changes over iterations (morphi
        </widget>
       </item>
       <item row="6" column="1">
-       <widget class="QLabel" name="label_mutation_postoff_x">
+       <widget class="QLabel" name="label_mutation_postoff_ax">
         <property name="text">
          <string>X:</string>
         </property>
@@ -1733,7 +1733,7 @@ Static: Fixed weight (simple). Iteration: Weight changes over iterations (morphi
        </widget>
       </item>
       <item row="6" column="2">
-       <widget class="MyDoubleSpinBox" name="spinbox_mutation_post_offset_x">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_post_offset_ax">
         <property name="decimals">
          <number>4</number>
         </property>
@@ -1749,7 +1749,7 @@ Static: Fixed weight (simple). Iteration: Weight changes over iterations (morphi
        </widget>
       </item>
       <item row="6" column="3">
-       <widget class="QLabel" name="label_mutation_postoff_y">
+       <widget class="QLabel" name="label_mutation_postoff_ay">
         <property name="text">
          <string>Y:</string>
         </property>
@@ -1759,7 +1759,7 @@ Static: Fixed weight (simple). Iteration: Weight changes over iterations (morphi
        </widget>
       </item>
       <item row="6" column="4">
-       <widget class="MyDoubleSpinBox" name="spinbox_mutation_post_offset_y">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_post_offset_ay">
         <property name="decimals">
          <number>4</number>
         </property>
@@ -1775,7 +1775,7 @@ Static: Fixed weight (simple). Iteration: Weight changes over iterations (morphi
        </widget>
       </item>
       <item row="6" column="5">
-       <widget class="QLabel" name="label_mutation_postoff_z">
+       <widget class="QLabel" name="label_mutation_postoff_az">
         <property name="text">
          <string>Z:</string>
         </property>
@@ -1785,7 +1785,7 @@ Static: Fixed weight (simple). Iteration: Weight changes over iterations (morphi
        </widget>
       </item>
       <item row="6" column="6">
-       <widget class="MyDoubleSpinBox" name="spinbox_mutation_post_offset_z">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_post_offset_az">
         <property name="decimals">
          <number>4</number>
         </property>
@@ -2714,6 +2714,13 @@ Static: Fixed weight (simple). Iteration: Weight changes over iterations (morphi
        <property name="maximum"><double>100.000000000000000</double></property>
        <property name="singleStep"><double>0.100000000000000</double></property>
        <property name="value"><double>1.000000000000000</double></property>
+      </widget>
+     </item>
+     <item row="29" column="0" colspan="2">
+      <widget class="QPushButton" name="pushButton_mutation_reset">
+       <property name="text">
+        <string>Reset Mutation to Defaults</string>
+       </property>
       </widget>
      </item>
     </layout>
