@@ -2191,6 +2191,9 @@ void cInterface::AttachMainImageWidget()
 
 void cInterface::ColorizeGroupBoxes(QWidget *window, int randomSeed)
 {
+	// Skip random colorization when 3x3lion theme is active (QSS handles styling)
+	if (gPar && gPar->Get<int>("ui_skin") == 8) return;
+
 	QList<QGroupBox *> widgets;
 	widgets = window->findChildren<QGroupBox *>();
 	if (qobject_cast<QGroupBox *>(window)) // check if QGroupBox
