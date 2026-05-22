@@ -283,6 +283,60 @@ cNineFractals::cNineFractals(std::shared_ptr<const cFractalContainer> par,
 			mutationParams[i].juliaBipolarCRz = bcr.z;
 		}
 
+		// v7.6 — Inversion system
+		mutationParams[i].inversionType = generalPar->Get<int>("mutation_inv_type", i + 1);
+		mutationParams[i].invCenterX = generalPar->Get<double>("mutation_inv_center_x", i + 1);
+		mutationParams[i].invCenterY = generalPar->Get<double>("mutation_inv_center_y", i + 1);
+		mutationParams[i].invCenterZ = generalPar->Get<double>("mutation_inv_center_z", i + 1);
+		mutationParams[i].invRadius = generalPar->Get<double>("mutation_inv_radius", i + 1);
+		mutationParams[i].invParamA = generalPar->Get<double>("mutation_inv_param_a", i + 1);
+		mutationParams[i].invParamB = generalPar->Get<double>("mutation_inv_param_b", i + 1);
+		mutationParams[i].invParamC = generalPar->Get<double>("mutation_inv_param_c", i + 1);
+		mutationParams[i].invScale = generalPar->Get<double>("mutation_inv_scale", i + 1);
+		mutationParams[i].invAngle = generalPar->Get<double>("mutation_inv_angle", i + 1);
+		mutationParams[i].invFrequency = generalPar->Get<double>("mutation_inv_frequency", i + 1);
+		mutationParams[i].invAmplitude = generalPar->Get<double>("mutation_inv_amplitude", i + 1);
+		mutationParams[i].invMinR = generalPar->Get<double>("mutation_inv_min_r", i + 1);
+		mutationParams[i].invMaxR = generalPar->Get<double>("mutation_inv_max_r", i + 1);
+		mutationParams[i].invPreRotX = generalPar->Get<double>("mutation_inv_pre_rot_x", i + 1);
+		mutationParams[i].invPreRotY = generalPar->Get<double>("mutation_inv_pre_rot_y", i + 1);
+		mutationParams[i].invPreRotZ = generalPar->Get<double>("mutation_inv_pre_rot_z", i + 1);
+		mutationParams[i].invCenter2X = generalPar->Get<double>("mutation_inv_center2_x", i + 1);
+		mutationParams[i].invCenter2Y = generalPar->Get<double>("mutation_inv_center2_y", i + 1);
+		mutationParams[i].invCenter2Z = generalPar->Get<double>("mutation_inv_center2_z", i + 1);
+		mutationParams[i].invRadius2 = generalPar->Get<double>("mutation_inv_radius2", i + 1);
+		mutationParams[i].invWeight = generalPar->Get<double>("mutation_inv_weight", i + 1);
+		mutationParams[i].invNSteps = generalPar->Get<int>("mutation_inv_n_steps", i + 1);
+		mutationParams[i].invThreshold = generalPar->Get<double>("mutation_inv_threshold", i + 1);
+		mutationParams[i].invColorFactor = generalPar->Get<double>("mutation_inv_color_factor", i + 1);
+		mutationParams[i].invIterStart = generalPar->Get<int>("mutation_inv_iter_start", i + 1);
+		mutationParams[i].invIterStop = generalPar->Get<int>("mutation_inv_iter_stop", i + 1);
+		// v7.6 — Clip system
+		mutationParams[i].clipType = generalPar->Get<int>("mutation_clip_type", i + 1);
+		mutationParams[i].clipCenterX = generalPar->Get<double>("mutation_clip_center_x", i + 1);
+		mutationParams[i].clipCenterY = generalPar->Get<double>("mutation_clip_center_y", i + 1);
+		mutationParams[i].clipCenterZ = generalPar->Get<double>("mutation_clip_center_z", i + 1);
+		mutationParams[i].clipSizeX = generalPar->Get<double>("mutation_clip_size_x", i + 1);
+		mutationParams[i].clipSizeY = generalPar->Get<double>("mutation_clip_size_y", i + 1);
+		mutationParams[i].clipSizeZ = generalPar->Get<double>("mutation_clip_size_z", i + 1);
+		mutationParams[i].clipRadius = generalPar->Get<double>("mutation_clip_radius", i + 1);
+		mutationParams[i].clipMajorRadius = generalPar->Get<double>("mutation_clip_major_radius", i + 1);
+		mutationParams[i].clipAngle = generalPar->Get<double>("mutation_clip_angle", i + 1);
+		mutationParams[i].clipAmplitude = generalPar->Get<double>("mutation_clip_amplitude", i + 1);
+		mutationParams[i].clipFrequency = generalPar->Get<double>("mutation_clip_frequency", i + 1);
+		mutationParams[i].clipSmoothK = generalPar->Get<double>("mutation_clip_smooth_k", i + 1);
+		mutationParams[i].clipBooleanOp = generalPar->Get<int>("mutation_clip_boolean_op", i + 1);
+		mutationParams[i].clipPreRotX = generalPar->Get<double>("mutation_clip_pre_rot_x", i + 1);
+		mutationParams[i].clipPreRotY = generalPar->Get<double>("mutation_clip_pre_rot_y", i + 1);
+		mutationParams[i].clipPreRotZ = generalPar->Get<double>("mutation_clip_pre_rot_z", i + 1);
+		mutationParams[i].clipNPoints = generalPar->Get<int>("mutation_clip_n_points", i + 1);
+		mutationParams[i].clipParamA = generalPar->Get<double>("mutation_clip_param_a", i + 1);
+		mutationParams[i].clipParamB = generalPar->Get<double>("mutation_clip_param_b", i + 1);
+		mutationParams[i].clipParamC = generalPar->Get<double>("mutation_clip_param_c", i + 1);
+		mutationParams[i].clipThreshold = generalPar->Get<double>("mutation_clip_threshold", i + 1);
+		mutationParams[i].clipIterStart = generalPar->Get<int>("mutation_clip_iter_start", i + 1);
+		mutationParams[i].clipIterStop = generalPar->Get<int>("mutation_clip_iter_stop", i + 1);
+
 		// Smart defaults: PK/JK formulas get Möbius (Bilinear) math preset
 		fractal::enumFractalFormula f = fractals[i]->formula;
 		bool isPKJK = (f == fractal::pseudoKleinian || f == fractal::pseudoKleinian4d
@@ -317,6 +371,14 @@ cNineFractals::cNineFractals(std::shared_ptr<const cFractalContainer> par,
 				mutationParams[i].juliaCRotX / 180.0 * M_PI,
 				mutationParams[i].juliaCRotY / 180.0 * M_PI,
 				mutationParams[i].juliaCRotZ / 180.0 * M_PI));
+			mutationParams[i].invPreRotMatrix.SetRotation2(CVector3(
+				mutationParams[i].invPreRotX / 180.0 * M_PI,
+				mutationParams[i].invPreRotY / 180.0 * M_PI,
+				mutationParams[i].invPreRotZ / 180.0 * M_PI));
+			mutationParams[i].clipPreRotMatrix.SetRotation2(CVector3(
+				mutationParams[i].clipPreRotX / 180.0 * M_PI,
+				mutationParams[i].clipPreRotY / 180.0 * M_PI,
+				mutationParams[i].clipPreRotZ / 180.0 * M_PI));
 		}
 
 		DEType[i] = fractal::deltaDEType;
@@ -1203,6 +1265,59 @@ void cNineFractals::CopyToOpenclData(sClFractalSequence *sequence) const
 		sequence->mutationParams[i].juliaBipolarCRx = mutationParams[i].juliaBipolarCRx;
 		sequence->mutationParams[i].juliaBipolarCRy = mutationParams[i].juliaBipolarCRy;
 		sequence->mutationParams[i].juliaBipolarCRz = mutationParams[i].juliaBipolarCRz;
+		// v7.6 — Inversion system GPU copy
+		sequence->mutationParams[i].inversionType = mutationParams[i].inversionType;
+		sequence->mutationParams[i].invCenterX = mutationParams[i].invCenterX;
+		sequence->mutationParams[i].invCenterY = mutationParams[i].invCenterY;
+		sequence->mutationParams[i].invCenterZ = mutationParams[i].invCenterZ;
+		sequence->mutationParams[i].invRadius = mutationParams[i].invRadius;
+		sequence->mutationParams[i].invParamA = mutationParams[i].invParamA;
+		sequence->mutationParams[i].invParamB = mutationParams[i].invParamB;
+		sequence->mutationParams[i].invParamC = mutationParams[i].invParamC;
+		sequence->mutationParams[i].invScale = mutationParams[i].invScale;
+		sequence->mutationParams[i].invAngle = mutationParams[i].invAngle;
+		sequence->mutationParams[i].invFrequency = mutationParams[i].invFrequency;
+		sequence->mutationParams[i].invAmplitude = mutationParams[i].invAmplitude;
+		sequence->mutationParams[i].invMinR = mutationParams[i].invMinR;
+		sequence->mutationParams[i].invMaxR = mutationParams[i].invMaxR;
+		sequence->mutationParams[i].invPreRotX = mutationParams[i].invPreRotX;
+		sequence->mutationParams[i].invPreRotY = mutationParams[i].invPreRotY;
+		sequence->mutationParams[i].invPreRotZ = mutationParams[i].invPreRotZ;
+		sequence->mutationParams[i].invCenter2X = mutationParams[i].invCenter2X;
+		sequence->mutationParams[i].invCenter2Y = mutationParams[i].invCenter2Y;
+		sequence->mutationParams[i].invCenter2Z = mutationParams[i].invCenter2Z;
+		sequence->mutationParams[i].invRadius2 = mutationParams[i].invRadius2;
+		sequence->mutationParams[i].invWeight = mutationParams[i].invWeight;
+		sequence->mutationParams[i].invNSteps = mutationParams[i].invNSteps;
+		sequence->mutationParams[i].invThreshold = mutationParams[i].invThreshold;
+		sequence->mutationParams[i].invColorFactor = mutationParams[i].invColorFactor;
+		sequence->mutationParams[i].invIterStart = mutationParams[i].invIterStart;
+		sequence->mutationParams[i].invIterStop = mutationParams[i].invIterStop;
+		// v7.6 — Clip system GPU copy
+		sequence->mutationParams[i].clipType = mutationParams[i].clipType;
+		sequence->mutationParams[i].clipCenterX = mutationParams[i].clipCenterX;
+		sequence->mutationParams[i].clipCenterY = mutationParams[i].clipCenterY;
+		sequence->mutationParams[i].clipCenterZ = mutationParams[i].clipCenterZ;
+		sequence->mutationParams[i].clipSizeX = mutationParams[i].clipSizeX;
+		sequence->mutationParams[i].clipSizeY = mutationParams[i].clipSizeY;
+		sequence->mutationParams[i].clipSizeZ = mutationParams[i].clipSizeZ;
+		sequence->mutationParams[i].clipRadius = mutationParams[i].clipRadius;
+		sequence->mutationParams[i].clipMajorRadius = mutationParams[i].clipMajorRadius;
+		sequence->mutationParams[i].clipAngle = mutationParams[i].clipAngle;
+		sequence->mutationParams[i].clipAmplitude = mutationParams[i].clipAmplitude;
+		sequence->mutationParams[i].clipFrequency = mutationParams[i].clipFrequency;
+		sequence->mutationParams[i].clipSmoothK = mutationParams[i].clipSmoothK;
+		sequence->mutationParams[i].clipBooleanOp = mutationParams[i].clipBooleanOp;
+		sequence->mutationParams[i].clipPreRotX = mutationParams[i].clipPreRotX;
+		sequence->mutationParams[i].clipPreRotY = mutationParams[i].clipPreRotY;
+		sequence->mutationParams[i].clipPreRotZ = mutationParams[i].clipPreRotZ;
+		sequence->mutationParams[i].clipNPoints = mutationParams[i].clipNPoints;
+		sequence->mutationParams[i].clipParamA = mutationParams[i].clipParamA;
+		sequence->mutationParams[i].clipParamB = mutationParams[i].clipParamB;
+		sequence->mutationParams[i].clipParamC = mutationParams[i].clipParamC;
+		sequence->mutationParams[i].clipThreshold = mutationParams[i].clipThreshold;
+		sequence->mutationParams[i].clipIterStart = mutationParams[i].clipIterStart;
+		sequence->mutationParams[i].clipIterStop = mutationParams[i].clipIterStop;
 		// Copy rotation matrices using matrix33 type
 		if (mutationParams[i].enabled)
 		{
@@ -1212,12 +1327,18 @@ void cNineFractals::CopyToOpenclData(sClFractalSequence *sequence) const
 				toClMatrix33(mutationParams[i].postRotMatrix);
 			sequence->mutationParams[i].juliaCRotMatrix =
 				toClMatrix33(mutationParams[i].juliaCRotMatrix);
+			sequence->mutationParams[i].invPreRotMatrix =
+				toClMatrix33(mutationParams[i].invPreRotMatrix);
+			sequence->mutationParams[i].clipPreRotMatrix =
+				toClMatrix33(mutationParams[i].clipPreRotMatrix);
 		}
 		else
 		{
 			memset(&sequence->mutationParams[i].preRotMatrix, 0, sizeof(matrix33));
 			memset(&sequence->mutationParams[i].postRotMatrix, 0, sizeof(matrix33));
 			memset(&sequence->mutationParams[i].juliaCRotMatrix, 0, sizeof(matrix33));
+			memset(&sequence->mutationParams[i].invPreRotMatrix, 0, sizeof(matrix33));
+			memset(&sequence->mutationParams[i].clipPreRotMatrix, 0, sizeof(matrix33));
 		}
 
 		sequence->DEFunctionType[i] = static_cast<enumDEFunctionTypeCl>(DEFunctionType[i]);

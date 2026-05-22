@@ -304,6 +304,60 @@ void InitParams(std::shared_ptr<cParameterContainer> par)
 		par->addParam("mutation_julia_fourier_c3", i, CVector3(0.0, 0.0, 0.0), morphAkima, paramStandard);
 		par->addParam("mutation_julia_bipolar_cr", i, CVector3(0.0, 0.0, 0.0), morphAkima, paramStandard);
 
+		// v7.6 — Inversion system (50 types)
+		par->addParam("mutation_inv_type", i, 0, 0, 50, morphAkima, paramStandard);
+		par->addParam("mutation_inv_center_x", i, 0.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_inv_center_y", i, 0.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_inv_center_z", i, 0.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_inv_radius", i, 1.0, 0.001, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_inv_param_a", i, 1.0, 0.001, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_inv_param_b", i, 1.0, 0.001, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_inv_param_c", i, 1.0, 0.001, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_inv_scale", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_inv_angle", i, 0.0, -360.0, 360.0, morphAkima, paramStandard);
+		par->addParam("mutation_inv_frequency", i, 1.0, 0.01, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_inv_amplitude", i, 0.5, -10.0, 10.0, morphAkima, paramStandard);
+		par->addParam("mutation_inv_min_r", i, 0.5, 0.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_inv_max_r", i, 1.0, 0.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_inv_pre_rot_x", i, 0.0, -360.0, 360.0, morphAkima, paramStandard);
+		par->addParam("mutation_inv_pre_rot_y", i, 0.0, -360.0, 360.0, morphAkima, paramStandard);
+		par->addParam("mutation_inv_pre_rot_z", i, 0.0, -360.0, 360.0, morphAkima, paramStandard);
+		par->addParam("mutation_inv_center2_x", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_inv_center2_y", i, 0.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_inv_center2_z", i, 0.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_inv_radius2", i, 1.0, 0.001, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_inv_weight", i, 1.0, 0.0, 10.0, morphAkima, paramStandard);
+		par->addParam("mutation_inv_n_steps", i, 2, 1, 8, morphAkima, paramStandard);
+		par->addParam("mutation_inv_threshold", i, 0.1, 0.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_inv_color_factor", i, 1.0, 0.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_inv_iter_start", i, 0, 0, 10000, morphAkima, paramStandard);
+		par->addParam("mutation_inv_iter_stop", i, 10000, 0, 10000, morphAkima, paramStandard);
+		// v7.6 — Clip system (50 types)
+		par->addParam("mutation_clip_type", i, 0, 0, 50, morphAkima, paramStandard);
+		par->addParam("mutation_clip_center_x", i, 0.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_clip_center_y", i, 0.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_clip_center_z", i, 0.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_clip_size_x", i, 1.0, 0.001, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_clip_size_y", i, 1.0, 0.001, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_clip_size_z", i, 1.0, 0.001, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_clip_radius", i, 1.0, 0.001, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_clip_major_radius", i, 2.0, 0.001, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_clip_angle", i, 0.0, -360.0, 360.0, morphAkima, paramStandard);
+		par->addParam("mutation_clip_amplitude", i, 0.5, -10.0, 10.0, morphAkima, paramStandard);
+		par->addParam("mutation_clip_frequency", i, 1.0, 0.01, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_clip_smooth_k", i, 0.1, 0.0, 10.0, morphAkima, paramStandard);
+		par->addParam("mutation_clip_boolean_op", i, 0, 0, 5, morphAkima, paramStandard);
+		par->addParam("mutation_clip_pre_rot_x", i, 0.0, -360.0, 360.0, morphAkima, paramStandard);
+		par->addParam("mutation_clip_pre_rot_y", i, 0.0, -360.0, 360.0, morphAkima, paramStandard);
+		par->addParam("mutation_clip_pre_rot_z", i, 0.0, -360.0, 360.0, morphAkima, paramStandard);
+		par->addParam("mutation_clip_n_points", i, 5, 3, 20, morphAkima, paramStandard);
+		par->addParam("mutation_clip_param_a", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_clip_param_b", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_clip_param_c", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_clip_threshold", i, 0.1, 0.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_clip_iter_start", i, 0, 0, 10000, morphAkima, paramStandard);
+		par->addParam("mutation_clip_iter_stop", i, 10000, 0, 10000, morphAkima, paramStandard);
+
 		par->addParam("julia_mode", i, false, morphLinear, paramStandard);
 		par->addParam("julia_c", i, CVector3(0.0, 0.0, 0.0), morphAkima, paramStandard);
 		par->addParam(

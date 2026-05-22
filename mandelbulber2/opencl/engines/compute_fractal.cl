@@ -520,6 +520,546 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 				if (mut->preScale != 1.0f) { z *= mut->preScale; aux.DE *= mut->preScale; }
 			}
 
+			// v7.6 — Inversion (per-section iteration range)
+			if (i >= mut->invIterStart && i < mut->invIterStop && mut->inversionType != 0)
+			{
+				float3 zz = z.xyz;
+				if (mut->invPreRotX != 0.0f || mut->invPreRotY != 0.0f || mut->invPreRotZ != 0.0f)
+					zz = Matrix33MulFloat3(mut->invPreRotMatrix, zz);
+				zz.x -= mut->invCenterX; zz.y -= mut->invCenterY; zz.z -= mut->invCenterZ;
+				float mde = 1.0f;
+				float a = mut->invParamA, b = mut->invParamB, c = mut->invParamC;
+				float R = mut->invRadius, sc = mut->invScale;
+				float rr;
+				switch (mut->inversionType)
+				{
+					case 1: // Ellipsoid Inversion
+					{
+						rr = (zz.x/a)*(zz.x/a) + (zz.y/b)*(zz.y/b) + (zz.z/c)*(zz.z/c);
+						if (rr < 1e-21f) rr = 1e-21f;
+						mde = 1.0f/rr;
+						zz.x *= mde * a * a; zz.y *= mde * b * b; zz.z *= mde * c * c;
+						mde = 1.0f/rr;
+						break;
+					}
+					case 2: // Cylinder Inversion
+					{
+						rr = zz.x * zz.x + zz.y * zz.y;
+						if (rr < 1e-21f) rr = 1e-21f;
+						mde = R * R / rr;
+						zz.x *= mde; zz.y *= mde;
+						break;
+					}
+					case 3: // Torus Inversion
+					{
+						float rxy = native_sqrt(zz.x * zz.x + zz.y * zz.y);
+						rr = (rxy - a) * (rxy - a) + zz.z * zz.z;
+						if (rr < 1e-21f) rr = 1e-21f;
+						mde = R * R / rr;
+						zz *= mde;
+						break;
+					}
+					case 4: // Hyperboloid Inversion
+					{
+						rr = (zz.x/a)*(zz.x/a) + (zz.y/b)*(zz.y/b) - (zz.z/c)*(zz.z/c);
+						if (fabs(rr) < 1e-21f) rr = 1e-21f;
+						mde = 1.0f / fabs(rr);
+						zz *= mde;
+						break;
+					}
+					case 5: // Paraboloid Inversion
+					{
+						rr = zz.x * zz.x + zz.y * zz.y - a * zz.z;
+						if (fabs(rr) < 1e-21f) rr = 1e-21f;
+						mde = 1.0f / fabs(rr);
+						zz *= mde;
+						break;
+					}
+					case 6: // Cone Inversion
+					{
+						float tanA = native_tan(mut->invAngle * M_PI_F / 180.0f);
+						rr = zz.x * zz.x + zz.y * zz.y - tanA * tanA * zz.z * zz.z;
+						if (fabs(rr) < 1e-21f) rr = 1e-21f;
+						mde = 1.0f / fabs(rr);
+						zz *= mde;
+						break;
+					}
+					case 7: // Saddle Inversion
+					{
+						rr = (zz.x/a)*(zz.x/a) - (zz.y/b)*(zz.y/b) - zz.z;
+						if (fabs(rr) < 1e-21f) rr = 1e-21f;
+						mde = 1.0f / fabs(rr);
+						zz *= mde;
+						break;
+					}
+					case 8: // Spiral Inversion
+					{
+						float r2d = native_sqrt(zz.x * zz.x + zz.y * zz.y);
+						float theta = atan2(zz.y, zz.x);
+						float k = mut->invFrequency;
+						rr = r2d * native_exp(-k * theta);
+						if (fabs(rr) < 1e-21f) rr = 1e-21f;
+						mde = 1.0f / rr;
+						zz *= mde;
+						break;
+					}
+					case 9: // Lemniscate Inversion
+					{
+						float x2 = zz.x * zz.x, y2 = zz.y * zz.y;
+						rr = (x2 + y2) * (x2 + y2) - a * a * (x2 - y2);
+						if (fabs(rr) < 1e-21f) rr = 1e-21f;
+						mde = 1.0f / fabs(rr);
+						zz *= mde;
+						break;
+					}
+					case 10: // Cassini Inversion
+					{
+						float d1sq = (zz.x - a) * (zz.x - a) + zz.y * zz.y;
+						float d2sq = (zz.x + a) * (zz.x + a) + zz.y * zz.y;
+						rr = d1sq * d2sq + zz.z * zz.z;
+						if (fabs(rr) < 1e-21f) rr = 1e-21f;
+						mde = 1.0f / rr;
+						zz *= mde;
+						break;
+					}
+					case 11: // Dipole Inversion
+					{
+						float3 c1 = (float3){mut->invCenterX, mut->invCenterY, mut->invCenterZ};
+						float3 c2 = (float3){mut->invCenter2X, mut->invCenter2Y, mut->invCenter2Z};
+						float3 zr = zz + (float3){mut->invCenterX, mut->invCenterY, mut->invCenterZ};
+						float d1 = dot(zr - c1, zr - c1); if (d1 < 1e-21f) d1 = 1e-21f;
+						float d2 = dot(zr - c2, zr - c2); if (d2 < 1e-21f) d2 = 1e-21f;
+						mde = R * R / d1 - mut->invRadius2 * mut->invRadius2 / d2;
+						zz *= mde;
+						mde = fabs(mde);
+						break;
+					}
+					case 12: // Multipoint Inversion
+					{
+						float3 c1 = (float3){0.0f, 0.0f, 0.0f};
+						float3 c2 = (float3){mut->invCenter2X, mut->invCenter2Y, mut->invCenter2Z};
+						float w1 = mut->invWeight, w2 = 1.0f - w1;
+						float d1 = dot(zz - c1, zz - c1); if (d1 < 1e-21f) d1 = 1e-21f;
+						float d2 = dot(zz - c2, zz - c2); if (d2 < 1e-21f) d2 = 1e-21f;
+						mde = w1 * R * R / d1 + w2 * mut->invRadius2 * mut->invRadius2 / d2;
+						zz *= mde;
+						mde = fabs(mde);
+						break;
+					}
+					case 13: // Chain Inversion (2-step)
+					{
+						float3 c1 = (float3){0.0f, 0.0f, 0.0f};
+						float3 c2 = (float3){mut->invCenter2X, mut->invCenter2Y, mut->invCenter2Z};
+						float d1 = dot(zz - c1, zz - c1); if (d1 < 1e-21f) d1 = 1e-21f;
+						float m1 = R * R / d1;
+						float3 z1 = c1 + (zz - c1) * m1;
+						float d2 = dot(z1 - c2, z1 - c2); if (d2 < 1e-21f) d2 = 1e-21f;
+						float m2 = mut->invRadius2 * mut->invRadius2 / d2;
+						zz = c2 + (z1 - c2) * m2;
+						mde = m1 * m2;
+						break;
+					}
+					case 14: // Nest Inversion (K-step)
+					{
+						mde = 1.0f;
+						float3 cc = (float3){0.0f, 0.0f, 0.0f};
+						float rk = R;
+						for (int k = 0; k < mut->invNSteps && k < 8; k++)
+						{
+							float3 delta = zz - cc;
+							float dk = dot(delta, delta); if (dk < 1e-21f) dk = 1e-21f;
+							float mk = rk * rk / dk;
+							zz = cc + delta * mk;
+							mde *= mk;
+							cc.x += mut->invCenter2X / (float)(k + 1);
+							cc.y += mut->invCenter2Y / (float)(k + 1);
+							cc.z += mut->invCenter2Z / (float)(k + 1);
+							rk *= 0.8f;
+						}
+						mde = fabs(mde);
+						break;
+					}
+					case 15: // Apollonian Inversion
+					{
+						float3 centers[4];
+						centers[0] = (float3){a, 0.0f, 0.0f};
+						centers[1] = (float3){-a, 0.0f, 0.0f};
+						centers[2] = (float3){0.0f, a, 0.0f};
+						centers[3] = (float3){0.0f, 0.0f, a};
+						float minD = 1e20f; int nearest = 0;
+						for (int k = 0; k < 4; k++)
+						{
+							float d = dot(zz - centers[k], zz - centers[k]);
+							if (d < minD) { minD = d; nearest = k; }
+						}
+						if (minD < 1e-21f) minD = 1e-21f;
+						mde = R * R / minD;
+						zz = centers[nearest] + (zz - centers[nearest]) * mde;
+						break;
+					}
+					case 16: // Ford Circle Inversion
+					{
+						float q = max(1.0f, a);
+						float cr = 1.0f / (2.0f * q * q);
+						float3 fc = (float3){1.0f / q, cr, 0.0f};
+						float d = dot(zz - fc, zz - fc); if (d < 1e-21f) d = 1e-21f;
+						mde = cr * cr / d;
+						zz = fc + (zz - fc) * mde;
+						break;
+					}
+					case 17: // Schottky Group Inversion
+					{
+						float3 c1 = (float3){a, 0.0f, 0.0f};
+						float3 c2 = (float3){-a, 0.0f, 0.0f};
+						float d1 = dot(zz - c1, zz - c1); if (d1 < 1e-21f) d1 = 1e-21f;
+						float d2 = dot(zz - c2, zz - c2); if (d2 < 1e-21f) d2 = 1e-21f;
+						if (d1 < d2) { mde = R * R / d1; zz = c1 + (zz - c1) * mde; }
+						else { mde = R * R / d2; zz = c2 + (zz - c2) * mde; }
+						break;
+					}
+					case 18: // Fuchsian Inversion
+					{
+						float cz_d = c * zz.x + 1.0f;
+						float denom = cz_d * cz_d + c * c * zz.y * zz.y;
+						if (denom < 1e-21f) denom = 1e-21f;
+						mde = 1.0f / denom;
+						float nx = (a * zz.x + b) * cz_d + a * c * zz.y * zz.y;
+						float ny = zz.y * (a - b * c);
+						zz.x = nx * mde; zz.y = ny * mde;
+						break;
+					}
+					case 19: // Modular Inversion (SL(2,Z))
+					{
+						rr = zz.x * zz.x + zz.y * zz.y;
+						if (rr < 1e-21f) rr = 1e-21f;
+						if (rr < 1.0f) { mde = 1.0f / rr; zz.x *= mde; zz.y *= -mde; }
+						else { mde = 1.0f; }
+						if (zz.x > 0.5f) zz.x -= 1.0f;
+						if (zz.x < -0.5f) zz.x += 1.0f;
+						break;
+					}
+					case 20: // Hecke Inversion
+					{
+						float lambda = 2.0f * native_cos(M_PI_F / a);
+						rr = zz.x * zz.x + zz.y * zz.y;
+						if (rr < 1e-21f) rr = 1e-21f;
+						if (rr < 1.0f) { mde = 1.0f / rr; zz.x *= mde; zz.y *= -mde; }
+						else { mde = 1.0f; }
+						if (zz.x > lambda * 0.5f) zz.x -= lambda;
+						if (zz.x < -lambda * 0.5f) zz.x += lambda;
+						break;
+					}
+					case 21: // Inversion with Pre-Rotation (already handled by invPreRotMatrix)
+					{
+						rr = dot(zz, zz); if (rr < 1e-21f) rr = 1e-21f;
+						mde = R * R / rr; zz *= mde;
+						break;
+					}
+					case 22: // Inversion with Pre-Shear
+					{
+						zz.x += mut->invAmplitude * zz.y;
+						rr = dot(zz, zz); if (rr < 1e-21f) rr = 1e-21f;
+						mde = R * R / rr; zz *= mde;
+						zz.x -= mut->invAmplitude * zz.y;
+						break;
+					}
+					case 23: // Inversion with Pre-Fold
+					{
+						float lim = a;
+						if (zz.x > lim) zz.x = 2.0f * lim - zz.x;
+						if (zz.x < -lim) zz.x = -2.0f * lim - zz.x;
+						if (zz.y > lim) zz.y = 2.0f * lim - zz.y;
+						if (zz.y < -lim) zz.y = -2.0f * lim - zz.y;
+						if (zz.z > lim) zz.z = 2.0f * lim - zz.z;
+						if (zz.z < -lim) zz.z = -2.0f * lim - zz.z;
+						rr = dot(zz, zz); if (rr < 1e-21f) rr = 1e-21f;
+						mde = R * R / rr; zz *= mde;
+						break;
+					}
+					case 24: // Inversion with Pre-Abs
+					{
+						zz.x = fabs(zz.x); zz.y = fabs(zz.y); zz.z = fabs(zz.z);
+						rr = dot(zz, zz); if (rr < 1e-21f) rr = 1e-21f;
+						mde = R * R / rr; zz *= mde;
+						break;
+					}
+					case 25: // Inversion with Post-Scale Pulse
+					{
+						rr = dot(zz, zz); if (rr < 1e-21f) rr = 1e-21f;
+						mde = R * R / rr; zz *= mde;
+						float pulse = sc * (1.0f + 0.1f * native_sin((float)i * mut->invFrequency));
+						zz *= pulse; mde *= fabs(pulse);
+						break;
+					}
+					case 26: // Inversion with Post-Offset Wave
+					{
+						rr = dot(zz, zz); if (rr < 1e-21f) rr = 1e-21f;
+						mde = R * R / rr; zz *= mde;
+						float freq = mut->invFrequency;
+						zz.x += mut->invAmplitude * native_sin(freq * zz.x);
+						zz.y += mut->invAmplitude * native_sin(freq * zz.y);
+						zz.z += mut->invAmplitude * native_sin(freq * zz.z);
+						break;
+					}
+					case 27: // Inversion with Iterative Angle
+					{
+						rr = dot(zz, zz); if (rr < 1e-21f) rr = 1e-21f;
+						mde = R * R / rr; zz *= mde;
+						float ga = (float)i * 2.399963f; // golden angle
+						float cosA = native_cos(ga), sinA = native_sin(ga);
+						float tx = zz.x * cosA - zz.y * sinA;
+						zz.y = zz.x * sinA + zz.y * cosA;
+						zz.x = tx;
+						break;
+					}
+					case 28: // DE-Aware Inversion
+					{
+						if (aux.DE < mut->invThreshold)
+						{
+							rr = dot(zz, zz); if (rr < 1e-21f) rr = 1e-21f;
+							mde = R * R / rr; zz *= mde;
+						}
+						break;
+					}
+					case 29: // Color-Trigger Inversion
+					{
+						rr = dot(zz, zz); if (rr < 1e-21f) rr = 1e-21f;
+						mde = R * R / rr; zz *= mde;
+						aux.color += mut->invColorFactor * fabs(mde - 1.0f);
+						break;
+					}
+					case 30: // Orbit-Trap Inversion
+					{
+						rr = dot(zz, zz); if (rr < 1e-21f) rr = 1e-21f;
+						mde = R * R / rr; zz *= mde;
+						float trap = length(zz);
+						if (trap < aux.color) aux.color = trap;
+						break;
+					}
+					case 31: // Quaternion Inversion
+					{
+						float4 q = (float4){zz.x, zz.y, zz.z, z.w};
+						float qn = dot(q, q); if (qn < 1e-21f) qn = 1e-21f;
+						mde = 1.0f / qn;
+						q = (float4){q.x, -q.y, -q.z, -q.w} * mde;
+						zz = q.xyz; z.w = q.w;
+						break;
+					}
+					case 32: // Dual Complex Inversion
+					{
+						float n1 = zz.x * zz.x + zz.y * zz.y; if (n1 < 1e-21f) n1 = 1e-21f;
+						float n2 = zz.z * zz.z + z.w * z.w; if (n2 < 1e-21f) n2 = 1e-21f;
+						zz.x /= n1; zz.y /= -n1;
+						zz.z /= n2; z.w /= -n2;
+						mde = max(1.0f / n1, 1.0f / n2);
+						break;
+					}
+					case 33: // Split Complex Inversion
+					{
+						float denom = zz.x * zz.x - zz.y * zz.y;
+						if (fabs(denom) < 1e-21f) denom = 1e-21f;
+						mde = 1.0f / fabs(denom);
+						zz.x = zz.x / denom; zz.y = -zz.y / denom;
+						break;
+					}
+					case 34: // Dual Number Inversion
+					{
+						if (fabs(zz.x) < 1e-21f) zz.x = 1e-21f;
+						mde = 1.0f / (zz.x * zz.x);
+						float ox = 1.0f / zz.x;
+						float oy = -zz.y / (zz.x * zz.x);
+						zz.x = ox; zz.y = oy;
+						break;
+					}
+					case 35: // Octonion Inversion
+					{
+						float on = dot(zz, zz) + z.w * z.w;
+						if (on < 1e-21f) on = 1e-21f;
+						mde = 1.0f / on;
+						zz *= mde; z.w *= -mde;
+						zz.y = -zz.y; zz.z = -zz.z;
+						break;
+					}
+					case 36: // Sedenion Inversion
+					{
+						float sn = dot(zz, zz) + z.w * z.w;
+						if (sn < 1e-21f) sn = 1e-21f;
+						mde = 1.0f / sn;
+						zz = (float3){zz.x, -zz.y, -zz.z} * mde;
+						z.w *= -mde;
+						break;
+					}
+					case 37: // Clifford Algebra Inversion
+					{
+						rr = dot(zz, zz); if (rr < 1e-21f) rr = 1e-21f;
+						mde = 1.0f / rr;
+						zz *= mde;
+						break;
+					}
+					case 38: // Grassmann Algebra Inversion
+					{
+						float hodge = zz.x * (zz.y * zz.z);
+						if (fabs(hodge) < 1e-21f) hodge = 1e-21f;
+						mde = 1.0f / fabs(hodge);
+						zz.x = (zz.y * zz.z) * mde;
+						zz.y = (zz.x * zz.z) * mde;
+						zz.z = (zz.x * zz.y) * mde;
+						break;
+					}
+					case 39: // Non-Commutative Inversion
+					{
+						float detA = zz.x * zz.y - zz.z * zz.z;
+						if (fabs(detA) < 1e-21f) detA = 1e-21f;
+						mde = 1.0f / fabs(detA);
+						float tx = zz.y * mde;
+						zz.y = zz.x * mde;
+						zz.x = tx;
+						zz.z = -zz.z * mde;
+						break;
+					}
+					case 40: // Probabilistic Inversion
+					{
+						float hash = fabs(native_sin(zz.x * 12.9898f + zz.y * 78.233f + zz.z * 45.164f) * 43758.5453f);
+						hash = hash - floor(hash);
+						float p = mut->invWeight;
+						rr = dot(zz, zz); if (rr < 1e-21f) rr = 1e-21f;
+						if (hash < p) { mde = R * R / rr; zz *= mde; }
+						else { mde = 1.0f; }
+						mde = (1.0f - p) + p * mde;
+						break;
+					}
+					case 41: // Inversion × Spherical Fold
+					{
+						rr = dot(zz, zz);
+						float minR2 = mut->invMinR * mut->invMinR;
+						float maxR2 = mut->invMaxR * mut->invMaxR;
+						if (rr < minR2) mde = maxR2 / minR2;
+						else if (rr < maxR2) mde = maxR2 / rr;
+						else mde = 1.0f;
+						zz *= mde;
+						break;
+					}
+					case 42: // Inversion × Box Fold
+					{
+						float lim = a;
+						if (zz.x > lim) zz.x = 2.0f * lim - zz.x;
+						if (zz.x < -lim) zz.x = -2.0f * lim - zz.x;
+						if (zz.y > lim) zz.y = 2.0f * lim - zz.y;
+						if (zz.y < -lim) zz.y = -2.0f * lim - zz.y;
+						if (zz.z > lim) zz.z = 2.0f * lim - zz.z;
+						if (zz.z < -lim) zz.z = -2.0f * lim - zz.z;
+						rr = dot(zz, zz); if (rr < 1e-21f) rr = 1e-21f;
+						mde = R * R / rr; zz *= mde;
+						lim = b;
+						if (zz.x > lim) zz.x = 2.0f * lim - zz.x;
+						if (zz.x < -lim) zz.x = -2.0f * lim - zz.x;
+						if (zz.y > lim) zz.y = 2.0f * lim - zz.y;
+						if (zz.y < -lim) zz.y = -2.0f * lim - zz.y;
+						if (zz.z > lim) zz.z = 2.0f * lim - zz.z;
+						if (zz.z < -lim) zz.z = -2.0f * lim - zz.z;
+						break;
+					}
+					case 43: // Inversion × Möbius
+					{
+						float cz_d2 = c * zz.x + 1.0f;
+						float denom2 = cz_d2 * cz_d2 + c * c * zz.y * zz.y;
+						if (denom2 < 1e-21f) denom2 = 1e-21f;
+						float mobMde = (a * 1.0f - b * c) / denom2;
+						zz.x = (a * zz.x + b) / (c * zz.x + 1.0f + 1e-21f);
+						zz.y = zz.y * mobMde;
+						rr = dot(zz, zz); if (rr < 1e-21f) rr = 1e-21f;
+						mde = R * R / rr; zz *= mde;
+						mde *= fabs(mobMde);
+						break;
+					}
+					case 44: // Inversion × Kleinian
+					{
+						float3 dynC = zz * mut->invAmplitude;
+						rr = dot(zz - dynC, zz - dynC); if (rr < 1e-21f) rr = 1e-21f;
+						mde = R * R / rr;
+						zz = dynC + (zz - dynC) * mde;
+						break;
+					}
+					case 45: // Inversion × Julia
+					{
+						float3 jc = (float3){mut->invCenter2X, mut->invCenter2Y, mut->invCenter2Z};
+						rr = dot(zz - jc, zz - jc); if (rr < 1e-21f) rr = 1e-21f;
+						mde = R * R / rr;
+						zz = jc + (zz - jc) * mde;
+						break;
+					}
+					case 46: // Inversion × IFS
+					{
+						float3 ifs_c = (float3){a, b, c};
+						float d = dot(zz - ifs_c, zz - ifs_c); if (d < 1e-21f) d = 1e-21f;
+						mde = R * R / d;
+						zz = ifs_c + (zz - ifs_c) * mde;
+						zz.x = fabs(zz.x); zz.y = fabs(zz.y);
+						break;
+					}
+					case 47: // Inversion × Loxodromic
+					{
+						rr = dot(zz, zz); if (rr < 1e-21f) rr = 1e-21f;
+						mde = R * R / rr; zz *= mde;
+						float theta = mut->invAngle * M_PI_F / 180.0f;
+						float cosT = native_cos(theta), sinT = native_sin(theta);
+						float tx2 = zz.x * cosT - zz.y * sinT;
+						zz.y = zz.x * sinT + zz.y * cosT;
+						zz.x = tx2;
+						zz *= sc;
+						mde *= fabs(sc);
+						break;
+					}
+					case 48: // Inversion × Parabolic
+					{
+						zz.x += mut->invAmplitude;
+						zz.y += mut->invAmplitude * zz.x * zz.x;
+						rr = dot(zz, zz); if (rr < 1e-21f) rr = 1e-21f;
+						mde = R * R / rr; zz *= mde;
+						break;
+					}
+					case 49: // Inversion × Elliptic
+					{
+						float theta = mut->invAngle * M_PI_F / 180.0f;
+						float cosT = native_cos(theta), sinT = native_sin(theta);
+						float tx3 = zz.x * cosT - zz.y * sinT;
+						zz.y = zz.x * sinT + zz.y * cosT;
+						zz.x = tx3;
+						rr = dot(zz, zz); if (rr < 1e-21f) rr = 1e-21f;
+						mde = R * R / rr; zz *= mde;
+						break;
+					}
+					case 50: // Inversion × Hyperbolic Translation (Poincaré ball)
+					{
+						float3 aa = (float3){mut->invCenter2X, mut->invCenter2Y, mut->invCenter2Z};
+						float an = dot(aa, aa);
+						float za = dot(zz, aa);
+						float zn = dot(zz, zz);
+						float denom3 = 1.0f + 2.0f * za + an * zn;
+						if (fabs(denom3) < 1e-21f) denom3 = 1e-21f;
+						zz = (zz * (1.0f + 2.0f * za + an) + aa * (1.0f + zn)) / denom3;
+						mde = (1.0f - an) / (denom3 * denom3);
+						rr = dot(zz, zz); if (rr < 1e-21f) rr = 1e-21f;
+						float invMde = R * R / rr;
+						zz *= invMde;
+						mde *= invMde;
+						mde = fabs(mde);
+						break;
+					}
+				}
+				zz.x += mut->invCenterX; zz.y += mut->invCenterY; zz.z += mut->invCenterZ;
+				if (mut->invPreRotX != 0.0f || mut->invPreRotY != 0.0f || mut->invPreRotZ != 0.0f)
+				{
+					matrix33 invRot;
+					invRot.m1 = (float3){mut->invPreRotMatrix.m1.x, mut->invPreRotMatrix.m2.x, mut->invPreRotMatrix.m3.x};
+					invRot.m2 = (float3){mut->invPreRotMatrix.m1.y, mut->invPreRotMatrix.m2.y, mut->invPreRotMatrix.m3.y};
+					invRot.m3 = (float3){mut->invPreRotMatrix.m1.z, mut->invPreRotMatrix.m2.z, mut->invPreRotMatrix.m3.z};
+					zz = Matrix33MulFloat3(invRot, zz);
+				}
+				z.xyz = zz;
+				aux.DE *= fabs(mde);
+			}
+
 			// Fold injection (pre or both)
 			if (i >= mut->foldIterStart && i < mut->foldIterStop
 				&& mut->foldType != 0 && (mut->foldPosition == 0 || mut->foldPosition == 2))
@@ -2066,6 +2606,457 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 				z.x += mut->postOffsetX; z.y += mut->postOffsetY; z.z += mut->postOffsetZ;
 			}
 			if (mut->zMix < 1.0f) { float m = mut->zMix; z = z * m + preMutZ * (1.0f - m); }
+
+			// v7.6 — Clip system (per-section iteration range)
+			if (i >= mut->clipIterStart && i < mut->clipIterStop && mut->clipType != 0)
+			{
+				float3 cz = z.xyz;
+				if (mut->clipPreRotX != 0.0f || mut->clipPreRotY != 0.0f || mut->clipPreRotZ != 0.0f)
+					cz = Matrix33MulFloat3(mut->clipPreRotMatrix, cz);
+				cz.x -= mut->clipCenterX; cz.y -= mut->clipCenterY; cz.z -= mut->clipCenterZ;
+				float clipDist = 1e10f;
+				float sx = mut->clipSizeX, sy = mut->clipSizeY, sz = mut->clipSizeZ;
+				float cr = mut->clipRadius, cR = mut->clipMajorRadius;
+				float ca = mut->clipParamA, cb = mut->clipParamB, cc = mut->clipParamC;
+				switch (mut->clipType)
+				{
+					case 1: // Ellipsoid Clip
+					{
+						clipDist = native_sqrt((cz.x/sx)*(cz.x/sx) + (cz.y/sy)*(cz.y/sy) + (cz.z/sz)*(cz.z/sz)) - 1.0f;
+						break;
+					}
+					case 2: // Torus Clip
+					{
+						float rxy = native_sqrt(cz.x * cz.x + cz.y * cz.y) - cR;
+						clipDist = native_sqrt(rxy * rxy + cz.z * cz.z) - cr;
+						break;
+					}
+					case 3: // Cylinder (infinite) Clip
+					{
+						clipDist = native_sqrt(cz.x * cz.x + cz.y * cz.y) - cr;
+						break;
+					}
+					case 4: // Cone Clip
+					{
+						float tanAlpha = native_tan(mut->clipAngle * M_PI_F / 180.0f);
+						clipDist = native_sqrt(cz.x * cz.x + cz.y * cz.y) - tanAlpha * fabs(cz.z);
+						break;
+					}
+					case 5: // Hyperboloid Clip
+					{
+						clipDist = (cz.x/sx)*(cz.x/sx) + (cz.y/sy)*(cz.y/sy) - (cz.z/sz)*(cz.z/sz) - 1.0f;
+						break;
+					}
+					case 6: // Paraboloid Clip
+					{
+						clipDist = cz.x * cz.x + cz.y * cz.y - ca * cz.z;
+						break;
+					}
+					case 7: // Saddle Clip
+					{
+						clipDist = (cz.x/sx)*(cz.x/sx) - (cz.y/sy)*(cz.y/sy) - cz.z;
+						break;
+					}
+					case 8: // Spiral Clip
+					{
+						float r2d = native_sqrt(cz.x * cz.x + cz.y * cz.y);
+						float theta = atan2(cz.y, cz.x);
+						clipDist = r2d - ca * native_exp(cb * theta);
+						break;
+					}
+					case 9: // Wave Clip
+					{
+						float freq = mut->clipFrequency;
+						float amp = mut->clipAmplitude;
+						clipDist = cz.z - amp * native_sin(freq * cz.x) * native_sin(freq * cz.y);
+						break;
+					}
+					case 10: // Noise Clip
+					{
+						float n = native_sin(cz.x * 12.9898f + cz.y * 78.233f) * 43758.5453f;
+						n = (n - floor(n)) * 2.0f - 1.0f;
+						float n2 = native_sin(cz.y * 19.8672f + cz.z * 53.471f) * 28947.3125f;
+						n2 = (n2 - floor(n2)) * 2.0f - 1.0f;
+						clipDist = cz.z - mut->clipAmplitude * (n + n2) * 0.5f;
+						break;
+					}
+					case 11: // Union (OR) Clip
+					{
+						float d1 = native_sqrt((cz.x/sx)*(cz.x/sx) + (cz.y/sy)*(cz.y/sy) + (cz.z/sz)*(cz.z/sz)) - 1.0f;
+						float d2 = native_sqrt(cz.x*cz.x + cz.y*cz.y + cz.z*cz.z) - cr;
+						clipDist = min(d1, d2);
+						break;
+					}
+					case 12: // Difference (A - B) Clip
+					{
+						float dA = native_sqrt((cz.x/sx)*(cz.x/sx) + (cz.y/sy)*(cz.y/sy) + (cz.z/sz)*(cz.z/sz)) - 1.0f;
+						float dB = native_sqrt(cz.x*cz.x + cz.y*cz.y + cz.z*cz.z) - cr;
+						clipDist = max(dA, -dB);
+						break;
+					}
+					case 13: // XOR Clip
+					{
+						float dA2 = native_sqrt((cz.x/sx)*(cz.x/sx) + (cz.y/sy)*(cz.y/sy) + (cz.z/sz)*(cz.z/sz)) - 1.0f;
+						float dB2 = native_sqrt(cz.x*cz.x + cz.y*cz.y + cz.z*cz.z) - cr;
+						clipDist = max(min(dA2, dB2), -max(dA2, dB2));
+						break;
+					}
+					case 14: // Smooth Union Clip
+					{
+						float d1s = native_sqrt((cz.x/sx)*(cz.x/sx) + (cz.y/sy)*(cz.y/sy) + (cz.z/sz)*(cz.z/sz)) - 1.0f;
+						float d2s = native_sqrt(cz.x*cz.x + cz.y*cz.y + cz.z*cz.z) - cr;
+						float k = mut->clipSmoothK;
+						float h = clamp(0.5f + 0.5f * (d2s - d1s) / k, 0.0f, 1.0f);
+						clipDist = mix(d2s, d1s, h) - k * h * (1.0f - h);
+						break;
+					}
+					case 15: // Smooth Difference Clip
+					{
+						float dAs = native_sqrt((cz.x/sx)*(cz.x/sx) + (cz.y/sy)*(cz.y/sy) + (cz.z/sz)*(cz.z/sz)) - 1.0f;
+						float dBs = native_sqrt(cz.x*cz.x + cz.y*cz.y + cz.z*cz.z) - cr;
+						float k2 = mut->clipSmoothK;
+						float h2 = clamp(0.5f - 0.5f * (dAs + dBs) / k2, 0.0f, 1.0f);
+						clipDist = mix(dAs, -dBs, h2) + k2 * h2 * (1.0f - h2);
+						break;
+					}
+					case 16: // Chain Clip (3 stages)
+					{
+						float dc1 = native_sqrt(cz.x*cz.x + cz.y*cz.y + cz.z*cz.z) - cr;
+						float dc2 = max(fabs(cz.x) - sx, max(fabs(cz.y) - sy, fabs(cz.z) - sz));
+						float dc3 = native_sqrt(cz.x*cz.x + cz.y*cz.y) - cr * 0.5f;
+						clipDist = max(dc1, max(dc2, dc3));
+						break;
+					}
+					case 17: // Array (Grid) Clip
+					{
+						float3 rp = cz;
+						if (sx > 0.001f) rp.x = fmod(cz.x + sx * 0.5f, sx) - sx * 0.5f;
+						if (sy > 0.001f) rp.y = fmod(cz.y + sy * 0.5f, sy) - sy * 0.5f;
+						if (sz > 0.001f) rp.z = fmod(cz.z + sz * 0.5f, sz) - sz * 0.5f;
+						clipDist = native_sqrt(rp.x*rp.x + rp.y*rp.y + rp.z*rp.z) - cr;
+						break;
+					}
+					case 18: // Random Array Clip
+					{
+						float3 cell;
+						cell.x = (sx > 0.001f) ? floor(cz.x / sx) : 0.0f;
+						cell.y = (sy > 0.001f) ? floor(cz.y / sy) : 0.0f;
+						cell.z = (sz > 0.001f) ? floor(cz.z / sz) : 0.0f;
+						float h = fabs(native_sin(cell.x * 127.1f + cell.y * 311.7f + cell.z * 74.7f) * 43758.5453f);
+						h = h - floor(h);
+						float3 rp2 = cz;
+						if (sx > 0.001f) rp2.x = fmod(cz.x + sx * 0.5f, sx) - sx * 0.5f;
+						if (sy > 0.001f) rp2.y = fmod(cz.y + sy * 0.5f, sy) - sy * 0.5f;
+						if (sz > 0.001f) rp2.z = fmod(cz.z + sz * 0.5f, sz) - sz * 0.5f;
+						clipDist = native_sqrt(rp2.x*rp2.x + rp2.y*rp2.y + rp2.z*rp2.z) - cr * (0.5f + h);
+						break;
+					}
+					case 19: // Hierarchical Clip
+					{
+						float coarse = max(fabs(cz.x) - sx * 2.0f, max(fabs(cz.y) - sy * 2.0f, fabs(cz.z) - sz * 2.0f));
+						float fine = native_sqrt(cz.x*cz.x + cz.y*cz.y + cz.z*cz.z) - cr;
+						clipDist = (coarse < 0.0f) ? fine : coarse;
+						break;
+					}
+					case 20: // Fractal Clip
+					{
+						float3 fz = cz;
+						float fscale = 1.0f;
+						for (int k = 0; k < 4; k++)
+						{
+							fz = fabs(fz) * 2.0f - (float3){ca, ca, ca};
+							fscale *= 2.0f;
+						}
+						clipDist = (length(fz) - cr) / fscale;
+						break;
+					}
+					case 21: // Clip with Pre-Rotation (handled by clipPreRotMatrix)
+					{
+						clipDist = native_sqrt(cz.x*cz.x + cz.y*cz.y + cz.z*cz.z) - cr;
+						break;
+					}
+					case 22: // Clip with Pre-Scale
+					{
+						float3 scaled = cz;
+						scaled.x *= sx; scaled.y *= sy; scaled.z *= sz;
+						clipDist = native_sqrt(scaled.x*scaled.x + scaled.y*scaled.y + scaled.z*scaled.z) - cr;
+						break;
+					}
+					case 23: // Clip with Pre-Shear
+					{
+						float3 sheared = cz;
+						sheared.x += mut->clipAmplitude * cz.y;
+						clipDist = native_sqrt(sheared.x*sheared.x + sheared.y*sheared.y + sheared.z*sheared.z) - cr;
+						break;
+					}
+					case 24: // Clip with Pre-Fold
+					{
+						float3 folded = cz;
+						float lim = ca;
+						if (folded.x > lim) folded.x = 2.0f * lim - folded.x;
+						if (folded.x < -lim) folded.x = -2.0f * lim - folded.x;
+						if (folded.y > lim) folded.y = 2.0f * lim - folded.y;
+						if (folded.y < -lim) folded.y = -2.0f * lim - folded.y;
+						if (folded.z > lim) folded.z = 2.0f * lim - folded.z;
+						if (folded.z < -lim) folded.z = -2.0f * lim - folded.z;
+						clipDist = native_sqrt(folded.x*folded.x + folded.y*folded.y + folded.z*folded.z) - cr;
+						break;
+					}
+					case 25: // Clip with Pre-Abs
+					{
+						float3 absed = cz;
+						absed.x = fabs(absed.x); absed.y = fabs(absed.y); absed.z = fabs(absed.z);
+						clipDist = native_sqrt(absed.x*absed.x + absed.y*absed.y + absed.z*absed.z) - cr;
+						break;
+					}
+					case 26: // Clip with Post-Offset
+					{
+						clipDist = native_sqrt(cz.x*cz.x + cz.y*cz.y + cz.z*cz.z) - cr;
+						float pulse = 1.0f + 0.1f * native_sin((float)i * mut->clipFrequency);
+						clipDist *= pulse;
+						break;
+					}
+					case 27: // Clip with Post-Scale
+					{
+						clipDist = native_sqrt(cz.x*cz.x + cz.y*cz.y + cz.z*cz.z) - cr;
+						float scaleFactor = ca * (1.0f + 0.1f * (float)i / 250.0f);
+						clipDist *= scaleFactor;
+						break;
+					}
+					case 28: // Clip with Color-Depth
+					{
+						clipDist = native_sqrt(cz.x*cz.x + cz.y*cz.y + cz.z*cz.z) - cr;
+						if (clipDist < 0.0f) aux.color += fabs(clipDist) * mut->clipAmplitude;
+						break;
+					}
+					case 29: // Clip with Orbit-Trap
+					{
+						clipDist = native_sqrt(cz.x*cz.x + cz.y*cz.y + cz.z*cz.z) - cr;
+						float trap = length(cz);
+						if (trap < aux.color) aux.color = trap;
+						break;
+					}
+					case 30: // Clip with DE-Visualization
+					{
+						clipDist = native_sqrt(cz.x*cz.x + cz.y*cz.y + cz.z*cz.z) - cr;
+						aux.color = native_log(1.0f + fabs(aux.dist)) * mut->clipAmplitude;
+						break;
+					}
+					case 31: // Star (n-point) Clip
+					{
+						float r2d = native_sqrt(cz.x * cz.x + cz.y * cz.y);
+						float theta = atan2(cz.y, cz.x);
+						int n = mut->clipNPoints;
+						float starR = cr * (1.0f + mut->clipAmplitude * native_cos((float)n * theta));
+						clipDist = r2d - starR;
+						break;
+					}
+					case 32: // Heart Clip
+					{
+						float x2h = cz.x * cz.x + cz.y * cz.y;
+						clipDist = (x2h - 1.0f) * (x2h - 1.0f) * (x2h - 1.0f) - cz.x * cz.x * cz.y * cz.y * cz.y;
+						break;
+					}
+					case 33: // Superformula Clip
+					{
+						float r2d2 = native_sqrt(cz.x * cz.x + cz.y * cz.y);
+						float theta2 = atan2(cz.y, cz.x);
+						float m = (float)mut->clipNPoints;
+						float n1 = ca, n2 = cb, n3 = cc;
+						float t = m * theta2 / 4.0f;
+						float r_sf = native_powr(
+							native_powr(fabs(native_cos(t) / sx), n2) +
+							native_powr(fabs(native_sin(t) / sy), n3), -1.0f / n1);
+						clipDist = r2d2 - r_sf * cr;
+						break;
+					}
+					case 34: // Gear Clip
+					{
+						float r2d3 = native_sqrt(cz.x * cz.x + cz.y * cz.y);
+						float theta3 = atan2(cz.y, cz.x);
+						int ng = mut->clipNPoints;
+						float gearR = cr * (1.0f + 0.1f * tanh(native_sin((float)ng * theta3)));
+						clipDist = r2d3 - gearR;
+						break;
+					}
+					case 35: // Spiral Galaxy Clip
+					{
+						float r2d4 = native_sqrt(cz.x * cz.x + cz.y * cz.y);
+						float theta4 = atan2(cz.y, cz.x);
+						int ns = mut->clipNPoints;
+						float spiralR = ca * native_exp(-cb * theta4) * (1.0f + cc * native_cos((float)ns * theta4));
+						clipDist = r2d4 - spiralR;
+						break;
+					}
+					case 36: // Voronoi Clip
+					{
+						float3 seeds[4];
+						seeds[0] = (float3){ca, 0.0f, 0.0f};
+						seeds[1] = (float3){-ca, cb, 0.0f};
+						seeds[2] = (float3){0.0f, -ca, cc};
+						seeds[3] = (float3){cb, cc, -ca};
+						float minVD = 1e20f;
+						for (int k = 0; k < 4; k++)
+						{
+							float vd = length(cz - seeds[k]);
+							if (vd < minVD) minVD = vd;
+						}
+						clipDist = minVD - cr;
+						break;
+					}
+					case 37: // Delaunay Clip
+					{
+						float3 edges[3];
+						edges[0] = (float3){ca, 0.0f, 0.0f};
+						edges[1] = (float3){-ca * 0.5f, ca * 0.866f, 0.0f};
+						edges[2] = (float3){-ca * 0.5f, -ca * 0.866f, 0.0f};
+						float minED = 1e20f;
+						for (int k = 0; k < 3; k++)
+						{
+							float3 e = edges[(k + 1) % 3] - edges[k];
+							float3 p = cz - edges[k];
+							float t = clamp(dot(p, e) / dot(e, e), 0.0f, 1.0f);
+							float ed = length(p - e * t);
+							if (ed < minED) minED = ed;
+						}
+						clipDist = minED - cr;
+						break;
+					}
+					case 38: // L-System Clip
+					{
+						float3 lz = cz;
+						float lscale = 1.0f;
+						for (int k = 0; k < 3; k++)
+						{
+							lz = fabs(lz);
+							if (lz.x < lz.y) { float t = lz.x; lz.x = lz.y; lz.y = t; }
+							if (lz.x < lz.z) { float t = lz.x; lz.x = lz.z; lz.z = t; }
+							if (lz.y < lz.z) { float t = lz.y; lz.y = lz.z; lz.z = t; }
+							lz = lz * ca - (float3){cb, cb, cb} * (ca - 1.0f);
+							lscale *= ca;
+						}
+						clipDist = (length(lz) - cr) / lscale;
+						break;
+					}
+					case 39: // Julia Set Clip (2D extruded)
+					{
+						float jx = cz.x, jy = cz.y;
+						for (int k = 0; k < 8; k++)
+						{
+							float tx = jx * jx - jy * jy + ca;
+							jy = 2.0f * jx * jy + cb;
+							jx = tx;
+							if (jx * jx + jy * jy > 4.0f) break;
+						}
+						float jDist = (jx * jx + jy * jy > 4.0f) ? -cr : cr;
+						clipDist = max(jDist, fabs(cz.z) - sz);
+						break;
+					}
+					case 40: // Mandelbrot Set Clip (2D extruded)
+					{
+						float mx = 0.0f, my = 0.0f;
+						for (int k = 0; k < 8; k++)
+						{
+							float tx2 = mx * mx - my * my + cz.x;
+							my = 2.0f * mx * my + cz.y;
+							mx = tx2;
+							if (mx * mx + my * my > 4.0f) break;
+						}
+						float mDist = (mx * mx + my * my > 4.0f) ? -cr : cr;
+						clipDist = max(mDist, fabs(cz.z) - sz);
+						break;
+					}
+					case 41: // 4D Hypercube Clip
+					{
+						clipDist = max(max(fabs(cz.x), fabs(cz.y)), max(fabs(cz.z), fabs(z.w))) - cr;
+						break;
+					}
+					case 42: // 4D Hypersphere Clip
+					{
+						clipDist = native_sqrt(cz.x*cz.x + cz.y*cz.y + cz.z*cz.z + z.w*z.w) - cr;
+						break;
+					}
+					case 43: // Time-Dependent Clip
+					{
+						float time = (float)i * mut->clipFrequency;
+						float tR = cr * (1.0f + mut->clipAmplitude * native_sin(time));
+						clipDist = native_sqrt(cz.x*cz.x + cz.y*cz.y + cz.z*cz.z) - tR;
+						break;
+					}
+					case 44: // Orbit-Dependent Clip
+					{
+						float orbitR = cr * (1.0f + mut->clipAmplitude * native_sin(aux.color * mut->clipFrequency));
+						clipDist = native_sqrt(cz.x*cz.x + cz.y*cz.y + cz.z*cz.z) - orbitR;
+						break;
+					}
+					case 45: // DE-Dependent Clip
+					{
+						float deR = cr * (1.0f + mut->clipAmplitude * native_log(1.0f + fabs(aux.DE)));
+						clipDist = native_sqrt(cz.x*cz.x + cz.y*cz.y + cz.z*cz.z) - deR;
+						break;
+					}
+					case 46: // Color-Dependent Clip
+					{
+						float colR = cr * (1.0f + mut->clipAmplitude * native_sin(aux.color * mut->clipFrequency));
+						clipDist = native_sqrt(cz.x*cz.x + cz.y*cz.y + cz.z*cz.z) - colR;
+						break;
+					}
+					case 47: // Iteration-Dependent Clip
+					{
+						float iterR = cr * (1.0f + mut->clipAmplitude * (float)i / 250.0f);
+						clipDist = native_sqrt(cz.x*cz.x + cz.y*cz.y + cz.z*cz.z) - iterR;
+						break;
+					}
+					case 48: // Random-Dependent Clip
+					{
+						float rh = fabs(native_sin((float)i * 12.9898f + cz.x * 78.233f) * 43758.5453f);
+						rh = rh - floor(rh);
+						float randR = cr * (1.0f + mut->clipAmplitude * (rh - 0.5f));
+						clipDist = native_sqrt(cz.x*cz.x + cz.y*cz.y + cz.z*cz.z) - randR;
+						break;
+					}
+					case 49: // Neural-Dependent Clip (simplified MLP)
+					{
+						float nx = tanh(ca * cz.x + cb * cz.y + cc * cz.z);
+						float ny = tanh(cb * cz.x - ca * cz.y + cc * cz.z);
+						float nz = tanh(cc * cz.x + ca * cz.y - cb * cz.z);
+						clipDist = native_sqrt(nx*nx + ny*ny + nz*nz) - cr;
+						break;
+					}
+					case 50: // Fractal Recursion Clip
+					{
+						float3 rz = cz;
+						float rscale = 1.0f;
+						for (int k = 0; k < 5; k++)
+						{
+							rz = fabs(rz) * 2.0f - (float3){ca, ca, ca};
+							rscale *= 2.0f;
+							float rd = native_sqrt(rz.x*rz.x + rz.y*rz.y + rz.z*rz.z) - cr;
+							rd /= rscale;
+							if (rd < clipDist) clipDist = rd;
+						}
+						break;
+					}
+				}
+				// Apply boolean operation
+				int bop = mut->clipBooleanOp;
+				if (bop == 0) aux.dist = max(aux.dist, clipDist); // Intersection (AND)
+				else if (bop == 1) aux.dist = min(aux.dist, clipDist); // Union (OR)
+				else if (bop == 2) aux.dist = max(aux.dist, -clipDist); // Difference (A-B)
+				else if (bop == 3) aux.dist = max(min(aux.dist, clipDist), -max(aux.dist, clipDist)); // XOR
+				else if (bop == 4) // Smooth union
+				{
+					float kk = mut->clipSmoothK;
+					float hh = clamp(0.5f + 0.5f * (clipDist - aux.dist) / kk, 0.0f, 1.0f);
+					aux.dist = mix(clipDist, aux.dist, hh) - kk * hh * (1.0f - hh);
+				}
+				else if (bop == 5) // Smooth difference
+				{
+					float kk2 = mut->clipSmoothK;
+					float hh2 = clamp(0.5f - 0.5f * (aux.dist + clipDist) / kk2, 0.0f, 1.0f);
+					aux.dist = mix(aux.dist, -clipDist, hh2) + kk2 * hh2 * (1.0f - hh2);
+				}
+			}
 
 			// DE tweak (per-section iteration range)
 			if (i >= mut->deIterStart && i < mut->deIterStop) {

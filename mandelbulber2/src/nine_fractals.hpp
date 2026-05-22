@@ -432,10 +432,41 @@ struct sFormulaMutationParams
 	double juliaFourierC3x, juliaFourierC3y, juliaFourierC3z; // 3rd harmonic
 	double juliaBipolarCRx, juliaBipolarCRy, juliaBipolarCRz; // right-half c
 
+	// v7.6 — Inversion system
+	int inversionType;
+	double invCenterX, invCenterY, invCenterZ;
+	double invRadius;
+	double invParamA, invParamB, invParamC;
+	double invScale;
+	double invAngle, invFrequency, invAmplitude;
+	double invMinR, invMaxR;
+	double invPreRotX, invPreRotY, invPreRotZ;
+	double invCenter2X, invCenter2Y, invCenter2Z;
+	double invRadius2;
+	double invWeight;
+	int invNSteps;
+	double invThreshold, invColorFactor;
+	int invIterStart, invIterStop;
+	// v7.6 — Clip system
+	int clipType;
+	double clipCenterX, clipCenterY, clipCenterZ;
+	double clipSizeX, clipSizeY, clipSizeZ;
+	double clipRadius, clipMajorRadius;
+	double clipAngle, clipAmplitude, clipFrequency;
+	double clipSmoothK;
+	int clipBooleanOp;
+	double clipPreRotX, clipPreRotY, clipPreRotZ;
+	int clipNPoints;
+	double clipParamA, clipParamB, clipParamC;
+	double clipThreshold;
+	int clipIterStart, clipIterStop;
+
 	// Pre-computed rotation matrices (filled in constructor)
 	CRotationMatrix preRotMatrix;
 	CRotationMatrix postRotMatrix;
 	CRotationMatrix juliaCRotMatrix;
+	CRotationMatrix invPreRotMatrix;
+	CRotationMatrix clipPreRotMatrix;
 };
 
 class cNineFractals

@@ -262,10 +262,40 @@ typedef struct
 	cl_float juliaFourierC2x, juliaFourierC2y, juliaFourierC2z;
 	cl_float juliaFourierC3x, juliaFourierC3y, juliaFourierC3z;
 	cl_float juliaBipolarCRx, juliaBipolarCRy, juliaBipolarCRz;
+	// v7.6 — Inversion system
+	cl_int inversionType;
+	cl_float invCenterX, invCenterY, invCenterZ;
+	cl_float invRadius;
+	cl_float invParamA, invParamB, invParamC;
+	cl_float invScale;
+	cl_float invAngle, invFrequency, invAmplitude;
+	cl_float invMinR, invMaxR;
+	cl_float invPreRotX, invPreRotY, invPreRotZ;
+	cl_float invCenter2X, invCenter2Y, invCenter2Z;
+	cl_float invRadius2;
+	cl_float invWeight;
+	cl_int invNSteps;
+	cl_float invThreshold, invColorFactor;
+	cl_int invIterStart, invIterStop;
+	// v7.6 — Clip system
+	cl_int clipType;
+	cl_float clipCenterX, clipCenterY, clipCenterZ;
+	cl_float clipSizeX, clipSizeY, clipSizeZ;
+	cl_float clipRadius, clipMajorRadius;
+	cl_float clipAngle, clipAmplitude, clipFrequency;
+	cl_float clipSmoothK;
+	cl_int clipBooleanOp;
+	cl_float clipPreRotX, clipPreRotY, clipPreRotZ;
+	cl_int clipNPoints;
+	cl_float clipParamA, clipParamB, clipParamC;
+	cl_float clipThreshold;
+	cl_int clipIterStart, clipIterStop;
 	// Pre-computed rotation matrices
 	matrix33 preRotMatrix;
 	matrix33 postRotMatrix;
 	matrix33 juliaCRotMatrix;
+	matrix33 invPreRotMatrix;
+	matrix33 clipPreRotMatrix;
 } sClFormulaMutationParams;
 
 typedef struct
