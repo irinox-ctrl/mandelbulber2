@@ -427,7 +427,7 @@ void InitParams(std::shared_ptr<cParameterContainer> par)
 		par->addParam("mutation_sk_iter_stop", i, 10000, 0, 10000, morphAkima, paramStandard);
 
 		// v7.9 — Abox DE system (300 types)
-		par->addParam("mutation_abox_type", i, 0, 0, 300, morphAkima, paramStandard);
+		par->addParam("mutation_abox_type", i, 0, 0, 400, morphAkima, paramStandard);
 		par->addParam("mutation_ab_factor", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
 		par->addParam("mutation_ab_param_a", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
 		par->addParam("mutation_ab_param_b", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);

@@ -3161,6 +3161,106 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 						case 298: { { double wig=sin(aa*zx)*cos(ab*zy); aux.DE*=(1.0+ac*fabs(wig)); } break; }
 						case 299: { { double hus=exp(-aa*(zx*zx+zy*zy))*sin(ab*r); aux.DE*=(1.0+ac*fabs(hus)); } break; }
 						case 300: { { double mi=sin(aa*r)*sin(ab*r); aux.DE*=(1.0+ac*mi*mi); } break; }
+						case 301: { double psi = sin(aa*r + ab*z.x); aux.DE *= (1.0 + af * psi*psi); break; }
+						case 302: { double psi_f = cos(aa*r); double psi_i = sin(ab*r); double overlap = psi_f*psi_i + 1e-21; double wv = (psi_f*sin(ac*z.x)) / overlap; aux.DE *= (1.0 + af * fabs(wv)); break; }
+						case 303: { double rate = fabs(aa); double variance = z.x*z.x + z.y*z.y; aux.DE *= (1.0 + af * exp(-rate * (double)i * 0.01 * variance)); break; }
+						case 304: { double E = aa*r; double t = (double)i * 0.01; aux.DE *= (1.0 + af * fabs(ab) * sin(E*t)*sin(E*t)); break; }
+						case 305: { double path1 = sin(aa*z.x + ab*z.y); double path2 = sin(ac*z.x - ab*z.y); aux.DE *= (1.0 + af * fabs(path1 - path2)); break; }
+						case 306: { double choice_time = fabs(aa) * 10.0; double theta = (double)i > choice_time ? 1.0 : 0.0; aux.DE *= (1.0 + af * ab * theta); break; }
+						case 307: { double visibility = cos(aa*r)*cos(aa*r); double erased = sin(ab*z.x + ac*z.y); aux.DE *= (1.0 + af * visibility * erased*erased); break; }
+						case 308: { double source = sin(aa*z.x + ab*z.y + ac*z.z); double target = sin(aa*(z.x+ad) + ab*(z.y+ae) + ac*(z.z+aff)); double fidelity = source*target; aux.DE *= (1.0 + af * fabs(fidelity)); break; }
+						case 309: { double psi = sin(aa*r); double clone = sin(aa*r + ab*0.1); double fidelity = 1.0 - (psi-clone)*(psi-clone)*0.5; aux.DE *= (1.0 + af * fmax(fidelity, 0.0)); break; }
+						case 310: { double Iz = sin(aa*z.x)*sin(ab*z.y); double classical = sin(aa*z.x)*0.5; double discord = fabs(Iz - classical); aux.DE *= (1.0 + af * discord); break; }
+						case 311: { double epr = sin(aa*z.x)*cos(ab*z.y) - cos(aa*z.x)*sin(ab*z.y); aux.DE *= (1.0 + af * fabs(epr)); break; }
+						case 312: { double v1 = sin(aa*z.x)*sin(aa*z.y); double v2 = cos(ab*z.y)*cos(ab*z.z); double violation = fabs(v1 + v2) - 1.0; aux.DE *= (1.0 + af * fmax(violation, 0.0)); break; }
+						case 313: { double ca = cos(aa*z.x); double cb = cos(ab*z.y); double corr = ca*cb + ca*sin(ab*z.y) + sin(aa*z.x)*cb - sin(aa*z.x)*sin(ab*z.y); aux.DE *= (1.0 + af * fabs(corr) * 0.25); break; }
+						case 314: { double S = 2.0*sqrt(2.0)*sin(aa*r)*cos(ab*r); double violation = fmax(fabs(S) - 2.0, 0.0); aux.DE *= (1.0 + af * violation); break; }
+						case 315: { double bound = 2.0*sqrt(2.0); double corr = bound * cos(aa*r) * sin(ab*z.x); aux.DE *= (1.0 + af * fabs(corr) / bound); break; }
+						case 316: { double t1 = sin(aa*(double)i*0.1); double t2 = sin(aa*((double)i+ab)*0.1); double temporal = t1*t2 + t1*sin(aa*((double)i+ac)*0.1); aux.DE *= (1.0 + af * fabs(temporal)); break; }
+						case 317: { double rho = sin(aa*z.x)*sin(aa*z.x) + cos(ab*z.y)*cos(ab*z.y); double witness = rho - ac; aux.DE *= (1.0 + af * fmax(-witness, 0.0)); break; }
+						case 318: { double dpsi = aa*cos(aa*r + ab*z.x); double fisher = 4.0*dpsi*dpsi; aux.DE *= (1.0 + af * fisher / (1.0 + fisher)); break; }
+						case 319: { double F_Q = 4.0*(aa*cos(aa*r))*(aa*cos(aa*r)); double bound = 1.0/sqrt(fmax(ab*F_Q, 1e-21)); aux.DE *= (1.0 + af * bound); break; }
+						case 320: { double N = fmax(fabs(aa)*10.0, 1.0); double dphi = 1.0/(N*sqrt(fmax(fabs(ab), 1e-21))); double sql = 1.0/sqrt(N); double gain = (sql*sql)/(dphi*dphi+1e-21); aux.DE *= (1.0 + af * fmin(gain, 10.0) * sin(ac*r)*sin(ac*r)); break; }
+						case 321: { double T2 = fabs(aa) + 0.01; double sensitivity = 1.0/(ab*sqrt(T2)+1e-21); aux.DE *= (1.0 + af * sin(ac*r)*sin(ac*r) * fmin(sensitivity, 10.0)); break; }
+						case 322: { double lambda_r = fabs(aa)+0.1; double NA = fabs(ab)+0.1; double N_ph = fmax(fabs(ac)*10, 1.0); double res = lambda_r/(2.0*NA*sqrt(N_ph)); aux.DE *= (1.0 + af * sin(r/fmax(res,0.01))*sin(r/fmax(res,0.01))); break; }
+						case 323: { double N = fmax(fabs(aa)*5, 1.0); double pattern = sin(N*ab*z.x)*sin(N*ab*z.y); aux.DE *= (1.0 + af * pattern*pattern); break; }
+						case 324: { double snr_q = exp(-aa*r*r); double snr_c = exp(-ab*r*r); double advantage = snr_q/(snr_c+1e-21); aux.DE *= (1.0 + af * fmin(advantage, 10.0)); break; }
+						case 325: { double tau = fabs(aa)*r; double N_s = fmax(fabs(ab), 0.1); double N_i = fmax(fabs(ac), 0.1); double range_res = tau/(2.0*sqrt(N_s*N_i)+1e-21); aux.DE *= (1.0 + af * sin(range_res)*sin(range_res)); break; }
+						case 326: { double omega_rot = aa*z.x + ab*z.y; double phase = ac*omega_rot; aux.DE *= (1.0 + af * sin(phase)*sin(phase)); break; }
+						case 327: { double g_eff = aa; double T = fabs(ab)+0.01; double phase = g_eff*T*T*ac; aux.DE *= (1.0 + af * cos(phase)*cos(phase)); break; }
+						case 328: { double omega0 = fabs(aa)*100.0+1.0; double tau_c = fabs(ab)+0.01; double stability = 1.0/(omega0*sqrt(tau_c*(double)(i+1)*0.01)+1e-21); aux.DE *= (1.0 + af * fmin(stability*ac, 5.0)); break; }
+						case 329: { double B = aa*z.x + ab*z.y + ac*z.z; double sensitivity = sin(ad*B); aux.DE *= (1.0 + af * sensitivity*sensitivity); break; }
+						case 330: { double k_eff = aa; double T = fabs(ab)+0.01; double accel = k_eff*T*T*ac*r; aux.DE *= (1.0 + af * sin(accel)*sin(accel)); break; }
+						case 331: { double T_eff = fabs(aa)*r + 0.01; double C = fabs(ab)+0.1; double dE = fabs(ac)+0.01; double res = T_eff*T_eff/(C*dE); aux.DE *= (1.0 + af * fmin(res, 10.0)); break; }
+						case 332: { double pressure = aa*r*r + ab*z.x; double sensitivity = sin(ac*pressure); aux.DE *= (1.0 + af * sensitivity*sensitivity); break; }
+						case 333: { double dL = aa*(z.x - z.y); double L = fmax(r, 0.01); double strain = dL/L; double gauge = ab*strain; aux.DE *= (1.0 + af * sin(gauge)*sin(gauge)); break; }
+						case 334: { double omega0 = fabs(aa)+0.1; double Q = fabs(ab)+1.0; double force = ac/(2.0*Q*omega0+1e-21); aux.DE *= (1.0 + af * sin(force*r)*sin(force*r)); break; }
+						case 335: { double torque = aa*z.x*z.y - ab*z.y*z.z; double thermal = fabs(ac)+0.01; aux.DE *= (1.0 + af * fabs(torque)/(thermal+fabs(torque))); break; }
+						case 336: { double E_field = aa*z.x + ab*z.y + ac*z.z; double rydberg = sin(ad*E_field*E_field); aux.DE *= (1.0 + af * rydberg*rydberg); break; }
+						case 337: { double V_jj = aa*sin(ab*r); double josephson = cos(ac*V_jj); aux.DE *= (1.0 + af * (1.0 - josephson*josephson)); break; }
+						case 338: { double tunnel = exp(-aa*fabs(r-ab)); double current = ac*tunnel; aux.DE *= (1.0 + af * fabs(current)); break; }
+						case 339: { double n = floor(fabs(aa)*r*5.0+0.5); double R_H = 1.0/(fmax(n,1.0)*ab+1e-21); aux.DE *= (1.0 + af * fmin(R_H, 10.0)); break; }
+						case 340: { double C_q = aa*aa/(2.0*(fabs(ab)+0.01)); double charging = exp(-C_q*r*r); aux.DE *= (1.0 + af * charging); break; }
+						case 341: { double flux = aa*z.x*z.y; double inductance = cos(ab*flux); aux.DE *= (1.0 + af * inductance*inductance); break; }
+						case 342: { double L_q = fabs(aa)+0.01; double C_q = fabs(ab)+0.01; double Z = sqrt(L_q/C_q); double match = 1.0/(1.0 + (Z-ac)*(Z-ac)); aux.DE *= (1.0 + af * match); break; }
+						case 343: { double omega = aa*r; double n_th = 1.0/(exp(fabs(ab)*omega+1e-21)-1.0+1e-21); double psd = omega*(n_th+0.5); aux.DE *= (1.0 + af * fmin(fabs(psd), 10.0)); break; }
+						case 344: { double dE = fabs(aa)*r; double tau = fmax(fabs(ab),0.01); double uncertainty = dE*tau; aux.DE *= (1.0 + af * exp(-uncertainty)); break; }
+						case 345: { double W = aa*r*r; double T_eff = fmax(fabs(ab), 0.01); double jarzynski = exp(-W/T_eff); aux.DE *= (1.0 + af * jarzynski); break; }
+						case 346: { double Q_heat = aa*r; double T_eff = fmax(fabs(ab), 0.01); double C = fmax(fabs(ac), 0.01); double fluct = Q_heat/(T_eff*T_eff*C+1e-21); aux.DE *= (1.0 + af * exp(-fabs(fluct))); break; }
+						case 347: { double sigma = fabs(aa)*r*r; double relax = fmax(fabs(ab), 0.01); double prod = sigma/relax; aux.DE *= (1.0 + af * (1.0 - exp(-prod))); break; }
+						case 348: { double W = aa*(z.x*z.x + z.y*z.y); double T_eff = fmax(fabs(ab), 0.01); double ratio = exp(-W/T_eff); aux.DE *= (1.0 + af * fmin(ratio, 10.0)); break; }
+						case 349: { double info = fabs(sin(aa*z.x)*cos(ab*z.y)); double work = ac*info*log(2.0); aux.DE *= (1.0 + af * fabs(work)/(1.0+fabs(work))); break; }
+						case 350: { double W = fabs(aa)*log(2.0)*sin(ab*r)*sin(ab*r); aux.DE *= (1.0 + af * W); break; }
+						case 351: { double T_hot = fmax(fabs(aa)*r, 0.01); double T_cold = fmax(fabs(ab)*0.5, 0.001); double eff = 1.0 - T_cold/T_hot; double qcorr = sin(ac*r)*sin(ac*r); aux.DE *= (1.0 + af * fabs(eff) * qcorr); break; }
+						case 352: { double w_cold = fabs(aa)+0.1; double w_hot = fabs(ab)+0.2; double eff = 1.0 - w_cold/w_hot; double adiabatic = cos(ac*r)*cos(ac*r); aux.DE *= (1.0 + af * fabs(eff) * adiabatic); break; }
+						case 353: { double V_ratio = fmax(fabs(aa), 0.1)/fmax(fabs(ab), 0.1); double T_ratio = fmax(fabs(ac), 0.1)/fmax(fabs(ad), 0.1); double eff = log(V_ratio)/(log(T_ratio)+1e-21); aux.DE *= (1.0 + af * fmin(fabs(eff), 5.0) * sin(r)*sin(r)); break; }
+						case 354: { double gamma_g = 1.4; double ratio = fmax(fabs(aa), 0.1); double eff = 1.0 - (pow(ratio, gamma_g)-1.0)/(gamma_g*(ratio-1.0)+1e-21); aux.DE *= (1.0 + af * fabs(eff) * sin(ab*r)*sin(ab*r)); break; }
+						case 355: { double P_ratio = fmax(fabs(aa), 0.1); double gamma_g = 1.4; double eff = 1.0 - pow(1.0/P_ratio, (gamma_g-1.0)/gamma_g); aux.DE *= (1.0 + af * fabs(eff) * cos(ab*r)*cos(ab*r)); break; }
+						case 356: { double T_ratio = fmax(fabs(aa)+0.1, 0.01) / fmax(fabs(ab)+0.1, 0.01); double regen = fmin(fabs(ac), 1.0); double eff = (1.0 - 1.0/T_ratio) * regen; aux.DE *= (1.0 + af * fabs(eff)); break; }
+						case 357: { double expansion = fmax(fabs(aa), 0.1); double T_ratio = fmax(fabs(ab)+0.1, 0.01)/fmax(fabs(ac)+0.1, 0.01); double eff = (1.0 - 1.0/T_ratio)*expansion/(expansion+1.0); aux.DE *= (1.0 + af * fabs(eff) * sin(ad*r)*sin(ad*r)); break; }
+						case 358: { double T_ratio = fmax(fabs(aa)+0.1,0.01)/fmax(fabs(ab)+0.1,0.01); double loss = 1.0-fmin(fabs(ac),0.99); double eff = (1.0-1.0/T_ratio)*loss; aux.DE *= (1.0 + af * fabs(eff) * cos(ad*r)*cos(ad*r)); break; }
+						case 359: { double T_cold = fmax(fabs(aa),0.01); double T_hot = fmax(fabs(ab),0.02); double cop = T_cold/(T_hot-T_cold+1e-21); double qcop = cop*sin(ac*r)*sin(ac*r); aux.DE *= (1.0 + af * fmin(fabs(qcop),10.0)); break; }
+						case 360: { double T_hot = fmax(fabs(aa),0.02); double T_cold = fmax(fabs(ab),0.01); double cop = T_hot/(T_hot-T_cold+1e-21); double enhance = cos(ac*r)*cos(ac*r); aux.DE *= (1.0 + af * fmin(cop*enhance,10.0)); break; }
+						case 361: { double k = aa; double Gamma = fabs(ab)+0.01; double delta = fabs(ac)+0.01; double cooling = Gamma/(2.0*(1.0 + 4.0*delta*delta/(Gamma*Gamma))); aux.DE *= (1.0 + af * cooling * sin(k*r)*sin(k*r)); break; }
+						case 362: { double U0 = aa; double delta = fabs(ab)+0.01; double pol_grad = sin(ac*z.x)*cos(ac*z.y); double eff = U0/(delta+1e-21)*pol_grad*pol_grad; aux.DE *= (1.0 + af * fmin(fabs(eff),10.0)); break; }
+						case 363: { double T_ratio = fmax(fabs(aa),0.01)/fmax(fabs(ab),0.01); double eta = fabs(ac)+1.0; double eff = pow(T_ratio, 3.0)*eta; aux.DE *= (1.0 + af * fmin(fabs(eff),10.0) * sin(r)*sin(r)); break; }
+						case 364: { double m_ratio = fmax(fabs(aa),0.1)/fmax(fabs(ab),0.1); double collision = fabs(ac); double eff = m_ratio*collision; aux.DE *= (1.0 + af * fmin(eff,10.0) * sin(ad*r)*sin(ad*r)); break; }
+						case 365: { double eta = fabs(aa)*0.1; double Omega = fabs(ab)+0.1; double nu_m = fabs(ac)+0.1; double eff = eta*Omega*Omega/((fabs(ad)+0.01)*nu_m); aux.DE *= (1.0 + af * fmin(eff,10.0)); break; }
+						case 366: { double Sxy = sin(aa*z.x)*cos(ab*z.y); double Sxx = sin(aa*z.x)*sin(aa*z.x)+0.01; double Syy = cos(ab*z.y)*cos(ab*z.y)+0.01; double gain = Sxy*Sxy/(Sxx*Syy); aux.DE *= (1.0 + af * fabs(gain)); break; }
+						case 367: { double g = fabs(aa)+0.01; double kappa = fabs(ab)+0.01; double delta = fabs(ac)+0.01; double cooling = g*g/(kappa*kappa+delta*delta); double n_ph = sin(ad*r)*sin(ad*r)*10.0; aux.DE *= (1.0 + af * cooling*fmin(n_ph,10.0)); break; }
+						case 368: { double Cg = fabs(aa)+0.01; double Vg = ab; double C = fabs(ac)+0.01; double coupling = Cg*Vg/C; aux.DE *= (1.0 + af * sin(coupling*r)*sin(coupling*r)); break; }
+						case 369: { double S = aa; double sigma = fabs(ab)+0.01; double T_eff = fabs(ac)*r+0.01; double kappa = fabs(ad)+0.01; double ZT = S*S*sigma*T_eff/kappa; aux.DE *= (1.0 + af * fmin(ZT,10.0)); break; }
+						case 370: { double Ss = aa; double gradT = ab*z.x+ac*z.y; double spin_pol = sin(ad*r); aux.DE *= (1.0 + af * fabs(Ss*gradT*spin_pol)); break; }
+						case 371: { double Bz = aa; double gradT = ab*z.x; double Ey = ac*gradT*Bz; aux.DE *= (1.0 + af * sin(Ey)*sin(Ey)); break; }
+						case 372: { double n_level = floor(fabs(aa)*r*5.0+0.5); double conductance = fmax(n_level,1.0)*ab; aux.DE *= (1.0 + af * fmin(fabs(conductance),10.0) * sin(ac*r)*sin(ac*r)); break; }
+						case 373: { double edge = exp(-aa*fabs(z.x)); double helical = sin(ab*z.y); aux.DE *= (1.0 + af * edge * helical*helical); break; }
+						case 374: { double chern = floor(fabs(aa)*2.0+0.5); double mag_order = sin(ab*z.x)*sin(ab*z.y); aux.DE *= (1.0 + af * fabs(chern) * mag_order*mag_order); break; }
+						case 375: { double valley = sin(aa*z.x)*cos(ab*z.y) - cos(aa*z.x)*sin(ab*z.y); double broken_inv = sin(ac*r); aux.DE *= (1.0 + af * fabs(valley*broken_inv)); break; }
+						case 376: { double bulk_gap = fabs(aa); double surface = sin(ab*z.x)*sin(ab*z.y)*exp(-ac*fabs(z.z)); double k_F = ad*r; aux.DE *= (1.0 + af * bulk_gap*fabs(surface)*fmin(k_F,5.0)); break; }
+						case 377: { double kx = aa*z.x; double ky = ab*z.y; double kz = ac*z.z; double chirality = kx*kx + ky*ky - kz*kz; double fermi_arc = exp(-fabs(chirality)*ad); aux.DE *= (1.0 + af * fermi_arc); break; }
+						case 378: { double E_D = aa; double v_F = fabs(ab)+0.01; double k = ac*r; double cone = fabs(E_D)/(v_F*fmax(fabs(k),0.01)); aux.DE *= (1.0 + af * fmin(cone,10.0) * sin(r)*sin(r)); break; }
+						case 379: { double xi = fmax(fabs(aa),0.01); double L = fabs(ab)*r; double overlap = exp(-L/xi); double gap = fabs(ac); aux.DE *= (1.0 + af * overlap*gap); break; }
+						case 380: { double J = fabs(aa)+0.01; double alpha = fabs(ab)+0.01; double g = fabs(ac)+0.01; double gap = J*exp(-1.0/(alpha*g)); aux.DE *= (1.0 + af * gap * sin(ad*r)*sin(ad*r)); break; }
+						case 381: { double J = fabs(aa)+0.01; double h = fabs(ab)+0.01; double gap = fabs(J-h)/J; double crit_exp = fabs(ac)+0.5; aux.DE *= (1.0 + af * pow(fmax(gap,1e-10), crit_exp)); break; }
+						case 382: { double J = aa; double Si = sin(ab*z.x); double Sj = sin(ab*z.y); double coupling = J*Si*Sj; aux.DE *= (1.0 + af * fabs(coupling)); break; }
+						case 383: { double J = aa; double Sx = sin(ab*z.x)*cos(ac*z.y); double Sy = cos(ab*z.x)*sin(ac*z.y); double coupling = J*(Sx+Sy); aux.DE *= (1.0 + af * fabs(coupling)); break; }
+						case 384: { double J = aa; double q = fmax(floor(fabs(ab)*5+2), 2.0); double sigma_i = floor(sin(ac*z.x)*q); double sigma_j = floor(sin(ac*z.y)*q); double delta_s = (sigma_i == sigma_j) ? 1.0 : 0.0; aux.DE *= (1.0 + af * J*delta_s); break; }
+						case 385: { double J = aa; double q = fmax(floor(fabs(ab)*5+2), 2.0); double angle = 2.0*M_PI/q; double sigma_diff = sin(ac*z.x) - sin(ac*z.y); aux.DE *= (1.0 + af * J*cos(angle*sigma_diff)); break; }
+						case 386: { double J = aa; double lambda = ab; double sigma = sin(ac*z.x)*sin(ac*z.y); double tau = cos(ad*z.x)*cos(ad*z.y); double coupling = J*(sigma + tau + lambda*sigma*tau); aux.DE *= (1.0 + af * fabs(coupling)); break; }
+						case 387: { double W = aa; double X = ab; double Y = ac; double sigma = sin(ad*z.x)*sin(ad*z.y); double tau = cos(ad*z.x)*cos(ad*z.y); double v = W*sigma + X*tau + Y*sigma*tau; aux.DE *= (1.0 + af * fabs(v)); break; }
+						case 388: { double U = fabs(aa)+0.01; double t = fabs(ab)+0.01; double n_up = sin(ac*z.x)*sin(ac*z.x); double n_down = cos(ac*z.y)*cos(ac*z.y); double mott = U*n_up*n_down/t; aux.DE *= (1.0 + af * fmin(mott,10.0)); break; }
+						case 389: { double t = fabs(aa)+0.01; double J = ab; double hop = t*sin(ac*z.x)*cos(ac*z.y); double exchange = J*sin(ad*z.x)*sin(ad*z.y); aux.DE *= (1.0 + af * fabs(hop + exchange)); break; }
+						case 390: { double xi_loc = fmax(fabs(aa),0.01); double disorder = fabs(ab); double loc = exp(-r/xi_loc)*disorder; aux.DE *= (1.0 + af * loc); break; }
+						case 391: { double U = fabs(aa)+0.01; double U_c = fabs(ab)+0.01; double n = sin(ac*r)*0.5+0.5; double gap = (U/U_c)*(n-0.5)*(n-0.5); aux.DE *= (1.0 + af * fmin(gap*4.0,10.0)); break; }
+						case 392: { double alpha = aa; double u = ab; double k_F = ac; double gap = 2.0*fabs(alpha*u)*fabs(cos(2.0*k_F*z.x)); aux.DE *= (1.0 + af * fmin(gap,10.0)); break; }
+						case 393: { double J = fabs(aa)+0.01; double g = fabs(ab)+0.01; double gap = J*exp(-M_PI*J/(g*g)); double singlet = cos(ac*z.x)*cos(ac*z.y); aux.DE *= (1.0 + af * gap*singlet*singlet); break; }
+						case 394: { double J = fabs(aa)+0.01; double S = fmax(floor(fabs(ab)+1),1.0); double gap = J*exp(-M_PI*S); double string_order = sin(ac*r); aux.DE *= (1.0 + af * gap*string_order*string_order); break; }
+						case 395: { double J = fabs(aa)+0.01; double SiSj = sin(ab*z.x)*sin(ab*z.y); double SiSj2 = SiSj*SiSj; double aklt = J*(SiSj + SiSj2/3.0); aux.DE *= (1.0 + af * fabs(aklt)); break; }
+						case 396: { double J = fabs(aa)+0.01; double Av = sin(ab*z.x)*sin(ab*z.y); double Bp = cos(ac*z.x)*cos(ac*z.y); double toric = 4.0*J*(Av*Av + Bp*Bp); aux.DE *= (1.0 + af * fmin(toric,10.0)); break; }
+						case 397: { double F1 = sin(aa*z.x); double F2 = sin(ab*z.y); double F3 = cos(ac*z.x); double F4 = cos(ad*z.y); double wen = F1*F2*F3*F4; aux.DE *= (1.0 + af * fabs(wen)); break; }
+						case 398: { double sn = sin(aa*z.x+ab*z.y); double fusion = sn*sn; double F_sym = cos(ac*r)*cos(ac*r); double lw = fusion*F_sym; aux.DE *= (1.0 + af * lw); break; }
+						case 399: { double psi = sin(aa*z.x + ab*(double)i*0.1); double coin = cos(ac*z.y); double walker = psi*psi*coin*coin; aux.DE *= (1.0 + af * walker); break; }
+						case 400: { double rule = sin(aa*z.x)*sin(ab*z.y)*cos(ac*z.z); double evolution = cos(ad*(double)i*0.1); double qca = rule*evolution; aux.DE *= (1.0 + af * qca*qca); break; }
 					}
 				}
 
