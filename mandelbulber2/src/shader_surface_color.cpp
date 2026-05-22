@@ -505,6 +505,12 @@ sRGBAFloat cRenderWorker::SurfaceColour(
 		case fractal::objCylinder:
 		case fractal::objPrism:
 		case fractal::objEllipsoid:
+		case fractal::objCapsule:
+		case fractal::objHexPrism:
+		case fractal::objLavaPlane:
+		case fractal::objOctahedron:
+		case fractal::objPyramid:
+		case fractal::objTerrainPlane:
 		{
 			out.R = input.material->color.R;
 			out.G = input.material->color.G;

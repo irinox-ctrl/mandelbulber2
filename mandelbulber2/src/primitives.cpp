@@ -63,6 +63,12 @@ QString cPrimitives::PrimitiveNames(enumObjectType primitiveType)
 		case objTorus: return "torus";
 		case objPrism: return "prism";
 		case objEllipsoid: return "ellipsoid";
+		case objCapsule: return "capsule";
+		case objHexPrism: return "hexprism";
+		case objLavaPlane: return "lava_plane";
+		case objOctahedron: return "octahedron";
+		case objPyramid: return "pyramid";
+		case objTerrainPlane: return "terrain_plane";
 		default: return "";
 	}
 }
@@ -92,6 +98,18 @@ enumObjectType cPrimitives::PrimitiveNameToEnum(const QString &primitiveType)
 		type = objPrism;
 	else if (primitiveType == QString("ellipsoid"))
 		type = objEllipsoid;
+	else if (primitiveType == QString("capsule"))
+		type = objCapsule;
+	else if (primitiveType == QString("hexprism"))
+		type = objHexPrism;
+	else if (primitiveType == QString("lava_plane"))
+		type = objLavaPlane;
+	else if (primitiveType == QString("octahedron"))
+		type = objOctahedron;
+	else if (primitiveType == QString("pyramid"))
+		type = objPyramid;
+	else if (primitiveType == QString("terrain_plane"))
+		type = objTerrainPlane;
 	else
 		qCritical() << "Wrong primitive name: " << primitiveType;
 
@@ -221,6 +239,36 @@ void cPrimitives::Set(const std::shared_ptr<cParameterContainer> par,
 			case objEllipsoid:
 			{
 				primitive.reset(new sPrimitiveEllipsoid(item.fullName, par));
+				break;
+			}
+			case objCapsule:
+			{
+				primitive.reset(new sPrimitiveCapsule(item.fullName, par));
+				break;
+			}
+			case objHexPrism:
+			{
+				primitive.reset(new sPrimitiveHexPrism(item.fullName, par));
+				break;
+			}
+			case objLavaPlane:
+			{
+				primitive.reset(new sPrimitiveLavaPlane(item.fullName, par));
+				break;
+			}
+			case objOctahedron:
+			{
+				primitive.reset(new sPrimitiveOctahedron(item.fullName, par));
+				break;
+			}
+			case objPyramid:
+			{
+				primitive.reset(new sPrimitivePyramid(item.fullName, par));
+				break;
+			}
+			case objTerrainPlane:
+			{
+				primitive.reset(new sPrimitiveTerrainPlane(item.fullName, par));
 				break;
 			}
 			default:

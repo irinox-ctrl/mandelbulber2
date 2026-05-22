@@ -70,6 +70,8 @@ typedef struct
 	cl_int usedForVolumetric;
 	enumObjectTypeCl objectType;
 	matrix33 rotationMatrix;
+	// Scale
+	cl_float3 primitiveScale;
 	// Pivot
 	cl_float3 pivot;
 	cl_int useWorldSpacePivot;
@@ -96,6 +98,10 @@ typedef struct
 	cl_float3 repeatWaveFrequency;
 	cl_float3 repeatWavePhase;
 	cl_int repeatWaveAxis;
+	// Mirror
+	cl_int mirrorX;
+	cl_int mirrorY;
+	cl_int mirrorZ;
 	// Deformers
 	cl_int deformBendEnable;
 	cl_float deformBendAngle;

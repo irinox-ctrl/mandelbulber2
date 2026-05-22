@@ -85,6 +85,18 @@ cPrimitivesManager::cPrimitivesManager(QWidget *parent)
 		&cPrimitivesManager::slotButtonAddPrimitive);
 	connect(ui->pushButton_add_primitive_ellipsoid, &QPushButton::clicked, this,
 		&cPrimitivesManager::slotButtonAddPrimitive);
+	connect(ui->pushButton_add_primitive_capsule, &QPushButton::clicked, this,
+		&cPrimitivesManager::slotButtonAddPrimitive);
+	connect(ui->pushButton_add_primitive_hexprism, &QPushButton::clicked, this,
+		&cPrimitivesManager::slotButtonAddPrimitive);
+	connect(ui->pushButton_add_primitive_lava_plane, &QPushButton::clicked, this,
+		&cPrimitivesManager::slotButtonAddPrimitive);
+	connect(ui->pushButton_add_primitive_octahedron, &QPushButton::clicked, this,
+		&cPrimitivesManager::slotButtonAddPrimitive);
+	connect(ui->pushButton_add_primitive_pyramid, &QPushButton::clicked, this,
+		&cPrimitivesManager::slotButtonAddPrimitive);
+	connect(ui->pushButton_add_primitive_terrain_plane, &QPushButton::clicked, this,
+		&cPrimitivesManager::slotButtonAddPrimitive);
 
 	connect(ui->pushButton_deletePrimitive, &QPushButton::clicked, this,
 		&cPrimitivesManager::slotButtonDeletePrimitive);
@@ -713,4 +725,10 @@ void cPrimitivesManager::SetIconSizes()
 	ui->pushButton_add_primitive_torus->setIconSize(iconSize);
 	ui->pushButton_add_primitive_water->setIconSize(iconSize);
 	ui->pushButton_add_primitive_ellipsoid->setIconSize(iconSize);
+	ui->pushButton_add_primitive_capsule->setIconSize(iconSize);
+	ui->pushButton_add_primitive_hexprism->setIconSize(iconSize);
+	ui->pushButton_add_primitive_lava_plane->setIconSize(iconSize);
+	ui->pushButton_add_primitive_octahedron->setIconSize(iconSize);
+	ui->pushButton_add_primitive_pyramid->setIconSize(iconSize);
+	ui->pushButton_add_primitive_terrain_plane->setIconSize(iconSize);
 }

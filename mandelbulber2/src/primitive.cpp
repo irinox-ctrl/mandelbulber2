@@ -237,7 +237,6 @@ CVector3 sPrimitiveBasic::TransformPoint(const CVector3 &_point) const
 	CVector3 point;
 	if (useWorldSpacePivot)
 	{
-		// WORLD SPACE PIVOT: pivot is absolute world coordinate
 		point = _point - pivot;
 		point = rotationMatrix.RotateVector(point);
 		point = point + pivot;
@@ -245,11 +244,15 @@ CVector3 sPrimitiveBasic::TransformPoint(const CVector3 &_point) const
 	}
 	else
 	{
-		// LOCAL SPACE PIVOT: pivot is relative to position
 		point = _point - position;
 		point = rotationMatrix.RotateVector(point - pivot);
 		point = point + pivot;
 	}
+
+	if (mirrorX) point.x = fabs(point.x);
+	if (mirrorY) point.y = fabs(point.y);
+	if (mirrorZ) point.z = fabs(point.z);
+
 	return point;
 }
 
@@ -590,6 +593,12 @@ void sPrimitiveBasic::InitPrimitiveWireframeShapes()
 	sPrimitiveRectangle::InitPrimitiveWireframeShape();
 	sPrimitivePrism::InitPrimitiveWireframeShape();
 	sPrimitiveEllipsoid::InitPrimitiveWireframeShape();
+	sPrimitiveCapsule::InitPrimitiveWireframeShape();
+	sPrimitiveHexPrism::InitPrimitiveWireframeShape();
+	sPrimitiveLavaPlane::InitPrimitiveWireframeShape();
+	sPrimitiveOctahedron::InitPrimitiveWireframeShape();
+	sPrimitivePyramid::InitPrimitiveWireframeShape();
+	sPrimitiveTerrainPlane::InitPrimitiveWireframeShape();
 }
 
 sPrimitivePlane::sPrimitivePlane(
@@ -1418,4 +1427,440 @@ double sPrimitiveEllipsoid::PrimitiveDistance(CVector3 _point) const
 		dist = max(dist, limitBoxDist);
 	}
 	return dist * minScale;
+}
+
+// ========== Capsule ==========
+sPrimitiveCapsule::sPrimitiveCapsule(
+	const QString &fullName, const std::shared_ptr<cParameterContainer> par)
+		: sPrimitiveBasic(fullName, par)
+{
+	empty = par->Get<bool>(fullName + "_empty");
+	radius = par->Get<double>(fullName + "_radius");
+	height = par->Get<double>(fullName + "_height");
+	repeat = par->Get<CVector3>(fullName + "_repeat");
+	limitsEnable = par->Get<bool>(fullName + "_limits_enable");
+	limitsMax = par->Get<CVector3>(fullName + "_limits_max");
+	limitsMin = par->Get<CVector3>(fullName + "_limits_min");
+	wallThickness = par->Get<double>(fullName + "_wall_thickness");
+}
+
+sPrimitiveBasic::tWireframeShape sPrimitiveCapsule::wireFrameShape = {};
+void sPrimitiveCapsule::InitPrimitiveWireframeShape()
+{
+	double r = 1.0, h = 0.5;
+	double angleStep = 2.0 * M_PI / wireframeSegments;
+	for (double beta = 0.0; beta < 2.0 * M_PI; beta += angleStep)
+	{
+		double x1 = r * cos(beta), y1 = r * sin(beta);
+		double x2 = r * cos(beta + angleStep), y2 = r * sin(beta + angleStep);
+		wireFrameShape.push_back({{x1, y1, -h}, {x2, y2, -h}});
+		wireFrameShape.push_back({{x1, y1, h}, {x2, y2, h}});
+		wireFrameShape.push_back({{x1, y1, -h}, {x1, y1, h}});
+	}
+}
+
+double sPrimitiveCapsule::PrimitiveDistance(CVector3 _point) const
+{
+	CVector3 point = TransformPoint(_point);
+	point.x /= primitiveScale.x;
+	point.y /= primitiveScale.y;
+	point.z /= primitiveScale.z;
+	double minScale = std::min({primitiveScale.x, primitiveScale.y, primitiveScale.z});
+	point = ApplyDeformations(point);
+	double halfH = height * 0.5;
+	point.z -= std::max(-halfH, std::min(point.z, halfH));
+	double dist = CVector3(point.x, point.y, point.z).Length() - radius;
+	dist = empty ? fabs(dist) : dist;
+	dist = std::max(dist - wallThickness, 0.0);
+	if (limitsEnable)
+	{
+		CVector3 distanceAxial = max(point - limitsMax, limitsMin - point);
+		double limitBoxDist = std::max({distanceAxial.x, distanceAxial.y, distanceAxial.z});
+		dist = std::max(dist, limitBoxDist);
+	}
+	return dist * minScale;
+}
+
+// ========== HexPrism ==========
+sPrimitiveHexPrism::sPrimitiveHexPrism(
+	const QString &fullName, const std::shared_ptr<cParameterContainer> par)
+		: sPrimitiveBasic(fullName, par)
+{
+	empty = par->Get<bool>(fullName + "_empty");
+	height = par->Get<double>(fullName + "_height");
+	repeat = par->Get<CVector3>(fullName + "_repeat");
+	size = par->Get<CVector3>(fullName + "_size");
+	limitsEnable = par->Get<bool>(fullName + "_limits_enable");
+	limitsMax = par->Get<CVector3>(fullName + "_limits_max");
+	limitsMin = par->Get<CVector3>(fullName + "_limits_min");
+	wallThickness = par->Get<double>(fullName + "_wall_thickness");
+}
+
+sPrimitiveBasic::tWireframeShape sPrimitiveHexPrism::wireFrameShape = {};
+void sPrimitiveHexPrism::InitPrimitiveWireframeShape()
+{
+	double r = 1.0, h = 0.5;
+	for (int i = 0; i < 6; i++)
+	{
+		double a1 = i * M_PI / 3.0, a2 = (i + 1) * M_PI / 3.0;
+		double x1 = r * cos(a1), y1 = r * sin(a1);
+		double x2 = r * cos(a2), y2 = r * sin(a2);
+		wireFrameShape.push_back({{x1, y1, -h}, {x2, y2, -h}});
+		wireFrameShape.push_back({{x1, y1, h}, {x2, y2, h}});
+		wireFrameShape.push_back({{x1, y1, -h}, {x1, y1, h}});
+	}
+}
+
+double sPrimitiveHexPrism::PrimitiveDistance(CVector3 _point) const
+{
+	CVector3 point = TransformPoint(_point);
+	point.x /= primitiveScale.x;
+	point.y /= primitiveScale.y;
+	point.z /= primitiveScale.z;
+	double minScale = std::min({primitiveScale.x, primitiveScale.y, primitiveScale.z});
+	point = ApplyDeformations(point);
+	double r = size.x;
+	CVector3 absP(fabs(point.x), fabs(point.y), fabs(point.z));
+	double k = -0.8660254037844386; // -sqrt(3)/2
+	double px = absP.x, py = absP.y;
+	double t = 2.0 * std::min(k * px + 0.5 * py, 0.0);
+	px -= t * k;
+	py -= t * 0.5;
+	px -= std::max(-r, std::min(px, r));
+	double d2d = sqrt(px * px + std::max(py - r, 0.0) * std::max(py - r, 0.0))
+		* ((py - r > 0.0) ? 1.0 : -1.0);
+	double dist = std::max(d2d, absP.z - height * 0.5);
+	dist = empty ? fabs(dist) : dist;
+	dist = std::max(dist - wallThickness, 0.0);
+	if (limitsEnable)
+	{
+		CVector3 distanceAxial = max(point - limitsMax, limitsMin - point);
+		double limitBoxDist = std::max({distanceAxial.x, distanceAxial.y, distanceAxial.z});
+		dist = std::max(dist, limitBoxDist);
+	}
+	return dist * minScale;
+}
+
+// ========== LavaPlane ==========
+sPrimitiveLavaPlane::sPrimitiveLavaPlane(
+	const QString &fullName, const std::shared_ptr<cParameterContainer> par)
+		: sPrimitiveBasic(fullName, par)
+{
+	empty = par->Get<bool>(fullName + "_empty");
+	waveHeight = par->Get<double>(fullName + "_lava_wave_height");
+	waveScale = par->Get<double>(fullName + "_lava_wave_scale");
+	waveOctaves = par->Get<int>(fullName + "_lava_wave_octaves");
+	wallThickness = par->Get<double>(fullName + "_wall_thickness");
+}
+
+sPrimitiveBasic::tWireframeShape sPrimitiveLavaPlane::wireFrameShape = {};
+void sPrimitiveLavaPlane::InitPrimitiveWireframeShape()
+{
+	double s = 2.0;
+	wireFrameShape.push_back({{-s, -s, 0}, {s, -s, 0}});
+	wireFrameShape.push_back({{s, -s, 0}, {s, s, 0}});
+	wireFrameShape.push_back({{s, s, 0}, {-s, s, 0}});
+	wireFrameShape.push_back({{-s, s, 0}, {-s, -s, 0}});
+}
+
+double sPrimitiveLavaPlane::PrimitiveDistance(CVector3 _point) const
+{
+	CVector3 point = TransformPoint(_point);
+	point = ApplyDeformations(point);
+	double displacement = 0.0;
+	double freq = 1.0 / std::max(waveScale, 1e-10);
+	double amp = waveHeight;
+	for (int i = 0; i < waveOctaves; i++)
+	{
+		displacement += amp * sin(point.x * freq) * cos(point.y * freq);
+		freq *= 2.0;
+		amp *= 0.5;
+	}
+	double dist = point.z - displacement;
+	dist = empty ? fabs(dist) : dist;
+	return dist;
+}
+
+// ========== Octahedron ==========
+sPrimitiveOctahedron::sPrimitiveOctahedron(
+	const QString &fullName, const std::shared_ptr<cParameterContainer> par)
+		: sPrimitiveBasic(fullName, par)
+{
+	empty = par->Get<bool>(fullName + "_empty");
+	size = par->Get<CVector3>(fullName + "_size");
+	repeat = par->Get<CVector3>(fullName + "_repeat");
+	limitsEnable = par->Get<bool>(fullName + "_limits_enable");
+	limitsMax = par->Get<CVector3>(fullName + "_limits_max");
+	limitsMin = par->Get<CVector3>(fullName + "_limits_min");
+	wallThickness = par->Get<double>(fullName + "_wall_thickness");
+}
+
+sPrimitiveBasic::tWireframeShape sPrimitiveOctahedron::wireFrameShape = {};
+void sPrimitiveOctahedron::InitPrimitiveWireframeShape()
+{
+	double s = 1.0;
+	CVector3 top(0, 0, s), bot(0, 0, -s);
+	CVector3 v[4] = {{s, 0, 0}, {0, s, 0}, {-s, 0, 0}, {0, -s, 0}};
+	for (int i = 0; i < 4; i++)
+	{
+		int j = (i + 1) % 4;
+		wireFrameShape.push_back({v[i], v[j]});
+		wireFrameShape.push_back({top, v[i]});
+		wireFrameShape.push_back({bot, v[i]});
+	}
+}
+
+double sPrimitiveOctahedron::PrimitiveDistance(CVector3 _point) const
+{
+	CVector3 point = TransformPoint(_point);
+	point.x /= primitiveScale.x;
+	point.y /= primitiveScale.y;
+	point.z /= primitiveScale.z;
+	double minScale = std::min({primitiveScale.x, primitiveScale.y, primitiveScale.z});
+	point = ApplyDeformations(point);
+	double s = size.x;
+	CVector3 absP(fabs(point.x), fabs(point.y), fabs(point.z));
+	double dist = (absP.x + absP.y + absP.z - s) * 0.57735026919;
+	dist = empty ? fabs(dist) : dist;
+	dist = std::max(dist - wallThickness, 0.0);
+	if (limitsEnable)
+	{
+		CVector3 distanceAxial = max(point - limitsMax, limitsMin - point);
+		double limitBoxDist = std::max({distanceAxial.x, distanceAxial.y, distanceAxial.z});
+		dist = std::max(dist, limitBoxDist);
+	}
+	return dist * minScale;
+}
+
+// ========== Pyramid ==========
+sPrimitivePyramid::sPrimitivePyramid(
+	const QString &fullName, const std::shared_ptr<cParameterContainer> par)
+		: sPrimitiveBasic(fullName, par)
+{
+	empty = par->Get<bool>(fullName + "_empty");
+	height = par->Get<double>(fullName + "_height");
+	baseSize = par->Get<double>(fullName + "_base_size");
+	size = par->Get<CVector3>(fullName + "_size");
+	repeat = par->Get<CVector3>(fullName + "_repeat");
+	limitsEnable = par->Get<bool>(fullName + "_limits_enable");
+	limitsMax = par->Get<CVector3>(fullName + "_limits_max");
+	limitsMin = par->Get<CVector3>(fullName + "_limits_min");
+	wallThickness = par->Get<double>(fullName + "_wall_thickness");
+}
+
+sPrimitiveBasic::tWireframeShape sPrimitivePyramid::wireFrameShape = {};
+void sPrimitivePyramid::InitPrimitiveWireframeShape()
+{
+	double s = 1.0, h = 1.0;
+	CVector3 apex(0, 0, h);
+	CVector3 v[4] = {{-s, -s, 0}, {s, -s, 0}, {s, s, 0}, {-s, s, 0}};
+	for (int i = 0; i < 4; i++)
+	{
+		wireFrameShape.push_back({v[i], v[(i + 1) % 4]});
+		wireFrameShape.push_back({apex, v[i]});
+	}
+}
+
+double sPrimitivePyramid::PrimitiveDistance(CVector3 _point) const
+{
+	CVector3 point = TransformPoint(_point);
+	point.x /= primitiveScale.x;
+	point.y /= primitiveScale.y;
+	point.z /= primitiveScale.z;
+	double minScale = std::min({primitiveScale.x, primitiveScale.y, primitiveScale.z});
+	point = ApplyDeformations(point);
+	double h = std::max(height, 1e-10);
+	double b = std::max(baseSize, 1e-10) * 0.5;
+	double m2 = h * h / (b * b);
+	CVector3 absP(fabs(point.x), fabs(point.y), point.z);
+	absP.x -= std::max(-b, std::min(absP.x, b));
+	absP.y -= std::max(-b, std::min(absP.y, b));
+	double d1 = std::max(absP.x, absP.y);
+	double d2 = (point.z - h) * m2 / sqrt(m2 + 1.0);
+	double distBase = -point.z;
+	double dist = std::max(d1, std::max(d2, distBase));
+	dist = empty ? fabs(dist) : dist;
+	dist = std::max(dist - wallThickness, 0.0);
+	if (limitsEnable)
+	{
+		CVector3 distanceAxial = max(point - limitsMax, limitsMin - point);
+		double limitBoxDist = std::max({distanceAxial.x, distanceAxial.y, distanceAxial.z});
+		dist = std::max(dist, limitBoxDist);
+	}
+	return dist * minScale;
+}
+
+// ========== TerrainPlane ==========
+// Types: 0=Sand, 1=Mud, 2=Ice, 3=Grass, 4=Rock, 5=Snow,
+//        6=Magma, 7=Crystal, 8=Moss, 9=Volcanic, 10=Dunes, 11=Coral
+sPrimitiveTerrainPlane::sPrimitiveTerrainPlane(
+	const QString &fullName, const std::shared_ptr<cParameterContainer> par)
+		: sPrimitiveBasic(fullName, par)
+{
+	empty = par->Get<bool>(fullName + "_empty");
+	terrainType = par->Get<int>(fullName + "_terrain_type");
+	amplitude = par->Get<double>(fullName + "_amplitude");
+	frequency = par->Get<double>(fullName + "_frequency");
+	octaves = par->Get<int>(fullName + "_octaves");
+	roughness = par->Get<double>(fullName + "_roughness");
+	lacunarity = par->Get<double>(fullName + "_lacunarity");
+	erosion = par->Get<double>(fullName + "_erosion");
+	detailScale = par->Get<double>(fullName + "_detail_scale");
+	wallThickness = par->Get<double>(fullName + "_wall_thickness");
+}
+
+sPrimitiveBasic::tWireframeShape sPrimitiveTerrainPlane::wireFrameShape = {};
+void sPrimitiveTerrainPlane::InitPrimitiveWireframeShape()
+{
+	double s = 2.0;
+	wireFrameShape.push_back({{-s, -s, 0}, {s, -s, 0}});
+	wireFrameShape.push_back({{s, -s, 0}, {s, s, 0}});
+	wireFrameShape.push_back({{s, s, 0}, {-s, s, 0}});
+	wireFrameShape.push_back({{-s, s, 0}, {-s, -s, 0}});
+	wireFrameShape.push_back({{-s, -s, 0}, {s, s, 0}});
+	wireFrameShape.push_back({{s, -s, 0}, {-s, s, 0}});
+}
+
+static double terrainHash(double x, double y)
+{
+	double n = sin(x * 127.1 + y * 311.7) * 43758.5453123;
+	return n - floor(n);
+}
+
+static double terrainNoise(double x, double y)
+{
+	double ix = floor(x), iy = floor(y);
+	double fx = x - ix, fy = y - iy;
+	fx = fx * fx * (3.0 - 2.0 * fx);
+	fy = fy * fy * (3.0 - 2.0 * fy);
+	double a = terrainHash(ix, iy);
+	double b = terrainHash(ix + 1, iy);
+	double c = terrainHash(ix, iy + 1);
+	double d = terrainHash(ix + 1, iy + 1);
+	return a + (b - a) * fx + (c - a) * fy + (a - b - c + d) * fx * fy;
+}
+
+static double terrainFBM(double x, double y, int octs, double rough, double lac)
+{
+	double value = 0.0, amp = 1.0, freq = 1.0, maxAmp = 0.0;
+	for (int i = 0; i < octs; i++)
+	{
+		value += amp * (terrainNoise(x * freq, y * freq) * 2.0 - 1.0);
+		maxAmp += amp;
+		amp *= rough;
+		freq *= lac;
+	}
+	return value / std::max(maxAmp, 1e-10);
+}
+
+double sPrimitiveTerrainPlane::PrimitiveDistance(CVector3 _point) const
+{
+	CVector3 point = TransformPoint(_point);
+	point = ApplyDeformations(point);
+
+	double freq = std::max(frequency, 1e-10);
+	double px = point.x * freq;
+	double py = point.y * freq;
+	double displacement = 0.0;
+
+	switch (terrainType)
+	{
+		case 0: // Sand
+		{
+			displacement = amplitude * terrainFBM(px, py, octaves, 0.4, lacunarity);
+			displacement += sin(px * 8.0 + py * 3.0) * amplitude * 0.15 * detailScale;
+			break;
+		}
+		case 1: // Mud
+		{
+			double base = terrainFBM(px * 0.5, py * 0.5, octaves, roughness, lacunarity);
+			double cracks = fabs(terrainFBM(px * 3.0, py * 3.0, 3, 0.5, 2.0));
+			displacement = amplitude * (base * 0.7 - cracks * 0.3 * detailScale);
+			break;
+		}
+		case 2: // Ice
+		{
+			double flat = terrainFBM(px, py, octaves, 0.3, lacunarity) * 0.1;
+			double crack = pow(fabs(terrainFBM(px * 4.0, py * 4.0, 4, 0.5, 2.0)), 3.0);
+			displacement = amplitude * (flat - crack * detailScale * 0.5);
+			break;
+		}
+		case 3: // Grass
+		{
+			double base = terrainFBM(px, py, octaves, roughness, lacunarity);
+			double micro = terrainFBM(px * 10.0, py * 10.0, 3, 0.6, 2.0) * detailScale * 0.2;
+			displacement = amplitude * (base + micro);
+			break;
+		}
+		case 4: // Rock
+		{
+			displacement = amplitude * terrainFBM(px, py, octaves, roughness, lacunarity);
+			double sharp = terrainFBM(px * 2.0, py * 2.0, 4, 0.7, 2.5);
+			displacement += amplitude * fabs(sharp) * detailScale * 0.3;
+			break;
+		}
+		case 5: // Snow
+		{
+			displacement = amplitude * terrainFBM(px * 0.7, py * 0.7, octaves, 0.35, lacunarity);
+			displacement += sin(px * 2.0 + py * 0.5) * amplitude * 0.2;
+			break;
+		}
+		case 6: // Magma
+		{
+			double turb = 0.0, tFreq2 = 1.0, tAmp = 1.0;
+			for (int i = 0; i < octaves; i++)
+			{
+				turb += tAmp * fabs(terrainNoise(px * tFreq2, py * tFreq2) * 2.0 - 1.0);
+				tAmp *= roughness;
+				tFreq2 *= lacunarity;
+			}
+			displacement = amplitude * turb * (1.0 - erosion * 0.5);
+			break;
+		}
+		case 7: // Crystal
+		{
+			double n = terrainFBM(px, py, octaves, roughness, lacunarity);
+			double ds = std::max(detailScale, 1e-10);
+			displacement = amplitude * floor(n * 6.0 * ds) / (6.0 * ds);
+			break;
+		}
+		case 8: // Moss
+		{
+			double base = terrainFBM(px * 0.8, py * 0.8, octaves, 0.5, lacunarity);
+			double bumps = pow(0.5 + 0.5 * terrainFBM(px * 5.0, py * 5.0, 3, 0.4, 2.0), 2.0);
+			displacement = amplitude * (base * 0.6 + bumps * 0.4 * detailScale);
+			break;
+		}
+		case 9: // Volcanic
+		{
+			double n = terrainFBM(px, py, octaves, roughness, lacunarity);
+			double er = std::max(erosion, 0.01);
+			double shaped = (n > 0.0) ? pow(n, 0.5 + er) : -pow(-n, 0.5 + er);
+			displacement = amplitude * shaped;
+			break;
+		}
+		case 10: // Dunes
+		{
+			double mainWave = sin(px * 3.0 + py * 1.5) * 0.5 + 0.5;
+			mainWave = pow(mainWave, 1.5);
+			double detail = terrainFBM(px * 4.0, py * 4.0, 3, 0.4, 2.0) * detailScale * 0.15;
+			displacement = amplitude * (mainWave + detail);
+			break;
+		}
+		case 11: // Coral
+		{
+			double n1 = terrainFBM(px, py, octaves, roughness, lacunarity);
+			double n2 = terrainFBM(px + 5.2, py + 1.3, octaves, roughness, lacunarity);
+			double warp = terrainFBM(px + n1 * 2.0, py + n2 * 2.0, 3, 0.5, 2.0);
+			displacement = amplitude * warp * detailScale;
+			break;
+		}
+		default:
+			displacement = amplitude * terrainFBM(px, py, octaves, roughness, lacunarity);
+			break;
+	}
+
+	double dist = point.z - displacement;
+	dist = empty ? fabs(dist) : dist;
+	return dist;
 }

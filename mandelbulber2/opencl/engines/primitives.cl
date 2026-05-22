@@ -36,22 +36,39 @@
 
 float3 TransformPrimitivePoint(__global sPrimitiveCl *primitive, float3 _point)
 {
+	float3 point;
 	if (primitive->object.useWorldSpacePivot)
 	{
-		float3 point = _point - primitive->object.pivot;
+		point = _point - primitive->object.pivot;
 		point = Matrix33MulFloat3(primitive->object.rotationMatrix, point);
 		point = point + primitive->object.pivot;
 		point = point - primitive->object.position;
-		return point;
 	}
 	else
 	{
-		float3 point = _point - primitive->object.position;
+		point = _point - primitive->object.position;
 		point = point - primitive->object.pivot;
 		point = Matrix33MulFloat3(primitive->object.rotationMatrix, point);
 		point = point + primitive->object.pivot;
-		return point;
 	}
+
+	if (primitive->object.mirrorX) point.x = fabs(point.x);
+	if (primitive->object.mirrorY) point.y = fabs(point.y);
+	if (primitive->object.mirrorZ) point.z = fabs(point.z);
+
+	point.x /= max(primitive->object.primitiveScale.x, 1e-10f);
+	point.y /= max(primitive->object.primitiveScale.y, 1e-10f);
+	point.z /= max(primitive->object.primitiveScale.z, 1e-10f);
+
+	return point;
+}
+
+float GetPrimitiveMinScale(__global sPrimitiveCl *primitive)
+{
+	float ms = primitive->object.primitiveScale.x;
+	if (primitive->object.primitiveScale.y < ms) ms = primitive->object.primitiveScale.y;
+	if (primitive->object.primitiveScale.z < ms) ms = primitive->object.primitiveScale.z;
+	return ms;
 }
 
 float3 CalculateCloneOffsetOpenCL(__global sPrimitiveCl *primitive, int index)
@@ -705,6 +722,300 @@ float PrimitiveEllipsoid(__global sPrimitiveCl *primitive, float3 _point)
 }
 #endif
 
+#ifdef USE_PRIMITIVE_CAPSULE
+float PrimitiveCapsule(__global sPrimitiveCl *primitive, float3 _point)
+{
+	float3 point = TransformPrimitivePoint(primitive, _point);
+	point = ApplyDeformations(point, primitive);
+	point = ApplyRepeat(point, primitive);
+	point = modRepeat(point, primitive->data.capsule.repeat);
+
+	float halfH = primitive->data.capsule.height * 0.5f;
+	point.z -= clamp(point.z, -halfH, halfH);
+	float dist = length(point) - primitive->data.capsule.radius;
+
+	dist = primitive->data.capsule.empty ? fabs(dist) : dist;
+	dist = max(dist - primitive->object.wallThickness, 0.0f);
+
+	if (primitive->data.capsule.limitsEnable)
+	{
+		float3 distanceAxial =
+			max(point - primitive->data.capsule.limitsMax, primitive->data.capsule.limitsMin - point);
+		float limitBoxDist = max(max(distanceAxial.x, distanceAxial.y), distanceAxial.z);
+		dist = max(dist, limitBoxDist);
+	}
+	return dist;
+}
+#endif
+
+#ifdef USE_PRIMITIVE_HEXPRISM
+float PrimitiveHexPrism(__global sPrimitiveCl *primitive, float3 _point)
+{
+	float3 point = TransformPrimitivePoint(primitive, _point);
+	point = ApplyDeformations(point, primitive);
+	point = ApplyRepeat(point, primitive);
+	point = modRepeat(point, primitive->data.hexprism.repeat);
+
+	float r = primitive->object.size.x;
+	float3 absP = (float3)(fabs(point.x), fabs(point.y), fabs(point.z));
+	float k = -0.8660254037844386f;
+	float px = absP.x, py = absP.y;
+	float t = 2.0f * min(k * px + 0.5f * py, 0.0f);
+	px -= t * k;
+	py -= t * 0.5f;
+	px -= clamp(px, -r, r);
+	float d2d = native_sqrt(px * px + max(py - r, 0.0f) * max(py - r, 0.0f))
+		* ((py - r > 0.0f) ? 1.0f : -1.0f);
+	float dist = max(d2d, absP.z - primitive->data.hexprism.height * 0.5f);
+
+	dist = primitive->data.hexprism.empty ? fabs(dist) : dist;
+	dist = max(dist - primitive->object.wallThickness, 0.0f);
+
+	if (primitive->data.hexprism.limitsEnable)
+	{
+		float3 distanceAxial =
+			max(point - primitive->data.hexprism.limitsMax, primitive->data.hexprism.limitsMin - point);
+		float limitBoxDist = max(max(distanceAxial.x, distanceAxial.y), distanceAxial.z);
+		dist = max(dist, limitBoxDist);
+	}
+	return dist;
+}
+#endif
+
+#ifdef USE_PRIMITIVE_LAVAPLANE
+float PrimitiveLavaPlane(__global sPrimitiveCl *primitive, float3 _point)
+{
+	float3 point = TransformPrimitivePoint(primitive, _point);
+	point = ApplyDeformations(point, primitive);
+
+	float displacement = 0.0f;
+	float freq = 1.0f / max(primitive->data.lavaplane.waveScale, 1e-10f);
+	float amp = primitive->data.lavaplane.waveHeight;
+	for (int i = 0; i < primitive->data.lavaplane.waveOctaves; i++)
+	{
+		displacement += amp * native_sin(point.x * freq) * native_cos(point.y * freq);
+		freq *= 2.0f;
+		amp *= 0.5f;
+	}
+	float dist = point.z - displacement;
+	dist = primitive->data.lavaplane.empty ? fabs(dist) : dist;
+	return dist;
+}
+#endif
+
+#ifdef USE_PRIMITIVE_OCTAHEDRON
+float PrimitiveOctahedron(__global sPrimitiveCl *primitive, float3 _point)
+{
+	float3 point = TransformPrimitivePoint(primitive, _point);
+	point = ApplyDeformations(point, primitive);
+	point = ApplyRepeat(point, primitive);
+	point = modRepeat(point, primitive->data.octahedron.repeat);
+
+	float s = primitive->object.size.x;
+	float3 absP = (float3)(fabs(point.x), fabs(point.y), fabs(point.z));
+	float dist = (absP.x + absP.y + absP.z - s) * 0.57735026919f;
+
+	dist = primitive->data.octahedron.empty ? fabs(dist) : dist;
+	dist = max(dist - primitive->object.wallThickness, 0.0f);
+
+	if (primitive->data.octahedron.limitsEnable)
+	{
+		float3 distanceAxial =
+			max(point - primitive->data.octahedron.limitsMax, primitive->data.octahedron.limitsMin - point);
+		float limitBoxDist = max(max(distanceAxial.x, distanceAxial.y), distanceAxial.z);
+		dist = max(dist, limitBoxDist);
+	}
+	return dist;
+}
+#endif
+
+#ifdef USE_PRIMITIVE_PYRAMID
+float PrimitivePyramid(__global sPrimitiveCl *primitive, float3 _point)
+{
+	float3 point = TransformPrimitivePoint(primitive, _point);
+	point = ApplyDeformations(point, primitive);
+	point = ApplyRepeat(point, primitive);
+	point = modRepeat(point, primitive->data.pyramid.repeat);
+
+	float h = max(primitive->data.pyramid.height, 1e-10f);
+	float b = max(primitive->data.pyramid.baseSize, 1e-10f) * 0.5f;
+	float m2 = h * h / (b * b);
+	float3 absP = (float3)(fabs(point.x), fabs(point.y), point.z);
+	absP.x -= clamp(absP.x, -b, b);
+	absP.y -= clamp(absP.y, -b, b);
+	float d1 = max(absP.x, absP.y);
+	float d2 = (point.z - h) * m2 / native_sqrt(m2 + 1.0f);
+	float distBase = -point.z;
+	float dist = max(d1, max(d2, distBase));
+
+	dist = primitive->data.pyramid.empty ? fabs(dist) : dist;
+	dist = max(dist - primitive->object.wallThickness, 0.0f);
+
+	if (primitive->data.pyramid.limitsEnable)
+	{
+		float3 distanceAxial =
+			max(point - primitive->data.pyramid.limitsMax, primitive->data.pyramid.limitsMin - point);
+		float limitBoxDist = max(max(distanceAxial.x, distanceAxial.y), distanceAxial.z);
+		dist = max(dist, limitBoxDist);
+	}
+	return dist;
+}
+#endif
+
+#ifdef USE_PRIMITIVE_TERRAINPLANE
+float terrainHashCl(float x, float y)
+{
+	float n = native_sin(x * 127.1f + y * 311.7f) * 43758.5453123f;
+	return n - floor(n);
+}
+
+float terrainNoiseCl(float x, float y)
+{
+	float ix = floor(x), iy = floor(y);
+	float fx = x - ix, fy = y - iy;
+	fx = fx * fx * (3.0f - 2.0f * fx);
+	fy = fy * fy * (3.0f - 2.0f * fy);
+	float a = terrainHashCl(ix, iy);
+	float b = terrainHashCl(ix + 1.0f, iy);
+	float c = terrainHashCl(ix, iy + 1.0f);
+	float d = terrainHashCl(ix + 1.0f, iy + 1.0f);
+	return a + (b - a) * fx + (c - a) * fy + (a - b - c + d) * fx * fy;
+}
+
+float terrainFBMCl(float x, float y, int octs, float rough, float lac)
+{
+	float value = 0.0f, amp = 1.0f, freq = 1.0f, maxAmp = 0.0f;
+	for (int i = 0; i < octs; i++)
+	{
+		value += amp * (terrainNoiseCl(x * freq, y * freq) * 2.0f - 1.0f);
+		maxAmp += amp;
+		amp *= rough;
+		freq *= lac;
+	}
+	return value / max(maxAmp, 1e-10f);
+}
+
+float PrimitiveTerrainPlane(__global sPrimitiveCl *primitive, float3 _point)
+{
+	float3 point = TransformPrimitivePoint(primitive, _point);
+	point = ApplyDeformations(point, primitive);
+
+	float freq = max(primitive->data.terrainplane.frequency, 1e-10f);
+	float px = point.x * freq;
+	float py = point.y * freq;
+	float amp = primitive->data.terrainplane.amplitude;
+	float rough = primitive->data.terrainplane.roughness;
+	float lac = primitive->data.terrainplane.lacunarity;
+	float ds = primitive->data.terrainplane.detailScale;
+	float eros = primitive->data.terrainplane.erosion;
+	int octs = primitive->data.terrainplane.octaves;
+	float displacement = 0.0f;
+
+	switch (primitive->data.terrainplane.terrainType)
+	{
+		case 0: // Sand
+		{
+			displacement = amp * terrainFBMCl(px, py, octs, 0.4f, lac);
+			displacement += native_sin(px * 8.0f + py * 3.0f) * amp * 0.15f * ds;
+			break;
+		}
+		case 1: // Mud
+		{
+			float base = terrainFBMCl(px * 0.5f, py * 0.5f, octs, rough, lac);
+			float cracks = fabs(terrainFBMCl(px * 3.0f, py * 3.0f, 3, 0.5f, 2.0f));
+			displacement = amp * (base * 0.7f - cracks * 0.3f * ds);
+			break;
+		}
+		case 2: // Ice
+		{
+			float flat = terrainFBMCl(px, py, octs, 0.3f, lac) * 0.1f;
+			float crack = fabs(terrainFBMCl(px * 4.0f, py * 4.0f, 4, 0.5f, 2.0f));
+			crack = crack * crack * crack;
+			displacement = amp * (flat - crack * ds * 0.5f);
+			break;
+		}
+		case 3: // Grass
+		{
+			float base = terrainFBMCl(px, py, octs, rough, lac);
+			float micro = terrainFBMCl(px * 10.0f, py * 10.0f, 3, 0.6f, 2.0f) * ds * 0.2f;
+			displacement = amp * (base + micro);
+			break;
+		}
+		case 4: // Rock
+		{
+			displacement = amp * terrainFBMCl(px, py, octs, rough, lac);
+			float sharp = terrainFBMCl(px * 2.0f, py * 2.0f, 4, 0.7f, 2.5f);
+			displacement += amp * fabs(sharp) * ds * 0.3f;
+			break;
+		}
+		case 5: // Snow
+		{
+			displacement = amp * terrainFBMCl(px * 0.7f, py * 0.7f, octs, 0.35f, lac);
+			displacement += native_sin(px * 2.0f + py * 0.5f) * amp * 0.2f;
+			break;
+		}
+		case 6: // Magma
+		{
+			float turb = 0.0f, tF = 1.0f, tA = 1.0f;
+			for (int i = 0; i < octs; i++)
+			{
+				turb += tA * fabs(terrainNoiseCl(px * tF, py * tF) * 2.0f - 1.0f);
+				tA *= rough;
+				tF *= lac;
+			}
+			displacement = amp * turb * (1.0f - eros * 0.5f);
+			break;
+		}
+		case 7: // Crystal
+		{
+			float n = terrainFBMCl(px, py, octs, rough, lac);
+			float dsc = max(ds, 1e-10f);
+			displacement = amp * floor(n * 6.0f * dsc) / (6.0f * dsc);
+			break;
+		}
+		case 8: // Moss
+		{
+			float base = terrainFBMCl(px * 0.8f, py * 0.8f, octs, 0.5f, lac);
+			float bumps = 0.5f + 0.5f * terrainFBMCl(px * 5.0f, py * 5.0f, 3, 0.4f, 2.0f);
+			bumps = bumps * bumps;
+			displacement = amp * (base * 0.6f + bumps * 0.4f * ds);
+			break;
+		}
+		case 9: // Volcanic
+		{
+			float n = terrainFBMCl(px, py, octs, rough, lac);
+			float er = max(eros, 0.01f);
+			float shaped = (n > 0.0f) ? pow(n, 0.5f + er) : -pow(-n, 0.5f + er);
+			displacement = amp * shaped;
+			break;
+		}
+		case 10: // Dunes
+		{
+			float mainWave = native_sin(px * 3.0f + py * 1.5f) * 0.5f + 0.5f;
+			mainWave = pow(mainWave, 1.5f);
+			float detail = terrainFBMCl(px * 4.0f, py * 4.0f, 3, 0.4f, 2.0f) * ds * 0.15f;
+			displacement = amp * (mainWave + detail);
+			break;
+		}
+		case 11: // Coral
+		{
+			float n1 = terrainFBMCl(px, py, octs, rough, lac);
+			float n2 = terrainFBMCl(px + 5.2f, py + 1.3f, octs, rough, lac);
+			float warp = terrainFBMCl(px + n1 * 2.0f, py + n2 * 2.0f, 3, 0.5f, 2.0f);
+			displacement = amp * warp * ds;
+			break;
+		}
+		default:
+			displacement = amp * terrainFBMCl(px, py, octs, rough, lac);
+			break;
+	}
+
+	float dist = point.z - displacement;
+	dist = primitive->data.terrainplane.empty ? fabs(dist) : dist;
+	return dist;
+}
+#endif
+
 float TotalDistanceToPrimitives(__constant sClInConstants *consts, sRenderData *renderData,
 	float3 point, float fractalDistance, float detailSize, bool normalCalculationMode,
 	int *closestObjectId, int objectIdForVolumetrics)
@@ -846,9 +1157,58 @@ float TotalDistanceToPrimitives(__constant sClInConstants *consts, sRenderData *
 					}
 #endif
 
+#ifdef USE_PRIMITIVE_CAPSULE
+					case objCapsule:
+					{
+						dTemp = PrimitiveCapsule(primitive, point3);
+						break;
+					}
+#endif
+
+#ifdef USE_PRIMITIVE_HEXPRISM
+					case objHexPrism:
+					{
+						dTemp = PrimitiveHexPrism(primitive, point3);
+						break;
+					}
+#endif
+
+#ifdef USE_PRIMITIVE_LAVAPLANE
+					case objLavaPlane:
+					{
+						dTemp = PrimitiveLavaPlane(primitive, point3);
+						break;
+					}
+#endif
+
+#ifdef USE_PRIMITIVE_OCTAHEDRON
+					case objOctahedron:
+					{
+						dTemp = PrimitiveOctahedron(primitive, point3);
+						break;
+					}
+#endif
+
+#ifdef USE_PRIMITIVE_PYRAMID
+					case objPyramid:
+					{
+						dTemp = PrimitivePyramid(primitive, point3);
+						break;
+					}
+#endif
+
+#ifdef USE_PRIMITIVE_TERRAINPLANE
+					case objTerrainPlane:
+					{
+						dTemp = PrimitiveTerrainPlane(primitive, point3);
+						break;
+					}
+#endif
+
 					default: break;
 				}
 
+				dTemp *= GetPrimitiveMinScale(primitive);
 				dTemp *= minCloneScale;
 				if (dTemp < distTemp)
 					distTemp = dTemp;
@@ -963,6 +1323,39 @@ float TotalDistanceToPrimitives(__constant sClInConstants *consts, sRenderData *
 					{
 						dist = distTemp;
 					}
+					break;
+				}
+				case clPrimBooleanOperatorSmoothOR:
+				{
+					float smoothR = primitive->object.smoothDeCombineDistance;
+					if (smoothR < 1e-10f) smoothR = 0.1f;
+					if (distTemp < dist)
+					{
+						closestObject = primitive->object.objectId;
+					}
+					dist = opSmoothUnion(distTemp, dist, smoothR);
+					break;
+				}
+				case clPrimBooleanOperatorSmoothAND:
+				{
+					float smoothR = primitive->object.smoothDeCombineDistance;
+					if (smoothR < 1e-10f) smoothR = 0.1f;
+					if (distTemp > dist)
+					{
+						closestObject = primitive->object.objectId;
+					}
+					dist = opSmoothIntersection(dist, distTemp, smoothR);
+					break;
+				}
+				case clPrimBooleanOperatorSmoothSUB:
+				{
+					float smoothR = primitive->object.smoothDeCombineDistance;
+					if (smoothR < 1e-10f) smoothR = 0.1f;
+					if (distTemp < detailSize)
+					{
+						closestObject = primitive->object.objectId;
+					}
+					dist = opSmoothSubtraction(distTemp, dist, smoothR);
 					break;
 				}
 			} // switch

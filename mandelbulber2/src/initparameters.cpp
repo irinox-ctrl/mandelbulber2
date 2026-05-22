@@ -2442,6 +2442,61 @@ void InitPrimitiveParams(const sPrimitiveItem &primitive, std::shared_ptr<cParam
 				paramStandard);
 			par->addParam(QString(primitiveName) + "_wall_thickness", 0.0, morphAkima, paramStandard);
 			break;
+		case fractal::objCapsule:
+			par->addParam(QString(primitiveName) + "_radius", 0.5, morphAkima, paramStandard);
+			par->addParam(QString(primitiveName) + "_height", 1.0, morphAkima, paramStandard);
+			par->addParam(QString(primitiveName) + "_empty", false, morphAkima, paramStandard);
+			par->addParam(QString(primitiveName) + "_limits_enable", false, morphAkima, paramStandard);
+			par->addParam(QString(primitiveName) + "_limits_max", CVector3(0.7, 0.7, 0.7), morphAkima, paramStandard);
+			par->addParam(QString(primitiveName) + "_limits_min", CVector3(-0.7, -0.7, -0.7), morphAkima, paramStandard);
+			par->addParam(QString(primitiveName) + "_wall_thickness", 0.0, morphAkima, paramStandard);
+			break;
+		case fractal::objHexPrism:
+			par->addParam(QString(primitiveName) + "_size", CVector3(1.0, 1.0, 1.0), morphAkima, paramStandard);
+			par->addParam(QString(primitiveName) + "_height", 1.0, morphAkima, paramStandard);
+			par->addParam(QString(primitiveName) + "_empty", false, morphAkima, paramStandard);
+			par->addParam(QString(primitiveName) + "_limits_enable", false, morphAkima, paramStandard);
+			par->addParam(QString(primitiveName) + "_limits_max", CVector3(0.7, 0.7, 0.7), morphAkima, paramStandard);
+			par->addParam(QString(primitiveName) + "_limits_min", CVector3(-0.7, -0.7, -0.7), morphAkima, paramStandard);
+			par->addParam(QString(primitiveName) + "_wall_thickness", 0.0, morphAkima, paramStandard);
+			break;
+		case fractal::objLavaPlane:
+			par->addParam(QString(primitiveName) + "_empty", false, morphAkima, paramStandard);
+			par->addParam(QString(primitiveName) + "_lava_wave_height", 0.3, 0.0, 100.0, morphAkima, paramStandard);
+			par->addParam(QString(primitiveName) + "_lava_wave_scale", 1.0, 0.001, 1000.0, morphAkima, paramStandard);
+			par->addParam(QString(primitiveName) + "_lava_wave_octaves", 5, 1, 12, morphLinear, paramStandard);
+			par->addParam(QString(primitiveName) + "_wall_thickness", 0.0, morphAkima, paramStandard);
+			break;
+		case fractal::objOctahedron:
+			par->addParam(QString(primitiveName) + "_size", CVector3(1.0, 1.0, 1.0), morphAkima, paramStandard);
+			par->addParam(QString(primitiveName) + "_empty", false, morphAkima, paramStandard);
+			par->addParam(QString(primitiveName) + "_limits_enable", false, morphAkima, paramStandard);
+			par->addParam(QString(primitiveName) + "_limits_max", CVector3(0.7, 0.7, 0.7), morphAkima, paramStandard);
+			par->addParam(QString(primitiveName) + "_limits_min", CVector3(-0.7, -0.7, -0.7), morphAkima, paramStandard);
+			par->addParam(QString(primitiveName) + "_wall_thickness", 0.0, morphAkima, paramStandard);
+			break;
+		case fractal::objPyramid:
+			par->addParam(QString(primitiveName) + "_size", CVector3(1.0, 1.0, 1.0), morphAkima, paramStandard);
+			par->addParam(QString(primitiveName) + "_height", 1.0, morphAkima, paramStandard);
+			par->addParam(QString(primitiveName) + "_base_size", 1.0, morphAkima, paramStandard);
+			par->addParam(QString(primitiveName) + "_empty", false, morphAkima, paramStandard);
+			par->addParam(QString(primitiveName) + "_limits_enable", false, morphAkima, paramStandard);
+			par->addParam(QString(primitiveName) + "_limits_max", CVector3(0.7, 0.7, 0.7), morphAkima, paramStandard);
+			par->addParam(QString(primitiveName) + "_limits_min", CVector3(-0.7, -0.7, -0.7), morphAkima, paramStandard);
+			par->addParam(QString(primitiveName) + "_wall_thickness", 0.0, morphAkima, paramStandard);
+			break;
+		case fractal::objTerrainPlane:
+			par->addParam(QString(primitiveName) + "_empty", false, morphAkima, paramStandard);
+			par->addParam(QString(primitiveName) + "_terrain_type", 0, 0, 11, morphLinear, paramStandard);
+			par->addParam(QString(primitiveName) + "_amplitude", 0.3, 0.0, 100.0, morphAkima, paramStandard);
+			par->addParam(QString(primitiveName) + "_frequency", 1.0, 0.001, 1000.0, morphAkima, paramStandard);
+			par->addParam(QString(primitiveName) + "_octaves", 5, 1, 12, morphLinear, paramStandard);
+			par->addParam(QString(primitiveName) + "_roughness", 0.5, 0.0, 1.0, morphAkima, paramStandard);
+			par->addParam(QString(primitiveName) + "_lacunarity", 2.0, 0.1, 10.0, morphAkima, paramStandard);
+			par->addParam(QString(primitiveName) + "_erosion", 0.3, 0.0, 1.0, morphAkima, paramStandard);
+			par->addParam(QString(primitiveName) + "_detail_scale", 1.0, 0.01, 10.0, morphAkima, paramStandard);
+			par->addParam(QString(primitiveName) + "_wall_thickness", 0.0, morphAkima, paramStandard);
+			break;
 
 		default: break;
 	}
@@ -3221,6 +3276,61 @@ void DeletePrimitiveParams(fractal::enumObjectType objectType, const QString pri
 			par->DeleteParameter(QString(primitiveName) + "_limits_enable");
 			par->DeleteParameter(QString(primitiveName) + "_limits_max");
 			par->DeleteParameter(QString(primitiveName) + "_limits_min");
+			par->DeleteParameter(QString(primitiveName) + "_wall_thickness");
+			break;
+		case fractal::objCapsule:
+			par->DeleteParameter(QString(primitiveName) + "_radius");
+			par->DeleteParameter(QString(primitiveName) + "_height");
+			par->DeleteParameter(QString(primitiveName) + "_empty");
+			par->DeleteParameter(QString(primitiveName) + "_limits_enable");
+			par->DeleteParameter(QString(primitiveName) + "_limits_max");
+			par->DeleteParameter(QString(primitiveName) + "_limits_min");
+			par->DeleteParameter(QString(primitiveName) + "_wall_thickness");
+			break;
+		case fractal::objHexPrism:
+			par->DeleteParameter(QString(primitiveName) + "_size");
+			par->DeleteParameter(QString(primitiveName) + "_height");
+			par->DeleteParameter(QString(primitiveName) + "_empty");
+			par->DeleteParameter(QString(primitiveName) + "_limits_enable");
+			par->DeleteParameter(QString(primitiveName) + "_limits_max");
+			par->DeleteParameter(QString(primitiveName) + "_limits_min");
+			par->DeleteParameter(QString(primitiveName) + "_wall_thickness");
+			break;
+		case fractal::objLavaPlane:
+			par->DeleteParameter(QString(primitiveName) + "_empty");
+			par->DeleteParameter(QString(primitiveName) + "_lava_wave_height");
+			par->DeleteParameter(QString(primitiveName) + "_lava_wave_scale");
+			par->DeleteParameter(QString(primitiveName) + "_lava_wave_octaves");
+			par->DeleteParameter(QString(primitiveName) + "_wall_thickness");
+			break;
+		case fractal::objOctahedron:
+			par->DeleteParameter(QString(primitiveName) + "_size");
+			par->DeleteParameter(QString(primitiveName) + "_empty");
+			par->DeleteParameter(QString(primitiveName) + "_limits_enable");
+			par->DeleteParameter(QString(primitiveName) + "_limits_max");
+			par->DeleteParameter(QString(primitiveName) + "_limits_min");
+			par->DeleteParameter(QString(primitiveName) + "_wall_thickness");
+			break;
+		case fractal::objPyramid:
+			par->DeleteParameter(QString(primitiveName) + "_size");
+			par->DeleteParameter(QString(primitiveName) + "_height");
+			par->DeleteParameter(QString(primitiveName) + "_base_size");
+			par->DeleteParameter(QString(primitiveName) + "_empty");
+			par->DeleteParameter(QString(primitiveName) + "_limits_enable");
+			par->DeleteParameter(QString(primitiveName) + "_limits_max");
+			par->DeleteParameter(QString(primitiveName) + "_limits_min");
+			par->DeleteParameter(QString(primitiveName) + "_wall_thickness");
+			break;
+		case fractal::objTerrainPlane:
+			par->DeleteParameter(QString(primitiveName) + "_empty");
+			par->DeleteParameter(QString(primitiveName) + "_terrain_type");
+			par->DeleteParameter(QString(primitiveName) + "_amplitude");
+			par->DeleteParameter(QString(primitiveName) + "_frequency");
+			par->DeleteParameter(QString(primitiveName) + "_octaves");
+			par->DeleteParameter(QString(primitiveName) + "_roughness");
+			par->DeleteParameter(QString(primitiveName) + "_lacunarity");
+			par->DeleteParameter(QString(primitiveName) + "_erosion");
+			par->DeleteParameter(QString(primitiveName) + "_detail_scale");
 			par->DeleteParameter(QString(primitiveName) + "_wall_thickness");
 			break;
 

@@ -902,6 +902,12 @@ QString cOpenClDynamicData::BuildPrimitivesData(const cPrimitives *primitivesCon
 	bool usePrimitiveTorus = false;
 	bool usePrimitivePrism = false;
 	bool usePrimitiveEllipsoid = false;
+	bool usePrimitiveCapsule = false;
+	bool usePrimitiveHexPrism = false;
+	bool usePrimitiveLavaPlane = false;
+	bool usePrimitiveOctahedron = false;
+	bool usePrimitivePyramid = false;
+	bool usePrimitiveTerrainPlane = false;
 
 	// copy primitives data aligned to 16
 	for (int i = 0; i < numberOfPrimitives; i++)
@@ -922,6 +928,7 @@ QString cOpenClDynamicData::BuildPrimitivesData(const cPrimitives *primitivesCon
 		primitiveCl.object.position = toClFloat3(primitive->position);
 		primitiveCl.object.rotationMatrix = toClMatrix33(primitive->rotationMatrix);
 		primitiveCl.object.size = toClFloat3(primitive->size);
+		primitiveCl.object.primitiveScale = toClFloat3(primitive->primitiveScale);
 		primitiveCl.object.repeat = toClFloat3(primitive->repeat);
 		primitiveCl.object.smoothDeCombineEnable = primitive->smoothDeCombineEnable;
 		primitiveCl.object.smoothDeCombineDistance = primitive->smoothDeCombineDistance;
@@ -929,6 +936,94 @@ QString cOpenClDynamicData::BuildPrimitivesData(const cPrimitives *primitivesCon
 			static_cast<enumClPrimitiveBooleanOperator>(primitive->booleanOperator);
 		primitiveCl.object.usedForVolumetric = primitive->usedForVolumetric;
 		primitiveCl.object.wallThickness = primitive->wallThickness;
+
+		// Pivot
+		primitiveCl.object.pivot = toClFloat3(primitive->pivot);
+		primitiveCl.object.useWorldSpacePivot = primitive->useWorldSpacePivot;
+
+		// Cloner
+		primitiveCl.object.clonerEnabled = primitive->cloner.enabled;
+		primitiveCl.object.clonerMode = static_cast<cl_int>(primitive->cloner.mode);
+		primitiveCl.object.clonerCount = primitive->cloner.count;
+		primitiveCl.object.clonerOffset = toClFloat3(primitive->cloner.offset);
+		primitiveCl.object.clonerRadius = primitive->cloner.radius;
+		primitiveCl.object.clonerStartAngle = primitive->cloner.startAngle;
+		primitiveCl.object.clonerEndAngle = primitive->cloner.endAngle;
+		primitiveCl.object.clonerPlane = primitive->cloner.plane;
+		primitiveCl.object.clonerGridCount = toClFloat3(primitive->cloner.gridCount);
+		primitiveCl.object.clonerGridSize = toClFloat3(primitive->cloner.gridSize);
+
+		// Advanced Repeat
+		primitiveCl.object.repeatMode = primitive->repeatMode;
+		primitiveCl.object.repeatRotationStep = primitive->repeatRotationStep;
+		primitiveCl.object.repeatFibonacciCount = primitive->repeatFibonacciCount;
+		primitiveCl.object.repeatFibonacciSpread = primitive->repeatFibonacciSpread;
+		primitiveCl.object.repeatSpiralStep = toClFloat3(primitive->repeatSpiralStep);
+		primitiveCl.object.repeatSpiralAngle = toClFloat3(primitive->repeatSpiralAngle);
+		primitiveCl.object.repeatSpiralRadius = toClFloat3(primitive->repeatSpiralRadius);
+		primitiveCl.object.repeatWaveAmplitude = toClFloat3(primitive->repeatWaveAmplitude);
+		primitiveCl.object.repeatWaveFrequency = toClFloat3(primitive->repeatWaveFrequency);
+		primitiveCl.object.repeatWavePhase = toClFloat3(primitive->repeatWavePhase);
+		primitiveCl.object.repeatWaveAxis = primitive->repeatWaveAxis;
+
+		// Mirror
+		primitiveCl.object.mirrorX = primitive->mirrorX;
+		primitiveCl.object.mirrorY = primitive->mirrorY;
+		primitiveCl.object.mirrorZ = primitive->mirrorZ;
+
+		// Deformers
+		primitiveCl.object.deformBendEnable = primitive->deformBendEnable;
+		primitiveCl.object.deformBendAngle = primitive->deformBendAngle;
+		primitiveCl.object.deformBendAxis = primitive->deformBendAxis;
+		primitiveCl.object.deformTwistEnable = primitive->deformTwistEnable;
+		primitiveCl.object.deformTwistAngle = primitive->deformTwistAngle;
+		primitiveCl.object.deformTwistAxis = primitive->deformTwistAxis;
+		primitiveCl.object.deformTaperEnable = primitive->deformTaperEnable;
+		primitiveCl.object.deformTaperRate = primitive->deformTaperRate;
+		primitiveCl.object.deformTaperAxis = primitive->deformTaperAxis;
+
+		// Effectors (MoGraph)
+		for (int ei = 0; ei < 4; ei++)
+		{
+			if (primitive->effectors[ei] && primitive->effectors[ei]->enabled)
+			{
+				auto *eff = primitive->effectors[ei].get();
+				primitiveCl.effectors[ei].mode = static_cast<cl_int>(eff->mode);
+				primitiveCl.effectors[ei].strength = eff->strength;
+
+				auto *re = dynamic_cast<sPrimitiveBasic::RandomEffector *>(eff);
+				auto *se = dynamic_cast<sPrimitiveBasic::StepEffector *>(eff);
+				auto *fe = dynamic_cast<sPrimitiveBasic::FormulaEffector *>(eff);
+				auto *te = dynamic_cast<sPrimitiveBasic::TimeEffector *>(eff);
+
+				if (re)
+				{
+					primitiveCl.effectors[ei].type = 1;
+					primitiveCl.effectors[ei].seed = re->seed;
+					primitiveCl.effectors[ei].posAmp = toClFloat3(re->positionAmp);
+					primitiveCl.effectors[ei].rotAmp = toClFloat3(re->rotationAmp);
+					primitiveCl.effectors[ei].scaleAmp = toClFloat3(re->scaleAmp);
+				}
+				else if (se)
+				{
+					primitiveCl.effectors[ei].type = 2;
+					primitiveCl.effectors[ei].posAmp = toClFloat3(se->positionStep);
+					primitiveCl.effectors[ei].rotAmp = toClFloat3(se->rotationStep);
+					primitiveCl.effectors[ei].scaleAmp = toClFloat3(se->scaleStep);
+				}
+				else if (fe)
+				{
+					primitiveCl.effectors[ei].type = 3;
+					primitiveCl.effectors[ei].formulaPreset = fe->formulaPreset;
+				}
+				else if (te)
+				{
+					primitiveCl.effectors[ei].type = 4;
+					primitiveCl.effectors[ei].timeOffset = te->timeOffset;
+					primitiveCl.effectors[ei].timeScale = te->timeScale;
+				}
+			}
+		}
 
 		try
 		{
@@ -1136,6 +1231,122 @@ QString cOpenClDynamicData::BuildPrimitivesData(const cPrimitives *primitivesCon
 					break;
 				}
 
+				case fractal::objCapsule:
+				{
+					const sPrimitiveCapsule *capsule =
+						dynamic_cast<const sPrimitiveCapsule *>(primitive.get());
+					if (capsule)
+					{
+						primitiveCl.data.capsule.empty = capsule->empty;
+						primitiveCl.data.capsule.radius = capsule->radius;
+						primitiveCl.data.capsule.height = capsule->height;
+						primitiveCl.data.capsule.repeat = toClFloat3(capsule->repeat);
+						primitiveCl.data.capsule.limitsEnable = capsule->limitsEnable;
+						primitiveCl.data.capsule.limitsMax = toClFloat3(capsule->limitsMax);
+						primitiveCl.data.capsule.limitsMin = toClFloat3(capsule->limitsMin);
+						usePrimitiveCapsule = true;
+					}
+					else
+						throw QString("sPrimitiveCapsule");
+					break;
+				}
+
+				case fractal::objHexPrism:
+				{
+					const sPrimitiveHexPrism *hexprism =
+						dynamic_cast<const sPrimitiveHexPrism *>(primitive.get());
+					if (hexprism)
+					{
+						primitiveCl.data.hexprism.empty = hexprism->empty;
+						primitiveCl.data.hexprism.height = hexprism->height;
+						primitiveCl.data.hexprism.repeat = toClFloat3(hexprism->repeat);
+						primitiveCl.data.hexprism.limitsEnable = hexprism->limitsEnable;
+						primitiveCl.data.hexprism.limitsMax = toClFloat3(hexprism->limitsMax);
+						primitiveCl.data.hexprism.limitsMin = toClFloat3(hexprism->limitsMin);
+						usePrimitiveHexPrism = true;
+					}
+					else
+						throw QString("sPrimitiveHexPrism");
+					break;
+				}
+
+				case fractal::objLavaPlane:
+				{
+					const sPrimitiveLavaPlane *lava =
+						dynamic_cast<const sPrimitiveLavaPlane *>(primitive.get());
+					if (lava)
+					{
+						primitiveCl.data.lavaplane.empty = lava->empty;
+						primitiveCl.data.lavaplane.waveHeight = lava->waveHeight;
+						primitiveCl.data.lavaplane.waveScale = lava->waveScale;
+						primitiveCl.data.lavaplane.waveOctaves = lava->waveOctaves;
+						usePrimitiveLavaPlane = true;
+					}
+					else
+						throw QString("sPrimitiveLavaPlane");
+					break;
+				}
+
+				case fractal::objOctahedron:
+				{
+					const sPrimitiveOctahedron *octa =
+						dynamic_cast<const sPrimitiveOctahedron *>(primitive.get());
+					if (octa)
+					{
+						primitiveCl.data.octahedron.empty = octa->empty;
+						primitiveCl.data.octahedron.repeat = toClFloat3(octa->repeat);
+						primitiveCl.data.octahedron.limitsEnable = octa->limitsEnable;
+						primitiveCl.data.octahedron.limitsMax = toClFloat3(octa->limitsMax);
+						primitiveCl.data.octahedron.limitsMin = toClFloat3(octa->limitsMin);
+						usePrimitiveOctahedron = true;
+					}
+					else
+						throw QString("sPrimitiveOctahedron");
+					break;
+				}
+
+				case fractal::objPyramid:
+				{
+					const sPrimitivePyramid *pyramid =
+						dynamic_cast<const sPrimitivePyramid *>(primitive.get());
+					if (pyramid)
+					{
+						primitiveCl.data.pyramid.empty = pyramid->empty;
+						primitiveCl.data.pyramid.height = pyramid->height;
+						primitiveCl.data.pyramid.baseSize = pyramid->baseSize;
+						primitiveCl.data.pyramid.repeat = toClFloat3(pyramid->repeat);
+						primitiveCl.data.pyramid.limitsEnable = pyramid->limitsEnable;
+						primitiveCl.data.pyramid.limitsMax = toClFloat3(pyramid->limitsMax);
+						primitiveCl.data.pyramid.limitsMin = toClFloat3(pyramid->limitsMin);
+						usePrimitivePyramid = true;
+					}
+					else
+						throw QString("sPrimitivePyramid");
+					break;
+				}
+
+				case fractal::objTerrainPlane:
+				{
+					const sPrimitiveTerrainPlane *terrain =
+						dynamic_cast<const sPrimitiveTerrainPlane *>(primitive.get());
+					if (terrain)
+					{
+						primitiveCl.data.terrainplane.empty = terrain->empty;
+						primitiveCl.data.terrainplane.terrainType = terrain->terrainType;
+						primitiveCl.data.terrainplane.amplitude = terrain->amplitude;
+						primitiveCl.data.terrainplane.frequency = terrain->frequency;
+						primitiveCl.data.terrainplane.octaves = terrain->octaves;
+						primitiveCl.data.terrainplane.roughness = terrain->roughness;
+						primitiveCl.data.terrainplane.lacunarity = terrain->lacunarity;
+						primitiveCl.data.terrainplane.erosion = terrain->erosion;
+						primitiveCl.data.terrainplane.detailScale = terrain->detailScale;
+						usePrimitiveTerrainPlane = true;
+					}
+					else
+						throw QString("sPrimitiveTerrainPlane");
+					break;
+				}
+
 				default:
 				{
 					qCritical() << "cOpenClDynamicData::BuildPrimitivesData - invalid object type";
@@ -1171,6 +1382,12 @@ QString cOpenClDynamicData::BuildPrimitivesData(const cPrimitives *primitivesCon
 	if (usePrimitiveTorus) definesCollector += " -DUSE_PRIMITIVE_TORUS";
 	if (usePrimitiveWater) definesCollector += " -DUSE_PRIMITIVE_WATER";
 	if (usePrimitiveEllipsoid) definesCollector += " -DUSE_PRIMITIVE_ELLIPSOID";
+	if (usePrimitiveCapsule) definesCollector += " -DUSE_PRIMITIVE_CAPSULE";
+	if (usePrimitiveHexPrism) definesCollector += " -DUSE_PRIMITIVE_HEXPRISM";
+	if (usePrimitiveLavaPlane) definesCollector += " -DUSE_PRIMITIVE_LAVAPLANE";
+	if (usePrimitiveOctahedron) definesCollector += " -DUSE_PRIMITIVE_OCTAHEDRON";
+	if (usePrimitivePyramid) definesCollector += " -DUSE_PRIMITIVE_PYRAMID";
+	if (usePrimitiveTerrainPlane) definesCollector += " -DUSE_PRIMITIVE_TERRAINPLANE";
 
 	if (primitivesContainer->primitiveIndexForBasicFog >= 0)
 		definesCollector += " -DBASIC_FOG_SHAPE_FROM_PRIMITIVE";

@@ -422,4 +422,102 @@ struct sPrimitiveWater : sPrimitiveBasic
 	virtual const tWireframeShape &GetWireFrameShape() override { return wireFrameShape; }
 };
 
+struct sPrimitiveCapsule : sPrimitiveBasic
+{
+	sPrimitiveCapsule(const QString &fullName, const std::shared_ptr<cParameterContainer> par);
+	bool empty;
+	double radius;
+	double height;
+	bool limitsEnable;
+	CVector3 repeat;
+	CVector3 limitsMax;
+	CVector3 limitsMin;
+	double PrimitiveDistance(CVector3 _point) const override;
+
+	static tWireframeShape wireFrameShape;
+	static void InitPrimitiveWireframeShape();
+	virtual const tWireframeShape &GetWireFrameShape() override { return wireFrameShape; }
+};
+
+struct sPrimitiveHexPrism : sPrimitiveBasic
+{
+	sPrimitiveHexPrism(const QString &fullName, const std::shared_ptr<cParameterContainer> par);
+	bool empty;
+	double height;
+	bool limitsEnable;
+	CVector3 repeat;
+	CVector3 limitsMax;
+	CVector3 limitsMin;
+	double PrimitiveDistance(CVector3 _point) const override;
+
+	static tWireframeShape wireFrameShape;
+	static void InitPrimitiveWireframeShape();
+	virtual const tWireframeShape &GetWireFrameShape() override { return wireFrameShape; }
+};
+
+struct sPrimitiveLavaPlane : sPrimitiveBasic
+{
+	sPrimitiveLavaPlane(const QString &fullName, const std::shared_ptr<cParameterContainer> par);
+	bool empty;
+	double waveHeight;
+	double waveScale;
+	int waveOctaves;
+	double PrimitiveDistance(CVector3 _point) const override;
+
+	static tWireframeShape wireFrameShape;
+	static void InitPrimitiveWireframeShape();
+	virtual const tWireframeShape &GetWireFrameShape() override { return wireFrameShape; }
+};
+
+struct sPrimitiveOctahedron : sPrimitiveBasic
+{
+	sPrimitiveOctahedron(const QString &fullName, const std::shared_ptr<cParameterContainer> par);
+	bool empty;
+	bool limitsEnable;
+	CVector3 repeat;
+	CVector3 limitsMax;
+	CVector3 limitsMin;
+	double PrimitiveDistance(CVector3 _point) const override;
+
+	static tWireframeShape wireFrameShape;
+	static void InitPrimitiveWireframeShape();
+	virtual const tWireframeShape &GetWireFrameShape() override { return wireFrameShape; }
+};
+
+struct sPrimitivePyramid : sPrimitiveBasic
+{
+	sPrimitivePyramid(const QString &fullName, const std::shared_ptr<cParameterContainer> par);
+	bool empty;
+	double height;
+	double baseSize;
+	bool limitsEnable;
+	CVector3 repeat;
+	CVector3 limitsMax;
+	CVector3 limitsMin;
+	double PrimitiveDistance(CVector3 _point) const override;
+
+	static tWireframeShape wireFrameShape;
+	static void InitPrimitiveWireframeShape();
+	virtual const tWireframeShape &GetWireFrameShape() override { return wireFrameShape; }
+};
+
+struct sPrimitiveTerrainPlane : sPrimitiveBasic
+{
+	sPrimitiveTerrainPlane(const QString &fullName, const std::shared_ptr<cParameterContainer> par);
+	bool empty;
+	int terrainType;
+	double amplitude;
+	double frequency;
+	int octaves;
+	double roughness;
+	double lacunarity;
+	double erosion;
+	double detailScale;
+	double PrimitiveDistance(CVector3 _point) const override;
+
+	static tWireframeShape wireFrameShape;
+	static void InitPrimitiveWireframeShape();
+	virtual const tWireframeShape &GetWireFrameShape() override { return wireFrameShape; }
+};
+
 #endif /* MANDELBULBER2_SRC_PRIMITIVE_HPP_ */

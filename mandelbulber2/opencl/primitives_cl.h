@@ -45,7 +45,10 @@ typedef enum
 	clPrimBooleanOperatorAND = 0,
 	clPrimBooleanOperatorOR = 1,
 	clPrimBooleanOperatorSUB = 2,
-	clPrimBooleanOperatorRevSUB = 3
+	clPrimBooleanOperatorRevSUB = 3,
+	clPrimBooleanOperatorSmoothOR = 4,
+	clPrimBooleanOperatorSmoothAND = 5,
+	clPrimBooleanOperatorSmoothSUB = 6
 } enumClPrimitiveBooleanOperator;
 
 // primitive specified parameters
@@ -160,6 +163,68 @@ typedef struct
 
 typedef struct
 {
+	cl_int empty;
+	cl_float radius;
+	cl_float height;
+	cl_int limitsEnable;
+	cl_float3 repeat;
+	cl_float3 limitsMax;
+	cl_float3 limitsMin;
+} sPrimitiveCapsuleCl;
+
+typedef struct
+{
+	cl_int empty;
+	cl_float height;
+	cl_int limitsEnable;
+	cl_float3 repeat;
+	cl_float3 limitsMax;
+	cl_float3 limitsMin;
+} sPrimitiveHexPrismCl;
+
+typedef struct
+{
+	cl_int empty;
+	cl_float waveHeight;
+	cl_float waveScale;
+	cl_int waveOctaves;
+} sPrimitiveLavaPlaneCl;
+
+typedef struct
+{
+	cl_int empty;
+	cl_int limitsEnable;
+	cl_float3 repeat;
+	cl_float3 limitsMax;
+	cl_float3 limitsMin;
+} sPrimitiveOctahedronCl;
+
+typedef struct
+{
+	cl_int empty;
+	cl_float height;
+	cl_float baseSize;
+	cl_int limitsEnable;
+	cl_float3 repeat;
+	cl_float3 limitsMax;
+	cl_float3 limitsMin;
+} sPrimitivePyramidCl;
+
+typedef struct
+{
+	cl_int empty;
+	cl_int terrainType;
+	cl_float amplitude;
+	cl_float frequency;
+	cl_int octaves;
+	cl_float roughness;
+	cl_float lacunarity;
+	cl_float erosion;
+	cl_float detailScale;
+} sPrimitiveTerrainPlaneCl;
+
+typedef struct
+{
 	cl_float3 allPrimitivesPosition;
 	cl_float3 allPrimitivesRotation;
 	matrix33 mRotAllPrimitivesRotation;
@@ -183,6 +248,12 @@ typedef union
 	sPrimitiveRectangleCl rectangle;
 	sPrimitivePrismCl prism;
 	sPrimitiveEllipsoidCl ellipsoid;
+	sPrimitiveCapsuleCl capsule;
+	sPrimitiveHexPrismCl hexprism;
+	sPrimitiveLavaPlaneCl lavaplane;
+	sPrimitiveOctahedronCl octahedron;
+	sPrimitivePyramidCl pyramid;
+	sPrimitiveTerrainPlaneCl terrainplane;
 } uPrimitiveCl;
 
 // full definition of primitive
