@@ -41,6 +41,7 @@
 #include <QVector>
 
 #include "compute_fractal.hpp"
+#include "deep_zoom_integration.h"
 #include "displacement_map.hpp"
 #include "fractal.h"
 #include "fractal_enums.h"
@@ -60,6 +61,25 @@ using namespace std;
 double CalculateDistance(const sParamRender &params, const cNineFractals &fractals,
 	const sDistanceIn &in, sDistanceOut *out, sRenderData *data)
 {
+	// Deep Zoom path: if perturbation engine is active, use it for distance calculation
+	if (deep_zoom_integration::IsActive())
+	{
+		int iters = 0;
+		double colorIndex = 0.0;
+		double dist = deep_zoom_integration::CalculateDeepZoomDistance(
+			in.point, &iters, &colorIndex);
+		if (dist >= 0.0)
+		{
+			out->distance = dist;
+			out->iters = iters;
+			out->totalIters = iters;
+			out->colorIndex = colorIndex;
+			out->objectId = 0;
+			out->maxiter = (iters >= params.N);
+			return dist;
+		}
+	}
+
 	if (params.objectsTreeEnable)
 	{
 		return CalculateDistanceFromObjectsTree(params, fractals, in, out, data);

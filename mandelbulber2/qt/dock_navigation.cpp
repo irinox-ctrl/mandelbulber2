@@ -1042,9 +1042,16 @@ void cDockNavigation::slotDeepZoomToggle(bool checked)
 	if (checked)
 	{
 		deepZoomStatusLabel->setText("Status: Enabled — compute reference orbit to start");
+		if (deepZoomManager && deepZoomManager->IsReady())
+		{
+			deep_zoom_integration::Enable(deepZoomManager);
+			deep_zoom_integration::PrepareGPUData();
+			deepZoomStatusLabel->setText("Status: Active — rendering via perturbation engine");
+		}
 	}
 	else
 	{
+		deep_zoom_integration::Disable();
 		deepZoomStatusLabel->setText("Status: Inactive");
 	}
 }
@@ -1107,6 +1114,21 @@ void cDockNavigation::slotDeepZoomCompute()
 	else
 	{
 		status += "\nSeries Approx: not applicable";
+	}
+
+	// Enable deep zoom in the rendering pipeline if checkbox is checked
+	if (deepZoomCheckBox && deepZoomCheckBox->isChecked())
+	{
+		deep_zoom_integration::Enable(deepZoomManager);
+		deep_zoom_integration::PrepareGPUData();
+		status += "\nGPU Integration: ACTIVE";
+
+		const auto &gpuData = deep_zoom_integration::GetGPUData();
+		status += QString("\nGPU orbit: %1 points uploaded").arg(gpuData.orbitLength);
+		if (gpuData.saValid)
+		{
+			status += QString("\nGPU SA: skip %1 iters (matrix ready)").arg(gpuData.saSkipIters);
+		}
 	}
 
 	deepZoomStatusLabel->setText(status);

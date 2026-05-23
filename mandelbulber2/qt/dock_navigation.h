@@ -44,6 +44,7 @@
 #include "src/algebra.hpp"
 #ifdef USE_MPFR
 #include "src/deep_zoom.h"
+#include "src/deep_zoom_integration.h"
 #endif
 #include "smart_camera.h"
 
