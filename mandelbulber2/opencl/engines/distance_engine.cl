@@ -46,6 +46,9 @@ kernel void fractal3D(__global float *outDistance, __global char *inBuff,
 	// main offset for materials
 
 	int primitivesMainOffset = GetInteger(3 * sizeof(int), inBuff);
+#ifdef DEEP_ZOOM_ENABLED
+	int deepZoomMainOffset = GetInteger(5 * sizeof(int), inBuff);
+#endif
 
 	//--- Primitives
 
@@ -76,6 +79,28 @@ kernel void fractal3D(__global float *outDistance, __global char *inBuff,
 	renderData.primitives = primitives;
 	renderData.numberOfPrimitives = numberOfPrimitives;
 	renderData.primitivesGlobalData = primitivesGlobalData;
+#ifdef DEEP_ZOOM_ENABLED
+	{
+		int dzOL = GetInteger(deepZoomMainOffset, inBuff);
+		__global float *dzPP = (__global float *)&inBuff[deepZoomMainOffset + sizeof(int)];
+		__global float *dzBP = (__global float *)&inBuff[deepZoomMainOffset + sizeof(int) + sizeof(float)];
+		__global float *dzCP = (__global float *)&inBuff[deepZoomMainOffset + sizeof(int) + 3 * sizeof(float)];
+		__global float *dzSM = (__global float *)&inBuff[deepZoomMainOffset + sizeof(int) + 6 * sizeof(float)];
+		int dzSS = GetInteger(deepZoomMainOffset + sizeof(int) + 15 * sizeof(float), inBuff);
+		int dzSV = GetInteger(deepZoomMainOffset + sizeof(int) + 15 * sizeof(float) + sizeof(int), inBuff);
+		int dzOO = GetInteger(deepZoomMainOffset + sizeof(int) + 15 * sizeof(float) + 2 * sizeof(int), inBuff);
+		renderData.deepZoomOrbit = (__global float *)&inBuff[dzOO];
+		renderData.deepZoomSAMatrix = dzSM;
+		renderData.deepZoomOrbitLength = dzOL;
+		renderData.deepZoomPower = *dzPP;
+		renderData.deepZoomBailout = *dzBP;
+		renderData.deepZoomCenterX = dzCP[0];
+		renderData.deepZoomCenterY = dzCP[1];
+		renderData.deepZoomCenterZ = dzCP[2];
+		renderData.deepZoomSASkipIters = dzSS;
+		renderData.deepZoomSAValid = dzSV;
+	}
+#endif
 
 	formulaOut outF;
 

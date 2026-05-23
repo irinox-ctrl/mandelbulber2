@@ -106,8 +106,20 @@ const sDeepZoomState::sGPUData &GetGPUData()
 	return gState.gpuData;
 }
 
+const deep_zoom::cDeepZoomManager *GetManager()
+{
+	return gState.manager;
+}
+
+CVector3 GetCenter()
+{
+	return lastAutoCenter;
+}
+
 void AutoActivate(double cameraDistance, const CVector3 &target,
-	bool juliaMode, const CVector3 &juliaC, int maxIter)
+	bool juliaMode, const CVector3 &juliaC, int maxIter,
+	double power, double bailout,
+	double alphaAngleOffset, double betaAngleOffset)
 {
 	double zoomLevel = 1.0 / std::max(cameraDistance, 1e-30);
 
@@ -144,12 +156,14 @@ void AutoActivate(double cameraDistance, const CVector3 &target,
 	if (needRecompute)
 	{
 		deep_zoom::sDeepZoomConfig config;
-		config.power = 8.0;
-		config.bailout = 256.0;
+		config.power = power;
+		config.bailout = bailout;
 		config.maxIterations = maxIter;
 		config.precisionBits = deep_zoom::cDeepZoomManager::PrecisionForZoom(zoomLevel);
 		config.juliaMode = juliaMode;
 		config.juliaC = juliaC;
+		config.alphaAngleOffset = alphaAngleOffset;
+		config.betaAngleOffset = betaAngleOffset;
 
 		double pixelSpacing = cameraDistance / 800.0;
 

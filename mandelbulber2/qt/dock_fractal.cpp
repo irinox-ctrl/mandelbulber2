@@ -57,6 +57,7 @@
 #include "formula/definition/all_fractal_list.hpp"
 #include "julia_heatmap_widget.h"
 #include "navigator_window.h"
+#include "src/deep_zoom_integration.h"
 
 cDockFractal::cDockFractal(QWidget *parent)
 		: QWidget(parent), cMyWidgetWithParams(), ui(new Ui::cDockFractal)
@@ -968,18 +969,57 @@ void cDockFractal::UpdateHeatmapMarker()
 
 double cDockFractal::ComputeQuickScore(double cx, double cy, double cz)
 {
-	// Quick heuristic score based on Julia c-value properties.
-	// Uses the Mandelbrot-set membership test as a proxy for interesting Julia sets:
-	// c-values near the boundary of the Mandelbrot set produce the most interesting Julia sets.
-	// For 3D, we extend this to test orbit divergence speed.
+	// When deep zoom is active, use the perturbation engine for high-precision scoring.
+	// This enables drones to explore Julia c-space at extreme zoom levels without
+	// losing precision (standard double ~10^-15 limit bypassed by MPFR reference orbit).
+	if (deep_zoom_integration::IsActive())
+	{
+		CVector3 cPoint(cx, cy, cz);
+		int iters = 0;
+		double colorIndex = 0.0;
+		double dist = deep_zoom_integration::CalculateDeepZoomDistance(cPoint, &iters, &colorIndex);
 
+		if (dist < 0.0)
+		{
+			// Deep zoom returned negative = not applicable, fall through to standard path
+		}
+		else
+		{
+			// Use distance estimate and iteration count as scoring proxy
+			// Small distance + high iterations = near boundary = most interesting
+			int maxIter = 1000;
+			double normalizedIter = qBound(0.0, static_cast<double>(iters) / maxIter, 1.0);
+
+			if (iters >= maxIter)
+			{
+				// Inside the set — moderately interesting
+				return 0.4;
+			}
+
+			// Boundary scoring with distance weighting
+			double iterScore = 4.0 * normalizedIter * (1.0 - normalizedIter);
+
+			// Distance-based boost: very small distances = very close to surface
+			double distScore = 1.0;
+			if (dist > 0.0 && dist < 1.0)
+			{
+				distScore = 1.0 + 0.5 * (1.0 - dist);
+			}
+
+			double score = iterScore * distScore;
+			if (normalizedIter > 0.3 && normalizedIter < 0.8) score *= 1.5;
+
+			return qBound(0.0, score, 1.0);
+		}
+	}
+
+	// Standard quick heuristic (power-2 approximation, 64 iterations)
 	double zx = 0.0, zy = 0.0, zz = 0.0;
 	int maxIter = 64;
 	int escapeIter = maxIter;
 
 	for (int i = 0; i < maxIter; i++)
 	{
-		// Simplified 3D orbit: z = z^2 + c (using a Mandelbulb-like power-2 approximation)
 		double r = std::sqrt(zx * zx + zy * zy + zz * zz);
 		if (r > 4.0)
 		{
@@ -998,19 +1038,11 @@ double cDockFractal::ComputeQuickScore(double cx, double cy, double cz)
 
 	if (escapeIter == maxIter)
 	{
-		// Inside the set — moderately interesting (connected Julia set)
 		return 0.4;
 	}
 
-	// Boundary region is most interesting — score based on how close to boundary
-	// Points that escape quickly (low iter) are boring (dust Julia sets)
-	// Points that escape slowly (high iter) are near the boundary (most interesting)
 	double normalizedIter = static_cast<double>(escapeIter) / maxIter;
-
-	// Smooth scoring: peak interest at boundary
 	double score = 4.0 * normalizedIter * (1.0 - normalizedIter);
-
-	// Boost near-boundary points
 	if (normalizedIter > 0.3 && normalizedIter < 0.8) score *= 1.5;
 
 	return qBound(0.0, score, 1.0);

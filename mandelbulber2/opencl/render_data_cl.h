@@ -194,6 +194,19 @@ typedef struct
 
 	int numberOfPrimitives;
 
+#ifdef DEEP_ZOOM_ENABLED
+	__global float *deepZoomOrbit;
+	__global float *deepZoomSAMatrix;
+	int deepZoomOrbitLength;
+	float deepZoomPower;
+	float deepZoomBailout;
+	float deepZoomCenterX;
+	float deepZoomCenterY;
+	float deepZoomCenterZ;
+	int deepZoomSASkipIters;
+	int deepZoomSAValid;
+#endif
+
 #if !defined(MESH_EXPORT) || 1
 	matrix33 mRot;
 	matrix33 mRotInv;

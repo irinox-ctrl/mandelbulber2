@@ -1605,4 +1605,93 @@ void cOpenClDynamicData::BuildNebulaGradientsData(const sParamRender *params)
 		reinterpret_cast<char *>(&paletteItemsOffset), sizeof(paletteItemsOffset));
 }
 
+void cOpenClDynamicData::BuildDeepZoomData(const float *orbitData, int orbitLength,
+	float power, float bailout, float rebaseThreshold,
+	float centerX, float centerY, float centerZ,
+	const float *saMatrix, int saSkipIters, bool saValid)
+{
+	/* Deep Zoom perturbation data for GPU
+	 *
+	 * header:
+	 * cl_int orbitLength
+	 * cl_float power
+	 * cl_float bailout
+	 * cl_float rebaseThreshold
+	 * cl_float centerX, centerY, centerZ
+	 * cl_float saMatrix[9]
+	 * cl_int saSkipIters
+	 * cl_int saValid
+	 * cl_int orbitDataOffset
+	 *
+	 * array (aligned to 16):
+	 *   float[8] orbitPoint0 (Z.x, Z.y, Z.z, DE, r, theta, phi, escaped)
+	 *   float[8] orbitPoint1
+	 *   ...
+	 */
+
+	totalDataOffset += PutDummyToAlign(totalDataOffset, 16, &data);
+	itemOffsets[deepZoomItemIndex].itemOffset = totalDataOffset;
+
+	cl_int clOrbitLength = orbitLength;
+	data.append(reinterpret_cast<char *>(&clOrbitLength), sizeof(clOrbitLength));
+	totalDataOffset += sizeof(clOrbitLength);
+
+	cl_float clPower = power;
+	data.append(reinterpret_cast<char *>(&clPower), sizeof(clPower));
+	totalDataOffset += sizeof(clPower);
+
+	cl_float clBailout = bailout;
+	data.append(reinterpret_cast<char *>(&clBailout), sizeof(clBailout));
+	totalDataOffset += sizeof(clBailout);
+
+	cl_float clRebase = rebaseThreshold;
+	data.append(reinterpret_cast<char *>(&clRebase), sizeof(clRebase));
+	totalDataOffset += sizeof(clRebase);
+
+	cl_float clCx = centerX;
+	data.append(reinterpret_cast<char *>(&clCx), sizeof(clCx));
+	totalDataOffset += sizeof(clCx);
+	cl_float clCy = centerY;
+	data.append(reinterpret_cast<char *>(&clCy), sizeof(clCy));
+	totalDataOffset += sizeof(clCy);
+	cl_float clCz = centerZ;
+	data.append(reinterpret_cast<char *>(&clCz), sizeof(clCz));
+	totalDataOffset += sizeof(clCz);
+
+	// SA matrix (9 floats)
+	for (int i = 0; i < 9; i++)
+	{
+		cl_float val = saMatrix[i];
+		data.append(reinterpret_cast<char *>(&val), sizeof(val));
+		totalDataOffset += sizeof(val);
+	}
+
+	cl_int clSASkip = saSkipIters;
+	data.append(reinterpret_cast<char *>(&clSASkip), sizeof(clSASkip));
+	totalDataOffset += sizeof(clSASkip);
+
+	cl_int clSAValid = saValid ? 1 : 0;
+	data.append(reinterpret_cast<char *>(&clSAValid), sizeof(clSAValid));
+	totalDataOffset += sizeof(clSAValid);
+
+	// reserve bytes for orbit data offset
+	cl_int orbitDataOffset = 0;
+	int orbitDataOffsetAddress = totalDataOffset;
+	data.append(reinterpret_cast<char *>(&orbitDataOffset), sizeof(orbitDataOffset));
+	totalDataOffset += sizeof(orbitDataOffset);
+
+	// align to 16 before orbit array
+	totalDataOffset += PutDummyToAlign(totalDataOffset, 16, &data);
+	orbitDataOffset = totalDataOffset;
+
+	// orbit data: orbitLength * 8 floats per point
+	int orbitBytes = orbitLength * 8 * sizeof(cl_float);
+	data.append(reinterpret_cast<const char *>(orbitData), orbitBytes);
+	totalDataOffset += orbitBytes;
+
+	// fill orbitDataOffset value
+	data.replace(orbitDataOffsetAddress, sizeof(orbitDataOffset),
+		reinterpret_cast<char *>(&orbitDataOffset), sizeof(orbitDataOffset));
+}
+
 #endif // USE_OPENCL

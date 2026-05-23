@@ -74,6 +74,7 @@
 
 #include "formula/definition/all_fractal_list.hpp"
 #include "formula/definition/legacy_fractal_transforms.hpp"
+#include "deep_zoom_integration.h"
 
 // custom includes
 #ifdef USE_OPENCL
@@ -1107,7 +1108,7 @@ void cOpenClEngineRenderFractal::SetParameters(
 
 	//----------- create dynamic data -----------
 	WriteLog(QString("Creating dynamic data for OpenCL rendering"), 2);
-	dynamicData.reset(new cOpenClDynamicData(5));
+	dynamicData.reset(new cOpenClDynamicData(6));
 	dynamicData->ReserveHeader();
 
 	// ------------ enabling shaders ----------
@@ -1150,6 +1151,30 @@ void cOpenClEngineRenderFractal::SetParameters(
 		dynamicData->BuildObjectsData(&renderData->objectData);
 		// definesCollector += " -DOBJ_ARRAY_SIZE=" + QString::number(renderData->objectData.size());
 	}
+
+	// Deep zoom perturbation data
+#ifdef USE_MPFR
+	if (deep_zoom_integration::IsActive())
+	{
+		const auto &gpuData = deep_zoom_integration::GetGPUData();
+		if (gpuData.orbitLength > 0 && !gpuData.refOrbitFlat.empty())
+		{
+			const auto *mgr = deep_zoom_integration::GetManager();
+			const auto &cfg = mgr->GetConfig();
+			CVector3 center = deep_zoom_integration::GetCenter();
+			dynamicData->BuildDeepZoomData(
+				gpuData.refOrbitFlat.data(), gpuData.orbitLength,
+				static_cast<float>(cfg.power),
+				static_cast<float>(cfg.bailout),
+				0.001f, // rebase threshold
+				static_cast<float>(center.x),
+				static_cast<float>(center.y),
+				static_cast<float>(center.z),
+				gpuData.saMatrix, gpuData.saSkipIters, gpuData.saValid);
+			definesCollector += " -DDEEP_ZOOM_ENABLED";
+		}
+	}
+#endif
 
 	dynamicData->FillHeader();
 

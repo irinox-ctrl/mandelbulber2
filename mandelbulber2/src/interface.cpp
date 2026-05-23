@@ -764,7 +764,13 @@ void cInterface::startRenderImpl(
 		bool juliaMode = gPar->Get<bool>("julia_mode");
 		CVector3 juliaC = gPar->Get<CVector3>("julia_c");
 		int maxIter = gPar->Get<int>("N");
-		deep_zoom_integration::AutoActivate(cameraDist, target, juliaMode, juliaC, maxIter);
+		double power = gParFractal->at(0)->Get<double>("power");
+		double bailout = gPar->Get<double>("bailout");
+		double alphaAngle = gParFractal->at(0)->Get<double>("alpha_angle_offset");
+		double betaAngle = gParFractal->at(0)->Get<double>("beta_angle_offset");
+		deep_zoom_integration::AutoActivate(
+			cameraDist, target, juliaMode, juliaC, maxIter,
+			power, bailout, alphaAngle, betaAngle);
 	}
 
 	const int temporaryScale = int(pow(int(2), gPar->Get<int>("temporary_scale")));

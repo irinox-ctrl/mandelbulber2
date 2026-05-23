@@ -71,6 +71,9 @@ kernel void fractal3D(__global sClPixel *out, __global char *inBuff,
 	int AOVectorsMainOffset = GetInteger(1 * sizeof(int), inBuff);
 	int lightsMainOffset = GetInteger(2 * sizeof(int), inBuff);
 	int primitivesMainOffset = GetInteger(3 * sizeof(int), inBuff);
+#ifdef DEEP_ZOOM_ENABLED
+	int deepZoomMainOffset = GetInteger(5 * sizeof(int), inBuff);
+#endif
 
 	//--- main material
 
@@ -446,6 +449,28 @@ kernel void fractal3D(__global sClPixel *out, __global char *inBuff,
 			renderData.primitives = primitives;
 			renderData.numberOfPrimitives = numberOfPrimitives;
 			renderData.primitivesGlobalData = primitivesGlobalData;
+#ifdef DEEP_ZOOM_ENABLED
+			{
+				int dzOrbitLength = GetInteger(deepZoomMainOffset, inBuff);
+				__global float *dzPowerPtr = (__global float *)&inBuff[deepZoomMainOffset + sizeof(int)];
+				__global float *dzBailoutPtr = (__global float *)&inBuff[deepZoomMainOffset + sizeof(int) + sizeof(float)];
+				__global float *dzCenterPtr = (__global float *)&inBuff[deepZoomMainOffset + sizeof(int) + 3 * sizeof(float)];
+				__global float *dzSAMat = (__global float *)&inBuff[deepZoomMainOffset + sizeof(int) + 6 * sizeof(float)];
+				int dzSASkip = GetInteger(deepZoomMainOffset + sizeof(int) + 15 * sizeof(float), inBuff);
+				int dzSAV = GetInteger(deepZoomMainOffset + sizeof(int) + 15 * sizeof(float) + sizeof(int), inBuff);
+				int dzOrbOff = GetInteger(deepZoomMainOffset + sizeof(int) + 15 * sizeof(float) + 2 * sizeof(int), inBuff);
+				renderData.deepZoomOrbit = (__global float *)&inBuff[dzOrbOff];
+				renderData.deepZoomSAMatrix = dzSAMat;
+				renderData.deepZoomOrbitLength = dzOrbitLength;
+				renderData.deepZoomPower = *dzPowerPtr;
+				renderData.deepZoomBailout = *dzBailoutPtr;
+				renderData.deepZoomCenterX = dzCenterPtr[0];
+				renderData.deepZoomCenterY = dzCenterPtr[1];
+				renderData.deepZoomCenterZ = dzCenterPtr[2];
+				renderData.deepZoomSASkipIters = dzSASkip;
+				renderData.deepZoomSAValid = dzSAV;
+			}
+#endif
 			renderData.mRot = rot;
 			renderData.mRotInv = rotInv;
 

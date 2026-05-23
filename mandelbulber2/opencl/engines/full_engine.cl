@@ -75,6 +75,9 @@ kernel void fractal3D(__global sClPixel *out, __global char *inBuff, __global ch
 	int lightsMainOffset = GetInteger(2 * sizeof(int), inBuff);
 	int primitivesMainOffset = GetInteger(3 * sizeof(int), inBuff);
 	int objectsMainOffset = GetInteger(4 * sizeof(int), inBuff);
+#ifdef DEEP_ZOOM_ENABLED
+	int deepZoomMainOffset = GetInteger(5 * sizeof(int), inBuff);
+#endif
 
 	//--- materials
 	__global sMaterialCl *materials[MAT_ARRAY_SIZE];
@@ -256,6 +259,26 @@ kernel void fractal3D(__global sClPixel *out, __global char *inBuff, __global ch
 
 	__global sObjectDataCl *__attribute__((aligned(16))) objectsData =
 		(__global sObjectDataCl *)&inBuff[objectsOffset];
+
+	//--- Deep Zoom
+#ifdef DEEP_ZOOM_ENABLED
+	int dzOrbitLength = GetInteger(deepZoomMainOffset, inBuff);
+	__global float *dzPowerPtr = (__global float *)&inBuff[deepZoomMainOffset + sizeof(int)];
+	float dzPower = *dzPowerPtr;
+	__global float *dzBailoutPtr = (__global float *)&inBuff[deepZoomMainOffset + sizeof(int) + sizeof(float)];
+	float dzBailout = *dzBailoutPtr;
+	__global float *dzRebasePtr = (__global float *)&inBuff[deepZoomMainOffset + sizeof(int) + 2 * sizeof(float)];
+	float dzRebase = *dzRebasePtr;
+	__global float *dzCenterPtr = (__global float *)&inBuff[deepZoomMainOffset + sizeof(int) + 3 * sizeof(float)];
+	float dzCenterX = dzCenterPtr[0];
+	float dzCenterY = dzCenterPtr[1];
+	float dzCenterZ = dzCenterPtr[2];
+	__global float *dzSAMatrix = (__global float *)&inBuff[deepZoomMainOffset + sizeof(int) + 6 * sizeof(float)];
+	int dzSASkipIters = GetInteger(deepZoomMainOffset + sizeof(int) + 15 * sizeof(float), inBuff);
+	int dzSAValid = GetInteger(deepZoomMainOffset + sizeof(int) + 15 * sizeof(float) + sizeof(int), inBuff);
+	int dzOrbitDataOffset = GetInteger(deepZoomMainOffset + sizeof(int) + 15 * sizeof(float) + 2 * sizeof(int), inBuff);
+	__global float *dzOrbitData = (__global float *)&inBuff[dzOrbitDataOffset];
+#endif
 
 	//--------- end of data file ----------------------------------
 
@@ -496,6 +519,18 @@ kernel void fractal3D(__global sClPixel *out, __global char *inBuff, __global ch
 		renderData.mRotInv = rotInv;
 #if defined(CLOUDS) || defined(USE_PERLIN_NOISE)
 		renderData.perlinNoiseSeeds = perlinNoiseSeeds;
+#endif
+#ifdef DEEP_ZOOM_ENABLED
+		renderData.deepZoomOrbit = dzOrbitData;
+		renderData.deepZoomSAMatrix = dzSAMatrix;
+		renderData.deepZoomOrbitLength = dzOrbitLength;
+		renderData.deepZoomPower = dzPower;
+		renderData.deepZoomBailout = dzBailout;
+		renderData.deepZoomCenterX = dzCenterX;
+		renderData.deepZoomCenterY = dzCenterY;
+		renderData.deepZoomCenterZ = dzCenterZ;
+		renderData.deepZoomSASkipIters = dzSASkipIters;
+		renderData.deepZoomSAValid = dzSAValid;
 #endif
 #ifdef USE_TEXTURES
 		renderData.textures = textures;

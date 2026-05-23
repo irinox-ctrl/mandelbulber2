@@ -100,6 +100,143 @@ formulaOut CalculateDistance(__constant sClInConstants *consts, float3 point,
 	out.maxiter = false;
 	out.objectId = 0;
 
+#ifdef DEEP_ZOOM_ENABLED
+	// Deep Zoom perturbation path: use reference orbit + delta iteration
+	if (renderData->deepZoomOrbitLength > 0)
+	{
+		__global const float *orbit = renderData->deepZoomOrbit;
+		int orbitLen = renderData->deepZoomOrbitLength;
+		float power = renderData->deepZoomPower;
+		float bailout = renderData->deepZoomBailout;
+
+		float3 center = (float3)(
+			renderData->deepZoomCenterX,
+			renderData->deepZoomCenterY,
+			renderData->deepZoomCenterZ);
+		float3 deltaC = point - center;
+		float3 deltaZ = (float3)(0.0f, 0.0f, 0.0f);
+		float deltaDE = 0.0f;
+
+		int startIter = 0;
+		// Apply Series Approximation skip if valid
+		if (renderData->deepZoomSAValid && renderData->deepZoomSASkipIters > 0)
+		{
+			__global const float *sa = renderData->deepZoomSAMatrix;
+			// δz₀ = A · δc (matrix-vector multiply)
+			deltaZ.x = sa[0] * deltaC.x + sa[1] * deltaC.y + sa[2] * deltaC.z;
+			deltaZ.y = sa[3] * deltaC.x + sa[4] * deltaC.y + sa[5] * deltaC.z;
+			deltaZ.z = sa[6] * deltaC.x + sa[7] * deltaC.y + sa[8] * deltaC.z;
+			startIter = renderData->deepZoomSASkipIters;
+		}
+
+		int iters = 0;
+		bool escaped = false;
+		float lastR = 0.0f;
+		for (int i = startIter; i < orbitLen && i < (int)calcParam->N; i++)
+		{
+			// Read reference orbit point: [Z.x, Z.y, Z.z, DE, r, theta, phi, escaped]
+			int base = i * 8;
+			float3 refZ = (float3)(orbit[base], orbit[base + 1], orbit[base + 2]);
+			float refDE = orbit[base + 3];
+			float refR = orbit[base + 4];
+			float refTheta = orbit[base + 5];
+			float refPhi = orbit[base + 6];
+
+			// Full point: Z + δz
+			float3 Zfull = refZ + deltaZ;
+			float rFull = length(Zfull);
+
+			if (rFull > bailout)
+			{
+				escaped = true;
+				iters = i;
+				lastR = rFull;
+				break;
+			}
+
+			if (rFull < 1e-20f)
+			{
+				deltaZ = deltaC;
+				deltaDE = 1.0f;
+				iters = i + 1;
+				continue;
+			}
+
+			// f(Z + δz) in spherical coordinates
+			float thetaFull = asin(clamp(Zfull.z / rFull, -1.0f, 1.0f));
+			float phiFull = atan2(Zfull.y, Zfull.x);
+			float rpFull = pow(rFull, power);
+			float rp1Full = pow(rFull, power - 1.0f);
+
+			float pTh = power * thetaFull;
+			float pPh = power * phiFull;
+			float3 fFull = (float3)(
+				rpFull * cos(pTh) * cos(pPh),
+				rpFull * cos(pTh) * sin(pPh),
+				rpFull * sin(pTh));
+
+			// f(Z) from reference
+			float rpRef = pow(refR, power);
+			float pThRef = power * refTheta;
+			float pPhRef = power * refPhi;
+			float3 fRef = (float3)(
+				rpRef * cos(pThRef) * cos(pPhRef),
+				rpRef * cos(pThRef) * sin(pPhRef),
+				rpRef * sin(pThRef));
+
+			// δz_{n+1} = f(Z + δz) - f(Z) + δc
+			deltaZ = fFull - fRef + deltaC;
+
+			// DE perturbation
+			float deFull = refDE + deltaDE;
+			float newDEFull = power * rp1Full * deFull + 1.0f;
+			float newDERef = power * pow(refR, power - 1.0f) * refDE + 1.0f;
+			deltaDE = newDEFull - newDERef;
+
+			iters = i + 1;
+			lastR = rFull;
+
+			// Rebasing: if |δz| grows too large relative to |Z|
+			float dzLen = length(deltaZ);
+			if (refR > 1e-10f && dzLen / refR > 1000.0f)
+			{
+				break;
+			}
+		}
+
+		// Compute distance estimate
+		float3 lastRefZ = (float3)(
+			orbit[(iters > 0 ? iters - 1 : 0) * 8],
+			orbit[(iters > 0 ? iters - 1 : 0) * 8 + 1],
+			orbit[(iters > 0 ? iters - 1 : 0) * 8 + 2]);
+		float lastRefDE = orbit[(iters > 0 ? iters - 1 : 0) * 8 + 3];
+
+		float3 finalZ = lastRefZ + deltaZ;
+		float finalR = length(finalZ);
+		float finalDE = fabs(lastRefDE + deltaDE);
+
+		if (escaped && finalDE > 0.0f)
+		{
+			out.distance = 0.5f * finalR * log(finalR) / finalDE;
+		}
+		else
+		{
+			out.distance = calcParam->detailSize;
+		}
+
+		out.iters = iters;
+		out.maxiter = (!escaped && iters >= (int)calcParam->N);
+		out.colorIndex = (float)iters;
+		out.z = (float4)(finalZ.x, finalZ.y, finalZ.z, 0.0f);
+
+		if (isinf(out.distance)) out.distance = 0.0f;
+		if (out.distance < 0.0f) out.distance = 0.0f;
+		if (out.distance > 5.0f) out.distance = 5.0f;
+
+		return out;
+	}
+#endif // DEEP_ZOOM_ENABLED
+
 #ifndef BOOLEAN_OPERATORS
 	float limitBoxDist = 0.0f;
 	int forcedFormulaIndex = -1;

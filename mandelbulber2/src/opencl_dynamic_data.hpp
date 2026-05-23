@@ -61,6 +61,10 @@ public:
 	QString BuildPrimitivesData(const cPrimitives *primitives); // return definesCollector;
 	void BuildObjectsData(const std::vector<cObjectData> *objectData);
 	void BuildNebulaGradientsData(const sParamRender *params);
+	void BuildDeepZoomData(const float *orbitData, int orbitLength,
+		float power, float bailout, float rebaseThreshold,
+		float centerX, float centerY, float centerZ,
+		const float *saMatrix, int saSkipIters, bool saValid);
 
 private:
 	const int materialsItemIndex = 0;
@@ -68,6 +72,7 @@ private:
 	const int lightsItemIndex = 2;
 	const int primitivesItemIndex = 3;
 	const int objectsItemIndex = 4;
+	const int deepZoomItemIndex = 5;
 
 	const int nebulaGradientsItemIndex = 0; // only one data set for nebulas
 };

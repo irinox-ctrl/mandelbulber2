@@ -16,6 +16,7 @@
 
 #include "algebra.hpp"
 #include <QString>
+#include <vector>
 
 #ifdef USE_MPFR
 #include "deep_zoom.h"
@@ -68,10 +69,18 @@ void PrepareGPUData();
 // Get the reference orbit data formatted for GPU upload
 const sDeepZoomState::sGPUData &GetGPUData();
 
+// Get the active manager (for config access)
+const deep_zoom::cDeepZoomManager *GetManager();
+
+// Get the reference orbit center point
+CVector3 GetCenter();
+
 // Auto-activate deep zoom based on camera distance and params
 // Called before each render — activates/deactivates as needed
 void AutoActivate(double cameraDistance, const CVector3 &target,
-	bool juliaMode, const CVector3 &juliaC, int maxIter);
+	bool juliaMode, const CVector3 &juliaC, int maxIter,
+	double power = 8.0, double bailout = 256.0,
+	double alphaAngleOffset = 0.0, double betaAngleOffset = 0.0);
 
 // Get a status string for the HUD overlay
 QString GetStatusString();
@@ -85,9 +94,15 @@ double GetActiveZoomLevel();
 inline bool IsActive() { return false; }
 inline double CalculateDeepZoomDistance(const CVector3 &, int * = nullptr,
 	double * = nullptr) { return -1.0; }
-inline void AutoActivate(double, const CVector3 &, bool, const CVector3 &, int) {}
+inline void AutoActivate(double, const CVector3 &, bool, const CVector3 &, int,
+	double = 8.0, double = 256.0, double = 0.0, double = 0.0) {}
 inline QString GetStatusString() { return QString(); }
 inline double GetActiveZoomLevel() { return 0.0; }
+
+struct sDeepZoomState { struct sGPUData { std::vector<float> refOrbitFlat; float saMatrix[9]; int saSkipIters; bool saValid; int orbitLength; }; };
+inline const sDeepZoomState::sGPUData &GetGPUData() { static sDeepZoomState::sGPUData d; return d; }
+inline const void *GetManager() { return nullptr; }
+inline CVector3 GetCenter() { return CVector3(); }
 
 #endif // USE_MPFR
 
