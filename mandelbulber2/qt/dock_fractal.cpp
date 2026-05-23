@@ -50,6 +50,10 @@
 #include "src/rendered_image_widget.hpp"
 #include "src/write_log.hpp"
 
+#include <QClipboard>
+#include <QRandomGenerator>
+#include <QDateTime>
+
 #include "formula/definition/all_fractal_list.hpp"
 #include "navigator_window.h"
 
@@ -79,10 +83,16 @@ cDockFractal::cDockFractal(QWidget *parent)
 	ui->tabWidget_fractals->setElideMode(Qt::ElideNone);
 
 	ConnectSignals();
+	SetupJuliaExplorer();
 }
 
 cDockFractal::~cDockFractal()
 {
+	if (sweepTimer)
+	{
+		sweepTimer->stop();
+		delete sweepTimer;
+	}
 	delete ui;
 }
 
@@ -492,4 +502,390 @@ void cDockFractal::HideSomeWidgetsForNavi()
 	ui->pushButton_get_julia_constant = nullptr;
 	delete ui->groupBox_julia_preview;
 	ui->groupBox_julia_preview = nullptr;
+}
+
+// ===== 3x3lion Julia Explorer =====
+
+void cDockFractal::SetupJuliaExplorer()
+{
+	// Default range: ±2.0 (index 2)
+	if (ui->comboBox_julia_range) ui->comboBox_julia_range->setCurrentIndex(2);
+
+	sweepTimer = new QTimer(this);
+	sweepTimer->setInterval(100);
+
+	ConnectJuliaExplorerSignals();
+}
+
+void cDockFractal::ConnectJuliaExplorerSignals()
+{
+	// Sliders
+	if (ui->slider_julia_cx)
+		connect(ui->slider_julia_cx, SIGNAL(valueChanged(int)), this, SLOT(slotJuliaSliderCxChanged(int)));
+	if (ui->slider_julia_cy)
+		connect(ui->slider_julia_cy, SIGNAL(valueChanged(int)), this, SLOT(slotJuliaSliderCyChanged(int)));
+	if (ui->slider_julia_cz)
+		connect(ui->slider_julia_cz, SIGNAL(valueChanged(int)), this, SLOT(slotJuliaSliderCzChanged(int)));
+
+	// Range combo
+	if (ui->comboBox_julia_range)
+		connect(ui->comboBox_julia_range, SIGNAL(currentIndexChanged(int)), this, SLOT(slotJuliaRangeChanged(int)));
+
+	// Action buttons
+	if (ui->pushButton_julia_copy)
+		connect(ui->pushButton_julia_copy, SIGNAL(clicked()), this, SLOT(slotJuliaCopy()));
+	if (ui->pushButton_julia_paste)
+		connect(ui->pushButton_julia_paste, SIGNAL(clicked()), this, SLOT(slotJuliaPaste()));
+	if (ui->pushButton_julia_random)
+		connect(ui->pushButton_julia_random, SIGNAL(clicked()), this, SLOT(slotJuliaRandom()));
+	if (ui->pushButton_julia_zero)
+		connect(ui->pushButton_julia_zero, SIGNAL(clicked()), this, SLOT(slotJuliaZero()));
+
+	// Presets (use lambda to pass index)
+	QPushButton *presetButtons[] = {
+		ui->pushButton_julia_preset_1, ui->pushButton_julia_preset_2, ui->pushButton_julia_preset_3,
+		ui->pushButton_julia_preset_4, ui->pushButton_julia_preset_5, ui->pushButton_julia_preset_6,
+		ui->pushButton_julia_preset_7, ui->pushButton_julia_preset_8, ui->pushButton_julia_preset_9
+	};
+	for (int i = 0; i < 9; i++)
+	{
+		if (presetButtons[i])
+		{
+			connect(presetButtons[i], &QPushButton::clicked, this, [this, i]() { slotJuliaPreset(i); });
+		}
+	}
+
+	// Sweep
+	if (ui->pushButton_julia_sweep_start)
+		connect(ui->pushButton_julia_sweep_start, SIGNAL(clicked()), this, SLOT(slotJuliaSweepStart()));
+	if (ui->pushButton_julia_sweep_stop)
+		connect(ui->pushButton_julia_sweep_stop, SIGNAL(clicked()), this, SLOT(slotJuliaSweepStop()));
+	if (sweepTimer)
+		connect(sweepTimer, SIGNAL(timeout()), this, SLOT(slotJuliaSweepStep()));
+
+	// History
+	if (ui->listWidget_julia_history)
+		connect(ui->listWidget_julia_history, SIGNAL(itemDoubleClicked(QListWidgetItem *)),
+			this, SLOT(slotJuliaHistoryItemDoubleClicked(QListWidgetItem *)));
+	if (ui->pushButton_julia_history_save)
+		connect(ui->pushButton_julia_history_save, SIGNAL(clicked()), this, SLOT(slotJuliaHistorySave()));
+	if (ui->pushButton_julia_history_clear)
+		connect(ui->pushButton_julia_history_clear, SIGNAL(clicked()), this, SLOT(slotJuliaHistoryClear()));
+}
+
+double cDockFractal::JuliaSliderRange() const
+{
+	if (!ui->comboBox_julia_range) return 2.0;
+	switch (ui->comboBox_julia_range->currentIndex())
+	{
+		case 0: return 0.5;
+		case 1: return 1.0;
+		case 2: return 2.0;
+		case 3: return 5.0;
+		case 4: return 10.0;
+		default: return 2.0;
+	}
+}
+
+void cDockFractal::UpdateJuliaSliderLabels()
+{
+	double range = JuliaSliderRange();
+	if (ui->slider_julia_cx && ui->label_julia_cx_value)
+	{
+		double val = ui->slider_julia_cx->value() / 1000.0 * range;
+		ui->label_julia_cx_value->setText(QString::number(val, 'f', 3));
+	}
+	if (ui->slider_julia_cy && ui->label_julia_cy_value)
+	{
+		double val = ui->slider_julia_cy->value() / 1000.0 * range;
+		ui->label_julia_cy_value->setText(QString::number(val, 'f', 3));
+	}
+	if (ui->slider_julia_cz && ui->label_julia_cz_value)
+	{
+		double val = ui->slider_julia_cz->value() / 1000.0 * range;
+		ui->label_julia_cz_value->setText(QString::number(val, 'f', 3));
+	}
+}
+
+void cDockFractal::AddToJuliaHistory(double cx, double cy, double cz)
+{
+	sJuliaHistoryEntry entry;
+	entry.cx = cx;
+	entry.cy = cy;
+	entry.cz = cz;
+	entry.timestamp = QDateTime::currentDateTime().toString("HH:mm:ss");
+
+	// Avoid duplicates at the top
+	if (!juliaHistory.isEmpty())
+	{
+		const auto &last = juliaHistory.last();
+		if (qFuzzyCompare(last.cx, cx) && qFuzzyCompare(last.cy, cy) && qFuzzyCompare(last.cz, cz))
+			return;
+	}
+
+	juliaHistory.append(entry);
+
+	// Keep max 50 entries
+	while (juliaHistory.size() > 50) juliaHistory.removeFirst();
+
+	// Update list widget
+	if (ui->listWidget_julia_history)
+	{
+		ui->listWidget_julia_history->clear();
+		for (int i = juliaHistory.size() - 1; i >= 0; i--)
+		{
+			const auto &e = juliaHistory[i];
+			QString text = QString("[%1] c = (%2, %3, %4)")
+				.arg(e.timestamp)
+				.arg(e.cx, 0, 'f', 4)
+				.arg(e.cy, 0, 'f', 4)
+				.arg(e.cz, 0, 'f', 4);
+			ui->listWidget_julia_history->addItem(text);
+		}
+	}
+}
+
+void cDockFractal::slotJuliaSliderCxChanged(int value)
+{
+	double range = JuliaSliderRange();
+	double cx = value / 1000.0 * range;
+	if (ui->vect3_julia_c_x) ui->vect3_julia_c_x->setText(QString::number(cx, 'f', 6));
+	UpdateJuliaSliderLabels();
+}
+
+void cDockFractal::slotJuliaSliderCyChanged(int value)
+{
+	double range = JuliaSliderRange();
+	double cy = value / 1000.0 * range;
+	if (ui->vect3_julia_c_y) ui->vect3_julia_c_y->setText(QString::number(cy, 'f', 6));
+	UpdateJuliaSliderLabels();
+}
+
+void cDockFractal::slotJuliaSliderCzChanged(int value)
+{
+	double range = JuliaSliderRange();
+	double cz = value / 1000.0 * range;
+	if (ui->vect3_julia_c_z) ui->vect3_julia_c_z->setText(QString::number(cz, 'f', 6));
+	UpdateJuliaSliderLabels();
+}
+
+void cDockFractal::slotJuliaRangeChanged(int /*index*/)
+{
+	UpdateJuliaSliderLabels();
+}
+
+void cDockFractal::slotJuliaCopy()
+{
+	if (!ui->vect3_julia_c_x || !ui->vect3_julia_c_y || !ui->vect3_julia_c_z) return;
+	QString text = QString("%1, %2, %3")
+		.arg(ui->vect3_julia_c_x->text())
+		.arg(ui->vect3_julia_c_y->text())
+		.arg(ui->vect3_julia_c_z->text());
+	QApplication::clipboard()->setText(text);
+}
+
+void cDockFractal::slotJuliaPaste()
+{
+	QString text = QApplication::clipboard()->text();
+	QStringList parts = text.split(',');
+	if (parts.size() >= 3)
+	{
+		if (ui->vect3_julia_c_x) ui->vect3_julia_c_x->setText(parts[0].trimmed());
+		if (ui->vect3_julia_c_y) ui->vect3_julia_c_y->setText(parts[1].trimmed());
+		if (ui->vect3_julia_c_z) ui->vect3_julia_c_z->setText(parts[2].trimmed());
+		double cx = parts[0].trimmed().toDouble();
+		double cy = parts[1].trimmed().toDouble();
+		double cz = parts[2].trimmed().toDouble();
+		AddToJuliaHistory(cx, cy, cz);
+	}
+}
+
+void cDockFractal::slotJuliaRandom()
+{
+	double range = JuliaSliderRange();
+	double cx = (QRandomGenerator::global()->generateDouble() * 2.0 - 1.0) * range;
+	double cy = (QRandomGenerator::global()->generateDouble() * 2.0 - 1.0) * range;
+	double cz = (QRandomGenerator::global()->generateDouble() * 2.0 - 1.0) * range;
+	if (ui->vect3_julia_c_x) ui->vect3_julia_c_x->setText(QString::number(cx, 'f', 6));
+	if (ui->vect3_julia_c_y) ui->vect3_julia_c_y->setText(QString::number(cy, 'f', 6));
+	if (ui->vect3_julia_c_z) ui->vect3_julia_c_z->setText(QString::number(cz, 'f', 6));
+
+	// Update sliders
+	if (ui->slider_julia_cx) ui->slider_julia_cx->setValue(static_cast<int>(cx / range * 1000.0));
+	if (ui->slider_julia_cy) ui->slider_julia_cy->setValue(static_cast<int>(cy / range * 1000.0));
+	if (ui->slider_julia_cz) ui->slider_julia_cz->setValue(static_cast<int>(cz / range * 1000.0));
+
+	AddToJuliaHistory(cx, cy, cz);
+}
+
+void cDockFractal::slotJuliaZero()
+{
+	if (ui->vect3_julia_c_x) ui->vect3_julia_c_x->setText("0.0");
+	if (ui->vect3_julia_c_y) ui->vect3_julia_c_y->setText("0.0");
+	if (ui->vect3_julia_c_z) ui->vect3_julia_c_z->setText("0.0");
+	if (ui->slider_julia_cx) ui->slider_julia_cx->setValue(0);
+	if (ui->slider_julia_cy) ui->slider_julia_cy->setValue(0);
+	if (ui->slider_julia_cz) ui->slider_julia_cz->setValue(0);
+}
+
+void cDockFractal::slotJuliaPreset(int presetIndex)
+{
+	struct sPreset { double cx, cy, cz; };
+	static const sPreset presets[] = {
+		{0.285, 0.01, 0.0},       // Classic
+		{0.0, 1.0, 0.0},          // Dendrite
+		{-0.4, 0.6, 0.0},         // Spiral
+		{-0.391, -0.587, 0.0},    // Siegel
+		{-0.123, 0.745, 0.0},     // Rabbit
+		{-0.75, 0.15, 0.2},       // Starfish
+		{0.355, 0.355, 0.355},    // Galaxy
+		{0.36, 0.1, -0.3},        // Dragon
+		{-0.5, 0.0, 0.5}          // Flower
+	};
+
+	if (presetIndex < 0 || presetIndex >= 9) return;
+	const sPreset &p = presets[presetIndex];
+
+	if (ui->vect3_julia_c_x) ui->vect3_julia_c_x->setText(QString::number(p.cx, 'f', 6));
+	if (ui->vect3_julia_c_y) ui->vect3_julia_c_y->setText(QString::number(p.cy, 'f', 6));
+	if (ui->vect3_julia_c_z) ui->vect3_julia_c_z->setText(QString::number(p.cz, 'f', 6));
+
+	// Update sliders
+	double range = JuliaSliderRange();
+	if (range > 0.0)
+	{
+		if (ui->slider_julia_cx) ui->slider_julia_cx->setValue(static_cast<int>(p.cx / range * 1000.0));
+		if (ui->slider_julia_cy) ui->slider_julia_cy->setValue(static_cast<int>(p.cy / range * 1000.0));
+		if (ui->slider_julia_cz) ui->slider_julia_cz->setValue(static_cast<int>(p.cz / range * 1000.0));
+	}
+
+	// Auto-enable Julia mode
+	if (ui->groupCheck_julia_mode && !ui->groupCheck_julia_mode->isChecked())
+		ui->groupCheck_julia_mode->setChecked(true);
+
+	AddToJuliaHistory(p.cx, p.cy, p.cz);
+}
+
+void cDockFractal::slotJuliaSweepStart()
+{
+	if (sweepRunning) return;
+
+	sweepAxis = ui->comboBox_julia_sweep_axis ? ui->comboBox_julia_sweep_axis->currentIndex() : 0;
+	sweepFrom = ui->spinBox_julia_sweep_from ? ui->spinBox_julia_sweep_from->value() : -2.0;
+	sweepTo = ui->spinBox_julia_sweep_to ? ui->spinBox_julia_sweep_to->value() : 2.0;
+	sweepTotalSteps = ui->spinBox_julia_sweep_steps ? ui->spinBox_julia_sweep_steps->value() : 50;
+	sweepCurrentStep = 0;
+	sweepRunning = true;
+
+	// Auto-enable Julia mode
+	if (ui->groupCheck_julia_mode && !ui->groupCheck_julia_mode->isChecked())
+		ui->groupCheck_julia_mode->setChecked(true);
+
+	if (ui->progressBar_julia_sweep) ui->progressBar_julia_sweep->setValue(0);
+
+	if (sweepTimer) sweepTimer->start();
+}
+
+void cDockFractal::slotJuliaSweepStop()
+{
+	sweepRunning = false;
+	if (sweepTimer) sweepTimer->stop();
+	if (ui->progressBar_julia_sweep)
+		ui->progressBar_julia_sweep->setValue(0);
+}
+
+void cDockFractal::slotJuliaSweepStep()
+{
+	if (!sweepRunning || sweepCurrentStep >= sweepTotalSteps)
+	{
+		slotJuliaSweepStop();
+		return;
+	}
+
+	double t = static_cast<double>(sweepCurrentStep) / static_cast<double>(sweepTotalSteps - 1);
+	double val = sweepFrom + t * (sweepTo - sweepFrom);
+
+	// Get current c values
+	double cx = ui->vect3_julia_c_x ? ui->vect3_julia_c_x->text().toDouble() : 0.0;
+	double cy = ui->vect3_julia_c_y ? ui->vect3_julia_c_y->text().toDouble() : 0.0;
+	double cz = ui->vect3_julia_c_z ? ui->vect3_julia_c_z->text().toDouble() : 0.0;
+
+	switch (sweepAxis)
+	{
+		case 0: // c.x
+			cx = val;
+			break;
+		case 1: // c.y
+			cy = val;
+			break;
+		case 2: // c.z
+			cz = val;
+			break;
+		case 3: // All (spiral)
+		{
+			double angle = t * 4.0 * M_PI;
+			double radius = val;
+			cx = radius * cos(angle);
+			cy = radius * sin(angle);
+			cz = val * 0.5;
+			break;
+		}
+	}
+
+	if (ui->vect3_julia_c_x) ui->vect3_julia_c_x->setText(QString::number(cx, 'f', 6));
+	if (ui->vect3_julia_c_y) ui->vect3_julia_c_y->setText(QString::number(cy, 'f', 6));
+	if (ui->vect3_julia_c_z) ui->vect3_julia_c_z->setText(QString::number(cz, 'f', 6));
+
+	// Update progress
+	int progress = static_cast<int>((sweepCurrentStep + 1) * 100.0 / sweepTotalSteps);
+	if (ui->progressBar_julia_sweep) ui->progressBar_julia_sweep->setValue(progress);
+
+	sweepCurrentStep++;
+}
+
+void cDockFractal::slotJuliaHistoryItemDoubleClicked(QListWidgetItem *item)
+{
+	if (!item) return;
+	int row = ui->listWidget_julia_history->row(item);
+	int historyIndex = juliaHistory.size() - 1 - row;
+	if (historyIndex < 0 || historyIndex >= juliaHistory.size()) return;
+
+	const auto &entry = juliaHistory[historyIndex];
+	if (ui->vect3_julia_c_x) ui->vect3_julia_c_x->setText(QString::number(entry.cx, 'f', 6));
+	if (ui->vect3_julia_c_y) ui->vect3_julia_c_y->setText(QString::number(entry.cy, 'f', 6));
+	if (ui->vect3_julia_c_z) ui->vect3_julia_c_z->setText(QString::number(entry.cz, 'f', 6));
+
+	double range = JuliaSliderRange();
+	if (range > 0.0)
+	{
+		if (ui->slider_julia_cx)
+			ui->slider_julia_cx->setValue(static_cast<int>(entry.cx / range * 1000.0));
+		if (ui->slider_julia_cy)
+			ui->slider_julia_cy->setValue(static_cast<int>(entry.cy / range * 1000.0));
+		if (ui->slider_julia_cz)
+			ui->slider_julia_cz->setValue(static_cast<int>(entry.cz / range * 1000.0));
+	}
+}
+
+void cDockFractal::slotJuliaHistorySave()
+{
+	if (!ui->listWidget_julia_history) return;
+	QListWidgetItem *item = ui->listWidget_julia_history->currentItem();
+	if (!item) return;
+
+	int row = ui->listWidget_julia_history->row(item);
+	int historyIndex = juliaHistory.size() - 1 - row;
+	if (historyIndex < 0 || historyIndex >= juliaHistory.size()) return;
+
+	const auto &entry = juliaHistory[historyIndex];
+	QString msg = QString("Julia c = (%1, %2, %3) saved to clipboard as bookmark format")
+		.arg(entry.cx, 0, 'f', 4).arg(entry.cy, 0, 'f', 4).arg(entry.cz, 0, 'f', 4);
+	QApplication::clipboard()->setText(
+		QString("%1, %2, %3").arg(entry.cx, 0, 'f', 6).arg(entry.cy, 0, 'f', 6).arg(entry.cz, 0, 'f', 6));
+}
+
+void cDockFractal::slotJuliaHistoryClear()
+{
+	juliaHistory.clear();
+	if (ui->listWidget_julia_history) ui->listWidget_julia_history->clear();
 }

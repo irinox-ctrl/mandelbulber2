@@ -957,6 +957,350 @@
                 </property>
                </widget>
               </item>
+              <!-- 3x3lion Julia Explorer -->
+              <item>
+               <widget class="QGroupBox" name="groupBox_julia_explorer">
+                <property name="title">
+                 <string>Julia Explorer</string>
+                </property>
+                <layout class="QVBoxLayout" name="layout_julia_explorer">
+                 <property name="spacing"><number>3</number></property>
+                 <property name="leftMargin"><number>3</number></property>
+                 <property name="topMargin"><number>3</number></property>
+                 <property name="rightMargin"><number>3</number></property>
+                 <property name="bottomMargin"><number>3</number></property>
+                 <!-- c.x / c.y / c.z sliders -->
+                 <item>
+                  <layout class="QGridLayout" name="gridLayout_julia_sliders">
+                   <property name="spacing"><number>2</number></property>
+                   <item row="0" column="0">
+                    <widget class="QLabel" name="label_julia_slider_cx">
+                     <property name="text"><string>c.x</string></property>
+                     <property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property>
+                    </widget>
+                   </item>
+                   <item row="0" column="1">
+                    <widget class="QSlider" name="slider_julia_cx">
+                     <property name="minimum"><number>-2000</number></property>
+                     <property name="maximum"><number>2000</number></property>
+                     <property name="orientation"><enum>Qt::Horizontal</enum></property>
+                     <property name="toolTip"><string>Drag to adjust Julia c.x</string></property>
+                    </widget>
+                   </item>
+                   <item row="0" column="2">
+                    <widget class="QLabel" name="label_julia_cx_value">
+                     <property name="text"><string>0.000</string></property>
+                     <property name="minimumSize"><size><width>48</width><height>0</height></size></property>
+                     <property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property>
+                    </widget>
+                   </item>
+                   <item row="1" column="0">
+                    <widget class="QLabel" name="label_julia_slider_cy">
+                     <property name="text"><string>c.y</string></property>
+                     <property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property>
+                    </widget>
+                   </item>
+                   <item row="1" column="1">
+                    <widget class="QSlider" name="slider_julia_cy">
+                     <property name="minimum"><number>-2000</number></property>
+                     <property name="maximum"><number>2000</number></property>
+                     <property name="orientation"><enum>Qt::Horizontal</enum></property>
+                     <property name="toolTip"><string>Drag to adjust Julia c.y</string></property>
+                    </widget>
+                   </item>
+                   <item row="1" column="2">
+                    <widget class="QLabel" name="label_julia_cy_value">
+                     <property name="text"><string>0.000</string></property>
+                     <property name="minimumSize"><size><width>48</width><height>0</height></size></property>
+                     <property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property>
+                    </widget>
+                   </item>
+                   <item row="2" column="0">
+                    <widget class="QLabel" name="label_julia_slider_cz">
+                     <property name="text"><string>c.z</string></property>
+                     <property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property>
+                    </widget>
+                   </item>
+                   <item row="2" column="1">
+                    <widget class="QSlider" name="slider_julia_cz">
+                     <property name="minimum"><number>-2000</number></property>
+                     <property name="maximum"><number>2000</number></property>
+                     <property name="orientation"><enum>Qt::Horizontal</enum></property>
+                     <property name="toolTip"><string>Drag to adjust Julia c.z</string></property>
+                    </widget>
+                   </item>
+                   <item row="2" column="2">
+                    <widget class="QLabel" name="label_julia_cz_value">
+                     <property name="text"><string>0.000</string></property>
+                     <property name="minimumSize"><size><width>48</width><height>0</height></size></property>
+                     <property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property>
+                    </widget>
+                   </item>
+                   <item row="3" column="0">
+                    <widget class="QLabel" name="label_julia_range">
+                     <property name="text"><string>Range</string></property>
+                     <property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property>
+                    </widget>
+                   </item>
+                   <item row="3" column="1">
+                    <widget class="QComboBox" name="comboBox_julia_range">
+                     <property name="toolTip"><string>Range of Julia c sliders</string></property>
+                     <item><property name="text"><string>±0.5</string></property></item>
+                     <item><property name="text"><string>±1.0</string></property></item>
+                     <item><property name="text"><string>±2.0</string></property></item>
+                     <item><property name="text"><string>±5.0</string></property></item>
+                     <item><property name="text"><string>±10.0</string></property></item>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <!-- Copy / Paste / Random / Zero buttons -->
+                 <item>
+                  <layout class="QHBoxLayout" name="layout_julia_actions">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="QPushButton" name="pushButton_julia_copy">
+                     <property name="text"><string>Copy c</string></property>
+                     <property name="toolTip"><string>Copy Julia constant to clipboard</string></property>
+                     <property name="maximumSize"><size><width>16777215</width><height>24</height></size></property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="pushButton_julia_paste">
+                     <property name="text"><string>Paste c</string></property>
+                     <property name="toolTip"><string>Paste Julia constant from clipboard</string></property>
+                     <property name="maximumSize"><size><width>16777215</width><height>24</height></size></property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="pushButton_julia_random">
+                     <property name="text"><string>Random</string></property>
+                     <property name="toolTip"><string>Generate random Julia constant</string></property>
+                     <property name="maximumSize"><size><width>16777215</width><height>24</height></size></property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="pushButton_julia_zero">
+                     <property name="text"><string>Zero</string></property>
+                     <property name="toolTip"><string>Reset Julia constant to (0, 0, 0)</string></property>
+                     <property name="maximumSize"><size><width>16777215</width><height>24</height></size></property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <!-- Presets grid (9 famous Julia constants) -->
+                 <item>
+                  <widget class="QGroupBox" name="groupBox_julia_presets">
+                   <property name="title"><string>Presets</string></property>
+                   <layout class="QGridLayout" name="gridLayout_julia_presets">
+                    <property name="spacing"><number>2</number></property>
+                    <property name="leftMargin"><number>2</number></property>
+                    <property name="topMargin"><number>2</number></property>
+                    <property name="rightMargin"><number>2</number></property>
+                    <property name="bottomMargin"><number>2</number></property>
+                    <item row="0" column="0">
+                     <widget class="QPushButton" name="pushButton_julia_preset_1">
+                      <property name="text"><string>Classic</string></property>
+                      <property name="toolTip"><string>c = (0.285, 0.01, 0.0)</string></property>
+                      <property name="maximumSize"><size><width>16777215</width><height>22</height></size></property>
+                     </widget>
+                    </item>
+                    <item row="0" column="1">
+                     <widget class="QPushButton" name="pushButton_julia_preset_2">
+                      <property name="text"><string>Dendrite</string></property>
+                      <property name="toolTip"><string>c = (0.0, 1.0, 0.0)</string></property>
+                      <property name="maximumSize"><size><width>16777215</width><height>22</height></size></property>
+                     </widget>
+                    </item>
+                    <item row="0" column="2">
+                     <widget class="QPushButton" name="pushButton_julia_preset_3">
+                      <property name="text"><string>Spiral</string></property>
+                      <property name="toolTip"><string>c = (-0.4, 0.6, 0.0)</string></property>
+                      <property name="maximumSize"><size><width>16777215</width><height>22</height></size></property>
+                     </widget>
+                    </item>
+                    <item row="1" column="0">
+                     <widget class="QPushButton" name="pushButton_julia_preset_4">
+                      <property name="text"><string>Siegel</string></property>
+                      <property name="toolTip"><string>c = (-0.391, -0.587, 0.0)</string></property>
+                      <property name="maximumSize"><size><width>16777215</width><height>22</height></size></property>
+                     </widget>
+                    </item>
+                    <item row="1" column="1">
+                     <widget class="QPushButton" name="pushButton_julia_preset_5">
+                      <property name="text"><string>Rabbit</string></property>
+                      <property name="toolTip"><string>c = (-0.123, 0.745, 0.0)</string></property>
+                      <property name="maximumSize"><size><width>16777215</width><height>22</height></size></property>
+                     </widget>
+                    </item>
+                    <item row="1" column="2">
+                     <widget class="QPushButton" name="pushButton_julia_preset_6">
+                      <property name="text"><string>Starfish</string></property>
+                      <property name="toolTip"><string>c = (-0.75, 0.15, 0.2)</string></property>
+                      <property name="maximumSize"><size><width>16777215</width><height>22</height></size></property>
+                     </widget>
+                    </item>
+                    <item row="2" column="0">
+                     <widget class="QPushButton" name="pushButton_julia_preset_7">
+                      <property name="text"><string>Galaxy</string></property>
+                      <property name="toolTip"><string>c = (0.355, 0.355, 0.355)</string></property>
+                      <property name="maximumSize"><size><width>16777215</width><height>22</height></size></property>
+                     </widget>
+                    </item>
+                    <item row="2" column="1">
+                     <widget class="QPushButton" name="pushButton_julia_preset_8">
+                      <property name="text"><string>Dragon</string></property>
+                      <property name="toolTip"><string>c = (0.36, 0.1, -0.3)</string></property>
+                      <property name="maximumSize"><size><width>16777215</width><height>22</height></size></property>
+                     </widget>
+                    </item>
+                    <item row="2" column="2">
+                     <widget class="QPushButton" name="pushButton_julia_preset_9">
+                      <property name="text"><string>Flower</string></property>
+                      <property name="toolTip"><string>c = (-0.5, 0.0, 0.5)</string></property>
+                      <property name="maximumSize"><size><width>16777215</width><height>22</height></size></property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
+                 <!-- Animated Sweep -->
+                 <item>
+                  <widget class="QGroupBox" name="groupBox_julia_sweep">
+                   <property name="title"><string>Animated Sweep</string></property>
+                   <layout class="QVBoxLayout" name="layout_julia_sweep">
+                    <property name="spacing"><number>2</number></property>
+                    <property name="leftMargin"><number>2</number></property>
+                    <property name="topMargin"><number>2</number></property>
+                    <property name="rightMargin"><number>2</number></property>
+                    <property name="bottomMargin"><number>2</number></property>
+                    <item>
+                     <layout class="QHBoxLayout" name="layout_sweep_axis">
+                      <item>
+                       <widget class="QLabel" name="label_sweep_axis">
+                        <property name="text"><string>Sweep axis:</string></property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QComboBox" name="comboBox_julia_sweep_axis">
+                        <item><property name="text"><string>c.x</string></property></item>
+                        <item><property name="text"><string>c.y</string></property></item>
+                        <item><property name="text"><string>c.z</string></property></item>
+                        <item><property name="text"><string>All (spiral)</string></property></item>
+                       </widget>
+                      </item>
+                     </layout>
+                    </item>
+                    <item>
+                     <layout class="QHBoxLayout" name="layout_sweep_range">
+                      <item>
+                       <widget class="QLabel" name="label_sweep_from">
+                        <property name="text"><string>From:</string></property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QDoubleSpinBox" name="spinBox_julia_sweep_from">
+                        <property name="minimum"><double>-10.000000</double></property>
+                        <property name="maximum"><double>10.000000</double></property>
+                        <property name="value"><double>-2.000000</double></property>
+                        <property name="decimals"><number>3</number></property>
+                        <property name="singleStep"><double>0.100000</double></property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QLabel" name="label_sweep_to">
+                        <property name="text"><string>To:</string></property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QDoubleSpinBox" name="spinBox_julia_sweep_to">
+                        <property name="minimum"><double>-10.000000</double></property>
+                        <property name="maximum"><double>10.000000</double></property>
+                        <property name="value"><double>2.000000</double></property>
+                        <property name="decimals"><number>3</number></property>
+                        <property name="singleStep"><double>0.100000</double></property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </item>
+                    <item>
+                     <layout class="QHBoxLayout" name="layout_sweep_controls">
+                      <property name="spacing"><number>2</number></property>
+                      <item>
+                       <widget class="QPushButton" name="pushButton_julia_sweep_start">
+                        <property name="text"><string>Sweep</string></property>
+                        <property name="toolTip"><string>Animate through Julia c-space</string></property>
+                        <property name="maximumSize"><size><width>16777215</width><height>24</height></size></property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QPushButton" name="pushButton_julia_sweep_stop">
+                        <property name="text"><string>Stop</string></property>
+                        <property name="toolTip"><string>Stop the current sweep</string></property>
+                        <property name="maximumSize"><size><width>16777215</width><height>24</height></size></property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QSpinBox" name="spinBox_julia_sweep_steps">
+                        <property name="minimum"><number>5</number></property>
+                        <property name="maximum"><number>1000</number></property>
+                        <property name="value"><number>50</number></property>
+                        <property name="toolTip"><string>Number of steps in sweep</string></property>
+                        <property name="suffix"><string> steps</string></property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </item>
+                    <item>
+                     <widget class="QProgressBar" name="progressBar_julia_sweep">
+                      <property name="value"><number>0</number></property>
+                      <property name="maximumSize"><size><width>16777215</width><height>12</height></size></property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
+                 <!-- History -->
+                 <item>
+                  <widget class="QGroupBox" name="groupBox_julia_history">
+                   <property name="title"><string>History</string></property>
+                   <layout class="QVBoxLayout" name="layout_julia_history">
+                    <property name="spacing"><number>2</number></property>
+                    <property name="leftMargin"><number>2</number></property>
+                    <property name="topMargin"><number>2</number></property>
+                    <property name="rightMargin"><number>2</number></property>
+                    <property name="bottomMargin"><number>2</number></property>
+                    <item>
+                     <widget class="QListWidget" name="listWidget_julia_history">
+                      <property name="maximumSize"><size><width>16777215</width><height>90</height></size></property>
+                      <property name="toolTip"><string>Recent Julia constants — double-click to apply</string></property>
+                     </widget>
+                    </item>
+                    <item>
+                     <layout class="QHBoxLayout" name="layout_julia_history_buttons">
+                      <property name="spacing"><number>2</number></property>
+                      <item>
+                       <widget class="QPushButton" name="pushButton_julia_history_save">
+                        <property name="text"><string>Save to Bookmarks</string></property>
+                        <property name="toolTip"><string>Save selected Julia constant as bookmark</string></property>
+                        <property name="maximumSize"><size><width>16777215</width><height>24</height></size></property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QPushButton" name="pushButton_julia_history_clear">
+                        <property name="text"><string>Clear</string></property>
+                        <property name="toolTip"><string>Clear Julia history</string></property>
+                        <property name="maximumSize"><size><width>16777215</width><height>24</height></size></property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
               <item>
                <widget class="MyGroupBox" name="groupBox_julia_preview">
                 <property name="title">

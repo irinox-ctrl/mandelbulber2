@@ -37,6 +37,8 @@
 
 #include <QWidget>
 #include <QtWidgets/QtWidgets>
+#include <QTimer>
+#include <QListWidget>
 
 #include "tab_fractal.h"
 
@@ -95,6 +97,23 @@ private slots:
 	void slotPressedButtonNavi();
 	void slotNewParametersFromNavi();
 
+	// 3x3lion Julia Explorer slots
+	void slotJuliaSliderCxChanged(int value);
+	void slotJuliaSliderCyChanged(int value);
+	void slotJuliaSliderCzChanged(int value);
+	void slotJuliaRangeChanged(int index);
+	void slotJuliaCopy();
+	void slotJuliaPaste();
+	void slotJuliaRandom();
+	void slotJuliaZero();
+	void slotJuliaPreset(int presetIndex);
+	void slotJuliaSweepStart();
+	void slotJuliaSweepStop();
+	void slotJuliaSweepStep();
+	void slotJuliaHistoryItemDoubleClicked(QListWidgetItem *item);
+	void slotJuliaHistorySave();
+	void slotJuliaHistoryClear();
+
 signals:
 	void signalUpdatePrimitivesCombos();
 
@@ -104,6 +123,28 @@ private:
 
 	cAutomatedWidgets *automatedWidgets;
 	std::vector<cTabFractal *> fractalTabs;
+
+	// 3x3lion Julia Explorer
+	void SetupJuliaExplorer();
+	void ConnectJuliaExplorerSignals();
+	void UpdateJuliaSliderLabels();
+	void AddToJuliaHistory(double cx, double cy, double cz);
+	double JuliaSliderRange() const;
+
+	QTimer *sweepTimer = nullptr;
+	int sweepCurrentStep = 0;
+	int sweepTotalSteps = 0;
+	double sweepFrom = 0.0;
+	double sweepTo = 0.0;
+	int sweepAxis = 0;
+	bool sweepRunning = false;
+
+	struct sJuliaHistoryEntry
+	{
+		double cx, cy, cz;
+		QString timestamp;
+	};
+	QList<sJuliaHistoryEntry> juliaHistory;
 };
 
 #endif /* MANDELBULBER2_QT_DOCK_FRACTAL_H_ */
