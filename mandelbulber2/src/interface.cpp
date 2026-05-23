@@ -108,6 +108,8 @@
 #include "qt/smart_camera.h"
 #include "deep_zoom_integration.h"
 
+#include <QTimer>
+
 // custom includes
 #ifdef USE_GAMEPAD
 #include <QtGamepad/qgamepadmanager.h>
@@ -346,7 +348,10 @@ void cInterface::ShowUi()
 	}
 
 	// 3x3lion: Move Julia Explorer, Heatmap, and Drone Explorer to dedicated Julia dock
-	{
+	// Deferred via singleShot because dock_fractal.ui widgets need InitializeFractalUi() first
+	RenderWindow *mw = mainWindow;
+	QTimer::singleShot(0, mw, [mw]() {
+		RenderWindow *mainWindow = mw;
 		auto moveWidget = [](QWidget *src, QLayout *dst) {
 			if (src)
 			{
@@ -367,7 +372,6 @@ void cInterface::ShowUi()
 		if (scrollArea)
 		{
 			QLayout *innerLayout = scrollArea->widget()->layout();
-			// Remove placeholder label
 			while (QLayoutItem *item = innerLayout->takeAt(0))
 			{
 				delete item->widget();
@@ -376,11 +380,14 @@ void cInterface::ShowUi()
 			moveWidget(juliaExplorer, innerLayout);
 			moveWidget(juliaHeatmap, innerLayout);
 			moveWidget(droneExplorer, innerLayout);
-			// Add stretch at bottom
 			if (QVBoxLayout *vbox = qobject_cast<QVBoxLayout *>(innerLayout))
 				vbox->addStretch(1);
 		}
-	}
+		else
+		{
+			qWarning() << "3x3lion: Could not find scrollArea_julia_dock for Julia reparent";
+		}
+	});
 
 	// Baseline for "reset dock positions" must match actual dock widgets (e.g. gamepad dock may be
 	// deleted above); saving too early would make restoreState(defaultState) crash.
