@@ -347,11 +347,12 @@ void cInterface::ShowUi()
 		}
 	}
 
+	// loading default ui for all fractal components — must happen BEFORE reparenting
+	mainWindow->ui->widgetDockFractal->InitializeFractalUi();
+
 	// 3x3lion: Move Julia Explorer, Heatmap, and Drone Explorer to dedicated Julia dock
-	// Deferred via singleShot because dock_fractal.ui widgets need InitializeFractalUi() first
-	RenderWindow *mw = mainWindow;
-	QTimer::singleShot(0, mw, [mw]() {
-		RenderWindow *mainWindow = mw;
+	// Now synchronous because InitializeFractalUi() has already created the widgets
+	{
 		auto moveWidget = [](QWidget *src, QLayout *dst) {
 			if (src)
 			{
@@ -369,9 +370,10 @@ void cInterface::ShowUi()
 
 		QScrollArea *scrollArea =
 			mainWindow->ui->dockWidget_julia->findChild<QScrollArea *>("scrollArea_julia_dock");
-		if (scrollArea)
+		if (scrollArea && scrollArea->widget() && scrollArea->widget()->layout())
 		{
 			QLayout *innerLayout = scrollArea->widget()->layout();
+			// remove placeholder
 			while (QLayoutItem *item = innerLayout->takeAt(0))
 			{
 				delete item->widget();
@@ -387,14 +389,16 @@ void cInterface::ShowUi()
 		{
 			qWarning() << "3x3lion: Could not find scrollArea_julia_dock for Julia reparent";
 		}
-	});
+	}
 
-	// Baseline for "reset dock positions" must match actual dock widgets (e.g. gamepad dock may be
-	// deleted above); saving too early would make restoreState(defaultState) crash.
+	// Place Julia dock in the right area (separate from the left panel tabs)
+	mainWindow->addDockWidget(Qt::RightDockWidgetArea, mainWindow->ui->dockWidget_julia);
+	mainWindow->ui->dockWidget_julia->setMinimumWidth(280);
+	mainWindow->ui->dockWidget_julia->setMinimumHeight(200);
+
+	// Baseline for "reset dock positions" must match actual dock widgets including reparented Julia.
 	mainWindow->CaptureDefaultWindowLayout();
 
-	// loading default ui for all fractal components
-	mainWindow->ui->widgetDockFractal->InitializeFractalUi();
 	InitMaterialsUi();
 	scrollAreaMaterialEditor = mainWindow->ui->scrollArea_material;
 
@@ -463,8 +467,9 @@ void cInterface::ShowUi()
 	WriteLog("cInterface::ConnectSignals(void) finished", 2);
 
 	// 3x3lion: Setup focus mode shortcuts and apply focus mode on startup
+	// Deferred: window must be shown and resized by window manager first
 	mainWindow->SetupFocusModeShortcuts();
-	mainWindow->slotApplyFocusModeOnStartup();
+	QTimer::singleShot(200, mainWindow, &RenderWindow::slotApplyFocusModeOnStartup);
 }
 
 void cInterface::ConnectSignals() const

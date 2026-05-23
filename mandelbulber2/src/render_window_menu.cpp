@@ -60,7 +60,9 @@
 #include "qt/preview_file_dialog.h"
 #include "qt/settings_browser.h"
 
+#include <QGuiApplication>
 #include <QMenu>
+#include <QScreen>
 #include <QShortcut>
 
 void RenderWindow::slotImportOldSettings()
@@ -577,14 +579,15 @@ void RenderWindow::slotMenuResetDocksPositions()
 
 	tabifyDockWidget(ui->dockWidget_materialEditor, ui->dockWidget_pattern_lines);
 	tabifyDockWidget(ui->dockWidget_pattern_lines, ui->dockWidget_primitives);
-	tabifyDockWidget(ui->dockWidget_primitives, ui->dockWidget_julia);
-	tabifyDockWidget(ui->dockWidget_julia, ui->dockWidget_effects);
+	tabifyDockWidget(ui->dockWidget_primitives, ui->dockWidget_effects);
 	tabifyDockWidget(ui->dockWidget_effects, ui->dockWidget_image_adjustments);
 	tabifyDockWidget(ui->dockWidget_image_adjustments, ui->dockWidget_rendering_engine);
 	tabifyDockWidget(ui->dockWidget_rendering_engine, ui->dockWidget_objects);
 	tabifyDockWidget(ui->dockWidget_objects, ui->dockWidget_histogram);
 
 	addDockWidget(Qt::LeftDockWidgetArea, ui->dockWidget_Materials);
+	addDockWidget(Qt::RightDockWidgetArea, ui->dockWidget_julia);
+	ui->dockWidget_julia->show();
 }
 
 void RenderWindow::slotMenuAnimationDocksPositions()
@@ -601,14 +604,15 @@ void RenderWindow::slotMenuAnimationDocksPositions()
 
 	tabifyDockWidget(ui->dockWidget_materialEditor, ui->dockWidget_pattern_lines);
 	tabifyDockWidget(ui->dockWidget_pattern_lines, ui->dockWidget_primitives);
-	tabifyDockWidget(ui->dockWidget_primitives, ui->dockWidget_julia);
-	tabifyDockWidget(ui->dockWidget_julia, ui->dockWidget_effects);
+	tabifyDockWidget(ui->dockWidget_primitives, ui->dockWidget_effects);
 	tabifyDockWidget(ui->dockWidget_effects, ui->dockWidget_image_adjustments);
 	tabifyDockWidget(ui->dockWidget_image_adjustments, ui->dockWidget_rendering_engine);
 	tabifyDockWidget(ui->dockWidget_rendering_engine, ui->dockWidget_objects);
 	tabifyDockWidget(ui->dockWidget_objects, ui->dockWidget_histogram);
 
 	addDockWidget(Qt::LeftDockWidgetArea, ui->dockWidget_Materials);
+	addDockWidget(Qt::RightDockWidgetArea, ui->dockWidget_julia);
+	ui->dockWidget_julia->show();
 }
 
 void RenderWindow::slotMenuSaveDocksPositions()
@@ -1066,7 +1070,7 @@ void RenderWindow::slotToggleFocusMode()
 		ui->dockWidget_fake_lights->hide();
 		ui->dockWidget_pattern_lines->hide();
 		ui->dockWidget_primitives->hide();
-		ui->dockWidget_julia->hide();
+		// Julia dock stays visible in Focus Mode (main view = fractal + Julia)
 		ui->dockWidget_objects->hide();
 		ui->dockWidget_rendering_engine->hide();
 		ui->dockWidget_info->hide();
@@ -1080,6 +1084,10 @@ void RenderWindow::slotToggleFocusMode()
 		ui->toolBar->hide();
 		ui->menubar->hide();
 		ui->statusbar->hide();
+
+		// Keep Julia dock visible in Focus Mode
+		addDockWidget(Qt::RightDockWidgetArea, ui->dockWidget_julia);
+		ui->dockWidget_julia->show();
 	}
 	else
 	{
@@ -1102,7 +1110,7 @@ void RenderWindow::slotApplyFocusModeOnStartup()
 	ui->dockWidget_fake_lights->hide();
 	ui->dockWidget_pattern_lines->hide();
 	ui->dockWidget_primitives->hide();
-	ui->dockWidget_julia->hide();
+	// Julia dock stays visible in Focus Mode (main view = fractal + Julia)
 	ui->dockWidget_objects->hide();
 	ui->dockWidget_rendering_engine->hide();
 	ui->dockWidget_info->hide();
@@ -1116,6 +1124,17 @@ void RenderWindow::slotApplyFocusModeOnStartup()
 	ui->toolBar->hide();
 	ui->menubar->hide();
 	ui->statusbar->hide();
+
+	// Resize to screen and place Julia dock in right area
+	QScreen *screen = QGuiApplication::primaryScreen();
+	if (screen)
+	{
+		QRect geo = screen->availableGeometry();
+		resize(geo.width(), geo.height());
+		move(geo.topLeft());
+	}
+	addDockWidget(Qt::RightDockWidgetArea, ui->dockWidget_julia);
+	ui->dockWidget_julia->show();
 }
 
 void RenderWindow::slotShowViewerContextMenu(const QPoint &pos)
@@ -1243,6 +1262,9 @@ void RenderWindow::slotShowViewerContextMenu(const QPoint &pos)
 		ui->statusbar->show();
 		slotMenuResetDocksPositions();
 		ui->toolBar->show();
+		ui->dockWidget_julia->show();
+		ui->dockWidget_primitives->show();
+		ui->dockWidget_pattern_lines->show();
 	});
 
 	menu.addSeparator();
