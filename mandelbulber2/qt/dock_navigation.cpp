@@ -824,6 +824,14 @@ void cDockNavigation::SetupSmartCamera()
 	lay->addWidget(cbHUD);
 	connect(cbHUD, &QCheckBox::toggled, this, &cDockNavigation::slotToggleHUD);
 
+	// Depth overlay toggle
+	QCheckBox *cbDepth = new QCheckBox("Depth Visualization", smartGroup);
+	cbDepth->setObjectName("cb_depth_overlay");
+	cbDepth->setChecked(false);
+	cbDepth->setToolTip("Overlay depth coloring on the render (red=near, blue=far)");
+	lay->addWidget(cbDepth);
+	connect(cbDepth, &QCheckBox::toggled, this, &cDockNavigation::slotToggleDepthOverlay);
+
 	QLayout *dockLayout = layout();
 	if (dockLayout)
 		dockLayout->addWidget(smartGroup);
@@ -934,6 +942,11 @@ void cDockNavigation::slotClearFlightPath()
 void cDockNavigation::slotToggleHUD(bool checked)
 {
 	emit signalToggleHUD(checked);
+}
+
+void cDockNavigation::slotToggleDepthOverlay(bool checked)
+{
+	emit signalToggleDepthOverlay(checked);
 }
 
 void cDockNavigation::slotSmartCameraUpdated()

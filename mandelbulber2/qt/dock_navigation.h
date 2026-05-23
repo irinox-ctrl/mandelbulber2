@@ -135,6 +135,7 @@ private slots:
 	void slotImportFlightPath();
 	void slotClearFlightPath();
 	void slotToggleHUD(bool checked);
+	void slotToggleDepthOverlay(bool checked);
 	void slotSmartCameraUpdated();
 
 private:
@@ -184,6 +185,7 @@ signals:
 	void signalCameraMovementModeChanged(int index);
 	void signalHUDDataChanged(const cSmartCamera::sHUDData &data);
 	void signalToggleHUD(bool visible);
+	void signalToggleDepthOverlay(bool enable);
 };
 
 #endif /* MANDELBULBER2_QT_DOCK_NAVIGATION_H_ */

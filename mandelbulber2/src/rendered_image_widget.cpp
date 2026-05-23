@@ -198,6 +198,9 @@ void RenderedImage::paintEvent(QPaintEvent *event)
 
 		PaintLastRenderedTilesInfo();
 
+		if (depthOverlayEnabled)
+			PaintDepthOverlay();
+
 		redrawed = true;
 	}
 }
@@ -1890,4 +1893,122 @@ void RenderedImage::line3D(const CVector3 &p1, const CVector3 &p2, const CVector
 				p1Projected.z, p2Projected.z, color, opacity, thickness, layer);
 		}
 	}
+}
+
+// 3x3lion: Depth Visualization Overlay
+void RenderedImage::PaintDepthOverlay()
+{
+	if (!image) return;
+
+	int previewW = image->GetPreviewWidth();
+	int previewH = image->GetPreviewHeight();
+	int imgW = image->GetWidth();
+	int imgH = image->GetHeight();
+
+	if (imgW <= 0 || imgH <= 0 || previewW <= 0 || previewH <= 0) return;
+
+	double scale = image->GetPreviewScale();
+
+	// Sample z-buffer to find min/max for normalization
+	float zMin = 1e20f, zMax = 0.0f;
+	int step = qMax(1, imgW / 64);
+	for (int y = 0; y < imgH; y += step)
+	{
+		for (int x = 0; x < imgW; x += step)
+		{
+			float z = image->GetPixelZBuffer(x, y);
+			if (z < 1e10f && z > 0.0f)
+			{
+				if (z < zMin) zMin = z;
+				if (z > zMax) zMax = z;
+			}
+		}
+	}
+
+	if (zMin >= zMax || zMin >= 1e10f) return;
+	float logMin = log10f(qMax(zMin, 1e-15f));
+	float logMax = log10f(zMax);
+	float logRange = logMax - logMin;
+	if (logRange < 0.01f) logRange = 1.0f;
+
+	QPainter painter(this);
+	painter.setOpacity(0.35);
+
+	int blockSize = qMax(2, int(4.0 / scale));
+	for (int py = 0; py < previewH; py += blockSize)
+	{
+		for (int px = 0; px < previewW; px += blockSize)
+		{
+			int ix = qMin(int(px / scale), imgW - 1);
+			int iy = qMin(int(py / scale), imgH - 1);
+			float z = image->GetPixelZBuffer(ix, iy);
+
+			if (z >= 1e10f) continue;
+
+			float logZ = log10f(qMax(z, 1e-15f));
+			float t = qBound(0.0f, (logZ - logMin) / logRange, 1.0f);
+
+			// Catppuccin depth gradient: red(close) -> orange -> green -> blue(far)
+			QColor color;
+			if (t < 0.25f)
+			{
+				float u = t / 0.25f;
+				color = QColor(
+					int(243 + (250 - 243) * u), int(139 + (179 - 139) * u), int(168 + (135 - 168) * u));
+			}
+			else if (t < 0.5f)
+			{
+				float u = (t - 0.25f) / 0.25f;
+				color = QColor(
+					int(250 + (166 - 250) * u), int(179 + (227 - 179) * u), int(135 + (161 - 135) * u));
+			}
+			else if (t < 0.75f)
+			{
+				float u = (t - 0.5f) / 0.25f;
+				color = QColor(
+					int(166 + (137 - 166) * u), int(227 + (180 - 227) * u), int(161 + (250 - 161) * u));
+			}
+			else
+			{
+				float u = (t - 0.75f) / 0.25f;
+				color = QColor(
+					int(137 + (203 - 137) * u), int(180 + (166 - 180) * u), int(250 + (247 - 250) * u));
+			}
+
+			painter.fillRect(px, py, blockSize, blockSize, color);
+		}
+	}
+
+	// Legend
+	painter.setOpacity(0.8);
+	int legendX = 10;
+	int legendY = previewH - 80;
+	int legendW = 20;
+	int legendH = 60;
+
+	painter.fillRect(legendX - 2, legendY - 14, legendW + 40, legendH + 20,
+		QColor(0x11, 0x11, 0x1b, 180));
+
+	for (int i = 0; i < legendH; i++)
+	{
+		float t = 1.0f - float(i) / legendH;
+		QColor color;
+		if (t < 0.25f)
+			color = QColor(243, 139, 168);
+		else if (t < 0.5f)
+			color = QColor(250, 179, 135);
+		else if (t < 0.75f)
+			color = QColor(166, 227, 161);
+		else
+			color = QColor(137, 180, 250);
+
+		painter.fillRect(legendX, legendY + i, legendW, 1, color);
+	}
+
+	QFont font("Monospace", 7);
+	font.setStyleHint(QFont::Monospace);
+	painter.setFont(font);
+	painter.setPen(QColor(0xcd, 0xd6, 0xf4));
+	painter.drawText(legendX, legendY - 3, "NEAR");
+	painter.drawText(legendX, legendY + legendH + 10, "FAR");
 }

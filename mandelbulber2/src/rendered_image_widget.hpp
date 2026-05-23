@@ -101,6 +101,10 @@ public:
 
 	RenderedImage(QWidget *parent = nullptr);
 	void AssignImage(std::shared_ptr<cImage> _image) { image = _image; }
+
+	// 3x3lion depth visualization
+	void SetDepthOverlay(bool enable) { depthOverlayEnabled = enable; update(); }
+	bool GetDepthOverlay() const { return depthOverlayEnabled; }
 	void AssignParameters(
 		std::shared_ptr<cParameterContainer> _mainParams, std::shared_ptr<cFractalContainer> _fractals)
 	{
@@ -168,6 +172,7 @@ private:
 	static QPointF CalcPointPersp(const CVector3 &point, const CRotationMatrix &rot, double persp);
 	void DrawAnimationPath();
 	void PaintLastRenderedTilesInfo();
+	void PaintDepthOverlay();
 	void DisplayAllLights();
 	void DisplayAllPrimitives();
 	void DisplayPatternLineTraps();
@@ -186,6 +191,7 @@ private:
 	bool primitivesVisible;
 	bool patternLineTrapsVisible = false;
 	bool mcNoiseVisible = false;
+	bool depthOverlayEnabled = false;
 	bool isFocus;
 	bool isOnObject;
 	bool placeLightBehind;

@@ -233,6 +233,8 @@ void cInterface::ShowUi()
 	}
 	connect(mainWindow->ui->widgetDockNavigation, &cDockNavigation::signalToggleHUD, cameraHUD,
 		&cCameraHUDWidget::SetVisible);
+	connect(mainWindow->ui->widgetDockNavigation, &cDockNavigation::signalToggleDepthOverlay,
+		renderedImage, &RenderedImage::SetDepthOverlay);
 
 	mainWindow->ui->widgetEffects->AssignParameterContainers(gPar, gParFractal);
 	mainWindow->ui->widgetEffects->AssignSpecialWidgets(
