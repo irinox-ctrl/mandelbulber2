@@ -38,6 +38,7 @@ private:
 	void DrawCollisionWarning(QPainter &p, int w, int h);
 	void DrawDepthBar(QPainter &p, int w, int h);
 	void DrawModeIndicator(QPainter &p, int w);
+	void DrawDeepZoomIndicator(QPainter &p, int w);
 	void DrawCopyright(QPainter &p, int w, int h);
 
 	cSmartCamera::sHUDData currentData;

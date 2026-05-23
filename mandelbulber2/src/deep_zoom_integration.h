@@ -15,6 +15,7 @@
 #define MANDELBULBER2_SRC_DEEP_ZOOM_INTEGRATION_H_
 
 #include "algebra.hpp"
+#include <QString>
 
 #ifdef USE_MPFR
 #include "deep_zoom.h"
@@ -67,12 +68,26 @@ void PrepareGPUData();
 // Get the reference orbit data formatted for GPU upload
 const sDeepZoomState::sGPUData &GetGPUData();
 
+// Auto-activate deep zoom based on camera distance and params
+// Called before each render — activates/deactivates as needed
+void AutoActivate(double cameraDistance, const CVector3 &target,
+	bool juliaMode, const CVector3 &juliaC, int maxIter);
+
+// Get a status string for the HUD overlay
+QString GetStatusString();
+
+// Get zoom level at which deep zoom was auto-activated
+double GetActiveZoomLevel();
+
 #else // !USE_MPFR
 
 // Stubs for non-MPFR builds
 inline bool IsActive() { return false; }
 inline double CalculateDeepZoomDistance(const CVector3 &, int * = nullptr,
 	double * = nullptr) { return -1.0; }
+inline void AutoActivate(double, const CVector3 &, bool, const CVector3 &, int) {}
+inline QString GetStatusString() { return QString(); }
+inline double GetActiveZoomLevel() { return 0.0; }
 
 #endif // USE_MPFR
 

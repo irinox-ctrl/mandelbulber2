@@ -1075,6 +1075,12 @@ void cDockNavigation::slotDeepZoomCompute()
 	config.bailout = 256.0;
 	config.maxIterations = params->Get<int>("N");
 
+	// Julia mode support
+	bool juliaMode = params->Get<bool>("julia_mode");
+	CVector3 juliaC = params->Get<CVector3>("julia_c");
+	config.juliaMode = juliaMode;
+	config.juliaC = juliaC;
+
 	int precData = deepZoomPrecision->currentData().toInt();
 	if (precData == 0)
 	{
@@ -1090,12 +1096,14 @@ void cDockNavigation::slotDeepZoomCompute()
 
 	deepZoomManager->Configure(config);
 	deepZoomManager->SetPixelSpacing(pixelSpacing);
+	if (juliaMode) deepZoomManager->SetJuliaMode(true, juliaC);
 	deepZoomManager->SetCenter(target);
 
 	const auto &refOrbit = deepZoomManager->GetReferenceOrbit();
 	int saSkip = deepZoomManager->GetSASkipIterations();
 
-	QString status = QString("Status: Ready\n"
+	QString modeStr = juliaMode ? "Julia" : "Mandelbulb";
+	QString status = QString("Status: Ready [%7]\n"
 		"Reference orbit: %1 iterations\n"
 		"Precision: %2 bits (%3 digits)\n"
 		"Escaped: %4 (iter %5)\n"
@@ -1105,7 +1113,8 @@ void cDockNavigation::slotDeepZoomCompute()
 		.arg(static_cast<int>(config.precisionBits * 0.301))
 		.arg(refOrbit.Escaped() ? "yes" : "no")
 		.arg(refOrbit.GetEscapeIteration())
-		.arg(QString::number(zoomLevel, 'e', 2));
+		.arg(QString::number(zoomLevel, 'e', 2))
+		.arg(modeStr);
 
 	if (saSkip > 0)
 	{

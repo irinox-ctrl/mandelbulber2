@@ -106,6 +106,7 @@
 #include "qt/system_tray.hpp"
 #include "qt/camera_hud_widget.h"
 #include "qt/smart_camera.h"
+#include "deep_zoom_integration.h"
 
 // custom includes
 #ifdef USE_GAMEPAD
@@ -754,6 +755,16 @@ void cInterface::startRenderImpl(
 	if (!noUndo) gUndo->Store(gPar, gParFractal);
 
 	DisableJuliaPointMode();
+
+	// Auto-activate Deep Zoom when camera is zoomed deep enough
+	{
+		double cameraDist = gPar->Get<double>("camera_distance_to_target");
+		CVector3 target = gPar->Get<CVector3>("target");
+		bool juliaMode = gPar->Get<bool>("julia_mode");
+		CVector3 juliaC = gPar->Get<CVector3>("julia_c");
+		int maxIter = gPar->Get<int>("N");
+		deep_zoom_integration::AutoActivate(cameraDist, target, juliaMode, juliaC, maxIter);
+	}
 
 	const int temporaryScale = int(pow(int(2), gPar->Get<int>("temporary_scale")));
 	timerForAbortWarnings.start();

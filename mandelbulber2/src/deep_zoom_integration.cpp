@@ -11,6 +11,7 @@
 
 #ifdef USE_MPFR
 
+#include <cmath>
 #include <cstring>
 
 namespace deep_zoom_integration
@@ -19,6 +20,11 @@ namespace deep_zoom_integration
 namespace
 {
 sDeepZoomState gState;
+deep_zoom::cDeepZoomManager *autoManager = nullptr;
+double activeZoomLevel = 0.0;
+CVector3 lastAutoCenter;
+CVector3 lastAutoJuliaC;
+bool lastAutoJuliaMode = false;
 } // namespace
 
 sDeepZoomState &GetState()
@@ -98,6 +104,102 @@ void PrepareGPUData()
 const sDeepZoomState::sGPUData &GetGPUData()
 {
 	return gState.gpuData;
+}
+
+void AutoActivate(double cameraDistance, const CVector3 &target,
+	bool juliaMode, const CVector3 &juliaC, int maxIter)
+{
+	double zoomLevel = 1.0 / std::max(cameraDistance, 1e-30);
+
+	if (!deep_zoom::cDeepZoomManager::ShouldUseDeepZoom(zoomLevel))
+	{
+		// Below threshold: disable if auto-manager was active
+		if (gState.enabled && gState.manager == autoManager && autoManager != nullptr)
+		{
+			Disable();
+		}
+		activeZoomLevel = 0.0;
+		return;
+	}
+
+	// Check if we need to recompute (center or Julia c changed, or not yet computed)
+	bool needRecompute = false;
+	if (autoManager == nullptr)
+	{
+		autoManager = new deep_zoom::cDeepZoomManager();
+		needRecompute = true;
+	}
+
+	CVector3 delta = target - lastAutoCenter;
+	double centerDist = delta.Length();
+	bool centerChanged = centerDist > cameraDistance * 0.01;
+	bool juliaModeChanged = (juliaMode != lastAutoJuliaMode);
+	bool juliaCChanged = juliaMode && (juliaC - lastAutoJuliaC).Length() > 1e-10;
+
+	if (centerChanged || juliaModeChanged || juliaCChanged || !autoManager->IsReady())
+	{
+		needRecompute = true;
+	}
+
+	if (needRecompute)
+	{
+		deep_zoom::sDeepZoomConfig config;
+		config.power = 8.0;
+		config.bailout = 256.0;
+		config.maxIterations = maxIter;
+		config.precisionBits = deep_zoom::cDeepZoomManager::PrecisionForZoom(zoomLevel);
+		config.juliaMode = juliaMode;
+		config.juliaC = juliaC;
+
+		double pixelSpacing = cameraDistance / 800.0;
+
+		autoManager->Configure(config);
+		autoManager->SetPixelSpacing(pixelSpacing);
+
+		if (juliaMode)
+		{
+			autoManager->SetJuliaMode(true, juliaC);
+		}
+
+		autoManager->SetCenter(target);
+
+		lastAutoCenter = target;
+		lastAutoJuliaC = juliaC;
+		lastAutoJuliaMode = juliaMode;
+	}
+
+	// Activate
+	Enable(autoManager);
+	PrepareGPUData();
+	activeZoomLevel = zoomLevel;
+}
+
+QString GetStatusString()
+{
+	if (!IsActive()) return QString();
+
+	const deep_zoom::cReferenceOrbit &orbit = gState.manager->GetReferenceOrbit();
+	const deep_zoom::sDeepZoomConfig &config = gState.manager->GetConfig();
+	int saSkip = gState.manager->GetSASkipIterations();
+
+	QString mode = config.juliaMode ? "Julia" : "Mandelbulb";
+	QString status = QString("DEEP ZOOM [%1]\nOrbit: %2 iters | %3 bits | SA skip: %4")
+		.arg(mode)
+		.arg(orbit.GetLength())
+		.arg(config.precisionBits)
+		.arg(saSkip);
+
+	if (activeZoomLevel > 0.0)
+	{
+		status += QString("\nZoom: %1").arg(QString::number(activeZoomLevel, 'e', 2));
+	}
+
+	return status;
+}
+
+double GetActiveZoomLevel()
+{
+	return activeZoomLevel;
 }
 
 } // namespace deep_zoom_integration

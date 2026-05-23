@@ -8,6 +8,7 @@
 #include <QPainterPath>
 #include <cmath>
 
+#include "src/deep_zoom_integration.h"
 #include "src/system.hpp"
 
 namespace
@@ -58,6 +59,7 @@ void cCameraHUDWidget::paintEvent(QPaintEvent *)
 	DrawBottomBar(p, w, h);
 	DrawDepthBar(p, w, h);
 	DrawModeIndicator(p, w);
+	DrawDeepZoomIndicator(p, w);
 	DrawCopyright(p, w, h);
 
 	if (currentData.collisionWarning)
@@ -260,4 +262,45 @@ void cCameraHUDWidget::DrawModeIndicator(QPainter &p, int w)
 	p.drawRect(bg);
 	p.setPen(modeColor);
 	p.drawText(x, y, currentData.modeName);
+}
+
+void cCameraHUDWidget::DrawDeepZoomIndicator(QPainter &p, int w)
+{
+	if (!deep_zoom_integration::IsActive()) return;
+
+	QString status = deep_zoom_integration::GetStatusString();
+	if (status.isEmpty()) return;
+
+	QFont font("Monospace", 8);
+	font.setStyleHint(QFont::Monospace);
+	p.setFont(font);
+
+	QStringList lines = status.split('\n');
+	int lineH = p.fontMetrics().height();
+	int maxW = 0;
+	for (const QString &line : lines)
+		maxW = qMax(maxW, p.fontMetrics().horizontalAdvance(line));
+
+	int x = kMargin;
+	int y = kBarHeight + 50;
+	int panelH = lineH * lines.size() + 12;
+	int panelW = maxW + 16;
+
+	// Background panel
+	QRect bg(x, y, panelW, panelH);
+	p.fillRect(bg, QColor(0x11, 0x11, 0x1b, 200));
+	p.setPen(QPen(QColor(0xf3, 0x8b, 0xa8), 1));  // red accent for Deep Zoom
+	p.drawRect(bg);
+
+	// Title line in red, rest in text color
+	int textY = y + lineH;
+	for (int i = 0; i < lines.size(); i++)
+	{
+		if (i == 0)
+			p.setPen(QColor(0xf3, 0x8b, 0xa8));  // red
+		else
+			p.setPen(QColor(0xcd, 0xd6, 0xf4));  // text
+		p.drawText(x + 8, textY, lines[i]);
+		textY += lineH;
+	}
 }

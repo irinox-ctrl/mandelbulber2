@@ -157,15 +157,26 @@ void cReferenceOrbit::Compute(const CVector3 &center)
 	mpfr_t zx, zy, zz, cx, cy, cz, de, r;
 	mpfr_inits2(prec, zx, zy, zz, cx, cy, cz, de, r, (mpfr_ptr)0);
 
-	// c = center
-	mpfr_set(cx, centerHP.x, MPFR_RNDN);
-	mpfr_set(cy, centerHP.y, MPFR_RNDN);
-	mpfr_set(cz, centerHP.z, MPFR_RNDN);
-
-	// z = c (first point in Mandelbulb)
-	mpfr_set(zx, cx, MPFR_RNDN);
-	mpfr_set(zy, cy, MPFR_RNDN);
-	mpfr_set(zz, cz, MPFR_RNDN);
+	if (config.juliaMode)
+	{
+		// Julia mode: c is fixed (juliaC), z₀ = center (the point in z-space)
+		mpfr_set_d(cx, config.juliaC.x, MPFR_RNDN);
+		mpfr_set_d(cy, config.juliaC.y, MPFR_RNDN);
+		mpfr_set_d(cz, config.juliaC.z, MPFR_RNDN);
+		mpfr_set(zx, centerHP.x, MPFR_RNDN);
+		mpfr_set(zy, centerHP.y, MPFR_RNDN);
+		mpfr_set(zz, centerHP.z, MPFR_RNDN);
+	}
+	else
+	{
+		// Mandelbrot mode: c = center, z₀ = c
+		mpfr_set(cx, centerHP.x, MPFR_RNDN);
+		mpfr_set(cy, centerHP.y, MPFR_RNDN);
+		mpfr_set(cz, centerHP.z, MPFR_RNDN);
+		mpfr_set(zx, cx, MPFR_RNDN);
+		mpfr_set(zy, cy, MPFR_RNDN);
+		mpfr_set(zz, cz, MPFR_RNDN);
+	}
 	mpfr_set_d(de, 1.0, MPFR_RNDN);
 
 	escaped = false;
@@ -746,6 +757,15 @@ void cDeepZoomManager::SetCenter(const CVector3 &center)
 	}
 
 	referenceComputed = true;
+}
+
+void cDeepZoomManager::SetJuliaMode(bool enabled, const CVector3 &juliaC)
+{
+	config.juliaMode = enabled;
+	config.juliaC = juliaC;
+	refOrbit.Configure(config);
+	perturbator.Configure(config);
+	referenceComputed = false;
 }
 
 void cDeepZoomManager::SetPixelSpacing(double spacing)

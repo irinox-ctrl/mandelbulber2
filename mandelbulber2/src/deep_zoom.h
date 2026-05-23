@@ -204,6 +204,10 @@ struct sDeepZoomConfig
 	int saOrder = 3;             // series approximation polynomial order
 	double betaAngleOffset = 0.0;
 	double alphaAngleOffset = 0.0;
+
+	// Julia mode: when enabled, c is fixed (juliaC) and z₀ varies
+	bool juliaMode = false;
+	CVector3 juliaC = CVector3(0.0, 0.0, 0.0);
 };
 
 // ============================================================
@@ -308,6 +312,12 @@ public:
 
 	// Set the zoom center and compute reference orbit
 	void SetCenter(const CVector3 &center);
+
+	// Set Julia mode with c-constant and compute reference orbit
+	void SetJuliaMode(bool enabled, const CVector3 &juliaC);
+
+	// Get the current configuration
+	const sDeepZoomConfig &GetConfig() const { return config; }
 
 	// Calculate distance for a single 3D point (used by ray marcher)
 	// point: world-space position
