@@ -3116,39 +3116,7 @@ Static: Fixed weight (simple). Iteration: Weight changes over iterations (morphi
      <item row="58" column="5" colspan="2"><widget class="MySpinBox" name="spinboxInt_mutation_clip_iter_stop"><property name="minimum"><number>0</number></property><property name="maximum"><number>10000</number></property><property name="value"><number>10000</number></property></widget></item>
      <item row="59" column="0" colspan="7"><widget class="QLabel" name="label_jos_leys_header"><property name="text"><string>— Jos Leys DE System —</string></property><property name="alignment"><set>Qt::AlignCenter</set></property><property name="font"><font><bold>true</bold></font></property></widget></item>
      <item row="60" column="0"><widget class="QLabel" name="label_jos_type"><property name="text"><string>Jos Leys Type:</string></property></widget></item>
-     <item row="60" column="1" colspan="6"><widget class="QComboBox" name="comboBox_mutation_jos_de_type">
-        <item><property name="text"><string>None</string></property></item>
-        <item><property name="text"><string>Curvature Feedback</string></property></item>
-        <item><property name="text"><string>Log-Derivative Scaling</string></property></item>
-        <item><property name="text"><string>Spherical Cap DE</string></property></item>
-        <item><property name="text"><string>Radial-Twist DE</string></property></item>
-        <item><property name="text"><string>Harmonic Decay DE</string></property></item>
-        <item><property name="text"><string>Orbit Length DE</string></property></item>
-        <item><property name="text"><string>Torsion Feedback</string></property></item>
-        <item><property name="text"><string>Angular Momentum DE</string></property></item>
-        <item><property name="text"><string>Conformal Stretch</string></property></item>
-        <item><property name="text"><string>Lyapunov DE</string></property></item>
-        <item><property name="text"><string>Gradient Descent DE</string></property></item>
-        <item><property name="text"><string>Newton Step DE</string></property></item>
-        <item><property name="text"><string>Min-Max Axis DE</string></property></item>
-        <item><property name="text"><string>Distance Ratio DE</string></property></item>
-        <item><property name="text"><string>Sectional Curvature</string></property></item>
-        <item><property name="text"><string>Geodesic DE</string></property></item>
-        <item><property name="text"><string>Laplacian DE</string></property></item>
-        <item><property name="text"><string>Divergence DE</string></property></item>
-        <item><property name="text"><string>Curl DE</string></property></item>
-        <item><property name="text"><string>Vorticity DE</string></property></item>
-        <item><property name="text"><string>Strain-Rate DE</string></property></item>
-        <item><property name="text"><string>Potential Field DE</string></property></item>
-        <item><property name="text"><string>Green Function DE</string></property></item>
-        <item><property name="text"><string>Poisson DE</string></property></item>
-        <item><property name="text"><string>Helmholtz DE</string></property></item>
-        <item><property name="text"><string>Wave Equation DE</string></property></item>
-        <item><property name="text"><string>Diffusion DE</string></property></item>
-        <item><property name="text"><string>Heat Kernel DE</string></property></item>
-        <item><property name="text"><string>Spectral DE</string></property></item>
-        <item><property name="text"><string>Fractal Dim DE</string></property></item>
-      </widget></item>
+     <item row="60" column="1" colspan="6"><widget class="MySpinBox" name="spinboxInt_mutation_jos_de_type"><property name="minimum"><number>0</number></property><property name="maximum"><number>100</number></property><property name="value"><number>0</number></property></widget></item>
      <item row="61" column="0"><widget class="QLabel" name="label_jos_factor"><property name="text"><string>Factor:</string></property></widget></item>
      <item row="61" column="1"><widget class="MyDoubleSpinBox" name="spinboxDouble_mutation_jos_factor"><property name="minimum"><double>-100.0</double></property><property name="maximum"><double>100.0</double></property><property name="singleStep"><double>0.1</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>6</number></property></widget></item>
      <item row="61" column="2"><widget class="QLabel" name="label_jos_scale"><property name="text"><string>Scale:</string></property></widget></item>
@@ -3173,39 +3141,7 @@ Static: Fixed weight (simple). Iteration: Weight changes over iterations (morphi
      <item row="64" column="3"><widget class="MySpinBox" name="spinboxInt_mutation_jos_iter_stop"><property name="minimum"><number>0</number></property><property name="maximum"><number>10000</number></property><property name="value"><number>10000</number></property></widget></item>
      <item row="65" column="0" colspan="7"><widget class="QLabel" name="label_pk_header"><property name="text"><string>— Pseudokleinian DE System —</string></property><property name="alignment"><set>Qt::AlignCenter</set></property><property name="font"><font><bold>true</bold></font></property></widget></item>
      <item row="66" column="0"><widget class="QLabel" name="label_pk_type"><property name="text"><string>PK Type:</string></property></widget></item>
-     <item row="66" column="1" colspan="6"><widget class="QComboBox" name="comboBox_mutation_pk_de_type">
-        <item><property name="text"><string>None</string></property></item>
-        <item><property name="text"><string>Conformal DE</string></property></item>
-        <item><property name="text"><string>Poincaré Metric</string></property></item>
-        <item><property name="text"><string>Ford Circle DE</string></property></item>
-        <item><property name="text"><string>Apollonian DE</string></property></item>
-        <item><property name="text"><string>Schottky DE</string></property></item>
-        <item><property name="text"><string>Fuchsian DE</string></property></item>
-        <item><property name="text"><string>Modular DE</string></property></item>
-        <item><property name="text"><string>Hecke DE</string></property></item>
-        <item><property name="text"><string>Eisenstein DE</string></property></item>
-        <item><property name="text"><string>Theta Function DE</string></property></item>
-        <item><property name="text"><string>Weierstrass DE</string></property></item>
-        <item><property name="text"><string>Klein J DE</string></property></item>
-        <item><property name="text"><string>Riemann Surface DE</string></property></item>
-        <item><property name="text"><string>Uniformization DE</string></property></item>
-        <item><property name="text"><string>Selberg Zeta DE</string></property></item>
-        <item><property name="text"><string>L-Function DE</string></property></item>
-        <item><property name="text"><string>Dirichlet DE</string></property></item>
-        <item><property name="text"><string>Ramanujan DE</string></property></item>
-        <item><property name="text"><string>Dedekind DE</string></property></item>
-        <item><property name="text"><string>Eta Function DE</string></property></item>
-        <item><property name="text"><string>Jacobi Form DE</string></property></item>
-        <item><property name="text"><string>Siegel Modular DE</string></property></item>
-        <item><property name="text"><string>Hilbert Modular DE</string></property></item>
-        <item><property name="text"><string>Picard DE</string></property></item>
-        <item><property name="text"><string>Bianchi DE</string></property></item>
-        <item><property name="text"><string>Arithmetic DE</string></property></item>
-        <item><property name="text"><string>Quaternionic DE</string></property></item>
-        <item><property name="text"><string>Octonionic DE</string></property></item>
-        <item><property name="text"><string>Algebraic DE</string></property></item>
-        <item><property name="text"><string>Transcendental DE</string></property></item>
-      </widget></item>
+     <item row="66" column="1" colspan="6"><widget class="MySpinBox" name="spinboxInt_mutation_pk_de_type"><property name="minimum"><number>0</number></property><property name="maximum"><number>100</number></property><property name="value"><number>0</number></property></widget></item>
      <item row="67" column="0"><widget class="QLabel" name="label_pk_factor"><property name="text"><string>Factor:</string></property></widget></item>
      <item row="67" column="1"><widget class="MyDoubleSpinBox" name="spinboxDouble_mutation_pk_factor"><property name="minimum"><double>-100.0</double></property><property name="maximum"><double>100.0</double></property><property name="singleStep"><double>0.1</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>6</number></property></widget></item>
      <item row="67" column="2"><widget class="QLabel" name="label_pk_scale"><property name="text"><string>Scale:</string></property></widget></item>
@@ -3230,39 +3166,7 @@ Static: Fixed weight (simple). Iteration: Weight changes over iterations (morphi
      <item row="70" column="3"><widget class="MySpinBox" name="spinboxInt_mutation_pk_iter_stop"><property name="minimum"><number>0</number></property><property name="maximum"><number>10000</number></property><property name="value"><number>10000</number></property></widget></item>
      <item row="71" column="0" colspan="7"><widget class="QLabel" name="label_mb_math_header"><property name="text"><string>— Mandelbox Math System —</string></property><property name="alignment"><set>Qt::AlignCenter</set></property><property name="font"><font><bold>true</bold></font></property></widget></item>
      <item row="72" column="0"><widget class="QLabel" name="label_mb_math_type"><property name="text"><string>MB Type:</string></property></widget></item>
-     <item row="72" column="1" colspan="6"><widget class="QComboBox" name="comboBox_mutation_mb_math_type">
-        <item><property name="text"><string>None</string></property></item>
-        <item><property name="text"><string>Box Fold (Custom Limits)</string></property></item>
-        <item><property name="text"><string>Spherical Fold (Custom Radii)</string></property></item>
-        <item><property name="text"><string>Rotational Fold</string></property></item>
-        <item><property name="text"><string>Shear Fold</string></property></item>
-        <item><property name="text"><string>Scaling Oscillation</string></property></item>
-        <item><property name="text"><string>Adaptive Box Fold</string></property></item>
-        <item><property name="text"><string>Conditional Abs Fold</string></property></item>
-        <item><property name="text"><string>Smooth Box Fold</string></property></item>
-        <item><property name="text"><string>Power Box Fold</string></property></item>
-        <item><property name="text"><string>Exponential Fold</string></property></item>
-        <item><property name="text"><string>Tanh Fold</string></property></item>
-        <item><property name="text"><string>Sin-Cos Fold</string></property></item>
-        <item><property name="text"><string>Spiral Fold</string></property></item>
-        <item><property name="text"><string>Twist Fold</string></property></item>
-        <item><property name="text"><string>Stretch Fold</string></property></item>
-        <item><property name="text"><string>Compress Fold</string></property></item>
-        <item><property name="text"><string>Mirror Fold</string></property></item>
-        <item><property name="text"><string>Kaleidoscope Fold</string></property></item>
-        <item><property name="text"><string>Menger Fold</string></property></item>
-        <item><property name="text"><string>Sierpinski Fold</string></property></item>
-        <item><property name="text"><string>Koch Fold</string></property></item>
-        <item><property name="text"><string>Cantor Fold</string></property></item>
-        <item><property name="text"><string>Julia Fold</string></property></item>
-        <item><property name="text"><string>Newton Fold</string></property></item>
-        <item><property name="text"><string>Halley Fold</string></property></item>
-        <item><property name="text"><string>Laguerre Fold</string></property></item>
-        <item><property name="text"><string>Durand-Kerner Fold</string></property></item>
-        <item><property name="text"><string>Bairstow Fold</string></property></item>
-        <item><property name="text"><string>Aberth Fold</string></property></item>
-        <item><property name="text"><string>Jenkins-Traub Fold</string></property></item>
-      </widget></item>
+     <item row="72" column="1" colspan="6"><widget class="MySpinBox" name="spinboxInt_mutation_mb_math_type"><property name="minimum"><number>0</number></property><property name="maximum"><number>200</number></property><property name="value"><number>0</number></property></widget></item>
      <item row="73" column="0"><widget class="QLabel" name="label_mb_factor"><property name="text"><string>Factor:</string></property></widget></item>
      <item row="73" column="1"><widget class="MyDoubleSpinBox" name="spinboxDouble_mutation_mb_factor"><property name="minimum"><double>-100.0</double></property><property name="maximum"><double>100.0</double></property><property name="singleStep"><double>0.1</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>6</number></property></widget></item>
      <item row="73" column="2"><widget class="QLabel" name="label_mb_param_a"><property name="text"><string>A:</string></property></widget></item>
@@ -3287,39 +3191,7 @@ Static: Fixed weight (simple). Iteration: Weight changes over iterations (morphi
      <item row="76" column="3"><widget class="MySpinBox" name="spinboxInt_mutation_mb_iter_stop"><property name="minimum"><number>0</number></property><property name="maximum"><number>10000</number></property><property name="value"><number>10000</number></property></widget></item>
      <item row="77" column="0" colspan="7"><widget class="QLabel" name="label_wd_header"><property name="text"><string>— Warp Distortion System —</string></property><property name="alignment"><set>Qt::AlignCenter</set></property><property name="font"><font><bold>true</bold></font></property></widget></item>
      <item row="78" column="0"><widget class="QLabel" name="label_wd_type"><property name="text"><string>WD Type:</string></property></widget></item>
-     <item row="78" column="1" colspan="6"><widget class="QComboBox" name="comboBox_mutation_warp_dist_type">
-        <item><property name="text"><string>None</string></property></item>
-        <item><property name="text"><string>Sine X (Y-driven)</string></property></item>
-        <item><property name="text"><string>Sine Y (Z-driven)</string></property></item>
-        <item><property name="text"><string>Sine Z (X-driven)</string></property></item>
-        <item><property name="text"><string>3D Sine (all axes)</string></property></item>
-        <item><property name="text"><string>Cos-Sin Cross</string></property></item>
-        <item><property name="text"><string>Polar Warp</string></property></item>
-        <item><property name="text"><string>Spherical Warp</string></property></item>
-        <item><property name="text"><string>Curl Warp (3D)</string></property></item>
-        <item><property name="text"><string>Per-Axis Sine</string></property></item>
-        <item><property name="text"><string>Radial Pulse</string></property></item>
-        <item><property name="text"><string>Nested Sine</string></property></item>
-        <item><property name="text"><string>Nested Cos-Sine</string></property></item>
-        <item><property name="text"><string>Nested Sin-Cos</string></property></item>
-        <item><property name="text"><string>Compound Double</string></property></item>
-        <item><property name="text"><string>Cross-Product Sine</string></property></item>
-        <item><property name="text"><string>Recursive Noise</string></property></item>
-        <item><property name="text"><string>Cross-Trig 3D</string></property></item>
-        <item><property name="text"><string>Ratio Sine</string></property></item>
-        <item><property name="text"><string>Spherical Multi-Axis</string></property></item>
-        <item><property name="text"><string>Feedback Sum</string></property></item>
-        <item><property name="text"><string>Fractal Noise X (4-oct)</string></property></item>
-        <item><property name="text"><string>Fractal Noise Y (4-oct)</string></property></item>
-        <item><property name="text"><string>Fractal Noise Z (4-oct)</string></property></item>
-        <item><property name="text"><string>Fractal Noise 3D</string></property></item>
-        <item><property name="text"><string>Custom Octave 3D</string></property></item>
-        <item><property name="text"><string>Turbulence X</string></property></item>
-        <item><property name="text"><string>Turbulence Y</string></property></item>
-        <item><property name="text"><string>Turbulence Z</string></property></item>
-        <item><property name="text"><string>Turbulence 3D</string></property></item>
-        <item><property name="text"><string>Ridged Noise</string></property></item>
-      </widget></item>
+     <item row="78" column="1" colspan="6"><widget class="MySpinBox" name="spinboxInt_mutation_warp_dist_type"><property name="minimum"><number>0</number></property><property name="maximum"><number>100</number></property><property name="value"><number>0</number></property></widget></item>
      <item row="79" column="0"><widget class="QLabel" name="label_wd_factor"><property name="text"><string>Factor:</string></property></widget></item>
      <item row="79" column="1"><widget class="MyDoubleSpinBox" name="spinboxDouble_mutation_wd_factor"><property name="minimum"><double>-100.0</double></property><property name="maximum"><double>100.0</double></property><property name="singleStep"><double>0.1</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>6</number></property></widget></item>
      <item row="79" column="2"><widget class="QLabel" name="label_wd_param_a"><property name="text"><string>A:</string></property></widget></item>
@@ -3344,39 +3216,7 @@ Static: Fixed weight (simple). Iteration: Weight changes over iterations (morphi
      <item row="82" column="3"><widget class="MySpinBox" name="spinboxInt_mutation_wd_iter_stop"><property name="minimum"><number>0</number></property><property name="maximum"><number>10000</number></property><property name="value"><number>10000</number></property></widget></item>
      <item row="83" column="0" colspan="7"><widget class="QLabel" name="label_sk_header"><property name="text"><string>— Symmetry / Kaleidoscope —</string></property><property name="alignment"><set>Qt::AlignCenter</set></property><property name="font"><font><bold>true</bold></font></property></widget></item>
      <item row="84" column="0"><widget class="QLabel" name="label_sk_type"><property name="text"><string>SK Type:</string></property></widget></item>
-     <item row="84" column="1" colspan="6"><widget class="QComboBox" name="comboBox_mutation_sym_kal_type">
-        <item><property name="text"><string>None</string></property></item>
-        <item><property name="text"><string>Abs X</string></property></item>
-        <item><property name="text"><string>Abs Y</string></property></item>
-        <item><property name="text"><string>Abs Z</string></property></item>
-        <item><property name="text"><string>Abs XY</string></property></item>
-        <item><property name="text"><string>Abs XZ</string></property></item>
-        <item><property name="text"><string>Abs YZ</string></property></item>
-        <item><property name="text"><string>Abs XYZ</string></property></item>
-        <item><property name="text"><string>Min-Max Swap XY</string></property></item>
-        <item><property name="text"><string>Min-Max Swap XZ</string></property></item>
-        <item><property name="text"><string>Min-Max Swap YZ</string></property></item>
-        <item><property name="text"><string>Cyclic Sort</string></property></item>
-        <item><property name="text"><string>Reverse Sort</string></property></item>
-        <item><property name="text"><string>Sign Flip X</string></property></item>
-        <item><property name="text"><string>Sign Flip Y</string></property></item>
-        <item><property name="text"><string>Sign Flip Z</string></property></item>
-        <item><property name="text"><string>Rotation 90° XY</string></property></item>
-        <item><property name="text"><string>Rotation 90° XZ</string></property></item>
-        <item><property name="text"><string>Rotation 90° YZ</string></property></item>
-        <item><property name="text"><string>Mirror X=Y</string></property></item>
-        <item><property name="text"><string>Mirror X=Z</string></property></item>
-        <item><property name="text"><string>Mirror Y=Z</string></property></item>
-        <item><property name="text"><string>N-Fold (Z-axis)</string></property></item>
-        <item><property name="text"><string>Tetrahedral</string></property></item>
-        <item><property name="text"><string>Octahedral</string></property></item>
-        <item><property name="text"><string>Icosahedral</string></property></item>
-        <item><property name="text"><string>Cubic Mirror</string></property></item>
-        <item><property name="text"><string>Hexagonal</string></property></item>
-        <item><property name="text"><string>Pentagonal</string></property></item>
-        <item><property name="text"><string>Triangular</string></property></item>
-        <item><property name="text"><string>Diamond</string></property></item>
-      </widget></item>
+     <item row="84" column="1" colspan="6"><widget class="MySpinBox" name="spinboxInt_mutation_sym_kal_type"><property name="minimum"><number>0</number></property><property name="maximum"><number>100</number></property><property name="value"><number>0</number></property></widget></item>
      <item row="85" column="0"><widget class="QLabel" name="label_sk_factor"><property name="text"><string>Factor:</string></property></widget></item>
      <item row="85" column="1"><widget class="MyDoubleSpinBox" name="spinboxDouble_mutation_sk_factor"><property name="minimum"><double>-100.0</double></property><property name="maximum"><double>100.0</double></property><property name="singleStep"><double>0.1</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>6</number></property></widget></item>
      <item row="85" column="2"><widget class="QLabel" name="label_sk_param_a"><property name="text"><string>A:</string></property></widget></item>
@@ -3401,39 +3241,7 @@ Static: Fixed weight (simple). Iteration: Weight changes over iterations (morphi
      <item row="88" column="3"><widget class="MySpinBox" name="spinboxInt_mutation_sk_iter_stop"><property name="minimum"><number>0</number></property><property name="maximum"><number>10000</number></property><property name="value"><number>10000</number></property></widget></item>
      <item row="89" column="0" colspan="7"><widget class="QLabel" name="label_ab_header"><property name="text"><string>— Abox DE System —</string></property><property name="alignment"><set>Qt::AlignCenter</set></property><property name="font"><font><bold>true</bold></font></property></widget></item>
      <item row="90" column="0"><widget class="QLabel" name="label_ab_type"><property name="text"><string>AB Type:</string></property></widget></item>
-     <item row="90" column="1" colspan="6"><widget class="QComboBox" name="comboBox_mutation_abox_type">
-        <item><property name="text"><string>None</string></property></item>
-        <item><property name="text"><string>Linear Scale</string></property></item>
-        <item><property name="text"><string>Quadratic Scale</string></property></item>
-        <item><property name="text"><string>Exponential Decay</string></property></item>
-        <item><property name="text"><string>Harmonic Scale</string></property></item>
-        <item><property name="text"><string>Sigmoid Scale</string></property></item>
-        <item><property name="text"><string>Log Scale</string></property></item>
-        <item><property name="text"><string>Sqrt Scale</string></property></item>
-        <item><property name="text"><string>Power Scale</string></property></item>
-        <item><property name="text"><string>Atan Scale</string></property></item>
-        <item><property name="text"><string>Tanh Scale</string></property></item>
-        <item><property name="text"><string>Softplus</string></property></item>
-        <item><property name="text"><string>ReLU</string></property></item>
-        <item><property name="text"><string>Gaussian</string></property></item>
-        <item><property name="text"><string>Laplacian</string></property></item>
-        <item><property name="text"><string>Cauchy</string></property></item>
-        <item><property name="text"><string>Logistic</string></property></item>
-        <item><property name="text"><string>Reciprocal</string></property></item>
-        <item><property name="text"><string>Step</string></property></item>
-        <item><property name="text"><string>Sawtooth</string></property></item>
-        <item><property name="text"><string>Triangle Wave</string></property></item>
-        <item><property name="text"><string>Square Wave</string></property></item>
-        <item><property name="text"><string>Smooth Step</string></property></item>
-        <item><property name="text"><string>Hermite</string></property></item>
-        <item><property name="text"><string>Catmull-Rom</string></property></item>
-        <item><property name="text"><string>B-Spline</string></property></item>
-        <item><property name="text"><string>Bezier</string></property></item>
-        <item><property name="text"><string>Polynomial 3</string></property></item>
-        <item><property name="text"><string>Polynomial 4</string></property></item>
-        <item><property name="text"><string>Rational</string></property></item>
-        <item><property name="text"><string>Chebyshev</string></property></item>
-      </widget></item>
+     <item row="90" column="1" colspan="6"><widget class="MySpinBox" name="spinboxInt_mutation_abox_type"><property name="minimum"><number>0</number></property><property name="maximum"><number>400</number></property><property name="value"><number>0</number></property></widget></item>
      <item row="91" column="0"><widget class="QLabel" name="label_ab_factor"><property name="text"><string>Factor:</string></property></widget></item>
      <item row="91" column="1"><widget class="MyDoubleSpinBox" name="spinboxDouble_mutation_ab_factor"><property name="minimum"><double>-100.0</double></property><property name="maximum"><double>100.0</double></property><property name="singleStep"><double>0.1</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>6</number></property></widget></item>
      <item row="91" column="2"><widget class="QLabel" name="label_ab_param_a"><property name="text"><string>A:</string></property></widget></item>
@@ -3458,39 +3266,7 @@ Static: Fixed weight (simple). Iteration: Weight changes over iterations (morphi
      <item row="94" column="3"><widget class="MySpinBox" name="spinboxInt_mutation_ab_iter_stop"><property name="minimum"><number>0</number></property><property name="maximum"><number>10000</number></property><property name="value"><number>10000</number></property></widget></item>
      <item row="95" column="0" colspan="7"><widget class="QLabel" name="label_noise_header"><property name="text"><string>— Noise &amp; Procedural DE —</string></property><property name="alignment"><set>Qt::AlignCenter</set></property><property name="font"><font><bold>true</bold></font></property></widget></item>
      <item row="96" column="0"><widget class="QLabel" name="label_noise_type"><property name="text"><string>Noise Type:</string></property></widget></item>
-     <item row="96" column="1" colspan="6"><widget class="QComboBox" name="comboBox_mutation_noise_type">
-        <item><property name="text"><string>None</string></property></item>
-        <item><property name="text"><string>Hash Noise 3D</string></property></item>
-        <item><property name="text"><string>Hash Noise Avg</string></property></item>
-        <item><property name="text"><string>Sine Noise</string></property></item>
-        <item><property name="text"><string>Lattice Noise</string></property></item>
-        <item><property name="text"><string>Gradient Noise</string></property></item>
-        <item><property name="text"><string>Value Noise</string></property></item>
-        <item><property name="text"><string>Perlin 3D</string></property></item>
-        <item><property name="text"><string>Simplex 3D</string></property></item>
-        <item><property name="text"><string>Worley (Cell)</string></property></item>
-        <item><property name="text"><string>Voronoi</string></property></item>
-        <item><property name="text"><string>FBM (4-octave)</string></property></item>
-        <item><property name="text"><string>Turbulence</string></property></item>
-        <item><property name="text"><string>Ridged Multi</string></property></item>
-        <item><property name="text"><string>Billowed</string></property></item>
-        <item><property name="text"><string>Marble</string></property></item>
-        <item><property name="text"><string>Wood Grain</string></property></item>
-        <item><property name="text"><string>Caustics</string></property></item>
-        <item><property name="text"><string>Erosion</string></property></item>
-        <item><property name="text"><string>River Network</string></property></item>
-        <item><property name="text"><string>Cloud</string></property></item>
-        <item><property name="text"><string>Lava</string></property></item>
-        <item><property name="text"><string>Crystal</string></property></item>
-        <item><property name="text"><string>Foam</string></property></item>
-        <item><property name="text"><string>Bark</string></property></item>
-        <item><property name="text"><string>Scales</string></property></item>
-        <item><property name="text"><string>Weave</string></property></item>
-        <item><property name="text"><string>Spots</string></property></item>
-        <item><property name="text"><string>Speckle</string></property></item>
-        <item><property name="text"><string>Dunes</string></property></item>
-        <item><property name="text"><string>Crackle</string></property></item>
-      </widget></item>
+     <item row="96" column="1" colspan="6"><widget class="MySpinBox" name="spinboxInt_mutation_noise_type"><property name="minimum"><number>0</number></property><property name="maximum"><number>100</number></property><property name="value"><number>0</number></property></widget></item>
      <item row="97" column="0"><widget class="QLabel" name="label_noise_factor"><property name="text"><string>Factor:</string></property></widget></item>
      <item row="97" column="1"><widget class="MyDoubleSpinBox" name="spinboxDouble_mutation_noise_factor"><property name="minimum"><double>-100.0</double></property><property name="maximum"><double>100.0</double></property><property name="singleStep"><double>0.1</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>6</number></property></widget></item>
      <item row="97" column="2"><widget class="QLabel" name="label_noise_param_a"><property name="text"><string>A:</string></property></widget></item>
@@ -3511,39 +3287,7 @@ Static: Fixed weight (simple). Iteration: Weight changes over iterations (morphi
      <item row="99" column="5" colspan="2"><widget class="MySpinBox" name="spinboxInt_mutation_noise_iter_stop"><property name="minimum"><number>0</number></property><property name="maximum"><number>10000</number></property><property name="value"><number>10000</number></property></widget></item>
      <item row="100" column="0" colspan="7"><widget class="QLabel" name="label_orbit_header"><property name="text"><string>— Orbit Trap DE —</string></property><property name="alignment"><set>Qt::AlignCenter</set></property><property name="font"><font><bold>true</bold></font></property></widget></item>
      <item row="101" column="0"><widget class="QLabel" name="label_orbit_type"><property name="text"><string>Orbit Type:</string></property></widget></item>
-     <item row="101" column="1" colspan="6"><widget class="QComboBox" name="comboBox_mutation_orbit_trap_type">
-        <item><property name="text"><string>None</string></property></item>
-        <item><property name="text"><string>Sphere Trap</string></property></item>
-        <item><property name="text"><string>Manhattan Trap</string></property></item>
-        <item><property name="text"><string>Chebyshev Trap</string></property></item>
-        <item><property name="text"><string>Cylinder Trap</string></property></item>
-        <item><property name="text"><string>Plane Trap</string></property></item>
-        <item><property name="text"><string>Torus Trap</string></property></item>
-        <item><property name="text"><string>Cross Trap</string></property></item>
-        <item><property name="text"><string>Line Trap</string></property></item>
-        <item><property name="text"><string>Point Trap</string></property></item>
-        <item><property name="text"><string>Box Trap</string></property></item>
-        <item><property name="text"><string>Ellipsoid Trap</string></property></item>
-        <item><property name="text"><string>Cone Trap</string></property></item>
-        <item><property name="text"><string>Hyperboloid Trap</string></property></item>
-        <item><property name="text"><string>Paraboloid Trap</string></property></item>
-        <item><property name="text"><string>Spiral Trap</string></property></item>
-        <item><property name="text"><string>Helix Trap</string></property></item>
-        <item><property name="text"><string>Knot Trap</string></property></item>
-        <item><property name="text"><string>Möbius Trap</string></property></item>
-        <item><property name="text"><string>Gyroid Trap</string></property></item>
-        <item><property name="text"><string>Schwarz-P Trap</string></property></item>
-        <item><property name="text"><string>Schwarz-D Trap</string></property></item>
-        <item><property name="text"><string>Neovius Trap</string></property></item>
-        <item><property name="text"><string>Lidinoid Trap</string></property></item>
-        <item><property name="text"><string>Split-P Trap</string></property></item>
-        <item><property name="text"><string>IWP Trap</string></property></item>
-        <item><property name="text"><string>FRD Trap</string></property></item>
-        <item><property name="text"><string>Tubular-G Trap</string></property></item>
-        <item><property name="text"><string>Tubular-P Trap</string></property></item>
-        <item><property name="text"><string>Custom TPMS Trap</string></property></item>
-        <item><property name="text"><string>Multi-Trap</string></property></item>
-      </widget></item>
+     <item row="101" column="1" colspan="6"><widget class="MySpinBox" name="spinboxInt_mutation_orbit_trap_type"><property name="minimum"><number>0</number></property><property name="maximum"><number>100</number></property><property name="value"><number>0</number></property></widget></item>
      <item row="102" column="0"><widget class="QLabel" name="label_orbit_factor"><property name="text"><string>Factor:</string></property></widget></item>
      <item row="102" column="1"><widget class="MyDoubleSpinBox" name="spinboxDouble_mutation_orbit_factor"><property name="minimum"><double>-100.0</double></property><property name="maximum"><double>100.0</double></property><property name="singleStep"><double>0.1</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>6</number></property></widget></item>
      <item row="102" column="2"><widget class="QLabel" name="label_orbit_param_a"><property name="text"><string>A:</string></property></widget></item>
@@ -3560,39 +3304,7 @@ Static: Fixed weight (simple). Iteration: Weight changes over iterations (morphi
      <item row="104" column="1"><widget class="MySpinBox" name="spinboxInt_mutation_orbit_iter_stop"><property name="minimum"><number>0</number></property><property name="maximum"><number>10000</number></property><property name="value"><number>10000</number></property></widget></item>
      <item row="105" column="0" colspan="7"><widget class="QLabel" name="label_torus_header"><property name="text"><string>— MandelTorus DE —</string></property><property name="alignment"><set>Qt::AlignCenter</set></property><property name="font"><font><bold>true</bold></font></property></widget></item>
      <item row="106" column="0"><widget class="QLabel" name="label_torus_type"><property name="text"><string>Torus Type:</string></property></widget></item>
-     <item row="106" column="1" colspan="6"><widget class="QComboBox" name="comboBox_mutation_torus_type">
-        <item><property name="text"><string>None</string></property></item>
-        <item><property name="text"><string>Sigmoid DE</string></property></item>
-        <item><property name="text"><string>Gaussian DE</string></property></item>
-        <item><property name="text"><string>Double-Well DE</string></property></item>
-        <item><property name="text"><string>Plateau DE</string></property></item>
-        <item><property name="text"><string>Asymmetric DE</string></property></item>
-        <item><property name="text"><string>Oscillating DE</string></property></item>
-        <item><property name="text"><string>Step DE</string></property></item>
-        <item><property name="text"><string>Smooth Clamp DE</string></property></item>
-        <item><property name="text"><string>Exponential Plateau</string></property></item>
-        <item><property name="text"><string>Log Barrier DE</string></property></item>
-        <item><property name="text"><string>Inverse Barrier DE</string></property></item>
-        <item><property name="text"><string>Softmin DE</string></property></item>
-        <item><property name="text"><string>Softmax DE</string></property></item>
-        <item><property name="text"><string>Boltzmann DE</string></property></item>
-        <item><property name="text"><string>Fermi-Dirac DE</string></property></item>
-        <item><property name="text"><string>Power Sigmoid DE</string></property></item>
-        <item><property name="text"><string>Tanh Plateau</string></property></item>
-        <item><property name="text"><string>Arctan Plateau</string></property></item>
-        <item><property name="text"><string>Erf Plateau</string></property></item>
-        <item><property name="text"><string>Sech Squared DE</string></property></item>
-        <item><property name="text"><string>Lorentzian DE</string></property></item>
-        <item><property name="text"><string>Voigt Profile DE</string></property></item>
-        <item><property name="text"><string>Pseudo-Voigt DE</string></property></item>
-        <item><property name="text"><string>Asymmetric Gaussian</string></property></item>
-        <item><property name="text"><string>Bifurcation DE</string></property></item>
-        <item><property name="text"><string>Logistic Map DE</string></property></item>
-        <item><property name="text"><string>Henon Map DE</string></property></item>
-        <item><property name="text"><string>Lorenz Attractor DE</string></property></item>
-        <item><property name="text"><string>Rössler DE</string></property></item>
-        <item><property name="text"><string>Strange Attractor DE</string></property></item>
-      </widget></item>
+     <item row="106" column="1" colspan="6"><widget class="MySpinBox" name="spinboxInt_mutation_torus_type"><property name="minimum"><number>0</number></property><property name="maximum"><number>100</number></property><property name="value"><number>0</number></property></widget></item>
      <item row="107" column="0"><widget class="QLabel" name="label_torus_factor"><property name="text"><string>Factor:</string></property></widget></item>
      <item row="107" column="1"><widget class="MyDoubleSpinBox" name="spinboxDouble_mutation_torus_factor"><property name="minimum"><double>-100.0</double></property><property name="maximum"><double>100.0</double></property><property name="singleStep"><double>0.1</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>6</number></property></widget></item>
      <item row="107" column="2"><widget class="QLabel" name="label_torus_param_a"><property name="text"><string>A:</string></property></widget></item>

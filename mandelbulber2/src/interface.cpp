@@ -459,6 +459,13 @@ void cInterface::ShowUi()
 	mainWindow->tabifyDockWidget(
 		mainWindow->ui->dockWidget_effects, mainWindow->ui->dockWidget_image_adjustments);
 
+	// 3x3lion: Force Julia dock to right area AFTER restoreState/tabify
+	// (restoreState and tabifyDockWidget above may have moved it back to left tabs)
+	mainWindow->addDockWidget(Qt::RightDockWidgetArea, mainWindow->ui->dockWidget_julia);
+	mainWindow->ui->dockWidget_julia->setMinimumWidth(280);
+	mainWindow->ui->dockWidget_julia->setMinimumHeight(200);
+	mainWindow->ui->dockWidget_julia->show();
+
 	// installing event filter for disabling tooltips
 	gApplication->installEventFilter(mainWindow);
 
