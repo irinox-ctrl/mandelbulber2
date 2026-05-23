@@ -980,7 +980,7 @@
                     </widget>
                    </item>
                    <item row="0" column="1">
-                    <widget class="QSlider" name="slider_julia_cx">
+                    <widget class="QSlider" name="jslider_julia_cx">
                      <property name="minimum"><number>-2000</number></property>
                      <property name="maximum"><number>2000</number></property>
                      <property name="orientation"><enum>Qt::Horizontal</enum></property>
@@ -1001,7 +1001,7 @@
                     </widget>
                    </item>
                    <item row="1" column="1">
-                    <widget class="QSlider" name="slider_julia_cy">
+                    <widget class="QSlider" name="jslider_julia_cy">
                      <property name="minimum"><number>-2000</number></property>
                      <property name="maximum"><number>2000</number></property>
                      <property name="orientation"><enum>Qt::Horizontal</enum></property>
@@ -1022,7 +1022,7 @@
                     </widget>
                    </item>
                    <item row="2" column="1">
-                    <widget class="QSlider" name="slider_julia_cz">
+                    <widget class="QSlider" name="jslider_julia_cz">
                      <property name="minimum"><number>-2000</number></property>
                      <property name="maximum"><number>2000</number></property>
                      <property name="orientation"><enum>Qt::Horizontal</enum></property>
@@ -1475,7 +1475,7 @@
                     </widget>
                    </item>
                    <item>
-                    <widget class="QSlider" name="slider_drone_speed">
+                    <widget class="QSlider" name="jslider_drone_speed">
                      <property name="orientation"><enum>Qt::Horizontal</enum></property>
                      <property name="minimum"><number>1</number></property>
                      <property name="maximum"><number>50</number></property>

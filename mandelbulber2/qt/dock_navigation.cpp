@@ -748,7 +748,7 @@ void cDockNavigation::SetupSmartCamera()
 	QHBoxLayout *smoothLay = new QHBoxLayout();
 	QLabel *smoothLabel = new QLabel("Smoothness:", smartGroup);
 	QSlider *smoothSlider = new QSlider(Qt::Horizontal, smartGroup);
-	smoothSlider->setObjectName("slider_smoothness");
+	smoothSlider->setObjectName("jslider_smoothness");
 	smoothSlider->setRange(1, 50);
 	smoothSlider->setValue(15);
 	smoothSlider->setToolTip("Camera interpolation smoothness");

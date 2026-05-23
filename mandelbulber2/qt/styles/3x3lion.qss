@@ -1386,17 +1386,17 @@ QLabel#label_julia_cz_value {
 }
 
 /* Julia c sliders - purple accent */
-QSlider#slider_julia_cx::groove:horizontal,
-QSlider#slider_julia_cy::groove:horizontal,
-QSlider#slider_julia_cz::groove:horizontal {
+QSlider#jslider_julia_cx::groove:horizontal,
+QSlider#jslider_julia_cy::groove:horizontal,
+QSlider#jslider_julia_cz::groove:horizontal {
     height: 6px;
     background: #313244;
     border-radius: 3px;
 }
 
-QSlider#slider_julia_cx::handle:horizontal,
-QSlider#slider_julia_cy::handle:horizontal,
-QSlider#slider_julia_cz::handle:horizontal {
+QSlider#jslider_julia_cx::handle:horizontal,
+QSlider#jslider_julia_cy::handle:horizontal,
+QSlider#jslider_julia_cz::handle:horizontal {
     background: #cba6f7;
     width: 14px;
     height: 14px;
@@ -1404,15 +1404,15 @@ QSlider#slider_julia_cz::handle:horizontal {
     border-radius: 7px;
 }
 
-QSlider#slider_julia_cx::handle:horizontal:hover,
-QSlider#slider_julia_cy::handle:horizontal:hover,
-QSlider#slider_julia_cz::handle:horizontal:hover {
+QSlider#jslider_julia_cx::handle:horizontal:hover,
+QSlider#jslider_julia_cy::handle:horizontal:hover,
+QSlider#jslider_julia_cz::handle:horizontal:hover {
     background: #f5c2e7;
 }
 
-QSlider#slider_julia_cx::sub-page:horizontal,
-QSlider#slider_julia_cy::sub-page:horizontal,
-QSlider#slider_julia_cz::sub-page:horizontal {
+QSlider#jslider_julia_cx::sub-page:horizontal,
+QSlider#jslider_julia_cy::sub-page:horizontal,
+QSlider#jslider_julia_cz::sub-page:horizontal {
     background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
         stop:0 #45475a, stop:1 #cba6f7);
     border-radius: 3px;
@@ -1854,14 +1854,14 @@ QComboBox#comboBox_drone_strategy:hover {
 }
 
 /* Speed slider — purple themed */
-QSlider#slider_drone_speed::groove:horizontal {
+QSlider#jslider_drone_speed::groove:horizontal {
     border: 1px solid #45475a;
     height: 4px;
     background: #313244;
     border-radius: 2px;
 }
 
-QSlider#slider_drone_speed::handle:horizontal {
+QSlider#jslider_drone_speed::handle:horizontal {
     background: #cba6f7;
     border: 1px solid #cba6f7;
     width: 12px;
@@ -1869,7 +1869,7 @@ QSlider#slider_drone_speed::handle:horizontal {
     border-radius: 6px;
 }
 
-QSlider#slider_drone_speed::handle:horizontal:hover {
+QSlider#jslider_drone_speed::handle:horizontal:hover {
     background: #f5c2e7;
     border-color: #f5c2e7;
 }

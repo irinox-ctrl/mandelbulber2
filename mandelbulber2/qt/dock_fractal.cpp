@@ -523,12 +523,12 @@ void cDockFractal::SetupJuliaExplorer()
 void cDockFractal::ConnectJuliaExplorerSignals()
 {
 	// Sliders
-	if (ui->slider_julia_cx)
-		connect(ui->slider_julia_cx, SIGNAL(valueChanged(int)), this, SLOT(slotJuliaSliderCxChanged(int)));
-	if (ui->slider_julia_cy)
-		connect(ui->slider_julia_cy, SIGNAL(valueChanged(int)), this, SLOT(slotJuliaSliderCyChanged(int)));
-	if (ui->slider_julia_cz)
-		connect(ui->slider_julia_cz, SIGNAL(valueChanged(int)), this, SLOT(slotJuliaSliderCzChanged(int)));
+	if (ui->jslider_julia_cx)
+		connect(ui->jslider_julia_cx, SIGNAL(valueChanged(int)), this, SLOT(slotJuliaSliderCxChanged(int)));
+	if (ui->jslider_julia_cy)
+		connect(ui->jslider_julia_cy, SIGNAL(valueChanged(int)), this, SLOT(slotJuliaSliderCyChanged(int)));
+	if (ui->jslider_julia_cz)
+		connect(ui->jslider_julia_cz, SIGNAL(valueChanged(int)), this, SLOT(slotJuliaSliderCzChanged(int)));
 
 	// Range combo
 	if (ui->comboBox_julia_range)
@@ -593,19 +593,19 @@ double cDockFractal::JuliaSliderRange() const
 void cDockFractal::UpdateJuliaSliderLabels()
 {
 	double range = JuliaSliderRange();
-	if (ui->slider_julia_cx && ui->label_julia_cx_value)
+	if (ui->jslider_julia_cx && ui->label_julia_cx_value)
 	{
-		double val = ui->slider_julia_cx->value() / 1000.0 * range;
+		double val = ui->jslider_julia_cx->value() / 1000.0 * range;
 		ui->label_julia_cx_value->setText(QString::number(val, 'f', 3));
 	}
-	if (ui->slider_julia_cy && ui->label_julia_cy_value)
+	if (ui->jslider_julia_cy && ui->label_julia_cy_value)
 	{
-		double val = ui->slider_julia_cy->value() / 1000.0 * range;
+		double val = ui->jslider_julia_cy->value() / 1000.0 * range;
 		ui->label_julia_cy_value->setText(QString::number(val, 'f', 3));
 	}
-	if (ui->slider_julia_cz && ui->label_julia_cz_value)
+	if (ui->jslider_julia_cz && ui->label_julia_cz_value)
 	{
-		double val = ui->slider_julia_cz->value() / 1000.0 * range;
+		double val = ui->jslider_julia_cz->value() / 1000.0 * range;
 		ui->label_julia_cz_value->setText(QString::number(val, 'f', 3));
 	}
 }
@@ -714,9 +714,9 @@ void cDockFractal::slotJuliaRandom()
 	if (ui->vect3_julia_c_z) ui->vect3_julia_c_z->setText(QString::number(cz, 'f', 6));
 
 	// Update sliders
-	if (ui->slider_julia_cx) ui->slider_julia_cx->setValue(static_cast<int>(cx / range * 1000.0));
-	if (ui->slider_julia_cy) ui->slider_julia_cy->setValue(static_cast<int>(cy / range * 1000.0));
-	if (ui->slider_julia_cz) ui->slider_julia_cz->setValue(static_cast<int>(cz / range * 1000.0));
+	if (ui->jslider_julia_cx) ui->jslider_julia_cx->setValue(static_cast<int>(cx / range * 1000.0));
+	if (ui->jslider_julia_cy) ui->jslider_julia_cy->setValue(static_cast<int>(cy / range * 1000.0));
+	if (ui->jslider_julia_cz) ui->jslider_julia_cz->setValue(static_cast<int>(cz / range * 1000.0));
 
 	AddToJuliaHistory(cx, cy, cz);
 }
@@ -726,9 +726,9 @@ void cDockFractal::slotJuliaZero()
 	if (ui->vect3_julia_c_x) ui->vect3_julia_c_x->setText("0.0");
 	if (ui->vect3_julia_c_y) ui->vect3_julia_c_y->setText("0.0");
 	if (ui->vect3_julia_c_z) ui->vect3_julia_c_z->setText("0.0");
-	if (ui->slider_julia_cx) ui->slider_julia_cx->setValue(0);
-	if (ui->slider_julia_cy) ui->slider_julia_cy->setValue(0);
-	if (ui->slider_julia_cz) ui->slider_julia_cz->setValue(0);
+	if (ui->jslider_julia_cx) ui->jslider_julia_cx->setValue(0);
+	if (ui->jslider_julia_cy) ui->jslider_julia_cy->setValue(0);
+	if (ui->jslider_julia_cz) ui->jslider_julia_cz->setValue(0);
 }
 
 void cDockFractal::slotJuliaPreset(int presetIndex)
@@ -757,9 +757,9 @@ void cDockFractal::slotJuliaPreset(int presetIndex)
 	double range = JuliaSliderRange();
 	if (range > 0.0)
 	{
-		if (ui->slider_julia_cx) ui->slider_julia_cx->setValue(static_cast<int>(p.cx / range * 1000.0));
-		if (ui->slider_julia_cy) ui->slider_julia_cy->setValue(static_cast<int>(p.cy / range * 1000.0));
-		if (ui->slider_julia_cz) ui->slider_julia_cz->setValue(static_cast<int>(p.cz / range * 1000.0));
+		if (ui->jslider_julia_cx) ui->jslider_julia_cx->setValue(static_cast<int>(p.cx / range * 1000.0));
+		if (ui->jslider_julia_cy) ui->jslider_julia_cy->setValue(static_cast<int>(p.cy / range * 1000.0));
+		if (ui->jslider_julia_cz) ui->jslider_julia_cz->setValue(static_cast<int>(p.cz / range * 1000.0));
 	}
 
 	// Auto-enable Julia mode
@@ -861,12 +861,12 @@ void cDockFractal::slotJuliaHistoryItemDoubleClicked(QListWidgetItem *item)
 	double range = JuliaSliderRange();
 	if (range > 0.0)
 	{
-		if (ui->slider_julia_cx)
-			ui->slider_julia_cx->setValue(static_cast<int>(entry.cx / range * 1000.0));
-		if (ui->slider_julia_cy)
-			ui->slider_julia_cy->setValue(static_cast<int>(entry.cy / range * 1000.0));
-		if (ui->slider_julia_cz)
-			ui->slider_julia_cz->setValue(static_cast<int>(entry.cz / range * 1000.0));
+		if (ui->jslider_julia_cx)
+			ui->jslider_julia_cx->setValue(static_cast<int>(entry.cx / range * 1000.0));
+		if (ui->jslider_julia_cy)
+			ui->jslider_julia_cy->setValue(static_cast<int>(entry.cy / range * 1000.0));
+		if (ui->jslider_julia_cz)
+			ui->jslider_julia_cz->setValue(static_cast<int>(entry.cz / range * 1000.0));
 	}
 }
 
@@ -1208,8 +1208,8 @@ void cDockFractal::ConnectDroneExplorerSignals()
 		connect(ui->comboBox_drone_strategy, QOverload<int>::of(&QComboBox::currentIndexChanged),
 			this, &cDockFractal::slotDroneStrategyChanged);
 
-	if (ui->slider_drone_speed)
-		connect(ui->slider_drone_speed, &QSlider::valueChanged, this,
+	if (ui->jslider_drone_speed)
+		connect(ui->jslider_drone_speed, &QSlider::valueChanged, this,
 			&cDockFractal::slotDroneSpeedChanged);
 
 	if (ui->widget_drone_explorer)
