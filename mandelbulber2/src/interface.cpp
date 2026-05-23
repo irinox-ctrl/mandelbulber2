@@ -350,54 +350,40 @@ void cInterface::ShowUi()
 	// loading default ui for all fractal components — must happen BEFORE reparenting
 	mainWindow->ui->widgetDockFractal->InitializeFractalUi();
 
-	// 3x3lion: Move Julia Explorer, Heatmap, and Drone Explorer to dedicated Julia dock
-	// Now synchronous because InitializeFractalUi() has already created the widgets
+	// 3x3lion: Move the ENTIRE Julia mode groupbox to the dedicated Julia dock.
+	// This moves the Julia enable toggle + c constants + explorer + heatmap + drone + preview
+	// all at once, keeping the widget hierarchy intact so ui-> pointers remain valid.
 	{
-		auto moveWidget = [](QWidget *src, QLayout *dst) {
-			if (src)
-			{
-				src->setParent(nullptr);
-				dst->addWidget(src);
-			}
-		};
-
-		QGroupBox *juliaExplorer =
-			mainWindow->ui->widgetDockFractal->findChild<QGroupBox *>("groupBox_julia_explorer");
-		QGroupBox *juliaHeatmap =
-			mainWindow->ui->widgetDockFractal->findChild<QGroupBox *>("groupBox_julia_heatmap");
-		QGroupBox *droneExplorer =
-			mainWindow->ui->widgetDockFractal->findChild<QGroupBox *>("groupBox_drone_explorer");
+		QGroupBox *juliaMode =
+			mainWindow->ui->widgetDockFractal->findChild<QGroupBox *>("groupCheck_julia_mode");
 
 		QScrollArea *scrollArea =
 			mainWindow->ui->dockWidget_julia->findChild<QScrollArea *>("scrollArea_julia_dock");
-		if (scrollArea && scrollArea->widget() && scrollArea->widget()->layout())
+		if (juliaMode && scrollArea && scrollArea->widget() && scrollArea->widget()->layout())
 		{
 			QLayout *innerLayout = scrollArea->widget()->layout();
-			// remove placeholder
+			// remove placeholder label
 			while (QLayoutItem *item = innerLayout->takeAt(0))
 			{
 				delete item->widget();
 				delete item;
 			}
-			moveWidget(juliaExplorer, innerLayout);
-			moveWidget(juliaHeatmap, innerLayout);
-			moveWidget(droneExplorer, innerLayout);
+			juliaMode->setParent(nullptr);
+			innerLayout->addWidget(juliaMode);
 			if (QVBoxLayout *vbox = qobject_cast<QVBoxLayout *>(innerLayout))
 				vbox->addStretch(1);
+
+			// Hide the built-in Julia preview thumbnail (redundant, takes space)
+			QGroupBox *juliaPreview = juliaMode->findChild<QGroupBox *>("groupBox_julia_preview");
+			if (juliaPreview)
+			{
+				juliaPreview->hide();
+				juliaPreview->setMaximumHeight(0);
+			}
 		}
 		else
 		{
-			qWarning() << "3x3lion: Could not find scrollArea_julia_dock for Julia reparent";
-		}
-
-		// Hide the old built-in Julia preview (groupBox_julia_preview with previewwidget_julia)
-		// since we now have a dedicated Julia Explorer dock with full controls
-		QGroupBox *juliaPreview =
-			mainWindow->ui->widgetDockFractal->findChild<QGroupBox *>("groupBox_julia_preview");
-		if (juliaPreview)
-		{
-			juliaPreview->hide();
-			juliaPreview->setMaximumHeight(0);
+			qWarning() << "3x3lion: Could not reparent Julia mode to Julia dock";
 		}
 	}
 
