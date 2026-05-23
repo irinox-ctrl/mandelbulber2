@@ -144,6 +144,34 @@ QGroupBox::title {
     border-radius: 4px;
 }
 
+QGroupBox::indicator {
+    width: 14px;
+    height: 14px;
+    margin-left: 2px;
+}
+
+QGroupBox::indicator:checked {
+    background-color: #89b4fa;
+    border: 2px solid #89b4fa;
+    border-radius: 3px;
+    image: none;
+}
+
+QGroupBox::indicator:unchecked {
+    background-color: transparent;
+    border: 2px solid #585b70;
+    border-radius: 3px;
+}
+
+QGroupBox::indicator:checked:hover {
+    background-color: #74c7ec;
+    border-color: #74c7ec;
+}
+
+QGroupBox::indicator:unchecked:hover {
+    border-color: #89b4fa;
+}
+
 /* ---- Push Buttons ---- */
 QPushButton {
     background-color: #313244;
@@ -1060,13 +1088,15 @@ QGroupBox[collapsible="true"]::indicator {
 }
 
 QGroupBox[collapsible="true"]::indicator:checked {
-    border: none;
-    background: none;
+    background-color: #89b4fa;
+    border: 2px solid #89b4fa;
+    border-radius: 3px;
 }
 
 QGroupBox[collapsible="true"]::indicator:unchecked {
-    border: none;
-    background: none;
+    background-color: transparent;
+    border: 2px solid #585b70;
+    border-radius: 3px;
 }
 
 /* -- Quick View Preset Buttons -- */

@@ -711,9 +711,11 @@ void RenderedImage::enterEvent(QEvent *event)
 {
 	(void)event;
 
+	// Only change cursor, do NOT steal keyboard focus.
+	// Focus is acquired via ClickFocus policy (mouse click only).
+	// Calling setFocus() here would hijack keyboard navigation from UI controls.
 	if (!isFocus)
 	{
-		setFocus();
 		QApplication::setOverrideCursor(Qt::CrossCursor);
 	}
 	isFocus = true;

@@ -389,6 +389,16 @@ void cInterface::ShowUi()
 		{
 			qWarning() << "3x3lion: Could not find scrollArea_julia_dock for Julia reparent";
 		}
+
+		// Hide the old built-in Julia preview (groupBox_julia_preview with previewwidget_julia)
+		// since we now have a dedicated Julia Explorer dock with full controls
+		QGroupBox *juliaPreview =
+			mainWindow->ui->widgetDockFractal->findChild<QGroupBox *>("groupBox_julia_preview");
+		if (juliaPreview)
+		{
+			juliaPreview->hide();
+			juliaPreview->setMaximumHeight(0);
+		}
 	}
 
 	// Place Julia dock in the right area (separate from the left panel tabs)
