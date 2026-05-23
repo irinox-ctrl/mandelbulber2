@@ -114,6 +114,20 @@ private slots:
 	void slotJuliaHistorySave();
 	void slotJuliaHistoryClear();
 
+	// 3x3lion Julia Heatmap slots
+	void slotHeatmapScan();
+	void slotHeatmapStop();
+	void slotHeatmapClear();
+	void slotHeatmapAxisHChanged(int index);
+	void slotHeatmapAxisVChanged(int index);
+	void slotHeatmapResolutionChanged(int index);
+	void slotHeatmapSchemeChanged(int index);
+	void slotHeatmapCellClicked(double cH, double cV);
+	void slotHeatmapScanRequested(int gx, int gy, double cH, double cV);
+	void slotHeatmapScanProgress(int percent);
+	void slotHeatmapScanComplete();
+	void slotHeatmapHoverInfo(double cH, double cV, double score);
+
 signals:
 	void signalUpdatePrimitivesCombos();
 
@@ -130,6 +144,12 @@ private:
 	void UpdateJuliaSliderLabels();
 	void AddToJuliaHistory(double cx, double cy, double cz);
 	double JuliaSliderRange() const;
+
+	// 3x3lion Julia Heatmap
+	void SetupJuliaHeatmap();
+	void ConnectJuliaHeatmapSignals();
+	void UpdateHeatmapMarker();
+	double ComputeQuickScore(double cx, double cy, double cz);
 
 	QTimer *sweepTimer = nullptr;
 	int sweepCurrentStep = 0;

@@ -1643,3 +1643,125 @@ QComboBox#comboBox_julia_sweep_axis {
     padding: 2px 4px;
     font-size: 8pt;
 }
+
+/* ===== 3x3lion Julia Heatmap ===== */
+
+QGroupBox#groupBox_julia_heatmap {
+    border: 2px solid #89b4fa;
+    border-radius: 6px;
+    margin-top: 12px;
+    padding: 8px 4px 4px 4px;
+    font-weight: bold;
+}
+
+QGroupBox#groupBox_julia_heatmap::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top center;
+    padding: 0 8px;
+    color: #89b4fa;
+    font-weight: bold;
+    font-size: 9pt;
+    background-color: #1e1e2e;
+}
+
+/* Heatmap axis combos */
+QComboBox#comboBox_heatmap_axis_h,
+QComboBox#comboBox_heatmap_axis_v,
+QComboBox#comboBox_heatmap_resolution,
+QComboBox#comboBox_heatmap_scheme {
+    background-color: #1e1e2e;
+    color: #89b4fa;
+    border: 1px solid #585b70;
+    border-radius: 4px;
+    padding: 2px 4px;
+    font-size: 8pt;
+    min-width: 50px;
+}
+
+QComboBox#comboBox_heatmap_axis_h:hover,
+QComboBox#comboBox_heatmap_axis_v:hover,
+QComboBox#comboBox_heatmap_resolution:hover,
+QComboBox#comboBox_heatmap_scheme:hover {
+    border-color: #89b4fa;
+}
+
+/* Heatmap labels */
+QLabel#label_heatmap_h,
+QLabel#label_heatmap_v,
+QLabel#label_heatmap_res,
+QLabel#label_heatmap_scheme {
+    color: #a6adc8;
+    font-size: 8pt;
+    font-weight: bold;
+}
+
+QLabel#label_heatmap_info {
+    color: #cdd6f4;
+    font-size: 7pt;
+    padding: 2px;
+    background-color: #181825;
+    border: 1px solid #313244;
+    border-radius: 3px;
+}
+
+/* Scan/Stop/Clear buttons */
+QPushButton#pushButton_heatmap_scan {
+    background-color: #313244;
+    color: #89b4fa;
+    border: 1px solid #89b4fa;
+    border-radius: 4px;
+    padding: 3px 8px;
+    font-size: 8pt;
+    font-weight: bold;
+}
+
+QPushButton#pushButton_heatmap_scan:hover {
+    background-color: #89b4fa;
+    color: #1e1e2e;
+}
+
+QPushButton#pushButton_heatmap_stop {
+    background-color: #313244;
+    color: #f38ba8;
+    border: 1px solid #f38ba8;
+    border-radius: 4px;
+    padding: 3px 8px;
+    font-size: 8pt;
+    font-weight: bold;
+}
+
+QPushButton#pushButton_heatmap_stop:hover {
+    background-color: #f38ba8;
+    color: #1e1e2e;
+}
+
+QPushButton#pushButton_heatmap_clear {
+    background-color: #313244;
+    color: #a6adc8;
+    border: 1px solid #585b70;
+    border-radius: 4px;
+    padding: 3px 8px;
+    font-size: 8pt;
+}
+
+QPushButton#pushButton_heatmap_clear:hover {
+    background-color: #45475a;
+    color: #cdd6f4;
+}
+
+/* Heatmap progress bar */
+QProgressBar#progressBar_heatmap {
+    border: 1px solid #45475a;
+    border-radius: 3px;
+    text-align: center;
+    background-color: #181825;
+    color: #cdd6f4;
+    font-size: 7pt;
+    max-height: 14px;
+}
+
+QProgressBar#progressBar_heatmap::chunk {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+        stop:0 #89b4fa, stop:0.5 #cba6f7, stop:1 #f5c2e7);
+    border-radius: 2px;
+}

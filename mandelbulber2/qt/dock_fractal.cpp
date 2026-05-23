@@ -55,6 +55,7 @@
 #include <QDateTime>
 
 #include "formula/definition/all_fractal_list.hpp"
+#include "julia_heatmap_widget.h"
 #include "navigator_window.h"
 
 cDockFractal::cDockFractal(QWidget *parent)
@@ -84,6 +85,7 @@ cDockFractal::cDockFractal(QWidget *parent)
 
 	ConnectSignals();
 	SetupJuliaExplorer();
+	SetupJuliaHeatmap();
 }
 
 cDockFractal::~cDockFractal()
@@ -888,4 +890,292 @@ void cDockFractal::slotJuliaHistoryClear()
 {
 	juliaHistory.clear();
 	if (ui->listWidget_julia_history) ui->listWidget_julia_history->clear();
+}
+
+// ========================================================================
+// 3x3lion Julia Heatmap — maps interest scores across Julia c-space
+// ========================================================================
+
+void cDockFractal::SetupJuliaHeatmap()
+{
+	if (ui->comboBox_heatmap_resolution)
+		ui->comboBox_heatmap_resolution->setCurrentIndex(1); // 32x32 default
+
+	ConnectJuliaHeatmapSignals();
+}
+
+void cDockFractal::ConnectJuliaHeatmapSignals()
+{
+	if (ui->pushButton_heatmap_scan)
+		connect(ui->pushButton_heatmap_scan, &QPushButton::clicked, this,
+			&cDockFractal::slotHeatmapScan);
+
+	if (ui->pushButton_heatmap_stop)
+		connect(ui->pushButton_heatmap_stop, &QPushButton::clicked, this,
+			&cDockFractal::slotHeatmapStop);
+
+	if (ui->pushButton_heatmap_clear)
+		connect(ui->pushButton_heatmap_clear, &QPushButton::clicked, this,
+			&cDockFractal::slotHeatmapClear);
+
+	if (ui->comboBox_heatmap_axis_h)
+		connect(ui->comboBox_heatmap_axis_h, QOverload<int>::of(&QComboBox::currentIndexChanged),
+			this, &cDockFractal::slotHeatmapAxisHChanged);
+
+	if (ui->comboBox_heatmap_axis_v)
+		connect(ui->comboBox_heatmap_axis_v, QOverload<int>::of(&QComboBox::currentIndexChanged),
+			this, &cDockFractal::slotHeatmapAxisVChanged);
+
+	if (ui->comboBox_heatmap_resolution)
+		connect(ui->comboBox_heatmap_resolution,
+			QOverload<int>::of(&QComboBox::currentIndexChanged), this,
+			&cDockFractal::slotHeatmapResolutionChanged);
+
+	if (ui->comboBox_heatmap_scheme)
+		connect(ui->comboBox_heatmap_scheme, QOverload<int>::of(&QComboBox::currentIndexChanged),
+			this, &cDockFractal::slotHeatmapSchemeChanged);
+
+	if (ui->widget_julia_heatmap)
+	{
+		connect(ui->widget_julia_heatmap, &cJuliaHeatmapWidget::signalCellClicked, this,
+			&cDockFractal::slotHeatmapCellClicked);
+		connect(ui->widget_julia_heatmap, &cJuliaHeatmapWidget::signalScanRequested, this,
+			&cDockFractal::slotHeatmapScanRequested);
+		connect(ui->widget_julia_heatmap, &cJuliaHeatmapWidget::signalScanProgress, this,
+			&cDockFractal::slotHeatmapScanProgress);
+		connect(ui->widget_julia_heatmap, &cJuliaHeatmapWidget::signalScanComplete, this,
+			&cDockFractal::slotHeatmapScanComplete);
+		connect(ui->widget_julia_heatmap, &cJuliaHeatmapWidget::signalHoverInfo, this,
+			&cDockFractal::slotHeatmapHoverInfo);
+	}
+}
+
+void cDockFractal::UpdateHeatmapMarker()
+{
+	if (!ui->widget_julia_heatmap) return;
+
+	double cx = ui->vect3_julia_c_x ? ui->vect3_julia_c_x->text().toDouble() : 0.0;
+	double cy = ui->vect3_julia_c_y ? ui->vect3_julia_c_y->text().toDouble() : 0.0;
+	double cz = ui->vect3_julia_c_z ? ui->vect3_julia_c_z->text().toDouble() : 0.0;
+
+	int axisH = ui->widget_julia_heatmap->GetAxisH();
+	int axisV = ui->widget_julia_heatmap->GetAxisV();
+
+	double cArr[3] = {cx, cy, cz};
+	ui->widget_julia_heatmap->SetMarker(cArr[axisH], cArr[axisV]);
+}
+
+double cDockFractal::ComputeQuickScore(double cx, double cy, double cz)
+{
+	// Quick heuristic score based on Julia c-value properties.
+	// Uses the Mandelbrot-set membership test as a proxy for interesting Julia sets:
+	// c-values near the boundary of the Mandelbrot set produce the most interesting Julia sets.
+	// For 3D, we extend this to test orbit divergence speed.
+
+	double zx = 0.0, zy = 0.0, zz = 0.0;
+	int maxIter = 64;
+	int escapeIter = maxIter;
+
+	for (int i = 0; i < maxIter; i++)
+	{
+		// Simplified 3D orbit: z = z^2 + c (using a Mandelbulb-like power-2 approximation)
+		double r = std::sqrt(zx * zx + zy * zy + zz * zz);
+		if (r > 4.0)
+		{
+			escapeIter = i;
+			break;
+		}
+
+		double theta = std::atan2(std::sqrt(zx * zx + zy * zy), zz);
+		double phi = std::atan2(zy, zx);
+		double r2 = r * r;
+
+		zx = r2 * std::sin(2.0 * theta) * std::cos(2.0 * phi) + cx;
+		zy = r2 * std::sin(2.0 * theta) * std::sin(2.0 * phi) + cy;
+		zz = r2 * std::cos(2.0 * theta) + cz;
+	}
+
+	if (escapeIter == maxIter)
+	{
+		// Inside the set — moderately interesting (connected Julia set)
+		return 0.4;
+	}
+
+	// Boundary region is most interesting — score based on how close to boundary
+	// Points that escape quickly (low iter) are boring (dust Julia sets)
+	// Points that escape slowly (high iter) are near the boundary (most interesting)
+	double normalizedIter = static_cast<double>(escapeIter) / maxIter;
+
+	// Smooth scoring: peak interest at boundary
+	double score = 4.0 * normalizedIter * (1.0 - normalizedIter);
+
+	// Boost near-boundary points
+	if (normalizedIter > 0.3 && normalizedIter < 0.8) score *= 1.5;
+
+	return qBound(0.0, score, 1.0);
+}
+
+void cDockFractal::slotHeatmapScan()
+{
+	if (!ui->widget_julia_heatmap) return;
+
+	// Set resolution based on combo
+	static const int resolutions[] = {16, 32, 48, 64};
+	int resIdx = ui->comboBox_heatmap_resolution ? ui->comboBox_heatmap_resolution->currentIndex() : 1;
+	if (resIdx < 0 || resIdx > 3) resIdx = 1;
+	ui->widget_julia_heatmap->SetResolution(resolutions[resIdx]);
+
+	// Set range from Julia Explorer range combo
+	double range = JuliaSliderRange();
+	ui->widget_julia_heatmap->SetRange(range);
+
+	// Set the fixed axis value (third axis not shown in heatmap)
+	int axisH = ui->comboBox_heatmap_axis_h ? ui->comboBox_heatmap_axis_h->currentIndex() : 0;
+	int axisV = ui->comboBox_heatmap_axis_v ? ui->comboBox_heatmap_axis_v->currentIndex() : 1;
+	ui->widget_julia_heatmap->SetAxes(axisH, axisV);
+
+	// The fixed axis is whichever is not H or V
+	int fixedAxis = 3 - axisH - axisV;
+	if (fixedAxis < 0 || fixedAxis > 2) fixedAxis = 2;
+	double cArr[3] = {
+		ui->vect3_julia_c_x ? ui->vect3_julia_c_x->text().toDouble() : 0.0,
+		ui->vect3_julia_c_y ? ui->vect3_julia_c_y->text().toDouble() : 0.0,
+		ui->vect3_julia_c_z ? ui->vect3_julia_c_z->text().toDouble() : 0.0};
+	ui->widget_julia_heatmap->SetFixedAxisValue(cArr[fixedAxis]);
+
+	// Start the scan
+	ui->widget_julia_heatmap->StartScan();
+}
+
+void cDockFractal::slotHeatmapStop()
+{
+	if (ui->widget_julia_heatmap) ui->widget_julia_heatmap->StopScan();
+}
+
+void cDockFractal::slotHeatmapClear()
+{
+	if (ui->widget_julia_heatmap) ui->widget_julia_heatmap->ClearScores();
+	if (ui->progressBar_heatmap) ui->progressBar_heatmap->setValue(0);
+	if (ui->label_heatmap_info)
+		ui->label_heatmap_info->setText("Hover over heatmap for details");
+}
+
+void cDockFractal::slotHeatmapAxisHChanged(int index)
+{
+	if (!ui->widget_julia_heatmap) return;
+
+	int axisV = ui->comboBox_heatmap_axis_v ? ui->comboBox_heatmap_axis_v->currentIndex() : 1;
+	if (index == axisV)
+	{
+		// Swap to avoid same axis on both
+		int newV = (index + 1) % 3;
+		if (ui->comboBox_heatmap_axis_v)
+			ui->comboBox_heatmap_axis_v->setCurrentIndex(newV);
+		axisV = newV;
+	}
+	ui->widget_julia_heatmap->SetAxes(index, axisV);
+	ui->widget_julia_heatmap->ClearScores();
+}
+
+void cDockFractal::slotHeatmapAxisVChanged(int index)
+{
+	if (!ui->widget_julia_heatmap) return;
+
+	int axisH = ui->comboBox_heatmap_axis_h ? ui->comboBox_heatmap_axis_h->currentIndex() : 0;
+	if (index == axisH)
+	{
+		int newH = (index + 1) % 3;
+		if (ui->comboBox_heatmap_axis_h)
+			ui->comboBox_heatmap_axis_h->setCurrentIndex(newH);
+		axisH = newH;
+	}
+	ui->widget_julia_heatmap->SetAxes(axisH, index);
+	ui->widget_julia_heatmap->ClearScores();
+}
+
+void cDockFractal::slotHeatmapResolutionChanged(int index)
+{
+	if (!ui->widget_julia_heatmap) return;
+	static const int resolutions[] = {16, 32, 48, 64};
+	if (index >= 0 && index <= 3)
+		ui->widget_julia_heatmap->SetResolution(resolutions[index]);
+}
+
+void cDockFractal::slotHeatmapSchemeChanged(int index)
+{
+	if (!ui->widget_julia_heatmap) return;
+	ui->widget_julia_heatmap->SetColorScheme(
+		static_cast<cJuliaHeatmapWidget::eColorScheme>(index));
+}
+
+void cDockFractal::slotHeatmapCellClicked(double cH, double cV)
+{
+	// When user clicks a cell, jump to that Julia c-value
+	int axisH = ui->widget_julia_heatmap ? ui->widget_julia_heatmap->GetAxisH() : 0;
+	int axisV = ui->widget_julia_heatmap ? ui->widget_julia_heatmap->GetAxisV() : 1;
+
+	double cx = ui->vect3_julia_c_x ? ui->vect3_julia_c_x->text().toDouble() : 0.0;
+	double cy = ui->vect3_julia_c_y ? ui->vect3_julia_c_y->text().toDouble() : 0.0;
+	double cz = ui->vect3_julia_c_z ? ui->vect3_julia_c_z->text().toDouble() : 0.0;
+
+	double cArr[3] = {cx, cy, cz};
+	cArr[axisH] = cH;
+	cArr[axisV] = cV;
+
+	if (ui->vect3_julia_c_x) ui->vect3_julia_c_x->setText(QString::number(cArr[0], 'f', 6));
+	if (ui->vect3_julia_c_y) ui->vect3_julia_c_y->setText(QString::number(cArr[1], 'f', 6));
+	if (ui->vect3_julia_c_z) ui->vect3_julia_c_z->setText(QString::number(cArr[2], 'f', 6));
+
+	UpdateJuliaSliderLabels();
+	AddToJuliaHistory(cArr[0], cArr[1], cArr[2]);
+	UpdateHeatmapMarker();
+}
+
+void cDockFractal::slotHeatmapScanRequested(int gx, int gy, double cH, double cV)
+{
+	if (!ui->widget_julia_heatmap) return;
+
+	int axisH = ui->widget_julia_heatmap->GetAxisH();
+	int axisV = ui->widget_julia_heatmap->GetAxisV();
+	double fixedVal = ui->widget_julia_heatmap->GetFixedAxisValue();
+
+	double cArr[3] = {0.0, 0.0, 0.0};
+	cArr[axisH] = cH;
+	cArr[axisV] = cV;
+
+	// Set the fixed axis
+	int fixedAxis = 3 - axisH - axisV;
+	if (fixedAxis >= 0 && fixedAxis <= 2) cArr[fixedAxis] = fixedVal;
+
+	double score = ComputeQuickScore(cArr[0], cArr[1], cArr[2]);
+	ui->widget_julia_heatmap->SetScore(gx, gy, score);
+}
+
+void cDockFractal::slotHeatmapScanProgress(int percent)
+{
+	if (ui->progressBar_heatmap) ui->progressBar_heatmap->setValue(percent);
+}
+
+void cDockFractal::slotHeatmapScanComplete()
+{
+	if (ui->progressBar_heatmap) ui->progressBar_heatmap->setValue(100);
+	if (ui->label_heatmap_info)
+		ui->label_heatmap_info->setText("Scan complete — click hotspots to explore");
+	UpdateHeatmapMarker();
+}
+
+void cDockFractal::slotHeatmapHoverInfo(double cH, double cV, double score)
+{
+	if (!ui->label_heatmap_info) return;
+	int axisH = ui->widget_julia_heatmap ? ui->widget_julia_heatmap->GetAxisH() : 0;
+	int axisV = ui->widget_julia_heatmap ? ui->widget_julia_heatmap->GetAxisV() : 1;
+
+	static const char *names[] = {"c.x", "c.y", "c.z"};
+	ui->label_heatmap_info->setText(
+		QString("%1=%2  %3=%4  score=%5")
+			.arg(names[axisH])
+			.arg(QString::number(cH, 'f', 3))
+			.arg(names[axisV])
+			.arg(QString::number(cV, 'f', 3))
+			.arg(QString::number(score, 'f', 4)));
 }

@@ -1301,6 +1301,145 @@
                 </layout>
                </widget>
               </item>
+              <!-- 3x3lion Julia Heatmap -->
+              <item>
+               <widget class="QGroupBox" name="groupBox_julia_heatmap">
+                <property name="title">
+                 <string>Julia Heatmap</string>
+                </property>
+                <layout class="QVBoxLayout" name="layout_julia_heatmap">
+                 <property name="spacing"><number>3</number></property>
+                 <property name="leftMargin"><number>3</number></property>
+                 <property name="topMargin"><number>3</number></property>
+                 <property name="rightMargin"><number>3</number></property>
+                 <property name="bottomMargin"><number>3</number></property>
+                 <!-- Axis selectors and controls -->
+                 <item>
+                  <layout class="QHBoxLayout" name="layout_heatmap_controls">
+                   <property name="spacing"><number>3</number></property>
+                   <item>
+                    <widget class="QLabel" name="label_heatmap_h">
+                     <property name="text"><string>H:</string></property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QComboBox" name="comboBox_heatmap_axis_h">
+                     <property name="toolTip"><string>Horizontal axis</string></property>
+                     <item><property name="text"><string>c.x</string></property></item>
+                     <item><property name="text"><string>c.y</string></property></item>
+                     <item><property name="text"><string>c.z</string></property></item>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="label_heatmap_v">
+                     <property name="text"><string>V:</string></property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QComboBox" name="comboBox_heatmap_axis_v">
+                     <property name="toolTip"><string>Vertical axis</string></property>
+                     <property name="currentIndex"><number>1</number></property>
+                     <item><property name="text"><string>c.x</string></property></item>
+                     <item><property name="text"><string>c.y</string></property></item>
+                     <item><property name="text"><string>c.z</string></property></item>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="label_heatmap_res">
+                     <property name="text"><string>Res:</string></property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QComboBox" name="comboBox_heatmap_resolution">
+                     <property name="toolTip"><string>Grid resolution (cells per axis)</string></property>
+                     <item><property name="text"><string>16×16</string></property></item>
+                     <item><property name="text"><string>32×32</string></property></item>
+                     <item><property name="text"><string>48×48</string></property></item>
+                     <item><property name="text"><string>64×64</string></property></item>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <!-- Color scheme selector -->
+                 <item>
+                  <layout class="QHBoxLayout" name="layout_heatmap_scheme">
+                   <property name="spacing"><number>3</number></property>
+                   <item>
+                    <widget class="QLabel" name="label_heatmap_scheme">
+                     <property name="text"><string>Colors:</string></property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QComboBox" name="comboBox_heatmap_scheme">
+                     <property name="toolTip"><string>Heatmap color scheme</string></property>
+                     <item><property name="text"><string>Catppuccin</string></property></item>
+                     <item><property name="text"><string>Inferno</string></property></item>
+                     <item><property name="text"><string>Plasma</string></property></item>
+                     <item><property name="text"><string>Viridis</string></property></item>
+                     <item><property name="text"><string>Magma</string></property></item>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer name="heatmap_spacer_1">
+                     <property name="orientation"><enum>Qt::Horizontal</enum></property>
+                    </spacer>
+                   </item>
+                  </layout>
+                 </item>
+                 <!-- The heatmap widget -->
+                 <item>
+                  <widget class="cJuliaHeatmapWidget" name="widget_julia_heatmap" native="true">
+                   <property name="minimumSize">
+                    <size>
+                     <width>200</width>
+                     <height>200</height>
+                    </size>
+                   </property>
+                   <property name="toolTip">
+                    <string>Julia c-space interest heatmap. Click to jump to that c value. Brighter = more interesting.</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <!-- Scan controls -->
+                 <item>
+                  <layout class="QHBoxLayout" name="layout_heatmap_scan">
+                   <property name="spacing"><number>3</number></property>
+                   <item>
+                    <widget class="QPushButton" name="pushButton_heatmap_scan">
+                     <property name="text"><string>Scan</string></property>
+                     <property name="toolTip"><string>Scan Julia c-space to build the interest heatmap</string></property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="pushButton_heatmap_stop">
+                     <property name="text"><string>Stop</string></property>
+                     <property name="toolTip"><string>Stop the current scan</string></property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="pushButton_heatmap_clear">
+                     <property name="text"><string>Clear</string></property>
+                     <property name="toolTip"><string>Clear the heatmap data</string></property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QProgressBar" name="progressBar_heatmap">
+                     <property name="value"><number>0</number></property>
+                     <property name="textVisible"><bool>true</bool></property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <!-- Hover info -->
+                 <item>
+                  <widget class="QLabel" name="label_heatmap_info">
+                   <property name="text"><string>Hover over heatmap for details</string></property>
+                   <property name="alignment"><set>Qt::AlignCenter</set></property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
               <item>
                <widget class="MyGroupBox" name="groupBox_julia_preview">
                 <property name="title">
@@ -3075,6 +3214,12 @@ with visible shadows of fractal objects</string>
    <class>cObjectsTreeWidget</class>
    <extends>QWidget</extends>
    <header>objects_tree_widget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>cJuliaHeatmapWidget</class>
+   <extends>QWidget</extends>
+   <header>julia_heatmap_widget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
