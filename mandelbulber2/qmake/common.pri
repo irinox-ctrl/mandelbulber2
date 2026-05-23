@@ -131,7 +131,7 @@ macx:DEFINES += "SHARED_DIR_IS_APP_DIR"
 m1:QMAKE_CXXFLAGS += -I/opt/homebrew/include
 
 # library linking
-unix:!macx:LIBS += -lpng -lgsl -lgslcblas -llzo2 -fopenmp
+unix:!macx:LIBS += -lpng -lgsl -lgslcblas -llzo2 -lmpfr -lgmp -fopenmp
 macx:!m1:LIBS += -lpng -lgsl -lgslcblas -llzo2 -fopenmp
 #macx:m1:LIBS += -lpng -lgsl -lgslcblas -llzo2 -lomp
 macx:m1:LIBS += -lpng -lgsl -lgslcblas -llzo2

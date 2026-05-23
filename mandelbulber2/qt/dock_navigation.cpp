@@ -77,6 +77,7 @@ cDockNavigation::cDockNavigation(QWidget *parent) : QWidget(parent), ui(new Ui::
 	SetupQuickPresets();
 	SetupBookmarks();
 	SetupSmartCamera();
+	SetupDeepZoom();
 }
 
 cDockNavigation::~cDockNavigation()
@@ -952,4 +953,149 @@ void cDockNavigation::slotToggleDepthOverlay(bool checked)
 void cDockNavigation::slotSmartCameraUpdated()
 {
 	SynchronizeInterfaceWindow(this, params, qInterface::write);
+}
+
+// ============================================================
+// Deep Zoom Engine (Perturbation Theory for 3D Fractals)
+// ============================================================
+
+void cDockNavigation::SetupDeepZoom()
+{
+	deepZoomManager = new deep_zoom::cDeepZoomManager();
+
+	QGroupBox *dzGroup = new QGroupBox("Deep Zoom (Perturbation Theory)", this);
+	dzGroup->setObjectName("groupBox_deep_zoom");
+
+	QVBoxLayout *lay = new QVBoxLayout(dzGroup);
+	lay->setContentsMargins(4, 8, 4, 4);
+	lay->setSpacing(4);
+
+	// Enable toggle
+	deepZoomCheckBox = new QCheckBox("Enable Deep Zoom", dzGroup);
+	deepZoomCheckBox->setObjectName("cb_deep_zoom_enable");
+	deepZoomCheckBox->setChecked(false);
+	deepZoomCheckBox->setToolTip(
+		"Perturbation theory for infinite zoom on 3D fractals.\n"
+		"Computes reference orbit at arbitrary precision (MPFR)\n"
+		"and uses delta iteration at double precision per pixel.");
+	lay->addWidget(deepZoomCheckBox);
+	connect(deepZoomCheckBox, &QCheckBox::toggled, this, &cDockNavigation::slotDeepZoomToggle);
+
+	// Precision selector
+	QHBoxLayout *precLay = new QHBoxLayout();
+	QLabel *precLabel = new QLabel("Precision:", dzGroup);
+	deepZoomPrecision = new QComboBox(dzGroup);
+	deepZoomPrecision->setObjectName("combo_deep_zoom_precision");
+	deepZoomPrecision->addItem("Auto (zoom-based)", 0);
+	deepZoomPrecision->addItem("256 bits (~77 digits)", 256);
+	deepZoomPrecision->addItem("512 bits (~154 digits)", 512);
+	deepZoomPrecision->addItem("1024 bits (~308 digits)", 1024);
+	deepZoomPrecision->addItem("2048 bits (~617 digits)", 2048);
+	deepZoomPrecision->addItem("4096 bits (~1234 digits)", 4096);
+	deepZoomPrecision->addItem("8192 bits (~2468 digits)", 8192);
+	deepZoomPrecision->setCurrentIndex(0);
+	deepZoomPrecision->setToolTip(
+		"MPFR precision for reference orbit computation.\n"
+		"Auto mode adjusts based on zoom level.\n"
+		"Higher precision = deeper zoom but slower computation.");
+	precLay->addWidget(precLabel);
+	precLay->addWidget(deepZoomPrecision);
+	lay->addLayout(precLay);
+	connect(deepZoomPrecision, QOverload<int>::of(&QComboBox::currentIndexChanged),
+		this, &cDockNavigation::slotDeepZoomPrecisionChanged);
+
+	// Compute reference orbit button
+	QPushButton *btnCompute = new QPushButton("Compute Reference Orbit", dzGroup);
+	btnCompute->setObjectName("btn_deep_zoom_compute");
+	btnCompute->setToolTip(
+		"Compute the reference orbit at the current camera target.\n"
+		"This must be done once per zoom center.\n"
+		"The orbit is computed at arbitrary precision using MPFR.");
+	lay->addWidget(btnCompute);
+	connect(btnCompute, &QPushButton::clicked, this, &cDockNavigation::slotDeepZoomCompute);
+
+	// Status label
+	deepZoomStatusLabel = new QLabel("Status: Inactive", dzGroup);
+	deepZoomStatusLabel->setObjectName("label_deep_zoom_status");
+	deepZoomStatusLabel->setWordWrap(true);
+	lay->addWidget(deepZoomStatusLabel);
+
+	// Info text
+	QLabel *infoLabel = new QLabel(
+		"<small>The Holy Grail: infinite zoom on 3D fractals.<br>"
+		"Reference orbit at arbitrary precision (CPU/MPFR),<br>"
+		"delta iteration at double precision (GPU).<br>"
+		"<b>Never done before for 3D fractals with DE.</b></small>", dzGroup);
+	infoLabel->setWordWrap(true);
+	lay->addWidget(infoLabel);
+
+	QLayout *dockLayout = layout();
+	if (dockLayout)
+		dockLayout->addWidget(dzGroup);
+}
+
+void cDockNavigation::slotDeepZoomToggle(bool checked)
+{
+	if (checked)
+	{
+		deepZoomStatusLabel->setText("Status: Enabled — compute reference orbit to start");
+	}
+	else
+	{
+		deepZoomStatusLabel->setText("Status: Inactive");
+	}
+}
+
+void cDockNavigation::slotDeepZoomCompute()
+{
+	if (!params || !deepZoomManager) return;
+
+	deepZoomStatusLabel->setText("Status: Computing reference orbit...");
+	QApplication::processEvents();
+
+	// Get zoom level and determine precision
+	CVector3 camera = params->Get<CVector3>("camera");
+	CVector3 target = params->Get<CVector3>("target");
+	double distance = params->Get<double>("camera_distance_to_target");
+
+	double zoomLevel = 1.0 / std::max(distance, 1e-30);
+
+	deep_zoom::sDeepZoomConfig config;
+	config.power = 8.0;
+	config.bailout = 256.0;
+	config.maxIterations = params->Get<int>("N");
+
+	int precData = deepZoomPrecision->currentData().toInt();
+	if (precData == 0)
+	{
+		config.precisionBits = deep_zoom::cDeepZoomManager::PrecisionForZoom(zoomLevel);
+	}
+	else
+	{
+		config.precisionBits = precData;
+	}
+
+	deepZoomManager->Configure(config);
+	deepZoomManager->SetCenter(target);
+
+	const auto &refOrbit = deepZoomManager->GetReferenceOrbit();
+	QString status = QString("Status: Ready\n"
+		"Reference orbit: %1 iterations\n"
+		"Precision: %2 bits (%3 digits)\n"
+		"Escaped: %4 (iter %5)\n"
+		"Zoom level: %6")
+		.arg(refOrbit.GetLength())
+		.arg(config.precisionBits)
+		.arg(static_cast<int>(config.precisionBits * 0.301))
+		.arg(refOrbit.Escaped() ? "yes" : "no")
+		.arg(refOrbit.GetEscapeIteration())
+		.arg(QString::number(zoomLevel, 'e', 2));
+
+	deepZoomStatusLabel->setText(status);
+}
+
+void cDockNavigation::slotDeepZoomPrecisionChanged(int index)
+{
+	(void)index;
+	// Will take effect on next compute
 }

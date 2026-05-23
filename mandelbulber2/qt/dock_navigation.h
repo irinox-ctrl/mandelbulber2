@@ -42,6 +42,7 @@
 #include <QJsonObject>
 
 #include "src/algebra.hpp"
+#include "src/deep_zoom.h"
 #include "smart_camera.h"
 
 class QLabel;
@@ -138,6 +139,11 @@ private slots:
 	void slotToggleDepthOverlay(bool checked);
 	void slotSmartCameraUpdated();
 
+	// Deep Zoom
+	void slotDeepZoomToggle(bool checked);
+	void slotDeepZoomCompute();
+	void slotDeepZoomPrecisionChanged(int index);
+
 private:
 	void ConnectSignals() const;
 	void SetIconSizes();
@@ -166,6 +172,13 @@ private:
 	// Smart camera
 	void SetupSmartCamera();
 	cSmartCamera *smartCamera = nullptr;
+
+	// Deep Zoom
+	void SetupDeepZoom();
+	deep_zoom::cDeepZoomManager *deepZoomManager = nullptr;
+	QLabel *deepZoomStatusLabel = nullptr;
+	QCheckBox *deepZoomCheckBox = nullptr;
+	QComboBox *deepZoomPrecision = nullptr;
 
 	QList<sCameraBookmark> bookmarks;
 	QListWidget *bookmarkListWidget = nullptr;

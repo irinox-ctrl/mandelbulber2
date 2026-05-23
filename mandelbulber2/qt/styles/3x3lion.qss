@@ -2131,3 +2131,90 @@ QMenu#viewerContextMenu::separator {
     height: 1px;
     margin: 4px 12px;
 }
+
+/* ======================================================================
+   3x3lion Deep Zoom (Perturbation Theory) — The Holy Grail
+   ====================================================================== */
+
+QGroupBox#groupBox_deep_zoom {
+    border: 2px solid #f38ba8;
+    border-radius: 8px;
+    margin-top: 12px;
+    padding-top: 16px;
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 rgba(243,139,168,15), stop:1 rgba(30,30,46,0));
+}
+
+QGroupBox#groupBox_deep_zoom::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top center;
+    padding: 2px 12px;
+    color: #f38ba8;
+    font-weight: bold;
+    font-size: 11px;
+}
+
+QGroupBox#groupBox_deep_zoom QCheckBox {
+    color: #cdd6f4;
+    spacing: 6px;
+    font-size: 10px;
+}
+
+QGroupBox#groupBox_deep_zoom QCheckBox::indicator:checked {
+    background: #f38ba8;
+    border: 1px solid #f38ba8;
+    border-radius: 3px;
+}
+
+QGroupBox#groupBox_deep_zoom QCheckBox::indicator:unchecked {
+    background: #313244;
+    border: 1px solid #585b70;
+    border-radius: 3px;
+}
+
+QGroupBox#groupBox_deep_zoom QPushButton {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+        stop:0 #f38ba8, stop:1 #fab387);
+    color: #1e1e2e;
+    font-weight: bold;
+    font-size: 10px;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+}
+
+QGroupBox#groupBox_deep_zoom QPushButton:hover {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+        stop:0 #fab387, stop:1 #f9e2af);
+}
+
+QGroupBox#groupBox_deep_zoom QPushButton:pressed {
+    background: #eba0ac;
+}
+
+QGroupBox#groupBox_deep_zoom QComboBox {
+    background: #313244;
+    color: #cdd6f4;
+    border: 1px solid #f38ba8;
+    border-radius: 4px;
+    padding: 3px 6px;
+    font-size: 10px;
+}
+
+QGroupBox#groupBox_deep_zoom QComboBox:hover {
+    border-color: #fab387;
+}
+
+QGroupBox#groupBox_deep_zoom QLabel {
+    color: #bac2de;
+    font-size: 10px;
+}
+
+QGroupBox#groupBox_deep_zoom QLabel#label_deep_zoom_status {
+    color: #a6e3a1;
+    font-family: monospace;
+    font-size: 9px;
+    padding: 4px;
+    background: rgba(17,17,27,80);
+    border-radius: 4px;
+}
