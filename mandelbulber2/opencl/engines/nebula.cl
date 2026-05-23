@@ -623,7 +623,7 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 				}
 				case 6: // Cone Inversion
 				{
-					float tanA = native_tan(mut->invAngle * M_PI_F / 180.0f);
+					float tanA = tan(mut->invAngle * M_PI_F / 180.0f);
 					rr = zz.x * zz.x + zz.y * zz.y - tanA * tanA * zz.z * zz.z;
 					if (fabs(rr) < 1e-21f) rr = 1e-21f;
 					mde = 1.0f / fabs(rr);
@@ -4144,7 +4144,7 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 				}
 				case 4: // Cone Clip
 				{
-					float tanAlpha = native_tan(mut->clipAngle * M_PI_F / 180.0f);
+					float tanAlpha = tan(mut->clipAngle * M_PI_F / 180.0f);
 					clipDist = native_sqrt(cz.x * cz.x + cz.y * cz.y) - tanAlpha * fabs(cz.z);
 					break;
 				}

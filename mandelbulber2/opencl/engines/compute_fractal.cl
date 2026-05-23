@@ -577,7 +577,7 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 					}
 					case 6: // Cone Inversion
 					{
-						float tanA = native_tan(mut->invAngle * M_PI_F / 180.0f);
+						float tanA = tan(mut->invAngle * M_PI_F / 180.0f);
 						rr = zz.x * zz.x + zz.y * zz.y - tanA * tanA * zz.z * zz.z;
 						if (fabs(rr) < 1e-21f) rr = 1e-21f;
 						mde = 1.0f / fabs(rr);
@@ -2638,7 +2638,7 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 					}
 					case 4: // Cone Clip
 					{
-						float tanAlpha = native_tan(mut->clipAngle * M_PI_F / 180.0f);
+						float tanAlpha = tan(mut->clipAngle * M_PI_F / 180.0f);
 						clipDist = native_sqrt(cz.x * cz.x + cz.y * cz.y) - tanAlpha * fabs(cz.z);
 						break;
 					}
@@ -3587,7 +3587,7 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 						case 74: { { float d=wf*wam/(1.0+wfq*(zx*zx+zy*zy+zz2*zz2)); z.x+=d*native_sin(wa*zy+wph); z.y+=d*native_cos(wa*zz2+wph); aux.DE*=(1.0+2.0*fabs(d*wa)); } break; }
 						case 75: { { z *= (1.0 + wf*wam*pow(fabs(native_sin(wfq*r+wph)), wa)); aux.DE *= (1.0 + fabs(wf*wam)); } break; }
 						case 76: { { float p=wf*wam*pow(r+1e-21, wa-1.0)*native_sin(wfq*r+wph); z.x+=p*zx; z.y+=p*zy; z.z+=p*zz2; aux.DE*=(1.0+fabs(p*r)); } break; }
-						case 77: { { float d=wf*wam*native_tanh(wfq*(r-wa)); z*=(1.0+d); aux.DE*=(1.0+fabs(d)); } break; }
+						case 77: { { float d=wf*wam*tanh(wfq*(r-wa)); z*=(1.0+d); aux.DE*=(1.0+fabs(d)); } break; }
 						case 78: { { float d=wf*wam*native_log(1.0+wfq*r)*native_sin(wa*r+wph)/(r+1e-21); z.x+=d*zx; z.y+=d*zy; z.z+=d*zz2; aux.DE*=(1.0+fabs(d*r)); } break; }
 						case 79: { { float d=wf*wam*native_sin(wfq*native_log(r+1e-21)+wph); z*=(1.0+d/r); aux.DE*=(1.0+fabs(d/r)); } break; }
 						case 80: { { float sg=1.0/(1.0+native_exp(-wfq*(r-wa))); z*=(1.0+wf*wam*(2.0*sg-1.0)); aux.DE*=(1.0+fabs(wf*wam*(2.0*sg-1.0))); } break; }
@@ -3745,7 +3745,7 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 						case 4: { aux.DE *= (1.0 + af * aa * native_exp(-ab * r)); break; }
 						case 5: { aux.DE *= (1.0 + af * aa * native_exp(-ab * rr)); break; }
 						case 6: { aux.DE *= (1.0 + af * aa * native_log(1.0 + ab * r)); break; }
-						case 7: { aux.DE *= (1.0 + af * aa * native_tanh(ab * r)); break; }
+						case 7: { aux.DE *= (1.0 + af * aa * tanh(ab * r)); break; }
 						case 8: { aux.DE *= (1.0 + af * aa * native_sin(ab * zx) * native_cos(ac * zy)); break; }
 						case 9: { aux.DE *= (1.0 + af * aa * native_sin(ab * zy) * native_cos(ac * zz2)); break; }
 						case 10: { aux.DE *= (1.0 + af * aa * native_sin(ab * zz2) * native_cos(ac * zx)); break; }
@@ -3771,7 +3771,7 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 						case 30: { aux.DE *= (1.0 + af * aa * native_sin(ab*r)*native_exp(-ac*r)); break; }
 						case 31: { aux.DE *= (1.0 + af * aa * fabs(native_sin(ab*r+ac))*native_exp(-ad*r)); break; }
 						case 32: { { float s = aa * native_sin(ab*r+ac*atan2(zy,zx)) * native_exp(-ad*r); aux.DE *= (1.0 + af*s); } break; }
-						case 33: { aux.DE *= (1.0 + af * aa * native_tanh(ab*(r-ac))); break; }
+						case 33: { aux.DE *= (1.0 + af * aa * tanh(ab*(r-ac))); break; }
 						case 34: { aux.DE *= (1.0 + af * aa * native_sin(ab*native_log(r+1e-21))); break; }
 						case 35: { aux.DE *= (1.0 + af * aa * native_cos(ab*native_log(r+1e-21)+ac)); break; }
 						case 36: { { float ph=atan2(zy,zx); float th=acos(zz2/r); aux.DE*=(1.0+af*aa*native_sin(ab*ph)*native_sin(ac*th)); } break; }
@@ -3798,7 +3798,7 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 						case 57: { aux.DE *= fabs(aa + ab * native_log(1.0 + ac * i)); break; }
 						case 58: { { float golden=1.6180339887; aux.DE*=fabs(aa+ab*pow(golden,ac*i-ad)); } break; }
 						case 59: { aux.DE *= fabs(aa + ab * native_sin(ac * i) * native_cos(ad * r)); break; }
-						case 60: { { float s=aa+ab*native_tanh(ac*(i-ad)); aux.DE*=fabs(s); } break; }
+						case 60: { { float s=aa+ab*tanh(ac*(i-ad)); aux.DE*=fabs(s); } break; }
 						case 61: { aux.DE *= fmax(0.01, fabs(aa + ab * fmod((float)(i) * ac, ad))); break; }
 						case 62: { aux.DE *= fabs(aa + ab / (1.0 + ac * i)); break; }
 						case 63: { { float ph=atan2(zy,zx); aux.DE*=fabs(aa+ab*native_sin(ac*ph)); } break; }
@@ -3811,7 +3811,7 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 						case 70: { { float rat=aa/fmax(ab,1e-21); float s=pow(fabs(rat),ac); aux.DE*=s; } break; }
 						case 71: { aux.DE *= fmax(0.01, fabs(aa * native_exp(-ab * fabs(native_sin(ac * r))))); break; }
 						case 72: { { float s=aa+ab*pow(fabs(native_sin(ac*r)),ad); aux.DE*=fabs(s); } break; }
-						case 73: { aux.DE *= fabs(aa + ab * native_tanh(ac * native_sin(ad * r))); break; }
+						case 73: { aux.DE *= fabs(aa + ab * tanh(ac * native_sin(ad * r))); break; }
 						case 74: { { float mix=0.5+0.5*native_sin(ac*i); float s=aa*(1.0-mix)+ab*mix; aux.DE*=fabs(s); } break; }
 						case 75: { aux.DE *= fabs(aa + ab * native_sin(ac * r) * native_log(1.0 + ad * r)); break; }
 						case 76: { { float a=aa*M_PI_F/180.0; aux.DE*=(1.0+af*fabs(native_sin(a))); } break; }
@@ -3831,7 +3831,7 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 						case 90: { { float fld=aa*(fabs(zx)+fabs(zy)+fabs(zz2)); aux.DE*=(1.0+af*ab*native_sin(fld)); } break; }
 						case 91: { aux.DE *= (1.0 + af * aa * native_sin(ab*i) * native_cos(ac*r) * native_sin(ad*atan2(zy,zx))); break; }
 						case 92: { { float sym=fabs(zx-zy)+fabs(zy-zz2)+fabs(zz2-zx); aux.DE*=(1.0+af*aa*native_sin(ab*sym)); } break; }
-						case 93: { aux.DE *= (1.0 + af * aa * native_tanh(ab*native_sin(ac*atan2(zy,zx)))); break; }
+						case 93: { aux.DE *= (1.0 + af * aa * tanh(ab*native_sin(ac*atan2(zy,zx)))); break; }
 						case 94: { { float det=zx*zy-zy*zz2+zz2*zx; aux.DE*=(1.0+af*aa*native_sin(ab*det/(rr+1e-21))); } break; }
 						case 95: { aux.DE *= (1.0 + af * aa * native_sin(ab*r) * native_sin(ac*atan2(zy,zx)+ad*acos(zz2/r))); break; }
 						case 96: { { float tw=aa*zz2+ab; float cs=native_cos(tw),sn=native_sin(tw); aux.DE*=(1.0+af*ac*fabs(sn)); } break; }
@@ -3849,7 +3849,7 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 						case 108: { aux.DE *= (1.0 + af * aa * native_sin(ab*(zx*zy+ac*zz2))); break; }
 						case 109: { { float hd=native_sin(aa*zx)*native_cos(ab*zy)+native_sin(ac*zy)*native_cos(ad*zz2)+native_sin(ae*zz2)*native_cos(aff*zx); aux.DE*=(1.0+af*ag*hd/3.0); } break; }
 						case 110: { { float cr=zx*zx+zy*zy; float ci=2.0*zx*zy; float r4=native_sqrt(cr*cr+ci*ci+zz2*zz2); aux.DE*=(1.0+af*aa*native_sin(ab*r4)); } break; }
-						case 111: { aux.DE *= (1.0 + af * aa * native_tanh(ab*(zx*zx+zy*zy-zz2*zz2))); break; }
+						case 111: { aux.DE *= (1.0 + af * aa * tanh(ab*(zx*zx+zy*zy-zz2*zz2))); break; }
 						case 112: { aux.DE *= (1.0 + af * aa * native_sin(ab*zx+ac) * native_sin(ad*zy+ae) * native_cos(aff*zz2)); break; }
 						case 113: { { float p=aa*zx*zy*zz2/(r*r*r+1e-21); aux.DE*=(1.0+af*ab*native_sin(ac*p)); } break; }
 						case 114: { { float s1=native_sin(aa*r),s2=native_sin(ab*r); float w=s1*s1-s2*s2; aux.DE*=(1.0+af*ac*w); } break; }
@@ -3900,7 +3900,7 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 						case 159: { { float lag=1.0-aa*r+aa*aa*r*r*0.5; aux.DE*=(1.0+af*ab*lag*native_exp(-ac*r)); } break; }
 						case 160: { aux.DE *= (1.0 + af * aa * native_sin(ab*r+ac) * native_sin(ad*r+ae) * native_sin(aff*r+ag)); break; }
 						case 161: { { float gr=aa*r*native_exp(-ab*r*r)*native_sin(ac*r); aux.DE*=(1.0+af*gr); } break; }
-						case 162: { aux.DE *= (1.0 + af * aa * native_sin(ab*r) * native_tanh(ac*r)); break; }
+						case 162: { aux.DE *= (1.0 + af * aa * native_sin(ab*r) * tanh(ac*r)); break; }
 						case 163: { { float sg=1.0/(1.0+native_exp(-aa*(r-ab))); aux.DE*=(1.0+af*ac*sg*(1.0-sg)); } break; }
 						case 164: { { float gau=native_exp(-aa*(r-ab)*(r-ab)); aux.DE*=(1.0+af*ac*gau); } break; }
 						case 165: { { float stp=(r>aa)?ab:ac; aux.DE*=(1.0+af*stp); } break; }
@@ -3982,7 +3982,7 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 						case 241: { { float halo=1.0/(1.0+pow(r/fmax(aa,0.01),2.0)); aux.DE*=(1.0+ab*halo); } break; }
 						case 242: { aux.DE *= native_exp(fmin(aa * ab * r, 20.0f)); break; }
 						case 243: { { float cs2=native_log(fmax(fabs(native_sqrt(zx*zx+zy*zy)),1e-21)/fmax(aa,0.01)); aux.DE*=(1.0+ab*ac*cs2); } break; }
-						case 244: { aux.DE *= (1.0 + aa * native_tanh(fabs(zz2 - ab) / fmax(ac, 0.01))); break; }
+						case 244: { aux.DE *= (1.0 + aa * tanh(fabs(zz2 - ab) / fmax(ac, 0.01))); break; }
 						case 245: { { float ylm=native_sin(aa*acos(zz2/r))*native_cos(ab*atan2(zy,zx)); aux.DE*=(1.0+ac*fabs(ylm)); } break; }
 						case 246: { aux.DE *= native_exp(aa * ab); break; }
 						case 247: { { float rh=aa*ab*native_exp(-ac*(float)(i)*0.01); aux.DE*=(1.0+rh); } break; }
