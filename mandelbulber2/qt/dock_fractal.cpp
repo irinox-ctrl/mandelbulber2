@@ -86,6 +86,7 @@ cDockFractal::cDockFractal(QWidget *parent)
 	ConnectSignals();
 	SetupJuliaExplorer();
 	SetupJuliaHeatmap();
+	SetupDroneExplorer();
 }
 
 cDockFractal::~cDockFractal()
@@ -1178,4 +1179,153 @@ void cDockFractal::slotHeatmapHoverInfo(double cH, double cV, double score)
 			.arg(names[axisV])
 			.arg(QString::number(cV, 'f', 3))
 			.arg(QString::number(score, 'f', 4)));
+}
+
+// ========================================================================
+// ===== 3x3lion Drone Explorer =====
+// ========================================================================
+
+void cDockFractal::SetupDroneExplorer()
+{
+	ConnectDroneExplorerSignals();
+}
+
+void cDockFractal::ConnectDroneExplorerSignals()
+{
+	if (ui->pushButton_drone_launch)
+		connect(ui->pushButton_drone_launch, &QPushButton::clicked, this,
+			&cDockFractal::slotDroneLaunch);
+
+	if (ui->pushButton_drone_stop)
+		connect(ui->pushButton_drone_stop, &QPushButton::clicked, this,
+			&cDockFractal::slotDroneStop);
+
+	if (ui->pushButton_drone_reset)
+		connect(ui->pushButton_drone_reset, &QPushButton::clicked, this,
+			&cDockFractal::slotDroneReset);
+
+	if (ui->comboBox_drone_strategy)
+		connect(ui->comboBox_drone_strategy, QOverload<int>::of(&QComboBox::currentIndexChanged),
+			this, &cDockFractal::slotDroneStrategyChanged);
+
+	if (ui->slider_drone_speed)
+		connect(ui->slider_drone_speed, &QSlider::valueChanged, this,
+			&cDockFractal::slotDroneSpeedChanged);
+
+	if (ui->widget_drone_explorer)
+	{
+		connect(ui->widget_drone_explorer, &cDroneExplorerWidget::signalFleetStatus, this,
+			&cDockFractal::slotDroneFleetStatus);
+		connect(ui->widget_drone_explorer, &cDroneExplorerWidget::signalDroneClicked, this,
+			&cDockFractal::slotDroneClicked);
+	}
+}
+
+void cDockFractal::FeedHeatmapToDrones()
+{
+	if (!ui->widget_drone_explorer || !ui->widget_julia_heatmap) return;
+
+	cJuliaHeatmapWidget *heatmap = ui->widget_julia_heatmap;
+	int res = heatmap->GetResolution();
+	double range = heatmap->GetRange();
+
+	QVector<double> scores(res * res);
+	for (int gy = 0; gy < res; gy++)
+	{
+		for (int gx = 0; gx < res; gx++)
+		{
+			double cH = -range + (gx + 0.5) / res * 2.0 * range;
+			double cV = range - (gy + 0.5) / res * 2.0 * range;
+
+			int axisH = heatmap->GetAxisH();
+			int axisV = heatmap->GetAxisV();
+			double fixedVal = heatmap->GetFixedAxisValue();
+
+			double cArr[3] = {0.0, 0.0, 0.0};
+			cArr[axisH] = cH;
+			cArr[axisV] = cV;
+			int fixedAxis = 3 - axisH - axisV;
+			if (fixedAxis >= 0 && fixedAxis <= 2) cArr[fixedAxis] = fixedVal;
+
+			scores[gy * res + gx] = ComputeQuickScore(cArr[0], cArr[1], cArr[2]);
+		}
+	}
+
+	ui->widget_drone_explorer->SetRange(range);
+	ui->widget_drone_explorer->SetScoreGrid(scores, res);
+}
+
+void cDockFractal::slotDroneLaunch()
+{
+	if (!ui->widget_drone_explorer) return;
+
+	FeedHeatmapToDrones();
+	ui->widget_drone_explorer->StartFleet();
+
+	if (ui->label_drone_status)
+		ui->label_drone_status->setText("Fleet launched — drones exploring c-space...");
+}
+
+void cDockFractal::slotDroneStop()
+{
+	if (!ui->widget_drone_explorer) return;
+	ui->widget_drone_explorer->StopFleet();
+
+	if (ui->label_drone_status)
+		ui->label_drone_status->setText("Fleet recalled — drones holding position");
+}
+
+void cDockFractal::slotDroneReset()
+{
+	if (!ui->widget_drone_explorer) return;
+	ui->widget_drone_explorer->ResetFleet();
+
+	if (ui->label_drone_status)
+		ui->label_drone_status->setText("Fleet reset — ready to launch");
+}
+
+void cDockFractal::slotDroneStrategyChanged(int index)
+{
+	if (ui->widget_drone_explorer)
+		ui->widget_drone_explorer->SetStrategy(index);
+}
+
+void cDockFractal::slotDroneSpeedChanged(int value)
+{
+	if (ui->widget_drone_explorer)
+		ui->widget_drone_explorer->SetSpeed(value / 10.0);
+}
+
+void cDockFractal::slotDroneFleetStatus(int discoveries, double bestScore, double coverage)
+{
+	if (!ui->label_drone_status) return;
+	ui->label_drone_status->setText(
+		QString("Discoveries: %1 | Best: %2 | Coverage: %3%")
+			.arg(discoveries)
+			.arg(QString::number(bestScore, 'f', 3))
+			.arg(QString::number(coverage * 100.0, 'f', 1)));
+}
+
+void cDockFractal::slotDroneClicked(double cH, double cV)
+{
+	if (!ui->widget_julia_heatmap) return;
+
+	int axisH = ui->widget_julia_heatmap->GetAxisH();
+	int axisV = ui->widget_julia_heatmap->GetAxisV();
+
+	double cx = ui->vect3_julia_c_x ? ui->vect3_julia_c_x->text().toDouble() : 0.0;
+	double cy = ui->vect3_julia_c_y ? ui->vect3_julia_c_y->text().toDouble() : 0.0;
+	double cz = ui->vect3_julia_c_z ? ui->vect3_julia_c_z->text().toDouble() : 0.0;
+
+	double cArr[3] = {cx, cy, cz};
+	cArr[axisH] = cH;
+	cArr[axisV] = cV;
+
+	if (ui->vect3_julia_c_x) ui->vect3_julia_c_x->setText(QString::number(cArr[0], 'f', 6));
+	if (ui->vect3_julia_c_y) ui->vect3_julia_c_y->setText(QString::number(cArr[1], 'f', 6));
+	if (ui->vect3_julia_c_z) ui->vect3_julia_c_z->setText(QString::number(cArr[2], 'f', 6));
+
+	UpdateJuliaSliderLabels();
+	AddToJuliaHistory(cArr[0], cArr[1], cArr[2]);
+	UpdateHeatmapMarker();
 }

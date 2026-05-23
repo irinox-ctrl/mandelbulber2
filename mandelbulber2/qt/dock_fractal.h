@@ -41,6 +41,7 @@
 #include <QListWidget>
 
 #include "tab_fractal.h"
+#include "drone_explorer_widget.h"
 
 #include "src/fractal_container.hpp"
 #include "src/parameters.hpp"
@@ -128,6 +129,15 @@ private slots:
 	void slotHeatmapScanComplete();
 	void slotHeatmapHoverInfo(double cH, double cV, double score);
 
+	// 3x3lion Drone Explorer slots
+	void slotDroneLaunch();
+	void slotDroneStop();
+	void slotDroneReset();
+	void slotDroneStrategyChanged(int index);
+	void slotDroneSpeedChanged(int value);
+	void slotDroneFleetStatus(int discoveries, double bestScore, double coverage);
+	void slotDroneClicked(double cH, double cV);
+
 signals:
 	void signalUpdatePrimitivesCombos();
 
@@ -150,6 +160,11 @@ private:
 	void ConnectJuliaHeatmapSignals();
 	void UpdateHeatmapMarker();
 	double ComputeQuickScore(double cx, double cy, double cz);
+
+	// 3x3lion Drone Explorer
+	void SetupDroneExplorer();
+	void ConnectDroneExplorerSignals();
+	void FeedHeatmapToDrones();
 
 	QTimer *sweepTimer = nullptr;
 	int sweepCurrentStep = 0;

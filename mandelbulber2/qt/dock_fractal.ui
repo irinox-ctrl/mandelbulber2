@@ -1440,6 +1440,99 @@
                 </layout>
                </widget>
               </item>
+              <!-- 3x3lion Drone Explorer -->
+              <item>
+               <widget class="QGroupBox" name="groupBox_drone_explorer">
+                <property name="title">
+                 <string>Drone Explorer</string>
+                </property>
+                <layout class="QVBoxLayout" name="layout_drone_explorer">
+                 <property name="spacing"><number>3</number></property>
+                 <property name="leftMargin"><number>3</number></property>
+                 <property name="topMargin"><number>3</number></property>
+                 <property name="rightMargin"><number>3</number></property>
+                 <property name="bottomMargin"><number>3</number></property>
+                 <!-- Strategy and Speed controls -->
+                 <item>
+                  <layout class="QHBoxLayout" name="layout_drone_controls">
+                   <property name="spacing"><number>3</number></property>
+                   <item>
+                    <widget class="QLabel" name="label_drone_strategy">
+                     <property name="text"><string>Strategy:</string></property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QComboBox" name="comboBox_drone_strategy">
+                     <property name="toolTip"><string>Fleet exploration strategy</string></property>
+                     <item><property name="text"><string>Explore</string></property></item>
+                     <item><property name="text"><string>Exploit</string></property></item>
+                     <item><property name="text"><string>Swarm</string></property></item>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="label_drone_speed">
+                     <property name="text"><string>Speed:</string></property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QSlider" name="slider_drone_speed">
+                     <property name="orientation"><enum>Qt::Horizontal</enum></property>
+                     <property name="minimum"><number>1</number></property>
+                     <property name="maximum"><number>50</number></property>
+                     <property name="value"><number>10</number></property>
+                     <property name="toolTip"><string>Drone fleet speed</string></property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <!-- Drone explorer canvas -->
+                 <item>
+                  <widget class="cDroneExplorerWidget" name="widget_drone_explorer" native="true">
+                   <property name="minimumSize">
+                    <size>
+                     <width>280</width>
+                     <height>220</height>
+                    </size>
+                   </property>
+                   <property name="toolTip">
+                    <string>Autonomous drone fleet exploring Julia c-space. Click to set a target point.</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <!-- Fleet controls -->
+                 <item>
+                  <layout class="QHBoxLayout" name="layout_drone_fleet">
+                   <property name="spacing"><number>3</number></property>
+                   <item>
+                    <widget class="QPushButton" name="pushButton_drone_launch">
+                     <property name="text"><string>Launch Fleet</string></property>
+                     <property name="toolTip"><string>Launch the drone fleet to explore Julia c-space</string></property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="pushButton_drone_stop">
+                     <property name="text"><string>Recall</string></property>
+                     <property name="toolTip"><string>Recall all drones</string></property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="pushButton_drone_reset">
+                     <property name="text"><string>Reset</string></property>
+                     <property name="toolTip"><string>Reset drone fleet to initial positions</string></property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <!-- Status label -->
+                 <item>
+                  <widget class="QLabel" name="label_drone_status">
+                   <property name="text"><string>Fleet standby — Scan heatmap first, then launch drones</string></property>
+                   <property name="alignment"><set>Qt::AlignCenter</set></property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
               <item>
                <widget class="MyGroupBox" name="groupBox_julia_preview">
                 <property name="title">
@@ -3220,6 +3313,12 @@ with visible shadows of fractal objects</string>
    <class>cJuliaHeatmapWidget</class>
    <extends>QWidget</extends>
    <header>julia_heatmap_widget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>cDroneExplorerWidget</class>
+   <extends>QWidget</extends>
+   <header>drone_explorer_widget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

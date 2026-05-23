@@ -1765,3 +1765,119 @@ QProgressBar#progressBar_heatmap::chunk {
         stop:0 #89b4fa, stop:0.5 #cba6f7, stop:1 #f5c2e7);
     border-radius: 2px;
 }
+
+/* ======================================================================
+   3x3lion Drone Explorer
+   ====================================================================== */
+
+QGroupBox#groupBox_drone_explorer {
+    border: 2px solid #cba6f7;
+    border-radius: 6px;
+    margin-top: 12px;
+    padding: 8px 4px 4px 4px;
+    font-weight: bold;
+    color: #cba6f7;
+    background-color: rgba(30, 30, 46, 180);
+}
+
+QGroupBox#groupBox_drone_explorer::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top left;
+    padding: 2px 8px;
+    background-color: #1e1e2e;
+    border: 1px solid #cba6f7;
+    border-radius: 3px;
+    color: #cba6f7;
+    font-weight: bold;
+}
+
+/* Launch button — green accent */
+QPushButton#pushButton_drone_launch {
+    background-color: #313244;
+    color: #a6e3a1;
+    border: 1px solid #a6e3a1;
+    border-radius: 4px;
+    padding: 4px 10px;
+    font-weight: bold;
+}
+
+QPushButton#pushButton_drone_launch:hover {
+    background-color: #a6e3a1;
+    color: #1e1e2e;
+}
+
+QPushButton#pushButton_drone_launch:pressed {
+    background-color: #94d08a;
+    color: #1e1e2e;
+}
+
+/* Recall button — orange/red accent */
+QPushButton#pushButton_drone_stop {
+    background-color: #313244;
+    color: #fab387;
+    border: 1px solid #fab387;
+    border-radius: 4px;
+    padding: 4px 10px;
+    font-weight: bold;
+}
+
+QPushButton#pushButton_drone_stop:hover {
+    background-color: #fab387;
+    color: #1e1e2e;
+}
+
+/* Reset button — subtle */
+QPushButton#pushButton_drone_reset {
+    background-color: #313244;
+    color: #6c7086;
+    border: 1px solid #585b70;
+    border-radius: 4px;
+    padding: 4px 10px;
+}
+
+QPushButton#pushButton_drone_reset:hover {
+    background-color: #45475a;
+    color: #cdd6f4;
+}
+
+/* Strategy combo */
+QComboBox#comboBox_drone_strategy {
+    background-color: #313244;
+    color: #cba6f7;
+    border: 1px solid #585b70;
+    border-radius: 3px;
+    padding: 2px 6px;
+}
+
+QComboBox#comboBox_drone_strategy:hover {
+    border-color: #cba6f7;
+}
+
+/* Speed slider — purple themed */
+QSlider#slider_drone_speed::groove:horizontal {
+    border: 1px solid #45475a;
+    height: 4px;
+    background: #313244;
+    border-radius: 2px;
+}
+
+QSlider#slider_drone_speed::handle:horizontal {
+    background: #cba6f7;
+    border: 1px solid #cba6f7;
+    width: 12px;
+    margin: -4px 0;
+    border-radius: 6px;
+}
+
+QSlider#slider_drone_speed::handle:horizontal:hover {
+    background: #f5c2e7;
+    border-color: #f5c2e7;
+}
+
+/* Status label */
+QLabel#label_drone_status {
+    color: #6c7086;
+    font-size: 9px;
+    padding: 2px;
+    border-top: 1px solid #313244;
+}
