@@ -22,6 +22,8 @@
 
 #include "deep_zoom.h"
 
+#ifdef USE_MPFR
+
 #include <cmath>
 #include <algorithm>
 
@@ -570,3 +572,5 @@ bool cDeepZoomManager::ShouldUseDeepZoom(double zoomLevel)
 }
 
 } // namespace deep_zoom
+
+#endif // USE_MPFR

@@ -77,7 +77,9 @@ cDockNavigation::cDockNavigation(QWidget *parent) : QWidget(parent), ui(new Ui::
 	SetupQuickPresets();
 	SetupBookmarks();
 	SetupSmartCamera();
+#ifdef USE_MPFR
 	SetupDeepZoom();
+#endif
 }
 
 cDockNavigation::~cDockNavigation()
@@ -959,6 +961,7 @@ void cDockNavigation::slotSmartCameraUpdated()
 // Deep Zoom Engine (Perturbation Theory for 3D Fractals)
 // ============================================================
 
+#ifdef USE_MPFR
 void cDockNavigation::SetupDeepZoom()
 {
 	deepZoomManager = new deep_zoom::cDeepZoomManager();
@@ -1099,3 +1102,4 @@ void cDockNavigation::slotDeepZoomPrecisionChanged(int index)
 	(void)index;
 	// Will take effect on next compute
 }
+#endif // USE_MPFR

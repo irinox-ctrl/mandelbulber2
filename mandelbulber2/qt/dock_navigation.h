@@ -42,7 +42,9 @@
 #include <QJsonObject>
 
 #include "src/algebra.hpp"
+#ifdef USE_MPFR
 #include "src/deep_zoom.h"
+#endif
 #include "smart_camera.h"
 
 class QLabel;
@@ -139,10 +141,12 @@ private slots:
 	void slotToggleDepthOverlay(bool checked);
 	void slotSmartCameraUpdated();
 
+#ifdef USE_MPFR
 	// Deep Zoom
 	void slotDeepZoomToggle(bool checked);
 	void slotDeepZoomCompute();
 	void slotDeepZoomPrecisionChanged(int index);
+#endif
 
 private:
 	void ConnectSignals() const;
@@ -173,12 +177,14 @@ private:
 	void SetupSmartCamera();
 	cSmartCamera *smartCamera = nullptr;
 
+#ifdef USE_MPFR
 	// Deep Zoom
 	void SetupDeepZoom();
 	deep_zoom::cDeepZoomManager *deepZoomManager = nullptr;
 	QLabel *deepZoomStatusLabel = nullptr;
 	QCheckBox *deepZoomCheckBox = nullptr;
 	QComboBox *deepZoomPrecision = nullptr;
+#endif
 
 	QList<sCameraBookmark> bookmarks;
 	QListWidget *bookmarkListWidget = nullptr;

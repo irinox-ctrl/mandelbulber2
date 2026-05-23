@@ -132,6 +132,7 @@ m1:QMAKE_CXXFLAGS += -I/opt/homebrew/include
 
 # library linking
 unix:!macx:LIBS += -lpng -lgsl -lgslcblas -llzo2 -lmpfr -lgmp -fopenmp
+unix:!macx:DEFINES += USE_MPFR
 macx:!m1:LIBS += -lpng -lgsl -lgslcblas -llzo2 -fopenmp
 #macx:m1:LIBS += -lpng -lgsl -lgslcblas -llzo2 -lomp
 macx:m1:LIBS += -lpng -lgsl -lgslcblas -llzo2

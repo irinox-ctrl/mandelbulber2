@@ -27,7 +27,10 @@
 #ifndef MANDELBULBER2_SRC_DEEP_ZOOM_H_
 #define MANDELBULBER2_SRC_DEEP_ZOOM_H_
 
+#ifdef USE_MPFR
 #include <mpfr.h>
+#endif
+
 #include <vector>
 #include <memory>
 #include <functional>
@@ -36,6 +39,8 @@
 
 namespace deep_zoom
 {
+
+#ifdef USE_MPFR
 
 // Precision in bits for MPFR computations (dynamically adjusted based on zoom)
 constexpr int kDefaultPrecisionBits = 256;
@@ -294,6 +299,8 @@ private:
 	CVector3 currentCenter;
 	bool referenceComputed = false;
 };
+
+#endif // USE_MPFR
 
 } // namespace deep_zoom
 
