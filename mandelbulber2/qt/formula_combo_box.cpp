@@ -127,6 +127,20 @@ void cFormulaComboBox::populateItemsFromFractalList(QList<cAbstractFractal *> fr
 	QFont fontHeading;
 	fontHeading.setBold(true);
 
+	// 3x3lion: Use Catppuccin Mocha category colors for better organization
+	static const QColor kCatppuccinBases[] = {
+		QColor(0x1e, 0x1e, 0x2e), // Base
+		QColor(0x18, 0x18, 0x25), // Mantle
+		QColor(0x11, 0x11, 0x1b), // Crust
+	};
+	static const QColor kCatppuccinAccents[] = {
+		QColor(0x31, 0x32, 0x44), // Surface0
+		QColor(0x45, 0x47, 0x5a), // Surface1
+		QColor(0x58, 0x5b, 0x70), // Surface2
+		QColor(0x2a, 0x2b, 0x3c), // Slightly lighter than Base
+		QColor(0x24, 0x24, 0x36), // Between Base and Mantle
+	};
+
 	QPalette palette = window()->palette();
 	QColor globalColor = palette.window().color();
 	int brightness = globalColor.value();
@@ -148,7 +162,6 @@ void cFormulaComboBox::populateItemsFromFractalList(QList<cAbstractFractal *> fr
 		{
 			if (fractalList.at(fIndex)->getInternalId() == header.first)
 			{
-				// should be fIndex, but every new header inserts two new items, which have to be added
 				comboIndex = fIndex + 2 * hIndex;
 			}
 		}
@@ -160,23 +173,18 @@ void cFormulaComboBox::populateItemsFromFractalList(QList<cAbstractFractal *> fr
 		else
 		{
 			QColor itemsColor;
-			if (brightness > 20)
+			// Use alternating Catppuccin-based colors for dark themes
+			if (brightness <= 60)
+			{
+				itemsColor = kCatppuccinAccents[hIndex % 5];
+			}
+			else
 			{
 				int r = random.Random(40) + rBase - 20;
 				r = clamp(r, 0, 255);
 				int g = random.Random(40) + gBase - 20;
 				g = clamp(g, 0, 255);
 				int b = random.Random(40) + bBase - 20;
-				b = clamp(b, 0, 255);
-				itemsColor = QColor(r, g, b);
-			}
-			else
-			{
-				int r = random.Random(40) + rBase;
-				r = clamp(r, 0, 255);
-				int g = random.Random(40) + gBase;
-				g = clamp(g, 0, 255);
-				int b = random.Random(40) + bBase;
 				b = clamp(b, 0, 255);
 				itemsColor = QColor(r, g, b);
 			}
@@ -188,9 +196,16 @@ void cFormulaComboBox::populateItemsFromFractalList(QList<cAbstractFractal *> fr
 
 			previousComboIndex = comboIndex;
 
-			insertItem(comboIndex, header.second);
+			// Category header with accent styling
+			QString headerText = QString::fromUtf8("\u25BC ") + header.second;
+			insertItem(comboIndex, headerText);
 			setItemData(comboIndex, fontHeading, Qt::FontRole);
 			setItemData(comboIndex, Qt::AlignCenter, Qt::TextAlignmentRole);
+			if (brightness <= 60)
+			{
+				setItemData(comboIndex, QColor(0x89, 0xb4, 0xfa), Qt::ForegroundRole);
+				setItemData(comboIndex, QColor(0x18, 0x18, 0x25), Qt::BackgroundRole);
+			}
 			qobject_cast<QStandardItemModel *>(model())->item(comboIndex)->setEnabled(false);
 			insertSeparator(comboIndex);
 		}

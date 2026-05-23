@@ -246,6 +246,7 @@ void cSmartCamera::slotOrbitTick()
 
 	CVector3 top(0, 0, 1);
 	WriteCameraToParams(cam, orbitCenter, top);
+	UpdateHUD();
 	emit signalCameraUpdated();
 }
 
@@ -310,6 +311,7 @@ void cSmartCamera::slotSurfaceFollowTick()
 	CVector3 newTgt = newCam + surfaceFollowDirection * (newDE * 2.0);
 
 	WriteCameraToParams(newCam, newTgt, newUp);
+	UpdateHUD();
 	emit signalCameraUpdated();
 }
 

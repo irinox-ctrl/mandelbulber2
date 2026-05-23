@@ -137,6 +137,12 @@ private slots:
 	void ResetGlobalStopRequest();
 	void ToggleFullScreen();
 
+	// 3x3lion Focus Mode
+	void slotToggleFocusMode();
+	void slotApplyFocusModeOnStartup();
+	void slotShowViewerContextMenu(const QPoint &pos);
+	void SetupFocusModeShortcuts();
+
 	// pull down menu
 	void slotImportOldSettings();
 	void slotImportMandelbulb3dSettings();
@@ -218,6 +224,8 @@ private:
 
 	QByteArray defaultGeometry;
 	QByteArray defaultState;
+	QByteArray savedStateBeforeFocus;
+	bool focusModeActive = false;
 	QTimer *buttonPressTimer;
 	QList<int> currentKeyEvents;
 	Qt::KeyboardModifiers lastKeyEventModifiers;

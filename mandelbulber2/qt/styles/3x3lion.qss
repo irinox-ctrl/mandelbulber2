@@ -2034,3 +2034,100 @@ QGroupBox#groupBox_smart_camera QLabel {
     color: #bac2de;
     font-size: 10px;
 }
+
+/* ============================================================
+   TOOLBAR THUMBNAILS — Larger, rounded preset miniatures
+   ============================================================ */
+
+QToolBar QToolButton {
+    border: 2px solid transparent;
+    border-radius: 8px;
+    padding: 3px;
+    margin: 2px;
+    background: transparent;
+}
+
+QToolBar QToolButton:hover {
+    border-color: #89b4fa;
+    background: rgba(137,180,250,15);
+}
+
+QToolBar QToolButton:pressed {
+    border-color: #cba6f7;
+    background: rgba(203,166,247,20);
+}
+
+/* ============================================================
+   FORMULA COMBO BOX — Better organized dropdown
+   ============================================================ */
+
+cFormulaComboBox {
+    background-color: #181825;
+    color: #cdd6f4;
+    border: 1px solid #45475a;
+    border-radius: 6px;
+    padding: 4px 8px;
+    font-size: 10pt;
+}
+
+cFormulaComboBox:hover {
+    border-color: #89b4fa;
+}
+
+cFormulaComboBox:focus {
+    border-color: #89b4fa;
+    background-color: #1e1e2e;
+}
+
+cFormulaComboBox::drop-down {
+    border: none;
+    width: 24px;
+    background: transparent;
+}
+
+cFormulaComboBox QAbstractItemView {
+    background-color: #181825;
+    color: #cdd6f4;
+    border: 1px solid #45475a;
+    selection-background-color: #313244;
+    selection-color: #89b4fa;
+    padding: 4px;
+    outline: none;
+}
+
+cFormulaComboBox QAbstractItemView::item {
+    padding: 6px 8px;
+    min-height: 28px;
+}
+
+cFormulaComboBox QAbstractItemView::item:hover {
+    background-color: #313244;
+}
+
+/* ============================================================
+   RIGHT-CLICK CONTEXT MENU — Catppuccin styled
+   ============================================================ */
+
+QMenu#viewerContextMenu {
+    background: #1e1e2e;
+    color: #cdd6f4;
+    border: 1px solid #313244;
+    border-radius: 8px;
+    padding: 6px;
+}
+
+QMenu#viewerContextMenu::item {
+    padding: 8px 24px;
+    border-radius: 4px;
+}
+
+QMenu#viewerContextMenu::item:selected {
+    background: #313244;
+    color: #89b4fa;
+}
+
+QMenu#viewerContextMenu::separator {
+    background: #313244;
+    height: 1px;
+    margin: 4px 12px;
+}

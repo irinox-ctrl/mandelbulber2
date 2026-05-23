@@ -58,6 +58,9 @@
 #include "qt/preview_file_dialog.h"
 #include "qt/settings_browser.h"
 
+#include <QMenu>
+#include <QShortcut>
+
 void RenderWindow::slotImportOldSettings()
 {
 	QFileDialog dialog(this);
@@ -1037,4 +1040,214 @@ void RenderWindow::slotDeleteDefaultSettings()
 	{
 		QFile::remove(filename);
 	}
+}
+
+// ============================================================
+// 3x3lion Focus Mode — clean viewer with all panels hidden
+// ============================================================
+
+void RenderWindow::slotToggleFocusMode()
+{
+	focusModeActive = !focusModeActive;
+
+	if (focusModeActive)
+	{
+		savedStateBeforeFocus = saveState();
+
+		ui->dockWidget_image_adjustments->hide();
+		ui->dockWidget_navigation->hide();
+		ui->dockWidget_effects->hide();
+		ui->dockWidget_fake_lights->hide();
+		ui->dockWidget_pattern_lines->hide();
+		ui->dockWidget_objects->hide();
+		ui->dockWidget_rendering_engine->hide();
+		ui->dockWidget_info->hide();
+		ui->dockWidget_animation->hide();
+		ui->dockWidget_histogram->hide();
+		ui->dockWidget_queue_dock->hide();
+		ui->dockWidget_measurement->hide();
+		ui->dockWidget_materialEditor->hide();
+		ui->dockWidget_Materials->hide();
+		if (ui->dockWidget_gamepad_dock) ui->dockWidget_gamepad_dock->hide();
+		ui->toolBar->hide();
+		ui->menubar->hide();
+		ui->statusbar->hide();
+	}
+	else
+	{
+		ui->menubar->show();
+		ui->statusbar->show();
+		if (!savedStateBeforeFocus.isEmpty())
+			restoreState(savedStateBeforeFocus);
+		else
+			slotMenuResetDocksPositions();
+	}
+}
+
+void RenderWindow::slotApplyFocusModeOnStartup()
+{
+	focusModeActive = true;
+
+	ui->dockWidget_image_adjustments->hide();
+	ui->dockWidget_navigation->hide();
+	ui->dockWidget_effects->hide();
+	ui->dockWidget_fake_lights->hide();
+	ui->dockWidget_pattern_lines->hide();
+	ui->dockWidget_objects->hide();
+	ui->dockWidget_rendering_engine->hide();
+	ui->dockWidget_info->hide();
+	ui->dockWidget_animation->hide();
+	ui->dockWidget_histogram->hide();
+	ui->dockWidget_queue_dock->hide();
+	ui->dockWidget_measurement->hide();
+	ui->dockWidget_materialEditor->hide();
+	ui->dockWidget_Materials->hide();
+	if (ui->dockWidget_gamepad_dock) ui->dockWidget_gamepad_dock->hide();
+	ui->toolBar->hide();
+	ui->menubar->hide();
+	ui->statusbar->hide();
+}
+
+void RenderWindow::slotShowViewerContextMenu(const QPoint &pos)
+{
+	QMenu menu(this);
+	menu.setStyleSheet(
+		"QMenu { background: #1e1e2e; color: #cdd6f4; border: 1px solid #313244; }"
+		"QMenu::item:selected { background: #313244; }"
+		"QMenu::separator { background: #313244; height: 1px; margin: 4px 8px; }");
+
+	QAction *actRender = menu.addAction("Render (Ctrl+R)");
+	connect(actRender, &QAction::triggered, this, [this]() {
+		gMainInterface->StartRender();
+	});
+
+	QAction *actStop = menu.addAction("Stop (Ctrl+T)");
+	connect(actStop, &QAction::triggered, this, []() {
+		gMainInterface->StopRender();
+	});
+
+	menu.addSeparator();
+
+	QAction *actNav = menu.addAction("Navigation (F1)");
+	actNav->setCheckable(true);
+	actNav->setChecked(ui->dockWidget_navigation->isVisible());
+	connect(actNav, &QAction::triggered, this, [this](bool checked) {
+		ui->dockWidget_navigation->setVisible(checked);
+	});
+
+	QAction *actObj = menu.addAction("Objects / Fractals (F2)");
+	actObj->setCheckable(true);
+	actObj->setChecked(ui->dockWidget_objects->isVisible());
+	connect(actObj, &QAction::triggered, this, [this](bool checked) {
+		ui->dockWidget_objects->setVisible(checked);
+	});
+
+	QAction *actEffects = menu.addAction("Effects (F3)");
+	actEffects->setCheckable(true);
+	actEffects->setChecked(ui->dockWidget_effects->isVisible());
+	connect(actEffects, &QAction::triggered, this, [this](bool checked) {
+		ui->dockWidget_effects->setVisible(checked);
+	});
+
+	QAction *actImg = menu.addAction("Image Adjustments (F4)");
+	actImg->setCheckable(true);
+	actImg->setChecked(ui->dockWidget_image_adjustments->isVisible());
+	connect(actImg, &QAction::triggered, this, [this](bool checked) {
+		ui->dockWidget_image_adjustments->setVisible(checked);
+	});
+
+	QAction *actEngine = menu.addAction("Rendering Engine (F5)");
+	actEngine->setCheckable(true);
+	actEngine->setChecked(ui->dockWidget_rendering_engine->isVisible());
+	connect(actEngine, &QAction::triggered, this, [this](bool checked) {
+		ui->dockWidget_rendering_engine->setVisible(checked);
+	});
+
+	QAction *actMat = menu.addAction("Materials (F6)");
+	actMat->setCheckable(true);
+	actMat->setChecked(ui->dockWidget_Materials->isVisible());
+	connect(actMat, &QAction::triggered, this, [this](bool checked) {
+		ui->dockWidget_Materials->setVisible(checked);
+	});
+
+	QAction *actAnim = menu.addAction("Animation (F7)");
+	actAnim->setCheckable(true);
+	actAnim->setChecked(ui->dockWidget_animation->isVisible());
+	connect(actAnim, &QAction::triggered, this, [this](bool checked) {
+		ui->dockWidget_animation->setVisible(checked);
+	});
+
+	QAction *actLights = menu.addAction("Fake Lights (F8)");
+	actLights->setCheckable(true);
+	actLights->setChecked(ui->dockWidget_fake_lights->isVisible());
+	connect(actLights, &QAction::triggered, this, [this](bool checked) {
+		ui->dockWidget_fake_lights->setVisible(checked);
+	});
+
+	menu.addSeparator();
+
+	QAction *actToolbar = menu.addAction("Preset Toolbar (F9)");
+	actToolbar->setCheckable(true);
+	actToolbar->setChecked(ui->toolBar->isVisible());
+	connect(actToolbar, &QAction::triggered, this, [this](bool checked) {
+		ui->toolBar->setVisible(checked);
+	});
+
+	QAction *actMenuBar = menu.addAction("Menu Bar (F10)");
+	actMenuBar->setCheckable(true);
+	actMenuBar->setChecked(ui->menubar->isVisible());
+	connect(actMenuBar, &QAction::triggered, this, [this](bool checked) {
+		ui->menubar->setVisible(checked);
+	});
+
+	menu.addSeparator();
+
+	QAction *actFocus = menu.addAction("Focus Mode (F11)");
+	connect(actFocus, &QAction::triggered, this, &RenderWindow::slotToggleFocusMode);
+
+	QAction *actShowAll = menu.addAction("Show All Panels");
+	connect(actShowAll, &QAction::triggered, this, [this]() {
+		focusModeActive = false;
+		ui->menubar->show();
+		ui->statusbar->show();
+		slotMenuResetDocksPositions();
+		ui->toolBar->show();
+	});
+
+	menu.exec(mapToGlobal(pos));
+}
+
+void RenderWindow::SetupFocusModeShortcuts()
+{
+	auto addToggle = [this](const char *key, QWidget *w) {
+		QShortcut *sc = new QShortcut(QKeySequence(key), this);
+		connect(sc, &QShortcut::activated, this, [w]() { w->setVisible(!w->isVisible()); });
+	};
+
+	addToggle("F1", ui->dockWidget_navigation);
+	addToggle("F2", ui->dockWidget_objects);
+	addToggle("F3", ui->dockWidget_effects);
+	addToggle("F4", ui->dockWidget_image_adjustments);
+	addToggle("F5", ui->dockWidget_rendering_engine);
+	addToggle("F6", ui->dockWidget_Materials);
+	addToggle("F7", ui->dockWidget_animation);
+	addToggle("F8", ui->dockWidget_fake_lights);
+
+	auto *scToolbar = new QShortcut(QKeySequence("F9"), this);
+	connect(scToolbar, &QShortcut::activated, this, [this]() {
+		ui->toolBar->setVisible(!ui->toolBar->isVisible());
+	});
+
+	auto *scMenubar = new QShortcut(QKeySequence("F10"), this);
+	connect(scMenubar, &QShortcut::activated, this, [this]() {
+		ui->menubar->setVisible(!ui->menubar->isVisible());
+	});
+
+	auto *scFocus = new QShortcut(QKeySequence("F11"), this);
+	connect(scFocus, &QShortcut::activated, this, &RenderWindow::slotToggleFocusMode);
+
+	// Right-click anywhere on central widget shows context menu
+	ui->centralwidget->setContextMenuPolicy(Qt::CustomContextMenu);
+	connect(ui->centralwidget, &QWidget::customContextMenuRequested, this,
+		&RenderWindow::slotShowViewerContextMenu);
 }

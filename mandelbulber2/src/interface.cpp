@@ -387,6 +387,10 @@ void cInterface::ShowUi()
 	WriteLog("cInterface::ConnectSignals(void)", 2);
 	ConnectSignals();
 	WriteLog("cInterface::ConnectSignals(void) finished", 2);
+
+	// 3x3lion: Setup focus mode shortcuts and apply focus mode on startup
+	mainWindow->SetupFocusModeShortcuts();
+	mainWindow->slotApplyFocusModeOnStartup();
 }
 
 void cInterface::ConnectSignals() const

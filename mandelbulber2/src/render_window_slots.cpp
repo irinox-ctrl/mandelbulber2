@@ -614,15 +614,25 @@ void RenderWindow::slotPopulateToolbar(bool completeRefresh)
 			QVBoxLayout *tooltipLayout = new QVBoxLayout;
 			QToolButton *buttonRemove = new QToolButton;
 
-			tooltipLayout->setContentsMargins(3, 3, 3, 3);
+			tooltipLayout->setContentsMargins(4, 4, 4, 4);
+			tooltipLayout->setSpacing(2);
 			tooltipLayout->addWidget(thumbWidget);
 			QIcon iconDelete = QIcon::fromTheme("list-remove", QIcon(":system/icons/list-remove.svg"));
 			buttonRemove->setIcon(iconDelete);
-			buttonRemove->setMaximumSize(QSize(15, 15));
-			buttonRemove->setStyleSheet("margin-bottom: -2px; margin-left: -2px;");
-			tooltipLayout->addWidget(buttonRemove);
-			buttonLoad->setToolTip(QObject::tr("Toolbar settings: ") + filename);
+			buttonRemove->setMaximumSize(QSize(16, 16));
+			buttonRemove->setStyleSheet(
+				"QToolButton { background: rgba(243,139,168,30); border: none; border-radius: 8px; "
+				"margin: 0; padding: 1px; }"
+				"QToolButton:hover { background: rgba(243,139,168,80); }");
+			tooltipLayout->addWidget(buttonRemove, 0, Qt::AlignCenter);
+
+			buttonLoad->setToolTip(QFileInfo(filename).baseName());
 			buttonLoad->setLayout(tooltipLayout);
+			buttonLoad->setStyleSheet(
+				"QToolButton { border: 2px solid #313244; border-radius: 8px; "
+				"background: #11111b; padding: 3px; margin: 2px; }"
+				"QToolButton:hover { border-color: #89b4fa; "
+				"background: rgba(137,180,250,15); }");
 			action->setDefaultWidget(buttonLoad);
 			action->setObjectName(toolbarFiles.at(i));
 			ui->toolBar->addAction(action);
