@@ -316,6 +316,10 @@ void cInterface::ShowUi()
 
 	renderedImage->show();
 
+	// Ensure the central render area is never squeezed to zero by docks
+	mainWindow->centralWidget()->setMinimumWidth(320);
+	mainWindow->centralWidget()->setMinimumHeight(240);
+
 	mainWindow->setCorner(Qt::TopLeftCorner, Qt::LeftDockWidgetArea);
 	mainWindow->setCorner(Qt::TopRightCorner, Qt::RightDockWidgetArea);
 	mainWindow->setCorner(Qt::BottomLeftCorner, Qt::LeftDockWidgetArea);

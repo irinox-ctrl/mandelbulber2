@@ -1093,15 +1093,22 @@ void RenderWindow::slotToggleFocusMode()
 	{
 		ui->menubar->show();
 		ui->statusbar->show();
+		ui->toolBar->show();
 		if (!savedStateBeforeFocus.isEmpty())
 			restoreState(savedStateBeforeFocus);
 		else
 			slotMenuResetDocksPositions();
+
+		// Always re-place Julia dock on the right after restoring state
+		addDockWidget(Qt::RightDockWidgetArea, ui->dockWidget_julia);
+		ui->dockWidget_julia->show();
 	}
 }
 
 void RenderWindow::slotApplyFocusModeOnStartup()
 {
+	// Save the normal layout BEFORE entering focus mode so F11 can restore it
+	savedStateBeforeFocus = saveState();
 	focusModeActive = true;
 
 	ui->dockWidget_image_adjustments->hide();
@@ -1110,7 +1117,6 @@ void RenderWindow::slotApplyFocusModeOnStartup()
 	ui->dockWidget_fake_lights->hide();
 	ui->dockWidget_pattern_lines->hide();
 	ui->dockWidget_primitives->hide();
-	// Julia dock stays visible in Focus Mode (main view = fractal + Julia)
 	ui->dockWidget_objects->hide();
 	ui->dockWidget_rendering_engine->hide();
 	ui->dockWidget_info->hide();
