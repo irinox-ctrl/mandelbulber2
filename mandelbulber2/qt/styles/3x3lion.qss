@@ -1881,3 +1881,156 @@ QLabel#label_drone_status {
     padding: 2px;
     border-top: 1px solid #313244;
 }
+
+/* ======================================================================
+   3x3lion Smart Camera
+   ====================================================================== */
+
+QGroupBox#groupBox_smart_camera {
+    border: 2px solid #89b4fa;
+    border-radius: 8px;
+    margin-top: 12px;
+    padding: 10px 6px 6px 6px;
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 rgba(137,180,250,15), stop:1 rgba(30,30,46,0));
+}
+
+QGroupBox#groupBox_smart_camera::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top center;
+    padding: 2px 12px;
+    color: #89b4fa;
+    font-weight: bold;
+    font-size: 11px;
+}
+
+/* Checkboxes in smart camera */
+QGroupBox#groupBox_smart_camera QCheckBox {
+    color: #cdd6f4;
+    spacing: 6px;
+    font-size: 10px;
+}
+
+QGroupBox#groupBox_smart_camera QCheckBox::indicator:checked {
+    background: #89b4fa;
+    border: 1px solid #89b4fa;
+    border-radius: 3px;
+}
+
+QGroupBox#groupBox_smart_camera QCheckBox::indicator:unchecked {
+    background: #313244;
+    border: 1px solid #585b70;
+    border-radius: 3px;
+}
+
+/* Smart camera buttons */
+QPushButton#btn_orbit_start,
+QPushButton#btn_surface_start {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #cba6f7, stop:1 #9d7cd8);
+    color: #1e1e2e;
+    border: 1px solid #cba6f7;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-weight: bold;
+    font-size: 10px;
+}
+
+QPushButton#btn_orbit_start:hover,
+QPushButton#btn_surface_start:hover {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #d4bfff, stop:1 #cba6f7);
+}
+
+QPushButton#btn_orbit_stop,
+QPushButton#btn_surface_stop {
+    background: #45475a;
+    color: #cdd6f4;
+    border: 1px solid #585b70;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 10px;
+}
+
+/* Flight recorder buttons */
+QPushButton#btn_flight_record {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #f38ba8, stop:1 #d35f7f);
+    color: #1e1e2e;
+    border: 1px solid #f38ba8;
+    border-radius: 4px;
+    padding: 4px 6px;
+    font-weight: bold;
+    font-size: 10px;
+}
+
+QPushButton#btn_flight_record:hover {
+    background: #f38ba8;
+}
+
+QPushButton#btn_flight_play {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #a6e3a1, stop:1 #7bc67b);
+    color: #1e1e2e;
+    border: 1px solid #a6e3a1;
+    border-radius: 4px;
+    padding: 4px 6px;
+    font-weight: bold;
+    font-size: 10px;
+}
+
+QPushButton#btn_flight_play:hover {
+    background: #a6e3a1;
+}
+
+QPushButton#btn_flight_stop_record,
+QPushButton#btn_flight_stop_play,
+QPushButton#btn_flight_clear {
+    background: #45475a;
+    color: #cdd6f4;
+    border: 1px solid #585b70;
+    border-radius: 4px;
+    padding: 4px 6px;
+    font-size: 10px;
+}
+
+QPushButton#btn_flight_export,
+QPushButton#btn_flight_import {
+    background: #313244;
+    color: #89b4fa;
+    border: 1px dashed #89b4fa;
+    border-radius: 4px;
+    padding: 4px 6px;
+    font-size: 10px;
+}
+
+QPushButton#btn_flight_export:hover,
+QPushButton#btn_flight_import:hover {
+    background: rgba(137,180,250,30);
+}
+
+/* Smoothness slider */
+QGroupBox#groupBox_smart_camera QSlider::groove:horizontal {
+    height: 6px;
+    background: #313244;
+    border-radius: 3px;
+}
+
+QGroupBox#groupBox_smart_camera QSlider::handle:horizontal {
+    width: 14px;
+    height: 14px;
+    margin: -4px 0;
+    background: #89b4fa;
+    border-radius: 7px;
+}
+
+QGroupBox#groupBox_smart_camera QSlider::sub-page:horizontal {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+        stop:0 #89b4fa, stop:1 #cba6f7);
+    border-radius: 3px;
+}
+
+QGroupBox#groupBox_smart_camera QLabel {
+    color: #bac2de;
+    font-size: 10px;
+}

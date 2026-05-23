@@ -42,11 +42,15 @@
 #include <QJsonObject>
 
 #include "src/algebra.hpp"
+#include "smart_camera.h"
 
 class QLabel;
 class QGroupBox;
 class QToolButton;
 class QListWidget;
+class QSlider;
+class QCheckBox;
+class QComboBox;
 
 // forward declarations
 class cAutomatedWidgets;
@@ -76,6 +80,8 @@ public:
 	void HideSomeButtons();
 	void AssignParameterContainers(std::shared_ptr<cParameterContainer> _params,
 		std::shared_ptr<cFractalContainer> _fractalParams);
+
+	cSmartCamera *GetSmartCamera() { return smartCamera; }
 
 private slots:
 	void slotStartRender();
@@ -113,6 +119,24 @@ private slots:
 	void slotBookmarkExport();
 	void slotBookmarkImport();
 
+	// Smart camera
+	void slotToggleCollisionAvoidance(bool checked);
+	void slotToggleAdaptiveStep(bool checked);
+	void slotSmoothnessChanged(int value);
+	void slotStartOrbit();
+	void slotStopOrbit();
+	void slotStartSurfaceFollow();
+	void slotStopSurfaceFollow();
+	void slotStartFlightRecord();
+	void slotStopFlightRecord();
+	void slotStartFlightPlayback();
+	void slotStopFlightPlayback();
+	void slotExportFlightPath();
+	void slotImportFlightPath();
+	void slotClearFlightPath();
+	void slotToggleHUD(bool checked);
+	void slotSmartCameraUpdated();
+
 private:
 	void ConnectSignals() const;
 	void SetIconSizes();
@@ -138,6 +162,10 @@ private:
 	void RefreshBookmarkList();
 	QString BookmarksFilePath() const;
 
+	// Smart camera
+	void SetupSmartCamera();
+	cSmartCamera *smartCamera = nullptr;
+
 	QList<sCameraBookmark> bookmarks;
 	QListWidget *bookmarkListWidget = nullptr;
 
@@ -154,6 +182,8 @@ signals:
 	void signalRender();
 	void signalStop();
 	void signalCameraMovementModeChanged(int index);
+	void signalHUDDataChanged(const cSmartCamera::sHUDData &data);
+	void signalToggleHUD(bool visible);
 };
 
 #endif /* MANDELBULBER2_QT_DOCK_NAVIGATION_H_ */

@@ -104,6 +104,8 @@
 #include "qt/preview_file_dialog.h"
 #include "qt/settings_cleaner.h"
 #include "qt/system_tray.hpp"
+#include "qt/camera_hud_widget.h"
+#include "qt/smart_camera.h"
 
 // custom includes
 #ifdef USE_GAMEPAD
@@ -216,6 +218,21 @@ void cInterface::ShowUi()
 		mainWindow->GetWidgetDockEffects(), mainWindow->GetWidgetDockFractal());
 
 	mainWindow->ui->widgetDockNavigation->AssignParameterContainers(gPar, gParFractal);
+
+	// 3x3lion: Camera HUD overlay on rendered image
+	cameraHUD = new cCameraHUDWidget(renderedImage);
+	cameraHUD->setGeometry(0, 0, renderedImage->width(), renderedImage->height());
+	cameraHUD->show();
+
+	// Connect HUD to smart camera
+	cSmartCamera *smartCam = mainWindow->ui->widgetDockNavigation->GetSmartCamera();
+	if (smartCam)
+	{
+		connect(smartCam, &cSmartCamera::signalHUDDataChanged, cameraHUD,
+			&cCameraHUDWidget::slotUpdateHUD);
+	}
+	connect(mainWindow->ui->widgetDockNavigation, &cDockNavigation::signalToggleHUD, cameraHUD,
+		&cCameraHUDWidget::SetVisible);
 
 	mainWindow->ui->widgetEffects->AssignParameterContainers(gPar, gParFractal);
 	mainWindow->ui->widgetEffects->AssignSpecialWidgets(

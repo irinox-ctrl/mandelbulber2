@@ -57,6 +57,7 @@ class cMaterialEditor;
 class cSystemTray;
 class cImage;
 class cDetachedWindow;
+class cCameraHUDWidget;
 
 class cInterface : public QObject
 {
@@ -155,6 +156,7 @@ public:
 	cDetachedWindow *detachedWindow;
 	cHeadless *headless;
 	RenderedImage *renderedImage;
+	cCameraHUDWidget *cameraHUD = nullptr;
 	PlayerWidget *imageSequencePlayer;
 	MyProgressBar *progressBar;
 	MyProgressBar *progressBarAnimation;

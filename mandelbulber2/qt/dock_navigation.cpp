@@ -61,7 +61,9 @@
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QListWidget>
+#include <QCheckBox>
 #include <QPropertyAnimation>
+#include <QSlider>
 
 cDockNavigation::cDockNavigation(QWidget *parent) : QWidget(parent), ui(new Ui::cDockNavigation)
 {
@@ -74,6 +76,7 @@ cDockNavigation::cDockNavigation(QWidget *parent) : QWidget(parent), ui(new Ui::
 	SetupCollapsibleSections();
 	SetupQuickPresets();
 	SetupBookmarks();
+	SetupSmartCamera();
 }
 
 cDockNavigation::~cDockNavigation()
@@ -87,6 +90,8 @@ void cDockNavigation::AssignParameterContainers(
 	params = _params;
 	fractalParams = _fractalParams;
 	manipulations->AssignParameterContainers(_params, _fractalParams);
+	if (smartCamera)
+		smartCamera->AssignParameters(_params, _fractalParams);
 	manipulations->AssignWidgets(nullptr, this, nullptr, nullptr);
 }
 
@@ -697,4 +702,241 @@ void cDockNavigation::slotBookmarkImport()
 
 	SaveBookmarksToFile();
 	RefreshBookmarkList();
+}
+
+// ============================================================
+// Smart Camera System
+// ============================================================
+
+void cDockNavigation::SetupSmartCamera()
+{
+	smartCamera = new cSmartCamera(this);
+
+	connect(smartCamera, &cSmartCamera::signalCameraUpdated, this,
+		&cDockNavigation::slotSmartCameraUpdated);
+	connect(smartCamera, &cSmartCamera::signalRender, this, &cDockNavigation::signalRender);
+	connect(smartCamera, &cSmartCamera::signalHUDDataChanged, this,
+		&cDockNavigation::signalHUDDataChanged);
+
+	QGroupBox *smartGroup = new QGroupBox("Smart Camera", this);
+	smartGroup->setObjectName("groupBox_smart_camera");
+
+	QVBoxLayout *lay = new QVBoxLayout(smartGroup);
+	lay->setContentsMargins(4, 8, 4, 4);
+	lay->setSpacing(4);
+
+	// Collision avoidance
+	QCheckBox *cbCollision = new QCheckBox("Collision Avoidance", smartGroup);
+	cbCollision->setObjectName("cb_collision_avoidance");
+	cbCollision->setChecked(true);
+	cbCollision->setToolTip("DE-based collision prevention");
+	lay->addWidget(cbCollision);
+	connect(cbCollision, &QCheckBox::toggled, this, &cDockNavigation::slotToggleCollisionAvoidance);
+
+	// Adaptive step
+	QCheckBox *cbAdaptive = new QCheckBox("Adaptive Step Size", smartGroup);
+	cbAdaptive->setObjectName("cb_adaptive_step");
+	cbAdaptive->setChecked(true);
+	cbAdaptive->setToolTip("Auto-adjust movement speed based on distance to surface");
+	lay->addWidget(cbAdaptive);
+	connect(cbAdaptive, &QCheckBox::toggled, this, &cDockNavigation::slotToggleAdaptiveStep);
+
+	// Smoothness slider
+	QHBoxLayout *smoothLay = new QHBoxLayout();
+	QLabel *smoothLabel = new QLabel("Smoothness:", smartGroup);
+	QSlider *smoothSlider = new QSlider(Qt::Horizontal, smartGroup);
+	smoothSlider->setObjectName("slider_smoothness");
+	smoothSlider->setRange(1, 50);
+	smoothSlider->setValue(15);
+	smoothSlider->setToolTip("Camera interpolation smoothness");
+	smoothLay->addWidget(smoothLabel);
+	smoothLay->addWidget(smoothSlider);
+	lay->addLayout(smoothLay);
+	connect(smoothSlider, &QSlider::valueChanged, this, &cDockNavigation::slotSmoothnessChanged);
+
+	// Orbit mode
+	QHBoxLayout *orbitLay = new QHBoxLayout();
+	QPushButton *btnOrbitStart = new QPushButton("Orbit", smartGroup);
+	btnOrbitStart->setObjectName("btn_orbit_start");
+	btnOrbitStart->setToolTip("Orbit camera around current target");
+	QPushButton *btnOrbitStop = new QPushButton("Stop Orbit", smartGroup);
+	btnOrbitStop->setObjectName("btn_orbit_stop");
+	orbitLay->addWidget(btnOrbitStart);
+	orbitLay->addWidget(btnOrbitStop);
+	lay->addLayout(orbitLay);
+	connect(btnOrbitStart, &QPushButton::clicked, this, &cDockNavigation::slotStartOrbit);
+	connect(btnOrbitStop, &QPushButton::clicked, this, &cDockNavigation::slotStopOrbit);
+
+	// Surface following
+	QHBoxLayout *surfLay = new QHBoxLayout();
+	QPushButton *btnSurfStart = new QPushButton("Surface Follow", smartGroup);
+	btnSurfStart->setObjectName("btn_surface_start");
+	btnSurfStart->setToolTip("Camera follows fractal surface at constant DE distance");
+	QPushButton *btnSurfStop = new QPushButton("Stop Follow", smartGroup);
+	btnSurfStop->setObjectName("btn_surface_stop");
+	surfLay->addWidget(btnSurfStart);
+	surfLay->addWidget(btnSurfStop);
+	lay->addLayout(surfLay);
+	connect(btnSurfStart, &QPushButton::clicked, this, &cDockNavigation::slotStartSurfaceFollow);
+	connect(btnSurfStop, &QPushButton::clicked, this, &cDockNavigation::slotStopSurfaceFollow);
+
+	// Flight path recorder
+	QHBoxLayout *flightLay1 = new QHBoxLayout();
+	QPushButton *btnRecord = new QPushButton("Record", smartGroup);
+	btnRecord->setObjectName("btn_flight_record");
+	btnRecord->setToolTip("Record camera movement as a flight path");
+	QPushButton *btnStopRecord = new QPushButton("Stop Rec", smartGroup);
+	btnStopRecord->setObjectName("btn_flight_stop_record");
+	QPushButton *btnPlay = new QPushButton("Play", smartGroup);
+	btnPlay->setObjectName("btn_flight_play");
+	QPushButton *btnStopPlay = new QPushButton("Stop", smartGroup);
+	btnStopPlay->setObjectName("btn_flight_stop_play");
+	flightLay1->addWidget(btnRecord);
+	flightLay1->addWidget(btnStopRecord);
+	flightLay1->addWidget(btnPlay);
+	flightLay1->addWidget(btnStopPlay);
+	lay->addLayout(flightLay1);
+	connect(btnRecord, &QPushButton::clicked, this, &cDockNavigation::slotStartFlightRecord);
+	connect(btnStopRecord, &QPushButton::clicked, this, &cDockNavigation::slotStopFlightRecord);
+	connect(btnPlay, &QPushButton::clicked, this, &cDockNavigation::slotStartFlightPlayback);
+	connect(btnStopPlay, &QPushButton::clicked, this, &cDockNavigation::slotStopFlightPlayback);
+
+	QHBoxLayout *flightLay2 = new QHBoxLayout();
+	QPushButton *btnExport = new QPushButton("Export Path", smartGroup);
+	btnExport->setObjectName("btn_flight_export");
+	QPushButton *btnImport = new QPushButton("Import Path", smartGroup);
+	btnImport->setObjectName("btn_flight_import");
+	QPushButton *btnClear = new QPushButton("Clear", smartGroup);
+	btnClear->setObjectName("btn_flight_clear");
+	flightLay2->addWidget(btnExport);
+	flightLay2->addWidget(btnImport);
+	flightLay2->addWidget(btnClear);
+	lay->addLayout(flightLay2);
+	connect(btnExport, &QPushButton::clicked, this, &cDockNavigation::slotExportFlightPath);
+	connect(btnImport, &QPushButton::clicked, this, &cDockNavigation::slotImportFlightPath);
+	connect(btnClear, &QPushButton::clicked, this, &cDockNavigation::slotClearFlightPath);
+
+	// HUD toggle
+	QCheckBox *cbHUD = new QCheckBox("Show Camera HUD", smartGroup);
+	cbHUD->setObjectName("cb_show_hud");
+	cbHUD->setChecked(true);
+	cbHUD->setToolTip("Show/hide camera info HUD overlay on the render view");
+	lay->addWidget(cbHUD);
+	connect(cbHUD, &QCheckBox::toggled, this, &cDockNavigation::slotToggleHUD);
+
+	QLayout *dockLayout = layout();
+	if (dockLayout)
+		dockLayout->addWidget(smartGroup);
+}
+
+void cDockNavigation::slotToggleCollisionAvoidance(bool checked)
+{
+	if (smartCamera) smartCamera->SetCollisionAvoidance(checked);
+}
+
+void cDockNavigation::slotToggleAdaptiveStep(bool checked)
+{
+	if (smartCamera) smartCamera->SetAdaptiveStep(checked);
+}
+
+void cDockNavigation::slotSmoothnessChanged(int value)
+{
+	if (smartCamera) smartCamera->SetSmoothness(value / 100.0);
+}
+
+void cDockNavigation::slotStartOrbit()
+{
+	if (!smartCamera || !params) return;
+	CVector3 target = params->Get<CVector3>("target");
+	double distance = params->Get<double>("camera_distance_to_target");
+	smartCamera->StartOrbit(target, distance, 1.0);
+}
+
+void cDockNavigation::slotStopOrbit()
+{
+	if (smartCamera) smartCamera->StopOrbit();
+	emit signalRender();
+}
+
+void cDockNavigation::slotStartSurfaceFollow()
+{
+	if (!smartCamera || !params) return;
+	CVector3 cam = params->Get<CVector3>("camera");
+	double de = cInterface::GetDistanceForPoint(cam, params, fractalParams);
+	smartCamera->StartSurfaceFollow(de * 0.5, 1.0);
+}
+
+void cDockNavigation::slotStopSurfaceFollow()
+{
+	if (smartCamera) smartCamera->StopSurfaceFollow();
+	emit signalRender();
+}
+
+void cDockNavigation::slotStartFlightRecord()
+{
+	if (smartCamera) smartCamera->StartRecording();
+}
+
+void cDockNavigation::slotStopFlightRecord()
+{
+	if (smartCamera) smartCamera->StopRecording();
+}
+
+void cDockNavigation::slotStartFlightPlayback()
+{
+	if (smartCamera) smartCamera->StartPlayback(1.0);
+}
+
+void cDockNavigation::slotStopFlightPlayback()
+{
+	if (smartCamera) smartCamera->StopPlayback();
+	emit signalRender();
+}
+
+void cDockNavigation::slotExportFlightPath()
+{
+	if (!smartCamera) return;
+	QString path = QFileDialog::getSaveFileName(
+		this, "Export Flight Path", "3x3lion_flight.json", "JSON Files (*.json)");
+	if (path.isEmpty()) return;
+
+	QJsonDocument doc(smartCamera->FlightPathToJson());
+	QFile file(path);
+	if (file.open(QIODevice::WriteOnly))
+	{
+		file.write(doc.toJson());
+		file.close();
+	}
+}
+
+void cDockNavigation::slotImportFlightPath()
+{
+	if (!smartCamera) return;
+	QString path = QFileDialog::getOpenFileName(
+		this, "Import Flight Path", QString(), "JSON Files (*.json)");
+	if (path.isEmpty()) return;
+
+	QFile file(path);
+	if (!file.open(QIODevice::ReadOnly)) return;
+
+	QJsonDocument doc = QJsonDocument::fromJson(file.readAll());
+	file.close();
+	if (!doc.isArray()) return;
+
+	smartCamera->FlightPathFromJson(doc.array());
+}
+
+void cDockNavigation::slotClearFlightPath()
+{
+	if (smartCamera) smartCamera->ClearFlightPath();
+}
+
+void cDockNavigation::slotToggleHUD(bool checked)
+{
+	emit signalToggleHUD(checked);
+}
+
+void cDockNavigation::slotSmartCameraUpdated()
+{
+	SynchronizeInterfaceWindow(this, params, qInterface::write);
 }
