@@ -54,6 +54,8 @@
 #include "system_data.hpp"
 #include "system_directories.hpp"
 
+#include "rendered_image_widget.hpp"
+
 #include "qt/image_save_dialog.h"
 #include "qt/preview_file_dialog.h"
 #include "qt/settings_browser.h"
@@ -1214,6 +1216,11 @@ void RenderWindow::slotShowViewerContextMenu(const QPoint &pos)
 		ui->toolBar->show();
 	});
 
+	menu.addSeparator();
+
+	QAction *actFullscreen = menu.addAction("Fullscreen Viewer (Double-click)");
+	connect(actFullscreen, &QAction::triggered, this, &RenderWindow::ToggleFullScreen);
+
 	menu.exec(mapToGlobal(pos));
 }
 
@@ -1250,4 +1257,11 @@ void RenderWindow::SetupFocusModeShortcuts()
 	ui->centralwidget->setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(ui->centralwidget, &QWidget::customContextMenuRequested, this,
 		&RenderWindow::slotShowViewerContextMenu);
+
+	// Double-click on fractal viewer → fullscreen
+	if (gMainInterface && gMainInterface->renderedImage)
+	{
+		connect(gMainInterface->renderedImage, &RenderedImage::doubleClicked, this,
+			&RenderWindow::slotToggleFocusMode);
+	}
 }

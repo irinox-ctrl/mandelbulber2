@@ -146,6 +146,7 @@ signals:
 	void RotationChanged(double direction);
 	void ShiftModeChanged(bool shiftPressed);
 	void Pause();
+	void doubleClicked();
 
 protected:
 	void paintEvent(QPaintEvent *event) override;
@@ -160,6 +161,7 @@ protected:
 	void enterEvent(QEvent *event) override;
 #endif
 	void leaveEvent(QEvent *event) override;
+	void mouseDoubleClickEvent(QMouseEvent *event) override;
 	void wheelEvent(QWheelEvent *event) override;
 
 private:

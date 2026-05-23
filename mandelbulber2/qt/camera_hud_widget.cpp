@@ -8,6 +8,8 @@
 #include <QPainterPath>
 #include <cmath>
 
+#include "src/system.hpp"
+
 namespace
 {
 const QColor kBgColor(0x11, 0x11, 0x1b, 180);
@@ -56,6 +58,7 @@ void cCameraHUDWidget::paintEvent(QPaintEvent *)
 	DrawBottomBar(p, w, h);
 	DrawDepthBar(p, w, h);
 	DrawModeIndicator(p, w);
+	DrawCopyright(p, w, h);
 
 	if (currentData.collisionWarning)
 		DrawCollisionWarning(p, w, h);
@@ -219,6 +222,19 @@ void cCameraHUDWidget::DrawDepthBar(QPainter &p, int w, int h)
 	p.rotate(-90);
 	p.drawText(0, 0, "DEPTH");
 	p.restore();
+}
+
+void cCameraHUDWidget::DrawCopyright(QPainter &p, int w, int h)
+{
+	QFont font("Monospace", 8);
+	font.setStyleHint(QFont::Monospace);
+	p.setFont(font);
+
+	p.setPen(QColor(0xcd, 0xd6, 0xf4, 100));
+	QString copyright = QString::fromUtf8("\u00A9 2025 ") + QString(APP_NAME)
+		+ " — " + QString(APP_FOUNDERS);
+	int tw = p.fontMetrics().horizontalAdvance(copyright);
+	p.drawText(w - tw - kMargin, h - kBarHeight - 6, copyright);
 }
 
 void cCameraHUDWidget::DrawModeIndicator(QPainter &p, int w)

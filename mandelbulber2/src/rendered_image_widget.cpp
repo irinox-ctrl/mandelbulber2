@@ -636,6 +636,18 @@ void RenderedImage::mouseMoveEvent(QMouseEvent *event)
 	}
 }
 
+void RenderedImage::mouseDoubleClickEvent(QMouseEvent *event)
+{
+	if (event->button() == Qt::LeftButton)
+	{
+		emit doubleClicked();
+	}
+	else
+	{
+		QWidget::mouseDoubleClickEvent(event);
+	}
+}
+
 void RenderedImage::mousePressEvent(QMouseEvent *event)
 {
 	if (enumClickMode(clickModeData.at(0).toInt()) == clickFlightSpeedControl)

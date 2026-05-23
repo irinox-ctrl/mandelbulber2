@@ -302,9 +302,7 @@ void cInterface::ShowUi()
 		mainWindow->GetWidgetDockImageAdjustments()->SetAntialiasingOpenCL(true);
 #endif
 
-	QShortcut *shortcut = new QShortcut(QKeySequence(Qt::Key_F11), mainWindow);
-	shortcut->setContext(Qt::ApplicationShortcut);
-	connect(shortcut, &QShortcut::activated, mainWindow, &RenderWindow::ToggleFullScreen);
+	// F11 is handled by Focus Mode in SetupFocusModeShortcuts()
 
 	mainWindow->ui->actionImport_settings_from_Mandelbulb3d->setVisible(false);
 
