@@ -319,6 +319,33 @@ void cInterface::ShowUi()
 	mainWindow->setCorner(Qt::BottomLeftCorner, Qt::LeftDockWidgetArea);
 	mainWindow->setCorner(Qt::BottomRightCorner, Qt::RightDockWidgetArea);
 
+	// 3x3lion: Move Primitives tab from Fractal dock to dedicated Primitives dock
+	{
+		QTabWidget *fracTabs = mainWindow->ui->widgetDockFractal->findChild<QTabWidget *>(
+			"tabWidget_fractal");
+		if (fracTabs)
+		{
+			for (int i = 0; i < fracTabs->count(); ++i)
+			{
+				if (fracTabs->tabText(i) == "Primitives")
+				{
+					QWidget *primTab = fracTabs->widget(i);
+					fracTabs->removeTab(i);
+					QLayout *dockLayout =
+						mainWindow->ui->dockWidget_primitives->widget()->layout();
+					// Remove placeholder label
+					while (QLayoutItem *item = dockLayout->takeAt(0))
+					{
+						delete item->widget();
+						delete item;
+					}
+					dockLayout->addWidget(primTab);
+					break;
+				}
+			}
+		}
+	}
+
 	// Baseline for "reset dock positions" must match actual dock widgets (e.g. gamepad dock may be
 	// deleted above); saving too early would make restoreState(defaultState) crash.
 	mainWindow->CaptureDefaultWindowLayout();
@@ -354,7 +381,9 @@ void cInterface::ShowUi()
 		mainWindow->tabifyDockWidget(
 			mainWindow->ui->dockWidget_materialEditor, mainWindow->ui->dockWidget_pattern_lines);
 		mainWindow->tabifyDockWidget(
-			mainWindow->ui->dockWidget_pattern_lines, mainWindow->ui->dockWidget_effects);
+			mainWindow->ui->dockWidget_pattern_lines, mainWindow->ui->dockWidget_primitives);
+		mainWindow->tabifyDockWidget(
+			mainWindow->ui->dockWidget_primitives, mainWindow->ui->dockWidget_effects);
 		mainWindow->tabifyDockWidget(
 			mainWindow->ui->dockWidget_effects, mainWindow->ui->dockWidget_fake_lights);
 		mainWindow->tabifyDockWidget(
@@ -373,10 +402,13 @@ void cInterface::ShowUi()
 
 	// Second tab (after Material editor): always visible; not merged into the Effects dock body.
 	mainWindow->ui->dockWidget_pattern_lines->setVisible(true);
+	mainWindow->ui->dockWidget_primitives->setVisible(true);
 	mainWindow->tabifyDockWidget(
 		mainWindow->ui->dockWidget_materialEditor, mainWindow->ui->dockWidget_pattern_lines);
 	mainWindow->tabifyDockWidget(
-		mainWindow->ui->dockWidget_pattern_lines, mainWindow->ui->dockWidget_effects);
+		mainWindow->ui->dockWidget_pattern_lines, mainWindow->ui->dockWidget_primitives);
+	mainWindow->tabifyDockWidget(
+		mainWindow->ui->dockWidget_primitives, mainWindow->ui->dockWidget_effects);
 	mainWindow->tabifyDockWidget(
 		mainWindow->ui->dockWidget_effects, mainWindow->ui->dockWidget_image_adjustments);
 
