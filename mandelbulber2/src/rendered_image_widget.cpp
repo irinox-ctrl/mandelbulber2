@@ -601,7 +601,11 @@ void RenderedImage::mouseMoveEvent(QMouseEvent *event)
 	CVector2<double> yawAndPitch;
 	yawAndPitch.x = (double(lastMousePosition.x) / image->GetPreviewWidth() - 0.5) * 2.0;
 	yawAndPitch.y = (double(lastMousePosition.y) / image->GetPreviewHeight() - 0.5) * 2.0;
-	emit YawAndPitchChanged(yawAndPitch);
+
+	// Only emit camera signals when render widget has focus and a mouse button is pressed.
+	// This prevents the camera from following the mouse for keyboard-only users.
+	if (hasFocus() && buttonsPressed > 0)
+		emit YawAndPitchChanged(yawAndPitch);
 
 	if (params)
 	{

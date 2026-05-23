@@ -325,78 +325,13 @@ void cInterface::ShowUi()
 	mainWindow->setCorner(Qt::BottomLeftCorner, Qt::LeftDockWidgetArea);
 	mainWindow->setCorner(Qt::BottomRightCorner, Qt::RightDockWidgetArea);
 
-	// 3x3lion: Move Primitives tab from Fractal dock to dedicated Primitives dock
-	{
-		QTabWidget *fracTabs = mainWindow->ui->widgetDockFractal->findChild<QTabWidget *>(
-			"tabWidget_fractal");
-		if (fracTabs)
-		{
-			for (int i = 0; i < fracTabs->count(); ++i)
-			{
-				if (fracTabs->tabText(i) == "Primitives")
-				{
-					QWidget *primTab = fracTabs->widget(i);
-					fracTabs->removeTab(i);
-					QLayout *dockLayout =
-						mainWindow->ui->dockWidget_primitives->widget()->layout();
-					while (QLayoutItem *item = dockLayout->takeAt(0))
-					{
-						delete item->widget();
-						delete item;
-					}
-					dockLayout->addWidget(primTab);
-					break;
-				}
-			}
-		}
-	}
-
-	// loading default ui for all fractal components — must happen BEFORE reparenting
+	// loading default ui for all fractal components
 	mainWindow->ui->widgetDockFractal->InitializeFractalUi();
 
-	// 3x3lion: Move the ENTIRE Julia mode groupbox to the dedicated Julia dock.
-	// This moves the Julia enable toggle + c constants + explorer + heatmap + drone + preview
-	// all at once, keeping the widget hierarchy intact so ui-> pointers remain valid.
-	{
-		QGroupBox *juliaMode =
-			mainWindow->ui->widgetDockFractal->findChild<QGroupBox *>("groupCheck_julia_mode");
+	// Hide custom docks that are not populated (Julia and Primitives stay in dock_fractal)
+	mainWindow->ui->dockWidget_julia->hide();
+	mainWindow->ui->dockWidget_primitives->hide();
 
-		QScrollArea *scrollArea =
-			mainWindow->ui->dockWidget_julia->findChild<QScrollArea *>("scrollArea_julia_dock");
-		if (juliaMode && scrollArea && scrollArea->widget() && scrollArea->widget()->layout())
-		{
-			QLayout *innerLayout = scrollArea->widget()->layout();
-			// remove placeholder label
-			while (QLayoutItem *item = innerLayout->takeAt(0))
-			{
-				delete item->widget();
-				delete item;
-			}
-			juliaMode->setParent(nullptr);
-			innerLayout->addWidget(juliaMode);
-			if (QVBoxLayout *vbox = qobject_cast<QVBoxLayout *>(innerLayout))
-				vbox->addStretch(1);
-
-			// Hide the built-in Julia preview thumbnail (redundant, takes space)
-			QGroupBox *juliaPreview = juliaMode->findChild<QGroupBox *>("groupBox_julia_preview");
-			if (juliaPreview)
-			{
-				juliaPreview->hide();
-				juliaPreview->setMaximumHeight(0);
-			}
-		}
-		else
-		{
-			qWarning() << "3x3lion: Could not reparent Julia mode to Julia dock";
-		}
-	}
-
-	// Place Julia dock in the right area (separate from the left panel tabs)
-	mainWindow->addDockWidget(Qt::RightDockWidgetArea, mainWindow->ui->dockWidget_julia);
-	mainWindow->ui->dockWidget_julia->setMinimumWidth(280);
-	mainWindow->ui->dockWidget_julia->setMinimumHeight(200);
-
-	// Baseline for "reset dock positions" must match actual dock widgets including reparented Julia.
 	mainWindow->CaptureDefaultWindowLayout();
 
 	InitMaterialsUi();
@@ -447,25 +382,6 @@ void cInterface::ShowUi()
 		mainWindow->ui->dockWidget_queue_dock->hide();
 	}
 
-	// Second tab (after Material editor): always visible; not merged into the Effects dock body.
-	mainWindow->ui->dockWidget_pattern_lines->setVisible(true);
-	mainWindow->ui->dockWidget_primitives->setVisible(true);
-	mainWindow->tabifyDockWidget(
-		mainWindow->ui->dockWidget_materialEditor, mainWindow->ui->dockWidget_pattern_lines);
-	mainWindow->tabifyDockWidget(
-		mainWindow->ui->dockWidget_pattern_lines, mainWindow->ui->dockWidget_primitives);
-	mainWindow->tabifyDockWidget(
-		mainWindow->ui->dockWidget_primitives, mainWindow->ui->dockWidget_effects);
-	mainWindow->tabifyDockWidget(
-		mainWindow->ui->dockWidget_effects, mainWindow->ui->dockWidget_image_adjustments);
-
-	// 3x3lion: Force Julia dock to right area AFTER restoreState/tabify
-	// (restoreState and tabifyDockWidget above may have moved it back to left tabs)
-	mainWindow->addDockWidget(Qt::RightDockWidgetArea, mainWindow->ui->dockWidget_julia);
-	mainWindow->ui->dockWidget_julia->setMinimumWidth(280);
-	mainWindow->ui->dockWidget_julia->setMinimumHeight(200);
-	mainWindow->ui->dockWidget_julia->show();
-
 	// installing event filter for disabling tooltips
 	gApplication->installEventFilter(mainWindow);
 
@@ -473,10 +389,8 @@ void cInterface::ShowUi()
 	ConnectSignals();
 	WriteLog("cInterface::ConnectSignals(void) finished", 2);
 
-	// 3x3lion: Setup focus mode shortcuts and apply focus mode on startup
-	// Deferred: window must be shown and resized by window manager first
+	// 3x3lion: Setup focus mode shortcuts
 	mainWindow->SetupFocusModeShortcuts();
-	QTimer::singleShot(200, mainWindow, &RenderWindow::slotApplyFocusModeOnStartup);
 }
 
 void cInterface::ConnectSignals() const

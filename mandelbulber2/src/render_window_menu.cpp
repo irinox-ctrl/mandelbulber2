@@ -568,26 +568,24 @@ void RenderWindow::ResetDocksPositions()
 
 void RenderWindow::slotMenuResetDocksPositions()
 {
-	// restoreState(gMainInterface->settings.value("mainWindowState").toByteArray());
 	ResetDocksPositions();
 	ui->dockWidget_histogram->hide();
 	ui->dockWidget_info->hide();
 	ui->dockWidget_queue_dock->hide();
 	ui->dockWidget_animation->hide();
 	ui->dockWidget_measurement->hide();
+	ui->dockWidget_julia->hide();
+	ui->dockWidget_primitives->hide();
 	if (ui->dockWidget_gamepad_dock != nullptr) ui->dockWidget_gamepad_dock->hide();
 
 	tabifyDockWidget(ui->dockWidget_materialEditor, ui->dockWidget_pattern_lines);
-	tabifyDockWidget(ui->dockWidget_pattern_lines, ui->dockWidget_primitives);
-	tabifyDockWidget(ui->dockWidget_primitives, ui->dockWidget_effects);
+	tabifyDockWidget(ui->dockWidget_pattern_lines, ui->dockWidget_effects);
 	tabifyDockWidget(ui->dockWidget_effects, ui->dockWidget_image_adjustments);
 	tabifyDockWidget(ui->dockWidget_image_adjustments, ui->dockWidget_rendering_engine);
 	tabifyDockWidget(ui->dockWidget_rendering_engine, ui->dockWidget_objects);
 	tabifyDockWidget(ui->dockWidget_objects, ui->dockWidget_histogram);
 
 	addDockWidget(Qt::LeftDockWidgetArea, ui->dockWidget_Materials);
-	addDockWidget(Qt::RightDockWidgetArea, ui->dockWidget_julia);
-	ui->dockWidget_julia->show();
 }
 
 void RenderWindow::slotMenuAnimationDocksPositions()
@@ -1064,30 +1062,16 @@ void RenderWindow::slotToggleFocusMode()
 	{
 		savedStateBeforeFocus = saveState();
 
-		ui->dockWidget_image_adjustments->hide();
-		ui->dockWidget_navigation->hide();
-		ui->dockWidget_effects->hide();
-		ui->dockWidget_fake_lights->hide();
-		ui->dockWidget_pattern_lines->hide();
-		ui->dockWidget_primitives->hide();
-		// Julia dock stays visible in Focus Mode (main view = fractal + Julia)
-		ui->dockWidget_objects->hide();
-		ui->dockWidget_rendering_engine->hide();
-		ui->dockWidget_info->hide();
-		ui->dockWidget_animation->hide();
-		ui->dockWidget_histogram->hide();
-		ui->dockWidget_queue_dock->hide();
-		ui->dockWidget_measurement->hide();
-		ui->dockWidget_materialEditor->hide();
-		ui->dockWidget_Materials->hide();
-		if (ui->dockWidget_gamepad_dock) ui->dockWidget_gamepad_dock->hide();
+		// Hide all docks except Navigation (has RENDER button)
+		QList<QDockWidget *> allDocks = findChildren<QDockWidget *>();
+		for (auto *dock : allDocks)
+		{
+			if (dock != ui->dockWidget_navigation)
+				dock->hide();
+		}
 		ui->toolBar->hide();
 		ui->menubar->hide();
 		ui->statusbar->hide();
-
-		// Keep Julia dock visible in Focus Mode
-		addDockWidget(Qt::RightDockWidgetArea, ui->dockWidget_julia);
-		ui->dockWidget_julia->show();
 	}
 	else
 	{
@@ -1098,49 +1082,13 @@ void RenderWindow::slotToggleFocusMode()
 			restoreState(savedStateBeforeFocus);
 		else
 			slotMenuResetDocksPositions();
-
-		// Always re-place Julia dock on the right after restoring state
-		addDockWidget(Qt::RightDockWidgetArea, ui->dockWidget_julia);
-		ui->dockWidget_julia->show();
 	}
 }
 
 void RenderWindow::slotApplyFocusModeOnStartup()
 {
-	// Save the normal layout BEFORE entering focus mode so F11 can restore it
-	savedStateBeforeFocus = saveState();
-	focusModeActive = true;
-
-	ui->dockWidget_image_adjustments->hide();
-	ui->dockWidget_navigation->hide();
-	ui->dockWidget_effects->hide();
-	ui->dockWidget_fake_lights->hide();
-	ui->dockWidget_pattern_lines->hide();
-	ui->dockWidget_primitives->hide();
-	ui->dockWidget_objects->hide();
-	ui->dockWidget_rendering_engine->hide();
-	ui->dockWidget_info->hide();
-	ui->dockWidget_animation->hide();
-	ui->dockWidget_histogram->hide();
-	ui->dockWidget_queue_dock->hide();
-	ui->dockWidget_measurement->hide();
-	ui->dockWidget_materialEditor->hide();
-	ui->dockWidget_Materials->hide();
-	if (ui->dockWidget_gamepad_dock) ui->dockWidget_gamepad_dock->hide();
-	ui->toolBar->hide();
-	ui->menubar->hide();
-	ui->statusbar->hide();
-
-	// Resize to screen and place Julia dock in right area
-	QScreen *screen = QGuiApplication::primaryScreen();
-	if (screen)
-	{
-		QRect geo = screen->availableGeometry();
-		resize(geo.width(), geo.height());
-		move(geo.topLeft());
-	}
-	addDockWidget(Qt::RightDockWidgetArea, ui->dockWidget_julia);
-	ui->dockWidget_julia->show();
+	// No longer used — Focus Mode is not applied on startup
+	// to ensure the full UI is available for the user
 }
 
 void RenderWindow::slotShowViewerContextMenu(const QPoint &pos)
@@ -1219,20 +1167,6 @@ void RenderWindow::slotShowViewerContextMenu(const QPoint &pos)
 		ui->dockWidget_fake_lights->setVisible(checked);
 	});
 
-	QAction *actPrim = menu.addAction("Primitives");
-	actPrim->setCheckable(true);
-	actPrim->setChecked(ui->dockWidget_primitives->isVisible());
-	connect(actPrim, &QAction::triggered, this, [this](bool checked) {
-		ui->dockWidget_primitives->setVisible(checked);
-	});
-
-	QAction *actJulia = menu.addAction("Julia Explorer");
-	actJulia->setCheckable(true);
-	actJulia->setChecked(ui->dockWidget_julia->isVisible());
-	connect(actJulia, &QAction::triggered, this, [this](bool checked) {
-		ui->dockWidget_julia->setVisible(checked);
-	});
-
 	QAction *actPattern = menu.addAction("Pattern Lines");
 	actPattern->setCheckable(true);
 	actPattern->setChecked(ui->dockWidget_pattern_lines->isVisible());
@@ -1266,11 +1200,8 @@ void RenderWindow::slotShowViewerContextMenu(const QPoint &pos)
 		focusModeActive = false;
 		ui->menubar->show();
 		ui->statusbar->show();
-		slotMenuResetDocksPositions();
 		ui->toolBar->show();
-		ui->dockWidget_julia->show();
-		ui->dockWidget_primitives->show();
-		ui->dockWidget_pattern_lines->show();
+		slotMenuResetDocksPositions();
 	});
 
 	menu.addSeparator();
