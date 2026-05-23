@@ -1112,6 +1112,59 @@ void DefineFractalList(QList<cAbstractFractal *> *fractalList)
 	fractalList->append(new cFractalThreex3CrystalGrowthFractal());
 	fractalList->append(new cFractalThreex3MineralDepositFractal());
 
+
+	// ---- Mandalay Fold V1-V50 formulas ----
+	fractalList->append(new cFractalMandalayFoldRicciFlow());
+	fractalList->append(new cFractalMandalayFoldMeanCurvatureFlow());
+	fractalList->append(new cFractalMandalayFoldInverseMcf());
+	fractalList->append(new cFractalMandalayFoldWillmoreFlow());
+	fractalList->append(new cFractalMandalayFoldGaussCurvatureFlow());
+	fractalList->append(new cFractalMandalayFoldAffineSphere());
+	fractalList->append(new cFractalMandalayFoldMongeAmpre());
+	fractalList->append(new cFractalMandalayFoldComplexMongeAmpre());
+	fractalList->append(new cFractalMandalayFoldHessianEquation());
+	fractalList->append(new cFractalMandalayFoldCurvatureMeasure());
+	fractalList->append(new cFractalMandalayFoldIntegralGeometry());
+	fractalList->append(new cFractalMandalayFoldValuationTheory());
+	fractalList->append(new cFractalMandalayFoldConvexIntegration());
+	fractalList->append(new cFractalMandalayFoldHPrinciple());
+	fractalList->append(new cFractalMandalayFoldMicroflexibility());
+	fractalList->append(new cFractalMandalayFoldHolonomicApproximation());
+	fractalList->append(new cFractalMandalayFoldWrinkle());
+	fractalList->append(new cFractalMandalayFoldFoldSingularity());
+	fractalList->append(new cFractalMandalayFoldCuspSingularity());
+	fractalList->append(new cFractalMandalayFoldSwallowtail());
+	fractalList->append(new cFractalMandalayFoldButterfly());
+	fractalList->append(new cFractalMandalayFoldUmbilic());
+	fractalList->append(new cFractalMandalayFoldRidge());
+	fractalList->append(new cFractalMandalayFoldSymmetrySet());
+	fractalList->append(new cFractalMandalayFoldMedialAxis());
+	fractalList->append(new cFractalMandalayFoldLaguerreGeometry());
+	fractalList->append(new cFractalMandalayFoldLieSphere());
+	fractalList->append(new cFractalMandalayFoldDupinCyclide());
+	fractalList->append(new cFractalMandalayFoldChannelSurface());
+	fractalList->append(new cFractalMandalayFoldPipeSurface());
+	fractalList->append(new cFractalMandalayFoldOffsetSurface());
+	fractalList->append(new cFractalMandalayFoldMinkowskiSum());
+	fractalList->append(new cFractalMandalayFoldMorphologicalDilation());
+	fractalList->append(new cFractalMandalayFoldMorphologicalErosion());
+	fractalList->append(new cFractalMandalayFoldDistanceTransform());
+	fractalList->append(new cFractalMandalayFoldVoronoiDiagram());
+	fractalList->append(new cFractalMandalayFoldDelaunayTriangulation());
+	fractalList->append(new cFractalMandalayFoldPowerDiagram());
+	fractalList->append(new cFractalMandalayFoldApolloniusDiagram());
+	fractalList->append(new cFractalMandalayFoldAlphaShape());
+	fractalList->append(new cFractalMandalayFoldPersistentHomology());
+	fractalList->append(new cFractalMandalayFoldBettiNumber());
+	fractalList->append(new cFractalMandalayFoldEulerCharacteristic());
+	fractalList->append(new cFractalMandalayFoldGaussBonnet());
+	fractalList->append(new cFractalMandalayFoldChernGaussBonnet());
+	fractalList->append(new cFractalMandalayFoldAtiyahSingerIndex());
+	fractalList->append(new cFractalMandalayFoldDiracOperator());
+	fractalList->append(new cFractalMandalayFoldSpinGeometry());
+	fractalList->append(new cFractalMandalayFoldTwistorTheory());
+	fractalList->append(new cFractalMandalayFoldSelfDualYangMills());
+
 	//====================== FRACTAL LIST - END ==================
 
 	for (cAbstractFractal *fractal : newFractalList)

@@ -1,0 +1,69 @@
+/**
+ * Mandelbulber v2, a 3D fractal generator
+ * Copyright (C) 2025 3x3lion Team
+ * This file is part of Mandelbulber. Licensed under GPLv3.
+ *
+ * Mandalay Fold: Minkowski-som in Mandalay Fold.
+ * Math: z = z + A+B = {a+b} * convolution * morphological * dilation * collision_detection
+ */
+
+#include "all_fractal_definitions.h"
+
+cFractalMandalayFoldMinkowskiSum::cFractalMandalayFoldMinkowskiSum() : cAbstractFractal()
+{
+	nameInComboBox = "Mandalay Fold V32 Minkowski Sum";
+	internalName = "mandalay_fold_minkowski_sum";
+	internalID = fractal::mandalayFoldMinkowskiSum;
+	DEType = analyticDEType;
+	DEFunctionType = linearDEFunction;
+	cpixelAddition = cpixelEnabledByDefault;
+	defaultBailout = 100.0;
+	DEAnalyticFunction = analyticFunctionLinear;
+	coloringFunction = coloringFunctionDefault;
+}
+
+void cFractalMandalayFoldMinkowskiSum::FormulaCode(CVector4 &z, const sFractal *fractal, sExtendedAux &aux)
+{
+	// Mandalay base: abs fold
+	z = fabs(z);
+
+	// Sort for Mandalay clip
+	if (z.z > z.y) swap(z.y, z.z);
+	if (z.y > z.x) swap(z.x, z.y);
+	if (z.z > z.y) swap(z.y, z.z);
+
+	// Minkowski Sum fold: A+B dilation
+	double s = fractal->transformCommon.scale08;
+	double bx = 0.5 * sign(z.x);
+	double by = 0.5 * sign(z.y);
+	double bz = 0.5 * sign(z.z);
+	z.x += bx * s;
+	z.y += by * s;
+	z.z += bz * s;
+
+	// Spherical fold
+	double rr = z.Dot(z);
+	if (rr < fractal->transformCommon.minR2p25)
+	{
+		double tglad_factor1 = fractal->transformCommon.maxR2d1 / fractal->transformCommon.minR2p25;
+		z *= tglad_factor1;
+		aux.DE *= tglad_factor1;
+	}
+	else if (rr < fractal->transformCommon.maxR2d1)
+	{
+		double tglad_factor2 = fractal->transformCommon.maxR2d1 / rr;
+		z *= tglad_factor2;
+		aux.DE *= tglad_factor2;
+	}
+
+	// Scale
+	double useScale = fractal->transformCommon.scale2;
+	z *= useScale;
+	aux.DE = aux.DE * fabs(useScale) + 1.0;
+
+	// Rotation
+	if (fractal->transformCommon.rotationEnabled)
+	{
+		z = fractal->transformCommon.rotationMatrix.RotateVector(z);
+	}
+}

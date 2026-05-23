@@ -1,0 +1,70 @@
+/**
+ * Mandelbulber v2, a 3D fractal generator
+ * Copyright (C) 2025 3x3lion Team
+ * This file is part of Mandelbulber. Licensed under GPLv3.
+ *
+ * Mandalay Fold: Pijp-oppervlak in Mandalay Fold.
+ * Math: z = z + fixed_radius * spine_curve * canal * offset * Minkowski_sum
+ */
+
+#include "all_fractal_definitions.h"
+
+cFractalMandalayFoldPipeSurface::cFractalMandalayFoldPipeSurface() : cAbstractFractal()
+{
+	nameInComboBox = "Mandalay Fold V30 Pipe Surface";
+	internalName = "mandalay_fold_pipe_surface";
+	internalID = fractal::mandalayFoldPipeSurface;
+	DEType = analyticDEType;
+	DEFunctionType = linearDEFunction;
+	cpixelAddition = cpixelEnabledByDefault;
+	defaultBailout = 100.0;
+	DEAnalyticFunction = analyticFunctionLinear;
+	coloringFunction = coloringFunctionDefault;
+}
+
+void cFractalMandalayFoldPipeSurface::FormulaCode(CVector4 &z, const sFractal *fractal, sExtendedAux &aux)
+{
+	// Mandalay base: abs fold
+	z = fabs(z);
+
+	// Sort for Mandalay clip
+	if (z.z > z.y) swap(z.y, z.z);
+	if (z.y > z.x) swap(z.x, z.y);
+	if (z.z > z.y) swap(z.y, z.z);
+
+	// Pipe Surface fold: fixed radius tube
+	double s = fractal->transformCommon.scale08;
+	double pipe_r = 0.5;
+	double rxy = sqrt(z.x*z.x + z.y*z.y);
+	if (rxy > 1e-21) {
+		double factor = (rxy - pipe_r) / rxy;
+		z.x -= z.x * factor * s;
+		z.y -= z.y * factor * s;
+	}
+
+	// Spherical fold
+	double rr = z.Dot(z);
+	if (rr < fractal->transformCommon.minR2p25)
+	{
+		double tglad_factor1 = fractal->transformCommon.maxR2d1 / fractal->transformCommon.minR2p25;
+		z *= tglad_factor1;
+		aux.DE *= tglad_factor1;
+	}
+	else if (rr < fractal->transformCommon.maxR2d1)
+	{
+		double tglad_factor2 = fractal->transformCommon.maxR2d1 / rr;
+		z *= tglad_factor2;
+		aux.DE *= tglad_factor2;
+	}
+
+	// Scale
+	double useScale = fractal->transformCommon.scale2;
+	z *= useScale;
+	aux.DE = aux.DE * fabs(useScale) + 1.0;
+
+	// Rotation
+	if (fractal->transformCommon.rotationEnabled)
+	{
+		z = fractal->transformCommon.rotationMatrix.RotateVector(z);
+	}
+}
