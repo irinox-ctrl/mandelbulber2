@@ -577,7 +577,8 @@ void RenderWindow::slotMenuResetDocksPositions()
 
 	tabifyDockWidget(ui->dockWidget_materialEditor, ui->dockWidget_pattern_lines);
 	tabifyDockWidget(ui->dockWidget_pattern_lines, ui->dockWidget_primitives);
-	tabifyDockWidget(ui->dockWidget_primitives, ui->dockWidget_effects);
+	tabifyDockWidget(ui->dockWidget_primitives, ui->dockWidget_julia);
+	tabifyDockWidget(ui->dockWidget_julia, ui->dockWidget_effects);
 	tabifyDockWidget(ui->dockWidget_effects, ui->dockWidget_image_adjustments);
 	tabifyDockWidget(ui->dockWidget_image_adjustments, ui->dockWidget_rendering_engine);
 	tabifyDockWidget(ui->dockWidget_rendering_engine, ui->dockWidget_objects);
@@ -600,7 +601,8 @@ void RenderWindow::slotMenuAnimationDocksPositions()
 
 	tabifyDockWidget(ui->dockWidget_materialEditor, ui->dockWidget_pattern_lines);
 	tabifyDockWidget(ui->dockWidget_pattern_lines, ui->dockWidget_primitives);
-	tabifyDockWidget(ui->dockWidget_primitives, ui->dockWidget_effects);
+	tabifyDockWidget(ui->dockWidget_primitives, ui->dockWidget_julia);
+	tabifyDockWidget(ui->dockWidget_julia, ui->dockWidget_effects);
 	tabifyDockWidget(ui->dockWidget_effects, ui->dockWidget_image_adjustments);
 	tabifyDockWidget(ui->dockWidget_image_adjustments, ui->dockWidget_rendering_engine);
 	tabifyDockWidget(ui->dockWidget_rendering_engine, ui->dockWidget_objects);
@@ -1064,6 +1066,7 @@ void RenderWindow::slotToggleFocusMode()
 		ui->dockWidget_fake_lights->hide();
 		ui->dockWidget_pattern_lines->hide();
 		ui->dockWidget_primitives->hide();
+		ui->dockWidget_julia->hide();
 		ui->dockWidget_objects->hide();
 		ui->dockWidget_rendering_engine->hide();
 		ui->dockWidget_info->hide();
@@ -1099,6 +1102,7 @@ void RenderWindow::slotApplyFocusModeOnStartup()
 	ui->dockWidget_fake_lights->hide();
 	ui->dockWidget_pattern_lines->hide();
 	ui->dockWidget_primitives->hide();
+	ui->dockWidget_julia->hide();
 	ui->dockWidget_objects->hide();
 	ui->dockWidget_rendering_engine->hide();
 	ui->dockWidget_info->hide();
@@ -1195,6 +1199,13 @@ void RenderWindow::slotShowViewerContextMenu(const QPoint &pos)
 	actPrim->setChecked(ui->dockWidget_primitives->isVisible());
 	connect(actPrim, &QAction::triggered, this, [this](bool checked) {
 		ui->dockWidget_primitives->setVisible(checked);
+	});
+
+	QAction *actJulia = menu.addAction("Julia Explorer");
+	actJulia->setCheckable(true);
+	actJulia->setChecked(ui->dockWidget_julia->isVisible());
+	connect(actJulia, &QAction::triggered, this, [this](bool checked) {
+		ui->dockWidget_julia->setVisible(checked);
 	});
 
 	QAction *actPattern = menu.addAction("Pattern Lines");

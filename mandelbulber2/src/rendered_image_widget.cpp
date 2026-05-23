@@ -60,8 +60,9 @@ using namespace Qt;
 
 RenderedImage::RenderedImage(QWidget *parent) : QWidget(parent)
 {
-	// makes RenderedImage focusable to catch keyboard events
-	setFocusPolicy(Qt::StrongFocus);
+	// ClickFocus: only grab keyboard when user explicitly clicks the render area.
+	// StrongFocus would steal Tab-key navigation from the UI controls.
+	setFocusPolicy(Qt::ClickFocus);
 	setMouseTracking(true);
 
 	image = nullptr;

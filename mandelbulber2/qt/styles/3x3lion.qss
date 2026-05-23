@@ -778,6 +778,12 @@ QDockWidget#dockWidget_primitives::title {
     border-left: 3px solid #fab387;
 }
 
+/* -- Julia Explorer dock → Mauve (#cba6f7) -- */
+QDockWidget#dockWidget_julia::title {
+    color: #cba6f7;
+    border-left: 3px solid #cba6f7;
+}
+
 /* -- Pattern Lines dock → Lavender (#b4befe) -- */
 QDockWidget#dockWidget_pattern_lines::title {
     color: #b4befe;

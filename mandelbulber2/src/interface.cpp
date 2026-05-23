@@ -333,7 +333,6 @@ void cInterface::ShowUi()
 					fracTabs->removeTab(i);
 					QLayout *dockLayout =
 						mainWindow->ui->dockWidget_primitives->widget()->layout();
-					// Remove placeholder label
 					while (QLayoutItem *item = dockLayout->takeAt(0))
 					{
 						delete item->widget();
@@ -343,6 +342,43 @@ void cInterface::ShowUi()
 					break;
 				}
 			}
+		}
+	}
+
+	// 3x3lion: Move Julia Explorer, Heatmap, and Drone Explorer to dedicated Julia dock
+	{
+		auto moveWidget = [](QWidget *src, QLayout *dst) {
+			if (src)
+			{
+				src->setParent(nullptr);
+				dst->addWidget(src);
+			}
+		};
+
+		QGroupBox *juliaExplorer =
+			mainWindow->ui->widgetDockFractal->findChild<QGroupBox *>("groupBox_julia_explorer");
+		QGroupBox *juliaHeatmap =
+			mainWindow->ui->widgetDockFractal->findChild<QGroupBox *>("groupBox_julia_heatmap");
+		QGroupBox *droneExplorer =
+			mainWindow->ui->widgetDockFractal->findChild<QGroupBox *>("groupBox_drone_explorer");
+
+		QScrollArea *scrollArea =
+			mainWindow->ui->dockWidget_julia->findChild<QScrollArea *>("scrollArea_julia_dock");
+		if (scrollArea)
+		{
+			QLayout *innerLayout = scrollArea->widget()->layout();
+			// Remove placeholder label
+			while (QLayoutItem *item = innerLayout->takeAt(0))
+			{
+				delete item->widget();
+				delete item;
+			}
+			moveWidget(juliaExplorer, innerLayout);
+			moveWidget(juliaHeatmap, innerLayout);
+			moveWidget(droneExplorer, innerLayout);
+			// Add stretch at bottom
+			if (QVBoxLayout *vbox = qobject_cast<QVBoxLayout *>(innerLayout))
+				vbox->addStretch(1);
 		}
 	}
 
