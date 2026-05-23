@@ -163,14 +163,31 @@ struct sJacobian3x3
 
 // ============================================================
 // Series Approximation coefficients
+// Skips early iterations by approximating:
+//   δz_n ≈ A_n·δc + B_n·δc² + C_n·δc³
+// where A,B,C are 3×3 matrix coefficients propagated per iteration
 // ============================================================
-struct sSeriesCoeff
+struct sSeriesCoeff3x3
 {
-	CVector3 A;  // linear term coefficient
-	CVector3 B;  // quadratic term coefficient
-	CVector3 C;  // cubic term coefficient
-	int skipIters; // number of iterations this SA can skip
+	sJacobian3x3 A;  // linear: dz/dc
+	// For 3D fractals we track the linear term as a 3×3 matrix
+	// because δz_n = A_n · δc (matrix-vector product)
+	int skipIters;   // iterations this SA can skip
+	double tolerance; // max relative error when SA was validated
 	bool valid;
+
+	sSeriesCoeff3x3() : skipIters(0), tolerance(0.0), valid(false) {}
+};
+
+// Rebasing info for when δz grows too large
+struct sRebasePoint
+{
+	int iteration;      // iteration at which to rebase
+	CVector3 newRefZ;   // new reference Z value
+	double newRefDE;    // new reference DE value
+	double newRefR;     // new reference r
+	double newRefTheta; // new reference theta
+	double newRefPhi;   // new reference phi
 };
 
 // ============================================================
@@ -213,6 +230,13 @@ public:
 	// Get the full-precision center
 	const MPFRVec3 &GetCenter() const { return centerHP; }
 
+	// Series Approximation: compute SA coefficients after orbit is ready
+	void ComputeSeriesApproximation(double pixelSpacing);
+	const sSeriesCoeff3x3 &GetSeriesApprox() const { return seriesApprox; }
+
+	// Rebase points: computed during orbit generation
+	const std::vector<sRebasePoint> &GetRebasePoints() const { return rebasePoints; }
+
 private:
 	void MandelbulbIterationMPFR(mpfr_t zx, mpfr_t zy, mpfr_t zz,
 		mpfr_t cx, mpfr_t cy, mpfr_t cz, mpfr_t de, mpfr_t r_out);
@@ -220,6 +244,8 @@ private:
 	sDeepZoomConfig config;
 	MPFRVec3 centerHP;
 	std::vector<sReferenceOrbitPoint> orbit;
+	std::vector<sRebasePoint> rebasePoints;
+	sSeriesCoeff3x3 seriesApprox;
 	int escapeIter = 0;
 	bool escaped = false;
 };
@@ -257,6 +283,11 @@ private:
 	CVector3 PerturbStep(const CVector3 &deltaZ, const CVector3 &deltaC,
 		const sReferenceOrbitPoint &ref, double &deltaDE) const;
 
+	// Rebasing: when δz grows too large, reset to a new local reference
+	bool ShouldRebase(const CVector3 &deltaZ, const sReferenceOrbitPoint &ref) const;
+	CVector3 Rebase(CVector3 &deltaZ, double &deltaDE,
+		const sReferenceOrbitPoint &ref, int iter) const;
+
 	sDeepZoomConfig config;
 	const cReferenceOrbit *refOrbit = nullptr;
 };
@@ -271,6 +302,9 @@ public:
 	~cDeepZoomManager();
 
 	void Configure(const sDeepZoomConfig &config);
+
+	// Set pixel spacing for Series Approximation tolerance
+	void SetPixelSpacing(double spacing);
 
 	// Set the zoom center and compute reference orbit
 	void SetCenter(const CVector3 &center);
@@ -292,11 +326,18 @@ public:
 	// Get the reference orbit for GPU upload
 	const cReferenceOrbit &GetReferenceOrbit() const { return refOrbit; }
 
+	// Get Series Approximation info
+	int GetSASkipIterations() const;
+
+	// Get stats for UI display
+	int GetRebaseCount() const;
+
 private:
 	sDeepZoomConfig config;
 	cReferenceOrbit refOrbit;
 	cPerturbationIterator perturbator;
 	CVector3 currentCenter;
+	double currentPixelSpacing = 0.0;
 	bool referenceComputed = false;
 };
 

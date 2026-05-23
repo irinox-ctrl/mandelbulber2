@@ -228,6 +228,141 @@ void cReferenceOrbit::Compute(const CVector3 &center)
 	mpfr_clears(zx, zy, zz, cx, cy, cz, de, r, (mpfr_ptr)0);
 }
 
+void cReferenceOrbit::ComputeSeriesApproximation(double pixelSpacing)
+{
+	/**
+	 * Series Approximation for 3D fractals.
+	 *
+	 * The idea: for early iterations where all pixels behave similarly,
+	 * we can approximate δz_n ≈ A_n · δc using a 3×3 matrix A_n.
+	 *
+	 * Propagation rule (from the Jacobian):
+	 *   A_{n+1} = J_f(Z_n) · A_n + I
+	 *   (where I is identity — the +δc term in δz_{n+1} = J·δz_n + δc)
+	 *
+	 * The SA is valid as long as the approximation error stays below a tolerance.
+	 * We validate by checking that |A_n · δc_test| * pixelSpacing stays meaningful.
+	 *
+	 * We stop when the linear approximation diverges too much from the actual
+	 * perturbation (the Jacobian norm grows too large relative to the pixel spacing).
+	 */
+
+	seriesApprox = sSeriesCoeff3x3();
+
+	if (!config.seriesApproxEnabled || orbit.size() < 3)
+	{
+		return;
+	}
+
+	if (pixelSpacing <= 0.0) pixelSpacing = 1e-10;
+
+	// Start with A_0 = I (identity matrix) because δz_0 = δc → A_0 = I
+	sJacobian3x3 A; // initialized to identity by default constructor
+
+	int maxSAIter = static_cast<int>(orbit.size()) - 1;
+	int skipIters = 0;
+
+	for (int i = 0; i < maxSAIter; i++)
+	{
+		const sReferenceOrbitPoint &ref = orbit[i];
+
+		if (ref.escaped || ref.r < 1e-30) break;
+
+		// Compute Jacobian at this reference point
+		double p = config.power;
+		double r = ref.r;
+		double theta = ref.theta;
+		double phi = ref.phi;
+		double x = ref.Z.x, y = ref.Z.y, z = ref.Z.z;
+		double r2 = r * r;
+		double rxy2 = x * x + y * y;
+		double rxy = sqrt(rxy2);
+
+		double pTheta = p * theta;
+		double pPhi = p * phi;
+		double cpth = cos(pTheta), spth = sin(pTheta);
+		double cpph = cos(pPhi), spph = sin(pPhi);
+		double rp = pow(r, p);
+		double rp_minus1 = pow(r, p - 1.0);
+
+		double dfr_x = p * rp_minus1 * cpth * cpph;
+		double dfr_y = p * rp_minus1 * cpth * spph;
+		double dfr_z = p * rp_minus1 * spth;
+		double dfth_x = rp * (-p * spth * cpph);
+		double dfth_y = rp * (-p * spth * spph);
+		double dfth_z = rp * (p * cpth);
+		double dfph_x = rp * (cpth * (-p * spph));
+		double dfph_y = rp * (cpth * (p * cpph));
+
+		double dr_dx = x / r, dr_dy = y / r, dr_dz = z / r;
+		double dth_dx = 0, dth_dy = 0, dth_dz = 0;
+		if (rxy > 1e-30)
+		{
+			dth_dx = -x * z / (r2 * rxy);
+			dth_dy = -y * z / (r2 * rxy);
+			dth_dz = rxy / r2;
+		}
+		double dph_dx = 0, dph_dy = 0;
+		if (rxy2 > 1e-30)
+		{
+			dph_dx = -y / rxy2;
+			dph_dy = x / rxy2;
+		}
+
+		sJacobian3x3 J;
+		J.m[0][0] = dfr_x * dr_dx + dfth_x * dth_dx + dfph_x * dph_dx;
+		J.m[0][1] = dfr_x * dr_dy + dfth_x * dth_dy + dfph_x * dph_dy;
+		J.m[0][2] = dfr_x * dr_dz + dfth_x * dth_dz;
+		J.m[1][0] = dfr_y * dr_dx + dfth_y * dth_dx + dfph_y * dph_dx;
+		J.m[1][1] = dfr_y * dr_dy + dfth_y * dth_dy + dfph_y * dph_dy;
+		J.m[1][2] = dfr_y * dr_dz + dfth_y * dth_dz;
+		J.m[2][0] = dfr_z * dr_dx + dfth_z * dth_dx;
+		J.m[2][1] = dfr_z * dr_dy + dfth_z * dth_dy;
+		J.m[2][2] = dfr_z * dr_dz + dfth_z * dth_dz;
+
+		// Propagate: A_{n+1} = J · A_n + I
+		sJacobian3x3 newA;
+		for (int row = 0; row < 3; row++)
+		{
+			for (int col = 0; col < 3; col++)
+			{
+				double sum = 0.0;
+				for (int k = 0; k < 3; k++)
+					sum += J.m[row][k] * A.m[k][col];
+				newA.m[row][col] = sum + ((row == col) ? 1.0 : 0.0);
+			}
+		}
+
+		// Check if SA is still valid: the approximation error should be small
+		// relative to the pixel spacing. The error grows with |A| * |δc|².
+		// We check the matrix norm (Frobenius) times pixel spacing.
+		double normSq = 0.0;
+		for (int row = 0; row < 3; row++)
+			for (int col = 0; col < 3; col++)
+				normSq += newA.m[row][col] * newA.m[row][col];
+
+		double norm = sqrt(normSq);
+		double approxError = norm * pixelSpacing * pixelSpacing;
+
+		// SA breaks down when the quadratic error term exceeds half a pixel
+		if (approxError > 0.5 * pixelSpacing || !std::isfinite(norm))
+		{
+			break;
+		}
+
+		A = newA;
+		skipIters = i + 1;
+	}
+
+	if (skipIters > 0)
+	{
+		seriesApprox.A = A;
+		seriesApprox.skipIters = skipIters;
+		seriesApprox.tolerance = pixelSpacing;
+		seriesApprox.valid = true;
+	}
+}
+
 // ============================================================
 // cPerturbationIterator
 // ============================================================
@@ -430,6 +565,66 @@ CVector3 cPerturbationIterator::PerturbStep(const CVector3 &deltaZ, const CVecto
 	return newDeltaZ;
 }
 
+bool cPerturbationIterator::ShouldRebase(
+	const CVector3 &deltaZ, const sReferenceOrbitPoint &ref) const
+{
+	double deltaR = deltaZ.Length();
+	// Rebase when δz is too large relative to Z — precision is being lost
+	// A good threshold is when |δz| > |Z| (delta exceeds reference)
+	return (ref.r > 1e-30 && deltaR > ref.r * config.rebaseThreshold);
+}
+
+CVector3 cPerturbationIterator::Rebase(
+	CVector3 &deltaZ, double &deltaDE,
+	const sReferenceOrbitPoint &ref, int iter) const
+{
+	/**
+	 * Rebasing: when δz grows too large, the subtraction f(Z+δz) - f(Z)
+	 * loses significant digits. We "rebase" by:
+	 *   1. Computing the full position: z_full = Z_n + δz_n
+	 *   2. Finding the closest reference orbit point to z_full
+	 *   3. Setting δz_new = z_full - Z_closest
+	 *
+	 * For simplicity (single reference orbit), we rebase to the same
+	 * reference orbit but restart from a later iteration where Z_n is
+	 * closer to our current z_full. This is the "glitch detection" approach.
+	 *
+	 * The key insight: δz is relative to the CURRENT reference point.
+	 * After rebase, δz = z_full - Z_n is recomputed fresh (smaller).
+	 */
+
+	CVector3 zFull = ref.Z + deltaZ;
+
+	// Search forward in the orbit for a point closer to zFull
+	int bestIter = iter;
+	double bestDist = deltaZ.Length();
+	int searchRange = std::min(50, refOrbit->GetLength() - iter - 1);
+
+	for (int j = 1; j <= searchRange; j++)
+	{
+		int candidateIter = iter + j;
+		if (candidateIter >= refOrbit->GetLength()) break;
+
+		CVector3 diff = zFull - refOrbit->GetPoint(candidateIter).Z;
+		double dist = diff.Length();
+		if (dist < bestDist)
+		{
+			bestDist = dist;
+			bestIter = candidateIter;
+		}
+	}
+
+	if (bestIter != iter)
+	{
+		const sReferenceOrbitPoint &newRef = refOrbit->GetPoint(bestIter);
+		deltaZ = zFull - newRef.Z;
+		double deFull = ref.DE + deltaDE;
+		deltaDE = deFull - newRef.DE;
+	}
+
+	return deltaZ;
+}
+
 cPerturbationIterator::sResult cPerturbationIterator::Iterate(const CVector3 &deltaC) const
 {
 	sResult result;
@@ -443,11 +638,28 @@ cPerturbationIterator::sResult cPerturbationIterator::Iterate(const CVector3 &de
 
 	CVector3 deltaZ = deltaC; // initial δz = δc (since z₀ = c)
 	double deltaDE = 0.0;     // initial δDE = 0
+	int startIter = 0;
+
+	// Series Approximation: skip early iterations
+	const sSeriesCoeff3x3 &sa = refOrbit->GetSeriesApprox();
+	if (sa.valid && sa.skipIters > 0)
+	{
+		// δz_n ≈ A_n · δc (matrix-vector product)
+		deltaZ = sa.A.Apply(deltaC);
+		startIter = sa.skipIters;
+
+		// Approximate δDE after SA: use magnitude of A·δc as scale
+		// This is a rough estimate; the exact DE is refined in the iteration loop
+		double deltaZLen = deltaZ.Length();
+		if (deltaZLen > 0)
+		{
+			deltaDE = deltaZLen; // simplified DE seed after SA skip
+		}
+	}
 
 	int maxIter = std::min(config.maxIterations, refOrbit->GetLength() - 1);
-	int rebaseCount = 0;
 
-	for (int i = 0; i < maxIter; i++)
+	for (int i = startIter; i < maxIter; i++)
 	{
 		const sReferenceOrbitPoint &ref = refOrbit->GetPoint(i);
 
@@ -476,14 +688,10 @@ cPerturbationIterator::sResult cPerturbationIterator::Iterate(const CVector3 &de
 			return result;
 		}
 
-		// Rebasing: if δz is too large relative to Z, precision is lost
-		// In that case, we rebase by absorbing the delta into a new reference
-		double deltaR = deltaZ.Length();
-		if (ref.r > 1e-30 && deltaR / ref.r > config.rebaseThreshold)
+		// Rebasing: if δz is too large relative to Z, rebase to maintain precision
+		if (ShouldRebase(deltaZ, ref))
 		{
-			// For now, we don't rebase (would require multiple reference orbits)
-			// This limits zoom depth but keeps the implementation correct
-			rebaseCount++;
+			deltaZ = Rebase(deltaZ, deltaDE, ref, i);
 		}
 
 		// Perturbation step
@@ -493,11 +701,12 @@ cPerturbationIterator::sResult cPerturbationIterator::Iterate(const CVector3 &de
 	// Didn't escape — we're inside the fractal
 	result.iterations = maxIter;
 	result.escaped = false;
-	result.finalPos = refOrbit->GetPoint(maxIter).Z + deltaZ;
+	int lastIdx = std::min(maxIter, refOrbit->GetLength() - 1);
+	result.finalPos = refOrbit->GetPoint(lastIdx).Z + deltaZ;
 
 	// Interior DE estimate
 	double rFinal = result.finalPos.Length();
-	double deFull = refOrbit->GetPoint(maxIter).DE + deltaDE;
+	double deFull = refOrbit->GetPoint(lastIdx).DE + deltaDE;
 	if (deFull > 0.0 && rFinal > 0.0)
 	{
 		result.distance = 0.5 * rFinal * log(std::max(rFinal, 1.0)) / fabs(deFull);
@@ -529,7 +738,30 @@ void cDeepZoomManager::SetCenter(const CVector3 &center)
 	currentCenter = center;
 	refOrbit.Compute(center);
 	perturbator.SetReferenceOrbit(&refOrbit);
+
+	// Compute Series Approximation if enabled
+	if (config.seriesApproxEnabled && currentPixelSpacing > 0.0)
+	{
+		refOrbit.ComputeSeriesApproximation(currentPixelSpacing);
+	}
+
 	referenceComputed = true;
+}
+
+void cDeepZoomManager::SetPixelSpacing(double spacing)
+{
+	currentPixelSpacing = spacing;
+}
+
+int cDeepZoomManager::GetSASkipIterations() const
+{
+	const sSeriesCoeff3x3 &sa = refOrbit.GetSeriesApprox();
+	return sa.valid ? sa.skipIters : 0;
+}
+
+int cDeepZoomManager::GetRebaseCount() const
+{
+	return static_cast<int>(refOrbit.GetRebasePoints().size());
 }
 
 double cDeepZoomManager::CalculateDistance(

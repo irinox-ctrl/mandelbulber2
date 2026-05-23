@@ -1078,10 +1078,16 @@ void cDockNavigation::slotDeepZoomCompute()
 		config.precisionBits = precData;
 	}
 
+	// Estimate pixel spacing from zoom level (for SA tolerance)
+	double pixelSpacing = distance / 800.0; // rough estimate: distance / image_width
+
 	deepZoomManager->Configure(config);
+	deepZoomManager->SetPixelSpacing(pixelSpacing);
 	deepZoomManager->SetCenter(target);
 
 	const auto &refOrbit = deepZoomManager->GetReferenceOrbit();
+	int saSkip = deepZoomManager->GetSASkipIterations();
+
 	QString status = QString("Status: Ready\n"
 		"Reference orbit: %1 iterations\n"
 		"Precision: %2 bits (%3 digits)\n"
@@ -1093,6 +1099,15 @@ void cDockNavigation::slotDeepZoomCompute()
 		.arg(refOrbit.Escaped() ? "yes" : "no")
 		.arg(refOrbit.GetEscapeIteration())
 		.arg(QString::number(zoomLevel, 'e', 2));
+
+	if (saSkip > 0)
+	{
+		status += QString("\nSeries Approx: skip %1 iterations").arg(saSkip);
+	}
+	else
+	{
+		status += "\nSeries Approx: not applicable";
+	}
 
 	deepZoomStatusLabel->setText(status);
 }

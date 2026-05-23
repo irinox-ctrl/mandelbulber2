@@ -6,6 +6,11 @@
  * This kernel computes delta iterations (δz) for each pixel, using a reference orbit
  * computed at arbitrary precision on the CPU.
  *
+ * Features:
+ * - Series Approximation: skips early iterations using linear matrix approximation
+ * - Rebasing: when δz grows too large, resets to maintain precision
+ * - Perturbed Distance Estimation: full DE computation via perturbation
+ *
  * For each pixel:
  *   z_n = Z_n + δz_n   (reference orbit + perturbation)
  *   c   = C   + δc     (reference center + pixel offset)
@@ -29,6 +34,14 @@ typedef struct
 	int escaped;    // 1 if |Z_n| > bailout
 } sRefOrbitPoint;
 
+// Series Approximation matrix (3x3, uploaded from CPU)
+typedef struct
+{
+	float m[3][3];  // the linear coefficient matrix A
+	int skipIters;  // number of iterations to skip
+	int valid;      // 1 if SA is valid
+} sSeriesApproxGPU;
+
 // Deep zoom configuration
 typedef struct
 {
@@ -40,6 +53,17 @@ typedef struct
 	float alphaAngleOffset;
 	int refOrbitLength;    // length of reference orbit
 } sDeepZoomConfig;
+
+/**
+ * Apply 3x3 matrix to vector (for Series Approximation)
+ */
+float3 MatVecMul(float m[3][3], float3 v)
+{
+	return (float3)(
+		m[0][0] * v.x + m[0][1] * v.y + m[0][2] * v.z,
+		m[1][0] * v.x + m[1][1] * v.y + m[1][2] * v.z,
+		m[2][0] * v.x + m[2][1] * v.y + m[2][2] * v.z);
+}
 
 /**
  * Compute a single perturbed Mandelbulb iteration on GPU.
@@ -102,11 +126,53 @@ float3 PerturbStepGPU(
 }
 
 /**
+ * Rebasing on GPU: find a closer reference orbit point
+ * to reduce |δz| and maintain precision.
+ */
+int RebaseGPU(
+	float3 *deltaZ,
+	float *deltaDE,
+	__global const sRefOrbitPoint *refOrbit,
+	int currentIter,
+	int orbitLength)
+{
+	float3 zFull = refOrbit[currentIter].Z + *deltaZ;
+	float bestDist = length(*deltaZ);
+	int bestIter = currentIter;
+
+	int searchEnd = min(currentIter + 50, orbitLength - 1);
+	for (int j = currentIter + 1; j <= searchEnd; j++)
+	{
+		float3 diff = zFull - refOrbit[j].Z;
+		float dist = length(diff);
+		if (dist < bestDist)
+		{
+			bestDist = dist;
+			bestIter = j;
+		}
+	}
+
+	if (bestIter != currentIter)
+	{
+		float deFull = refOrbit[currentIter].DE + *deltaDE;
+		*deltaZ = zFull - refOrbit[bestIter].Z;
+		*deltaDE = deFull - refOrbit[bestIter].DE;
+	}
+
+	return bestIter;
+}
+
+/**
  * Main deep zoom kernel: compute distance for one pixel using perturbation theory.
+ *
+ * Now with:
+ * - Series Approximation: skip early iterations via matrix multiplication
+ * - Rebasing: when δz grows too large, find closer reference point
  *
  * Input:
  *   refOrbit[]  — reference orbit (uploaded from CPU)
  *   config      — deep zoom configuration
+ *   sa          — series approximation matrix (if valid)
  *   deltaCArray — per-pixel δc values (offset from reference center)
  *
  * Output:
@@ -116,6 +182,7 @@ float3 PerturbStepGPU(
 __kernel void DeepZoomPerturbationKernel(
 	__global const sRefOrbitPoint *refOrbit,
 	__global const sDeepZoomConfig *config,
+	__global const sSeriesApproxGPU *sa,
 	__global const float3 *deltaCArray,
 	__global float *distances,
 	__global int *iterations,
@@ -127,16 +194,32 @@ __kernel void DeepZoomPerturbationKernel(
 	float3 deltaC = deltaCArray[gid];
 	float3 deltaZ = deltaC; // initial δz = δc
 	float deltaDE = 0.0f;
+	int startIter = 0;
 
 	float power = config->power;
 	float bailout = config->bailout;
 	int maxIter = min(config->maxIterations, config->refOrbitLength - 1);
+	float rebaseThresh = config->rebaseThreshold;
+
+	// Series Approximation: skip early iterations
+	if (sa->valid && sa->skipIters > 0 && sa->skipIters < maxIter)
+	{
+		// δz_n ≈ A_n · δc
+		float saMatrix[3][3];
+		for (int i = 0; i < 3; i++)
+			for (int j = 0; j < 3; j++)
+				saMatrix[i][j] = sa->m[i][j];
+
+		deltaZ = MatVecMul(saMatrix, deltaC);
+		startIter = sa->skipIters;
+		deltaDE = length(deltaZ); // rough DE seed after SA
+	}
 
 	int finalIter = maxIter;
 	float finalDist = 1e10f;
 	bool escaped = false;
 
-	for (int i = 0; i < maxIter; i++)
+	for (int i = startIter; i < maxIter; i++)
 	{
 		float3 zFull = refOrbit[i].Z + deltaZ;
 		float rFull = length(zFull);
@@ -159,11 +242,16 @@ __kernel void DeepZoomPerturbationKernel(
 			break;
 		}
 
-		// Rebasing check
+		// Rebasing check: if δz is too large relative to Z
 		float deltaR = length(deltaZ);
-		if (refOrbit[i].r > 1e-20f && deltaR / refOrbit[i].r > config->rebaseThreshold)
+		if (refOrbit[i].r > 1e-20f && deltaR > refOrbit[i].r * rebaseThresh)
 		{
-			// Mark as needing rebase (future: use tiled reference orbits)
+			int newIter = RebaseGPU(&deltaZ, &deltaDE, refOrbit, i, config->refOrbitLength);
+			if (newIter != i)
+			{
+				i = newIter - 1; // -1 because for loop will increment
+				continue;
+			}
 		}
 
 		// Perturbation step
@@ -172,9 +260,10 @@ __kernel void DeepZoomPerturbationKernel(
 
 	if (!escaped)
 	{
-		float3 zFinal = refOrbit[maxIter > 0 ? maxIter - 1 : 0].Z + deltaZ;
+		int lastIdx = maxIter > 0 ? min(maxIter - 1, config->refOrbitLength - 1) : 0;
+		float3 zFinal = refOrbit[lastIdx].Z + deltaZ;
 		float rFinal = length(zFinal);
-		float deFull = refOrbit[maxIter > 0 ? maxIter - 1 : 0].DE + deltaDE;
+		float deFull = refOrbit[lastIdx].DE + deltaDE;
 		if (deFull > 0.0f && rFinal > 0.0f)
 		{
 			finalDist = 0.5f * rFinal * max(native_log(rFinal), 0.0f) / fabs(deFull);
