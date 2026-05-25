@@ -1,3 +1,4 @@
+#include <QDebug>
 /**
  * Mandelbulber v2, a 3D fractal generator       ,=#MKNmMMKmmßMNWy,
  *                                             ,B" ]L,,p%%%,,,§;, "K
@@ -101,6 +102,27 @@ void cTabFractal::Init(bool firstTab, int _tabIndex)
 	tabIndex = _tabIndex;
 
 	InitWidgetNames();
+
+	// Direct parameter update for mutation type comboboxes
+	// (plain QComboBox does not auto-update parameters on interaction)
+	auto connectMutationCombo = [&](QComboBox *combo, const QString &paramBase) {
+		if (!combo || !params) return;
+		QString paramName = paramBase + "_" + QString::number(tabIndex + 1);
+		connect(combo, QOverload<int>::of(&QComboBox::currentIndexChanged),
+			[=](int index) {
+				if (params) params->Set(paramName, index);
+			});
+	};
+
+	connectMutationCombo(ui->comboBox_mutation_jos_de_type, "mutation_jos_de_type");
+	connectMutationCombo(ui->comboBox_mutation_pk_de_type, "mutation_pk_de_type");
+	connectMutationCombo(ui->comboBox_mutation_mb_math_type, "mutation_mb_math_type");
+	connectMutationCombo(ui->comboBox_mutation_warp_dist_type, "mutation_warp_dist_type");
+	connectMutationCombo(ui->comboBox_mutation_sym_kal_type, "mutation_sym_kal_type");
+	connectMutationCombo(ui->comboBox_mutation_abox_type, "mutation_abox_type");
+	connectMutationCombo(ui->comboBox_mutation_noise_type, "mutation_noise_type");
+	connectMutationCombo(ui->comboBox_mutation_orbit_trap_type, "mutation_orbit_trap_type");
+	connectMutationCombo(ui->comboBox_mutation_torus_type, "mutation_torus_type");
 
 	// set headings and separator of formulas and transforms
 	QFont fontHeading;
@@ -337,6 +359,7 @@ void cTabFractal::SynchronizeInterface(
 	// SynchronizeInterfaceWindow processes CHILDREN only, not the widget itself.
 	{
 		QString paramName = "mutation_enabled_" + QString::number(tabIndex + 1);
+		WriteLog(QString("Mutation sync: paramName=%1, exists=%2").arg(paramName).arg(par->IfExists(paramName)), 2);
 		if (mode == qInterface::read)
 			par->Set(paramName, ui->groupCheck_mutation_enabled->isChecked());
 		else

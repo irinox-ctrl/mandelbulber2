@@ -55,6 +55,8 @@ MyGroupBox::MyGroupBox(QWidget *parent) : QGroupBox(parent), CommonMyWidgetWrapp
 	actionSaveFromThisGroupbox = nullptr;
 	actionRandomize = nullptr;
 	connect(this, SIGNAL(toggled(bool)), this, SLOT(slotToggled(bool)));
+	// Delay initial visibility update until all children are created
+	QMetaObject::invokeMethod(this, "slotToggled", Qt::QueuedConnection, Q_ARG(bool, isChecked()));
 }
 
 void MyGroupBox::resetToDefault()
@@ -106,7 +108,7 @@ bool MyGroupBox::GetDefault()
 	return defaultValue;
 }
 
-void MyGroupBox::slotToggled(bool on) const
+void MyGroupBox::slotToggled(bool on)
 {
 	QList<QWidget *> list = findChildren<QWidget *>(QString(), Qt::FindDirectChildrenOnly);
 	for (auto &widget : list)

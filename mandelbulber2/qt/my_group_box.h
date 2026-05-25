@@ -63,7 +63,7 @@ private:
 	QAction *actionRandomize;
 
 private slots:
-	void slotToggled(bool on) const;
+	void slotToggled(bool on);
 	void slotResetAllToDefault();
 	void slotLoadToThisGroupbox();
 	void slotSaveFromThisGroupbox();

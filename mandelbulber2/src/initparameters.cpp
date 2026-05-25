@@ -207,6 +207,17 @@ void InitParams(std::shared_ptr<cParameterContainer> par)
 
 		// Formula Mutation parameters
 		par->addParam("mutation_enabled", i, false, morphLinear, paramStandard);
+		par->addParam("mutation_inversion_enabled", i, true, morphLinear, paramStandard);
+		par->addParam("mutation_clip_enabled", i, true, morphLinear, paramStandard);
+		par->addParam("mutation_jos_leys_enabled", i, true, morphLinear, paramStandard);
+		par->addParam("mutation_pk_enabled", i, true, morphLinear, paramStandard);
+		par->addParam("mutation_mb_math_enabled", i, true, morphLinear, paramStandard);
+		par->addParam("mutation_warp_dist_enabled", i, true, morphLinear, paramStandard);
+		par->addParam("mutation_symmetry_enabled", i, true, morphLinear, paramStandard);
+		par->addParam("mutation_abox_enabled", i, true, morphLinear, paramStandard);
+		par->addParam("mutation_noise_enabled", i, true, morphLinear, paramStandard);
+		par->addParam("mutation_orbit_trap_enabled", i, true, morphLinear, paramStandard);
+		par->addParam("mutation_torus_enabled", i, true, morphLinear, paramStandard);
 		// Pre-transform
 		par->addParam("mutation_pre_rotation_ax", i, 0.0, -360.0, 360.0, morphAkima, paramStandard);
 		par->addParam("mutation_pre_rotation_ay", i, 0.0, -360.0, 360.0, morphAkima, paramStandard);
@@ -358,7 +369,7 @@ void InitParams(std::shared_ptr<cParameterContainer> par)
 		par->addParam("mutation_clip_iter_start", i, 0, 0, 10000, morphAkima, paramStandard);
 		par->addParam("mutation_clip_iter_stop", i, 10000, 0, 10000, morphAkima, paramStandard);
 		// v7.7 — Jos Leys DE system (100 types)
-		par->addParam("mutation_jos_de_type", i, 0, 0, 100, morphAkima, paramStandard);
+		par->addParam("mutation_jos_de_type", i, 0, 0, 30, morphAkima, paramStandard);
 		par->addParam("mutation_jos_factor", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
 		par->addParam("mutation_jos_param_a", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
 		par->addParam("mutation_jos_param_b", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
@@ -371,7 +382,7 @@ void InitParams(std::shared_ptr<cParameterContainer> par)
 		par->addParam("mutation_jos_iter_start", i, 0, 0, 10000, morphAkima, paramStandard);
 		par->addParam("mutation_jos_iter_stop", i, 10000, 0, 10000, morphAkima, paramStandard);
 		// v7.7 — Pseudokleinian DE system (100 types)
-		par->addParam("mutation_pk_de_type", i, 0, 0, 100, morphAkima, paramStandard);
+		par->addParam("mutation_pk_de_type", i, 0, 0, 30, morphAkima, paramStandard);
 		par->addParam("mutation_pk_factor", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
 		par->addParam("mutation_pk_param_a", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
 		par->addParam("mutation_pk_param_b", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
@@ -385,7 +396,7 @@ void InitParams(std::shared_ptr<cParameterContainer> par)
 		par->addParam("mutation_pk_iter_stop", i, 10000, 0, 10000, morphAkima, paramStandard);
 
 		// v7.8 — Mandelbox Math system (200 types)
-		par->addParam("mutation_mb_math_type", i, 0, 0, 200, morphAkima, paramStandard);
+		par->addParam("mutation_mb_math_type", i, 0, 0, 30, morphAkima, paramStandard);
 		par->addParam("mutation_mb_factor", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
 		par->addParam("mutation_mb_param_a", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
 		par->addParam("mutation_mb_param_b", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
@@ -399,7 +410,7 @@ void InitParams(std::shared_ptr<cParameterContainer> par)
 		par->addParam("mutation_mb_iter_stop", i, 10000, 0, 10000, morphAkima, paramStandard);
 
 		// v7.9 — Warp Distortion system (100 types)
-		par->addParam("mutation_warp_dist_type", i, 0, 0, 100, morphAkima, paramStandard);
+		par->addParam("mutation_warp_dist_type", i, 0, 0, 30, morphAkima, paramStandard);
 		par->addParam("mutation_wd_factor", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
 		par->addParam("mutation_wd_param_a", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
 		par->addParam("mutation_wd_param_b", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
@@ -413,7 +424,7 @@ void InitParams(std::shared_ptr<cParameterContainer> par)
 		par->addParam("mutation_wd_iter_stop", i, 10000, 0, 10000, morphAkima, paramStandard);
 
 		// v7.9 — Symmetry/Kaleidoscope system (100 types)
-		par->addParam("mutation_sym_kal_type", i, 0, 0, 100, morphAkima, paramStandard);
+		par->addParam("mutation_sym_kal_type", i, 0, 0, 30, morphAkima, paramStandard);
 		par->addParam("mutation_sk_factor", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
 		par->addParam("mutation_sk_param_a", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
 		par->addParam("mutation_sk_param_b", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
@@ -427,7 +438,7 @@ void InitParams(std::shared_ptr<cParameterContainer> par)
 		par->addParam("mutation_sk_iter_stop", i, 10000, 0, 10000, morphAkima, paramStandard);
 
 		// v7.9 — Abox DE system (300 types)
-		par->addParam("mutation_abox_type", i, 0, 0, 400, morphAkima, paramStandard);
+		par->addParam("mutation_abox_type", i, 0, 0, 30, morphAkima, paramStandard);
 		par->addParam("mutation_ab_factor", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
 		par->addParam("mutation_ab_param_a", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
 		par->addParam("mutation_ab_param_b", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
@@ -441,7 +452,7 @@ void InitParams(std::shared_ptr<cParameterContainer> par)
 		par->addParam("mutation_ab_iter_stop", i, 10000, 0, 10000, morphAkima, paramStandard);
 
 		// v7.10 — Noise & Procedural DE system (100 types)
-		par->addParam("mutation_noise_type", i, 0, 0, 100, morphAkima, paramStandard);
+		par->addParam("mutation_noise_type", i, 0, 0, 30, morphAkima, paramStandard);
 		par->addParam("mutation_noise_factor", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
 		par->addParam("mutation_noise_param_a", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
 		par->addParam("mutation_noise_param_b", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
@@ -453,7 +464,7 @@ void InitParams(std::shared_ptr<cParameterContainer> par)
 		par->addParam("mutation_noise_iter_stop", i, 10000, 0, 10000, morphAkima, paramStandard);
 
 		// v7.10 — Orbit Trap DE system (100 types)
-		par->addParam("mutation_orbit_trap_type", i, 0, 0, 100, morphAkima, paramStandard);
+		par->addParam("mutation_orbit_trap_type", i, 0, 0, 30, morphAkima, paramStandard);
 		par->addParam("mutation_orbit_factor", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
 		par->addParam("mutation_orbit_param_a", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
 		par->addParam("mutation_orbit_param_b", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
@@ -463,7 +474,7 @@ void InitParams(std::shared_ptr<cParameterContainer> par)
 		par->addParam("mutation_orbit_iter_stop", i, 10000, 0, 10000, morphAkima, paramStandard);
 
 		// v7.12 — MandelTorus DE system (100 types)
-		par->addParam("mutation_torus_type", i, 0, 0, 100, morphAkima, paramStandard);
+		par->addParam("mutation_torus_type", i, 0, 0, 30, morphAkima, paramStandard);
 		par->addParam("mutation_torus_factor", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
 		par->addParam("mutation_torus_param_a", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
 		par->addParam("mutation_torus_param_b", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
