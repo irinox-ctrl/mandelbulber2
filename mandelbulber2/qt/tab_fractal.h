@@ -92,7 +92,6 @@ private slots:
 	void slotPressedButtonNavi();
 	void slotChangedWeightMode(int mode);
 	void slotChangedSeparateComponents(int state);
-	void slotPressedButtonMutationReset();
 
 	// IFS
 	void slotPressedButtonIFSDefaultsDodecahedron() const;
@@ -103,12 +102,9 @@ private slots:
 
 public:
 	void UpdateWeightWidgetsVisibility(int mode, bool separateComponents) const;
-	void UpdateMutationFieldVisibility(int formulaIndex) const;
-	void UpdateMutationGrayOut() const;
 
 private:
 	void ConnectSignals();
-	void SetMutationWidgetsEnabled(const QStringList &names, bool enabled) const;
 
 	Ui::cTabFractal *ui;
 
