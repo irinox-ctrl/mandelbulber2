@@ -2109,7 +2109,7 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 				}
 
 				// v7.6 — Clip system (per-section iteration range)
-				if (i >= mut.clipIterStart && i < mut.clipIterStop && mut.clipType != 0)
+				if (mut.enabled && i >= mut.clipIterStart && i < mut.clipIterStop && mut.clipType != 0)
 				{
 					CVector3 cz = z.GetXYZ();
 					if (mut.clipPreRotX != 0.0 || mut.clipPreRotY != 0.0 || mut.clipPreRotZ != 0.0)
@@ -2121,64 +2121,61 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 					double ca = mut.clipParamA, cb = mut.clipParamB, cc = mut.clipParamC;
 					switch (mut.clipType)
 					{
-						case 1: { clipDist=sqrt((cz.x/sx)*(cz.x/sx)+(cz.y/sy)*(cz.y/sy)+(cz.z/sz)*(cz.z/sz))-1.0; break; }
-						case 2: { double rxy=sqrt(cz.x*cz.x+cz.y*cz.y)-cR; clipDist=sqrt(rxy*rxy+cz.z*cz.z)-cr; break; }
-						case 3: { clipDist=sqrt(cz.x*cz.x+cz.y*cz.y)-cr; break; }
-						case 4: { double tanAlpha=tan(mut.clipAngle*M_PI/180.0); clipDist=sqrt(cz.x*cz.x+cz.y*cz.y)-tanAlpha*fabs(cz.z); break; }
-						case 5: { clipDist=(cz.x/sx)*(cz.x/sx)+(cz.y/sy)*(cz.y/sy)-(cz.z/sz)*(cz.z/sz)-1.0; break; }
-						case 6: { clipDist=cz.x*cz.x+cz.y*cz.y-ca*cz.z; break; }
-						case 7: { clipDist=(cz.x/sx)*(cz.x/sx)-(cz.y/sy)*(cz.y/sy)-cz.z; break; }
-						case 8: { double r2d=sqrt(cz.x*cz.x+cz.y*cz.y); double theta=atan2(cz.y,cz.x); clipDist=r2d-ca*exp(cb*theta); break; }
-						case 9: { double freq=mut.clipFrequency; double amp=mut.clipAmplitude; clipDist=cz.z-amp*sin(freq*cz.x)*sin(freq*cz.y); break; }
-						case 10: { double n=sin(cz.x*12.9898+cz.y*78.233)*43758.5453; n=(n-floor(n))*2.0-1.0; double n2=sin(cz.y*19.8672+cz.z*53.471)*28947.3125; n2=(n2-floor(n2))*2.0-1.0; clipDist=cz.z-mut.clipAmplitude*(n+n2)*0.5; break; }
-						case 11: { double d1=sqrt((cz.x/sx)*(cz.x/sx)+(cz.y/sy)*(cz.y/sy)+(cz.z/sz)*(cz.z/sz))-1.0; double d2=cz.Length()-cr; clipDist=fmin(d1,d2); break; }
-						case 12: { double dA=sqrt((cz.x/sx)*(cz.x/sx)+(cz.y/sy)*(cz.y/sy)+(cz.z/sz)*(cz.z/sz))-1.0; double dB=cz.Length()-cr; clipDist=fmax(dA,-dB); break; }
-						case 13: { double dA2=sqrt((cz.x/sx)*(cz.x/sx)+(cz.y/sy)*(cz.y/sy)+(cz.z/sz)*(cz.z/sz))-1.0; double dB2=cz.Length()-cr; clipDist=fmax(fmin(dA2,dB2),-fmax(dA2,dB2)); break; }
-						case 14: { double d1s=sqrt((cz.x/sx)*(cz.x/sx)+(cz.y/sy)*(cz.y/sy)+(cz.z/sz)*(cz.z/sz))-1.0; double d2s=cz.Length()-cr; double k=mut.clipSmoothK; double h=fmax(0.0,fmin(1.0,0.5+0.5*(d2s-d1s)/k)); clipDist=d2s+(d1s-d2s)*h-k*h*(1.0-h); break; }
-						case 15: { double dAs=sqrt((cz.x/sx)*(cz.x/sx)+(cz.y/sy)*(cz.y/sy)+(cz.z/sz)*(cz.z/sz))-1.0; double dBs=cz.Length()-cr; double k2=mut.clipSmoothK; double h2=fmax(0.0,fmin(1.0,0.5-0.5*(dAs+dBs)/k2)); clipDist=dAs+(-dBs-dAs)*h2+k2*h2*(1.0-h2); break; }
-						case 16: { double dc1=cz.Length()-cr; double dc2=fmax(fabs(cz.x)-sx,fmax(fabs(cz.y)-sy,fabs(cz.z)-sz)); double dc3=sqrt(cz.x*cz.x+cz.y*cz.y)-cr*0.5; clipDist=fmax(dc1,fmax(dc2,dc3)); break; }
-						case 17: { CVector3 rp=cz; if(sx>0.001)rp.x=fmod(cz.x+sx*0.5,sx)-sx*0.5; if(sy>0.001)rp.y=fmod(cz.y+sy*0.5,sy)-sy*0.5; if(sz>0.001)rp.z=fmod(cz.z+sz*0.5,sz)-sz*0.5; clipDist=rp.Length()-cr; break; }
-						case 18: { CVector3 cell; cell.x=(sx>0.001)?floor(cz.x/sx):0; cell.y=(sy>0.001)?floor(cz.y/sy):0; cell.z=(sz>0.001)?floor(cz.z/sz):0; double h=fabs(sin(cell.x*127.1+cell.y*311.7+cell.z*74.7)*43758.5453); h=h-floor(h); CVector3 rp2=cz; if(sx>0.001)rp2.x=fmod(cz.x+sx*0.5,sx)-sx*0.5; if(sy>0.001)rp2.y=fmod(cz.y+sy*0.5,sy)-sy*0.5; if(sz>0.001)rp2.z=fmod(cz.z+sz*0.5,sz)-sz*0.5; clipDist=rp2.Length()-cr*(0.5+h); break; }
-						case 19: { double coarse=fmax(fabs(cz.x)-sx*2.0,fmax(fabs(cz.y)-sy*2.0,fabs(cz.z)-sz*2.0)); double fine=cz.Length()-cr; clipDist=(coarse<0.0)?fine:coarse; break; }
-						case 20: { CVector3 fz=cz; double fscale=1.0; for(int k=0;k<4;k++){fz.x=fabs(fz.x)*2.0-ca; fz.y=fabs(fz.y)*2.0-ca; fz.z=fabs(fz.z)*2.0-ca; fscale*=2.0;} clipDist=(fz.Length()-cr)/fscale; break; }
-						case 21: { clipDist=cz.Length()-cr; break; }
-						case 22: { CVector3 scaled(cz.x*sx,cz.y*sy,cz.z*sz); clipDist=scaled.Length()-cr; break; }
-						case 23: { CVector3 sheared=cz; sheared.x+=mut.clipAmplitude*cz.y; clipDist=sheared.Length()-cr; break; }
-						case 24: { CVector3 folded=cz; double lim=ca; if(folded.x>lim)folded.x=2.0*lim-folded.x; if(folded.x<-lim)folded.x=-2.0*lim-folded.x; if(folded.y>lim)folded.y=2.0*lim-folded.y; if(folded.y<-lim)folded.y=-2.0*lim-folded.y; if(folded.z>lim)folded.z=2.0*lim-folded.z; if(folded.z<-lim)folded.z=-2.0*lim-folded.z; clipDist=folded.Length()-cr; break; }
-						case 25: { CVector3 absed(fabs(cz.x),fabs(cz.y),fabs(cz.z)); clipDist=absed.Length()-cr; break; }
-						case 26: { clipDist=cz.Length()-cr; double pulse=1.0+0.1*sin((double)i*mut.clipFrequency); clipDist*=pulse; break; }
-						case 27: { clipDist=cz.Length()-cr; double sf=ca*(1.0+0.1*(double)i/250.0); clipDist*=sf; break; }
-						case 28: { clipDist=cz.Length()-cr; if(clipDist<0.0) aux.color+=fabs(clipDist)*mut.clipAmplitude; break; }
-						case 29: { clipDist=cz.Length()-cr; double trap=cz.Length(); if(trap<aux.color)aux.color=trap; break; }
-						case 30: { clipDist=cz.Length()-cr; aux.color=log(1.0+fabs(aux.dist))*mut.clipAmplitude; break; }
-						case 31: { double r2d=sqrt(cz.x*cz.x+cz.y*cz.y); double theta=atan2(cz.y,cz.x); int n=mut.clipNPoints; double starR=cr*(1.0+mut.clipAmplitude*cos((double)n*theta)); clipDist=r2d-starR; break; }
-						case 32: { double x2h=cz.x*cz.x+cz.y*cz.y; clipDist=(x2h-1.0)*(x2h-1.0)*(x2h-1.0)-cz.x*cz.x*cz.y*cz.y*cz.y; break; }
-						case 33: { double r2d2=sqrt(cz.x*cz.x+cz.y*cz.y); double theta2=atan2(cz.y,cz.x); double m=(double)mut.clipNPoints; double n1=ca,n2=cb,n3=cc; double t=m*theta2/4.0; double r_sf=pow(pow(fabs(cos(t)/sx),n2)+pow(fabs(sin(t)/sy),n3),-1.0/n1); clipDist=r2d2-r_sf*cr; break; }
-						case 34: { double r2d3=sqrt(cz.x*cz.x+cz.y*cz.y); double theta3=atan2(cz.y,cz.x); int ng=mut.clipNPoints; double gearR=cr*(1.0+0.1*tanh(sin((double)ng*theta3))); clipDist=r2d3-gearR; break; }
-						case 35: { double r2d4=sqrt(cz.x*cz.x+cz.y*cz.y); double theta4=atan2(cz.y,cz.x); int ns=mut.clipNPoints; double spiralR=ca*exp(-cb*theta4)*(1.0+cc*cos((double)ns*theta4)); clipDist=r2d4-spiralR; break; }
-						case 36: { CVector3 seeds[4]; seeds[0]=CVector3(ca,0,0); seeds[1]=CVector3(-ca,cb,0); seeds[2]=CVector3(0,-ca,cc); seeds[3]=CVector3(cb,cc,-ca); double minVD=1e20; for(int k=0;k<4;k++){double vd=(cz-seeds[k]).Length(); if(vd<minVD)minVD=vd;} clipDist=minVD-cr; break; }
-						case 37: { CVector3 edges[3]; edges[0]=CVector3(ca,0,0); edges[1]=CVector3(-ca*0.5,ca*0.866,0); edges[2]=CVector3(-ca*0.5,-ca*0.866,0); double minED=1e20; for(int k=0;k<3;k++){CVector3 e=edges[(k+1)%3]-edges[k]; CVector3 p=cz-edges[k]; double t=fmax(0.0,fmin(1.0,p.Dot(e)/e.Dot(e))); double ed=(p-e*t).Length(); if(ed<minED)minED=ed;} clipDist=minED-cr; break; }
-						case 38: { CVector3 lz=cz; double lscale=1.0; for(int k=0;k<3;k++){lz.x=fabs(lz.x); lz.y=fabs(lz.y); lz.z=fabs(lz.z); if(lz.x<lz.y){double t=lz.x;lz.x=lz.y;lz.y=t;} if(lz.x<lz.z){double t=lz.x;lz.x=lz.z;lz.z=t;} if(lz.y<lz.z){double t=lz.y;lz.y=lz.z;lz.z=t;} lz=lz*ca-CVector3(cb,cb,cb)*(ca-1.0); lscale*=ca;} clipDist=(lz.Length()-cr)/lscale; break; }
-						case 39: { double jx=cz.x,jy=cz.y; for(int k=0;k<8;k++){double tx=jx*jx-jy*jy+ca; jy=2.0*jx*jy+cb; jx=tx; if(jx*jx+jy*jy>4.0)break;} double jDist=(jx*jx+jy*jy>4.0)?-cr:cr; clipDist=fmax(jDist,fabs(cz.z)-sz); break; }
-						case 40: { double mx=0,my=0; for(int k=0;k<8;k++){double tx2=mx*mx-my*my+cz.x; my=2.0*mx*my+cz.y; mx=tx2; if(mx*mx+my*my>4.0)break;} double mDist=(mx*mx+my*my>4.0)?-cr:cr; clipDist=fmax(mDist,fabs(cz.z)-sz); break; }
-						case 41: { clipDist=fmax(fmax(fabs(cz.x),fabs(cz.y)),fmax(fabs(cz.z),fabs(z.w)))-cr; break; }
-						case 42: { clipDist=sqrt(cz.x*cz.x+cz.y*cz.y+cz.z*cz.z+z.w*z.w)-cr; break; }
-						case 43: { double time=(double)i*mut.clipFrequency; double tR=cr*(1.0+mut.clipAmplitude*sin(time)); clipDist=cz.Length()-tR; break; }
-						case 44: { double orbitR=cr*(1.0+mut.clipAmplitude*sin(aux.color*mut.clipFrequency)); clipDist=cz.Length()-orbitR; break; }
-						case 45: { double deR=cr*(1.0+mut.clipAmplitude*log(1.0+fabs(aux.DE))); clipDist=cz.Length()-deR; break; }
-						case 46: { double colR=cr*(1.0+mut.clipAmplitude*sin(aux.color*mut.clipFrequency)); clipDist=cz.Length()-colR; break; }
-						case 47: { double iterR=cr*(1.0+mut.clipAmplitude*(double)i/250.0); clipDist=cz.Length()-iterR; break; }
-						case 48: { double rh=fabs(sin((double)i*12.9898+cz.x*78.233)*43758.5453); rh=rh-floor(rh); double randR=cr*(1.0+mut.clipAmplitude*(rh-0.5)); clipDist=cz.Length()-randR; break; }
-						case 49: { double nx=tanh(ca*cz.x+cb*cz.y+cc*cz.z); double ny=tanh(cb*cz.x-ca*cz.y+cc*cz.z); double nz=tanh(cc*cz.x+ca*cz.y-cb*cz.z); clipDist=sqrt(nx*nx+ny*ny+nz*nz)-cr; break; }
-						case 50: { CVector3 rz=cz; double rscale=1.0; for(int k=0;k<5;k++){rz.x=fabs(rz.x)*2.0-ca; rz.y=fabs(rz.y)*2.0-ca; rz.z=fabs(rz.z)*2.0-ca; rscale*=2.0; double rd=rz.Length()-cr; rd/=rscale; if(rd<clipDist)clipDist=rd;} break; }
+						// FIXED: Transform z vector instead of aux.dist
+						case 1: { clipDist=sqrt((cz.x/sx)*(cz.x/sx)+(cz.y/sy)*(cz.y/sy)+(cz.z/sz)*(cz.z/sz))-1.0; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0; } break; }
+						case 2: { double rxy=sqrt(cz.x*cz.x+cz.y*cz.y)-cR; clipDist=sqrt(rxy*rxy+cz.z*cz.z)-cr; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0; } break; }
+						case 3: { clipDist=sqrt(cz.x*cz.x+cz.y*cz.y)-cr; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0; } break; }
+						case 4: { double tanAlpha=tan(mut.clipAngle*M_PI/180.0); clipDist=sqrt(cz.x*cz.x+cz.y*cz.y)-tanAlpha*fabs(cz.z); if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0; } break; }
+						case 5: { clipDist=(cz.x/sx)*(cz.x/sx)+(cz.y/sy)*(cz.y/sy)-(cz.z/sz)*(cz.z/sz)-1.0; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0; } break; }
+						case 6: { clipDist=cz.x*cz.x+cz.y*cz.y-ca*cz.z; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0; } break; }
+						case 7: { clipDist=(cz.x/sx)*(cz.x/sx)-(cz.y/sy)*(cz.y/sy)-cz.z; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0; } break; }
+						case 8: { double r2d=sqrt(cz.x*cz.x+cz.y*cz.y); double theta=atan2(cz.y,cz.x); clipDist=r2d-ca*exp(cb*theta); if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0; } break; }
+						case 9: { double freq=mut.clipFrequency; double amp=mut.clipAmplitude; clipDist=cz.z-amp*sin(freq*cz.x)*sin(freq*cz.y); if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0; } break; }
+						case 10: { double n=sin(cz.x*12.9898+cz.y*78.233)*43758.5453; n=(n-floor(n))*2.0-1.0; double n2=sin(cz.y*19.8672+cz.z*53.471)*28947.3125; n2=(n2-floor(n2))*2.0-1.0; clipDist=cz.z-mut.clipAmplitude*(n+n2)*0.5; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0; } break; }
+						case 11: { double d1=sqrt((cz.x/sx)*(cz.x/sx)+(cz.y/sy)*(cz.y/sy)+(cz.z/sz)*(cz.z/sz))-1.0; double d2=cz.Length()-cr; clipDist=fmin(d1,d2); if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0; } break; }
+						case 12: { double dA=sqrt((cz.x/sx)*(cz.x/sx)+(cz.y/sy)*(cz.y/sy)+(cz.z/sz)*(cz.z/sz))-1.0; double dB=cz.Length()-cr; clipDist=fmax(dA,-dB); if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0; } break; }
+						case 13: { double dA2=sqrt((cz.x/sx)*(cz.x/sx)+(cz.y/sy)*(cz.y/sy)+(cz.z/sz)*(cz.z/sz))-1.0; double dB2=cz.Length()-cr; clipDist=fmax(fmin(dA2,dB2),-fmax(dA2,dB2)); if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0; } break; }
+						case 14: { double d1s=sqrt((cz.x/sx)*(cz.x/sx)+(cz.y/sy)*(cz.y/sy)+(cz.z/sz)*(cz.z/sz))-1.0; double d2s=cz.Length()-cr; double k=mut.clipSmoothK; double h=fmax(0.0,fmin(1.0,0.5+0.5*(d2s-d1s)/k)); clipDist=d2s+(d1s-d2s)*h-k*h*(1.0-h); if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0; } break; }
+						case 15: { double dAs=sqrt((cz.x/sx)*(cz.x/sx)+(cz.y/sy)*(cz.y/sy)+(cz.z/sz)*(cz.z/sz))-1.0; double dBs=cz.Length()-cr; double k2=mut.clipSmoothK; double h2=fmax(0.0,fmin(1.0,0.5-0.5*(dAs+dBs)/k2)); clipDist=dAs+(-dBs-dAs)*h2+k2*h2*(1.0-h2); if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0; } break; }
+						case 16: { double dc1=cz.Length()-cr; double dc2=fmax(fabs(cz.x)-sx,fmax(fabs(cz.y)-sy,fabs(cz.z)-sz)); double dc3=sqrt(cz.x*cz.x+cz.y*cz.y)-cr*0.5; clipDist=fmax(dc1,fmax(dc2,dc3)); if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0; } break; }
+						case 17: { CVector3 rp=cz; if(sx>0.001)rp.x=fmod(cz.x+sx*0.5,sx)-sx*0.5; if(sy>0.001)rp.y=fmod(cz.y+sy*0.5,sy)-sy*0.5; if(sz>0.001)rp.z=fmod(cz.z+sz*0.5,sz)-sz*0.5; clipDist=rp.Length()-cr; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0; } break; }
+						case 18: { CVector3 cell; cell.x=(sx>0.001)?floor(cz.x/sx):0; cell.y=(sy>0.001)?floor(cz.y/sy):0; cell.z=(sz>0.001)?floor(cz.z/sz):0; double h=fabs(sin(cell.x*127.1+cell.y*311.7+cell.z*74.7)*43758.5453); h=h-floor(h); CVector3 rp2=cz; if(sx>0.001)rp2.x=fmod(cz.x+sx*0.5,sx)-sx*0.5; if(sy>0.001)rp2.y=fmod(cz.y+sy*0.5,sy)-sy*0.5; if(sz>0.001)rp2.z=fmod(cz.z+sz*0.5,sz)-sz*0.5; clipDist=rp2.Length()-cr*(0.5+h); if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0; } break; }
+						case 19: { double coarse=fmax(fabs(cz.x)-sx*2.0,fmax(fabs(cz.y)-sy*2.0,fabs(cz.z)-sz*2.0)); double fine=cz.Length()-cr; clipDist=(coarse<0.0)?fine:coarse; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0; } break; }
+						case 20: { CVector3 fz=cz; double fscale=1.0; for(int k=0;k<4;k++){fz.x=fabs(fz.x)*2.0-ca; fz.y=fabs(fz.y)*2.0-ca; fz.z=fabs(fz.z)*2.0-ca; fscale*=2.0;} clipDist=(fz.Length()-cr)/fscale; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0; } break; }
+						case 21: { clipDist=cz.Length()-cr; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0; } break; }
+						case 22: { CVector3 scaled(cz.x*sx,cz.y*sy,cz.z*sz); clipDist=scaled.Length()-cr; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0; } break; }
+						case 23: { CVector3 sheared=cz; sheared.x+=mut.clipAmplitude*cz.y; clipDist=sheared.Length()-cr; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0; } break; }
+						case 24: { CVector3 folded=cz; double lim=ca; if(folded.x>lim)folded.x=2.0*lim-folded.x; if(folded.x<-lim)folded.x=-2.0*lim-folded.x; if(folded.y>lim)folded.y=2.0*lim-folded.y; if(folded.y<-lim)folded.y=-2.0*lim-folded.y; if(folded.z>lim)folded.z=2.0*lim-folded.z; if(folded.z<-lim)folded.z=-2.0*lim-folded.z; clipDist=folded.Length()-cr; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0; } break; }
+						case 25: { CVector3 absed(fabs(cz.x),fabs(cz.y),fabs(cz.z)); clipDist=absed.Length()-cr; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0; } break; }
+						case 26: { clipDist=cz.Length()-cr; double pulse=1.0+0.1*sin((double)i*mut.clipFrequency); clipDist*=pulse; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0; } break; }
+						case 27: { clipDist=cz.Length()-cr; double sf=ca*(1.0+0.1*(double)i/250.0); clipDist*=sf; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0; } break; }
+						case 28: { clipDist=cz.Length()-cr; if(clipDist<0.0) aux.color+=fabs(clipDist)*mut.clipAmplitude; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0; } break; }
+						case 29: { clipDist=cz.Length()-cr; double trap=cz.Length(); if(trap<aux.color)aux.color=trap; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0; } break; }
+						case 30: { clipDist=cz.Length()-cr; aux.color=log(1.0+fabs(aux.dist))*mut.clipAmplitude; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0; } break; }
+						case 31: { double r2d=sqrt(cz.x*cz.x+cz.y*cz.y); double theta=atan2(cz.y,cz.x); int n=mut.clipNPoints; double starR=cr*(1.0+mut.clipAmplitude*cos((double)n*theta)); clipDist=r2d-starR; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0; } break; }
+						case 32: { double x2h=cz.x*cz.x+cz.y*cz.y; clipDist=(x2h-1.0)*(x2h-1.0)*(x2h-1.0)-cz.x*cz.x*cz.y*cz.y*cz.y; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0; } break; }
+						case 33: { double r2d2=sqrt(cz.x*cz.x+cz.y*cz.y); double theta2=atan2(cz.y,cz.x); double m=(double)mut.clipNPoints; double n1=ca,n2=cb,n3=cc; double t=m*theta2/4.0; double r_sf=pow(pow(fabs(cos(t)/sx),n2)+pow(fabs(sin(t)/sy),n3),-1.0/n1); clipDist=r2d2-r_sf*cr; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0; } break; }
+						case 34: { double r2d3=sqrt(cz.x*cz.x+cz.y*cz.y); double theta3=atan2(cz.y,cz.x); int ng=mut.clipNPoints; double gearR=cr*(1.0+0.1*tanh(sin((double)ng*theta3))); clipDist=r2d3-gearR; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0; } break; }
+						case 35: { double r2d4=sqrt(cz.x*cz.x+cz.y*cz.y); double theta4=atan2(cz.y,cz.x); int ns=mut.clipNPoints; double spiralR=ca*exp(-cb*theta4)*(1.0+cc*cos((double)ns*theta4)); clipDist=r2d4-spiralR; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0; } break; }
+						case 36: { CVector3 seeds[4]; seeds[0]=CVector3(ca,0,0); seeds[1]=CVector3(-ca,cb,0); seeds[2]=CVector3(0,-ca,cc); seeds[3]=CVector3(cb,cc,-ca); double minVD=1e20; for(int k=0;k<4;k++){double vd=(cz-seeds[k]).Length(); if(vd<minVD)minVD=vd;} clipDist=minVD-cr; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0; } break; }
+						case 37: { CVector3 edges[3]; edges[0]=CVector3(ca,0,0); edges[1]=CVector3(-ca*0.5,ca*0.866,0); edges[2]=CVector3(-ca*0.5,-ca*0.866,0); double minED=1e20; for(int k=0;k<3;k++){CVector3 e=edges[(k+1)%3]-edges[k]; CVector3 p=cz-edges[k]; double t=fmax(0.0,fmin(1.0,p.Dot(e)/e.Dot(e))); double ed=(p-e*t).Length(); if(ed<minED)minED=ed;} clipDist=minED-cr; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0; } break; }
+						case 38: { CVector3 lz=cz; double lscale=1.0; for(int k=0;k<3;k++){lz.x=fabs(lz.x); lz.y=fabs(lz.y); lz.z=fabs(lz.z); if(lz.x<lz.y){double t=lz.x;lz.x=lz.y;lz.y=t;} if(lz.x<lz.z){double t=lz.x;lz.x=lz.z;lz.z=t;} if(lz.y<lz.z){double t=lz.y;lz.y=lz.z;lz.z=t;} lz=lz*ca-CVector3(cb,cb,cb)*(ca-1.0); lscale*=ca;} clipDist=(lz.Length()-cr)/lscale; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0; } break; }
+						case 39: { double jx=cz.x,jy=cz.y; for(int k=0;k<8;k++){double tx=jx*jx-jy*jy+ca; jy=2.0*jx*jy+cb; jx=tx; if(jx*jx+jy*jy>4.0)break;} double jDist=(jx*jx+jy*jy>4.0)?-cr:cr; clipDist=fmax(jDist,fabs(cz.z)-sz); if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0; } break; }
+						case 40: { double mx=0,my=0; for(int k=0;k<8;k++){double tx2=mx*mx-my*my+cz.x; my=2.0*mx*my+cz.y; mx=tx2; if(mx*mx+my*my>4.0)break;} double mDist=(mx*mx+my*my>4.0)?-cr:cr; clipDist=fmax(mDist,fabs(cz.z)-sz); if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0; } break; }
+						case 41: { clipDist=fmax(fmax(fabs(cz.x),fabs(cz.y)),fmax(fabs(cz.z),fabs(z.w)))-cr; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0; } break; }
+						case 42: { clipDist=sqrt(cz.x*cz.x+cz.y*cz.y+cz.z*cz.z+z.w*z.w)-cr; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0; } break; }
+						case 43: { double time=(double)i*mut.clipFrequency; double tR=cr*(1.0+mut.clipAmplitude*sin(time)); clipDist=cz.Length()-tR; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0; } break; }
+						case 44: { double orbitR=cr*(1.0+mut.clipAmplitude*sin(aux.color*mut.clipFrequency)); clipDist=cz.Length()-orbitR; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0; } break; }
+						case 45: { double deR=cr*(1.0+mut.clipAmplitude*log(1.0+fabs(aux.DE))); clipDist=cz.Length()-deR; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0; } break; }
+						case 46: { double colR=cr*(1.0+mut.clipAmplitude*sin(aux.color*mut.clipFrequency)); clipDist=cz.Length()-colR; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0; } break; }
+						case 47: { double iterR=cr*(1.0+mut.clipAmplitude*(double)i/250.0); clipDist=cz.Length()-iterR; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0; } break; }
+						case 48: { double rh=fabs(sin((double)i*12.9898+cz.x*78.233)*43758.5453); rh=rh-floor(rh); double randR=cr*(1.0+mut.clipAmplitude*(rh-0.5)); clipDist=cz.Length()-randR; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0; } break; }
+						case 49: { double nx=tanh(ca*cz.x+cb*cz.y+cc*cz.z); double ny=tanh(cb*cz.x-ca*cz.y+cc*cz.z); double nz=tanh(cc*cz.x+ca*cz.y-cb*cz.z); clipDist=sqrt(nx*nx+ny*ny+nz*nz)-cr; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0; } break; }
+						case 50: { CVector3 rz=cz; double rscale=1.0; for(int k=0;k<5;k++){rz.x=fabs(rz.x)*2.0-ca; rz.y=fabs(rz.y)*2.0-ca; rz.z=fabs(rz.z)*2.0-ca; rscale*=2.0; double rd=rz.Length()-cr; rd/=rscale; if(rd<clipDist)clipDist=rd;} if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0; } break; }
 					}
-					int bop = mut.clipBooleanOp;
-					if (bop == 0) aux.dist = fmax(aux.dist, clipDist);
-					else if (bop == 1) aux.dist = fmin(aux.dist, clipDist);
-					else if (bop == 2) aux.dist = fmax(aux.dist, -clipDist);
-					else if (bop == 3) aux.dist = fmax(fmin(aux.dist, clipDist), -fmax(aux.dist, clipDist));
-					else if (bop == 4) { double kk=mut.clipSmoothK; double hh=fmax(0.0,fmin(1.0,0.5+0.5*(clipDist-aux.dist)/kk)); aux.dist=clipDist+(aux.dist-clipDist)*hh-kk*hh*(1.0-hh); }
-					else if (bop == 5) { double kk2=mut.clipSmoothK; double hh2=fmax(0.0,fmin(1.0,0.5-0.5*(aux.dist+clipDist)/kk2)); aux.dist=aux.dist+(-clipDist-aux.dist)*hh2+kk2*hh2*(1.0-hh2); }
+					// Apply the transformed z vector back to the original z
+					cz.x += mut.clipCenterX; cz.y += mut.clipCenterY; cz.z += mut.clipCenterZ;
+					z = CVector4(cz, z.w);
 				}
 				// v7.7 — Jos Leys DE system (per-section iteration range)
 				if (i >= mut.josIterStart && i < mut.josIterStop && mut.josLeysDeType != 0)

@@ -2215,7 +2215,7 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 			if (mut->zMix < 1.0f) { float m = mut->zMix; z = z * m + preMutZ * (1.0f - m); }
 
 			// v7.6 — Clip system (per-section iteration range)
-			if (i >= mut->clipIterStart && i < mut->clipIterStop && mut->clipType != 0)
+			if (mut->enabled && i >= mut->clipIterStart && i < mut->clipIterStop && mut->clipType != 0)
 			{
 				float3 cz = z.xyz;
 				if (mut->clipPreRotX != 0.0f || mut->clipPreRotY != 0.0f || mut->clipPreRotZ != 0.0f)

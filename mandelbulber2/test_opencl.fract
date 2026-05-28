@@ -1,0 +1,18 @@
+# Mandelbulber settings file
+# version 2.26
+# only modified parameters
+[main_parameters]
+camera -2,13099957597042 -2,65981125399026 0,789064324930775;
+camera_distance_to_target 3,21828805928671;
+camera_rotation -31,5166776136377 -14,1925532903359 0;
+camera_top 0,1281677670855954 0,2090141986028645 0,969477224210775;
+detail_level 2;
+fov 53,130102354156;
+light1_is_defined true;
+mat1_is_defined true;
+opencl_enabled true;
+target -0,5 0 0;
+[fractal_1]
+alpha_angle_offset 90;
+beta_angle_offset 90;
+power 2;

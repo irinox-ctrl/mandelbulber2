@@ -1,4 +1,3 @@
-#include <QDebug>
 /**
  * Mandelbulber v2, a 3D fractal generator       ,=#MKNmMMKmmßMNWy,
  *                                             ,B" ]L,,p%%%,,,§;, "K
@@ -60,7 +59,7 @@ cTabFractal::cTabFractal(QWidget *parent)
 {
 	ui->setupUi(this);
 	automatedWidgets = new cAutomatedWidgets(this);
-	// Don't connect signals here yet - widget names need to be updated first
+	// automatedWidgets->ConnectSignalsForSlidersInWindow(this);
 	ConnectSignals();
 
 	tabIndex = 0;
@@ -102,9 +101,6 @@ void cTabFractal::Init(bool firstTab, int _tabIndex)
 	tabIndex = _tabIndex;
 
 	InitWidgetNames();
-	
-	// Connect signals after widget names have been updated with correct tab index
-	automatedWidgets->ConnectSignalsForSlidersInWindow(this);
 
 	// Direct parameter update for mutation type comboboxes
 	// (plain QComboBox does not auto-update parameters on interaction)
@@ -117,8 +113,6 @@ void cTabFractal::Init(bool firstTab, int _tabIndex)
 			});
 	};
 
-	connectMutationCombo(ui->comboBox_mutation_inv_type, "mutation_inv_type");
-	connectMutationCombo(ui->comboBox_mutation_clip_type, "mutation_clip_type");
 	connectMutationCombo(ui->comboBox_mutation_jos_de_type, "mutation_jos_de_type");
 	connectMutationCombo(ui->comboBox_mutation_pk_de_type, "mutation_pk_de_type");
 	connectMutationCombo(ui->comboBox_mutation_mb_math_type, "mutation_mb_math_type");
@@ -219,18 +213,6 @@ void cTabFractal::slotChangedComboFractal(int indexInComboBox)
 		if (widgetLoaded)
 		{
 			QVBoxLayout *layout = ui->verticalLayout_fractal;
-			
-			// Remove any existing widget from the layout before adding the new one
-			while (layout->count() > 0)
-			{
-				QLayoutItem *item = layout->takeAt(0);
-				if (item->widget())
-				{
-					item->widget()->setParent(nullptr);
-				}
-				delete item;
-			}
-			
 			layout->addWidget(fractalWidget.get());
 
 			if (params->Get<bool>("ui_colorize"))
@@ -376,59 +358,13 @@ void cTabFractal::SynchronizeInterface(
 	// SynchronizeInterfaceWindow processes CHILDREN only, not the widget itself.
 	{
 		QString paramName = "mutation_enabled_" + QString::number(tabIndex + 1);
-
+		WriteLog(QString("Mutation sync: paramName=%1, exists=%2").arg(paramName).arg(par->IfExists(paramName)), 2);
 		if (mode == qInterface::read)
 			par->Set(paramName, ui->groupCheck_mutation_enabled->isChecked());
 		else
 			ui->groupCheck_mutation_enabled->setChecked(par->Get<bool>(paramName));
 	}
 	SynchronizeInterfaceWindow(ui->groupCheck_mutation_enabled, par, mode);
-
-	// Sync individual mutation system groupboxes
-	auto syncMutationGroupbox = [&](const QString &paramBase, QGroupBox *groupbox) {
-		QString paramName = paramBase + "_" + QString::number(tabIndex + 1);
-		if (mode == qInterface::read)
-			par->Set(paramName, groupbox->isChecked());
-		else
-			groupbox->setChecked(par->Get<bool>(paramName));
-		SynchronizeInterfaceWindow(groupbox, par, mode);
-	};
-
-	WriteLog("cTabFractal::SynchronizeInterface: groupCheck_mutation_clip_enabled", 3);
-	syncMutationGroupbox("mutation_clip_enabled", ui->groupCheck_mutation_clip_enabled);
-	// Force clip groupbox to be visible
-	ui->groupCheck_mutation_clip_enabled->setVisible(true);
-
-	WriteLog("cTabFractal::SynchronizeInterface: groupCheck_mutation_inversion_enabled", 3);
-	syncMutationGroupbox("mutation_inversion_enabled", ui->groupCheck_mutation_inversion_enabled);
-	ui->groupCheck_mutation_inversion_enabled->setVisible(true);
-
-	WriteLog("cTabFractal::SynchronizeInterface: groupCheck_mutation_jos_leys_enabled", 3);
-	syncMutationGroupbox("mutation_jos_leys_enabled", ui->groupCheck_mutation_jos_leys_enabled);
-
-	WriteLog("cTabFractal::SynchronizeInterface: groupCheck_mutation_pk_enabled", 3);
-	syncMutationGroupbox("mutation_pk_enabled", ui->groupCheck_mutation_pk_enabled);
-
-	WriteLog("cTabFractal::SynchronizeInterface: groupCheck_mutation_mb_math_enabled", 3);
-	syncMutationGroupbox("mutation_mb_math_enabled", ui->groupCheck_mutation_mb_math_enabled);
-
-	WriteLog("cTabFractal::SynchronizeInterface: groupCheck_mutation_warp_dist_enabled", 3);
-	syncMutationGroupbox("mutation_warp_dist_enabled", ui->groupCheck_mutation_warp_dist_enabled);
-
-	WriteLog("cTabFractal::SynchronizeInterface: groupCheck_mutation_symmetry_enabled", 3);
-	syncMutationGroupbox("mutation_symmetry_enabled", ui->groupCheck_mutation_symmetry_enabled);
-
-	WriteLog("cTabFractal::SynchronizeInterface: groupCheck_mutation_abox_enabled", 3);
-	syncMutationGroupbox("mutation_abox_enabled", ui->groupCheck_mutation_abox_enabled);
-
-	WriteLog("cTabFractal::SynchronizeInterface: groupCheck_mutation_noise_enabled", 3);
-	syncMutationGroupbox("mutation_noise_enabled", ui->groupCheck_mutation_noise_enabled);
-
-	WriteLog("cTabFractal::SynchronizeInterface: groupCheck_mutation_orbit_trap_enabled", 3);
-	syncMutationGroupbox("mutation_orbit_trap_enabled", ui->groupCheck_mutation_orbit_trap_enabled);
-
-	WriteLog("cTabFractal::SynchronizeInterface: groupCheck_mutation_torus_enabled", 3);
-	syncMutationGroupbox("mutation_torus_enabled", ui->groupCheck_mutation_torus_enabled);
 }
 
 void cTabFractal::FrameIterationFormulaSetWidgetsVisibility(bool visible) const

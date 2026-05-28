@@ -225,7 +225,7 @@ void cInterface::ShowUi()
 	// 3x3lion: Camera HUD overlay on rendered image
 	cameraHUD = new cCameraHUDWidget(renderedImage);
 	cameraHUD->setGeometry(0, 0, renderedImage->width(), renderedImage->height());
-	cameraHUD->show();
+	cameraHUD->hide();
 
 	// Connect HUD to smart camera
 	cSmartCamera *smartCam = mainWindow->ui->widgetDockNavigation->GetSmartCamera();

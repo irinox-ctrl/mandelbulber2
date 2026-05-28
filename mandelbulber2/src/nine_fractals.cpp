@@ -298,9 +298,9 @@ cNineFractals::cNineFractals(std::shared_ptr<const cFractalContainer> par,
 		mutationParams[i].invAmplitude = generalPar->Get<double>("mutation_inv_amplitude", i + 1);
 		mutationParams[i].invMinR = generalPar->Get<double>("mutation_inv_min_r", i + 1);
 		mutationParams[i].invMaxR = generalPar->Get<double>("mutation_inv_max_r", i + 1);
-		mutationParams[i].invPreRotX = generalPar->Get<double>("mutation_inv_pre_rot_x", i + 1);
-		mutationParams[i].invPreRotY = generalPar->Get<double>("mutation_inv_pre_rot_y", i + 1);
-		mutationParams[i].invPreRotZ = generalPar->Get<double>("mutation_inv_pre_rot_z", i + 1);
+		mutationParams[i].invPreRotX = generalPar->Get<double>("mutation_inv_pre_rot_ax", i + 1);
+		mutationParams[i].invPreRotY = generalPar->Get<double>("mutation_inv_pre_rot_ay", i + 1);
+		mutationParams[i].invPreRotZ = generalPar->Get<double>("mutation_inv_pre_rot_az", i + 1);
 		mutationParams[i].invCenter2X = generalPar->Get<double>("mutation_inv_center2_ax", i + 1);
 		mutationParams[i].invCenter2Y = generalPar->Get<double>("mutation_inv_center2_ay", i + 1);
 		mutationParams[i].invCenter2Z = generalPar->Get<double>("mutation_inv_center2_az", i + 1);
@@ -326,9 +326,9 @@ cNineFractals::cNineFractals(std::shared_ptr<const cFractalContainer> par,
 		mutationParams[i].clipFrequency = generalPar->Get<double>("mutation_clip_frequency", i + 1);
 		mutationParams[i].clipSmoothK = generalPar->Get<double>("mutation_clip_smooth_k", i + 1);
 		mutationParams[i].clipBooleanOp = generalPar->Get<int>("mutation_clip_boolean_op", i + 1);
-		mutationParams[i].clipPreRotX = generalPar->Get<double>("mutation_clip_pre_rot_x", i + 1);
-		mutationParams[i].clipPreRotY = generalPar->Get<double>("mutation_clip_pre_rot_y", i + 1);
-		mutationParams[i].clipPreRotZ = generalPar->Get<double>("mutation_clip_pre_rot_z", i + 1);
+		mutationParams[i].clipPreRotX = generalPar->Get<double>("mutation_clip_pre_rot_ax", i + 1);
+		mutationParams[i].clipPreRotY = generalPar->Get<double>("mutation_clip_pre_rot_ay", i + 1);
+		mutationParams[i].clipPreRotZ = generalPar->Get<double>("mutation_clip_pre_rot_az", i + 1);
 		mutationParams[i].clipNPoints = generalPar->Get<int>("mutation_clip_n_points", i + 1);
 		mutationParams[i].clipParamA = generalPar->Get<double>("mutation_clip_param_a", i + 1);
 		mutationParams[i].clipParamB = generalPar->Get<double>("mutation_clip_param_b", i + 1);

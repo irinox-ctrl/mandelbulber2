@@ -255,12 +255,7 @@ bool cOpenClEngine::Build(const QByteArray &programString, QString *errorText, b
 
 					*errorText = QString::fromStdString(errorMessageStream.str());
 
-					std::cerr << buildLogText;
 
-					// GPU Diagnostics: enhanced error analysis
-					QString diagError = GPUDiag::FormatKernelBuildError(
-						QString::fromStdString(buildLogText), QString());
-					std::cerr << diagError.toStdString();
 
 					if (!quiet)
 					{

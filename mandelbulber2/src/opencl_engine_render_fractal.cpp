@@ -1120,12 +1120,14 @@ void cOpenClEngineRenderFractal::SetParameters(
 
 		WriteLogDouble("Constant buffer size [KB]", sizeof(sClInConstants) / 1024.0, 2);
 
-		// GPU Diagnostics: struct layout report
+		// GPU Diagnostics: struct layout report (disabled)
+		/*
 		{
 			QString diagReport = GPUDiag::RunStructDiagnostics();
 			WriteLogString("GPU Struct Diagnostics", diagReport.toUtf8().constData(), 2);
 			std::cerr << diagReport.toStdString();
 		}
+		*/
 
 		//---------- DYNAMIC DATA -------------
 
@@ -1263,16 +1265,18 @@ bool cOpenClEngineRenderFractal::PreAllocateBuffers(
 
 	cl_int err;
 
-	// GPU Diagnostics: verify constant buffer before sending to GPU
+	// GPU Diagnostics: verify constant buffer before sending to GPU (disabled)
+	/*
 	if (constantInBuffer)
 	{
 		QString bufReport = GPUDiag::VerifyConstantBuffer(constantInBuffer.get());
 		WriteLogString("GPU Buffer Verification", bufReport.toUtf8().constData(), 2);
 		std::cerr << bufReport.toStdString();
 	}
+	*/
 
-	// ComboBox ↔ Parameter range validation
-	GPUDiag::RunComboBoxDiagnostics();
+	// ComboBox ↔ Parameter range validation (disabled)
+	// GPUDiag::RunComboBoxDiagnostics();
 
 	// allocating input buffers for each device
 	for (int d = 0; d < hardware->getEnabledDevices().size(); d++)
