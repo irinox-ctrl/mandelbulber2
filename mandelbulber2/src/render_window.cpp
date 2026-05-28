@@ -130,6 +130,11 @@ cDockEffects *RenderWindow::GetWidgetDockEffects() const
 	return ui->widgetEffects;
 }
 
+cDockMutation *RenderWindow::GetWidgetDockMutation() const
+{
+	return ui->widgetDockMutation;
+}
+
 cDockPatternLines *RenderWindow::GetWidgetDockPatternLines() const
 {
 	return ui->widgetPatternLines;

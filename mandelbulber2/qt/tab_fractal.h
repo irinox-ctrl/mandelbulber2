@@ -83,6 +83,9 @@ public:
 		std::shared_ptr<cParameterContainer> fractal, qInterface::enumReadWrite mode) const;
 	int GetTabIndex() { return tabIndex; }
 
+signals:
+	void signalFormulaChanged(int formulaIndex);
+
 private slots:
 	void slotChangedComboFractal(int indexInComboBox);
 	void slotPressedButtonResetFormula() const;

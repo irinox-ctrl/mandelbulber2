@@ -36,6 +36,7 @@
 
 #include "ui_dock_fractal.h"
 
+#include "dock_mutation.h"
 #include "dock_rendering_engine.h"
 #include "my_tab_bar.h"
 
@@ -222,6 +223,12 @@ void cDockFractal::InitializeFractalUi() const
 	//		ui->verticalLayout_fractal_1->addWidget(fractalWidgets[0]);
 	//		fractalWidgets[0]->show();
 
+	cDockMutation *dockMutation = nullptr;
+	if (gMainInterface && gMainInterface->mainWindow)
+	{
+		dockMutation = gMainInterface->mainWindow->GetWidgetDockMutation();
+	}
+
 	for (int i = 0; i < NUMBER_OF_FRACTALS; i++)
 	{
 		if (i == 0)
@@ -236,6 +243,16 @@ void cDockFractal::InitializeFractalUi() const
 		fractalTabs[i]->AssignParameterContainers(params, fractalParams);
 		fractalTabs[i]->Init(i == 0, i);
 		fractalTabs[i]->AssignParentDockFractal(this);
+
+		// Connect fractal formula change to mutation dock
+		if (dockMutation)
+		{
+			connect(fractalTabs[i], &cTabFractal::signalFormulaChanged,
+				[=](int formulaIndex) {
+					dockMutation->UpdateMutationFieldVisibility(i, formulaIndex);
+					dockMutation->UpdateMutationGrayOut(i);
+				});
+		}
 	}
 
 	static_cast<MyTabBar *>(ui->tabWidget_fractals->tabBar())->setupMoveButtons();

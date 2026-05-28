@@ -251,6 +251,8 @@ void cInterface::ShowUi()
 	mainWindow->ui->widgetDockFractal->AssignSpecialWidgets(
 		renderedImage, mainWindow->ui->comboBox_mouse_click_function);
 
+	mainWindow->ui->widgetDockMutation->AssignParameterContainers(gPar, gParFractal);
+
 	WriteLog("Prepare progress and status bar", 2);
 	progressBarLayout = new QVBoxLayout();
 	progressBarLayout->setSpacing(0);
@@ -327,6 +329,7 @@ void cInterface::ShowUi()
 
 	// loading default ui for all fractal components
 	mainWindow->ui->widgetDockFractal->InitializeFractalUi();
+	mainWindow->ui->widgetDockMutation->InitializeMutationUi();
 
 	// Hide custom docks that are not populated (Julia and Primitives stay in dock_fractal)
 	mainWindow->ui->dockWidget_julia->hide();
@@ -666,6 +669,7 @@ void cInterface::SynchronizeInterface(std::shared_ptr<cParameterContainer> par,
 	}
 
 	mainWindow->ui->widgetDockFractal->SynchronizeInterfaceFractals(par, parFractal, mode);
+	mainWindow->ui->widgetDockMutation->SynchronizeInterfaceMutation(par, mode);
 
 	// Nauwkeurige delta voor Extra positie X/Y/Z (patroon-dock) na elke param ↔ UI-synchronisatie
 	mainWindow->ui->widgetPatternLines->syncAuxLightPlacementOffsetBaseline();

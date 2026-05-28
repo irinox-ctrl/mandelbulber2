@@ -58,6 +58,7 @@ class cDockImageAdjustments;
 class cDockRenderingEngine;
 class cDockFractal;
 class cDockEffects;
+class cDockMutation;
 class cDockPatternLines;
 class cManipulations;
 
@@ -83,6 +84,7 @@ public:
 	cDockRenderingEngine *GetWidgetDockRenderingEngine() const;
 	cDockFractal *GetWidgetDockFractal() const;
 	cDockEffects *GetWidgetDockEffects() const;
+	cDockMutation *GetWidgetDockMutation() const;
 	cDockPatternLines *GetWidgetDockPatternLines() const;
 
 	QWidget *GetCentralWidget() const;

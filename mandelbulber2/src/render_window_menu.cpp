@@ -839,6 +839,20 @@ void RenderWindow::slotMenuStopRendering()
 
 void RenderWindow::slotUpdateDocksAndToolbarByAction()
 {
+	// Mutation dock
+	if (ui->actionShow_mutation_dock->isChecked() != ui->dockWidget_mutation->isVisible())
+	{
+		if (ui->actionShow_mutation_dock->isChecked())
+		{
+			addDockWidget(Qt::LeftDockWidgetArea, ui->dockWidget_mutation);
+		}
+		else
+		{
+			removeDockWidget(ui->dockWidget_mutation);
+		}
+		ui->dockWidget_mutation->setVisible(ui->actionShow_mutation_dock->isChecked());
+	}
+
 	// Animation dock
 	if (ui->actionShow_animation_dock->isChecked() != ui->dockWidget_animation->isVisible())
 	{
@@ -934,6 +948,12 @@ void RenderWindow::slotUpdateDocksAndToolbarByAction()
 
 void RenderWindow::slotUpdateDocksAndToolbarByView() const
 {
+	// Mutation dock
+	if (ui->actionShow_mutation_dock->isChecked() != ui->dockWidget_mutation->isVisible())
+	{
+		ui->actionShow_mutation_dock->setChecked(ui->dockWidget_mutation->isVisible());
+	}
+
 	// Animation dock
 	if (ui->actionShow_animation_dock->isChecked() != ui->dockWidget_animation->isVisible())
 	{

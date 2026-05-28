@@ -1,107 +1,30 @@
-#include <QDebug>
-/**
- * Mandelbulber v2, a 3D fractal generator       ,=#MKNmMMKmmßMNWy,
- *                                             ,B" ]L,,p%%%,,,§;, "K
- * Copyright (C) 2016-22 Mandelbulber Team     §R-==%w["'~5]m%=L.=~5N
- *                                        ,=mm=§M ]=4 yJKA"/-Nsaj  "Bw,==,,
- * This file is part of Mandelbulber.    §R.r= jw",M  Km .mM  FW ",§=ß., ,TN
- *                                     ,4R =%["w[N=7]J '"5=],""]]M,w,-; T=]M
- * Mandelbulber is free software:     §R.ß~-Q/M=,=5"v"]=Qf,'§"M= =,M.§ Rz]M"Kw
- * you can redistribute it and/or     §w "xDY.J ' -"m=====WeC=\ ""%""y=%"]"" §
- * modify it under the terms of the    "§M=M =D=4"N #"%==A%p M§ M6  R' #"=~.4M
- * GNU General Public License as        §W =, ][T"]C  §  § '§ e===~ U  !§[Z ]N
- * published by the                    4M",,Jm=,"=e~  §  §  j]]""N  BmM"py=ßM
- * Free Software Foundation,          ]§ T,M=& 'YmMMpM9MMM%=w=,,=MT]M m§;'§,
- * either version 3 of the License,    TWw [.j"5=~N[=§%=%W,T ]R,"=="Y[LFT ]N
- * or (at your option)                   TW=,-#"%=;[  =Q:["V""  ],,M.m == ]N
- * any later version.                      J§"mr"] ,=,," =="""J]= M"M"]==ß"
- *                                          §= "=C=4 §"eM "=B:m|4"]#F,§~
- * Mandelbulber is distributed in            "9w=,,]w em%wJ '"~" ,=,,ß"
- * the hope that it will be useful,                 . "K=  ,=RMMMßM"""
- * but WITHOUT ANY WARRANTY;                            .'''
- * without even the implied warranty
- * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- *
- * See the GNU General Public License for more details.
- * You should have received a copy of the GNU General Public License
- * along with Mandelbulber. If not, see <http://www.gnu.org/licenses/>.
- *
- * ###########################################################################
- *
- * Authors: Krzysztof Marczak (buddhi1980@gmail.com)
- *
- * cTabFractal - contains ui logic for the fractal and transform tabs
- * tab_fractal.ui is the layout ui for the outer ui.
- * The formula specific ui is loaded dynamically in slotChangedComboFractal()
- * and reads the corresponding ui from formula/ui/fractal_<FORMULA_NAME>.ui
- */
-
-#include "tab_fractal.h"
-
-#include "ui_tab_fractal.h"
-
-#include "custom_formula_editor.h"
-#include "dock_fractal.h"
-#include "navigator_window.h"
+#include "dock_mutation_tab.h"
+#include "ui_dock_mutation_tab.h"
 
 #include "src/automated_widgets.hpp"
-#include "src/error_message.hpp"
 #include "src/fractal_container.hpp"
 #include "src/initparameters.hpp"
 #include "src/interface.hpp"
-#include "src/my_ui_loader.h"
-#include "src/render_window.hpp"
 #include "src/write_log.hpp"
 
 #include "formula/definition/all_fractal_list.hpp"
 
-cTabFractal::cTabFractal(QWidget *parent)
-		: QWidget(parent), cMyWidgetWithParams(), ui(new Ui::cTabFractal)
+cDockMutationTab::cDockMutationTab(QWidget *parent)
+		: QWidget(parent), cMyWidgetWithParams(), ui(new Ui::cDockMutationTab)
 {
 	ui->setupUi(this);
 	automatedWidgets = new cAutomatedWidgets(this);
-	// Don't connect signals here yet - widget names need to be updated first
-	ConnectSignals();
-
 	tabIndex = 0;
-
-	// v7.6 — Larger fonts and widgets for mutation section
-	QString mutationStyleSheet = QString(
-		"QLabel, QComboBox, QCheckBox, MyDoubleSpinBox, MySpinBox, QGroupBox, QRadioButton { "
-		"  font-size: 14px; "
-		"} "
-		"MyDoubleSpinBox, QDoubleSpinBox, QSpinBox, QComboBox { "
-		"  min-height: 28px; "
-		"  min-width: 120px; "
-		"  padding: 2px 6px; "
-		"} "
-		"QGroupBox::title { "
-		"  font-size: 15px; "
-		"  font-weight: bold; "
-		"} "
-		"QLabel { "
-		"  min-height: 22px; "
-		"}");
-
-	QList<QWidget *> allWidgets = findChildren<QWidget *>();
-	for (QWidget *widget : allWidgets)
-	{
-		if (widget->objectName().contains("mutation"))
-		{
-			widget->setStyleSheet(mutationStyleSheet);
-		}
-	}
 }
 
-cTabFractal::~cTabFractal()
+cDockMutationTab::~cDockMutationTab()
 {
 	delete ui;
 }
 
-void cTabFractal::InitWidgetNames() const
+void cDockMutationTab::InitWidgetNames() const
 {
 	QList<QWidget *> widgetList = findChildren<QWidget *>();
-
 	for (auto widget : widgetList)
 	{
 		QString oldName = widget->objectName();
@@ -112,8 +35,7 @@ void cTabFractal::InitWidgetNames() const
 			if (lastTwoLetters == "_x" || lastTwoLetters == "_y" || lastTwoLetters == "_z"
 					|| lastTwoLetters == "_w")
 			{
-				newName =
-					oldName.left(oldName.size() - 2) + "_" + QString::number(tabIndex + 1) + lastTwoLetters;
+				newName = oldName.left(oldName.size() - 2) + "_" + QString::number(tabIndex + 1) + lastTwoLetters;
 			}
 			else
 			{
@@ -124,17 +46,14 @@ void cTabFractal::InitWidgetNames() const
 	}
 }
 
-void cTabFractal::Init(bool firstTab, int _tabIndex)
+void cDockMutationTab::Init(int _tabIndex)
 {
 	tabIndex = _tabIndex;
 
 	InitWidgetNames();
-	
-	// Connect signals after widget names have been updated with correct tab index
+
 	automatedWidgets->ConnectSignalsForSlidersInWindow(this);
 
-	// Direct parameter update for mutation type comboboxes
-	// (plain QComboBox does not auto-update parameters on interaction)
 	auto connectMutationCombo = [&](QComboBox *combo, const QString &paramBase) {
 		if (!combo || !params) return;
 		QString paramName = paramBase + "_" + QString::number(tabIndex + 1);
@@ -156,7 +75,6 @@ void cTabFractal::Init(bool firstTab, int _tabIndex)
 	connectMutationCombo(ui->comboBox_mutation_orbit_trap_type, "mutation_orbit_trap_type");
 	connectMutationCombo(ui->comboBox_mutation_torus_type, "mutation_torus_type");
 
-	// v7.6 — Gray out mutation parameters that have no effect
 	QList<QComboBox *> mutationTypeCombos = {
 		ui->comboBox_mutation_inv_type,
 		ui->comboBox_mutation_clip_type,
@@ -172,11 +90,16 @@ void cTabFractal::Init(bool firstTab, int _tabIndex)
 		ui->comboBox_mutation_fold_type,
 		ui->comboBox_mutation_warp_type,
 		ui->comboBox_mutation_math_type,
+		ui->comboBox_mutation_julia_injection,
+		ui->comboBox_mutation_julia_start,
+		ui->comboBox_mutation_julia_c_transform,
+		ui->comboBox_mutation_julia_dynamic,
+		ui->comboBox_mutation_julia_multi,
 	};
 	for (QComboBox *combo : mutationTypeCombos)
 	{
 		if (combo) connect(combo, QOverload<int>::of(&QComboBox::currentIndexChanged),
-			this, &cTabFractal::UpdateMutationGrayOut);
+			this, &cDockMutationTab::UpdateMutationGrayOut);
 	}
 
 	QList<QGroupBox *> mutationGroups = {
@@ -195,493 +118,20 @@ void cTabFractal::Init(bool firstTab, int _tabIndex)
 	};
 	for (QGroupBox *group : mutationGroups)
 	{
-		if (group) connect(group, &QGroupBox::toggled, this, &cTabFractal::UpdateMutationGrayOut);
+		if (group) connect(group, &QGroupBox::toggled, this, &cDockMutationTab::UpdateMutationGrayOut);
 	}
 
-	// set headings and separator of formulas and transforms
-	QFont fontHeading;
-	fontHeading.setBold(true);
-	QList<QPair<int, QString> /* */> insertHeader;
-	insertHeader << QPair<int, QString>(
-		fractal::aexion, QObject::tr("*** Formulas with analytic DE ***"));
-	insertHeader << QPair<int, QString>(fractal::aexion, QObject::tr("Logarithmic DE"));
-	insertHeader << QPair<int, QString>(fractal::aboxMod1, QObject::tr("Linear DE"));
-	insertHeader << QPair<int, QString>(fractal::josKleinian, QObject::tr("JosLeys-Kleinian DE"));
-	insertHeader << QPair<int, QString>(fractal::pseudoKleinian, QObject::tr("Pseudo Kleinian DE"));
-	insertHeader << QPair<int, QString>(
-		fractal::dIFSAmazingIfs, QObject::tr("Custom DE - dIFS Formulas"));
-	insertHeader << QPair<int, QString>(
-		fractal::transfDIFSAmazingIfs, QObject::tr("Custom DE - dIFS Transforms"));
-	insertHeader << QPair<int, QString>(
-		fractal::foldCutCube, QObject::tr("Custom DE - non-dIFS formulas"));
-
-	insertHeader << QPair<int, QString>(
-		fractal::aexionOctopusMod, QObject::tr("*** Formulas with delta-DE ***"));
-	insertHeader << QPair<int, QString>(
-		fractal::aexionOctopusMod, QObject::tr("Logarithmic delta-DE"));
-	insertHeader << QPair<int, QString>(fractal::boxFoldBulbPow2, QObject::tr("Linear delta-DE"));
-
-	insertHeader << QPair<int, QString>(
-		fractal::transfAbsAddConditional, QObject::tr("*** Transforms ***"));
-
-	insertHeader << QPair<int, QString>(
-		fractal::transfHybridColor, QObject::tr("*** Hybrid coloring ***"));
-	insertHeader << QPair<int, QString>(
-		fractal::testing, QObject::tr("*** Experimental Do Not Use***"));
-
-	ui->comboBox_formula->populateItemsFromFractalList(
-		newFractalList, insertHeader, params->Get<int>("ui_colorize_random_seed"));
-
-	connect(ui->comboBox_formula, SIGNAL(currentIndexChanged(int)), this,
-		SLOT(slotChangedComboFractal(int)));
-	connect(
-		ui->pushButton_reset_formula, SIGNAL(clicked()), this, SLOT(slotPressedButtonResetFormula()));
-
-	FrameIterationFormulaSetWidgetsVisibility(false);
-
-	ui->checkBox_dont_add_c_constant->setText(QObject::tr("Don't add global C constant"));
-
-	if (!firstTab)
-	{
-		ui->frame_iterations_formula->setEnabled(false);
-	}
-
-	ui->groupBox_formula_transform->setVisible(false);
-	ui->groupBox_c_constant_addition->setVisible(false);
-	ui->groupBox_material_fractal->setVisible(false);
-}
-
-void cTabFractal::slotChangedComboFractal(int indexInComboBox)
-{
-	QString comboName = sender()->objectName();
-	int index = qobject_cast<QComboBox *>(sender())->itemData(indexInComboBox).toInt();
-
-	QString fullFormulaName = newFractalList[index]->getNameInComboBox();
-	if (newFractalList[index]->getInternalId() > 0)
-	{
-		QString formulaName = newFractalList[index]->getInternalName();
-		QString uiFilename = newFractalList[index]->getUiFilename();
-
-		bool widgetLoaded = false;
-
-		if (formulaName == "custom")
-		{
-			fractalWidget.reset(new cCustomFormulaEditor());
-			dynamic_cast<cCustomFormulaEditor *>(fractalWidget.get())->AssignSlot(tabIndex);
-			widgetLoaded = true;
-		}
-		else
-		{
-			MyUiLoader loader;
-			QFile uiFile(uiFilename);
-
-			if (uiFile.exists())
-			{
-				uiFile.open(QFile::ReadOnly);
-				fractalWidget.reset(loader.load(&uiFile));
-
-				uiFile.close();
-				widgetLoaded = true;
-			}
-		}
-
-		if (widgetLoaded)
-		{
-			QVBoxLayout *layout = ui->verticalLayout_fractal;
-			
-			// Remove any existing widget from the layout before adding the new one
-			while (layout->count() > 0)
-			{
-				QLayoutItem *item = layout->takeAt(0);
-				if (item->widget())
-				{
-					item->widget()->setParent(nullptr);
-				}
-				delete item;
-			}
-			
-			layout->addWidget(fractalWidget.get());
-
-			if (params->Get<bool>("ui_colorize"))
-				cInterface::ColorizeGroupBoxes(
-					fractalWidget.get(), params->Get<int>("ui_colorize_random_seed"));
-			cInterface::AdjustLayoutSpacing(fractalWidget.get(), gPar->Get<int>("ui_layout_spacing"));
-
-			fractalWidget->show();
-			automatedWidgets->ConnectSignalsForSlidersInWindow(fractalWidget.get());
-			SynchronizeInterfaceWindow(
-				fractalWidget.get(), fractalParams->at(tabIndex), qInterface::write);
-
-			switch (newFractalList[index]->getCpixelAddition())
-			{
-				case fractal::cpixelEnabledByDefault:
-					ui->checkBox_dont_add_c_constant->setText(QObject::tr("Don't add global C constant"));
-					ui->checkBox_dont_add_c_constant->setEnabled(true);
-					break;
-
-				case fractal::cpixelDisabledByDefault:
-				{
-					ui->checkBox_dont_add_c_constant->setText(QObject::tr("Add global C constant"));
-					ui->checkBox_dont_add_c_constant->setEnabled(true);
-					break;
-				}
-
-				case fractal::cpixelAlreadyHas:
-				{
-					ui->checkBox_dont_add_c_constant->setText(QObject::tr("Don't add global C constant"));
-					ui->checkBox_dont_add_c_constant->setEnabled(false);
-					break;
-				}
-
-				case fractal::cpixelUndefined:
-				{
-					ui->checkBox_dont_add_c_constant->setText(QObject::tr("Don't add global C constant"));
-					ui->checkBox_dont_add_c_constant->setEnabled(false);
-					break;
-				}
-			};
-
-			fractal::enumCPixelAddition cPixelAddition = newFractalList[index]->getCpixelAddition();
-
-			if (cPixelAddition == fractal::cpixelAlreadyHas)
-				CConstantAdditionSetVisible(false);
-			else
-			{
-				if (parentDockFractal)
-				{
-					bool booleanState = parentDockFractal->AreBooleanFractalsEnabled();
-					CConstantAdditionSetVisible(booleanState);
-				}
-			}
-
-			if (newFractalList[index]->getInternalId() == fractal::kaleidoscopicIfs)
-			{
-				QWidget *pushButton_preset_dodecahedron =
-					fractalWidget->findChild<QWidget *>("pushButton_preset_dodecahedron");
-				QApplication::connect(pushButton_preset_dodecahedron, SIGNAL(clicked()), this,
-					SLOT(slotPressedButtonIFSDefaultsDodecahedron()));
-				QWidget *pushButton_preset_icosahedron =
-					fractalWidget->findChild<QWidget *>("pushButton_preset_icosahedron");
-				QApplication::connect(pushButton_preset_icosahedron, SIGNAL(clicked()), this,
-					SLOT(slotPressedButtonIFSDefaultsIcosahedron()));
-				QWidget *pushButton_preset_octahedron =
-					fractalWidget->findChild<QWidget *>("pushButton_preset_octahedron");
-				QApplication::connect(pushButton_preset_octahedron, SIGNAL(clicked()), this,
-					SLOT(slotPressedButtonIFSDefaultsOctahedron()));
-				QWidget *pushButton_preset_menger_sponge =
-					fractalWidget->findChild<QWidget *>("pushButton_preset_menger_sponge");
-				QApplication::connect(pushButton_preset_menger_sponge, SIGNAL(clicked()), this,
-					SLOT(slotPressedButtonIFSDefaultsMengerSponge()));
-				QWidget *pushButton_preset_reset =
-					fractalWidget->findChild<QWidget *>("pushButton_preset_reset");
-				QApplication::connect(pushButton_preset_reset, SIGNAL(clicked()), this,
-					SLOT(slotPressedButtonIFSDefaultsReset()));
-			}
-		}
-		else
-		{
-			cErrorMessage::showMessage(
-				QString("Can't open file ") + uiFilename + QString("\nFractal ui file can't be loaded"),
-				cErrorMessage::errorMessage, gMainInterface->mainWindow);
-		}
-	}
-	else
-	{
-		fractalWidget.reset();
-	}
-
-	if (parentDockFractal)
-	{
-		parentDockFractal->SetTabText(
-			tabIndex, QString("#%1: %2").arg(tabIndex + 1).arg(fullFormulaName));
-	}
-
-	UpdateMutationFieldVisibility(index);
-	UpdateMutationGrayOut();
-
-	emit signalFormulaChanged(index);
-}
-
-void cTabFractal::FormulaTransformSetVisible(bool visible) const
-{
-	ui->groupBox_formula_transform->setVisible(visible);
-}
-
-int cTabFractal::GetCurrentFractalIndexOnList() const
-{
-	return ui->comboBox_formula->itemData(ui->comboBox_formula->currentIndex()).toInt();
-}
-
-void cTabFractal::CConstantAdditionSetVisible(bool visible) const
-{
-	ui->groupBox_c_constant_addition->setVisible(visible);
-}
-
-void cTabFractal::CalculationParametersSetVisible(bool visible) const
-{
-	ui->groupBox_calculation_parameters->setVisible(visible);
-}
-
-void cTabFractal::SynchronizeInterface(
-	std::shared_ptr<cParameterContainer> par, qInterface::enumReadWrite mode) const
-{
-	WriteLog("cTabFractal::SynchronizeInterface: frame_iterations_formula", 3);
-	SynchronizeInterfaceWindow(ui->frame_iterations_formula, par, mode);
-
-	WriteLog("cTabFractal::SynchronizeInterface: groupBox_formula_transform", 3);
-	SynchronizeInterfaceWindow(ui->groupBox_formula_transform, par, mode);
-
-	WriteLog("cTabFractal::SynchronizeInterface: groupBox_c_constant_addition", 3);
-	SynchronizeInterfaceWindow(ui->groupBox_c_constant_addition, par, mode);
-
-	WriteLog("cTabFractal::SynchronizeInterface: groupBox_material_fractal", 3);
-	SynchronizeInterfaceWindow(ui->groupBox_material_fractal, par, mode);
-
-	WriteLog("cTabFractal::SynchronizeInterface: groupBox_material_fractal", 3);
-	SynchronizeInterfaceWindow(ui->groupBox_calculation_parameters, par, mode);
-
-	WriteLog("cTabFractal::SynchronizeInterface: groupBox_advanced_weight", 3);
-	SynchronizeInterfaceWindow(ui->groupBox_advanced_weight, par, mode);
-
-	WriteLog("cTabFractal::SynchronizeInterface: groupCheck_mutation_enabled", 3);
-	// groupCheck's own checked state must be synced explicitly:
-	// SynchronizeInterfaceWindow processes CHILDREN only, not the widget itself.
-	{
-		QString paramName = "mutation_enabled_" + QString::number(tabIndex + 1);
-
-		if (mode == qInterface::read)
-			par->Set(paramName, ui->groupCheck_mutation_enabled->isChecked());
-		else
-			ui->groupCheck_mutation_enabled->setChecked(par->Get<bool>(paramName));
-	}
-	SynchronizeInterfaceWindow(ui->groupCheck_mutation_enabled, par, mode);
-
-	// Sync individual mutation system groupboxes
-	auto syncMutationGroupbox = [&](const QString &paramBase, QGroupBox *groupbox) {
-		QString paramName = paramBase + "_" + QString::number(tabIndex + 1);
-		if (mode == qInterface::read)
-			par->Set(paramName, groupbox->isChecked());
-		else
-			groupbox->setChecked(par->Get<bool>(paramName));
-		SynchronizeInterfaceWindow(groupbox, par, mode);
-	};
-
-	WriteLog("cTabFractal::SynchronizeInterface: groupCheck_mutation_clip_enabled", 3);
-	syncMutationGroupbox("mutation_clip_enabled", ui->groupCheck_mutation_clip_enabled);
-	// Force clip groupbox to be visible
-	ui->groupCheck_mutation_clip_enabled->setVisible(true);
-
-	WriteLog("cTabFractal::SynchronizeInterface: groupCheck_mutation_inversion_enabled", 3);
-	syncMutationGroupbox("mutation_inversion_enabled", ui->groupCheck_mutation_inversion_enabled);
-	ui->groupCheck_mutation_inversion_enabled->setVisible(true);
-
-	WriteLog("cTabFractal::SynchronizeInterface: groupCheck_mutation_jos_leys_enabled", 3);
-	syncMutationGroupbox("mutation_jos_leys_enabled", ui->groupCheck_mutation_jos_leys_enabled);
-
-	WriteLog("cTabFractal::SynchronizeInterface: groupCheck_mutation_pk_enabled", 3);
-	syncMutationGroupbox("mutation_pk_enabled", ui->groupCheck_mutation_pk_enabled);
-
-	WriteLog("cTabFractal::SynchronizeInterface: groupCheck_mutation_mb_math_enabled", 3);
-	syncMutationGroupbox("mutation_mb_math_enabled", ui->groupCheck_mutation_mb_math_enabled);
-
-	WriteLog("cTabFractal::SynchronizeInterface: groupCheck_mutation_warp_dist_enabled", 3);
-	syncMutationGroupbox("mutation_warp_dist_enabled", ui->groupCheck_mutation_warp_dist_enabled);
-
-	WriteLog("cTabFractal::SynchronizeInterface: groupCheck_mutation_symmetry_enabled", 3);
-	syncMutationGroupbox("mutation_symmetry_enabled", ui->groupCheck_mutation_symmetry_enabled);
-
-	WriteLog("cTabFractal::SynchronizeInterface: groupCheck_mutation_abox_enabled", 3);
-	syncMutationGroupbox("mutation_abox_enabled", ui->groupCheck_mutation_abox_enabled);
-
-	WriteLog("cTabFractal::SynchronizeInterface: groupCheck_mutation_noise_enabled", 3);
-	syncMutationGroupbox("mutation_noise_enabled", ui->groupCheck_mutation_noise_enabled);
-
-	WriteLog("cTabFractal::SynchronizeInterface: groupCheck_mutation_orbit_trap_enabled", 3);
-	syncMutationGroupbox("mutation_orbit_trap_enabled", ui->groupCheck_mutation_orbit_trap_enabled);
-
-	WriteLog("cTabFractal::SynchronizeInterface: groupCheck_mutation_torus_enabled", 3);
-	syncMutationGroupbox("mutation_torus_enabled", ui->groupCheck_mutation_torus_enabled);
-
-	// v7.6 — Update gray-out state for all mutation parameters
-	UpdateMutationGrayOut();
-}
-
-void cTabFractal::FrameIterationFormulaSetWidgetsVisibility(bool visible) const
-{
-	ui->label_formula_iterations->setVisible(visible);
-	ui->spinboxInt_formula_iterations->setVisible(visible);
-	ui->label_formula_weight->setVisible(visible);
-	ui->spinbox_formula_weight->setVisible(visible);
-	ui->label_formula_start_iteration->setVisible(visible);
-	ui->label_formula_stop_iteration->setVisible(visible);
-	ui->spinboxInt_formula_start_iteration->setVisible(visible);
-	ui->spinboxInt_formula_stop_iteration->setVisible(visible);
-	ui->checkBox_check_for_bailout->setVisible(visible);
-	ui->groupBox_advanced_weight->setVisible(visible);
-	// Formula Mutation is always visible (works in single formula mode too)
-}
-
-void cTabFractal::ConnectSignals()
-{
-	connect(
-		ui->pushButton_local_navi, &QPushButton::clicked, this, &cTabFractal::slotPressedButtonNavi);
-
-	// Connect weight mode combo box to dynamic visibility
-	connect(ui->comboBox_weight_mode, SIGNAL(currentIndexChanged(int)), this,
-		SLOT(slotChangedWeightMode(int)));
-	connect(ui->checkBox_weight_separate_components, SIGNAL(stateChanged(int)), this,
-		SLOT(slotChangedSeparateComponents(int)));
-
-	// Mutation reset button
 	connect(ui->pushButton_mutation_reset, &QPushButton::clicked, this,
-		&cTabFractal::slotPressedButtonMutationReset);
-
-	// Set initial visibility (mode 0 = Static)
-	UpdateWeightWidgetsVisibility(0, false);
+		&cDockMutationTab::slotPressedButtonMutationReset);
 }
 
-void cTabFractal::slotChangedWeightMode(int mode)
+void cDockMutationTab::SynchronizeInterface(
+	std::shared_ptr<cParameterContainer> par, qInterface::enumReadWrite mode)
 {
-	bool separateComponents = ui->checkBox_weight_separate_components->isChecked();
-	UpdateWeightWidgetsVisibility(mode, separateComponents);
+	SynchronizeInterfaceWindow(this, par, mode);
 }
 
-void cTabFractal::slotChangedSeparateComponents(int state)
-{
-	int mode = ui->comboBox_weight_mode->currentIndex();
-	UpdateWeightWidgetsVisibility(mode, state != 0);
-}
-
-void cTabFractal::UpdateWeightWidgetsVisibility(int mode, bool separateComponents) const
-{
-	// Static params (mode 0)
-	bool showStatic = (mode == 0);
-	ui->label_weight_static->setVisible(showStatic);
-	ui->spinbox_weight_static->setVisible(showStatic);
-
-	// Iteration params (mode 1)
-	bool showIter = (mode == 1);
-	ui->label_weight_iter_start->setVisible(showIter);
-	ui->spinboxInt_weight_iter_start->setVisible(showIter);
-	ui->label_weight_iter_end->setVisible(showIter);
-	ui->spinboxInt_weight_iter_end->setVisible(showIter);
-	ui->label_weight_start->setVisible(showIter);
-	ui->spinbox_weight_start->setVisible(showIter);
-	ui->label_weight_end->setVisible(showIter);
-	ui->spinbox_weight_end->setVisible(showIter);
-	ui->label_weight_blend_mode->setVisible(showIter);
-	ui->comboBox_weight_blend_mode->setVisible(showIter);
-
-	// DE params (mode 2)
-	bool showDE = (mode == 2);
-	ui->label_weight_de_base->setVisible(showDE);
-	ui->spinbox_weight_de_base->setVisible(showDE);
-	ui->label_weight_de_sensitivity->setVisible(showDE);
-	ui->spinbox_weight_de_sensitivity->setVisible(showDE);
-	ui->label_weight_de_threshold->setVisible(showDE);
-	ui->spinbox_weight_de_threshold->setVisible(showDE);
-	ui->label_weight_de_mod_type->setVisible(showDE);
-	ui->comboBox_weight_de_mod_type->setVisible(showDE);
-
-	// ZLength params (mode 3)
-	bool showZLen = (mode == 3);
-	ui->label_weight_zlength_base->setVisible(showZLen);
-	ui->spinbox_weight_zlength_base->setVisible(showZLen);
-	ui->label_weight_zlength_sens->setVisible(showZLen);
-	ui->spinbox_weight_zlength_sens->setVisible(showZLen);
-	ui->label_weight_zlength_threshold->setVisible(showZLen);
-	ui->spinbox_weight_zlength_threshold->setVisible(showZLen);
-	ui->label_weight_zlength_mod_type->setVisible(showZLen);
-	ui->comboBox_weight_zlength_mod_type->setVisible(showZLen);
-
-	// Conditional params (mode 4)
-	bool showCond = (mode == 4);
-	ui->label_weight_condition_type->setVisible(showCond);
-	ui->comboBox_weight_condition_type->setVisible(showCond);
-	ui->label_weight_condition_threshold->setVisible(showCond);
-	ui->spinbox_weight_condition_threshold->setVisible(showCond);
-	ui->label_weight_true->setVisible(showCond);
-	ui->spinbox_weight_true->setVisible(showCond);
-	ui->label_weight_false->setVisible(showCond);
-	ui->spinbox_weight_false->setVisible(showCond);
-	ui->label_weight_condition_blend->setVisible(showCond);
-	ui->comboBox_weight_condition_blend->setVisible(showCond);
-
-	// OrbitTrap params (mode 5)
-	bool showOrbit = (mode == 5);
-	ui->label_weight_orbit_trap_base->setVisible(showOrbit);
-	ui->spinbox_weight_orbit_trap_base->setVisible(showOrbit);
-	ui->label_weight_orbit_trap_sensitivity->setVisible(showOrbit);
-	ui->spinbox_weight_orbit_trap_sensitivity->setVisible(showOrbit);
-	ui->label_weight_orbit_trap_threshold->setVisible(showOrbit);
-	ui->spinbox_weight_orbit_trap_threshold->setVisible(showOrbit);
-	ui->label_weight_orbit_trap_mod_type->setVisible(showOrbit);
-	ui->comboBox_weight_orbit_trap_mod_type->setVisible(showOrbit);
-
-	// Curve params (mode 6)
-	bool showCurve = (mode == 6);
-	ui->label_weight_curve_base->setVisible(showCurve);
-	ui->spinbox_weight_curve_base->setVisible(showCurve);
-	ui->label_weight_curve_sensitivity->setVisible(showCurve);
-	ui->spinbox_weight_curve_sensitivity->setVisible(showCurve);
-	ui->label_weight_curve_power->setVisible(showCurve);
-	ui->spinbox_weight_curve_power->setVisible(showCurve);
-	ui->label_weight_curve_mod_type->setVisible(showCurve);
-	ui->comboBox_weight_curve_mod_type->setVisible(showCurve);
-
-	// DE Ratio params (mode 8)
-	bool showDERatio = (mode == 8);
-	ui->label_weight_de_ratio_scale->setVisible(showDERatio);
-	ui->spinbox_weight_de_ratio_scale->setVisible(showDERatio);
-	ui->label_weight_de_ratio_offset->setVisible(showDERatio);
-	ui->spinbox_weight_de_ratio_offset->setVisible(showDERatio);
-	ui->label_weight_de_ratio_mod_type->setVisible(showDERatio);
-	ui->comboBox_weight_de_ratio_mod_type->setVisible(showDERatio);
-
-	// Adaptive params (mode 9)
-	bool showAdaptive = (mode == 9);
-	ui->label_weight_adaptive_strength->setVisible(showAdaptive);
-	ui->spinbox_weight_adaptive_strength->setVisible(showAdaptive);
-
-	// Fine-tuning params — always visible when advanced weight is active (mode > 0)
-	bool showFineTuning = (mode > 0);
-	ui->label_weight_floor->setVisible(showFineTuning);
-	ui->spinbox_weight_floor->setVisible(showFineTuning);
-	ui->label_weight_ceiling->setVisible(showFineTuning);
-	ui->spinbox_weight_ceiling->setVisible(showFineTuning);
-	ui->label_weight_gamma->setVisible(showFineTuning);
-	ui->spinbox_weight_gamma->setVisible(showFineTuning);
-	ui->checkBox_weight_invert->setVisible(showFineTuning);
-	ui->label_weight_fade_in->setVisible(showFineTuning);
-	ui->spinboxInt_weight_fade_in->setVisible(showFineTuning);
-	ui->label_weight_fade_out->setVisible(showFineTuning);
-	ui->spinboxInt_weight_fade_out->setVisible(showFineTuning);
-	// DE Smooth Radius: only visible in DE-based modes (2, 5, 6, 8)
-	bool showDESmooth = (mode == 2 || mode == 5 || mode == 6 || mode == 8);
-	ui->label_weight_de_smooth_radius->setVisible(showDESmooth);
-	ui->spinbox_weight_de_smooth_radius->setVisible(showDESmooth);
-	// Blend curve: always visible when weight active
-	ui->label_weight_component_blend_curve->setVisible(showFineTuning);
-	ui->spinbox_weight_component_blend_curve->setVisible(showFineTuning);
-
-	// Separate components — always visible
-	// Sub-params only visible when checkbox is checked
-	ui->label_weight_z_vector->setVisible(separateComponents);
-	ui->spinbox_weight_z_vector->setVisible(separateComponents);
-	ui->label_weight_de_component->setVisible(separateComponents);
-	ui->spinbox_weight_de_component->setVisible(separateComponents);
-	ui->label_weight_dist_component->setVisible(separateComponents);
-	ui->spinbox_weight_dist_component->setVisible(separateComponents);
-	ui->label_weight_color_component->setVisible(separateComponents);
-	ui->spinbox_weight_color_component->setVisible(separateComponents);
-}
-
-void cTabFractal::MaterialSetVisible(bool visible) const
-{
-	ui->groupBox_material_fractal->setVisible(visible);
-}
-
-void cTabFractal::SetMutationWidgetsEnabled(const QStringList &names, bool enabled) const
+void cDockMutationTab::SetMutationWidgetsEnabled(const QStringList &names, bool enabled) const
 {
 	for (const QString &name : names)
 	{
@@ -690,7 +140,7 @@ void cTabFractal::SetMutationWidgetsEnabled(const QStringList &names, bool enabl
 	}
 }
 
-void cTabFractal::UpdateMutationFieldVisibility(int formulaIndex) const
+void cDockMutationTab::UpdateMutationFieldVisibility(int formulaIndex) const
 {
 	if (formulaIndex <= 0 || formulaIndex >= newFractalList.size()) return;
 
@@ -727,6 +177,24 @@ void cTabFractal::UpdateMutationFieldVisibility(int formulaIndex) const
 		"spinbox_mutation_julia_c_radius" + idx,
 		"spinbox_mutation_julia_pulse_freq" + idx,
 		"spinbox_mutation_julia_absorb" + idx,
+		"spinboxd3_mutation_julia_c_rot_x" + idx,
+		"spinboxd3_mutation_julia_c_rot_y" + idx,
+		"spinboxd3_mutation_julia_c_rot_z" + idx,
+		"spinboxd_mutation_julia_c_mobius_a" + idx,
+		"spinboxd_mutation_julia_c_mobius_b" + idx,
+		"spinboxd_mutation_julia_c_mobius_d" + idx,
+		"spinboxd_mutation_julia_pulse_amp" + idx,
+		"spinboxd_mutation_julia_noise_freq" + idx,
+		"spinboxd_mutation_julia_noise_amp" + idx,
+		"spinboxd3_mutation_julia_fourier_c2_x" + idx,
+		"spinboxd3_mutation_julia_fourier_c2_y" + idx,
+		"spinboxd3_mutation_julia_fourier_c2_z" + idx,
+		"spinboxd3_mutation_julia_fourier_c3_x" + idx,
+		"spinboxd3_mutation_julia_fourier_c3_y" + idx,
+		"spinboxd3_mutation_julia_fourier_c3_z" + idx,
+		"spinboxd3_mutation_julia_bipolar_cr_x" + idx,
+		"spinboxd3_mutation_julia_bipolar_cr_y" + idx,
+		"spinboxd3_mutation_julia_bipolar_cr_z" + idx,
 		"label_mutation_julia_injection" + idx,
 		"label_mutation_julia_start" + idx,
 		"label_mutation_julia_c_transform" + idx,
@@ -736,7 +204,17 @@ void cTabFractal::UpdateMutationFieldVisibility(int formulaIndex) const
 		"label_mutation_julia_c_power" + idx,
 		"label_mutation_julia_c_radius" + idx,
 		"label_mutation_julia_pulse_freq" + idx,
-		"label_mutation_julia_absorb" + idx
+		"label_mutation_julia_absorb" + idx,
+		"label_c_rotation" + idx,
+		"label_m_bius_a" + idx,
+		"label_m_bius_b" + idx,
+		"label_m_bius_d" + idx,
+		"label_pulse_amp" + idx,
+		"label_julia_noise_freq" + idx,
+		"label_julia_noise_amp" + idx,
+		"label_fourier_c2" + idx,
+		"label_fourier_c3" + idx,
+		"label_bipolar_cr" + idx
 	};
 	SetMutationWidgetsEnabled(juliaWidgets, juliaUseful);
 
@@ -748,16 +226,16 @@ void cTabFractal::UpdateMutationFieldVisibility(int formulaIndex) const
 	SetMutationWidgetsEnabled(orbitWidgets, !isTransform);
 }
 
-void cTabFractal::UpdateMutationGrayOut() const
+void cDockMutationTab::UpdateMutationGrayOut() const
 {
 	// Helper: set enabled state AND orange color for active parameters
 	auto styleWidget = [&](QWidget *w, bool enabled) {
 		if (!w) return;
 		w->setEnabled(enabled);
 		if (enabled) {
-			w->setStyleSheet("color: #FFA500;");
+			w->setStyleSheet("color: #FFA500; font-weight: bold;");
 		} else {
-			w->setStyleSheet("");
+			w->setStyleSheet("color: #AAAAAA;");
 		}
 	};
 
@@ -1138,63 +616,104 @@ void cTabFractal::UpdateMutationGrayOut() const
 		setPkWidget("label_pk_scale", needScale);
 		setPkWidget("spinbox_mutation_pk_scale", needScale);
 	}
-}
 
-void cTabFractal::FrameIterationFormulaSetEnabled(bool enabled) const
-{
-	ui->frame_iterations_formula->setEnabled(enabled);
-}
-
-void cTabFractal::SynchronizeFractal(
-	std::shared_ptr<cParameterContainer> fractal, qInterface::enumReadWrite mode) const
-{
-	if (fractalWidget)
+	// --- Julia system per-parameter gray-out ---
 	{
-		SynchronizeInterfaceWindow(fractalWidget.get(), fractal, mode);
+		QString suffix = "_" + QString::number(tabIndex + 1);
+		int juliaInjection = ui->comboBox_mutation_julia_injection->currentIndex();
+		int juliaCTransform = ui->comboBox_mutation_julia_c_transform->currentIndex();
+		int juliaDynamic = ui->comboBox_mutation_julia_dynamic->currentIndex();
+		int juliaMulti = ui->comboBox_mutation_julia_multi->currentIndex();
+
+		bool injectionActive = juliaInjection != 0;
+
+		auto setJuliaWidget = [&](const QString &baseName, bool enabled) {
+			QString fullName = baseName + suffix;
+			for (QWidget *w : allMutationChildren)
+			{
+				if (w->objectName() == fullName)
+				{
+					styleWidget(w, enabled);
+					break;
+				}
+			}
+		};
+
+		// Start mode, injection, iter range: always relevant
+		setJuliaWidget("comboBox_mutation_julia_start", true);
+		setJuliaWidget("label_mutation_julia_start", true);
+		setJuliaWidget("comboBox_mutation_julia_injection", true);
+		setJuliaWidget("label_mutation_julia_injection", true);
+		setJuliaWidget("spinboxInt_mutation_julia_iter_start", true);
+		setJuliaWidget("label_mutation_julia_iter_s", true);
+		setJuliaWidget("spinboxInt_mutation_julia_iter_stop", true);
+		setJuliaWidget("label_mutation_julia_iter_e", true);
+		setJuliaWidget("label_mutation_julia_iter", true);
+
+		// C-transform and base params
+		setJuliaWidget("comboBox_mutation_julia_c_transform", injectionActive);
+		setJuliaWidget("label_mutation_julia_c_transform", injectionActive);
+		setJuliaWidget("spinbox_mutation_julia_c_mul", injectionActive);
+		setJuliaWidget("label_mutation_julia_c_mul", injectionActive);
+
+		// C-transform specific params
+		setJuliaWidget("spinboxd3_mutation_julia_c_rot_x", injectionActive && juliaCTransform == 3);
+		setJuliaWidget("spinboxd3_mutation_julia_c_rot_y", injectionActive && juliaCTransform == 3);
+		setJuliaWidget("spinboxd3_mutation_julia_c_rot_z", injectionActive && juliaCTransform == 3);
+		setJuliaWidget("label_c_rotation", injectionActive && juliaCTransform == 3);
+
+		setJuliaWidget("spinbox_mutation_julia_c_radius", injectionActive && juliaCTransform == 1);
+		setJuliaWidget("label_mutation_julia_c_radius", injectionActive && juliaCTransform == 1);
+
+		setJuliaWidget("spinboxd_mutation_julia_c_mobius_a", injectionActive && juliaCTransform == 2);
+		setJuliaWidget("spinboxd_mutation_julia_c_mobius_b", injectionActive && juliaCTransform == 2);
+		setJuliaWidget("spinboxd_mutation_julia_c_mobius_d", injectionActive && juliaCTransform == 2);
+		setJuliaWidget("label_m_bius_a", injectionActive && juliaCTransform == 2);
+		setJuliaWidget("label_m_bius_b", injectionActive && juliaCTransform == 2);
+		setJuliaWidget("label_m_bius_d", injectionActive && juliaCTransform == 2);
+
+		setJuliaWidget("spinbox_mutation_julia_c_power", injectionActive && juliaCTransform == 4);
+		setJuliaWidget("label_mutation_julia_c_power", injectionActive && juliaCTransform == 4);
+
+		// Dynamic and its params
+		setJuliaWidget("comboBox_mutation_julia_dynamic", injectionActive);
+		setJuliaWidget("label_mutation_julia_dynamic", injectionActive);
+
+		setJuliaWidget("spinbox_mutation_julia_pulse_freq", injectionActive && juliaDynamic == 2);
+		setJuliaWidget("label_mutation_julia_pulse_freq", injectionActive && juliaDynamic == 2);
+		setJuliaWidget("spinboxd_mutation_julia_pulse_amp", injectionActive && juliaDynamic == 2);
+		setJuliaWidget("label_pulse_amp", injectionActive && juliaDynamic == 2);
+
+		setJuliaWidget("spinbox_mutation_julia_absorb", injectionActive && juliaDynamic == 4);
+		setJuliaWidget("label_mutation_julia_absorb", injectionActive && juliaDynamic == 4);
+
+		// Multi and its params
+		setJuliaWidget("comboBox_mutation_julia_multi", injectionActive);
+		setJuliaWidget("label_mutation_julia_multi", injectionActive);
+
+		setJuliaWidget("spinboxd_mutation_julia_noise_freq", injectionActive && juliaMulti == 4);
+		setJuliaWidget("label_julia_noise_freq", injectionActive && juliaMulti == 4);
+		setJuliaWidget("spinboxd_mutation_julia_noise_amp", injectionActive && juliaMulti == 4);
+		setJuliaWidget("label_julia_noise_amp", injectionActive && juliaMulti == 4);
+
+		setJuliaWidget("spinboxd3_mutation_julia_fourier_c2_x", injectionActive && juliaMulti == 3);
+		setJuliaWidget("spinboxd3_mutation_julia_fourier_c2_y", injectionActive && juliaMulti == 3);
+		setJuliaWidget("spinboxd3_mutation_julia_fourier_c2_z", injectionActive && juliaMulti == 3);
+		setJuliaWidget("label_fourier_c2", injectionActive && juliaMulti == 3);
+
+		setJuliaWidget("spinboxd3_mutation_julia_fourier_c3_x", injectionActive && juliaMulti == 3);
+		setJuliaWidget("spinboxd3_mutation_julia_fourier_c3_y", injectionActive && juliaMulti == 3);
+		setJuliaWidget("spinboxd3_mutation_julia_fourier_c3_z", injectionActive && juliaMulti == 3);
+		setJuliaWidget("label_fourier_c3", injectionActive && juliaMulti == 3);
+
+		setJuliaWidget("spinboxd3_mutation_julia_bipolar_cr_x", injectionActive && juliaMulti == 1);
+		setJuliaWidget("spinboxd3_mutation_julia_bipolar_cr_y", injectionActive && juliaMulti == 1);
+		setJuliaWidget("spinboxd3_mutation_julia_bipolar_cr_z", injectionActive && juliaMulti == 1);
+		setJuliaWidget("label_bipolar_cr", injectionActive && juliaMulti == 1);
 	}
 }
 
-void cTabFractal::slotPressedButtonIFSDefaultsDodecahedron() const
-{
-	SynchronizeInterfaceWindow(fractalWidget.get(), fractalParams->at(tabIndex), qInterface::read);
-	gMainInterface->IFSDefaultsDodecahedron(fractalParams->at(tabIndex));
-	SynchronizeInterfaceWindow(fractalWidget.get(), fractalParams->at(tabIndex), qInterface::write);
-}
-
-void cTabFractal::slotPressedButtonIFSDefaultsIcosahedron() const
-{
-	SynchronizeInterfaceWindow(fractalWidget.get(), fractalParams->at(tabIndex), qInterface::read);
-	gMainInterface->IFSDefaultsIcosahedron(fractalParams->at(tabIndex));
-	SynchronizeInterfaceWindow(fractalWidget.get(), fractalParams->at(tabIndex), qInterface::write);
-}
-
-void cTabFractal::slotPressedButtonIFSDefaultsOctahedron() const
-{
-	SynchronizeInterfaceWindow(fractalWidget.get(), fractalParams->at(tabIndex), qInterface::read);
-	gMainInterface->IFSDefaultsOctahedron(fractalParams->at(tabIndex));
-	SynchronizeInterfaceWindow(fractalWidget.get(), fractalParams->at(tabIndex), qInterface::write);
-}
-
-void cTabFractal::slotPressedButtonIFSDefaultsMengerSponge() const
-{
-	SynchronizeInterfaceWindow(fractalWidget.get(), fractalParams->at(tabIndex), qInterface::read);
-	gMainInterface->IFSDefaultsMengerSponge(fractalParams->at(tabIndex));
-	SynchronizeInterfaceWindow(fractalWidget.get(), fractalParams->at(tabIndex), qInterface::write);
-}
-
-void cTabFractal::slotPressedButtonIFSDefaultsReset() const
-{
-	SynchronizeInterfaceWindow(fractalWidget.get(), fractalParams->at(tabIndex), qInterface::read);
-	gMainInterface->IFSDefaultsReset(fractalParams->at(tabIndex));
-	SynchronizeInterfaceWindow(fractalWidget.get(), fractalParams->at(tabIndex), qInterface::write);
-}
-
-void cTabFractal::slotPressedButtonResetFormula() const
-{
-	gMainInterface->ResetFormula(tabIndex);
-}
-
-void cTabFractal::slotPressedButtonMutationReset()
+void cDockMutationTab::slotPressedButtonMutationReset()
 {
 	int idx = tabIndex + 1;
 	// Reset all mutation params to defaults (keep enabled state unchanged)
@@ -1279,6 +798,18 @@ void cTabFractal::slotPressedButtonMutationReset()
 	setD("mutation_julia_c_mul", 1.0);
 	setD("mutation_julia_c_power", 1.0);
 	setD("mutation_julia_c_radius", 1.0);
+	setD("mutation_julia_c_rot_x", 0.0);
+	setD("mutation_julia_c_rot_y", 0.0);
+	setD("mutation_julia_c_rot_z", 0.0);
+	setD("mutation_julia_c_mobius_a", 1.0);
+	setD("mutation_julia_c_mobius_b", 0.0);
+	setD("mutation_julia_c_mobius_d", 1.0);
+	setD("mutation_julia_pulse_amp", 1.0);
+	setD("mutation_julia_noise_freq", 1.0);
+	setD("mutation_julia_noise_amp", 0.1);
+	params->Set("mutation_julia_fourier_c2_" + QString::number(idx), CVector3(0.0, 0.0, 0.0));
+	params->Set("mutation_julia_fourier_c3_" + QString::number(idx), CVector3(0.0, 0.0, 0.0));
+	params->Set("mutation_julia_bipolar_cr_" + QString::number(idx), CVector3(0.0, 0.0, 0.0));
 	// Inversion
 	setI("mutation_inv_type", 0);
 	setD("mutation_inv_center_ax", 0.0);
@@ -1454,17 +985,3 @@ void cTabFractal::slotPressedButtonMutationReset()
 	UpdateMutationGrayOut();
 }
 
-void cTabFractal::slotPressedButtonNavi()
-{
-	gMainInterface->SynchronizeInterface(params, fractalParams, qInterface::read);
-	cNavigatorWindow *navigator = new cNavigatorWindow();
-	cTabFractal *leftWidget = new cTabFractal();
-	navigator->AddLeftWidget(leftWidget);
-	navigator->setAttribute(Qt::WA_DeleteOnClose);
-	navigator->SetInitialParameters(params, fractalParams);
-	leftWidget->Init(true, tabIndex);
-	navigator->SynchronizeInterface(qInterface::write);
-	navigator->SetMouseClickFunction(gMainInterface->GetMouseClickFunction());
-	navigator->show();
-	navigator->AllPrepared();
-}
