@@ -101,6 +101,7 @@ private slots:
 public:
 	void UpdateWeightWidgetsVisibility(int mode, bool separateComponents) const;
 	void UpdateMutationFieldVisibility(int formulaIndex) const;
+	void UpdateMutationGrayOut() const;
 
 private:
 	void ConnectSignals();

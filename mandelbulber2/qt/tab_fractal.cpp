@@ -64,6 +64,33 @@ cTabFractal::cTabFractal(QWidget *parent)
 	ConnectSignals();
 
 	tabIndex = 0;
+
+	// v7.6 — Larger fonts and widgets for mutation section
+	QString mutationStyleSheet = QString(
+		"QLabel, QComboBox, QCheckBox, MyDoubleSpinBox, MySpinBox, QGroupBox, QRadioButton { "
+		"  font-size: 14px; "
+		"} "
+		"MyDoubleSpinBox, QDoubleSpinBox, QSpinBox, QComboBox { "
+		"  min-height: 28px; "
+		"  min-width: 120px; "
+		"  padding: 2px 6px; "
+		"} "
+		"QGroupBox::title { "
+		"  font-size: 15px; "
+		"  font-weight: bold; "
+		"} "
+		"QLabel { "
+		"  min-height: 22px; "
+		"}");
+
+	QList<QWidget *> allWidgets = findChildren<QWidget *>();
+	for (QWidget *widget : allWidgets)
+	{
+		if (widget->objectName().contains("mutation"))
+		{
+			widget->setStyleSheet(mutationStyleSheet);
+		}
+	}
 }
 
 cTabFractal::~cTabFractal()
@@ -128,6 +155,48 @@ void cTabFractal::Init(bool firstTab, int _tabIndex)
 	connectMutationCombo(ui->comboBox_mutation_noise_type, "mutation_noise_type");
 	connectMutationCombo(ui->comboBox_mutation_orbit_trap_type, "mutation_orbit_trap_type");
 	connectMutationCombo(ui->comboBox_mutation_torus_type, "mutation_torus_type");
+
+	// v7.6 — Gray out mutation parameters that have no effect
+	QList<QComboBox *> mutationTypeCombos = {
+		ui->comboBox_mutation_inv_type,
+		ui->comboBox_mutation_clip_type,
+		ui->comboBox_mutation_jos_de_type,
+		ui->comboBox_mutation_pk_de_type,
+		ui->comboBox_mutation_mb_math_type,
+		ui->comboBox_mutation_warp_dist_type,
+		ui->comboBox_mutation_sym_kal_type,
+		ui->comboBox_mutation_abox_type,
+		ui->comboBox_mutation_noise_type,
+		ui->comboBox_mutation_orbit_trap_type,
+		ui->comboBox_mutation_torus_type,
+		ui->comboBox_mutation_fold_type,
+		ui->comboBox_mutation_warp_type,
+		ui->comboBox_mutation_math_type,
+	};
+	for (QComboBox *combo : mutationTypeCombos)
+	{
+		if (combo) connect(combo, QOverload<int>::of(&QComboBox::currentIndexChanged),
+			this, &cTabFractal::UpdateMutationGrayOut);
+	}
+
+	QList<QGroupBox *> mutationGroups = {
+		ui->groupCheck_mutation_enabled,
+		ui->groupCheck_mutation_inversion_enabled,
+		ui->groupCheck_mutation_clip_enabled,
+		ui->groupCheck_mutation_jos_leys_enabled,
+		ui->groupCheck_mutation_pk_enabled,
+		ui->groupCheck_mutation_mb_math_enabled,
+		ui->groupCheck_mutation_warp_dist_enabled,
+		ui->groupCheck_mutation_symmetry_enabled,
+		ui->groupCheck_mutation_abox_enabled,
+		ui->groupCheck_mutation_noise_enabled,
+		ui->groupCheck_mutation_orbit_trap_enabled,
+		ui->groupCheck_mutation_torus_enabled,
+	};
+	for (QGroupBox *group : mutationGroups)
+	{
+		if (group) connect(group, &QGroupBox::toggled, this, &cTabFractal::UpdateMutationGrayOut);
+	}
 
 	// set headings and separator of formulas and transforms
 	QFont fontHeading;
@@ -328,6 +397,7 @@ void cTabFractal::slotChangedComboFractal(int indexInComboBox)
 	}
 
 	UpdateMutationFieldVisibility(index);
+	UpdateMutationGrayOut();
 }
 
 void cTabFractal::FormulaTransformSetVisible(bool visible) const
@@ -429,6 +499,9 @@ void cTabFractal::SynchronizeInterface(
 
 	WriteLog("cTabFractal::SynchronizeInterface: groupCheck_mutation_torus_enabled", 3);
 	syncMutationGroupbox("mutation_torus_enabled", ui->groupCheck_mutation_torus_enabled);
+
+	// v7.6 — Update gray-out state for all mutation parameters
+	UpdateMutationGrayOut();
 }
 
 void cTabFractal::FrameIterationFormulaSetWidgetsVisibility(bool visible) const
@@ -671,6 +744,398 @@ void cTabFractal::UpdateMutationFieldVisibility(int formulaIndex) const
 		"label_mutation_orbit_trap" + idx
 	};
 	SetMutationWidgetsEnabled(orbitWidgets, !isTransform);
+}
+
+void cTabFractal::UpdateMutationGrayOut() const
+{
+	// Helper: set enabled state AND orange color for active parameters
+	auto styleWidget = [&](QWidget *w, bool enabled) {
+		if (!w) return;
+		w->setEnabled(enabled);
+		if (enabled) {
+			w->setStyleSheet("color: #FFA500;");
+		} else {
+			w->setStyleSheet("");
+		}
+	};
+
+	// Helper for systems with their own GroupBox (simple on/off based on type==0)
+	auto grayOutGroupSystem = [&](QComboBox *combo, QGroupBox *group) {
+		if (!combo || !group) return;
+		bool systemActive = group->isChecked() && combo->currentIndex() != 0;
+		QList<QWidget *> children = group->findChildren<QWidget *>();
+		for (QWidget *w : children)
+		{
+			if (w == combo || w == group) continue;
+			styleWidget(w, systemActive);
+		}
+	};
+
+	// Systems with their own GroupBox (simple on/off)
+	// Note: Inversion and Clip are handled separately below with per-type gray-out
+	grayOutGroupSystem(ui->comboBox_mutation_jos_de_type, ui->groupCheck_mutation_jos_leys_enabled);
+	grayOutGroupSystem(ui->comboBox_mutation_pk_de_type, ui->groupCheck_mutation_pk_enabled);
+	grayOutGroupSystem(ui->comboBox_mutation_mb_math_type, ui->groupCheck_mutation_mb_math_enabled);
+	grayOutGroupSystem(ui->comboBox_mutation_warp_dist_type, ui->groupCheck_mutation_warp_dist_enabled);
+	grayOutGroupSystem(ui->comboBox_mutation_sym_kal_type, ui->groupCheck_mutation_symmetry_enabled);
+	grayOutGroupSystem(ui->comboBox_mutation_abox_type, ui->groupCheck_mutation_abox_enabled);
+	grayOutGroupSystem(ui->comboBox_mutation_noise_type, ui->groupCheck_mutation_noise_enabled);
+	grayOutGroupSystem(ui->comboBox_mutation_orbit_trap_type, ui->groupCheck_mutation_orbit_trap_enabled);
+	grayOutGroupSystem(ui->comboBox_mutation_torus_type, ui->groupCheck_mutation_torus_enabled);
+
+	// --- Clip System: per-type gray-out ---
+	{
+		QGroupBox *clipGroup = ui->groupCheck_mutation_clip_enabled;
+		QComboBox *clipCombo = ui->comboBox_mutation_clip_type;
+		if (clipGroup && clipCombo)
+		{
+			bool clipActive = clipGroup->isChecked() && clipCombo->currentIndex() != 0;
+			int clipType = clipCombo->currentIndex();
+
+			auto setClipWidget = [&](const QString &baseName, bool enabled) {
+				QString suffix = "_" + QString::number(tabIndex + 1);
+				QWidget *w = clipGroup->findChild<QWidget *>(baseName + suffix);
+				styleWidget(w, clipActive && enabled);
+			};
+
+			// Always relevant for any active clip type
+			setClipWidget("label_clip_center", true);
+			setClipWidget("spinbox_mutation_clip_center_ax", true);
+			setClipWidget("spinbox_mutation_clip_center_ay", true);
+			setClipWidget("spinbox_mutation_clip_center_az", true);
+			setClipWidget("label_clip_bool", true);
+			setClipWidget("spinboxInt_mutation_clip_boolean_op", true);
+			setClipWidget("label_clip_iter_start", true);
+			setClipWidget("spinboxInt_mutation_clip_iter_start", true);
+			setClipWidget("label_clip_iter_stop", true);
+			setClipWidget("spinboxInt_mutation_clip_iter_stop", true);
+			setClipWidget("label_clip_prerot_x", true);
+			setClipWidget("label_clip_prerot_y", true);
+			setClipWidget("label_clip_prerot_z", true);
+			setClipWidget("spinbox_mutation_clip_pre_rot_ax", true);
+			setClipWidget("spinbox_mutation_clip_pre_rot_ay", true);
+			setClipWidget("spinbox_mutation_clip_pre_rot_az", true);
+
+			// Per-type relevance
+			bool needSize = (clipType == 1 || clipType == 5 || clipType == 7 || clipType == 11
+							 || clipType == 12 || clipType == 13 || clipType == 14 || clipType == 15
+							 || clipType == 16 || clipType == 17 || clipType == 18 || clipType == 19
+							 || clipType == 22);
+			setClipWidget("label_clip_size", needSize);
+			setClipWidget("spinbox_mutation_clip_size_ax", needSize);
+			setClipWidget("spinbox_mutation_clip_size_ay", needSize);
+			setClipWidget("spinbox_mutation_clip_size_az", needSize);
+
+			bool needRadius = (clipType == 2 || clipType == 3 || clipType == 11 || clipType == 12
+							 || clipType == 13 || clipType == 14 || clipType == 15 || clipType == 16
+							 || clipType == 17 || clipType == 18 || clipType == 19 || clipType == 20
+							 || clipType == 21 || clipType == 25 || clipType == 26 || clipType == 27
+							 || clipType == 28 || clipType == 29 || clipType == 30);
+			setClipWidget("label_clip_radius", needRadius);
+			setClipWidget("spinbox_mutation_clip_radius", needRadius);
+
+			bool needMajorR = (clipType == 2);
+			setClipWidget("label_clip_major_r", needMajorR);
+			setClipWidget("spinbox_mutation_clip_major_radius", needMajorR);
+
+			bool needAngle = (clipType == 4);
+			setClipWidget("label_clip_angle", needAngle);
+			setClipWidget("spinbox_mutation_clip_angle", needAngle);
+
+			bool needFreq = (clipType == 9 || clipType == 26);
+			setClipWidget("label_clip_freq", needFreq);
+			setClipWidget("spinbox_mutation_clip_frequency", needFreq);
+
+			bool needAmp = (clipType == 9 || clipType == 10 || clipType == 23 || clipType == 28
+							|| clipType == 30);
+			setClipWidget("label_clip_amp", needAmp);
+			setClipWidget("spinbox_mutation_clip_amplitude", needAmp);
+
+			bool needSmoothK = (clipType == 14 || clipType == 15);
+			setClipWidget("label_clip_smooth", needSmoothK);
+			setClipWidget("spinbox_mutation_clip_smooth_k", needSmoothK);
+
+			bool needNPoints = (clipType == 31 || clipType == 33 || clipType == 34 || clipType == 35);
+			setClipWidget("label_clip_npoints", needNPoints);
+			setClipWidget("spinboxInt_mutation_clip_n_points", needNPoints);
+
+			bool needParamA = (clipType == 6 || clipType == 8 || clipType == 20 || clipType == 24
+							 || clipType == 27);
+			setClipWidget("label_clip_param", needParamA);
+			setClipWidget("spinbox_mutation_clip_param_a", needParamA);
+
+			bool needParamB = (clipType == 8);
+			setClipWidget("label_clip_param_b", needParamB);
+			setClipWidget("spinbox_mutation_clip_param_b", needParamB);
+
+			bool needParamC = false; // not used by any current type
+			setClipWidget("label_clip_param_c", needParamC);
+			setClipWidget("spinbox_mutation_clip_param_c", needParamC);
+
+			bool needThreshold = false; // not used by any current type
+			setClipWidget("label_clip_threshold", needThreshold);
+			setClipWidget("spinbox_mutation_clip_threshold", needThreshold);
+		}
+	}
+
+	// --- Inversion System: per-type gray-out ---
+	{
+		QGroupBox *invGroup = ui->groupCheck_mutation_inversion_enabled;
+		QComboBox *invCombo = ui->comboBox_mutation_inv_type;
+		if (invGroup && invCombo)
+		{
+			bool invActive = invGroup->isChecked() && invCombo->currentIndex() != 0;
+			int invType = invCombo->currentIndex();
+
+			auto setInvWidget = [&](const QString &baseName, bool enabled) {
+				QString suffix = "_" + QString::number(tabIndex + 1);
+				QWidget *w = invGroup->findChild<QWidget *>(baseName + suffix);
+				styleWidget(w, invActive && enabled);
+			};
+
+			// Always relevant for any active inversion type
+			setInvWidget("label_inv_center", true);
+			setInvWidget("spinbox_mutation_inv_center_ax", true);
+			setInvWidget("spinbox_mutation_inv_center_ay", true);
+			setInvWidget("spinbox_mutation_inv_center_az", true);
+			setInvWidget("label_inv_iter_start", true);
+			setInvWidget("spinboxInt_mutation_inv_iter_start", true);
+			setInvWidget("label_inv_iter_stop", true);
+			setInvWidget("spinboxInt_mutation_inv_iter_stop", true);
+			setInvWidget("label_inv_prerot_x", true);
+			setInvWidget("label_inv_prerot_y", true);
+			setInvWidget("label_inv_prerot_z", true);
+			setInvWidget("spinbox_mutation_inv_pre_rot_ax", true);
+			setInvWidget("spinbox_mutation_inv_pre_rot_ay", true);
+			setInvWidget("spinbox_mutation_inv_pre_rot_az", true);
+
+			// Per-type relevance
+			bool needRadius = (invType >= 2 && invType <= 30);
+			setInvWidget("label_inv_radius", needRadius);
+			setInvWidget("spinbox_mutation_inv_radius", needRadius);
+
+			bool needParamA = (invType == 1 || invType == 3 || invType == 4 || invType == 5
+							 || invType == 7 || invType == 9 || invType == 10 || invType == 15
+							 || invType == 16 || invType == 17 || invType == 18 || invType == 20
+							 || invType == 23);
+			setInvWidget("label_inv_param_a", needParamA);
+			setInvWidget("spinbox_mutation_inv_param_a", needParamA);
+
+			bool needParamB = (invType == 1 || invType == 4 || invType == 7 || invType == 18);
+			setInvWidget("label_inv_param_b", needParamB);
+			setInvWidget("spinbox_mutation_inv_param_b", needParamB);
+
+			bool needParamC = (invType == 1 || invType == 4 || invType == 11 || invType == 18);
+			setInvWidget("label_inv_param_c", needParamC);
+			setInvWidget("spinbox_mutation_inv_param_c", needParamC);
+
+			bool needAngle = (invType == 6);
+			setInvWidget("label_inv_angle", needAngle);
+			setInvWidget("spinbox_mutation_inv_angle", needAngle);
+
+			bool needFreq = (invType == 8 || invType == 25 || invType == 26);
+			setInvWidget("label_inv_freq", needFreq);
+			setInvWidget("spinbox_mutation_inv_frequency", needFreq);
+
+			bool needAmp = (invType == 22 || invType == 25 || invType == 26);
+			setInvWidget("label_inv_amp", needAmp);
+			setInvWidget("spinbox_mutation_inv_amplitude", needAmp);
+
+			bool needScale = (invType == 25);
+			setInvWidget("label_inv_scale", needScale);
+			setInvWidget("spinbox_mutation_inv_scale", needScale);
+
+			bool needMinR = false; // not used in kernel
+			setInvWidget("label_inv_minr", needMinR);
+			setInvWidget("spinbox_mutation_inv_min_r", needMinR);
+
+			bool needMaxR = false; // not used in kernel
+			setInvWidget("label_inv_maxr", needMaxR);
+			setInvWidget("spinbox_mutation_inv_max_r", needMaxR);
+
+			bool needWeight = (invType == 12);
+			setInvWidget("label_inv_weight", needWeight);
+			setInvWidget("spinbox_mutation_inv_weight", needWeight);
+
+			bool needNSteps = (invType == 14);
+			setInvWidget("label_inv_nsteps", needNSteps);
+			setInvWidget("spinboxInt_mutation_inv_n_steps", needNSteps);
+
+			bool needThreshold = (invType == 28);
+			setInvWidget("label_inv_threshold", needThreshold);
+			setInvWidget("spinbox_mutation_inv_threshold", needThreshold);
+
+			bool needColorFactor = (invType == 29);
+			setInvWidget("label_inv_colorfactor", needColorFactor);
+			setInvWidget("spinbox_mutation_inv_color_factor", needColorFactor);
+
+			bool needCenter2 = (invType == 11 || invType == 12 || invType == 13 || invType == 14);
+			setInvWidget("label_inv_center2", needCenter2);
+			setInvWidget("spinbox_mutation_inv_center2_ax", needCenter2);
+			setInvWidget("spinbox_mutation_inv_center2_ay", needCenter2);
+			setInvWidget("spinbox_mutation_inv_center2_az", needCenter2);
+
+			bool needRadius2 = (invType == 11 || invType == 12 || invType == 13);
+			setInvWidget("label_inv_radius2", needRadius2);
+			setInvWidget("spinbox_mutation_inv_radius2", needRadius2);
+		}
+	}
+
+	// Systems inside the main mutation group (no own GroupBox)
+	bool mutationEnabled = ui->groupCheck_mutation_enabled->isChecked();
+
+	// Fold system
+	bool foldActive = mutationEnabled && ui->comboBox_mutation_fold_type->currentIndex() != 0;
+	QList<QWidget *> allMutationChildren = ui->groupCheck_mutation_enabled->findChildren<QWidget *>();
+	for (QWidget *w : allMutationChildren)
+	{
+		QString name = w->objectName();
+		if (name.contains("fold") && !name.contains("position"))
+		{
+			styleWidget(w, foldActive);
+		}
+	}
+
+	// Warp system (basic warp, not warp_dist)
+	bool warpActive = mutationEnabled && ui->comboBox_mutation_warp_type->currentIndex() != 0;
+	for (QWidget *w : allMutationChildren)
+	{
+		QString name = w->objectName();
+		if (name.contains("warp") && !name.contains("warp_dist") && !name.contains("wd_"))
+		{
+			styleWidget(w, warpActive);
+		}
+	}
+
+	// Math system
+	bool mathActive = mutationEnabled && ui->comboBox_mutation_math_type->currentIndex() != 0;
+	for (QWidget *w : allMutationChildren)
+	{
+		QString name = w->objectName();
+		if (name.contains("math") && !name.contains("mb_math"))
+		{
+			styleWidget(w, mathActive);
+		}
+	}
+
+	// --- Jos Leys DE per-type ---
+	{
+		QGroupBox *josGroup = ui->groupCheck_mutation_jos_leys_enabled;
+		int josType = ui->comboBox_mutation_jos_de_type->currentIndex();
+		bool josActive = josGroup->isChecked() && josType != 0;
+		QString suffix = "_" + QString::number(tabIndex + 1);
+		QList<QWidget *> josChildren = josGroup->findChildren<QWidget *>();
+		auto setJosWidget = [&](const QString &baseName, bool enabled) {
+			QString fullName = baseName + suffix;
+			for (QWidget *w : josChildren)
+			{
+				if (w->objectName() == fullName)
+				{
+					styleWidget(w, josActive && enabled);
+					break;
+				}
+			}
+		};
+
+		// Factor is used by all types
+		setJosWidget("label_jos_factor", true);
+		setJosWidget("spinbox_mutation_jos_factor", true);
+
+		bool needParamA = (josType == 1 || josType == 2 || josType == 3 || josType == 4
+						|| josType == 5 || josType == 6 || josType == 7 || josType == 8
+						|| josType == 10 || josType == 11 || josType == 12 || josType == 13
+						|| josType == 15 || josType == 17);
+		setJosWidget("label_jos_param_a", needParamA);
+		setJosWidget("spinbox_mutation_jos_param_a", needParamA);
+
+		bool needParamB = (josType == 1 || josType == 2 || josType == 5 || josType == 6
+						|| josType == 10 || josType == 11 || josType == 12 || josType == 13
+						|| josType == 17);
+		setJosWidget("label_jos_param_b", needParamB);
+		setJosWidget("spinbox_mutation_jos_param_b", needParamB);
+
+		bool needParamC = (josType == 3 || josType == 4 || josType == 7 || josType == 8
+						|| josType == 11 || josType == 12);
+		setJosWidget("label_jos_param_c", needParamC);
+		setJosWidget("spinbox_mutation_jos_param_c", needParamC);
+
+		bool needParamD = false; // never used in kernel
+		setJosWidget("label_jos_param_d", needParamD);
+		setJosWidget("spinbox_mutation_jos_param_d", needParamD);
+
+		bool needPhase = (josType == 2 || josType == 4 || josType == 6 || josType == 8);
+		setJosWidget("label_jos_phase", needPhase);
+		setJosWidget("spinbox_mutation_jos_phase", needPhase);
+
+		bool needFreq = (josType == 2 || josType == 4 || josType == 6 || josType == 8);
+		setJosWidget("label_jos_freq", needFreq);
+		setJosWidget("spinbox_mutation_jos_freq", needFreq);
+
+		bool needAmp = false; // never used in kernel
+		setJosWidget("label_jos_amp", needAmp);
+		setJosWidget("spinbox_mutation_jos_amp", needAmp);
+
+		bool needScale = false; // never used in kernel
+		setJosWidget("label_jos_scale", needScale);
+		setJosWidget("spinbox_mutation_jos_scale", needScale);
+	}
+
+	// --- Pseudokleinian DE per-type ---
+	{
+		QGroupBox *pkGroup = ui->groupCheck_mutation_pk_enabled;
+		int pkType = ui->comboBox_mutation_pk_de_type->currentIndex();
+		bool pkActive = pkGroup->isChecked() && pkType != 0;
+		QString suffix = "_" + QString::number(tabIndex + 1);
+		QList<QWidget *> pkChildren = pkGroup->findChildren<QWidget *>();
+		auto setPkWidget = [&](const QString &baseName, bool enabled) {
+			QString fullName = baseName + suffix;
+			for (QWidget *w : pkChildren)
+			{
+				if (w->objectName() == fullName)
+				{
+					styleWidget(w, pkActive && enabled);
+					break;
+				}
+			}
+		};
+
+		// Factor is used by all types
+		setPkWidget("label_pk_factor", true);
+		setPkWidget("spinbox_mutation_pk_factor", true);
+
+		bool needParamA = (pkType >= 7 && pkType <= 29);
+		setPkWidget("label_pk_param_a", needParamA);
+		setPkWidget("spinbox_mutation_pk_param_a", needParamA);
+
+		bool needParamB = (pkType == 13 || pkType == 14 || pkType == 20 || pkType == 21
+						|| pkType == 22 || pkType == 29);
+		setPkWidget("label_pk_param_b", needParamB);
+		setPkWidget("spinbox_mutation_pk_param_b", needParamB);
+
+		bool needParamC = (pkType == 21 || pkType == 22 || pkType == 29);
+		setPkWidget("label_pk_param_c", needParamC);
+		setPkWidget("spinbox_mutation_pk_param_c", needParamC);
+
+		bool needParamD = false; // never used in kernel
+		setPkWidget("label_pk_param_d", needParamD);
+		setPkWidget("spinbox_mutation_pk_param_d", needParamD);
+
+		bool needPhase = (pkType == 10 || pkType == 20 || pkType == 21 || pkType == 22);
+		setPkWidget("label_pk_phase", needPhase);
+		setPkWidget("spinbox_mutation_pk_phase", needPhase);
+
+		bool needFreq = (pkType == 10 || pkType == 20 || pkType == 21 || pkType == 22);
+		setPkWidget("label_pk_freq", needFreq);
+		setPkWidget("spinbox_mutation_pk_freq", needFreq);
+
+		bool needAmp = false; // never used in kernel
+		setPkWidget("label_pk_amp", needAmp);
+		setPkWidget("spinbox_mutation_pk_amp", needAmp);
+
+		bool needScale = false; // never used in kernel
+		setPkWidget("label_pk_scale", needScale);
+		setPkWidget("spinbox_mutation_pk_scale", needScale);
+	}
 }
 
 void cTabFractal::FrameIterationFormulaSetEnabled(bool enabled) const
@@ -984,6 +1449,7 @@ void cTabFractal::slotPressedButtonMutationReset()
 
 	// Write defaults back to UI widgets
 	SynchronizeInterface(params, qInterface::write);
+	UpdateMutationGrayOut();
 }
 
 void cTabFractal::slotPressedButtonNavi()

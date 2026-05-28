@@ -2469,6 +2469,16 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 					float hh2 = clamp(0.5f - 0.5f * (aux.dist + clipDist) / kk2, 0.0f, 1.0f);
 					aux.dist = mix(aux.dist, -clipDist, hh2) + kk2 * hh2 * (1.0f - hh2);
 				}
+
+				// Apply clip to z (clip points inside the shape)
+				if (clipDist < 0.0f)
+				{
+					cz.x = 0.0f;
+					cz.y = 0.0f;
+					cz.z = 0.0f;
+				}
+				cz.x += mut->clipCenterX; cz.y += mut->clipCenterY; cz.z += mut->clipCenterZ;
+				z.xyz = cz;
 			}
 
 			// v7.7 — Jos Leys DE system (per-section iteration range)
