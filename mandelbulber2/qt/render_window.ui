@@ -755,6 +755,7 @@
      </item>
     </layout>
    </widget>
+  </widget>
 
   <widget class="QDockWidget" name="dockWidget_mutation">
    <property name="features">
@@ -825,7 +826,6 @@
      </item>
     </layout>
    </widget>
-  </widget>
   </widget>
   <widget class="QDockWidget" name="dockWidget_fake_lights">
    <property name="features">
