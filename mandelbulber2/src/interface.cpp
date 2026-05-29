@@ -490,6 +490,8 @@ void cInterface::ConnectSignals() const
 		&RenderWindow::slotUpdateDocksAndToolbarByAction);
 	connect(mainWindow->ui->actionShow_fake_lights_dock, &QAction::triggered, mainWindow,
 		&RenderWindow::slotUpdateDocksAndToolbarByAction);
+	connect(mainWindow->ui->actionShow_mutation_dock, &QAction::triggered, mainWindow,
+		&RenderWindow::slotUpdateDocksAndToolbarByAction);
 	connect(mainWindow->ui->actionSave_settings, &QAction::triggered, mainWindow,
 		&RenderWindow::slotMenuSaveSettings);
 	connect(mainWindow->ui->actionSave_settings_to_clipboard, &QAction::triggered, mainWindow,
