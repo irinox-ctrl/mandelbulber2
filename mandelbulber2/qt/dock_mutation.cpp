@@ -9,6 +9,18 @@ cDockMutation::cDockMutation(QWidget *parent)
 {
 	ui->setupUi(this);
 	automatedWidgets = new cAutomatedWidgets(this);
+
+	// Larger fonts and widgets for readability
+	setStyleSheet(
+		"QWidget { font-size: 14px; }"
+		"QLabel { font-size: 13px; font-weight: bold; }"
+		"QSpinBox, QDoubleSpinBox { min-width: 90px; padding: 2px; }"
+		"QComboBox { min-width: 140px; padding: 2px; }"
+		"QCheckBox, QGroupBox { font-size: 14px; }"
+		"QSlider::groove:horizontal { height: 10px; }"
+		"QSlider::handle:horizontal { width: 18px; height: 18px; }"
+		"QTabBar::tab { font-size: 13px; padding: 6px 12px; }"
+	);
 }
 
 cDockMutation::~cDockMutation()
@@ -51,5 +63,13 @@ void cDockMutation::UpdateMutationGrayOut(int tabIndex)
 	if (tabIndex >= 0 && tabIndex < mutationTabs.size() && mutationTabs[tabIndex])
 	{
 		mutationTabs[tabIndex]->UpdateMutationGrayOut();
+	}
+}
+
+void cDockMutation::UpdateTabTitle(int tabIndex, const QString &title)
+{
+	if (tabIndex >= 0 && tabIndex < ui->tabWidget_mutations->count())
+	{
+		ui->tabWidget_mutations->setTabText(tabIndex, title);
 	}
 }

@@ -247,10 +247,23 @@ void cDockFractal::InitializeFractalUi() const
 		// Connect fractal formula change to mutation dock
 		if (dockMutation)
 		{
+			// Set initial tab title with formula name
+			int formulaIndex = fractalTabs[i]->GetCurrentFractalIndexOnList();
+			if (formulaIndex >= 0 && formulaIndex < newFractalList.size())
+			{
+				dockMutation->UpdateTabTitle(i, QString("#%1: %2")
+					.arg(i + 1).arg(newFractalList[formulaIndex]->getNameInComboBox()));
+			}
+
 			connect(fractalTabs[i], &cTabFractal::signalFormulaChanged,
 				[=](int formulaIndex) {
 					dockMutation->UpdateMutationFieldVisibility(i, formulaIndex);
 					dockMutation->UpdateMutationGrayOut(i);
+					if (formulaIndex >= 0 && formulaIndex < newFractalList.size())
+					{
+						dockMutation->UpdateTabTitle(i, QString("#%1: %2")
+							.arg(i + 1).arg(newFractalList[formulaIndex]->getNameInComboBox()));
+					}
 				});
 		}
 	}

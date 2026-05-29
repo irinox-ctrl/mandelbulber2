@@ -26,6 +26,7 @@ public:
 		qInterface::enumReadWrite mode);
 	void UpdateMutationFieldVisibility(int tabIndex, int formulaIndex);
 	void UpdateMutationGrayOut(int tabIndex);
+	void UpdateTabTitle(int tabIndex, const QString &title);
 
 private:
 	Ui::cDockMutation *ui;
