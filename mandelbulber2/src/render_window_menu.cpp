@@ -844,13 +844,59 @@ void RenderWindow::slotUpdateDocksAndToolbarByAction()
 	{
 		if (ui->actionShow_mutation_dock->isChecked())
 		{
+			// Save current layout before entering mutation-only view
+			savedStateBeforeMutationView = saveState();
+
+			// Hide all other docks
+			ui->dockWidget_effects->hide();
+			ui->dockWidget_materialEditor->hide();
+			ui->dockWidget_Materials->hide();
+			ui->dockWidget_pattern_lines->hide();
+			ui->dockWidget_julia->hide();
+			ui->dockWidget_primitives->hide();
+			ui->dockWidget_animation->hide();
+			ui->dockWidget_info->hide();
+			ui->dockWidget_histogram->hide();
+			ui->dockWidget_queue_dock->hide();
+			ui->dockWidget_measurement->hide();
+			ui->dockWidget_fake_lights->hide();
+			ui->dockWidget_image_adjustments->hide();
+			ui->dockWidget_navigation->hide();
+			ui->dockWidget_objects->hide();
+			ui->dockWidget_rendering_engine->hide();
+#ifdef USE_GAMEPAD
+			ui->dockWidget_gamepad_dock->hide();
+#endif
+			ui->toolBar->hide();
+
+			// Uncheck all other view actions
+			ui->actionShow_animation_dock->setChecked(false);
+			ui->actionShow_info_dock->setChecked(false);
+			ui->actionShow_statistics_dock->setChecked(false);
+			ui->actionShow_toolbar->setChecked(false);
+			ui->actionShow_queue_dock->setChecked(false);
+			ui->actionShow_measurement_dock->setChecked(false);
+			ui->actionShow_fake_lights_dock->setChecked(false);
+#ifdef USE_GAMEPAD
+			ui->actionShow_gamepad_dock->setChecked(false);
+#endif
+
+			// Show mutation dock
 			addDockWidget(Qt::LeftDockWidgetArea, ui->dockWidget_mutation);
+			ui->dockWidget_mutation->show();
 		}
 		else
 		{
+			// Hide mutation dock
+			ui->dockWidget_mutation->hide();
 			removeDockWidget(ui->dockWidget_mutation);
+
+			// Restore previous layout
+			if (!savedStateBeforeMutationView.isEmpty())
+			{
+				restoreState(savedStateBeforeMutationView);
+			}
 		}
-		ui->dockWidget_mutation->setVisible(ui->actionShow_mutation_dock->isChecked());
 	}
 
 	// Animation dock

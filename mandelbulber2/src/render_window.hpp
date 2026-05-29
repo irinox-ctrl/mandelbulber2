@@ -228,6 +228,7 @@ private:
 	QByteArray defaultState;
 	QByteArray savedStateBeforeFocus;
 	bool focusModeActive = false;
+	QByteArray savedStateBeforeMutationView;
 	QTimer *buttonPressTimer;
 	QList<int> currentKeyEvents;
 	Qt::KeyboardModifiers lastKeyEventModifiers;
