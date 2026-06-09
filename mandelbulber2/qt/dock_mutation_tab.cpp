@@ -87,6 +87,8 @@ void cDockMutationTab::Init(int _tabIndex)
 	connectMutationCombo(ui->comboBox_mutation_noise_type, "mutation_noise_type");
 	connectMutationCombo(ui->comboBox_mutation_orbit_trap_type, "mutation_orbit_trap_type");
 	connectMutationCombo(ui->comboBox_mutation_torus_type, "mutation_torus_type");
+	connectMutationCombo(ui->comboBox_mutation_as_type, "mutation_as_type");
+	connectMutationCombo(ui->comboBox_mutation_sm_type, "mutation_sm_type");
 	connectMutationCombo(ui->comboBox_mutation_blockify_type, "mutation_blockify_type");
 	connectMutationCombo(ui->comboBox_mutation_tile_type, "mutation_tile_type");
 
@@ -102,6 +104,8 @@ void cDockMutationTab::Init(int _tabIndex)
 		ui->comboBox_mutation_noise_type,
 		ui->comboBox_mutation_orbit_trap_type,
 		ui->comboBox_mutation_torus_type,
+		ui->comboBox_mutation_as_type,
+		ui->comboBox_mutation_sm_type,
 		ui->comboBox_mutation_blockify_type,
 		ui->comboBox_mutation_tile_type,
 		ui->comboBox_mutation_fold_type,
@@ -132,6 +136,8 @@ void cDockMutationTab::Init(int _tabIndex)
 		ui->groupCheck_mutation_noise_enabled,
 		ui->groupCheck_mutation_orbit_trap_enabled,
 		ui->groupCheck_mutation_torus_enabled,
+		ui->groupCheck_mutation_as_enabled,
+		ui->groupCheck_mutation_sm_enabled,
 		ui->groupCheck_mutation_blockify_enabled,
 		ui->groupCheck_mutation_tile_enabled,
 	};
