@@ -521,7 +521,7 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 			}
 
 			// v7.6 — Inversion (per-section iteration range)
-			if (i >= mut->invIterStart && i < mut->invIterStop && mut->inversionType != 0)
+			if (mut->enabled && i >= mut->invIterStart && i < mut->invIterStop && mut->inversionType != 0)
 			{
 				float3 zz = z.xyz;
 				if (mut->invPreRotX != 0.0f || mut->invPreRotY != 0.0f || mut->invPreRotZ != 0.0f)
@@ -836,6 +836,26 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 						if (trap < aux.color) aux.color = trap;
 						break;
 					}
+										case 31: { float4 q=(float4)(zz.x,zz.y,zz.z,z.w); float qn=dot(q,q); if(qn<1e-21f)qn=1e-21f; mde=1.0f/qn; q=(float4)(q.x,-q.y,-q.z,-q.w)*mde; zz=(float3)(q.x,q.y,q.z); z.w=q.w; break; }
+					case 32: { float n1=zz.x*zz.x+zz.y*zz.y; if(n1<1e-21f)n1=1e-21f; float n2=zz.z*zz.z+z.w*z.w; if(n2<1e-21f)n2=1e-21f; zz.x/=n1; zz.y/=-n1; zz.z/=n2; z.w/=-n2; mde=fmax(1.0f/n1,1.0f/n2); break; }
+					case 33: { float dn=zz.x*zz.x-zz.y*zz.y; if(fabs(dn)<1e-21f)dn=1e-21f; mde=1.0f/fabs(dn); zz.x=zz.x/dn; zz.y=-zz.y/dn; break; }
+					case 34: { if(fabs(zz.x)<1e-21f)zz.x=1e-21f; mde=1.0f/(zz.x*zz.x); float ox=1.0f/zz.x; float oy=-zz.y/(zz.x*zz.x); zz.x=ox; zz.y=oy; break; }
+					case 35: { float on=dot(zz,zz)+z.w*z.w; if(on<1e-21f)on=1e-21f; mde=1.0f/on; zz*=mde; z.w*=-mde; zz.y=-zz.y; zz.z=-zz.z; break; }
+					case 36: { float sn=dot(zz,zz)+z.w*z.w; if(sn<1e-21f)sn=1e-21f; mde=1.0f/sn; zz=(float3)(zz.x,-zz.y,-zz.z)*mde; z.w*=-mde; break; }
+					case 37: { rr=dot(zz,zz); if(rr<1e-21f)rr=1e-21f; mde=1.0f/rr; zz*=mde; break; }
+					case 38: { float hodge=zz.x*(zz.y*zz.z); if(fabs(hodge)<1e-21f)hodge=1e-21f; mde=1.0f/fabs(hodge); zz.x=(zz.y*zz.z)*mde; zz.y=(zz.x*zz.z)*mde; zz.z=(zz.x*zz.y)*mde; break; }
+					case 39: { float detA=zz.x*zz.y-zz.z*zz.z; if(fabs(detA)<1e-21f)detA=1e-21f; mde=1.0f/fabs(detA); float tx=zz.y*mde; zz.y=zz.x*mde; zz.x=tx; zz.z=-zz.z*mde; break; }
+					case 40: { float hash=fabs(sin(zz.x*12.9898f+zz.y*78.233f+zz.z*45.164f)*43758.5453f); hash=hash-floor(hash); float p=mut->invWeight; rr=dot(zz,zz); if(rr<1e-21f)rr=1e-21f; if(hash<p){mde=R*R/rr;zz*=mde;} else{mde=1.0f;} mde=(1.0f-p)+p*mde; break; }
+					case 41: { rr=dot(zz,zz); float minR2=mut->invMinR*mut->invMinR; float maxR2=mut->invMaxR*mut->invMaxR; if(rr<minR2)mde=maxR2/minR2; else if(rr<maxR2)mde=maxR2/rr; else mde=1.0f; zz*=mde; break; }
+					case 42: { float lim=a; if(zz.x>lim)zz.x=2.0f*lim-zz.x; if(zz.x<-lim)zz.x=-2.0f*lim-zz.x; if(zz.y>lim)zz.y=2.0f*lim-zz.y; if(zz.y<-lim)zz.y=-2.0f*lim-zz.y; if(zz.z>lim)zz.z=2.0f*lim-zz.z; if(zz.z<-lim)zz.z=-2.0f*lim-zz.z; rr=dot(zz,zz); if(rr<1e-21f)rr=1e-21f; mde=R*R/rr; zz*=mde; lim=b; if(zz.x>lim)zz.x=2.0f*lim-zz.x; if(zz.x<-lim)zz.x=-2.0f*lim-zz.x; if(zz.y>lim)zz.y=2.0f*lim-zz.y; if(zz.y<-lim)zz.y=-2.0f*lim-zz.y; if(zz.z>lim)zz.z=2.0f*lim-zz.z; if(zz.z<-lim)zz.z=-2.0f*lim-zz.z; break; }
+					case 43: { float cz_d2=c*zz.x+1.0f; float dn2=cz_d2*cz_d2+c*c*zz.y*zz.y; if(dn2<1e-21f)dn2=1e-21f; float mobMde=(a*1.0f-b*c)/dn2; zz.x=(a*zz.x+b)/(c*zz.x+1.0f+1e-21f); zz.y=zz.y*mobMde; rr=dot(zz,zz); if(rr<1e-21f)rr=1e-21f; mde=R*R/rr; zz*=mde; mde*=fabs(mobMde); break; }
+					case 44: { float3 dynC=zz*mut->invAmplitude; float3 dvec=zz-dynC; rr=dot(dvec,dvec); if(rr<1e-21f)rr=1e-21f; mde=R*R/rr; zz=dynC+dvec*mde; break; }
+					case 45: { float3 jc=(float3)(mut->invCenter2X,mut->invCenter2Y,mut->invCenter2Z); float3 dvec=zz-jc; rr=dot(dvec,dvec); if(rr<1e-21f)rr=1e-21f; mde=R*R/rr; zz=jc+dvec*mde; break; }
+					case 46: { float3 ifs_c=(float3)(a,b,c); float3 dvec=zz-ifs_c; float d=dot(dvec,dvec); if(d<1e-21f)d=1e-21f; mde=R*R/d; zz=ifs_c+dvec*mde; zz.x=fabs(zz.x); zz.y=fabs(zz.y); break; }
+					case 47: { rr=dot(zz,zz); if(rr<1e-21f)rr=1e-21f; mde=R*R/rr; zz*=mde; float theta=mut->invAngle*M_PI_F/180.0f; float cosT=cos(theta),sinT=sin(theta); float tx2=zz.x*cosT-zz.y*sinT; zz.y=zz.x*sinT+zz.y*cosT; zz.x=tx2; zz*=sc; mde*=fabs(sc); break; }
+					case 48: { zz.x+=mut->invAmplitude; zz.y+=mut->invAmplitude*zz.x*zz.x; rr=dot(zz,zz); if(rr<1e-21f)rr=1e-21f; mde=R*R/rr; zz*=mde; break; }
+					case 49: { float theta=mut->invAngle*M_PI_F/180.0f; float cosT=cos(theta),sinT=sin(theta); float tx3=zz.x*cosT-zz.y*sinT; zz.y=zz.x*sinT+zz.y*cosT; zz.x=tx3; rr=dot(zz,zz); if(rr<1e-21f)rr=1e-21f; mde=R*R/rr; zz*=mde; break; }
+					case 50: { float3 aa=(float3)(mut->invCenter2X,mut->invCenter2Y,mut->invCenter2Z); float an=dot(aa,aa); float za=dot(zz,aa); float zn=dot(zz,zz); float dn3=1.0f+2.0f*za+an*zn; if(fabs(dn3)<1e-21f)dn3=1e-21f; zz=(zz*(1.0f+2.0f*za+an)+aa*(1.0f+zn))/dn3; mde=(1.0f-an)/(dn3*dn3); rr=dot(zz,zz); if(rr<1e-21f)rr=1e-21f; float invMde=R*R/rr; zz*=invMde; mde*=invMde; mde=fabs(mde); break; }
 					default: break;
 				}
 				zz.x += mut->invCenterX; zz.y += mut->invCenterY; zz.z += mut->invCenterZ;
@@ -2449,6 +2469,26 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 						aux.color = native_log(1.0f + fabs(aux.dist)) * mut->clipAmplitude;
 						break;
 					}
+										case 31: { float r2d=native_sqrt(cz.x*cz.x+cz.y*cz.y); float theta=atan2(cz.y,cz.x); int n=mut->clipNPoints; float starR=cr*(1.0f+mut->clipAmplitude*cos((float)n*theta)); clipDist=r2d-starR; if(clipDist<0.0f){cz.x*=0.0f;cz.y*=0.0f;cz.z*=0.0f;} break; }
+					case 32: { float x2h=cz.x*cz.x+cz.y*cz.y; clipDist=(x2h-1.0f)*(x2h-1.0f)*(x2h-1.0f)-cz.x*cz.x*cz.y*cz.y*cz.y; if(clipDist<0.0f){cz.x*=0.0f;cz.y*=0.0f;cz.z*=0.0f;} break; }
+					case 33: { float r2d2=native_sqrt(cz.x*cz.x+cz.y*cz.y); float theta2=atan2(cz.y,cz.x); float m=(float)mut->clipNPoints; float n1=ca,n2=cb,n3=cc; float t=m*theta2/4.0f; float r_sf=pow(pow(fabs(cos(t)/sx),n2)+pow(fabs(sin(t)/sy),n3),-1.0f/n1); clipDist=r2d2-r_sf*cr; if(clipDist<0.0f){cz.x*=0.0f;cz.y*=0.0f;cz.z*=0.0f;} break; }
+					case 34: { float r2d3=native_sqrt(cz.x*cz.x+cz.y*cz.y); float theta3=atan2(cz.y,cz.x); int ng=mut->clipNPoints; float gearR=cr*(1.0f+0.1f*tanh(sin((float)ng*theta3))); clipDist=r2d3-gearR; if(clipDist<0.0f){cz.x*=0.0f;cz.y*=0.0f;cz.z*=0.0f;} break; }
+					case 35: { float r2d4=native_sqrt(cz.x*cz.x+cz.y*cz.y); float theta4=atan2(cz.y,cz.x); int ns=mut->clipNPoints; float spiralR=ca*native_exp(-cb*theta4)*(1.0f+cc*cos((float)ns*theta4)); clipDist=r2d4-spiralR; if(clipDist<0.0f){cz.x*=0.0f;cz.y*=0.0f;cz.z*=0.0f;} break; }
+					case 36: { float3 seeds[4]; seeds[0]=(float3)(ca,0.0f,0.0f); seeds[1]=(float3)(-ca,cb,0.0f); seeds[2]=(float3)(0.0f,-ca,cc); seeds[3]=(float3)(cb,cc,-ca); float minVD=1e20f; for(int k=0;k<4;k++){float vd=length(cz-seeds[k]); if(vd<minVD)minVD=vd;} clipDist=minVD-cr; if(clipDist<0.0f){cz.x*=0.0f;cz.y*=0.0f;cz.z*=0.0f;} break; }
+					case 37: { float3 edges[3]; edges[0]=(float3)(ca,0.0f,0.0f); edges[1]=(float3)(-ca*0.5f,ca*0.866f,0.0f); edges[2]=(float3)(-ca*0.5f,-ca*0.866f,0.0f); float minED=1e20f; for(int k=0;k<3;k++){float3 e=edges[(k+1)%3]-edges[k]; float3 p=cz-edges[k]; float t=fmax(0.0f,fmin(1.0f,dot(p,e)/dot(e,e))); float ed=length(p-e*t); if(ed<minED)minED=ed;} clipDist=minED-cr; if(clipDist<0.0f){cz.x*=0.0f;cz.y*=0.0f;cz.z*=0.0f;} break; }
+					case 38: { float3 lz=cz; float lscale=1.0f; for(int k=0;k<3;k++){lz.x=fabs(lz.x); lz.y=fabs(lz.y); lz.z=fabs(lz.z); if(lz.x<lz.y){float t=lz.x;lz.x=lz.y;lz.y=t;} if(lz.x<lz.z){float t=lz.x;lz.x=lz.z;lz.z=t;} if(lz.y<lz.z){float t=lz.y;lz.y=lz.z;lz.z=t;} lz=lz*ca-(float3)(cb,cb,cb)*(ca-1.0f); lscale*=ca;} clipDist=(length(lz)-cr)/lscale; if(clipDist<0.0f){cz.x*=0.0f;cz.y*=0.0f;cz.z*=0.0f;} break; }
+					case 39: { float jx=cz.x,jy=cz.y; for(int k=0;k<8;k++){float tx=jx*jx-jy*jy+ca; jy=2.0f*jx*jy+cb; jx=tx; if(jx*jx+jy*jy>4.0f)break;} float jDist=(jx*jx+jy*jy>4.0f)?-cr:cr; clipDist=fmax(jDist,fabs(cz.z)-sz); if(clipDist<0.0f){cz.x*=0.0f;cz.y*=0.0f;cz.z*=0.0f;} break; }
+					case 40: { float mx=0.0f,my=0.0f; for(int k=0;k<8;k++){float tx2=mx*mx-my*my+cz.x; my=2.0f*mx*my+cz.y; mx=tx2; if(mx*mx+my*my>4.0f)break;} float mDist=(mx*mx+my*my>4.0f)?-cr:cr; clipDist=fmax(mDist,fabs(cz.z)-sz); if(clipDist<0.0f){cz.x*=0.0f;cz.y*=0.0f;cz.z*=0.0f;} break; }
+					case 41: { clipDist=fmax(fmax(fabs(cz.x),fabs(cz.y)),fmax(fabs(cz.z),fabs(z.w)))-cr; if(clipDist<0.0f){cz.x*=0.0f;cz.y*=0.0f;cz.z*=0.0f;} break; }
+					case 42: { clipDist=native_sqrt(cz.x*cz.x+cz.y*cz.y+cz.z*cz.z+z.w*z.w)-cr; if(clipDist<0.0f){cz.x*=0.0f;cz.y*=0.0f;cz.z*=0.0f;} break; }
+					case 43: { float tt=(float)i*mut->clipFrequency; float tR=cr*(1.0f+mut->clipAmplitude*sin(tt)); clipDist=length(cz)-tR; if(clipDist<0.0f){cz.x*=0.0f;cz.y*=0.0f;cz.z*=0.0f;} break; }
+					case 44: { float orbitR=cr*(1.0f+mut->clipAmplitude*sin(aux.color*mut->clipFrequency)); clipDist=length(cz)-orbitR; if(clipDist<0.0f){cz.x*=0.0f;cz.y*=0.0f;cz.z*=0.0f;} break; }
+					case 45: { float deR=cr*(1.0f+mut->clipAmplitude*native_log(1.0f+fabs(aux.DE))); clipDist=length(cz)-deR; if(clipDist<0.0f){cz.x*=0.0f;cz.y*=0.0f;cz.z*=0.0f;} break; }
+					case 46: { float colR=cr*(1.0f+mut->clipAmplitude*sin(aux.color*mut->clipFrequency)); clipDist=length(cz)-colR; if(clipDist<0.0f){cz.x*=0.0f;cz.y*=0.0f;cz.z*=0.0f;} break; }
+					case 47: { float iterR=cr*(1.0f+mut->clipAmplitude*(float)i/250.0f); clipDist=length(cz)-iterR; if(clipDist<0.0f){cz.x*=0.0f;cz.y*=0.0f;cz.z*=0.0f;} break; }
+					case 48: { float rh=fabs(sin((float)i*12.9898f+cz.x*78.233f)*43758.5453f); rh=rh-floor(rh); float randR=cr*(1.0f+mut->clipAmplitude*(rh-0.5f)); clipDist=length(cz)-randR; if(clipDist<0.0f){cz.x*=0.0f;cz.y*=0.0f;cz.z*=0.0f;} break; }
+					case 49: { float nx=tanh(ca*cz.x+cb*cz.y+cc*cz.z); float ny=tanh(cb*cz.x-ca*cz.y+cc*cz.z); float nz=tanh(cc*cz.x+ca*cz.y-cb*cz.z); clipDist=native_sqrt(nx*nx+ny*ny+nz*nz)-cr; if(clipDist<0.0f){cz.x*=0.0f;cz.y*=0.0f;cz.z*=0.0f;} break; }
+					case 50: { float3 rz=cz; float rscale=1.0f; for(int k=0;k<5;k++){rz.x=fabs(rz.x)*2.0f-ca; rz.y=fabs(rz.y)*2.0f-ca; rz.z=fabs(rz.z)*2.0f-ca; rscale*=2.0f; float rd=length(rz)-cr; rd/=rscale; if(rd<clipDist)clipDist=rd;} if(clipDist<0.0f){cz.x*=0.0f;cz.y*=0.0f;cz.z*=0.0f;} break; }
 					default: break;
 				}
 				// Apply boolean operation

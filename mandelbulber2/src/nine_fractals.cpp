@@ -284,7 +284,8 @@ cNineFractals::cNineFractals(std::shared_ptr<const cFractalContainer> par,
 		}
 
 		// v7.6 — Inversion system
-		mutationParams[i].inversionType = generalPar->Get<int>("mutation_inv_type", i + 1);
+		mutationParams[i].inversionType = generalPar->Get<bool>("mutation_inversion_enabled", i + 1)
+			? generalPar->Get<int>("mutation_inv_type", i + 1) : 0;
 		mutationParams[i].invCenterX = generalPar->Get<double>("mutation_inv_center_ax", i + 1);
 		mutationParams[i].invCenterY = generalPar->Get<double>("mutation_inv_center_ay", i + 1);
 		mutationParams[i].invCenterZ = generalPar->Get<double>("mutation_inv_center_az", i + 1);
@@ -312,7 +313,8 @@ cNineFractals::cNineFractals(std::shared_ptr<const cFractalContainer> par,
 		mutationParams[i].invIterStart = generalPar->Get<int>("mutation_inv_iter_start", i + 1);
 		mutationParams[i].invIterStop = generalPar->Get<int>("mutation_inv_iter_stop", i + 1);
 		// v7.6 — Clip system
-		mutationParams[i].clipType = generalPar->Get<int>("mutation_clip_type", i + 1);
+		mutationParams[i].clipType = generalPar->Get<bool>("mutation_clip_enabled", i + 1)
+			? generalPar->Get<int>("mutation_clip_type", i + 1) : 0;
 		mutationParams[i].clipCenterX = generalPar->Get<double>("mutation_clip_center_ax", i + 1);
 		mutationParams[i].clipCenterY = generalPar->Get<double>("mutation_clip_center_ay", i + 1);
 		mutationParams[i].clipCenterZ = generalPar->Get<double>("mutation_clip_center_az", i + 1);
@@ -337,7 +339,8 @@ cNineFractals::cNineFractals(std::shared_ptr<const cFractalContainer> par,
 		mutationParams[i].clipIterStart = generalPar->Get<int>("mutation_clip_iter_start", i + 1);
 		mutationParams[i].clipIterStop = generalPar->Get<int>("mutation_clip_iter_stop", i + 1);
 		// v7.7 — Jos Leys DE system
-		mutationParams[i].josLeysDeType = generalPar->Get<int>("mutation_jos_de_type", i + 1);
+		mutationParams[i].josLeysDeType = generalPar->Get<bool>("mutation_jos_leys_enabled", i + 1)
+			? generalPar->Get<int>("mutation_jos_de_type", i + 1) : 0;
 		mutationParams[i].josFactor = generalPar->Get<double>("mutation_jos_factor", i + 1);
 		mutationParams[i].josParamA = generalPar->Get<double>("mutation_jos_param_a", i + 1);
 		mutationParams[i].josParamB = generalPar->Get<double>("mutation_jos_param_b", i + 1);
@@ -350,7 +353,8 @@ cNineFractals::cNineFractals(std::shared_ptr<const cFractalContainer> par,
 		mutationParams[i].josIterStart = generalPar->Get<int>("mutation_jos_iter_start", i + 1);
 		mutationParams[i].josIterStop = generalPar->Get<int>("mutation_jos_iter_stop", i + 1);
 		// v7.7 — Pseudokleinian DE system
-		mutationParams[i].pseudoKleinianDeType = generalPar->Get<int>("mutation_pk_de_type", i + 1);
+		mutationParams[i].pseudoKleinianDeType = generalPar->Get<bool>("mutation_pk_enabled", i + 1)
+			? generalPar->Get<int>("mutation_pk_de_type", i + 1) : 0;
 		mutationParams[i].pkFactor = generalPar->Get<double>("mutation_pk_factor", i + 1);
 		mutationParams[i].pkParamA = generalPar->Get<double>("mutation_pk_param_a", i + 1);
 		mutationParams[i].pkParamB = generalPar->Get<double>("mutation_pk_param_b", i + 1);
@@ -364,7 +368,8 @@ cNineFractals::cNineFractals(std::shared_ptr<const cFractalContainer> par,
 		mutationParams[i].pkIterStop = generalPar->Get<int>("mutation_pk_iter_stop", i + 1);
 
 		// v7.8 — Mandelbox Math system
-		mutationParams[i].mbMathType = generalPar->Get<int>("mutation_mb_math_type", i + 1);
+		mutationParams[i].mbMathType = generalPar->Get<bool>("mutation_mb_math_enabled", i + 1)
+			? generalPar->Get<int>("mutation_mb_math_type", i + 1) : 0;
 		mutationParams[i].mbFactor = generalPar->Get<double>("mutation_mb_factor", i + 1);
 		mutationParams[i].mbParamA = generalPar->Get<double>("mutation_mb_param_a", i + 1);
 		mutationParams[i].mbParamB = generalPar->Get<double>("mutation_mb_param_b", i + 1);
@@ -378,7 +383,8 @@ cNineFractals::cNineFractals(std::shared_ptr<const cFractalContainer> par,
 		mutationParams[i].mbIterStop = generalPar->Get<int>("mutation_mb_iter_stop", i + 1);
 
 		// v7.9 — Warp Distortion system
-		mutationParams[i].warpDistType = generalPar->Get<int>("mutation_warp_dist_type", i + 1);
+		mutationParams[i].warpDistType = generalPar->Get<bool>("mutation_warp_dist_enabled", i + 1)
+			? generalPar->Get<int>("mutation_warp_dist_type", i + 1) : 0;
 		mutationParams[i].wdFactor = generalPar->Get<double>("mutation_wd_factor", i + 1);
 		mutationParams[i].wdParamA = generalPar->Get<double>("mutation_wd_param_a", i + 1);
 		mutationParams[i].wdParamB = generalPar->Get<double>("mutation_wd_param_b", i + 1);
@@ -392,7 +398,8 @@ cNineFractals::cNineFractals(std::shared_ptr<const cFractalContainer> par,
 		mutationParams[i].wdIterStop = generalPar->Get<int>("mutation_wd_iter_stop", i + 1);
 
 		// v7.9 — Symmetry/Kaleidoscope system
-		mutationParams[i].symKalType = generalPar->Get<int>("mutation_sym_kal_type", i + 1);
+		mutationParams[i].symKalType = generalPar->Get<bool>("mutation_symmetry_enabled", i + 1)
+			? generalPar->Get<int>("mutation_sym_kal_type", i + 1) : 0;
 		mutationParams[i].skFactor = generalPar->Get<double>("mutation_sk_factor", i + 1);
 		mutationParams[i].skParamA = generalPar->Get<double>("mutation_sk_param_a", i + 1);
 		mutationParams[i].skParamB = generalPar->Get<double>("mutation_sk_param_b", i + 1);
@@ -406,7 +413,8 @@ cNineFractals::cNineFractals(std::shared_ptr<const cFractalContainer> par,
 		mutationParams[i].skIterStop = generalPar->Get<int>("mutation_sk_iter_stop", i + 1);
 
 		// v7.9 — Abox DE system
-		mutationParams[i].aboxType = generalPar->Get<int>("mutation_abox_type", i + 1);
+		mutationParams[i].aboxType = generalPar->Get<bool>("mutation_abox_enabled", i + 1)
+			? generalPar->Get<int>("mutation_abox_type", i + 1) : 0;
 		mutationParams[i].abFactor = generalPar->Get<double>("mutation_ab_factor", i + 1);
 		mutationParams[i].abParamA = generalPar->Get<double>("mutation_ab_param_a", i + 1);
 		mutationParams[i].abParamB = generalPar->Get<double>("mutation_ab_param_b", i + 1);
@@ -420,7 +428,8 @@ cNineFractals::cNineFractals(std::shared_ptr<const cFractalContainer> par,
 		mutationParams[i].abIterStop = generalPar->Get<int>("mutation_ab_iter_stop", i + 1);
 
 		// v7.10 — Noise & Procedural DE system
-		mutationParams[i].noiseType = generalPar->Get<int>("mutation_noise_type", i + 1);
+		mutationParams[i].noiseType = generalPar->Get<bool>("mutation_noise_enabled", i + 1)
+			? generalPar->Get<int>("mutation_noise_type", i + 1) : 0;
 		mutationParams[i].noiseFactor = generalPar->Get<double>("mutation_noise_factor", i + 1);
 		mutationParams[i].noiseParamA = generalPar->Get<double>("mutation_noise_param_a", i + 1);
 		mutationParams[i].noiseParamB = generalPar->Get<double>("mutation_noise_param_b", i + 1);
@@ -432,7 +441,8 @@ cNineFractals::cNineFractals(std::shared_ptr<const cFractalContainer> par,
 		mutationParams[i].noiseIterStop = generalPar->Get<int>("mutation_noise_iter_stop", i + 1);
 
 		// v7.10 — Orbit Trap DE system
-		mutationParams[i].orbitTrapType = generalPar->Get<int>("mutation_orbit_trap_type", i + 1);
+		mutationParams[i].orbitTrapType = generalPar->Get<bool>("mutation_orbit_trap_enabled", i + 1)
+			? generalPar->Get<int>("mutation_orbit_trap_type", i + 1) : 0;
 		mutationParams[i].orbitFactor = generalPar->Get<double>("mutation_orbit_factor", i + 1);
 		mutationParams[i].orbitParamA = generalPar->Get<double>("mutation_orbit_param_a", i + 1);
 		mutationParams[i].orbitParamB = generalPar->Get<double>("mutation_orbit_param_b", i + 1);
@@ -442,7 +452,8 @@ cNineFractals::cNineFractals(std::shared_ptr<const cFractalContainer> par,
 		mutationParams[i].orbitIterStop = generalPar->Get<int>("mutation_orbit_iter_stop", i + 1);
 
 		// v7.12 — MandelTorus DE system
-		mutationParams[i].torusType = generalPar->Get<int>("mutation_torus_type", i + 1);
+		mutationParams[i].torusType = generalPar->Get<bool>("mutation_torus_enabled", i + 1)
+			? generalPar->Get<int>("mutation_torus_type", i + 1) : 0;
 		mutationParams[i].torusFactor = generalPar->Get<double>("mutation_torus_factor", i + 1);
 		mutationParams[i].torusParamA = generalPar->Get<double>("mutation_torus_param_a", i + 1);
 		mutationParams[i].torusParamB = generalPar->Get<double>("mutation_torus_param_b", i + 1);
@@ -470,7 +481,8 @@ cNineFractals::cNineFractals(std::shared_ptr<const cFractalContainer> par,
 		mutationParams[i].smParamD = generalPar->Get<double>("mutation_sm_param_d", i + 1);
 		mutationParams[i].smIterStart = generalPar->Get<int>("mutation_sm_iter_start", i + 1);
 		mutationParams[i].smIterStop = generalPar->Get<int>("mutation_sm_iter_stop", i + 1);
-		mutationParams[i].blkType = generalPar->Get<int>("mutation_blockify_type", i + 1);
+		mutationParams[i].blkType = generalPar->Get<bool>("mutation_blockify_enabled", i + 1)
+			? generalPar->Get<int>("mutation_blockify_type", i + 1) : 0;
 		mutationParams[i].blkFactor = generalPar->Get<double>("mutation_blockify_factor", i + 1);
 		mutationParams[i].blkParamA = generalPar->Get<double>("mutation_blockify_param_a", i + 1);
 		mutationParams[i].blkParamB = generalPar->Get<double>("mutation_blockify_param_b", i + 1);
@@ -478,7 +490,8 @@ cNineFractals::cNineFractals(std::shared_ptr<const cFractalContainer> par,
 		mutationParams[i].blkParamD = generalPar->Get<double>("mutation_blockify_param_d", i + 1);
 		mutationParams[i].blkIterStart = generalPar->Get<int>("mutation_blockify_iter_start", i + 1);
 		mutationParams[i].blkIterStop = generalPar->Get<int>("mutation_blockify_iter_stop", i + 1);
-		mutationParams[i].tilType = generalPar->Get<int>("mutation_tile_type", i + 1);
+		mutationParams[i].tilType = generalPar->Get<bool>("mutation_tile_enabled", i + 1)
+			? generalPar->Get<int>("mutation_tile_type", i + 1) : 0;
 		mutationParams[i].tilFactor = generalPar->Get<double>("mutation_tile_factor", i + 1);
 		mutationParams[i].tilParamA = generalPar->Get<double>("mutation_tile_param_a", i + 1);
 		mutationParams[i].tilParamB = generalPar->Get<double>("mutation_tile_param_b", i + 1);
