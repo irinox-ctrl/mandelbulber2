@@ -308,6 +308,14 @@ void InitParams(std::shared_ptr<cParameterContainer> par)
 		par->addParam("mutation_tile_param_b_weight", i, 1.0, 0.0, 1.0, morphAkima, paramStandard);
 		par->addParam("mutation_tile_param_c_weight", i, 1.0, 0.0, 1.0, morphAkima, paramStandard);
 		par->addParam("mutation_tile_param_d_weight", i, 1.0, 0.0, 1.0, morphAkima, paramStandard);
+		par->addParam("mutation_mb_param_e_weight", i, 1.0, 0.0, 1.0, morphAkima, paramStandard);
+		par->addParam("mutation_mb_param_f_weight", i, 1.0, 0.0, 1.0, morphAkima, paramStandard);
+		par->addParam("mutation_mb_param_g_weight", i, 1.0, 0.0, 1.0, morphAkima, paramStandard);
+		par->addParam("mutation_mb_param_h_weight", i, 1.0, 0.0, 1.0, morphAkima, paramStandard);
+		par->addParam("mutation_ab_param_e_weight", i, 1.0, 0.0, 1.0, morphAkima, paramStandard);
+		par->addParam("mutation_ab_param_f_weight", i, 1.0, 0.0, 1.0, morphAkima, paramStandard);
+		par->addParam("mutation_ab_param_g_weight", i, 1.0, 0.0, 1.0, morphAkima, paramStandard);
+		par->addParam("mutation_ab_param_h_weight", i, 1.0, 0.0, 1.0, morphAkima, paramStandard);
 		// Pre-transform
 		par->addParam("mutation_pre_rotation_ax", i, 0.0, -360.0, 360.0, morphAkima, paramStandard);
 		par->addParam("mutation_pre_rotation_ay", i, 0.0, -360.0, 360.0, morphAkima, paramStandard);

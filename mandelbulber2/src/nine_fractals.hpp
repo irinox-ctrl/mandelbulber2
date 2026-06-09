@@ -566,6 +566,7 @@ struct sFormulaMutationParams
 	double wAsParamC, wAsParamD, wSmFactor, wSmParamA, wSmParamB, wSmParamC;
 	double wSmParamD, wBlkFactor, wBlkParamA, wBlkParamB, wBlkParamC, wBlkParamD;
 	double wTilFactor, wTilParamA, wTilParamB, wTilParamC, wTilParamD;
+	double wMbParamE, wMbParamF, wMbParamG, wMbParamH, wAbParamE, wAbParamF, wAbParamG, wAbParamH;
 	// Pre-computed rotation matrices (filled in constructor)
 	CRotationMatrix preRotMatrix;
 	CRotationMatrix postRotMatrix;

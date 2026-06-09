@@ -661,6 +661,22 @@ cNineFractals::cNineFractals(std::shared_ptr<const cFractalContainer> par,
 		{ double __pw = mutationParams[i].wTilParamC; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].tilParamC = 1.0 + (mutationParams[i].tilParamC - 1.0) * __pw; }
 		mutationParams[i].wTilParamD = generalPar->Get<double>("mutation_tile_param_d_weight", i + 1);
 		{ double __pw = mutationParams[i].wTilParamD; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].tilParamD = 1.0 + (mutationParams[i].tilParamD - 1.0) * __pw; }
+		mutationParams[i].wMbParamE = generalPar->Get<double>("mutation_mb_param_e_weight", i + 1);
+		{ double __pw = mutationParams[i].wMbParamE; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].mbParamE = 1.0 + (mutationParams[i].mbParamE - (1.0)) * __pw; }
+		mutationParams[i].wMbParamF = generalPar->Get<double>("mutation_mb_param_f_weight", i + 1);
+		{ double __pw = mutationParams[i].wMbParamF; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].mbParamF = 1.0 + (mutationParams[i].mbParamF - (1.0)) * __pw; }
+		mutationParams[i].wMbParamG = generalPar->Get<double>("mutation_mb_param_g_weight", i + 1);
+		{ double __pw = mutationParams[i].wMbParamG; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].mbParamG = 1.0 + (mutationParams[i].mbParamG - (1.0)) * __pw; }
+		mutationParams[i].wMbParamH = generalPar->Get<double>("mutation_mb_param_h_weight", i + 1);
+		{ double __pw = mutationParams[i].wMbParamH; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].mbParamH = 0.0 + (mutationParams[i].mbParamH - (0.0)) * __pw; }
+		mutationParams[i].wAbParamE = generalPar->Get<double>("mutation_ab_param_e_weight", i + 1);
+		{ double __pw = mutationParams[i].wAbParamE; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].abParamE = 1.0 + (mutationParams[i].abParamE - (1.0)) * __pw; }
+		mutationParams[i].wAbParamF = generalPar->Get<double>("mutation_ab_param_f_weight", i + 1);
+		{ double __pw = mutationParams[i].wAbParamF; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].abParamF = 1.0 + (mutationParams[i].abParamF - (1.0)) * __pw; }
+		mutationParams[i].wAbParamG = generalPar->Get<double>("mutation_ab_param_g_weight", i + 1);
+		{ double __pw = mutationParams[i].wAbParamG; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].abParamG = 1.0 + (mutationParams[i].abParamG - (1.0)) * __pw; }
+		mutationParams[i].wAbParamH = generalPar->Get<double>("mutation_ab_param_h_weight", i + 1);
+		{ double __pw = mutationParams[i].wAbParamH; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].abParamH = 0.0 + (mutationParams[i].abParamH - (0.0)) * __pw; }
 
 		// Smart defaults: PK/JK formulas get Möbius (Bilinear) math preset
 		fractal::enumFractalFormula f = fractals[i]->formula;
