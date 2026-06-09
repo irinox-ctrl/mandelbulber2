@@ -3072,6 +3072,16 @@ QComboBox { border-radius: 3px; padding: 2px 6px; }</string>
                    </property>
                   </widget>
                  </item>
+                 <item row="97" column="0" colspan="8">
+                  <widget class="QPushButton" name="pushButton_mutation_inversion_reset_weights">
+                   <property name="toolTip">
+                    <string>Reset only this section’s weights (section + per-parameter) back to 1.0</string>
+                   </property>
+                   <property name="text">
+                    <string>↺ Reset section weights</string>
+                   </property>
+                  </widget>
+                 </item>
                  <item row="3" column="4">
                   <widget class="QLabel" name="label_inv_angle">
                    <property name="text">
@@ -4123,6 +4133,16 @@ QComboBox { border-radius: 3px; padding: 2px 6px; }</string>
                    </property>
                   </widget>
                  </item>
+                 <item row="97" column="0" colspan="8">
+                  <widget class="QPushButton" name="pushButton_mutation_clip_reset_weights">
+                   <property name="toolTip">
+                    <string>Reset only this section’s weights (section + per-parameter) back to 1.0</string>
+                   </property>
+                   <property name="text">
+                    <string>↺ Reset section weights</string>
+                   </property>
+                  </widget>
+                 </item>
                  <item row="6" column="2">
                   <widget class="QLabel" name="label_clip_param_b">
                    <property name="text">
@@ -4571,6 +4591,16 @@ QComboBox { border-radius: 3px; padding: 2px 6px; }</string>
                    </property>
                    <property name="decimals">
                     <number>4</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="97" column="0" colspan="8">
+                  <widget class="QPushButton" name="pushButton_mutation_jos_reset_weights">
+                   <property name="toolTip">
+                    <string>Reset only this section’s weights (section + per-parameter) back to 1.0</string>
+                   </property>
+                   <property name="text">
+                    <string>↺ Reset section weights</string>
                    </property>
                   </widget>
                  </item>
@@ -5120,6 +5150,16 @@ QComboBox { border-radius: 3px; padding: 2px 6px; }</string>
                    </property>
                   </widget>
                  </item>
+                 <item row="97" column="0" colspan="8">
+                  <widget class="QPushButton" name="pushButton_mutation_pk_reset_weights">
+                   <property name="toolTip">
+                    <string>Reset only this section’s weights (section + per-parameter) back to 1.0</string>
+                   </property>
+                   <property name="text">
+                    <string>↺ Reset section weights</string>
+                   </property>
+                  </widget>
+                 </item>
                  <item row="1" column="2">
                   <widget class="QLabel" name="label_pk_scale">
                    <property name="text">
@@ -5663,6 +5703,16 @@ QComboBox { border-radius: 3px; padding: 2px 6px; }</string>
                    </property>
                    <property name="decimals">
                     <number>4</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="97" column="0" colspan="8">
+                  <widget class="QPushButton" name="pushButton_mutation_mb_reset_weights">
+                   <property name="toolTip">
+                    <string>Reset only this section’s weights (section + per-parameter) back to 1.0</string>
+                   </property>
+                   <property name="text">
+                    <string>↺ Reset section weights</string>
                    </property>
                   </widget>
                  </item>
@@ -6244,6 +6294,16 @@ QComboBox { border-radius: 3px; padding: 2px 6px; }</string>
                    </property>
                   </widget>
                  </item>
+                 <item row="97" column="0" colspan="8">
+                  <widget class="QPushButton" name="pushButton_mutation_wd_reset_weights">
+                   <property name="toolTip">
+                    <string>Reset only this section’s weights (section + per-parameter) back to 1.0</string>
+                   </property>
+                   <property name="text">
+                    <string>↺ Reset section weights</string>
+                   </property>
+                  </widget>
+                 </item>
                  <item row="1" column="2">
                   <widget class="QLabel" name="label_wd_param_a">
                    <property name="text">
@@ -6790,6 +6850,16 @@ QComboBox { border-radius: 3px; padding: 2px 6px; }</string>
                    </property>
                   </widget>
                  </item>
+                 <item row="97" column="0" colspan="8">
+                  <widget class="QPushButton" name="pushButton_mutation_sk_reset_weights">
+                   <property name="toolTip">
+                    <string>Reset only this section’s weights (section + per-parameter) back to 1.0</string>
+                   </property>
+                   <property name="text">
+                    <string>↺ Reset section weights</string>
+                   </property>
+                  </widget>
+                 </item>
                  <item row="1" column="2">
                   <widget class="QLabel" name="label_sk_param_a">
                    <property name="text">
@@ -7333,6 +7403,16 @@ QComboBox { border-radius: 3px; padding: 2px 6px; }</string>
                    </property>
                    <property name="decimals">
                     <number>4</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="97" column="0" colspan="8">
+                  <widget class="QPushButton" name="pushButton_mutation_ab_reset_weights">
+                   <property name="toolTip">
+                    <string>Reset only this section’s weights (section + per-parameter) back to 1.0</string>
+                   </property>
+                   <property name="text">
+                    <string>↺ Reset section weights</string>
                    </property>
                   </widget>
                  </item>
@@ -7914,6 +7994,16 @@ QComboBox { border-radius: 3px; padding: 2px 6px; }</string>
                    </property>
                   </widget>
                  </item>
+                 <item row="97" column="0" colspan="8">
+                  <widget class="QPushButton" name="pushButton_mutation_noise_reset_weights">
+                   <property name="toolTip">
+                    <string>Reset only this section’s weights (section + per-parameter) back to 1.0</string>
+                   </property>
+                   <property name="text">
+                    <string>↺ Reset section weights</string>
+                   </property>
+                  </widget>
+                 </item>
                  <item row="1" column="2">
                   <widget class="QLabel" name="label_noise_param_a">
                    <property name="text">
@@ -8408,6 +8498,16 @@ QComboBox { border-radius: 3px; padding: 2px 6px; }</string>
                    </property>
                   </widget>
                  </item>
+                 <item row="97" column="0" colspan="8">
+                  <widget class="QPushButton" name="pushButton_mutation_orbit_reset_weights">
+                   <property name="toolTip">
+                    <string>Reset only this section’s weights (section + per-parameter) back to 1.0</string>
+                   </property>
+                   <property name="text">
+                    <string>↺ Reset section weights</string>
+                   </property>
+                  </widget>
+                 </item>
                  <item row="1" column="2">
                   <widget class="QLabel" name="label_orbit_param_a">
                    <property name="text">
@@ -8847,6 +8947,16 @@ QComboBox { border-radius: 3px; padding: 2px 6px; }</string>
                    </property>
                    <property name="decimals">
                     <number>4</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="97" column="0" colspan="8">
+                  <widget class="QPushButton" name="pushButton_mutation_torus_reset_weights">
+                   <property name="toolTip">
+                    <string>Reset only this section’s weights (section + per-parameter) back to 1.0</string>
+                   </property>
+                   <property name="text">
+                    <string>↺ Reset section weights</string>
                    </property>
                   </widget>
                  </item>
@@ -9292,6 +9402,16 @@ QComboBox { border-radius: 3px; padding: 2px 6px; }</string>
                    </property>
                   </widget>
                  </item>
+                 <item row="97" column="0" colspan="8">
+                  <widget class="QPushButton" name="pushButton_mutation_as_reset_weights">
+                   <property name="toolTip">
+                    <string>Reset only this section’s weights (section + per-parameter) back to 1.0</string>
+                   </property>
+                   <property name="text">
+                    <string>↺ Reset section weights</string>
+                   </property>
+                  </widget>
+                 </item>
                  <item row="1" column="2">
                   <widget class="QLabel" name="label_as_param_a">
                    <property name="text">
@@ -9731,6 +9851,16 @@ QComboBox { border-radius: 3px; padding: 2px 6px; }</string>
                    </property>
                    <property name="decimals">
                     <number>4</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="97" column="0" colspan="8">
+                  <widget class="QPushButton" name="pushButton_mutation_sm_reset_weights">
+                   <property name="toolTip">
+                    <string>Reset only this section’s weights (section + per-parameter) back to 1.0</string>
+                   </property>
+                   <property name="text">
+                    <string>↺ Reset section weights</string>
                    </property>
                   </widget>
                  </item>
@@ -10276,6 +10406,16 @@ QComboBox { border-radius: 3px; padding: 2px 6px; }</string>
                    </property>
                   </widget>
                  </item>
+                 <item row="97" column="0" colspan="8">
+                  <widget class="QPushButton" name="pushButton_mutation_blockify_reset_weights">
+                   <property name="toolTip">
+                    <string>Reset only this section’s weights (section + per-parameter) back to 1.0</string>
+                   </property>
+                   <property name="text">
+                    <string>↺ Reset section weights</string>
+                   </property>
+                  </widget>
+                 </item>
                  <item row="1" column="2">
                   <widget class="QLabel" name="label_blockify_param_a">
                    <property name="text">
@@ -10815,6 +10955,16 @@ QComboBox { border-radius: 3px; padding: 2px 6px; }</string>
                    </property>
                    <property name="decimals">
                     <number>4</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="97" column="0" colspan="8">
+                  <widget class="QPushButton" name="pushButton_mutation_tile_reset_weights">
+                   <property name="toolTip">
+                    <string>Reset only this section’s weights (section + per-parameter) back to 1.0</string>
+                   </property>
+                   <property name="text">
+                    <string>↺ Reset section weights</string>
                    </property>
                   </widget>
                  </item>

@@ -38,6 +38,7 @@ private slots:
 	void slotPressedButtonMutationReset();
 	void slotPressedButtonRandomizeWeights();
 	void slotPressedButtonResetWeights();
+	void slotPressedButtonResetSectionWeights();
 
 private:
 	void ConnectSignals();
