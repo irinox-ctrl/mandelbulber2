@@ -30,7 +30,59 @@
     <number>2</number>
    </property>
    <item>
-    <widget class="MyGroupBox" name="groupCheck_mutation_enabled">
+    <layout class="QHBoxLayout" name="horizontalLayout_mutation_top">
+     <item>
+      <widget class="QPushButton" name="pushButton_mutation_reset">
+       <property name="toolTip">
+        <string>Reset all mutation parameters on this fractal tab to their defaults</string>
+       </property>
+       <property name="text">
+        <string>Reset Mutation to Defaults</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_mutation_top">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QScrollArea" name="scrollArea_mutation">
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
+     </property>
+     <widget class="QWidget" name="scrollAreaWidgetContents_mutation">
+      <layout class="QVBoxLayout" name="verticalLayout_mutation_scroll">
+       <property name="spacing">
+        <number>2</number>
+       </property>
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="MyGroupBox" name="groupCheck_mutation_enabled">
      <property name="title">
       <string>Formula Mutation</string>
      </property>
@@ -2660,13 +2712,6 @@
            </property>
            <property name="value">
             <number>10000</number>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="0" colspan="7">
-          <widget class="QPushButton" name="pushButton_mutation_reset">
-           <property name="text">
-            <string>Reset Mutation to Defaults</string>
            </property>
           </widget>
          </item>
@@ -7875,6 +7920,10 @@
        <widget class="MyDoubleSpinBox" name="spinboxd3_mutation_julia_bipolar_cr"></widget>
       </item>
      </layout>
+    </widget>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </item>
   </layout>
