@@ -553,6 +553,19 @@ struct sFormulaMutationParams
 	double inversionWeight, clipWeight, josWeight, pkWeight, mbWeight, wdWeight,
 		skWeight, abWeight, noiseWeight, orbitWeight, torusWeight, asWeight,
 		smWeight, blkWeight, tilWeight;
+	// v7.15 — Per-parameter mutation weights (option 3): blend each param from default(1.0) toward set value
+	double wInvParamA, wInvParamB, wInvParamC, wClipParamA, wClipParamB, wClipParamC;
+	double wJosFactor, wJosParamA, wJosParamB, wJosParamC, wJosParamD, wPkFactor;
+	double wPkParamA, wPkParamB, wPkParamC, wPkParamD, wMbFactor, wMbParamA;
+	double wMbParamB, wMbParamC, wMbParamD, wWdFactor, wWdParamA, wWdParamB;
+	double wWdParamC, wWdParamD, wSkFactor, wSkParamA, wSkParamB, wSkParamC;
+	double wSkParamD, wAbFactor, wAbParamA, wAbParamB, wAbParamC, wAbParamD;
+	double wNoiseFactor, wNoiseParamA, wNoiseParamB, wNoiseParamC, wNoiseParamD, wOrbitFactor;
+	double wOrbitParamA, wOrbitParamB, wOrbitParamC, wOrbitParamD, wTorusFactor, wTorusParamA;
+	double wTorusParamB, wTorusParamC, wTorusParamD, wAsFactor, wAsParamA, wAsParamB;
+	double wAsParamC, wAsParamD, wSmFactor, wSmParamA, wSmParamB, wSmParamC;
+	double wSmParamD, wBlkFactor, wBlkParamA, wBlkParamB, wBlkParamC, wBlkParamD;
+	double wTilFactor, wTilParamA, wTilParamB, wTilParamC, wTilParamD;
 	// Pre-computed rotation matrices (filled in constructor)
 	CRotationMatrix preRotMatrix;
 	CRotationMatrix postRotMatrix;

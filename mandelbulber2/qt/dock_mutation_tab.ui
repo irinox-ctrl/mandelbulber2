@@ -2903,7 +2903,10 @@
                   </widget>
                  </item>
                  <item row="2" column="3">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_inv_param_a">
+                  <layout class="QHBoxLayout" name="hlw_mutation_inv_param_a">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_inv_param_a">
                    <property name="minimum">
                     <double>0.001</double>
                    </property>
@@ -2917,6 +2920,11 @@
                     <double>0.1</double>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_inv_param_a_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="2" column="4">
                   <widget class="QLabel" name="label_inv_param_b">
@@ -2926,7 +2934,10 @@
                   </widget>
                  </item>
                  <item row="2" column="5" colspan="2">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_inv_param_b">
+                  <layout class="QHBoxLayout" name="hlw_mutation_inv_param_b">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_inv_param_b">
                    <property name="minimum">
                     <double>0.001</double>
                    </property>
@@ -2940,6 +2951,11 @@
                     <double>0.1</double>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_inv_param_b_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="3" column="0">
                   <widget class="QLabel" name="label_inv_param_c">
@@ -2949,7 +2965,10 @@
                   </widget>
                  </item>
                  <item row="3" column="1">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_inv_param_c">
+                  <layout class="QHBoxLayout" name="hlw_mutation_inv_param_c">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_inv_param_c">
                    <property name="minimum">
                     <double>0.001</double>
                    </property>
@@ -2963,6 +2982,11 @@
                     <double>0.1</double>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_inv_param_c_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="3" column="2">
                   <widget class="QLabel" name="label_inv_scale">
@@ -4015,7 +4039,10 @@
                   </widget>
                  </item>
                  <item row="6" column="1">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_clip_param_a">
+                  <layout class="QHBoxLayout" name="hlw_mutation_clip_param_a">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_clip_param_a">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -4029,6 +4056,11 @@
                     <double>0.1</double>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_clip_param_a_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="90" column="0">
                   <widget class="QLabel" name="label_w_clip">
@@ -4067,7 +4099,10 @@
                   </widget>
                  </item>
                  <item row="6" column="3">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_clip_param_b">
+                  <layout class="QHBoxLayout" name="hlw_mutation_clip_param_b">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_clip_param_b">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -4081,6 +4116,11 @@
                     <double>0.1</double>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_clip_param_b_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="6" column="4">
                   <widget class="QLabel" name="label_clip_param_c">
@@ -4090,7 +4130,10 @@
                   </widget>
                  </item>
                  <item row="6" column="5" colspan="2">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_clip_param_c">
+                  <layout class="QHBoxLayout" name="hlw_mutation_clip_param_c">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_clip_param_c">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -4104,6 +4147,11 @@
                     <double>0.1</double>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_clip_param_c_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="7" column="0">
                   <widget class="QLabel" name="label_clip_threshold">
@@ -4439,7 +4487,10 @@
                   </widget>
                  </item>
                  <item row="1" column="1">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_jos_factor">
+                  <layout class="QHBoxLayout" name="hlw_mutation_jos_factor">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_jos_factor">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -4456,6 +4507,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_jos_factor_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="90" column="0">
                   <widget class="QLabel" name="label_w_jos">
@@ -4546,7 +4602,10 @@
                   </widget>
                  </item>
                  <item row="2" column="1">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_jos_param_a">
+                  <layout class="QHBoxLayout" name="hlw_mutation_jos_param_a">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_jos_param_a">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -4563,6 +4622,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_jos_param_a_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="2" column="2">
                   <widget class="QLabel" name="label_jos_param_b">
@@ -4572,7 +4636,10 @@
                   </widget>
                  </item>
                  <item row="2" column="3">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_jos_param_b">
+                  <layout class="QHBoxLayout" name="hlw_mutation_jos_param_b">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_jos_param_b">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -4589,6 +4656,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_jos_param_b_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="2" column="4">
                   <widget class="QLabel" name="label_jos_param_c">
@@ -4598,7 +4670,10 @@
                   </widget>
                  </item>
                  <item row="2" column="5" colspan="2">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_jos_param_c">
+                  <layout class="QHBoxLayout" name="hlw_mutation_jos_param_c">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_jos_param_c">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -4615,6 +4690,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_jos_param_c_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="3" column="0">
                   <widget class="QLabel" name="label_jos_param_d">
@@ -4624,7 +4704,10 @@
                   </widget>
                  </item>
                  <item row="3" column="1">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_jos_param_d">
+                  <layout class="QHBoxLayout" name="hlw_mutation_jos_param_d">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_jos_param_d">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -4641,6 +4724,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_jos_param_d_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="3" column="2">
                   <widget class="QLabel" name="label_jos_freq">
@@ -4945,7 +5033,10 @@
                   </widget>
                  </item>
                  <item row="1" column="1">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_pk_factor">
+                  <layout class="QHBoxLayout" name="hlw_mutation_pk_factor">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_pk_factor">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -4962,6 +5053,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_pk_factor_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="90" column="0">
                   <widget class="QLabel" name="label_w_pk">
@@ -5052,7 +5148,10 @@
                   </widget>
                  </item>
                  <item row="2" column="1">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_pk_param_a">
+                  <layout class="QHBoxLayout" name="hlw_mutation_pk_param_a">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_pk_param_a">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -5069,6 +5168,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_pk_param_a_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="2" column="2">
                   <widget class="QLabel" name="label_pk_param_b">
@@ -5078,7 +5182,10 @@
                   </widget>
                  </item>
                  <item row="2" column="3">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_pk_param_b">
+                  <layout class="QHBoxLayout" name="hlw_mutation_pk_param_b">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_pk_param_b">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -5095,6 +5202,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_pk_param_b_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="2" column="4">
                   <widget class="QLabel" name="label_pk_param_c">
@@ -5104,7 +5216,10 @@
                   </widget>
                  </item>
                  <item row="2" column="5" colspan="2">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_pk_param_c">
+                  <layout class="QHBoxLayout" name="hlw_mutation_pk_param_c">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_pk_param_c">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -5121,6 +5236,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_pk_param_c_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="3" column="0">
                   <widget class="QLabel" name="label_pk_param_d">
@@ -5130,7 +5250,10 @@
                   </widget>
                  </item>
                  <item row="3" column="1">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_pk_param_d">
+                  <layout class="QHBoxLayout" name="hlw_mutation_pk_param_d">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_pk_param_d">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -5147,6 +5270,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_pk_param_d_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="3" column="2">
                   <widget class="QLabel" name="label_pk_freq">
@@ -5451,7 +5579,10 @@
                   </widget>
                  </item>
                  <item row="1" column="1">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_mb_factor">
+                  <layout class="QHBoxLayout" name="hlw_mutation_mb_factor">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_mb_factor">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -5468,6 +5599,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_mb_factor_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="90" column="0">
                   <widget class="QLabel" name="label_w_mb">
@@ -5506,7 +5642,10 @@
                   </widget>
                  </item>
                  <item row="1" column="3">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_mb_param_a">
+                  <layout class="QHBoxLayout" name="hlw_mutation_mb_param_a">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_mb_param_a">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -5523,6 +5662,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_mb_param_a_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="1" column="4">
                   <widget class="QLabel" name="label_mb_param_b">
@@ -5532,7 +5676,10 @@
                   </widget>
                  </item>
                  <item row="1" column="5" colspan="2">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_mb_param_b">
+                  <layout class="QHBoxLayout" name="hlw_mutation_mb_param_b">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_mb_param_b">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -5549,6 +5696,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_mb_param_b_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="2" column="0">
                   <widget class="QLabel" name="label_mb_param_c">
@@ -5558,7 +5710,10 @@
                   </widget>
                  </item>
                  <item row="2" column="1">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_mb_param_c">
+                  <layout class="QHBoxLayout" name="hlw_mutation_mb_param_c">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_mb_param_c">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -5575,6 +5730,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_mb_param_c_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="2" column="2">
                   <widget class="QLabel" name="label_mb_param_d">
@@ -5584,7 +5744,10 @@
                   </widget>
                  </item>
                  <item row="2" column="3">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_mb_param_d">
+                  <layout class="QHBoxLayout" name="hlw_mutation_mb_param_d">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_mb_param_d">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -5601,6 +5764,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_mb_param_d_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="2" column="4">
                   <widget class="QLabel" name="label_mb_param_e">
@@ -5957,7 +6125,10 @@
                   </widget>
                  </item>
                  <item row="1" column="1">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_wd_factor">
+                  <layout class="QHBoxLayout" name="hlw_mutation_wd_factor">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_wd_factor">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -5974,6 +6145,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_wd_factor_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="90" column="0">
                   <widget class="QLabel" name="label_w_wd">
@@ -6012,7 +6188,10 @@
                   </widget>
                  </item>
                  <item row="1" column="3">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_wd_param_a">
+                  <layout class="QHBoxLayout" name="hlw_mutation_wd_param_a">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_wd_param_a">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -6029,6 +6208,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_wd_param_a_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="1" column="4">
                   <widget class="QLabel" name="label_wd_param_b">
@@ -6038,7 +6222,10 @@
                   </widget>
                  </item>
                  <item row="1" column="5" colspan="2">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_wd_param_b">
+                  <layout class="QHBoxLayout" name="hlw_mutation_wd_param_b">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_wd_param_b">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -6055,6 +6242,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_wd_param_b_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="2" column="0">
                   <widget class="QLabel" name="label_wd_param_c">
@@ -6064,7 +6256,10 @@
                   </widget>
                  </item>
                  <item row="2" column="1">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_wd_param_c">
+                  <layout class="QHBoxLayout" name="hlw_mutation_wd_param_c">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_wd_param_c">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -6081,6 +6276,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_wd_param_c_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="2" column="2">
                   <widget class="QLabel" name="label_wd_param_d">
@@ -6090,7 +6290,10 @@
                   </widget>
                  </item>
                  <item row="2" column="3">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_wd_param_d">
+                  <layout class="QHBoxLayout" name="hlw_mutation_wd_param_d">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_wd_param_d">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -6107,6 +6310,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_wd_param_d_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="2" column="4">
                   <widget class="QLabel" name="label_wd_freq">
@@ -6463,7 +6671,10 @@
                   </widget>
                  </item>
                  <item row="1" column="1">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_sk_factor">
+                  <layout class="QHBoxLayout" name="hlw_mutation_sk_factor">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_sk_factor">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -6480,6 +6691,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_sk_factor_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="90" column="0">
                   <widget class="QLabel" name="label_w_sk">
@@ -6518,7 +6734,10 @@
                   </widget>
                  </item>
                  <item row="1" column="3">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_sk_param_a">
+                  <layout class="QHBoxLayout" name="hlw_mutation_sk_param_a">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_sk_param_a">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -6535,6 +6754,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_sk_param_a_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="1" column="4">
                   <widget class="QLabel" name="label_sk_param_b">
@@ -6544,7 +6768,10 @@
                   </widget>
                  </item>
                  <item row="1" column="5" colspan="2">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_sk_param_b">
+                  <layout class="QHBoxLayout" name="hlw_mutation_sk_param_b">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_sk_param_b">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -6561,6 +6788,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_sk_param_b_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="2" column="0">
                   <widget class="QLabel" name="label_sk_param_c">
@@ -6570,7 +6802,10 @@
                   </widget>
                  </item>
                  <item row="2" column="1">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_sk_param_c">
+                  <layout class="QHBoxLayout" name="hlw_mutation_sk_param_c">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_sk_param_c">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -6587,6 +6822,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_sk_param_c_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="2" column="2">
                   <widget class="QLabel" name="label_sk_param_d">
@@ -6596,7 +6836,10 @@
                   </widget>
                  </item>
                  <item row="2" column="3">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_sk_param_d">
+                  <layout class="QHBoxLayout" name="hlw_mutation_sk_param_d">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_sk_param_d">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -6613,6 +6856,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_sk_param_d_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="2" column="4">
                   <widget class="QLabel" name="label_sk_freq">
@@ -6969,7 +7217,10 @@
                   </widget>
                  </item>
                  <item row="1" column="1">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_ab_factor">
+                  <layout class="QHBoxLayout" name="hlw_mutation_ab_factor">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_ab_factor">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -6986,6 +7237,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_ab_factor_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="90" column="0">
                   <widget class="QLabel" name="label_w_ab">
@@ -7024,7 +7280,10 @@
                   </widget>
                  </item>
                  <item row="1" column="3">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_ab_param_a">
+                  <layout class="QHBoxLayout" name="hlw_mutation_ab_param_a">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_ab_param_a">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -7041,6 +7300,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_ab_param_a_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="1" column="4">
                   <widget class="QLabel" name="label_ab_param_b">
@@ -7050,7 +7314,10 @@
                   </widget>
                  </item>
                  <item row="1" column="5" colspan="2">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_ab_param_b">
+                  <layout class="QHBoxLayout" name="hlw_mutation_ab_param_b">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_ab_param_b">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -7067,6 +7334,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_ab_param_b_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="2" column="0">
                   <widget class="QLabel" name="label_ab_param_c">
@@ -7076,7 +7348,10 @@
                   </widget>
                  </item>
                  <item row="2" column="1">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_ab_param_c">
+                  <layout class="QHBoxLayout" name="hlw_mutation_ab_param_c">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_ab_param_c">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -7093,6 +7368,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_ab_param_c_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="2" column="2">
                   <widget class="QLabel" name="label_ab_param_d">
@@ -7102,7 +7382,10 @@
                   </widget>
                  </item>
                  <item row="2" column="3">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_ab_param_d">
+                  <layout class="QHBoxLayout" name="hlw_mutation_ab_param_d">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_ab_param_d">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -7119,6 +7402,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_ab_param_d_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="2" column="4">
                   <widget class="QLabel" name="label_ab_param_e">
@@ -7475,7 +7763,10 @@
                   </widget>
                  </item>
                  <item row="1" column="1">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_noise_factor">
+                  <layout class="QHBoxLayout" name="hlw_mutation_noise_factor">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_noise_factor">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -7492,6 +7783,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_noise_factor_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="90" column="0">
                   <widget class="QLabel" name="label_w_noise">
@@ -7530,7 +7826,10 @@
                   </widget>
                  </item>
                  <item row="1" column="3">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_noise_param_a">
+                  <layout class="QHBoxLayout" name="hlw_mutation_noise_param_a">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_noise_param_a">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -7547,6 +7846,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_noise_param_a_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="1" column="4">
                   <widget class="QLabel" name="label_noise_param_b">
@@ -7556,7 +7860,10 @@
                   </widget>
                  </item>
                  <item row="1" column="5" colspan="2">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_noise_param_b">
+                  <layout class="QHBoxLayout" name="hlw_mutation_noise_param_b">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_noise_param_b">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -7573,6 +7880,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_noise_param_b_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="2" column="0">
                   <widget class="QLabel" name="label_noise_param_c">
@@ -7582,7 +7894,10 @@
                   </widget>
                  </item>
                  <item row="2" column="1">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_noise_param_c">
+                  <layout class="QHBoxLayout" name="hlw_mutation_noise_param_c">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_noise_param_c">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -7599,6 +7914,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_noise_param_c_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="2" column="2">
                   <widget class="QLabel" name="label_noise_param_d">
@@ -7608,7 +7928,10 @@
                   </widget>
                  </item>
                  <item row="2" column="3">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_noise_param_d">
+                  <layout class="QHBoxLayout" name="hlw_mutation_noise_param_d">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_noise_param_d">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -7625,6 +7948,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_noise_param_d_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="2" column="4">
                   <widget class="QLabel" name="label_julia_noise_freq">
@@ -7929,7 +8257,10 @@
                   </widget>
                  </item>
                  <item row="1" column="1">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_orbit_factor">
+                  <layout class="QHBoxLayout" name="hlw_mutation_orbit_factor">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_orbit_factor">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -7946,6 +8277,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_orbit_factor_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="90" column="0">
                   <widget class="QLabel" name="label_w_orbit">
@@ -7984,7 +8320,10 @@
                   </widget>
                  </item>
                  <item row="1" column="3">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_orbit_param_a">
+                  <layout class="QHBoxLayout" name="hlw_mutation_orbit_param_a">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_orbit_param_a">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -8001,6 +8340,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_orbit_param_a_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="1" column="4">
                   <widget class="QLabel" name="label_orbit_param_b">
@@ -8010,7 +8354,10 @@
                   </widget>
                  </item>
                  <item row="1" column="5" colspan="2">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_orbit_param_b">
+                  <layout class="QHBoxLayout" name="hlw_mutation_orbit_param_b">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_orbit_param_b">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -8027,6 +8374,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_orbit_param_b_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="2" column="0">
                   <widget class="QLabel" name="label_orbit_param_c">
@@ -8036,7 +8388,10 @@
                   </widget>
                  </item>
                  <item row="2" column="1">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_orbit_param_c">
+                  <layout class="QHBoxLayout" name="hlw_mutation_orbit_param_c">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_orbit_param_c">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -8053,6 +8408,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_orbit_param_c_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="2" column="2">
                   <widget class="QLabel" name="label_orbit_param_d">
@@ -8062,7 +8422,10 @@
                   </widget>
                  </item>
                  <item row="2" column="3">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_orbit_param_d">
+                  <layout class="QHBoxLayout" name="hlw_mutation_orbit_param_d">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_orbit_param_d">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -8079,6 +8442,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_orbit_param_d_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="2" column="4">
                   <widget class="QLabel" name="label_orbit_iter">
@@ -8331,7 +8699,10 @@
                   </widget>
                  </item>
                  <item row="1" column="1">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_torus_factor">
+                  <layout class="QHBoxLayout" name="hlw_mutation_torus_factor">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_torus_factor">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -8348,6 +8719,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_torus_factor_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="90" column="0">
                   <widget class="QLabel" name="label_w_torus">
@@ -8386,7 +8762,10 @@
                   </widget>
                  </item>
                  <item row="1" column="3">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_torus_param_a">
+                  <layout class="QHBoxLayout" name="hlw_mutation_torus_param_a">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_torus_param_a">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -8403,6 +8782,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_torus_param_a_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="1" column="4">
                   <widget class="QLabel" name="label_torus_param_b">
@@ -8412,7 +8796,10 @@
                   </widget>
                  </item>
                  <item row="1" column="5" colspan="2">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_torus_param_b">
+                  <layout class="QHBoxLayout" name="hlw_mutation_torus_param_b">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_torus_param_b">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -8429,6 +8816,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_torus_param_b_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="2" column="0">
                   <widget class="QLabel" name="label_torus_param_c">
@@ -8438,7 +8830,10 @@
                   </widget>
                  </item>
                  <item row="2" column="1">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_torus_param_c">
+                  <layout class="QHBoxLayout" name="hlw_mutation_torus_param_c">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_torus_param_c">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -8455,6 +8850,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_torus_param_c_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="2" column="2">
                   <widget class="QLabel" name="label_torus_param_d">
@@ -8464,7 +8864,10 @@
                   </widget>
                  </item>
                  <item row="2" column="3">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_torus_param_d">
+                  <layout class="QHBoxLayout" name="hlw_mutation_torus_param_d">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_torus_param_d">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -8481,6 +8884,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_torus_param_d_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="2" column="4">
                   <widget class="QLabel" name="label_torus_iter">
@@ -8733,7 +9141,10 @@
                   </widget>
                  </item>
                  <item row="1" column="1">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_as_factor">
+                  <layout class="QHBoxLayout" name="hlw_mutation_as_factor">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_as_factor">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -8750,6 +9161,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_as_factor_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="90" column="0">
                   <widget class="QLabel" name="label_w_as">
@@ -8788,7 +9204,10 @@
                   </widget>
                  </item>
                  <item row="1" column="3">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_as_param_a">
+                  <layout class="QHBoxLayout" name="hlw_mutation_as_param_a">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_as_param_a">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -8805,6 +9224,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_as_param_a_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="1" column="4">
                   <widget class="QLabel" name="label_as_param_b">
@@ -8814,7 +9238,10 @@
                   </widget>
                  </item>
                  <item row="1" column="5" colspan="2">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_as_param_b">
+                  <layout class="QHBoxLayout" name="hlw_mutation_as_param_b">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_as_param_b">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -8831,6 +9258,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_as_param_b_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="2" column="0">
                   <widget class="QLabel" name="label_as_param_c">
@@ -8840,7 +9272,10 @@
                   </widget>
                  </item>
                  <item row="2" column="1">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_as_param_c">
+                  <layout class="QHBoxLayout" name="hlw_mutation_as_param_c">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_as_param_c">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -8857,6 +9292,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_as_param_c_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="2" column="2">
                   <widget class="QLabel" name="label_as_param_d">
@@ -8866,7 +9306,10 @@
                   </widget>
                  </item>
                  <item row="2" column="3">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_as_param_d">
+                  <layout class="QHBoxLayout" name="hlw_mutation_as_param_d">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_as_param_d">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -8883,6 +9326,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_as_param_d_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="2" column="4">
                   <widget class="QLabel" name="label_as_iter">
@@ -9135,7 +9583,10 @@
                   </widget>
                  </item>
                  <item row="1" column="1">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_sm_factor">
+                  <layout class="QHBoxLayout" name="hlw_mutation_sm_factor">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_sm_factor">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -9152,6 +9603,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_sm_factor_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="90" column="0">
                   <widget class="QLabel" name="label_w_sm">
@@ -9190,7 +9646,10 @@
                   </widget>
                  </item>
                  <item row="1" column="3">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_sm_param_a">
+                  <layout class="QHBoxLayout" name="hlw_mutation_sm_param_a">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_sm_param_a">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -9207,6 +9666,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_sm_param_a_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="1" column="4">
                   <widget class="QLabel" name="label_sm_param_b">
@@ -9216,7 +9680,10 @@
                   </widget>
                  </item>
                  <item row="1" column="5" colspan="2">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_sm_param_b">
+                  <layout class="QHBoxLayout" name="hlw_mutation_sm_param_b">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_sm_param_b">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -9233,6 +9700,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_sm_param_b_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="2" column="0">
                   <widget class="QLabel" name="label_sm_param_c">
@@ -9242,7 +9714,10 @@
                   </widget>
                  </item>
                  <item row="2" column="1">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_sm_param_c">
+                  <layout class="QHBoxLayout" name="hlw_mutation_sm_param_c">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_sm_param_c">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -9259,6 +9734,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_sm_param_c_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="2" column="2">
                   <widget class="QLabel" name="label_sm_param_d">
@@ -9268,7 +9748,10 @@
                   </widget>
                  </item>
                  <item row="2" column="3">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_sm_param_d">
+                  <layout class="QHBoxLayout" name="hlw_mutation_sm_param_d">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_sm_param_d">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -9285,6 +9768,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_sm_param_d_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="2" column="4">
                   <widget class="QLabel" name="label_sm_iter">
@@ -9637,7 +10125,10 @@
                   </widget>
                  </item>
                  <item row="1" column="1">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_blockify_factor">
+                  <layout class="QHBoxLayout" name="hlw_mutation_blockify_factor">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_blockify_factor">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -9654,6 +10145,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_blockify_factor_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="90" column="0">
                   <widget class="QLabel" name="label_w_blockify">
@@ -9692,7 +10188,10 @@
                   </widget>
                  </item>
                  <item row="1" column="3">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_blockify_param_a">
+                  <layout class="QHBoxLayout" name="hlw_mutation_blockify_param_a">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_blockify_param_a">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -9709,6 +10208,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_blockify_param_a_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="1" column="4">
                   <widget class="QLabel" name="label_blockify_param_b">
@@ -9718,7 +10222,10 @@
                   </widget>
                  </item>
                  <item row="1" column="5" colspan="2">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_blockify_param_b">
+                  <layout class="QHBoxLayout" name="hlw_mutation_blockify_param_b">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_blockify_param_b">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -9735,6 +10242,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_blockify_param_b_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="2" column="0">
                   <widget class="QLabel" name="label_blockify_param_c">
@@ -9744,7 +10256,10 @@
                   </widget>
                  </item>
                  <item row="2" column="1">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_blockify_param_c">
+                  <layout class="QHBoxLayout" name="hlw_mutation_blockify_param_c">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_blockify_param_c">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -9761,6 +10276,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_blockify_param_c_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="2" column="2">
                   <widget class="QLabel" name="label_blockify_param_d">
@@ -9770,7 +10290,10 @@
                   </widget>
                  </item>
                  <item row="2" column="3">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_blockify_param_d">
+                  <layout class="QHBoxLayout" name="hlw_mutation_blockify_param_d">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_blockify_param_d">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -9787,6 +10310,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_blockify_param_d_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="2" column="4">
                   <widget class="QLabel" name="label_blockify_iter">
@@ -10139,7 +10667,10 @@
                   </widget>
                  </item>
                  <item row="1" column="1">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_tile_factor">
+                  <layout class="QHBoxLayout" name="hlw_mutation_tile_factor">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_tile_factor">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -10156,6 +10687,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_tile_factor_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="90" column="0">
                   <widget class="QLabel" name="label_w_tile">
@@ -10194,7 +10730,10 @@
                   </widget>
                  </item>
                  <item row="1" column="3">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_tile_param_a">
+                  <layout class="QHBoxLayout" name="hlw_mutation_tile_param_a">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_tile_param_a">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -10211,6 +10750,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_tile_param_a_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="1" column="4">
                   <widget class="QLabel" name="label_tile_param_b">
@@ -10220,7 +10764,10 @@
                   </widget>
                  </item>
                  <item row="1" column="5" colspan="2">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_tile_param_b">
+                  <layout class="QHBoxLayout" name="hlw_mutation_tile_param_b">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_tile_param_b">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -10237,6 +10784,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_tile_param_b_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="2" column="0">
                   <widget class="QLabel" name="label_tile_param_c">
@@ -10246,7 +10798,10 @@
                   </widget>
                  </item>
                  <item row="2" column="1">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_tile_param_c">
+                  <layout class="QHBoxLayout" name="hlw_mutation_tile_param_c">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_tile_param_c">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -10263,6 +10818,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_tile_param_c_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="2" column="2">
                   <widget class="QLabel" name="label_tile_param_d">
@@ -10272,7 +10832,10 @@
                   </widget>
                  </item>
                  <item row="2" column="3">
-                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_tile_param_d">
+                  <layout class="QHBoxLayout" name="hlw_mutation_tile_param_d">
+                   <property name="spacing"><number>2</number></property>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_tile_param_d">
                    <property name="minimum">
                     <double>-100.0</double>
                    </property>
@@ -10289,6 +10852,11 @@
                     <number>6</number>
                    </property>
                   </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_mutation_tile_param_d_weight"><property name="maximumSize"><size><width>50</width><height>16777215</height></size></property><property name="toolTip"><string>Weight for this parameter: 1=full, 0=neutral(default). Multiplies how far it deviates from its default.</string></property><property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property><property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property><property name="decimals"><number>3</number></property></widget>
+                   </item>
+                  </layout>
                  </item>
                  <item row="2" column="4">
                   <widget class="QLabel" name="label_tile_iter">

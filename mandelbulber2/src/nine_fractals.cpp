@@ -519,6 +519,148 @@ cNineFractals::cNineFractals(std::shared_ptr<const cFractalContainer> par,
 		mutationParams[i].smWeight = generalPar->Get<double>("mutation_sm_weight", i + 1);
 		mutationParams[i].blkWeight = generalPar->Get<double>("mutation_blockify_weight", i + 1);
 		mutationParams[i].tilWeight = generalPar->Get<double>("mutation_tile_weight", i + 1);
+		mutationParams[i].wInvParamA = generalPar->Get<double>("mutation_inv_param_a_weight", i + 1);
+		{ double __pw = mutationParams[i].wInvParamA; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].invParamA = 1.0 + (mutationParams[i].invParamA - 1.0) * __pw; }
+		mutationParams[i].wInvParamB = generalPar->Get<double>("mutation_inv_param_b_weight", i + 1);
+		{ double __pw = mutationParams[i].wInvParamB; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].invParamB = 1.0 + (mutationParams[i].invParamB - 1.0) * __pw; }
+		mutationParams[i].wInvParamC = generalPar->Get<double>("mutation_inv_param_c_weight", i + 1);
+		{ double __pw = mutationParams[i].wInvParamC; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].invParamC = 1.0 + (mutationParams[i].invParamC - 1.0) * __pw; }
+		mutationParams[i].wClipParamA = generalPar->Get<double>("mutation_clip_param_a_weight", i + 1);
+		{ double __pw = mutationParams[i].wClipParamA; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].clipParamA = 1.0 + (mutationParams[i].clipParamA - 1.0) * __pw; }
+		mutationParams[i].wClipParamB = generalPar->Get<double>("mutation_clip_param_b_weight", i + 1);
+		{ double __pw = mutationParams[i].wClipParamB; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].clipParamB = 1.0 + (mutationParams[i].clipParamB - 1.0) * __pw; }
+		mutationParams[i].wClipParamC = generalPar->Get<double>("mutation_clip_param_c_weight", i + 1);
+		{ double __pw = mutationParams[i].wClipParamC; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].clipParamC = 1.0 + (mutationParams[i].clipParamC - 1.0) * __pw; }
+		mutationParams[i].wJosFactor = generalPar->Get<double>("mutation_jos_factor_weight", i + 1);
+		{ double __pw = mutationParams[i].wJosFactor; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].josFactor = 1.0 + (mutationParams[i].josFactor - 1.0) * __pw; }
+		mutationParams[i].wJosParamA = generalPar->Get<double>("mutation_jos_param_a_weight", i + 1);
+		{ double __pw = mutationParams[i].wJosParamA; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].josParamA = 1.0 + (mutationParams[i].josParamA - 1.0) * __pw; }
+		mutationParams[i].wJosParamB = generalPar->Get<double>("mutation_jos_param_b_weight", i + 1);
+		{ double __pw = mutationParams[i].wJosParamB; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].josParamB = 1.0 + (mutationParams[i].josParamB - 1.0) * __pw; }
+		mutationParams[i].wJosParamC = generalPar->Get<double>("mutation_jos_param_c_weight", i + 1);
+		{ double __pw = mutationParams[i].wJosParamC; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].josParamC = 1.0 + (mutationParams[i].josParamC - 1.0) * __pw; }
+		mutationParams[i].wJosParamD = generalPar->Get<double>("mutation_jos_param_d_weight", i + 1);
+		{ double __pw = mutationParams[i].wJosParamD; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].josParamD = 1.0 + (mutationParams[i].josParamD - 1.0) * __pw; }
+		mutationParams[i].wPkFactor = generalPar->Get<double>("mutation_pk_factor_weight", i + 1);
+		{ double __pw = mutationParams[i].wPkFactor; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].pkFactor = 1.0 + (mutationParams[i].pkFactor - 1.0) * __pw; }
+		mutationParams[i].wPkParamA = generalPar->Get<double>("mutation_pk_param_a_weight", i + 1);
+		{ double __pw = mutationParams[i].wPkParamA; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].pkParamA = 1.0 + (mutationParams[i].pkParamA - 1.0) * __pw; }
+		mutationParams[i].wPkParamB = generalPar->Get<double>("mutation_pk_param_b_weight", i + 1);
+		{ double __pw = mutationParams[i].wPkParamB; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].pkParamB = 1.0 + (mutationParams[i].pkParamB - 1.0) * __pw; }
+		mutationParams[i].wPkParamC = generalPar->Get<double>("mutation_pk_param_c_weight", i + 1);
+		{ double __pw = mutationParams[i].wPkParamC; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].pkParamC = 1.0 + (mutationParams[i].pkParamC - 1.0) * __pw; }
+		mutationParams[i].wPkParamD = generalPar->Get<double>("mutation_pk_param_d_weight", i + 1);
+		{ double __pw = mutationParams[i].wPkParamD; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].pkParamD = 1.0 + (mutationParams[i].pkParamD - 1.0) * __pw; }
+		mutationParams[i].wMbFactor = generalPar->Get<double>("mutation_mb_factor_weight", i + 1);
+		{ double __pw = mutationParams[i].wMbFactor; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].mbFactor = 1.0 + (mutationParams[i].mbFactor - 1.0) * __pw; }
+		mutationParams[i].wMbParamA = generalPar->Get<double>("mutation_mb_param_a_weight", i + 1);
+		{ double __pw = mutationParams[i].wMbParamA; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].mbParamA = 1.0 + (mutationParams[i].mbParamA - 1.0) * __pw; }
+		mutationParams[i].wMbParamB = generalPar->Get<double>("mutation_mb_param_b_weight", i + 1);
+		{ double __pw = mutationParams[i].wMbParamB; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].mbParamB = 1.0 + (mutationParams[i].mbParamB - 1.0) * __pw; }
+		mutationParams[i].wMbParamC = generalPar->Get<double>("mutation_mb_param_c_weight", i + 1);
+		{ double __pw = mutationParams[i].wMbParamC; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].mbParamC = 1.0 + (mutationParams[i].mbParamC - 1.0) * __pw; }
+		mutationParams[i].wMbParamD = generalPar->Get<double>("mutation_mb_param_d_weight", i + 1);
+		{ double __pw = mutationParams[i].wMbParamD; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].mbParamD = 1.0 + (mutationParams[i].mbParamD - 1.0) * __pw; }
+		mutationParams[i].wWdFactor = generalPar->Get<double>("mutation_wd_factor_weight", i + 1);
+		{ double __pw = mutationParams[i].wWdFactor; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].wdFactor = 1.0 + (mutationParams[i].wdFactor - 1.0) * __pw; }
+		mutationParams[i].wWdParamA = generalPar->Get<double>("mutation_wd_param_a_weight", i + 1);
+		{ double __pw = mutationParams[i].wWdParamA; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].wdParamA = 1.0 + (mutationParams[i].wdParamA - 1.0) * __pw; }
+		mutationParams[i].wWdParamB = generalPar->Get<double>("mutation_wd_param_b_weight", i + 1);
+		{ double __pw = mutationParams[i].wWdParamB; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].wdParamB = 1.0 + (mutationParams[i].wdParamB - 1.0) * __pw; }
+		mutationParams[i].wWdParamC = generalPar->Get<double>("mutation_wd_param_c_weight", i + 1);
+		{ double __pw = mutationParams[i].wWdParamC; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].wdParamC = 1.0 + (mutationParams[i].wdParamC - 1.0) * __pw; }
+		mutationParams[i].wWdParamD = generalPar->Get<double>("mutation_wd_param_d_weight", i + 1);
+		{ double __pw = mutationParams[i].wWdParamD; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].wdParamD = 1.0 + (mutationParams[i].wdParamD - 1.0) * __pw; }
+		mutationParams[i].wSkFactor = generalPar->Get<double>("mutation_sk_factor_weight", i + 1);
+		{ double __pw = mutationParams[i].wSkFactor; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].skFactor = 1.0 + (mutationParams[i].skFactor - 1.0) * __pw; }
+		mutationParams[i].wSkParamA = generalPar->Get<double>("mutation_sk_param_a_weight", i + 1);
+		{ double __pw = mutationParams[i].wSkParamA; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].skParamA = 1.0 + (mutationParams[i].skParamA - 1.0) * __pw; }
+		mutationParams[i].wSkParamB = generalPar->Get<double>("mutation_sk_param_b_weight", i + 1);
+		{ double __pw = mutationParams[i].wSkParamB; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].skParamB = 1.0 + (mutationParams[i].skParamB - 1.0) * __pw; }
+		mutationParams[i].wSkParamC = generalPar->Get<double>("mutation_sk_param_c_weight", i + 1);
+		{ double __pw = mutationParams[i].wSkParamC; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].skParamC = 1.0 + (mutationParams[i].skParamC - 1.0) * __pw; }
+		mutationParams[i].wSkParamD = generalPar->Get<double>("mutation_sk_param_d_weight", i + 1);
+		{ double __pw = mutationParams[i].wSkParamD; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].skParamD = 1.0 + (mutationParams[i].skParamD - 1.0) * __pw; }
+		mutationParams[i].wAbFactor = generalPar->Get<double>("mutation_ab_factor_weight", i + 1);
+		{ double __pw = mutationParams[i].wAbFactor; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].abFactor = 1.0 + (mutationParams[i].abFactor - 1.0) * __pw; }
+		mutationParams[i].wAbParamA = generalPar->Get<double>("mutation_ab_param_a_weight", i + 1);
+		{ double __pw = mutationParams[i].wAbParamA; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].abParamA = 1.0 + (mutationParams[i].abParamA - 1.0) * __pw; }
+		mutationParams[i].wAbParamB = generalPar->Get<double>("mutation_ab_param_b_weight", i + 1);
+		{ double __pw = mutationParams[i].wAbParamB; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].abParamB = 1.0 + (mutationParams[i].abParamB - 1.0) * __pw; }
+		mutationParams[i].wAbParamC = generalPar->Get<double>("mutation_ab_param_c_weight", i + 1);
+		{ double __pw = mutationParams[i].wAbParamC; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].abParamC = 1.0 + (mutationParams[i].abParamC - 1.0) * __pw; }
+		mutationParams[i].wAbParamD = generalPar->Get<double>("mutation_ab_param_d_weight", i + 1);
+		{ double __pw = mutationParams[i].wAbParamD; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].abParamD = 1.0 + (mutationParams[i].abParamD - 1.0) * __pw; }
+		mutationParams[i].wNoiseFactor = generalPar->Get<double>("mutation_noise_factor_weight", i + 1);
+		{ double __pw = mutationParams[i].wNoiseFactor; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].noiseFactor = 1.0 + (mutationParams[i].noiseFactor - 1.0) * __pw; }
+		mutationParams[i].wNoiseParamA = generalPar->Get<double>("mutation_noise_param_a_weight", i + 1);
+		{ double __pw = mutationParams[i].wNoiseParamA; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].noiseParamA = 1.0 + (mutationParams[i].noiseParamA - 1.0) * __pw; }
+		mutationParams[i].wNoiseParamB = generalPar->Get<double>("mutation_noise_param_b_weight", i + 1);
+		{ double __pw = mutationParams[i].wNoiseParamB; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].noiseParamB = 1.0 + (mutationParams[i].noiseParamB - 1.0) * __pw; }
+		mutationParams[i].wNoiseParamC = generalPar->Get<double>("mutation_noise_param_c_weight", i + 1);
+		{ double __pw = mutationParams[i].wNoiseParamC; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].noiseParamC = 1.0 + (mutationParams[i].noiseParamC - 1.0) * __pw; }
+		mutationParams[i].wNoiseParamD = generalPar->Get<double>("mutation_noise_param_d_weight", i + 1);
+		{ double __pw = mutationParams[i].wNoiseParamD; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].noiseParamD = 1.0 + (mutationParams[i].noiseParamD - 1.0) * __pw; }
+		mutationParams[i].wOrbitFactor = generalPar->Get<double>("mutation_orbit_factor_weight", i + 1);
+		{ double __pw = mutationParams[i].wOrbitFactor; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].orbitFactor = 1.0 + (mutationParams[i].orbitFactor - 1.0) * __pw; }
+		mutationParams[i].wOrbitParamA = generalPar->Get<double>("mutation_orbit_param_a_weight", i + 1);
+		{ double __pw = mutationParams[i].wOrbitParamA; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].orbitParamA = 1.0 + (mutationParams[i].orbitParamA - 1.0) * __pw; }
+		mutationParams[i].wOrbitParamB = generalPar->Get<double>("mutation_orbit_param_b_weight", i + 1);
+		{ double __pw = mutationParams[i].wOrbitParamB; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].orbitParamB = 1.0 + (mutationParams[i].orbitParamB - 1.0) * __pw; }
+		mutationParams[i].wOrbitParamC = generalPar->Get<double>("mutation_orbit_param_c_weight", i + 1);
+		{ double __pw = mutationParams[i].wOrbitParamC; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].orbitParamC = 1.0 + (mutationParams[i].orbitParamC - 1.0) * __pw; }
+		mutationParams[i].wOrbitParamD = generalPar->Get<double>("mutation_orbit_param_d_weight", i + 1);
+		{ double __pw = mutationParams[i].wOrbitParamD; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].orbitParamD = 1.0 + (mutationParams[i].orbitParamD - 1.0) * __pw; }
+		mutationParams[i].wTorusFactor = generalPar->Get<double>("mutation_torus_factor_weight", i + 1);
+		{ double __pw = mutationParams[i].wTorusFactor; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].torusFactor = 1.0 + (mutationParams[i].torusFactor - 1.0) * __pw; }
+		mutationParams[i].wTorusParamA = generalPar->Get<double>("mutation_torus_param_a_weight", i + 1);
+		{ double __pw = mutationParams[i].wTorusParamA; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].torusParamA = 1.0 + (mutationParams[i].torusParamA - 1.0) * __pw; }
+		mutationParams[i].wTorusParamB = generalPar->Get<double>("mutation_torus_param_b_weight", i + 1);
+		{ double __pw = mutationParams[i].wTorusParamB; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].torusParamB = 1.0 + (mutationParams[i].torusParamB - 1.0) * __pw; }
+		mutationParams[i].wTorusParamC = generalPar->Get<double>("mutation_torus_param_c_weight", i + 1);
+		{ double __pw = mutationParams[i].wTorusParamC; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].torusParamC = 1.0 + (mutationParams[i].torusParamC - 1.0) * __pw; }
+		mutationParams[i].wTorusParamD = generalPar->Get<double>("mutation_torus_param_d_weight", i + 1);
+		{ double __pw = mutationParams[i].wTorusParamD; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].torusParamD = 1.0 + (mutationParams[i].torusParamD - 1.0) * __pw; }
+		mutationParams[i].wAsFactor = generalPar->Get<double>("mutation_as_factor_weight", i + 1);
+		{ double __pw = mutationParams[i].wAsFactor; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].asFactor = 1.0 + (mutationParams[i].asFactor - 1.0) * __pw; }
+		mutationParams[i].wAsParamA = generalPar->Get<double>("mutation_as_param_a_weight", i + 1);
+		{ double __pw = mutationParams[i].wAsParamA; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].asParamA = 1.0 + (mutationParams[i].asParamA - 1.0) * __pw; }
+		mutationParams[i].wAsParamB = generalPar->Get<double>("mutation_as_param_b_weight", i + 1);
+		{ double __pw = mutationParams[i].wAsParamB; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].asParamB = 1.0 + (mutationParams[i].asParamB - 1.0) * __pw; }
+		mutationParams[i].wAsParamC = generalPar->Get<double>("mutation_as_param_c_weight", i + 1);
+		{ double __pw = mutationParams[i].wAsParamC; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].asParamC = 1.0 + (mutationParams[i].asParamC - 1.0) * __pw; }
+		mutationParams[i].wAsParamD = generalPar->Get<double>("mutation_as_param_d_weight", i + 1);
+		{ double __pw = mutationParams[i].wAsParamD; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].asParamD = 1.0 + (mutationParams[i].asParamD - 1.0) * __pw; }
+		mutationParams[i].wSmFactor = generalPar->Get<double>("mutation_sm_factor_weight", i + 1);
+		{ double __pw = mutationParams[i].wSmFactor; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].smFactor = 1.0 + (mutationParams[i].smFactor - 1.0) * __pw; }
+		mutationParams[i].wSmParamA = generalPar->Get<double>("mutation_sm_param_a_weight", i + 1);
+		{ double __pw = mutationParams[i].wSmParamA; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].smParamA = 1.0 + (mutationParams[i].smParamA - 1.0) * __pw; }
+		mutationParams[i].wSmParamB = generalPar->Get<double>("mutation_sm_param_b_weight", i + 1);
+		{ double __pw = mutationParams[i].wSmParamB; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].smParamB = 1.0 + (mutationParams[i].smParamB - 1.0) * __pw; }
+		mutationParams[i].wSmParamC = generalPar->Get<double>("mutation_sm_param_c_weight", i + 1);
+		{ double __pw = mutationParams[i].wSmParamC; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].smParamC = 1.0 + (mutationParams[i].smParamC - 1.0) * __pw; }
+		mutationParams[i].wSmParamD = generalPar->Get<double>("mutation_sm_param_d_weight", i + 1);
+		{ double __pw = mutationParams[i].wSmParamD; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].smParamD = 1.0 + (mutationParams[i].smParamD - 1.0) * __pw; }
+		mutationParams[i].wBlkFactor = generalPar->Get<double>("mutation_blockify_factor_weight", i + 1);
+		{ double __pw = mutationParams[i].wBlkFactor; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].blkFactor = 1.0 + (mutationParams[i].blkFactor - 1.0) * __pw; }
+		mutationParams[i].wBlkParamA = generalPar->Get<double>("mutation_blockify_param_a_weight", i + 1);
+		{ double __pw = mutationParams[i].wBlkParamA; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].blkParamA = 1.0 + (mutationParams[i].blkParamA - 1.0) * __pw; }
+		mutationParams[i].wBlkParamB = generalPar->Get<double>("mutation_blockify_param_b_weight", i + 1);
+		{ double __pw = mutationParams[i].wBlkParamB; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].blkParamB = 1.0 + (mutationParams[i].blkParamB - 1.0) * __pw; }
+		mutationParams[i].wBlkParamC = generalPar->Get<double>("mutation_blockify_param_c_weight", i + 1);
+		{ double __pw = mutationParams[i].wBlkParamC; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].blkParamC = 1.0 + (mutationParams[i].blkParamC - 1.0) * __pw; }
+		mutationParams[i].wBlkParamD = generalPar->Get<double>("mutation_blockify_param_d_weight", i + 1);
+		{ double __pw = mutationParams[i].wBlkParamD; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].blkParamD = 1.0 + (mutationParams[i].blkParamD - 1.0) * __pw; }
+		mutationParams[i].wTilFactor = generalPar->Get<double>("mutation_tile_factor_weight", i + 1);
+		{ double __pw = mutationParams[i].wTilFactor; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].tilFactor = 1.0 + (mutationParams[i].tilFactor - 1.0) * __pw; }
+		mutationParams[i].wTilParamA = generalPar->Get<double>("mutation_tile_param_a_weight", i + 1);
+		{ double __pw = mutationParams[i].wTilParamA; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].tilParamA = 1.0 + (mutationParams[i].tilParamA - 1.0) * __pw; }
+		mutationParams[i].wTilParamB = generalPar->Get<double>("mutation_tile_param_b_weight", i + 1);
+		{ double __pw = mutationParams[i].wTilParamB; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].tilParamB = 1.0 + (mutationParams[i].tilParamB - 1.0) * __pw; }
+		mutationParams[i].wTilParamC = generalPar->Get<double>("mutation_tile_param_c_weight", i + 1);
+		{ double __pw = mutationParams[i].wTilParamC; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].tilParamC = 1.0 + (mutationParams[i].tilParamC - 1.0) * __pw; }
+		mutationParams[i].wTilParamD = generalPar->Get<double>("mutation_tile_param_d_weight", i + 1);
+		{ double __pw = mutationParams[i].wTilParamD; if(__pw<0.0)__pw=0.0; if(__pw>1.0)__pw=1.0; mutationParams[i].tilParamD = 1.0 + (mutationParams[i].tilParamD - 1.0) * __pw; }
 
 		// Smart defaults: PK/JK formulas get Möbius (Bilinear) math preset
 		fractal::enumFractalFormula f = fractals[i]->formula;
