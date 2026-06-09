@@ -1,6 +1,9 @@
 #include "dock_mutation_tab.h"
 #include "ui_dock_mutation_tab.h"
 
+#include <QSettings>
+#include <QToolBox>
+
 #include "src/automated_widgets.hpp"
 #include "src/fractal_container.hpp"
 #include "src/initparameters.hpp"
@@ -123,6 +126,26 @@ void cDockMutationTab::Init(int _tabIndex)
 
 	connect(ui->pushButton_mutation_reset, &QPushButton::clicked, this,
 		&cDockMutationTab::slotPressedButtonMutationReset);
+
+	// Remember which mutation section (toolbox page) was last opened, per fractal tab,
+	// and restore it the next time this dock is built.
+	if (ui->toolBox_mutation_sections)
+	{
+		QSettings settings(QStringLiteral("Mandelbulber"), QStringLiteral("mandelbulber2"));
+		const QString toolBoxKey =
+			QStringLiteral("mutationDock/toolBoxIndex_%1").arg(tabIndex + 1);
+		const int savedIndex = settings.value(toolBoxKey, 0).toInt();
+		if (savedIndex >= 0 && savedIndex < ui->toolBox_mutation_sections->count())
+		{
+			ui->toolBox_mutation_sections->setCurrentIndex(savedIndex);
+		}
+		connect(ui->toolBox_mutation_sections, &QToolBox::currentChanged, this,
+			[this](int index) {
+				QSettings store(QStringLiteral("Mandelbulber"), QStringLiteral("mandelbulber2"));
+				store.setValue(
+					QStringLiteral("mutationDock/toolBoxIndex_%1").arg(tabIndex + 1), index);
+			});
+	}
 }
 
 void cDockMutationTab::SynchronizeInterface(
