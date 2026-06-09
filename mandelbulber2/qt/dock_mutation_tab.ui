@@ -8179,6 +8179,752 @@
               </item>
              </layout>
             </widget>
+            <widget class="QWidget" name="page_mut_as">
+             <attribute name="label">
+              <string>Amazing Surf DE</string>
+             </attribute>
+             <layout class="QVBoxLayout" name="vlay_mut_as">
+              <property name="spacing">
+               <number>2</number>
+              </property>
+              <property name="leftMargin">
+               <number>2</number>
+              </property>
+              <property name="topMargin">
+               <number>2</number>
+              </property>
+              <property name="rightMargin">
+               <number>2</number>
+              </property>
+              <property name="bottomMargin">
+               <number>2</number>
+              </property>
+              <item>
+               <widget class="MyGroupBox" name="groupCheck_mutation_as_enabled">
+                <property name="title">
+                 <string>Amazing Surf DE</string>
+                </property>
+                <property name="checkable">
+                 <bool>true</bool>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
+                </property>
+                <layout class="QGridLayout" name="gridLayout_mutation_as">
+                 <item row="0" column="0">
+                  <widget class="QLabel" name="label_as_type">
+                   <property name="text">
+                    <string>Type:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="1" colspan="6">
+                  <widget class="QComboBox" name="comboBox_mutation_as_type">
+                                      <item>
+                    <property name="text">
+                     <string>None</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Sigmoid DE</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Gaussian DE</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Threshold DE</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Two-Band DE</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Hash Noise DE</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Julia-Feedback DE</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Iteration Pulse DE</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Blend DE</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Harmonic Feedback DE</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Fractal Noise DE</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Speed Damping DE</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Uniform Scale DE</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Angular DE</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Shear DE</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Progress Fade DE</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Box Mask DE</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Sphere Mask DE</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Column Mask DE</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Interference DE</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Ambient Occlusion DE</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Gradient Damping DE</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Depth Scale DE</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Light Damping DE</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Subsurface DE</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Wavelength DE</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Caustic DE</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Fresnel DE</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Thin-Film DE</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Tangent DE</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Subdivision DE</string>
+                    </property>
+                   </item>
+                  </widget>
+                 </item>
+                 <item row="1" column="0">
+                  <widget class="QLabel" name="label_as_factor">
+                   <property name="text">
+                    <string>Factor:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="1">
+                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_as_factor">
+                   <property name="minimum">
+                    <double>-100.0</double>
+                   </property>
+                   <property name="maximum">
+                    <double>100.0</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.1</double>
+                   </property>
+                   <property name="value">
+                    <double>1.0</double>
+                   </property>
+                   <property name="decimals">
+                    <number>6</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="2">
+                  <widget class="QLabel" name="label_as_param_a">
+                   <property name="text">
+                    <string>A:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="3">
+                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_as_param_a">
+                   <property name="minimum">
+                    <double>-100.0</double>
+                   </property>
+                   <property name="maximum">
+                    <double>100.0</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.1</double>
+                   </property>
+                   <property name="value">
+                    <double>1.0</double>
+                   </property>
+                   <property name="decimals">
+                    <number>6</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="4">
+                  <widget class="QLabel" name="label_as_param_b">
+                   <property name="text">
+                    <string>B:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="5" colspan="2">
+                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_as_param_b">
+                   <property name="minimum">
+                    <double>-100.0</double>
+                   </property>
+                   <property name="maximum">
+                    <double>100.0</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.1</double>
+                   </property>
+                   <property name="value">
+                    <double>1.0</double>
+                   </property>
+                   <property name="decimals">
+                    <number>6</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="0">
+                  <widget class="QLabel" name="label_as_param_c">
+                   <property name="text">
+                    <string>C:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="1">
+                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_as_param_c">
+                   <property name="minimum">
+                    <double>-100.0</double>
+                   </property>
+                   <property name="maximum">
+                    <double>100.0</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.1</double>
+                   </property>
+                   <property name="value">
+                    <double>1.0</double>
+                   </property>
+                   <property name="decimals">
+                    <number>6</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="2">
+                  <widget class="QLabel" name="label_as_param_d">
+                   <property name="text">
+                    <string>D:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="3">
+                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_as_param_d">
+                   <property name="minimum">
+                    <double>-100.0</double>
+                   </property>
+                   <property name="maximum">
+                    <double>100.0</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.1</double>
+                   </property>
+                   <property name="value">
+                    <double>1.0</double>
+                   </property>
+                   <property name="decimals">
+                    <number>6</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="4">
+                  <widget class="QLabel" name="label_as_iter">
+                   <property name="text">
+                    <string>Iter:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="5" colspan="2">
+                  <widget class="MySpinBox" name="spinboxInt_mutation_as_iter_start">
+                   <property name="minimum">
+                    <number>0</number>
+                   </property>
+                   <property name="maximum">
+                    <number>10000</number>
+                   </property>
+                   <property name="value">
+                    <number>0</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="3" column="0">
+                  <widget class="QLabel" name="label_as_iter_stop2">
+                   <property name="text">
+                    <string>Stop:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="3" column="1">
+                  <widget class="MySpinBox" name="spinboxInt_mutation_as_iter_stop">
+                   <property name="minimum">
+                    <number>0</number>
+                   </property>
+                   <property name="maximum">
+                    <number>10000</number>
+                   </property>
+                   <property name="value">
+                    <number>10000</number>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+            <widget class="QWidget" name="page_mut_sm">
+             <attribute name="label">
+              <string>SphereTree/Menger DE</string>
+             </attribute>
+             <layout class="QVBoxLayout" name="vlay_mut_sm">
+              <property name="spacing">
+               <number>2</number>
+              </property>
+              <property name="leftMargin">
+               <number>2</number>
+              </property>
+              <property name="topMargin">
+               <number>2</number>
+              </property>
+              <property name="rightMargin">
+               <number>2</number>
+              </property>
+              <property name="bottomMargin">
+               <number>2</number>
+              </property>
+              <item>
+               <widget class="MyGroupBox" name="groupCheck_mutation_sm_enabled">
+                <property name="title">
+                 <string>SphereTree/Menger DE</string>
+                </property>
+                <property name="checkable">
+                 <bool>true</bool>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
+                </property>
+                <layout class="QGridLayout" name="gridLayout_mutation_sm">
+                 <item row="0" column="0">
+                  <widget class="QLabel" name="label_sm_type">
+                   <property name="text">
+                    <string>Type:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="1" colspan="6">
+                  <widget class="QComboBox" name="comboBox_mutation_sm_type">
+                                      <item>
+                    <property name="text">
+                     <string>None</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Branching DE</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Box Scale</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Golden-Angle Rotate</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Sin-Cos Ratio</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Hash Noise</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Double Shell</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Wave DE</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Ellipsoid SDF</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Torus SDF</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Capsule SDF</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Spherical Harmonic</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Julia Feedback</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Mandelbrot Feedback</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Affine Rotate</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Koch Amplitude</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Sierpinski Fold</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Spherical Inversion</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Hash Jitter</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Grid Snap</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Hash Offset</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Phyllotaxis Spiral</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Golden-Ratio Shrink</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Exponential Shrink</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Logarithmic Shrink</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Power Shrink</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Menger Fold</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Scaled Abs-Sort</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Hash Menger</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Rotate Abs Fold</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Epsilon Abs-Sort</string>
+                    </property>
+                   </item>
+                  </widget>
+                 </item>
+                 <item row="1" column="0">
+                  <widget class="QLabel" name="label_sm_factor">
+                   <property name="text">
+                    <string>Factor:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="1">
+                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_sm_factor">
+                   <property name="minimum">
+                    <double>-100.0</double>
+                   </property>
+                   <property name="maximum">
+                    <double>100.0</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.1</double>
+                   </property>
+                   <property name="value">
+                    <double>1.0</double>
+                   </property>
+                   <property name="decimals">
+                    <number>6</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="2">
+                  <widget class="QLabel" name="label_sm_param_a">
+                   <property name="text">
+                    <string>A:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="3">
+                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_sm_param_a">
+                   <property name="minimum">
+                    <double>-100.0</double>
+                   </property>
+                   <property name="maximum">
+                    <double>100.0</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.1</double>
+                   </property>
+                   <property name="value">
+                    <double>1.0</double>
+                   </property>
+                   <property name="decimals">
+                    <number>6</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="4">
+                  <widget class="QLabel" name="label_sm_param_b">
+                   <property name="text">
+                    <string>B:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="5" colspan="2">
+                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_sm_param_b">
+                   <property name="minimum">
+                    <double>-100.0</double>
+                   </property>
+                   <property name="maximum">
+                    <double>100.0</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.1</double>
+                   </property>
+                   <property name="value">
+                    <double>1.0</double>
+                   </property>
+                   <property name="decimals">
+                    <number>6</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="0">
+                  <widget class="QLabel" name="label_sm_param_c">
+                   <property name="text">
+                    <string>C:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="1">
+                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_sm_param_c">
+                   <property name="minimum">
+                    <double>-100.0</double>
+                   </property>
+                   <property name="maximum">
+                    <double>100.0</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.1</double>
+                   </property>
+                   <property name="value">
+                    <double>1.0</double>
+                   </property>
+                   <property name="decimals">
+                    <number>6</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="2">
+                  <widget class="QLabel" name="label_sm_param_d">
+                   <property name="text">
+                    <string>D:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="3">
+                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_sm_param_d">
+                   <property name="minimum">
+                    <double>-100.0</double>
+                   </property>
+                   <property name="maximum">
+                    <double>100.0</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.1</double>
+                   </property>
+                   <property name="value">
+                    <double>1.0</double>
+                   </property>
+                   <property name="decimals">
+                    <number>6</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="4">
+                  <widget class="QLabel" name="label_sm_iter">
+                   <property name="text">
+                    <string>Iter:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="5" colspan="2">
+                  <widget class="MySpinBox" name="spinboxInt_mutation_sm_iter_start">
+                   <property name="minimum">
+                    <number>0</number>
+                   </property>
+                   <property name="maximum">
+                    <number>10000</number>
+                   </property>
+                   <property name="value">
+                    <number>0</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="3" column="0">
+                  <widget class="QLabel" name="label_sm_iter_stop2">
+                   <property name="text">
+                    <string>Stop:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="3" column="1">
+                  <widget class="MySpinBox" name="spinboxInt_mutation_sm_iter_stop">
+                   <property name="minimum">
+                    <number>0</number>
+                   </property>
+                   <property name="maximum">
+                    <number>10000</number>
+                   </property>
+                   <property name="value">
+                    <number>10000</number>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+             </layout>
+            </widget>
             <widget class="QWidget" name="page_mut_blockify">
              <attribute name="label">
               <string>Blockify System</string>

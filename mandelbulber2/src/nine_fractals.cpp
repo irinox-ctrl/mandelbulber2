@@ -463,7 +463,8 @@ cNineFractals::cNineFractals(std::shared_ptr<const cFractalContainer> par,
 		mutationParams[i].torusIterStop = generalPar->Get<int>("mutation_torus_iter_stop", i + 1);
 
 		// v7.13 — Amazing Surf 1-4
-		mutationParams[i].asType = generalPar->Get<int>("mutation_as_type", i + 1);
+		mutationParams[i].asType = generalPar->Get<bool>("mutation_as_enabled", i + 1)
+			? generalPar->Get<int>("mutation_as_type", i + 1) : 0;
 		mutationParams[i].asFactor = generalPar->Get<double>("mutation_as_factor", i + 1);
 		mutationParams[i].asParamA = generalPar->Get<double>("mutation_as_param_a", i + 1);
 		mutationParams[i].asParamB = generalPar->Get<double>("mutation_as_param_b", i + 1);
@@ -473,7 +474,8 @@ cNineFractals::cNineFractals(std::shared_ptr<const cFractalContainer> par,
 		mutationParams[i].asIterStop = generalPar->Get<int>("mutation_as_iter_stop", i + 1);
 
 		// v7.13 — SphereTree/Menger
-		mutationParams[i].smType = generalPar->Get<int>("mutation_sm_type", i + 1);
+		mutationParams[i].smType = generalPar->Get<bool>("mutation_sm_enabled", i + 1)
+			? generalPar->Get<int>("mutation_sm_type", i + 1) : 0;
 		mutationParams[i].smFactor = generalPar->Get<double>("mutation_sm_factor", i + 1);
 		mutationParams[i].smParamA = generalPar->Get<double>("mutation_sm_param_a", i + 1);
 		mutationParams[i].smParamB = generalPar->Get<double>("mutation_sm_param_b", i + 1);

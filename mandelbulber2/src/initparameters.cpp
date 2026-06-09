@@ -486,6 +486,7 @@ void InitParams(std::shared_ptr<cParameterContainer> par)
 		par->addParam("mutation_torus_iter_stop", i, 10000, 0, 10000, morphAkima, paramStandard);
 
 		// v7.13 — Amazing Surf 1-4 DE system
+		par->addParam("mutation_as_enabled", i, true, morphLinear, paramStandard);
 		par->addParam("mutation_as_type", i, 0, 0, 100, morphAkima, paramStandard);
 		par->addParam("mutation_as_factor", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
 		par->addParam("mutation_as_param_a", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
@@ -496,6 +497,7 @@ void InitParams(std::shared_ptr<cParameterContainer> par)
 		par->addParam("mutation_as_iter_stop", i, 10000, 0, 10000, morphAkima, paramStandard);
 
 		// v7.13 — SphereTree/Menger DE system
+		par->addParam("mutation_sm_enabled", i, true, morphLinear, paramStandard);
 		par->addParam("mutation_sm_type", i, 0, 0, 100, morphAkima, paramStandard);
 		par->addParam("mutation_sm_factor", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
 		par->addParam("mutation_sm_param_a", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);

@@ -336,6 +336,8 @@ void cDockMutationTab::UpdateMutationGrayOut() const
 	grayOutGroupSystem(ui->comboBox_mutation_noise_type, ui->groupCheck_mutation_noise_enabled);
 	grayOutGroupSystem(ui->comboBox_mutation_orbit_trap_type, ui->groupCheck_mutation_orbit_trap_enabled);
 	grayOutGroupSystem(ui->comboBox_mutation_torus_type, ui->groupCheck_mutation_torus_enabled);
+	grayOutGroupSystem(ui->comboBox_mutation_as_type, ui->groupCheck_mutation_as_enabled);
+	grayOutGroupSystem(ui->comboBox_mutation_sm_type, ui->groupCheck_mutation_sm_enabled);
 	grayOutGroupSystem(ui->comboBox_mutation_blockify_type, ui->groupCheck_mutation_blockify_enabled);
 	grayOutGroupSystem(ui->comboBox_mutation_tile_type, ui->groupCheck_mutation_tile_enabled);
 
