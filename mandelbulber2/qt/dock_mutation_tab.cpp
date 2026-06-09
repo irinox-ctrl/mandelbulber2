@@ -146,6 +146,23 @@ void cDockMutationTab::Init(int _tabIndex)
 					QStringLiteral("mutationDock/toolBoxIndex_%1").arg(tabIndex + 1), index);
 			});
 	}
+
+	// Compact overview: collapse every section down to just its title bar so all
+	// section names are visible at a glance without scrolling.
+	if (ui->toolBox_mutation_sections && ui->pushButton_mutation_compact)
+	{
+		QToolBox *toolBox = ui->toolBox_mutation_sections;
+		auto applyCompact = [toolBox](bool compact) {
+			if (QWidget *page = toolBox->currentWidget()) page->setVisible(!compact);
+		};
+		connect(ui->pushButton_mutation_compact, &QPushButton::toggled, this,
+			[applyCompact](bool checked) { applyCompact(checked); });
+		// Keep the newly selected section collapsed too while compact mode is on.
+		connect(toolBox, &QToolBox::currentChanged, this,
+			[this, applyCompact](int) {
+				applyCompact(ui->pushButton_mutation_compact->isChecked());
+			});
+	}
 }
 
 void cDockMutationTab::SynchronizeInterface(

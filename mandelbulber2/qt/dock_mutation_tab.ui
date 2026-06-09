@@ -42,6 +42,19 @@
       </widget>
      </item>
      <item>
+      <widget class="QPushButton" name="pushButton_mutation_compact">
+       <property name="toolTip">
+        <string>Collapse all sections to a compact overview that shows only their titles</string>
+       </property>
+       <property name="text">
+        <string>Compact View</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
       <spacer name="horizontalSpacer_mutation_top">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
