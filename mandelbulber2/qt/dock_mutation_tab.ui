@@ -2,6 +2,18 @@
 <ui version="4.0">
  <class>cDockMutationTab</class>
  <widget class="QWidget" name="cDockMutationTab">
+  <property name="styleSheet">
+   <string notr="true">QToolBox::tab { background: palette(button); border: 1px solid palette(mid); border-radius: 4px; padding: 6px 10px; margin: 1px 0px; font-weight: bold; }
+QToolBox::tab:selected { color: #FF8C00; border: 1px solid #FF8C00; }
+QToolBox::tab:hover { border: 1px solid #FFA94D; }
+QPushButton { border: 1px solid palette(mid); border-radius: 4px; padding: 5px 12px; }
+QPushButton:hover { border: 1px solid #FF8C00; color: #FF8C00; }
+QPushButton:pressed { background: rgba(255,140,0,70); }
+QPushButton:checked { border: 1px solid #FF8C00; color: #FF8C00; }
+QPushButton#pushButton_mutation_randomize_weights { border: 1px solid #FF8C00; color: #FF8C00; font-weight: bold; }
+QPushButton#pushButton_mutation_randomize_weights:hover { background: rgba(255,140,0,60); }
+QComboBox { border-radius: 3px; padding: 2px 6px; }</string>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -51,6 +63,26 @@
        </property>
        <property name="checkable">
         <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_mutation_randomize_weights">
+       <property name="toolTip">
+        <string>Randomize every section and per-parameter weight on this fractal tab (master weight stays at full so the result stays visible)</string>
+       </property>
+       <property name="text">
+        <string>🎲 Randomize Weights</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_mutation_reset_weights">
+       <property name="toolTip">
+        <string>Reset all mutation weights on this fractal tab back to 1.0 (full effect)</string>
+       </property>
+       <property name="text">
+        <string>Reset Weights</string>
        </property>
       </widget>
      </item>

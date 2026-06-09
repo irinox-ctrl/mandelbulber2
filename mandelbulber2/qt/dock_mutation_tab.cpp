@@ -6,6 +6,7 @@
 #include <QScrollBar>
 #include <QTimer>
 #include <QFont>
+#include <QRandomGenerator>
 
 #include "src/automated_widgets.hpp"
 #include "src/fractal_container.hpp"
@@ -148,6 +149,10 @@ void cDockMutationTab::Init(int _tabIndex)
 
 	connect(ui->pushButton_mutation_reset, &QPushButton::clicked, this,
 		&cDockMutationTab::slotPressedButtonMutationReset);
+	connect(ui->pushButton_mutation_randomize_weights, &QPushButton::clicked, this,
+		&cDockMutationTab::slotPressedButtonRandomizeWeights);
+	connect(ui->pushButton_mutation_reset_weights, &QPushButton::clicked, this,
+		&cDockMutationTab::slotPressedButtonResetWeights);
 
 	// Remember which mutation section (toolbox page) was last opened, per fractal tab,
 	// and restore it the next time this dock is built.
@@ -1085,6 +1090,74 @@ void cDockMutationTab::slotPressedButtonMutationReset()
 	setI("mutation_tile_iter_stop", 10000);
 
 	// Write defaults back to UI widgets
+	SynchronizeInterface(params, qInterface::write);
+	UpdateMutationGrayOut();
+}
+
+namespace
+{
+// All mutation weight parameters (master + per-section + per-parameter) used by
+// the Randomize / Reset Weights buttons.
+const QStringList &mutationWeightParams()
+{
+	static const QStringList list = {
+		"mutation_master_weight", "mutation_inversion_weight", "mutation_clip_weight",
+		"mutation_jos_leys_weight", "mutation_pk_weight", "mutation_mb_math_weight",
+		"mutation_warp_dist_weight", "mutation_symmetry_weight", "mutation_abox_weight",
+		"mutation_noise_weight", "mutation_orbit_trap_weight", "mutation_torus_weight",
+		"mutation_as_weight", "mutation_sm_weight", "mutation_blockify_weight",
+		"mutation_tile_weight", "mutation_ab_factor_weight", "mutation_ab_param_a_weight",
+		"mutation_ab_param_b_weight", "mutation_ab_param_c_weight", "mutation_ab_param_d_weight",
+		"mutation_ab_param_e_weight", "mutation_ab_param_f_weight", "mutation_ab_param_g_weight",
+		"mutation_ab_param_h_weight", "mutation_as_factor_weight", "mutation_as_param_a_weight",
+		"mutation_as_param_b_weight", "mutation_as_param_c_weight", "mutation_as_param_d_weight",
+		"mutation_blockify_factor_weight", "mutation_blockify_param_a_weight", "mutation_blockify_param_b_weight",
+		"mutation_blockify_param_c_weight", "mutation_blockify_param_d_weight", "mutation_clip_param_a_weight",
+		"mutation_clip_param_b_weight", "mutation_clip_param_c_weight", "mutation_inv_param_a_weight",
+		"mutation_inv_param_b_weight", "mutation_inv_param_c_weight", "mutation_jos_factor_weight",
+		"mutation_jos_param_a_weight", "mutation_jos_param_b_weight", "mutation_jos_param_c_weight",
+		"mutation_jos_param_d_weight", "mutation_mb_factor_weight", "mutation_mb_param_a_weight",
+		"mutation_mb_param_b_weight", "mutation_mb_param_c_weight", "mutation_mb_param_d_weight",
+		"mutation_mb_param_e_weight", "mutation_mb_param_f_weight", "mutation_mb_param_g_weight",
+		"mutation_mb_param_h_weight", "mutation_noise_factor_weight", "mutation_noise_param_a_weight",
+		"mutation_noise_param_b_weight", "mutation_noise_param_c_weight", "mutation_noise_param_d_weight",
+		"mutation_orbit_factor_weight", "mutation_orbit_param_a_weight", "mutation_orbit_param_b_weight",
+		"mutation_orbit_param_c_weight", "mutation_orbit_param_d_weight", "mutation_pk_factor_weight",
+		"mutation_pk_param_a_weight", "mutation_pk_param_b_weight", "mutation_pk_param_c_weight",
+		"mutation_pk_param_d_weight", "mutation_sk_factor_weight", "mutation_sk_param_a_weight",
+		"mutation_sk_param_b_weight", "mutation_sk_param_c_weight", "mutation_sk_param_d_weight",
+		"mutation_sm_factor_weight", "mutation_sm_param_a_weight", "mutation_sm_param_b_weight",
+		"mutation_sm_param_c_weight", "mutation_sm_param_d_weight", "mutation_tile_factor_weight",
+		"mutation_tile_param_a_weight", "mutation_tile_param_b_weight", "mutation_tile_param_c_weight",
+		"mutation_tile_param_d_weight", "mutation_torus_factor_weight", "mutation_torus_param_a_weight",
+		"mutation_torus_param_b_weight", "mutation_torus_param_c_weight", "mutation_torus_param_d_weight",
+		"mutation_wd_factor_weight", "mutation_wd_param_a_weight", "mutation_wd_param_b_weight",
+		"mutation_wd_param_c_weight", "mutation_wd_param_d_weight"
+	};
+	return list;
+}
+} // namespace
+
+void cDockMutationTab::slotPressedButtonResetWeights()
+{
+	const int idx = tabIndex + 1;
+	for (const QString &name : mutationWeightParams())
+		params->Set(name + "_" + QString::number(idx), 1.0);
+	SynchronizeInterface(params, qInterface::write);
+	UpdateMutationGrayOut();
+}
+
+void cDockMutationTab::slotPressedButtonRandomizeWeights()
+{
+	const int idx = tabIndex + 1;
+	for (const QString &name : mutationWeightParams())
+	{
+		// keep the global master weight at full so randomized sections stay visible
+		const double v = (name == "mutation_master_weight")
+			? 1.0
+			: QRandomGenerator::global()->generateDouble();
+		params->Set(name + "_" + QString::number(idx), v);
+	}
 	SynchronizeInterface(params, qInterface::write);
 	UpdateMutationGrayOut();
 }
