@@ -3,6 +3,9 @@
 
 #include <QSettings>
 #include <QToolBox>
+#include <QScrollBar>
+#include <QTimer>
+#include <QFont>
 
 #include "src/automated_widgets.hpp"
 #include "src/fractal_container.hpp"
@@ -17,6 +20,13 @@ cDockMutationTab::cDockMutationTab(QWidget *parent)
 {
 	ui->setupUi(this);
 	automatedWidgets = new cAutomatedWidgets(this);
+	// Larger, more legible font across the whole mutation panel.
+	if (ui->scrollAreaWidgetContents_mutation)
+	{
+		QFont mutFont = ui->scrollAreaWidgetContents_mutation->font();
+		mutFont.setPointSizeF((mutFont.pointSizeF() > 0 ? mutFont.pointSizeF() : 10.0) + 1.0);
+		ui->scrollAreaWidgetContents_mutation->setFont(mutFont);
+	}
 	tabIndex = 0;
 }
 
@@ -151,6 +161,18 @@ void cDockMutationTab::Init(int _tabIndex)
 				store.setValue(
 					QStringLiteral("mutationDock/toolBoxIndex_%1").arg(tabIndex + 1), index);
 			});
+		// When a section opens, scroll it to the top so ALL its parameters are visible.
+		connect(ui->toolBox_mutation_sections, &QToolBox::currentChanged, this,
+			[this](int) {
+				QTimer::singleShot(0, this, [this]() {
+					if (!ui->toolBox_mutation_sections || !ui->scrollArea_mutation
+						|| !ui->scrollAreaWidgetContents_mutation) return;
+					QWidget *page = ui->toolBox_mutation_sections->currentWidget();
+					if (!page || !page->isVisible()) return;
+					const QPoint top = page->mapTo(ui->scrollAreaWidgetContents_mutation, QPoint(0, 0));
+					ui->scrollArea_mutation->verticalScrollBar()->setValue(qMax(0, top.y() - 36));
+				});
+			});
 	}
 
 	// Compact overview: collapse every section down to just its title bar so all
@@ -274,21 +296,27 @@ void cDockMutationTab::UpdateMutationFieldVisibility(int formulaIndex) const
 
 void cDockMutationTab::UpdateMutationGrayOut() const
 {
+	// Master gate: when global Mutation is off, NOTHING should be orange.
+	const bool mutationMasterOn =
+		ui->groupCheck_mutation_enabled && ui->groupCheck_mutation_enabled->isChecked();
+	// Slightly larger font for active/inactive parameters (legibility).
+	const int mutBaseFs = (this->font().pointSize() > 0) ? this->font().pointSize() : 10;
+	const int mutBigFs = mutBaseFs + 1;
 	// Helper: set enabled state AND orange color for active parameters
 	auto styleWidget = [&](QWidget *w, bool enabled) {
 		if (!w) return;
 		w->setEnabled(enabled);
 		if (enabled) {
-			w->setStyleSheet("color: #FFA500; font-weight: bold;");
+			w->setStyleSheet(QString("color: #FFA500; font-weight: bold; font-size: %1pt;").arg(mutBigFs));
 		} else {
-			w->setStyleSheet("color: #AAAAAA;");
+			w->setStyleSheet(QString("color: #AAAAAA; font-size: %1pt;").arg(mutBigFs));
 		}
 	};
 
 	// Helper for systems with their own GroupBox (simple on/off based on type==0)
 	auto grayOutGroupSystem = [&](QComboBox *combo, QGroupBox *group) {
 		if (!combo || !group) return;
-		bool systemActive = group->isChecked() && combo->currentIndex() != 0;
+		bool systemActive = mutationMasterOn && group->isChecked() && combo->currentIndex() != 0;
 		QList<QWidget *> children = group->findChildren<QWidget *>();
 		for (QWidget *w : children)
 		{
@@ -317,7 +345,7 @@ void cDockMutationTab::UpdateMutationGrayOut() const
 		QComboBox *clipCombo = ui->comboBox_mutation_clip_type;
 		if (clipGroup && clipCombo)
 		{
-			bool clipActive = clipGroup->isChecked() && clipCombo->currentIndex() != 0;
+			bool clipActive = mutationMasterOn && clipGroup->isChecked() && clipCombo->currentIndex() != 0;
 			int clipType = clipCombo->currentIndex();
 
 			auto setClipWidget = [&](const QString &baseName, bool enabled) {
@@ -412,7 +440,7 @@ void cDockMutationTab::UpdateMutationGrayOut() const
 		QComboBox *invCombo = ui->comboBox_mutation_inv_type;
 		if (invGroup && invCombo)
 		{
-			bool invActive = invGroup->isChecked() && invCombo->currentIndex() != 0;
+			bool invActive = mutationMasterOn && invGroup->isChecked() && invCombo->currentIndex() != 0;
 			int invType = invCombo->currentIndex();
 
 			auto setInvWidget = [&](const QString &baseName, bool enabled) {
