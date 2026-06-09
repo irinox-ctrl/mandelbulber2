@@ -220,6 +220,23 @@ void InitParams(std::shared_ptr<cParameterContainer> par)
 		par->addParam("mutation_torus_enabled", i, true, morphLinear, paramStandard);
 		par->addParam("mutation_blockify_enabled", i, true, morphLinear, paramStandard);
 		par->addParam("mutation_tile_enabled", i, true, morphLinear, paramStandard);
+		// v7.14 — Per-section mutation weights + master (0=off .. 1=full)
+		par->addParam("mutation_master_weight", i, 1.0, 0.0, 1.0, morphAkima, paramStandard);
+		par->addParam("mutation_inversion_weight", i, 1.0, 0.0, 1.0, morphAkima, paramStandard);
+		par->addParam("mutation_clip_weight", i, 1.0, 0.0, 1.0, morphAkima, paramStandard);
+		par->addParam("mutation_jos_leys_weight", i, 1.0, 0.0, 1.0, morphAkima, paramStandard);
+		par->addParam("mutation_pk_weight", i, 1.0, 0.0, 1.0, morphAkima, paramStandard);
+		par->addParam("mutation_mb_math_weight", i, 1.0, 0.0, 1.0, morphAkima, paramStandard);
+		par->addParam("mutation_warp_dist_weight", i, 1.0, 0.0, 1.0, morphAkima, paramStandard);
+		par->addParam("mutation_symmetry_weight", i, 1.0, 0.0, 1.0, morphAkima, paramStandard);
+		par->addParam("mutation_abox_weight", i, 1.0, 0.0, 1.0, morphAkima, paramStandard);
+		par->addParam("mutation_noise_weight", i, 1.0, 0.0, 1.0, morphAkima, paramStandard);
+		par->addParam("mutation_orbit_trap_weight", i, 1.0, 0.0, 1.0, morphAkima, paramStandard);
+		par->addParam("mutation_torus_weight", i, 1.0, 0.0, 1.0, morphAkima, paramStandard);
+		par->addParam("mutation_as_weight", i, 1.0, 0.0, 1.0, morphAkima, paramStandard);
+		par->addParam("mutation_sm_weight", i, 1.0, 0.0, 1.0, morphAkima, paramStandard);
+		par->addParam("mutation_blockify_weight", i, 1.0, 0.0, 1.0, morphAkima, paramStandard);
+		par->addParam("mutation_tile_weight", i, 1.0, 0.0, 1.0, morphAkima, paramStandard);
 		// Pre-transform
 		par->addParam("mutation_pre_rotation_ax", i, 0.0, -360.0, 360.0, morphAkima, paramStandard);
 		par->addParam("mutation_pre_rotation_ay", i, 0.0, -360.0, 360.0, morphAkima, paramStandard);

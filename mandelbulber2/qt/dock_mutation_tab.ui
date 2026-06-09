@@ -116,6 +116,35 @@
             </property>
            </widget>
           </item>
+          <item row="95" column="0">
+           <widget class="QLabel" name="label_mutation_master_weight">
+            <property name="text">
+             <string>Master Weight:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="95" column="1" colspan="2">
+           <widget class="MyDoubleSpinBox" name="spinbox_mutation_master_weight">
+            <property name="toolTip">
+             <string>Global master weight multiplied into every section weight (1=full, 0=all sections off)</string>
+            </property>
+            <property name="minimum">
+             <double>0.0</double>
+            </property>
+            <property name="maximum">
+             <double>1.0</double>
+            </property>
+            <property name="singleStep">
+             <double>0.05</double>
+            </property>
+            <property name="value">
+             <double>1.0</double>
+            </property>
+            <property name="decimals">
+             <number>4</number>
+            </property>
+           </widget>
+          </item>
           <item row="0" column="1">
            <widget class="QLabel" name="label_mutation_pre_rot_ax">
             <property name="text">
@@ -2958,6 +2987,35 @@
                    </property>
                   </widget>
                  </item>
+                 <item row="90" column="0">
+                  <widget class="QLabel" name="label_w_inversion">
+                   <property name="text">
+                    <string>Weight</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="90" column="1">
+                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_inversion_weight">
+                   <property name="toolTip">
+                    <string>Section blend weight: 1=full effect, 0=off (multiplied by master weight)</string>
+                   </property>
+                   <property name="minimum">
+                    <double>0.0</double>
+                   </property>
+                   <property name="maximum">
+                    <double>1.0</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.05</double>
+                   </property>
+                   <property name="value">
+                    <double>1.0</double>
+                   </property>
+                   <property name="decimals">
+                    <number>4</number>
+                   </property>
+                  </widget>
+                 </item>
                  <item row="3" column="4">
                   <widget class="QLabel" name="label_inv_angle">
                    <property name="text">
@@ -3972,6 +4030,35 @@
                    </property>
                   </widget>
                  </item>
+                 <item row="90" column="0">
+                  <widget class="QLabel" name="label_w_clip">
+                   <property name="text">
+                    <string>Weight</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="90" column="1">
+                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_clip_weight">
+                   <property name="toolTip">
+                    <string>Section blend weight: 1=full effect, 0=off (multiplied by master weight)</string>
+                   </property>
+                   <property name="minimum">
+                    <double>0.0</double>
+                   </property>
+                   <property name="maximum">
+                    <double>1.0</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.05</double>
+                   </property>
+                   <property name="value">
+                    <double>1.0</double>
+                   </property>
+                   <property name="decimals">
+                    <number>4</number>
+                   </property>
+                  </widget>
+                 </item>
                  <item row="6" column="2">
                   <widget class="QLabel" name="label_clip_param_b">
                    <property name="text">
@@ -4367,6 +4454,35 @@
                    </property>
                    <property name="decimals">
                     <number>6</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="90" column="0">
+                  <widget class="QLabel" name="label_w_jos">
+                   <property name="text">
+                    <string>Weight</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="90" column="1">
+                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_jos_leys_weight">
+                   <property name="toolTip">
+                    <string>Section blend weight: 1=full effect, 0=off (multiplied by master weight)</string>
+                   </property>
+                   <property name="minimum">
+                    <double>0.0</double>
+                   </property>
+                   <property name="maximum">
+                    <double>1.0</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.05</double>
+                   </property>
+                   <property name="value">
+                    <double>1.0</double>
+                   </property>
+                   <property name="decimals">
+                    <number>4</number>
                    </property>
                   </widget>
                  </item>
@@ -4847,6 +4963,35 @@
                    </property>
                   </widget>
                  </item>
+                 <item row="90" column="0">
+                  <widget class="QLabel" name="label_w_pk">
+                   <property name="text">
+                    <string>Weight</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="90" column="1">
+                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_pk_weight">
+                   <property name="toolTip">
+                    <string>Section blend weight: 1=full effect, 0=off (multiplied by master weight)</string>
+                   </property>
+                   <property name="minimum">
+                    <double>0.0</double>
+                   </property>
+                   <property name="maximum">
+                    <double>1.0</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.05</double>
+                   </property>
+                   <property name="value">
+                    <double>1.0</double>
+                   </property>
+                   <property name="decimals">
+                    <number>4</number>
+                   </property>
+                  </widget>
+                 </item>
                  <item row="1" column="2">
                   <widget class="QLabel" name="label_pk_scale">
                    <property name="text">
@@ -5321,6 +5466,35 @@
                    </property>
                    <property name="decimals">
                     <number>6</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="90" column="0">
+                  <widget class="QLabel" name="label_w_mb">
+                   <property name="text">
+                    <string>Weight</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="90" column="1">
+                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_mb_math_weight">
+                   <property name="toolTip">
+                    <string>Section blend weight: 1=full effect, 0=off (multiplied by master weight)</string>
+                   </property>
+                   <property name="minimum">
+                    <double>0.0</double>
+                   </property>
+                   <property name="maximum">
+                    <double>1.0</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.05</double>
+                   </property>
+                   <property name="value">
+                    <double>1.0</double>
+                   </property>
+                   <property name="decimals">
+                    <number>4</number>
                    </property>
                   </widget>
                  </item>
@@ -5801,6 +5975,35 @@
                    </property>
                   </widget>
                  </item>
+                 <item row="90" column="0">
+                  <widget class="QLabel" name="label_w_wd">
+                   <property name="text">
+                    <string>Weight</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="90" column="1">
+                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_warp_dist_weight">
+                   <property name="toolTip">
+                    <string>Section blend weight: 1=full effect, 0=off (multiplied by master weight)</string>
+                   </property>
+                   <property name="minimum">
+                    <double>0.0</double>
+                   </property>
+                   <property name="maximum">
+                    <double>1.0</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.05</double>
+                   </property>
+                   <property name="value">
+                    <double>1.0</double>
+                   </property>
+                   <property name="decimals">
+                    <number>4</number>
+                   </property>
+                  </widget>
+                 </item>
                  <item row="1" column="2">
                   <widget class="QLabel" name="label_wd_param_a">
                    <property name="text">
@@ -6275,6 +6478,35 @@
                    </property>
                    <property name="decimals">
                     <number>6</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="90" column="0">
+                  <widget class="QLabel" name="label_w_sk">
+                   <property name="text">
+                    <string>Weight</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="90" column="1">
+                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_symmetry_weight">
+                   <property name="toolTip">
+                    <string>Section blend weight: 1=full effect, 0=off (multiplied by master weight)</string>
+                   </property>
+                   <property name="minimum">
+                    <double>0.0</double>
+                   </property>
+                   <property name="maximum">
+                    <double>1.0</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.05</double>
+                   </property>
+                   <property name="value">
+                    <double>1.0</double>
+                   </property>
+                   <property name="decimals">
+                    <number>4</number>
                    </property>
                   </widget>
                  </item>
@@ -6755,6 +6987,35 @@
                    </property>
                   </widget>
                  </item>
+                 <item row="90" column="0">
+                  <widget class="QLabel" name="label_w_ab">
+                   <property name="text">
+                    <string>Weight</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="90" column="1">
+                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_abox_weight">
+                   <property name="toolTip">
+                    <string>Section blend weight: 1=full effect, 0=off (multiplied by master weight)</string>
+                   </property>
+                   <property name="minimum">
+                    <double>0.0</double>
+                   </property>
+                   <property name="maximum">
+                    <double>1.0</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.05</double>
+                   </property>
+                   <property name="value">
+                    <double>1.0</double>
+                   </property>
+                   <property name="decimals">
+                    <number>4</number>
+                   </property>
+                  </widget>
+                 </item>
                  <item row="1" column="2">
                   <widget class="QLabel" name="label_ab_param_a">
                    <property name="text">
@@ -7232,6 +7493,35 @@
                    </property>
                   </widget>
                  </item>
+                 <item row="90" column="0">
+                  <widget class="QLabel" name="label_w_noise">
+                   <property name="text">
+                    <string>Weight</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="90" column="1">
+                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_noise_weight">
+                   <property name="toolTip">
+                    <string>Section blend weight: 1=full effect, 0=off (multiplied by master weight)</string>
+                   </property>
+                   <property name="minimum">
+                    <double>0.0</double>
+                   </property>
+                   <property name="maximum">
+                    <double>1.0</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.05</double>
+                   </property>
+                   <property name="value">
+                    <double>1.0</double>
+                   </property>
+                   <property name="decimals">
+                    <number>4</number>
+                   </property>
+                  </widget>
+                 </item>
                  <item row="1" column="2">
                   <widget class="QLabel" name="label_noise_param_a">
                    <property name="text">
@@ -7657,6 +7947,35 @@
                    </property>
                   </widget>
                  </item>
+                 <item row="90" column="0">
+                  <widget class="QLabel" name="label_w_orbit">
+                   <property name="text">
+                    <string>Weight</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="90" column="1">
+                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_orbit_trap_weight">
+                   <property name="toolTip">
+                    <string>Section blend weight: 1=full effect, 0=off (multiplied by master weight)</string>
+                   </property>
+                   <property name="minimum">
+                    <double>0.0</double>
+                   </property>
+                   <property name="maximum">
+                    <double>1.0</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.05</double>
+                   </property>
+                   <property name="value">
+                    <double>1.0</double>
+                   </property>
+                   <property name="decimals">
+                    <number>4</number>
+                   </property>
+                  </widget>
+                 </item>
                  <item row="1" column="2">
                   <widget class="QLabel" name="label_orbit_param_a">
                    <property name="text">
@@ -8027,6 +8346,35 @@
                    </property>
                    <property name="decimals">
                     <number>6</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="90" column="0">
+                  <widget class="QLabel" name="label_w_torus">
+                   <property name="text">
+                    <string>Weight</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="90" column="1">
+                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_torus_weight">
+                   <property name="toolTip">
+                    <string>Section blend weight: 1=full effect, 0=off (multiplied by master weight)</string>
+                   </property>
+                   <property name="minimum">
+                    <double>0.0</double>
+                   </property>
+                   <property name="maximum">
+                    <double>1.0</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.05</double>
+                   </property>
+                   <property name="value">
+                    <double>1.0</double>
+                   </property>
+                   <property name="decimals">
+                    <number>4</number>
                    </property>
                   </widget>
                  </item>
@@ -8403,6 +8751,35 @@
                    </property>
                   </widget>
                  </item>
+                 <item row="90" column="0">
+                  <widget class="QLabel" name="label_w_as">
+                   <property name="text">
+                    <string>Weight</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="90" column="1">
+                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_as_weight">
+                   <property name="toolTip">
+                    <string>Section blend weight: 1=full effect, 0=off (multiplied by master weight)</string>
+                   </property>
+                   <property name="minimum">
+                    <double>0.0</double>
+                   </property>
+                   <property name="maximum">
+                    <double>1.0</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.05</double>
+                   </property>
+                   <property name="value">
+                    <double>1.0</double>
+                   </property>
+                   <property name="decimals">
+                    <number>4</number>
+                   </property>
+                  </widget>
+                 </item>
                  <item row="1" column="2">
                   <widget class="QLabel" name="label_as_param_a">
                    <property name="text">
@@ -8773,6 +9150,35 @@
                    </property>
                    <property name="decimals">
                     <number>6</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="90" column="0">
+                  <widget class="QLabel" name="label_w_sm">
+                   <property name="text">
+                    <string>Weight</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="90" column="1">
+                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_sm_weight">
+                   <property name="toolTip">
+                    <string>Section blend weight: 1=full effect, 0=off (multiplied by master weight)</string>
+                   </property>
+                   <property name="minimum">
+                    <double>0.0</double>
+                   </property>
+                   <property name="maximum">
+                    <double>1.0</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.05</double>
+                   </property>
+                   <property name="value">
+                    <double>1.0</double>
+                   </property>
+                   <property name="decimals">
+                    <number>4</number>
                    </property>
                   </widget>
                  </item>
@@ -9249,6 +9655,35 @@
                    </property>
                   </widget>
                  </item>
+                 <item row="90" column="0">
+                  <widget class="QLabel" name="label_w_blockify">
+                   <property name="text">
+                    <string>Weight</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="90" column="1">
+                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_blockify_weight">
+                   <property name="toolTip">
+                    <string>Section blend weight: 1=full effect, 0=off (multiplied by master weight)</string>
+                   </property>
+                   <property name="minimum">
+                    <double>0.0</double>
+                   </property>
+                   <property name="maximum">
+                    <double>1.0</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.05</double>
+                   </property>
+                   <property name="value">
+                    <double>1.0</double>
+                   </property>
+                   <property name="decimals">
+                    <number>4</number>
+                   </property>
+                  </widget>
+                 </item>
                  <item row="1" column="2">
                   <widget class="QLabel" name="label_blockify_param_a">
                    <property name="text">
@@ -9719,6 +10154,35 @@
                    </property>
                    <property name="decimals">
                     <number>6</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="90" column="0">
+                  <widget class="QLabel" name="label_w_tile">
+                   <property name="text">
+                    <string>Weight</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="90" column="1">
+                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_tile_weight">
+                   <property name="toolTip">
+                    <string>Section blend weight: 1=full effect, 0=off (multiplied by master weight)</string>
+                   </property>
+                   <property name="minimum">
+                    <double>0.0</double>
+                   </property>
+                   <property name="maximum">
+                    <double>1.0</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.05</double>
+                   </property>
+                   <property name="value">
+                    <double>1.0</double>
+                   </property>
+                   <property name="decimals">
+                    <number>4</number>
                    </property>
                   </widget>
                  </item>

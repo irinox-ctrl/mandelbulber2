@@ -338,6 +338,7 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 				// v7.6 — Inversion (per-section iteration range)
 				if (i >= mut.invIterStart && i < mut.invIterStop && mut.inversionType != 0)
 				{
+					CVector4 __wZ=z; double __wDE=aux.DE, __wDist=aux.dist;
 					CVector3 zz = z.GetXYZ();
 					if (mut.invPreRotX != 0.0 || mut.invPreRotY != 0.0 || mut.invPreRotZ != 0.0)
 						zz = mut.invPreRotMatrix.RotateVector(zz);
@@ -408,6 +409,7 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 					}
 					z = CVector4(zz, z.w);
 					aux.DE *= fabs(mde);
+									{ double __w=mut.inversionWeight*mut.masterWeight; if(__w<0.0)__w=0.0; if(__w>1.0)__w=1.0; z=__wZ+(z-__wZ)*__w; aux.DE=__wDE+(aux.DE-__wDE)*__w; aux.dist=__wDist+(aux.dist-__wDist)*__w; }
 				}
 
 				// Fold injection (pre-formula or both, per-section iteration range)
@@ -2111,6 +2113,7 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 				// v7.6 — Clip system (per-section iteration range)
 				if (mut.enabled && i >= mut.clipIterStart && i < mut.clipIterStop && mut.clipType != 0)
 				{
+					CVector4 __wZ=z; double __wDE=aux.DE, __wDist=aux.dist;
 					CVector3 cz = z.GetXYZ();
 					if (mut.clipPreRotX != 0.0 || mut.clipPreRotY != 0.0 || mut.clipPreRotZ != 0.0)
 						cz = mut.clipPreRotMatrix.RotateVector(cz);
@@ -2176,10 +2179,12 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 					// Apply the transformed z vector back to the original z
 					cz.x += mut.clipCenterX; cz.y += mut.clipCenterY; cz.z += mut.clipCenterZ;
 					z = CVector4(cz, z.w);
+									{ double __w=mut.clipWeight*mut.masterWeight; if(__w<0.0)__w=0.0; if(__w>1.0)__w=1.0; z=__wZ+(z-__wZ)*__w; aux.DE=__wDE+(aux.DE-__wDE)*__w; aux.dist=__wDist+(aux.dist-__wDist)*__w; }
 				}
 				// v7.7 — Jos Leys DE system (per-section iteration range)
 				if (i >= mut.josIterStart && i < mut.josIterStop && mut.josLeysDeType != 0)
 				{
+					CVector4 __wZ=z; double __wDE=aux.DE, __wDist=aux.dist;
 					double jf = mut.josFactor;
 					double ja = mut.josParamA, jb = mut.josParamB, jc = mut.josParamC, jd = mut.josParamD;
 					double jfreq = mut.josFreq, jamp = mut.josAmp, jsc = mut.josScale, jph = mut.josPhase;
@@ -2289,11 +2294,13 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 						case 99: { double ah=ja*jb/(fmax(1e-10,rr))*cos(jfreq*atan2(zy,zx)+jph); aux.DE*=(1.0+jf*ah); break; }
 						case 100: { double gh=ja*jb*jc/fmax(1e-10,r)*sin(jfreq*zz2+jph); aux.DE*=(1.0+jf*gh); break; }
 					}
+									{ double __w=mut.josWeight*mut.masterWeight; if(__w<0.0)__w=0.0; if(__w>1.0)__w=1.0; z=__wZ+(z-__wZ)*__w; aux.DE=__wDE+(aux.DE-__wDE)*__w; aux.dist=__wDist+(aux.dist-__wDist)*__w; }
 				}
 
 				// v7.7 — Pseudokleinian DE system (per-section iteration range)
 				if (i >= mut.pkIterStart && i < mut.pkIterStop && mut.pseudoKleinianDeType != 0)
 				{
+					CVector4 __wZ=z; double __wDE=aux.DE, __wDist=aux.dist;
 					double pf = mut.pkFactor;
 					double pa = mut.pkParamA, pb = mut.pkParamB, pc = mut.pkParamC, pd = mut.pkParamD;
 					double pfreq = mut.pkFreq, pamp = mut.pkAmp, psc = mut.pkScale, pph = mut.pkPhase;
@@ -2403,11 +2410,13 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 						case 99: { double cla=pa*pb*(zx*zy+zy*zz2+zz2*zx)/(fmax(1e-10,rr*r)); aux.DE*=(1.0+pf*cla); break; }
 						case 100: { double clv=pa*sin(pfreq*(zx*zy+zy*zz2)/fmax(1e-10,rr)+pph)*pb; aux.DE*=(1.0+pf*clv); break; }
 					}
+									{ double __w=mut.pkWeight*mut.masterWeight; if(__w<0.0)__w=0.0; if(__w>1.0)__w=1.0; z=__wZ+(z-__wZ)*__w; aux.DE=__wDE+(aux.DE-__wDE)*__w; aux.dist=__wDist+(aux.dist-__wDist)*__w; }
 				}
 
 				// v7.8 — Mandelbox Math system (per-section iteration range)
 				if (i >= mut.mbIterStart && i < mut.mbIterStop && mut.mbMathType != 0)
 				{
+					CVector4 __wZ=z; double __wDE=aux.DE, __wDist=aux.dist;
 					double mf = mut.mbFactor;
 					double ma = mut.mbParamA, mb = mut.mbParamB, mc = mut.mbParamC, md = mut.mbParamD;
 					double me = mut.mbParamE, mff = mut.mbParamF, mg = mut.mbParamG, mh = mut.mbParamH;
@@ -2617,11 +2626,13 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 						case 199: { double lt=ma+mb*sin(mc*i)*cos(md*r); if(fabs(zx)>lt) z.x=copysign(lt*2.0,zx)-zx; if(fabs(zy)>lt) z.y=copysign(lt*2.0,zy)-zy; if(fabs(zz2)>lt) z.z=copysign(lt*2.0,zz2)-zz2; double rr2=z.x*z.x+z.y*z.y+z.z*z.z; if(rr2<me*me) z*=mff*mff/(rr2+1e-21); z*=mg; aux.DE*=fabs(mg); break; }
 						case 200: { if(fabs(zx)>ma) z.x=copysign(ma*2.0,zx)-zx; if(fabs(zy)>ma) z.y=copysign(ma*2.0,zy)-zy; if(fabs(zz2)>ma) z.z=copysign(ma*2.0,zz2)-zz2; double rr2=z.x*z.x+z.y*z.y+z.z*z.z; double fR2=mb*mb; double mR2=mc*mc; if(rr2<mR2) z*=fR2/mR2; else if(rr2<fR2) z*=fR2/rr2; z*=md; z.x+=me; z.y+=mff; z.z+=mg; double th=mh*M_PI/180.0; double cs=cos(th),sn=sin(th); double nx=z.x*cs-z.y*sn; z.y=z.x*sn+z.y*cs; z.x=nx; aux.DE*=fabs(md); break; }
 					}
+									{ double __w=mut.mbWeight*mut.masterWeight; if(__w<0.0)__w=0.0; if(__w>1.0)__w=1.0; z=__wZ+(z-__wZ)*__w; aux.DE=__wDE+(aux.DE-__wDE)*__w; aux.dist=__wDist+(aux.dist-__wDist)*__w; }
 				}
 
 				// v7.9 — Warp Distortion system (per-section iteration range)
 				if (i >= mut.wdIterStart && i < mut.wdIterStop && mut.warpDistType != 0)
 				{
+					CVector4 __wZ=z; double __wDE=aux.DE, __wDist=aux.dist;
 					double wf = mut.wdFactor;
 					double wa = mut.wdParamA, wb = mut.wdParamB, wc = mut.wdParamC, wd = mut.wdParamD;
 					double wfq = mut.wdFreq, wam = mut.wdAmp;
@@ -2731,11 +2742,13 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 						case 99: { { double t=wfq*r+wph; double d=wf*wam*sin(t)*sin(wa*t); z.x+=d*zx/r; z.y+=d*zy/r; z.z+=d*zz2/r; aux.DE*=(1.0+fabs(d)); } break; }
 						case 100: { { double d=wf*wam*(sin(wfq*zx+wph)+sin(wa*zy+wb)+sin(wc*zz2+wd)); z*=(1.0+d/(3.0*r)); aux.DE*=(1.0+fabs(d/(3.0*r))); } break; }
 					}
+									{ double __w=mut.wdWeight*mut.masterWeight; if(__w<0.0)__w=0.0; if(__w>1.0)__w=1.0; z=__wZ+(z-__wZ)*__w; aux.DE=__wDE+(aux.DE-__wDE)*__w; aux.dist=__wDist+(aux.dist-__wDist)*__w; }
 				}
 
 				// v7.9 — Symmetry/Kaleidoscope system (per-section iteration range)
 				if (i >= mut.skIterStart && i < mut.skIterStop && mut.symKalType != 0)
 				{
+					CVector4 __wZ=z; double __wDE=aux.DE, __wDist=aux.dist;
 					double sf = mut.skFactor;
 					double sa = mut.skParamA, sb = mut.skParamB, sc = mut.skParamC, sd = mut.skParamD;
 					double sfq = mut.skFreq, sam = mut.skAmp;
@@ -2845,11 +2858,13 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 						case 99: { { z.x=fabs(z.x); z.y=fabs(z.y); z.z=fabs(z.z); if(z.x-z.y<0){double t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0){double t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0){double t=z.y;z.y=z.z;z.z=t;} z.z-=0.5*sa; z.z=-fabs(z.z)+0.5*sa; double cs=cos(sang),sn=sin(sang); double nx=z.x*cs-z.y*sn; z.y=z.x*sn+z.y*cs; z.x=nx; } break; }
 						case 100: { { z.x=fabs(z.x)-sa; z.y=fabs(z.y)-sb; z.z=fabs(z.z)-sc; if(z.x<z.y){double t=z.x;z.x=z.y;z.y=t;} if(z.x<z.z){double t=z.x;z.x=z.z;z.z=t;} if(z.y<z.z){double t=z.y;z.y=z.z;z.z=t;} double rr=z.x*z.x+z.y*z.y+z.z*z.z; if(rr<sd*sd){double m=sf*sf/fmax(rr,1e-21);z*=m;aux.DE*=m;} z*=sf; aux.DE=aux.DE*fabs(sf)+1.0; { double _cF=(1.0-sf); z.x += sa*_cF; z.y += sb*_cF; z.z += sc*_cF; }; } break; }
 					}
+									{ double __w=mut.skWeight*mut.masterWeight; if(__w<0.0)__w=0.0; if(__w>1.0)__w=1.0; z=__wZ+(z-__wZ)*__w; aux.DE=__wDE+(aux.DE-__wDE)*__w; aux.dist=__wDist+(aux.dist-__wDist)*__w; }
 				}
 
 				// v7.9 — Abox DE system (per-section iteration range)
 				if (i >= mut.abIterStart && i < mut.abIterStop && mut.aboxType != 0)
 				{
+					CVector4 __wZ=z; double __wDE=aux.DE, __wDist=aux.dist;
 					double af = mut.abFactor;
 					double aa = mut.abParamA, ab = mut.abParamB, ac = mut.abParamC, ad = mut.abParamD;
 					double ae = mut.abParamE, aff = mut.abParamF, ag = mut.abParamG, ah = mut.abParamH;
@@ -3259,12 +3274,14 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 						case 399: { double psi = sin(aa*z.x + ab*(double)i*0.1); double coin = cos(ac*z.y); double walker = psi*psi*coin*coin; aux.DE *= (1.0 + af * walker); break; }
 						case 400: { double rule = sin(aa*z.x)*sin(ab*z.y)*cos(ac*z.z); double evolution = cos(ad*(double)i*0.1); double qca = rule*evolution; aux.DE *= (1.0 + af * qca*qca); break; }
 					}
+									{ double __w=mut.abWeight*mut.masterWeight; if(__w<0.0)__w=0.0; if(__w>1.0)__w=1.0; z=__wZ+(z-__wZ)*__w; aux.DE=__wDE+(aux.DE-__wDE)*__w; aux.dist=__wDist+(aux.dist-__wDist)*__w; }
 				}
 
 
 				// v7.10 — Noise & Procedural DE system (per-section iteration range)
 				if (i >= mut.noiseIterStart && i < mut.noiseIterStop && mut.noiseType != 0)
 				{
+					CVector4 __wZ=z; double __wDE=aux.DE, __wDist=aux.dist;
 					double na = mut.noiseParamA, nb = mut.noiseParamB, nc = mut.noiseParamC, nd = mut.noiseParamD;
 					double nf = mut.noiseFactor, nfq = mut.noiseFreq, nam = mut.noiseAmp;
 					double r = sqrt(z.x*z.x + z.y*z.y + z.z*z.z);
@@ -3370,11 +3387,13 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 						case 99: { double v=0,f=nfq,a=nam; double offset=0; for(int k=0;k<5;k++){ double h=sin(z.x*f*127.1+z.y*f*311.7+z.z*f*74.7+offset)*43758.5453; h=h-floor(h); double r=fabs(h*2.0-1.0); r=offset+r*r*na; v+=a*r; offset=r; f*=2.0; a*=0.5; } aux.DE *= (1.0 + nf*v); break; }
 						case 100: { double v1=0,v2=0,f=nfq,a=nam; for(int k=0;k<5;k++){ double h=sin(z.x*f*127.1+z.y*f*311.7+z.z*f*74.7)*43758.5453; h=h-floor(h); v1+=a*h; double ridge=1.0-fabs(h*2.0-1.0); v2+=a*ridge*ridge; f*=2.0; a*=0.5; } double t=sin(z.x*na+z.y*nb+z.z*nc)*0.5+0.5; aux.DE *= (1.0 + nf*(v1*(1.0-t)+v2*t)); break; }
 					}
+									{ double __w=mut.noiseWeight*mut.masterWeight; if(__w<0.0)__w=0.0; if(__w>1.0)__w=1.0; z=__wZ+(z-__wZ)*__w; aux.DE=__wDE+(aux.DE-__wDE)*__w; aux.dist=__wDist+(aux.dist-__wDist)*__w; }
 				}
 
 				// v7.10 — Orbit Trap DE system (per-section iteration range)
 				if (i >= mut.orbitIterStart && i < mut.orbitIterStop && mut.orbitTrapType != 0)
 				{
+					CVector4 __wZ=z; double __wDE=aux.DE, __wDist=aux.dist;
 					double oa = mut.orbitParamA, ob = mut.orbitParamB, oc = mut.orbitParamC, od = mut.orbitParamD;
 					double of = mut.orbitFactor;
 					switch(mut.orbitTrapType) {
@@ -3479,11 +3498,13 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 						case 99: { double r=sqrt(z.x*z.x+z.y*z.y+z.z*z.z); double d=fabs(r-oa); double v=exp(-ob*d)*cos(oc*d); z.x += of*v*z.x/fmax(r,1e-21)*0.01; z.y += of*v*z.y/fmax(r,1e-21)*0.01; z.z += of*v*z.z/fmax(r,1e-21)*0.01; aux.DE *= (1.0 + of*fabs(v)*0.1); break; }
 						case 100: { double d1=sqrt(z.x*z.x+z.y*z.y+z.z*z.z)-oa; double d2=sqrt((z.x-ob)*(z.x-ob)+z.y*z.y+z.z*z.z)-oc; double d=fmin(fabs(d1),fabs(d2)); double blend=sin(z.x*od+z.y*od)*0.5+0.5; aux.DE *= (1.0 + of*(d1*(1.0-blend)+d2*blend)*exp(-d)); break; }
 					}
+									{ double __w=mut.orbitWeight*mut.masterWeight; if(__w<0.0)__w=0.0; if(__w>1.0)__w=1.0; z=__wZ+(z-__wZ)*__w; aux.DE=__wDE+(aux.DE-__wDE)*__w; aux.dist=__wDist+(aux.dist-__wDist)*__w; }
 				}
 
 				// v7.12 — MandelTorus DE system (per-section iteration range)
 				if (i >= mut.torusIterStart && i < mut.torusIterStop && mut.torusType != 0)
 				{
+					CVector4 __wZ=z; double __wDE=aux.DE, __wDist=aux.dist;
 					double tf = mut.torusFactor;
 					double ta = mut.torusParamA, tb = mut.torusParamB, tc = mut.torusParamC, td = mut.torusParamD;
 					switch(mut.torusType) {
@@ -3588,12 +3609,14 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 						case 99: { double r2d = sqrt(z.x*z.x+z.y*z.y); double phi = atan2(z.y,z.x); double lawson_r = ta*cos(tb*phi)*cos(tc*z.z); double d = fabs(r2d-fabs(lawson_r)-td); aux.DE *= (1.0 + tf*exp(-d*5.0)); break; }
 						case 100: { double r2d = sqrt(z.x*z.x+z.y*z.y); double phi = atan2(z.y,z.x); double theta = atan2(z.z,r2d-ta); double p=fmax(ta,0.1); double q=fmax(tb,0.1); double torus_knot_r = tc*(2.0+cos(q/p*phi)); double torus_knot_z = tc*sin(q/p*phi); double d = sqrt((r2d-torus_knot_r)*(r2d-torus_knot_r)+(z.z-torus_knot_z)*(z.z-torus_knot_z))-td; aux.DE *= (1.0 + tf*exp(-fabs(d)*5.0)); break; }
 					}
+									{ double __w=mut.torusWeight*mut.masterWeight; if(__w<0.0)__w=0.0; if(__w>1.0)__w=1.0; z=__wZ+(z-__wZ)*__w; aux.DE=__wDE+(aux.DE-__wDE)*__w; aux.dist=__wDist+(aux.dist-__wDist)*__w; }
 				}
 
 
 				// v7.13 — Amazing Surf 1-4 DE system (per-section iteration range)
 				if (i >= mut.asIterStart && i < mut.asIterStop && mut.asType != 0)
 				{
+					CVector4 __wZ=z; double __wDE=aux.DE, __wDist=aux.dist;
 					double sf = mut.asFactor;
 					double ta = mut.asParamA, tb = mut.asParamB;
 					double tc = mut.asParamC, td = mut.asParamD;
@@ -3699,11 +3722,13 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 						case 99: { double grad_phase = fabs(cos(z.x*ta)-cos(z.y*ta)) + fabs(cos(z.y*tb)-cos(z.z*tb)); aux.DE *= (1.0 + sf*tc*grad_phase); break; }
 						case 100: { double r = sqrt(z.x*z.x+z.y*z.y+z.z*z.z); double higgs = ta*tb*r*r; aux.DE *= (1.0 + sf*higgs); break; }
 					}
+									{ double __w=mut.asWeight*mut.masterWeight; if(__w<0.0)__w=0.0; if(__w>1.0)__w=1.0; z=__wZ+(z-__wZ)*__w; aux.DE=__wDE+(aux.DE-__wDE)*__w; aux.dist=__wDist+(aux.dist-__wDist)*__w; }
 				}
 
 				// v7.13 — SphereTree/Menger DE system (per-section iteration range)
 				if (i >= mut.smIterStart && i < mut.smIterStop && mut.smType != 0)
 				{
+					CVector4 __wZ=z; double __wDE=aux.DE, __wDist=aux.dist;
 					double sf = mut.smFactor;
 					double ta = mut.smParamA, tb = mut.smParamB;
 					double tc = mut.smParamC, td = mut.smParamD;
@@ -3809,11 +3834,13 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 						case 99: { double sc=3.0; double offset=fabs(ta); z=fabs(z); if(z.x-z.y<0.0){double t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0){double t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0){double t=z.y;z.y=z.z;z.z=t;} z=z*sc-CVector4(1,1,1,0)*(sc-1.0); aux.DE=aux.DE*sc+offset; break; }
 						case 100: { double h1=sin(ta*z.x+tb*z.y+tc*z.z); double h2=sin(td*h1+ta*(double)i*0.1); double sc=3.0+sf*h2*0.05; z=fabs(z); if(z.x-z.y<0.0){double t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0){double t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0){double t=z.y;z.y=z.z;z.z=t;} z=z*sc-CVector4(1,1,1,0)*(sc-1.0); aux.DE=aux.DE*fabs(sc)+1.0; break; }
 					}
+									{ double __w=mut.smWeight*mut.masterWeight; if(__w<0.0)__w=0.0; if(__w>1.0)__w=1.0; z=__wZ+(z-__wZ)*__w; aux.DE=__wDE+(aux.DE-__wDE)*__w; aux.dist=__wDist+(aux.dist-__wDist)*__w; }
 				}
 
 				// v7.14 — Blockify (grid/quantize) system (per-section iteration range)
 				if (i >= mut.blkIterStart && i < mut.blkIterStop && mut.blkType != 0)
 				{
+					CVector4 __wZ=z; double __wDE=aux.DE, __wDist=aux.dist;
 					double sf = mut.blkFactor;
 					double ta = mut.blkParamA, tb = mut.blkParamB, tc = mut.blkParamC, td = mut.blkParamD;
 					double gx = fmax(fabs(ta), 1e-4), gy = fmax(fabs(tb), 1e-4), gz = fmax(fabs(tc), 1e-4);
@@ -3873,11 +3900,13 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 						case 50: { for(int k=0;k<3;k++){ double g=gx/pow(2.0,(double)k); z.x=round(z.x/g)*g; z.y=round(z.y/g)*g; z.z=round(z.z/g)*g; } break; }
 					default: break;
 					}
+									{ double __w=mut.blkWeight*mut.masterWeight; if(__w<0.0)__w=0.0; if(__w>1.0)__w=1.0; z=__wZ+(z-__wZ)*__w; aux.DE=__wDE+(aux.DE-__wDE)*__w; aux.dist=__wDist+(aux.dist-__wDist)*__w; }
 				}
 
 				// v7.15 — Tile (space repetition) system (per-section iteration range)
 				if (i >= mut.tilIterStart && i < mut.tilIterStop && mut.tilType != 0)
 				{
+					CVector4 __wZ=z; double __wDE=aux.DE, __wDist=aux.dist;
 					double sf = mut.tilFactor;
 					double ta = mut.tilParamA, tb = mut.tilParamB, tc = mut.tilParamC, td = mut.tilParamD;
 					double gx = fmax(fabs(ta), 1e-4), gy = fmax(fabs(tb), 1e-4), gz = fmax(fabs(tc), 1e-4);
@@ -3937,6 +3966,7 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 						case 50: { double ix=floor(zx/gx+0.5),iy=floor(zy/gy+0.5),iz=floor(zz/gz+0.5); double sc=1.0+sf*0.05*(fabs(ix)+fabs(iy)+fabs(iz)); z.x=(zx-ix*gx)*sc; z.y=(zy-iy*gy)*sc; z.z=(zz-iz*gz)*sc; aux.DE*=fmax(sc,0.01); break; }
 					default: break;
 					}
+									{ double __w=mut.tilWeight*mut.masterWeight; if(__w<0.0)__w=0.0; if(__w>1.0)__w=1.0; z=__wZ+(z-__wZ)*__w; aux.DE=__wDE+(aux.DE-__wDE)*__w; aux.dist=__wDist+(aux.dist-__wDist)*__w; }
 				}
 
 				// DE tweak + DE scale (per-section iteration range)

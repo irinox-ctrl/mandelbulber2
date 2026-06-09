@@ -548,6 +548,11 @@ struct sFormulaMutationParams
 	double tilParamA, tilParamB, tilParamC, tilParamD;
 	int tilIterStart, tilIterStop;
 
+	// v7.14 — Per-section mutation weights (0=off .. 1=full) + global master
+	double masterWeight;
+	double inversionWeight, clipWeight, josWeight, pkWeight, mbWeight, wdWeight,
+		skWeight, abWeight, noiseWeight, orbitWeight, torusWeight, asWeight,
+		smWeight, blkWeight, tilWeight;
 	// Pre-computed rotation matrices (filled in constructor)
 	CRotationMatrix preRotMatrix;
 	CRotationMatrix postRotMatrix;

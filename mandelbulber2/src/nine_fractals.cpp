@@ -502,6 +502,24 @@ cNineFractals::cNineFractals(std::shared_ptr<const cFractalContainer> par,
 		mutationParams[i].tilIterStart = generalPar->Get<int>("mutation_tile_iter_start", i + 1);
 		mutationParams[i].tilIterStop = generalPar->Get<int>("mutation_tile_iter_stop", i + 1);
 
+		// v7.14 — Per-section mutation weights + master
+		mutationParams[i].masterWeight = generalPar->Get<double>("mutation_master_weight", i + 1);
+		mutationParams[i].inversionWeight = generalPar->Get<double>("mutation_inversion_weight", i + 1);
+		mutationParams[i].clipWeight = generalPar->Get<double>("mutation_clip_weight", i + 1);
+		mutationParams[i].josWeight = generalPar->Get<double>("mutation_jos_leys_weight", i + 1);
+		mutationParams[i].pkWeight = generalPar->Get<double>("mutation_pk_weight", i + 1);
+		mutationParams[i].mbWeight = generalPar->Get<double>("mutation_mb_math_weight", i + 1);
+		mutationParams[i].wdWeight = generalPar->Get<double>("mutation_warp_dist_weight", i + 1);
+		mutationParams[i].skWeight = generalPar->Get<double>("mutation_symmetry_weight", i + 1);
+		mutationParams[i].abWeight = generalPar->Get<double>("mutation_abox_weight", i + 1);
+		mutationParams[i].noiseWeight = generalPar->Get<double>("mutation_noise_weight", i + 1);
+		mutationParams[i].orbitWeight = generalPar->Get<double>("mutation_orbit_trap_weight", i + 1);
+		mutationParams[i].torusWeight = generalPar->Get<double>("mutation_torus_weight", i + 1);
+		mutationParams[i].asWeight = generalPar->Get<double>("mutation_as_weight", i + 1);
+		mutationParams[i].smWeight = generalPar->Get<double>("mutation_sm_weight", i + 1);
+		mutationParams[i].blkWeight = generalPar->Get<double>("mutation_blockify_weight", i + 1);
+		mutationParams[i].tilWeight = generalPar->Get<double>("mutation_tile_weight", i + 1);
+
 		// Smart defaults: PK/JK formulas get Möbius (Bilinear) math preset
 		fractal::enumFractalFormula f = fractals[i]->formula;
 		bool isPKJK = (f == fractal::pseudoKleinian || f == fractal::pseudoKleinian4d
@@ -1632,6 +1650,23 @@ void cNineFractals::CopyToOpenclData(sClFractalSequence *sequence) const
 		sequence->mutationParams[i].tilParamD = mutationParams[i].tilParamD;
 		sequence->mutationParams[i].tilIterStart = mutationParams[i].tilIterStart;
 		sequence->mutationParams[i].tilIterStop = mutationParams[i].tilIterStop;
+		// v7.14 — Per-section mutation weights + master
+		sequence->mutationParams[i].masterWeight = mutationParams[i].masterWeight;
+		sequence->mutationParams[i].inversionWeight = mutationParams[i].inversionWeight;
+		sequence->mutationParams[i].clipWeight = mutationParams[i].clipWeight;
+		sequence->mutationParams[i].josWeight = mutationParams[i].josWeight;
+		sequence->mutationParams[i].pkWeight = mutationParams[i].pkWeight;
+		sequence->mutationParams[i].mbWeight = mutationParams[i].mbWeight;
+		sequence->mutationParams[i].wdWeight = mutationParams[i].wdWeight;
+		sequence->mutationParams[i].skWeight = mutationParams[i].skWeight;
+		sequence->mutationParams[i].abWeight = mutationParams[i].abWeight;
+		sequence->mutationParams[i].noiseWeight = mutationParams[i].noiseWeight;
+		sequence->mutationParams[i].orbitWeight = mutationParams[i].orbitWeight;
+		sequence->mutationParams[i].torusWeight = mutationParams[i].torusWeight;
+		sequence->mutationParams[i].asWeight = mutationParams[i].asWeight;
+		sequence->mutationParams[i].smWeight = mutationParams[i].smWeight;
+		sequence->mutationParams[i].blkWeight = mutationParams[i].blkWeight;
+		sequence->mutationParams[i].tilWeight = mutationParams[i].tilWeight;
 
 		// Copy rotation matrices using matrix33 type
 		if (mutationParams[i].enabled)

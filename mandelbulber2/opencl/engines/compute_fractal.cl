@@ -523,6 +523,7 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 			// v7.6 — Inversion (per-section iteration range)
 			if (mut->enabled && i >= mut->invIterStart && i < mut->invIterStop && mut->inversionType != 0)
 			{
+				float4 __wZ=z; float __wDE=aux.DE, __wDist=aux.dist;
 				float3 zz = z.xyz;
 				if (mut->invPreRotX != 0.0f || mut->invPreRotY != 0.0f || mut->invPreRotZ != 0.0f)
 					zz = Matrix33MulFloat3(mut->invPreRotMatrix, zz);
@@ -869,6 +870,7 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 				}
 				z.xyz = zz;
 				aux.DE *= fabs(mde);
+							{ float __w=mut->masterWeight*mut->inversionWeight; __w=clamp(__w,0.0f,1.0f); z=__wZ+(z-__wZ)*__w; aux.DE=__wDE+(aux.DE-__wDE)*__w; aux.dist=__wDist+(aux.dist-__wDist)*__w; }
 			}
 
 			// Fold injection (pre or both)
@@ -2237,6 +2239,7 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 			// v7.6 — Clip system (per-section iteration range)
 			if (mut->enabled && i >= mut->clipIterStart && i < mut->clipIterStop && mut->clipType != 0)
 			{
+				float4 __wZ=z; float __wDE=aux.DE, __wDist=aux.dist;
 				float3 cz = z.xyz;
 				if (mut->clipPreRotX != 0.0f || mut->clipPreRotY != 0.0f || mut->clipPreRotZ != 0.0f)
 					cz = Matrix33MulFloat3(mut->clipPreRotMatrix, cz);
@@ -2519,11 +2522,13 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 				}
 				cz.x += mut->clipCenterX; cz.y += mut->clipCenterY; cz.z += mut->clipCenterZ;
 				z.xyz = cz;
+							{ float __w=mut->masterWeight*mut->clipWeight; __w=clamp(__w,0.0f,1.0f); z=__wZ+(z-__wZ)*__w; aux.DE=__wDE+(aux.DE-__wDE)*__w; aux.dist=__wDist+(aux.dist-__wDist)*__w; }
 			}
 
 			// v7.7 — Jos Leys DE system (per-section iteration range)
 			if (i >= mut->josIterStart && i < mut->josIterStop && mut->josLeysDeType != 0)
 			{
+				float4 __wZ=z; float __wDE=aux.DE, __wDist=aux.dist;
 				float jf = mut->josFactor;
 				float ja = mut->josParamA, jb = mut->josParamB, jc = mut->josParamC, jd = mut->josParamD;
 				float jfreq = mut->josFreq, jamp = mut->josAmp, jsc = mut->josScale, jph = mut->josPhase;
@@ -2564,11 +2569,13 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 					case 30: { float hmw=ja*(zx*zy-zy*zz2)/fmax(1e-10f,rr*r); aux.DE*=(1.0f+jf*hmw); break; }
 					default: break;
 				}
+							{ float __w=mut->masterWeight*mut->josWeight; __w=clamp(__w,0.0f,1.0f); z=__wZ+(z-__wZ)*__w; aux.DE=__wDE+(aux.DE-__wDE)*__w; aux.dist=__wDist+(aux.dist-__wDist)*__w; }
 			}
 
 			// v7.7 — Pseudokleinian DE system (per-section iteration range)
 			if (i >= mut->pkIterStart && i < mut->pkIterStop && mut->pseudoKleinianDeType != 0)
 			{
+				float4 __wZ=z; float __wDE=aux.DE, __wDist=aux.dist;
 				float pf = mut->pkFactor;
 				float pa = mut->pkParamA, pb = mut->pkParamB, pc = mut->pkParamC, pd = mut->pkParamD;
 				float pfreq = mut->pkFreq, pamp = mut->pkAmp, psc = mut->pkScale, pph = mut->pkPhase;
@@ -2609,11 +2616,13 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 					case 30: { float sg=pa*native_sin(native_sin(pfreq*zx+pph))*pb; aux.DE*=(1.0f+pf*sg/fmax(1e-10f,r)); break; }
 					default: break;
 				}
+							{ float __w=mut->masterWeight*mut->pkWeight; __w=clamp(__w,0.0f,1.0f); z=__wZ+(z-__wZ)*__w; aux.DE=__wDE+(aux.DE-__wDE)*__w; aux.dist=__wDist+(aux.dist-__wDist)*__w; }
 			}
 
 			// v7.8 [GPU] — Mandelbox Math system (per-section iteration range)
 			if (i >= mut->mbIterStart && i < mut->mbIterStop && mut->mbMathType != 0)
 			{
+				float4 __wZ=z; float __wDE=aux.DE, __wDist=aux.dist;
 				float mf = mut->mbFactor;
 				float ma = mut->mbParamA, mb = mut->mbParamB, mc = mut->mbParamC, md = mut->mbParamD;
 				float me = mut->mbParamE, mff = mut->mbParamF, mg = mut->mbParamG, mh = mut->mbParamH;
@@ -2654,11 +2663,13 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 					case 30: { float rrp=zx*zx+zy*zy-ma*zz2; float ar=fabs(rrp); if(ar<1e-21) ar=1e-21; float m2=mb*mb/ar; z*=m2; aux.DE*=m2*native_sqrt(1.0+4.0*ma*ma); break; }
 					default: break;
 			}
+							{ float __w=mut->masterWeight*mut->mbWeight; __w=clamp(__w,0.0f,1.0f); z=__wZ+(z-__wZ)*__w; aux.DE=__wDE+(aux.DE-__wDE)*__w; aux.dist=__wDist+(aux.dist-__wDist)*__w; }
 			}
 
 				// v7.9 — Warp Distortion system (per-section iteration range)
 				if (i >= mut->wdIterStart && i < mut->wdIterStop && mut->warpDistType != 0)
 				{
+				float4 __wZ=z; float __wDE=aux.DE, __wDist=aux.dist;
 					float wf = mut->wdFactor;
 					float wa = mut->wdParamA, wb = mut->wdParamB, wc = mut->wdParamC, wd = mut->wdParamD;
 					float wfq = mut->wdFreq, wam = mut->wdAmp;
@@ -2699,11 +2710,13 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 						case 30: { { float ph2=atan2(zy,zx); float th=acos(zz2/r); float v=0; for(int o=0;o<4;o++){float f=wfq*pow(2.0,o); v+=native_sin(f*th+wph)*native_cos(f*ph2)/pow(2.0,o);} float d=wf*wam*v; z.x+=d*native_sin(th)*native_cos(ph2); z.y+=d*native_sin(th)*native_sin(ph2); z.z+=d*native_cos(th); aux.DE*=(1.0+fabs(wf*wam*wfq*4.0)); } break; }
 					default: break;
 					}
-				}
+								{ float __w=mut->masterWeight*mut->wdWeight; __w=clamp(__w,0.0f,1.0f); z=__wZ+(z-__wZ)*__w; aux.DE=__wDE+(aux.DE-__wDE)*__w; aux.dist=__wDist+(aux.dist-__wDist)*__w; }
+			}
 
 				// v7.9 — Symmetry/Kaleidoscope system (per-section iteration range)
 				if (i >= mut->skIterStart && i < mut->skIterStop && mut->symKalType != 0)
 				{
+				float4 __wZ=z; float __wDE=aux.DE, __wDist=aux.dist;
 					float sf = mut->skFactor;
 					float sa = mut->skParamA, sb = mut->skParamB, sc = mut->skParamC, sd = mut->skParamD;
 					float sfq = mut->skFreq, sam = mut->skAmp;
@@ -2744,11 +2757,13 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 						case 30: { { float n = fmax(2.0, sa); for(int k=0; k<(int)(n); k++) { float a = k * 2.0*M_PI_F/n; float cs = native_cos(a), sn = native_sin(a); float d = z.x*cs + z.y*sn; if(d < 0) { z.x -= 2.0*d*cs; z.y -= 2.0*d*sn; } } } break; }
 					default: break;
 					}
-				}
+								{ float __w=mut->masterWeight*mut->skWeight; __w=clamp(__w,0.0f,1.0f); z=__wZ+(z-__wZ)*__w; aux.DE=__wDE+(aux.DE-__wDE)*__w; aux.dist=__wDist+(aux.dist-__wDist)*__w; }
+			}
 
 				// v7.9 — Abox DE system (per-section iteration range)
 				if (i >= mut->abIterStart && i < mut->abIterStop && mut->aboxType != 0)
 				{
+				float4 __wZ=z; float __wDE=aux.DE, __wDist=aux.dist;
 					float af = mut->abFactor;
 					float aa = mut->abParamA, ab = mut->abParamB, ac = mut->abParamC, ad = mut->abParamD;
 					float ae = mut->abParamE, aff = mut->abParamF, ag = mut->abParamG, ah = mut->abParamH;
@@ -2789,12 +2804,14 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 						case 30: { aux.DE *= (1.0 + af * aa * native_sin(ab*r)*native_exp(-ac*r)); break; }
 					default: break;
 					}
-				}
+								{ float __w=mut->masterWeight*mut->abWeight; __w=clamp(__w,0.0f,1.0f); z=__wZ+(z-__wZ)*__w; aux.DE=__wDE+(aux.DE-__wDE)*__w; aux.dist=__wDist+(aux.dist-__wDist)*__w; }
+			}
 
 
 			// v7.10 [GPU] — Noise & Procedural DE system (per-section iteration range)
 			if (i >= mut->noiseIterStart && i < mut->noiseIterStop && mut->noiseType != 0)
 			{
+				float4 __wZ=z; float __wDE=aux.DE, __wDist=aux.dist;
 				float na = mut->noiseParamA, nb = mut->noiseParamB, nc = mut->noiseParamC, nd = mut->noiseParamD;
 				float nf = mut->noiseFactor, nfq = mut->noiseFreq, nam = mut->noiseAmp;
 				float r = native_sqrt(z.x*z.x + z.y*z.y + z.z*z.z);
@@ -2832,11 +2849,13 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 					case 31: { float v=0, a=nam, f=nfq; for(int k=0;k<5;k++){ float r2=z.x*z.x+z.y*z.y+z.z*z.z; float h=native_sin(r2*f)*43758.5453; h=h-floor(h); v+=a*h; f*=2.0; a*=0.5; } aux.DE *= (1.0 + nf*v); break; }
 					default: break;
 				}
+							{ float __w=mut->masterWeight*mut->noiseWeight; __w=clamp(__w,0.0f,1.0f); z=__wZ+(z-__wZ)*__w; aux.DE=__wDE+(aux.DE-__wDE)*__w; aux.dist=__wDist+(aux.dist-__wDist)*__w; }
 			}
 
 			// v7.10 [GPU] — Orbit Trap DE system (per-section iteration range)
 			if (i >= mut->orbitIterStart && i < mut->orbitIterStop && mut->orbitTrapType != 0)
 			{
+				float4 __wZ=z; float __wDE=aux.DE, __wDist=aux.dist;
 				float oa = mut->orbitParamA, ob = mut->orbitParamB, oc = mut->orbitParamC, od = mut->orbitParamD;
 				float of = mut->orbitFactor;
 				switch(mut->orbitTrapType) {
@@ -2873,11 +2892,13 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 					case 31: { float r=native_sqrt(z.x*z.x+z.y*z.y); float d=fabs(r-oa); aux.DE *= (1.0 + of*native_exp(-od*d)); break; }
 					default: break;
 				}
+							{ float __w=mut->masterWeight*mut->orbitWeight; __w=clamp(__w,0.0f,1.0f); z=__wZ+(z-__wZ)*__w; aux.DE=__wDE+(aux.DE-__wDE)*__w; aux.dist=__wDist+(aux.dist-__wDist)*__w; }
 			}
 
 			// v7.12 [GPU] — MandelTorus DE system (per-section iteration range)
 			if (i >= mut->torusIterStart && i < mut->torusIterStop && mut->torusType != 0)
 			{
+				float4 __wZ=z; float __wDE=aux.DE, __wDist=aux.dist;
 				float tf = mut->torusFactor;
 				float ta = mut->torusParamA, tb = mut->torusParamB, tc = mut->torusParamC, td = mut->torusParamD;
 				switch(mut->torusType) {
@@ -2914,12 +2935,14 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 					case 31: { float dist = native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float lod = fmin(dist*ta, tb); aux.DE *= (1.0 + tf*lod); break; }
 					default: break;
 				}
+							{ float __w=mut->masterWeight*mut->torusWeight; __w=clamp(__w,0.0f,1.0f); z=__wZ+(z-__wZ)*__w; aux.DE=__wDE+(aux.DE-__wDE)*__w; aux.dist=__wDist+(aux.dist-__wDist)*__w; }
 			}
 
 
 				// v7.13 — Amazing Surf 1-4 DE system (per-section iteration range)
 				if (i >= mut->asIterStart && i < mut->asIterStop && mut->asType != 0)
 				{
+				float4 __wZ=z; float __wDE=aux.DE, __wDist=aux.dist;
 					float sf = mut->asFactor;
 					float ta = mut->asParamA, tb = mut->asParamB;
 					float tc = mut->asParamC, td = mut->asParamD;
@@ -2957,11 +2980,13 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 						case 31: { float dist = native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float lod = fmax(0.1, dist*ta); aux.DE *= lod; break; }
 					default: break;
 					}
-				}
+								{ float __w=mut->masterWeight*mut->asWeight; __w=clamp(__w,0.0f,1.0f); z=__wZ+(z-__wZ)*__w; aux.DE=__wDE+(aux.DE-__wDE)*__w; aux.dist=__wDist+(aux.dist-__wDist)*__w; }
+			}
 
 				// v7.13 — SphereTree/Menger DE system (per-section iteration range)
 				if (i >= mut->smIterStart && i < mut->smIterStop && mut->smType != 0)
 				{
+				float4 __wZ=z; float __wDE=aux.DE, __wDist=aux.dist;
 					float sf = mut->smFactor;
 					float ta = mut->smParamA, tb = mut->smParamB;
 					float tc = mut->smParamC, td = mut->smParamD;
@@ -2999,11 +3024,13 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 						case 31: { float sc=3.0; z=fabs(z); if(z.x-z.y<0.0){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0){float t=z.y;z.y=z.z;z.z=t;} z=z*sc-(float4)(1,1,1,0)*(sc-1.0)+(float4)(ta,tb,tc,0); aux.DE=aux.DE*sc+1.0; break; }
 					default: break;
 					}
-				}
+								{ float __w=mut->masterWeight*mut->smWeight; __w=clamp(__w,0.0f,1.0f); z=__wZ+(z-__wZ)*__w; aux.DE=__wDE+(aux.DE-__wDE)*__w; aux.dist=__wDist+(aux.dist-__wDist)*__w; }
+			}
 
 				// v7.14 — Blockify (grid/quantize) system (per-section iteration range)
 				if (i >= mut->blkIterStart && i < mut->blkIterStop && mut->blkType != 0)
 				{
+				float4 __wZ=z; float __wDE=aux.DE, __wDist=aux.dist;
 					float sf = mut->blkFactor;
 					float ta = mut->blkParamA, tb = mut->blkParamB, tc = mut->blkParamC, td = mut->blkParamD;
 					float gx = fmax(fabs(ta), 1e-4), gy = fmax(fabs(tb), 1e-4), gz = fmax(fabs(tc), 1e-4);
@@ -3063,11 +3090,13 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 						case 50: { for(int k=0;k<3;k++){ float g=gx/pow(2.0,(float)k); z.x=round(z.x/g)*g; z.y=round(z.y/g)*g; z.z=round(z.z/g)*g; } break; }
 					default: break;
 					}
-				}
+								{ float __w=mut->masterWeight*mut->blkWeight; __w=clamp(__w,0.0f,1.0f); z=__wZ+(z-__wZ)*__w; aux.DE=__wDE+(aux.DE-__wDE)*__w; aux.dist=__wDist+(aux.dist-__wDist)*__w; }
+			}
 
 				// v7.15 — Tile (space repetition) system (per-section iteration range)
 				if (i >= mut->tilIterStart && i < mut->tilIterStop && mut->tilType != 0)
 				{
+				float4 __wZ=z; float __wDE=aux.DE, __wDist=aux.dist;
 					float sf = mut->tilFactor;
 					float ta = mut->tilParamA, tb = mut->tilParamB, tc = mut->tilParamC, td = mut->tilParamD;
 					float gx = fmax(fabs(ta), 1e-4), gy = fmax(fabs(tb), 1e-4), gz = fmax(fabs(tc), 1e-4);
@@ -3127,7 +3156,8 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 						case 50: { float ix=floor(zx/gx+0.5),iy=floor(zy/gy+0.5),iz=floor(zz/gz+0.5); float sc=1.0+sf*0.05*(fabs(ix)+fabs(iy)+fabs(iz)); z.x=(zx-ix*gx)*sc; z.y=(zy-iy*gy)*sc; z.z=(zz-iz*gz)*sc; aux.DE*=fmax(sc,0.01); break; }
 					default: break;
 					}
-				}
+								{ float __w=mut->masterWeight*mut->tilWeight; __w=clamp(__w,0.0f,1.0f); z=__wZ+(z-__wZ)*__w; aux.DE=__wDE+(aux.DE-__wDE)*__w; aux.dist=__wDist+(aux.dist-__wDist)*__w; }
+			}
 
 			// DE tweak (per-section iteration range)
 			if (i >= mut->deIterStart && i < mut->deIterStop) {

@@ -364,6 +364,11 @@ typedef struct
 	cl_float tilFactor;
 	cl_float tilParamA, tilParamB, tilParamC, tilParamD;
 	cl_int tilIterStart, tilIterStop;
+	// v7.14 — Per-section mutation weights (0=off .. 1=full) + global master
+	cl_float masterWeight;
+	cl_float inversionWeight, clipWeight, josWeight, pkWeight, mbWeight, wdWeight,
+		skWeight, abWeight, noiseWeight, orbitWeight, torusWeight, asWeight,
+		smWeight, blkWeight, tilWeight;
 	// Pre-computed rotation matrices
 	matrix33 preRotMatrix;
 	matrix33 postRotMatrix;
