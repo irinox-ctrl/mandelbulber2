@@ -2961,6 +2961,134 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 					}
 				}
 
+				// v7.14 — Blockify (grid/quantize) system (per-section iteration range)
+				if (i >= mut->blkIterStart && i < mut->blkIterStop && mut->blkType != 0)
+				{
+					float sf = mut->blkFactor;
+					float ta = mut->blkParamA, tb = mut->blkParamB, tc = mut->blkParamC, td = mut->blkParamD;
+					float gx = fmax(fabs(ta), 1e-4), gy = fmax(fabs(tb), 1e-4), gz = fmax(fabs(tc), 1e-4);
+					float zx = z.x, zy = z.y, zz = z.z;
+					float r = native_sqrt(zx*zx + zy*zy + zz*zz + 1e-21);
+					switch (mut->blkType)
+					{
+						case 1: { z.x=round(z.x/gx)*gx; z.y=round(z.y/gx)*gx; z.z=round(z.z/gx)*gx; break; }
+						case 2: { z.x=round(z.x/gx)*gx; z.y=round(z.y/gy)*gy; z.z=round(z.z/gz)*gz; break; }
+						case 3: { z.x=floor(z.x/gx)*gx; z.y=floor(z.y/gx)*gx; z.z=floor(z.z/gx)*gx; break; }
+						case 4: { z.x=(floor(z.x/gx)+1.0)*gx; z.y=(floor(z.y/gx)+1.0)*gx; z.z=(floor(z.z/gx)+1.0)*gx; break; }
+						case 5: { z.x=round((z.x-td)/gx)*gx+td; z.y=round((z.y-td)/gx)*gx+td; z.z=round((z.z-td)/gx)*gx+td; break; }
+						case 6: { z.x=round(z.x/gx)*gx; break; }
+						case 7: { z.y=round(z.y/gy)*gy; break; }
+						case 8: { z.z=round(z.z/gz)*gz; break; }
+						case 9: { z.x=round(z.x/gx)*gx; z.y=round(z.y/gy)*gy; break; }
+						case 10: { z.x=round(z.x/gx)*gx+gx*0.5; z.y=round(z.y/gy)*gy+gy*0.5; z.z=round(z.z/gz)*gz+gz*0.5; break; }
+						case 11: { float rq=round(r/gx)*gx; float s=rq/r; z.x=zx*s; z.y=zy*s; z.z=zz*s; break; }
+						case 12: { float na=fmax(round(fabs(tb)),1.0); float lim=fmax(fabs(td),1e-4); z.x=round(z.x/lim*na)/na*lim; z.y=round(z.y/lim*na)/na*lim; z.z=round(z.z/lim*na)/na*lim; break; }
+						case 13: { z.x=trunc(z.x/gx)*gx; z.y=trunc(z.y/gy)*gy; z.z=trunc(z.z/gz)*gz; break; }
+						case 14: { float a=fmin(fmax(sf,0.0),1.0); z.x=zx+(round(zx/gx)*gx-zx)*a; z.y=zy+(round(zy/gx)*gx-zy)*a; z.z=zz+(round(zz/gx)*gx-zz)*a; break; }
+						case 15: { float sgx=(zx<0.0)?-1.0:1.0; float sgy=(zy<0.0)?-1.0:1.0; float sgz=(zz<0.0)?-1.0:1.0; z.x=sgx*round(fabs(zx)/gx)*gx; z.y=sgy*round(fabs(zy)/gx)*gx; z.z=sgz*round(fabs(zz)/gx)*gx; break; }
+						case 16: { z.z=zz+gz*floor(zx/gx); break; }
+						case 17: { float ncnt=fmax(round(fabs(ta)),1.0); float ang=atan2(zy,zx); float sct=2.0*M_PI_F/ncnt; ang=round(ang/sct)*sct; float rxy=native_sqrt(zx*zx+zy*zy); z.x=rxy*native_cos(ang); z.y=rxy*native_sin(ang); break; }
+						case 18: { float rxy=native_sqrt(zx*zx+zy*zy); float rq=round(rxy/gx)*gx; float s=(rxy>1e-9)?rq/rxy:1.0; z.x=zx*s; z.y=zy*s; break; }
+						case 19: { float na=fmax(round(fabs(ta)),1.0); z.x=round(z.x*na)/na; z.y=round(z.y*na)/na; z.z=round(z.z*na)/na; break; }
+						case 20: { float cx=floor(zx/gx), cy=floor(zy/gy), cz2=floor(zz/gz); float off=(fmod(cx+cy+cz2,2.0)!=0.0)?gx*0.5:0.0; z.x=cx*gx+off; z.y=cy*gy+off; z.z=cz2*gz+off; break; }
+						case 21: { z.x=(floor(z.x/gx)+0.5)*gx; z.y=(floor(z.y/gy)+0.5)*gy; z.z=(floor(z.z/gz)+0.5)*gz; break; }
+						case 22: { float g=gx*(1.0+(float)i*0.01); z.x=round(z.x/g)*g; z.y=round(z.y/g)*g; z.z=round(z.z/g)*g; break; }
+						case 23: { float cx=floor(zx/gx),cy=floor(zy/gy),cz2=floor(zz/gz); float h=native_sin(cx*12.9898+cy*78.233+cz2*37.719)*43758.5453; h=h-floor(h); z.x=(cx+h*tb)*gx; z.y=(cy+h*tb)*gy; z.z=(cz2+h*tb)*gz; break; }
+						case 24: { z.x=round(z.x/gx)*gx; z.y=round(z.y/gy)*gy; float cs=native_cos(td),sn=native_sin(td); float nx=z.x*cs-z.y*sn; z.y=z.x*sn+z.y*cs; z.x=nx; break; }
+						case 25: { z.x=fabs(round(z.x/gx)*gx); z.y=fabs(round(z.y/gy)*gy); z.z=fabs(round(z.z/gz)*gz); break; }
+						case 26: { z.x=zx-round(zx/gx)*gx; z.y=zy-round(zy/gy)*gy; z.z=zz-round(zz/gz)*gz; break; }
+						case 27: { float g=fmax(fabs(ta)+fabs(tb)*fabs(zx),1e-4); z.z=round(zz/g)*g; break; }
+						case 28: { float sgx=(zx<0.0)?-1.0:1.0; float lx=(fabs(zx)>1e-6)?native_exp(round(native_log(fabs(zx))/gx)*gx):0.0; z.x=sgx*lx; float sgy=(zy<0.0)?-1.0:1.0; float ly=(fabs(zy)>1e-6)?native_exp(round(native_log(fabs(zy))/gx)*gx):0.0; z.y=sgy*ly; break; }
+						case 29: { float kk=fmax(fabs(tb),0.1); z.x=gx*tanh(zx/gx*kk); z.y=gy*tanh(zy/gy*kk); z.z=gz*tanh(zz/gz*kk); break; }
+						case 30: { float c=native_cos(0.78539816),s=native_sin(0.78539816); float ux=zx*c-zy*s, uy=zx*s+zy*c; ux=round(ux/gx)*gx; uy=round(uy/gx)*gx; z.x=ux*c+uy*s; z.y=-ux*s+uy*c; break; }
+						case 31: { z.x=round(z.x/gx)*gx*sf; z.y=round(z.y/gy)*gy*sf; z.z=round(z.z/gz)*gz*sf; break; }
+						case 32: { float bx=round(zx/gx)*gx; float res=zx-bx; res=fmax(fmin(res,gx*0.25),-gx*0.25); z.x=bx+res; float by=round(zy/gy)*gy; float rey=zy-by; rey=fmax(fmin(rey,gy*0.25),-gy*0.25); z.y=by+rey; break; }
+						case 33: { float nx=fmax(round(fabs(ta)),1.0),ny=fmax(round(fabs(tb)),1.0),nz=fmax(round(fabs(tc)),1.0); z.x=round(z.x*nx)/nx; z.y=round(z.y*ny)/ny; z.z=round(z.z*nz)/nz; break; }
+						case 34: { float s=(r>1e-9)?round(r/gx)*gx/r:1.0; z.x=zx*s; z.y=zy*s; z.z=zz*s; aux.DE*=fmax(fabs(s),0.01); break; }
+						case 35: { z.x=((zx<0.0)?-1.0:1.0)*round(fabs(zx)/gx)*gx; z.y=((zy<0.0)?-1.0:1.0)*round(fabs(zy)/gy)*gy; z.z=((zz<0.0)?-1.0:1.0)*round(fabs(zz)/gz)*gz; break; }
+						case 36: { float ph=native_sin((float)i*tb); z.x=round((z.x+ph)/gx)*gx-ph; z.y=round((z.y+ph)/gy)*gy-ph; break; }
+						case 37: { float cx=floor(zx/gx); float sc=1.0+0.1*sf*fmod(fabs(cx),3.0); z.x=cx*gx; z.y=round(zy/gy)*gy*sc; z.z=round(zz/gz)*gz*sc; break; }
+						case 38: { float row=floor(zy/gy); float sh=(fmod(fabs(row),2.0)!=0.0)?gx*0.5:0.0; z.x=round((zx-sh)/gx)*gx+sh; z.y=row*gy; break; }
+						case 39: { float rq=round(r/gx)*gx; float s=(r>1e-9)?rq/r:1.0; z.x=zx*s; z.y=zy*s; z.z=zz*s; break; }
+						case 40: { float rxy=native_sqrt(zx*zx+zy*zy); float rq=round(rxy/gx)*gx; float s=(rxy>1e-9)?rq/rxy:1.0; z.x=zx*s; z.y=zy*s; z.z=round(zz/gz)*gz; break; }
+						case 41: { z.x=round(z.x/gx)*gx; z.y=round(z.y/gy)*gy; z.z=round(z.z/gz)*gz+td; break; }
+						case 42: { z.x=floor(z.x/gx+0.5)*gx; z.y=floor(z.y/gy+0.5)*gy; z.z=floor(z.z/gz+0.5)*gz; break; }
+						case 43: { float na=pow(2.0,fmax(round(fabs(ta)),1.0)); z.x=floor(z.x*na)/na; z.y=floor(z.y*na)/na; z.z=floor(z.z*na)/na; break; }
+						case 44: { float ga=fmax(fabs(ta),1e-4), gb=fmax(fabs(tb),1e-4); float a=fmin(fmax(sf,0.0),1.0); z.x=round(z.x/ga)*ga*(1.0-a)+round(z.x/gb)*gb*a; z.y=round(z.y/ga)*ga*(1.0-a)+round(z.y/gb)*gb*a; break; }
+						case 45: { float cx=floor(zx/gx); z.x=cx*gx; float g2=gy*(1.0+0.2*fmod(fabs(cx),2.0)); z.y=round(zy/g2)*g2; break; }
+						case 46: { float tol=fmax(fmin(fabs(td),0.5),0.0); float bx=round(zx/gx)*gx; if(fabs(zx-bx)<gx*tol) z.x=bx; float by=round(zy/gy)*gy; if(fabs(zy-by)<gy*tol) z.y=by; break; }
+						case 47: { z.x=round(z.x/gx)*gx; z.y=round(z.y/gy)*gy; z.z=round(z.z/gz)*gz; if(r<fabs(td)){z.x=-z.x;z.y=-z.y;z.z=-z.z;} break; }
+						case 48: { z.x=round(z.x/gx)*gx*sf; z.y=round(z.y/gy)*gy*sf; z.z=round(z.z/gz)*gz*sf; aux.DE*=fmax(fabs(sf),0.01); break; }
+						case 49: { float c=native_cos(0.61547971),s=native_sin(0.61547971); float ux=zx, uy=zy*c-zz*s, uz=zy*s+zz*c; ux=round(ux/gx)*gx; uy=round(uy/gx)*gx; uz=round(uz/gx)*gx; z.x=ux; z.y=uy*c+uz*s; z.z=-uy*s+uz*c; break; }
+						case 50: { for(int k=0;k<3;k++){ float g=gx/pow(2.0,(float)k); z.x=round(z.x/g)*g; z.y=round(z.y/g)*g; z.z=round(z.z/g)*g; } break; }
+					default: break;
+					}
+				}
+
+				// v7.15 — Tile (space repetition) system (per-section iteration range)
+				if (i >= mut->tilIterStart && i < mut->tilIterStop && mut->tilType != 0)
+				{
+					float sf = mut->tilFactor;
+					float ta = mut->tilParamA, tb = mut->tilParamB, tc = mut->tilParamC, td = mut->tilParamD;
+					float gx = fmax(fabs(ta), 1e-4), gy = fmax(fabs(tb), 1e-4), gz = fmax(fabs(tc), 1e-4);
+					float zx = z.x, zy = z.y, zz = z.z;
+					float r = native_sqrt(zx*zx + zy*zy + zz*zz + 1e-21);
+					switch (mut->tilType)
+					{
+						case 1: { z.x=z.x-gx*floor(z.x/gx+0.5); z.y=z.y-gx*floor(z.y/gx+0.5); z.z=z.z-gx*floor(z.z/gx+0.5); break; }
+						case 2: { z.x=z.x-gx*floor(z.x/gx+0.5); z.y=z.y-gy*floor(z.y/gy+0.5); z.z=z.z-gz*floor(z.z/gz+0.5); break; }
+						case 3: { z.x=z.x-gx*floor(z.x/gx+0.5); break; }
+						case 4: { z.y=z.y-gy*floor(z.y/gy+0.5); break; }
+						case 5: { z.z=z.z-gz*floor(z.z/gz+0.5); break; }
+						case 6: { z.x=z.x-gx*floor(z.x/gx+0.5); z.y=z.y-gy*floor(z.y/gy+0.5); break; }
+						case 7: { float mx=fmod(fabs(zx),2.0*gx); z.x=((mx<gx)?mx:2.0*gx-mx)-gx*0.5; break; }
+						case 8: { float mx=fmod(fabs(zx),2.0*gx); z.x=((mx<gx)?mx:2.0*gx-mx)-gx*0.5; float my=fmod(fabs(zy),2.0*gy); z.y=((my<gy)?my:2.0*gy-my)-gy*0.5; float mz=fmod(fabs(zz),2.0*gz); z.z=((mz<gz)?mz:2.0*gz-mz)-gz*0.5; break; }
+						case 9: { z.x=(z.x-td)-gx*floor((z.x-td)/gx+0.5)+td; z.y=(z.y-td)-gy*floor((z.y-td)/gy+0.5)+td; break; }
+						case 10: { z.x=z.x-gx*floor(z.x/gx+0.5); z.y=z.y-gy*floor(z.y/gy+0.5); z.z=z.z-gz*floor(z.z/gz+0.5); z.x=fabs(z.x); z.y=fabs(z.y); z.z=fabs(z.z); break; }
+						case 11: { float ncnt=fmax(round(fabs(ta)),1.0); float ang=atan2(zy,zx); float sct=2.0*M_PI_F/ncnt; ang=fmod(ang+10.0*M_PI_F,sct)-sct*0.5; float rxy=native_sqrt(zx*zx+zy*zy); z.x=rxy*native_cos(ang); z.y=rxy*native_sin(ang); break; }
+						case 12: { float rxy=native_sqrt(zx*zx+zy*zy); float mr=rxy-gx*floor(rxy/gx); float s=(rxy>1e-9)?mr/rxy:0.0; z.x=zx*s; z.y=zy*s; break; }
+						case 13: { float row=floor(zy/gy+0.5); float sh=(fmod(fabs(row),2.0)!=0.0)?gx*0.5:0.0; z.x=(zx+sh)-gx*floor((zx+sh)/gx+0.5); z.y=zy-gy*floor(zy/gy+0.5); break; }
+						case 14: { float a60=M_PI_F/3.0; float ux=gx, uy=0.0; float vx=gx*native_cos(a60), vy=gx*native_sin(a60); float det=ux*vy-uy*vx; float ix=floor((zx*vy-zy*vx)/det+0.5); float iy=floor((zy*ux-zx*uy)/det+0.5); z.x=zx-ix*ux-iy*vx; z.y=zy-ix*uy-iy*vy; break; }
+						case 15: { float ix=floor(zx/gx+0.5), iy=floor(zy/gy+0.5); z.x=zx-ix*gx; z.y=zy-iy*gy; float a=td*(ix+iy); float cs=native_cos(a),sn=native_sin(a); float nx=z.x*cs-z.y*sn; z.y=z.x*sn+z.y*cs; z.x=nx; break; }
+						case 16: { float ncnt=fmax(round(fabs(ta)),1.0); float ang=atan2(zy,zx); float sct=2.0*M_PI_F/ncnt; ang=fabs(fmod(ang+10.0*M_PI_F,sct)-sct*0.5); float rxy=native_sqrt(zx*zx+zy*zy); rxy=rxy-gy*floor(rxy/gy); z.x=rxy*native_cos(ang); z.y=rxy*native_sin(ang); break; }
+						case 17: { float ph=sf*native_sin((float)i*fmax(fabs(tb),0.01)); z.x=(zx+ph)-gx*floor((zx+ph)/gx+0.5); z.y=(zy+ph)-gy*floor((zy+ph)/gy+0.5); break; }
+						case 18: { z.x=fabs(z.x-gx*floor(z.x/gx+0.5))*sf; z.y=fabs(z.y-gy*floor(z.y/gy+0.5))*sf; z.z=fabs(z.z-gz*floor(z.z/gz+0.5))*sf; aux.DE*=fmax(fabs(sf),0.01); break; }
+						case 19: { float mz=fmod(fabs(zz),2.0*gz); z.z=((mz<gz)?mz:2.0*gz-mz)-gz*0.5; break; }
+						case 20: { float c=native_cos(0.78539816),s=native_sin(0.78539816); float ux=zx*c-zy*s, uy=zx*s+zy*c; ux=ux-gx*floor(ux/gx+0.5); uy=uy-gx*floor(uy/gx+0.5); z.x=ux*c+uy*s; z.y=-ux*s+uy*c; break; }
+						case 21: { float ix=floor(zx/gx+0.5), iy=floor(zy/gy+0.5); float h=native_sin(ix*12.9898+iy*78.233)*43758.5453; h=h-floor(h); z.x=zx-ix*gx+(h-0.5)*tb; z.y=zy-iy*gy+(h-0.5)*tb; break; }
+						case 22: { float a=0.0; for(int k=0;k<3;k++){ float d=z.x*native_cos(a)+z.y*native_sin(a); if(d<0.0){z.x=z.x-2.0*d*native_cos(a); z.y=z.y-2.0*d*native_sin(a);} a=a+M_PI_F/3.0; } z.x=z.x-gx*floor(z.x/gx+0.5); break; }
+						case 23: { z.x=z.x-gx*floor(z.x/gx+0.5); z.y=z.y-gy*floor(z.y/gy+0.5); z.z=z.z-gz*floor(z.z/gz+0.5); float q=gx*0.25; z.x=round(z.x/q)*q; z.y=round(z.y/q)*q; break; }
+						case 24: { float qx=gx,qy=gx*1.5,qz=gx*2.0; z.x=z.x-qx*floor(z.x/qx+0.5); z.y=z.y-qy*floor(z.y/qy+0.5); z.z=z.z-qz*floor(z.z/qz+0.5); break; }
+						case 25: { z.x=fabs(zx-gx*floor(zx/gx+0.5)); break; }
+						case 26: { z.y=fabs(zy-gy*floor(zy/gy+0.5)); break; }
+						case 27: { z.x=z.x-gx*floor(z.x/gx+0.5); z.y=z.y-gy*floor(z.y/gy+0.5); float mz=fmod(fabs(zz),2.0*gz); z.z=((mz<gz)?mz:2.0*gz-mz)-gz*0.5; break; }
+						case 28: { float ix=floor(zx/gx+0.5),iy=floor(zy/gy+0.5),iz=floor(zz/gz+0.5); float a=fmin(fmax(sf,0.0),1.0); z.x=zx-ix*gx*a; z.y=zy-iy*gy*a; z.z=zz-iz*gz*a; break; }
+						case 29: { float lim=fmax(fabs(td),1e-4); if(z.x>lim) z.x=2.0*lim-z.x; else if(z.x<-lim) z.x=-2.0*lim-z.x; if(z.y>lim) z.y=2.0*lim-z.y; else if(z.y<-lim) z.y=-2.0*lim-z.y; if(z.z>lim) z.z=2.0*lim-z.z; else if(z.z<-lim) z.z=-2.0*lim-z.z; break; }
+						case 30: { z.x=z.x-gx*floor(z.x/gx+0.5); z.y=z.y-gy*floor(z.y/gy+0.5); float rr=native_sqrt(z.x*z.x+z.y*z.y); if(rr<fabs(td)&&rr>1e-9){float s=fabs(td)/rr; z.x=z.x*s; z.y=z.y*s;} break; }
+						case 31: { float iz=floor(zz/gz+0.5); float off=fmod(fabs(iz),2.0)*gx*0.5; z.x=(zx+off)-gx*floor((zx+off)/gx+0.5); z.y=zy-gy*floor(zy/gy+0.5); z.z=zz-gz*iz; break; }
+						case 32: { float ncnt=fmax(round(fabs(ta)),1.0); float ang=atan2(zy,zx); float sct=2.0*M_PI_F/ncnt; ang=fmod(ang+10.0*M_PI_F,sct)-sct*0.5; float rxy=native_sqrt(zx*zx+zy*zy); rxy=rxy-gy*floor(rxy/gy); z.x=rxy*native_cos(ang); z.y=rxy*native_sin(ang); z.z=zz-gz*floor(zz/gz+0.5); break; }
+						case 33: { float ncnt=fmax(round(fabs(ta)),1.0); float ph=atan2(zy,zx); float th=acos(zz/r); float sp=2.0*M_PI_F/ncnt; ph=fmod(ph+10.0*M_PI_F,sp)-sp*0.5; float mm=fmax(round(fabs(tb)),1.0); float st=M_PI_F/mm; th=fmod(th+10.0*M_PI_F,st); z.x=r*native_sin(th)*native_cos(ph); z.y=r*native_sin(th)*native_sin(ph); z.z=r*native_cos(th); break; }
+						case 34: { float ix=floor(zx/gx+0.5),iy=floor(zy/gy+0.5),iz=floor(zz/gz+0.5); float sgn=(fmod(ix+iy+iz,2.0)!=0.0)?-1.0:1.0; z.x=sgn*(zx-ix*gx); z.y=sgn*(zy-iy*gy); z.z=sgn*(zz-iz*gz); break; }
+						case 35: { float iz=floor(zz/gz+0.5); z.z=zz-iz*gz; z.x=zx-gx*floor(zx/gx+0.5); z.y=zy-gy*floor(zy/gy+0.5); float a=td*iz; float cs=native_cos(a),sn=native_sin(a); float nx=z.x*cs-z.y*sn; z.y=z.x*sn+z.y*cs; z.x=nx; break; }
+						case 36: { float rxy=native_sqrt(zx*zx+zy*zy); float mr=rxy-gx*floor(rxy/gx); float s=(rxy>1e-9)?mr/rxy:0.0; z.x=zx*s; z.y=zy*s; break; }
+						case 37: { float mx=fmod(fabs(zx),2.0*gx); z.x=((mx<gx)?mx:2.0*gx-mx)-gx*0.5; z.y=zy-gy*floor(zy/gy+0.5); break; }
+						case 38: { float iy=floor(zy/gy+0.5); float sh=fmod(fabs(iy)*0.6180339887,1.0)*gx; z.x=(zx+sh)-gx*floor((zx+sh)/gx+0.5); z.y=zy-gy*floor(zy/gy+0.5); break; }
+						case 39: { float a=fmin(fmax(sf,0.0),1.0); float tx=zx-gx*floor(zx/gx+0.5); float ty=zy-gy*floor(zy/gy+0.5); z.x=zx+(tx-zx)*a; z.y=zy+(ty-zy)*a; break; }
+						case 40: { float tx=zx-gx*floor(zx/gx+0.5); float ty=zy-gy*floor(zy/gy+0.5); float tz=zz-gz*floor(zz/gz+0.5); float rr=tx*tx+ty*ty+tz*tz; float dd=fmax(fabs(td),1e-4); float s=(rr>1e-9)?dd*dd/rr:1.0; z.x=tx*s; z.y=ty*s; z.z=tz*s; break; }
+						case 41: { float ix=floor(zx/gx+0.5),iy=floor(zy/gy+0.5); float sc=1.0+sf*0.1*fmod(fabs(ix+iy),3.0); z.x=(zx-ix*gx)*sc; z.y=(zy-iy*gy)*sc; break; }
+						case 42: { float a=td; for(int k=0;k<3;k++){ float d=z.x*native_cos(a)+z.y*native_sin(a); if(d<0.0){ z.x=z.x-2.0*d*native_cos(a); z.y=z.y-2.0*d*native_sin(a);} a=a+2.0*M_PI_F/3.0; } break; }
+						case 43: { z.x=fabs(z.x-gx*floor(z.x/gx+0.5)); z.y=fabs(z.y-gy*floor(z.y/gy+0.5)); z.z=fabs(z.z-gz*floor(z.z/gz+0.5)); break; }
+						case 44: { float qy=gx*1.6180339887; z.x=zx-gx*floor(zx/gx+0.5); z.y=zy-qy*floor(zy/qy+0.5); break; }
+						case 45: { z.x=zx-gx*floor(zx/gx+0.5); z.y=zy-gy*floor(zy/gy+0.5); float a=td*zz; float cs=native_cos(a),sn=native_sin(a); float nx=z.x*cs-z.y*sn; z.y=z.x*sn+z.y*cs; z.x=nx; break; }
+						case 46: { z.x=zx-gx*floor(zx/gx+0.5); z.y=zy-gy*floor(zy/gy+0.5); float kk=fmax(fabs(tb),0.01); z.x=z.x+sf*0.1*native_sin(zy*kk); z.y=z.y+sf*0.1*native_sin(zx*kk); break; }
+						case 47: { float tx=zx-gx*floor(zx/gx+0.5); float ty=zy-gy*floor(zy/gy+0.5); float lim=gx*fmax(fmin(fabs(td),0.5),0.05); z.x=fmax(fmin(tx,lim),-lim); z.y=fmax(fmin(ty,lim),-lim); break; }
+						case 48: { for(int k=0;k<3;k++){ float g=gx*pow(2.0,(float)k); z.x=z.x-g*floor(z.x/g+0.5); z.y=z.y-g*floor(z.y/g+0.5); z.z=z.z-g*floor(z.z/g+0.5); } break; }
+						case 49: { float mr=r-gx*floor(r/gx); float s=(r>1e-9)?mr/r:0.0; z.x=zx*s; z.y=zy*s; z.z=zz*s; break; }
+						case 50: { float ix=floor(zx/gx+0.5),iy=floor(zy/gy+0.5),iz=floor(zz/gz+0.5); float sc=1.0+sf*0.05*(fabs(ix)+fabs(iy)+fabs(iz)); z.x=(zx-ix*gx)*sc; z.y=(zy-iy*gy)*sc; z.z=(zz-iz*gz)*sc; aux.DE*=fmax(sc,0.01); break; }
+					default: break;
+					}
+				}
+
 			// DE tweak (per-section iteration range)
 			if (i >= mut->deIterStart && i < mut->deIterStop) {
 			if (mut->deScale != 1.0f) aux.DE *= mut->deScale;

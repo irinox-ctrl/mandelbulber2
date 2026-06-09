@@ -8179,6 +8179,952 @@
               </item>
              </layout>
             </widget>
+            <widget class="QWidget" name="page_mut_blockify">
+             <attribute name="label">
+              <string>Blockify System</string>
+             </attribute>
+             <layout class="QVBoxLayout" name="vlay_mut_blockify">
+              <property name="spacing">
+               <number>2</number>
+              </property>
+              <property name="leftMargin">
+               <number>2</number>
+              </property>
+              <property name="topMargin">
+               <number>2</number>
+              </property>
+              <property name="rightMargin">
+               <number>2</number>
+              </property>
+              <property name="bottomMargin">
+               <number>2</number>
+              </property>
+              <item>
+               <widget class="MyGroupBox" name="groupCheck_mutation_blockify_enabled">
+                <property name="title">
+                 <string>Blockify System</string>
+                </property>
+                <property name="checkable">
+                 <bool>true</bool>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
+                </property>
+                <layout class="QGridLayout" name="gridLayout_mutation_blockify">
+                 <item row="0" column="0">
+                  <widget class="QLabel" name="label_blockify_type">
+                   <property name="text">
+                    <string>Blockify Type:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="1" colspan="6">
+                  <widget class="QComboBox" name="comboBox_mutation_blockify_type">
+                   <item>
+                    <property name="text">
+                     <string>None</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Cubic Snap</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Anisotropic Snap</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Floor Grid</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Ceil Grid</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Offset Snap</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Snap X</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Snap Y</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Snap Z</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Snap XY</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Half-Cell Snap</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Radial Shell Snap</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Level Quantize</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Truncate Grid</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Soft Snap</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Signed Snap</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Stair Step Z</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Angular Snap</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Radius Snap XY</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Posterize</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>BCC Offset Snap</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Voxel Center</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Growing Grid</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Jittered Cells</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Snap + Rotate</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Abs Snap</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Residual Deblock</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Tapered Z Snap</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Log Snap</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Tanh Banding</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Diagonal Snap</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Scaled Snap</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Bevel Snap</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Per-Axis Levels</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Shell Snap (DE)</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Octant Snap</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Phase Snap</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Column Snap</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Brick Snap</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Spherical Shells</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Cylinder Shells</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Z-Offset Snap</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Rounded Grid</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Bit Crush</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Dual-Grid Blend</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Row-Var Grid</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Deadzone Snap</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Core Invert Snap</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Scaled Cubic (DE)</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>3D Diagonal Snap</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Recursive Snap</string>
+                    </property>
+                   </item>
+                  </widget>
+                 </item>
+                 <item row="1" column="0">
+                  <widget class="QLabel" name="label_blockify_factor">
+                   <property name="text">
+                    <string>Factor:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="1">
+                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_blockify_factor">
+                   <property name="minimum">
+                    <double>-100.0</double>
+                   </property>
+                   <property name="maximum">
+                    <double>100.0</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.1</double>
+                   </property>
+                   <property name="value">
+                    <double>1.0</double>
+                   </property>
+                   <property name="decimals">
+                    <number>6</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="2">
+                  <widget class="QLabel" name="label_blockify_param_a">
+                   <property name="text">
+                    <string>A:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="3">
+                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_blockify_param_a">
+                   <property name="minimum">
+                    <double>-100.0</double>
+                   </property>
+                   <property name="maximum">
+                    <double>100.0</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.1</double>
+                   </property>
+                   <property name="value">
+                    <double>1.0</double>
+                   </property>
+                   <property name="decimals">
+                    <number>6</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="4">
+                  <widget class="QLabel" name="label_blockify_param_b">
+                   <property name="text">
+                    <string>B:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="5" colspan="2">
+                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_blockify_param_b">
+                   <property name="minimum">
+                    <double>-100.0</double>
+                   </property>
+                   <property name="maximum">
+                    <double>100.0</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.1</double>
+                   </property>
+                   <property name="value">
+                    <double>1.0</double>
+                   </property>
+                   <property name="decimals">
+                    <number>6</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="0">
+                  <widget class="QLabel" name="label_blockify_param_c">
+                   <property name="text">
+                    <string>C:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="1">
+                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_blockify_param_c">
+                   <property name="minimum">
+                    <double>-100.0</double>
+                   </property>
+                   <property name="maximum">
+                    <double>100.0</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.1</double>
+                   </property>
+                   <property name="value">
+                    <double>1.0</double>
+                   </property>
+                   <property name="decimals">
+                    <number>6</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="2">
+                  <widget class="QLabel" name="label_blockify_param_d">
+                   <property name="text">
+                    <string>D:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="3">
+                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_blockify_param_d">
+                   <property name="minimum">
+                    <double>-100.0</double>
+                   </property>
+                   <property name="maximum">
+                    <double>100.0</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.1</double>
+                   </property>
+                   <property name="value">
+                    <double>1.0</double>
+                   </property>
+                   <property name="decimals">
+                    <number>6</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="4">
+                  <widget class="QLabel" name="label_blockify_iter">
+                   <property name="text">
+                    <string>Iter:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="5" colspan="2">
+                  <widget class="MySpinBox" name="spinboxInt_mutation_blockify_iter_start">
+                   <property name="minimum">
+                    <number>0</number>
+                   </property>
+                   <property name="maximum">
+                    <number>10000</number>
+                   </property>
+                   <property name="value">
+                    <number>0</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="3" column="0">
+                  <widget class="QLabel" name="label_blockify_iter_stop2">
+                   <property name="text">
+                    <string>Stop:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="3" column="1">
+                  <widget class="MySpinBox" name="spinboxInt_mutation_blockify_iter_stop">
+                   <property name="minimum">
+                    <number>0</number>
+                   </property>
+                   <property name="maximum">
+                    <number>10000</number>
+                   </property>
+                   <property name="value">
+                    <number>10000</number>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+            <widget class="QWidget" name="page_mut_tile">
+             <attribute name="label">
+              <string>Tile System</string>
+             </attribute>
+             <layout class="QVBoxLayout" name="vlay_mut_tile">
+              <property name="spacing">
+               <number>2</number>
+              </property>
+              <property name="leftMargin">
+               <number>2</number>
+              </property>
+              <property name="topMargin">
+               <number>2</number>
+              </property>
+              <property name="rightMargin">
+               <number>2</number>
+              </property>
+              <property name="bottomMargin">
+               <number>2</number>
+              </property>
+              <item>
+               <widget class="MyGroupBox" name="groupCheck_mutation_tile_enabled">
+                <property name="title">
+                 <string>Tile System</string>
+                </property>
+                <property name="checkable">
+                 <bool>true</bool>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
+                </property>
+                <layout class="QGridLayout" name="gridLayout_mutation_tile">
+                 <item row="0" column="0">
+                  <widget class="QLabel" name="label_tile_type">
+                   <property name="text">
+                    <string>Tile Type:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="1" colspan="6">
+                  <widget class="QComboBox" name="comboBox_mutation_tile_type">
+                   <item>
+                    <property name="text">
+                     <string>None</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Cubic Tile</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Anisotropic Tile</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Tile X</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Tile Y</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Tile Z</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Tile XY</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Mirror X</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Mirror XYZ</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Offset Tile</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Abs Tile</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Angular Repeat</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Radial Tile XY</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Brick Tile</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Hex Tile</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Tile + Cell Rotate</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Kaleido Tile</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Phase Tile</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Fold Tile (DE)</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Mirror Z</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Diagonal Tile</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Jittered Tile</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Triangular Fold</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Tile + Snap</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Multi-Period Tile</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Mirror Fold X</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Mirror Fold Y</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Tile XY Mirror Z</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Shrink Tile</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Box Fold</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Tile + Radial Fold</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Layered Tile</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Cylindrical Tile</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Spherical Tile</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Checker Flip</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Tile + Z Twist</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Tube Tile</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Mirror + Tile</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Golden Row Tile</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Soft Tile</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Cell Invert</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Per-Cell Scale</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>3-Plane Fold</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Octant Tile</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Golden Tile</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Tile + Twist Z</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Tile + Wave</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Deadband Tile</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Recursive Tile</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Radial Shells 3D</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Cell Scale Ramp</string>
+                    </property>
+                   </item>
+                  </widget>
+                 </item>
+                 <item row="1" column="0">
+                  <widget class="QLabel" name="label_tile_factor">
+                   <property name="text">
+                    <string>Factor:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="1">
+                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_tile_factor">
+                   <property name="minimum">
+                    <double>-100.0</double>
+                   </property>
+                   <property name="maximum">
+                    <double>100.0</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.1</double>
+                   </property>
+                   <property name="value">
+                    <double>1.0</double>
+                   </property>
+                   <property name="decimals">
+                    <number>6</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="2">
+                  <widget class="QLabel" name="label_tile_param_a">
+                   <property name="text">
+                    <string>A:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="3">
+                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_tile_param_a">
+                   <property name="minimum">
+                    <double>-100.0</double>
+                   </property>
+                   <property name="maximum">
+                    <double>100.0</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.1</double>
+                   </property>
+                   <property name="value">
+                    <double>1.0</double>
+                   </property>
+                   <property name="decimals">
+                    <number>6</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="4">
+                  <widget class="QLabel" name="label_tile_param_b">
+                   <property name="text">
+                    <string>B:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="5" colspan="2">
+                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_tile_param_b">
+                   <property name="minimum">
+                    <double>-100.0</double>
+                   </property>
+                   <property name="maximum">
+                    <double>100.0</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.1</double>
+                   </property>
+                   <property name="value">
+                    <double>1.0</double>
+                   </property>
+                   <property name="decimals">
+                    <number>6</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="0">
+                  <widget class="QLabel" name="label_tile_param_c">
+                   <property name="text">
+                    <string>C:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="1">
+                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_tile_param_c">
+                   <property name="minimum">
+                    <double>-100.0</double>
+                   </property>
+                   <property name="maximum">
+                    <double>100.0</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.1</double>
+                   </property>
+                   <property name="value">
+                    <double>1.0</double>
+                   </property>
+                   <property name="decimals">
+                    <number>6</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="2">
+                  <widget class="QLabel" name="label_tile_param_d">
+                   <property name="text">
+                    <string>D:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="3">
+                  <widget class="MyDoubleSpinBox" name="spinbox_mutation_tile_param_d">
+                   <property name="minimum">
+                    <double>-100.0</double>
+                   </property>
+                   <property name="maximum">
+                    <double>100.0</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.1</double>
+                   </property>
+                   <property name="value">
+                    <double>1.0</double>
+                   </property>
+                   <property name="decimals">
+                    <number>6</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="4">
+                  <widget class="QLabel" name="label_tile_iter">
+                   <property name="text">
+                    <string>Iter:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="5" colspan="2">
+                  <widget class="MySpinBox" name="spinboxInt_mutation_tile_iter_start">
+                   <property name="minimum">
+                    <number>0</number>
+                   </property>
+                   <property name="maximum">
+                    <number>10000</number>
+                   </property>
+                   <property name="value">
+                    <number>0</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="3" column="0">
+                  <widget class="QLabel" name="label_tile_iter_stop2">
+                   <property name="text">
+                    <string>Stop:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="3" column="1">
+                  <widget class="MySpinBox" name="spinboxInt_mutation_tile_iter_stop">
+                   <property name="minimum">
+                    <number>0</number>
+                   </property>
+                   <property name="maximum">
+                    <number>10000</number>
+                   </property>
+                   <property name="value">
+                    <number>10000</number>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+             </layout>
+            </widget>
            </widget>
           </item>
          </layout>

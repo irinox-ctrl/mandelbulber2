@@ -538,6 +538,16 @@ struct sFormulaMutationParams
 	double smParamA, smParamB, smParamC, smParamD;
 	int smIterStart, smIterStop;
 
+	int blkType;
+	double blkFactor;
+	double blkParamA, blkParamB, blkParamC, blkParamD;
+	int blkIterStart, blkIterStop;
+
+	int tilType;
+	double tilFactor;
+	double tilParamA, tilParamB, tilParamC, tilParamD;
+	int tilIterStart, tilIterStop;
+
 	// Pre-computed rotation matrices (filled in constructor)
 	CRotationMatrix preRotMatrix;
 	CRotationMatrix postRotMatrix;

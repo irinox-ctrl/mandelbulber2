@@ -77,6 +77,8 @@ void cDockMutationTab::Init(int _tabIndex)
 	connectMutationCombo(ui->comboBox_mutation_noise_type, "mutation_noise_type");
 	connectMutationCombo(ui->comboBox_mutation_orbit_trap_type, "mutation_orbit_trap_type");
 	connectMutationCombo(ui->comboBox_mutation_torus_type, "mutation_torus_type");
+	connectMutationCombo(ui->comboBox_mutation_blockify_type, "mutation_blockify_type");
+	connectMutationCombo(ui->comboBox_mutation_tile_type, "mutation_tile_type");
 
 	QList<QComboBox *> mutationTypeCombos = {
 		ui->comboBox_mutation_inv_type,
@@ -90,6 +92,8 @@ void cDockMutationTab::Init(int _tabIndex)
 		ui->comboBox_mutation_noise_type,
 		ui->comboBox_mutation_orbit_trap_type,
 		ui->comboBox_mutation_torus_type,
+		ui->comboBox_mutation_blockify_type,
+		ui->comboBox_mutation_tile_type,
 		ui->comboBox_mutation_fold_type,
 		ui->comboBox_mutation_warp_type,
 		ui->comboBox_mutation_math_type,
@@ -118,6 +122,8 @@ void cDockMutationTab::Init(int _tabIndex)
 		ui->groupCheck_mutation_noise_enabled,
 		ui->groupCheck_mutation_orbit_trap_enabled,
 		ui->groupCheck_mutation_torus_enabled,
+		ui->groupCheck_mutation_blockify_enabled,
+		ui->groupCheck_mutation_tile_enabled,
 	};
 	for (QGroupBox *group : mutationGroups)
 	{
@@ -302,6 +308,8 @@ void cDockMutationTab::UpdateMutationGrayOut() const
 	grayOutGroupSystem(ui->comboBox_mutation_noise_type, ui->groupCheck_mutation_noise_enabled);
 	grayOutGroupSystem(ui->comboBox_mutation_orbit_trap_type, ui->groupCheck_mutation_orbit_trap_enabled);
 	grayOutGroupSystem(ui->comboBox_mutation_torus_type, ui->groupCheck_mutation_torus_enabled);
+	grayOutGroupSystem(ui->comboBox_mutation_blockify_type, ui->groupCheck_mutation_blockify_enabled);
+	grayOutGroupSystem(ui->comboBox_mutation_tile_type, ui->groupCheck_mutation_tile_enabled);
 
 	// --- Clip System: per-type gray-out ---
 	{
@@ -1019,6 +1027,26 @@ void cDockMutationTab::slotPressedButtonMutationReset()
 	setD("mutation_torus_param_d", 1.0);
 	setI("mutation_torus_iter_start", 0);
 	setI("mutation_torus_iter_stop", 10000);
+
+	// Blockify reset
+	setI("mutation_blockify_type", 0);
+	setD("mutation_blockify_factor", 1.0);
+	setD("mutation_blockify_param_a", 1.0);
+	setD("mutation_blockify_param_b", 1.0);
+	setD("mutation_blockify_param_c", 1.0);
+	setD("mutation_blockify_param_d", 1.0);
+	setI("mutation_blockify_iter_start", 0);
+	setI("mutation_blockify_iter_stop", 10000);
+
+	// Tile reset
+	setI("mutation_tile_type", 0);
+	setD("mutation_tile_factor", 1.0);
+	setD("mutation_tile_param_a", 1.0);
+	setD("mutation_tile_param_b", 1.0);
+	setD("mutation_tile_param_c", 1.0);
+	setD("mutation_tile_param_d", 1.0);
+	setI("mutation_tile_iter_start", 0);
+	setI("mutation_tile_iter_stop", 10000);
 
 	// Write defaults back to UI widgets
 	SynchronizeInterface(params, qInterface::write);

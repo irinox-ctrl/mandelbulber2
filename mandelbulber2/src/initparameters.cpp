@@ -218,6 +218,8 @@ void InitParams(std::shared_ptr<cParameterContainer> par)
 		par->addParam("mutation_noise_enabled", i, true, morphLinear, paramStandard);
 		par->addParam("mutation_orbit_trap_enabled", i, true, morphLinear, paramStandard);
 		par->addParam("mutation_torus_enabled", i, true, morphLinear, paramStandard);
+		par->addParam("mutation_blockify_enabled", i, true, morphLinear, paramStandard);
+		par->addParam("mutation_tile_enabled", i, true, morphLinear, paramStandard);
 		// Pre-transform
 		par->addParam("mutation_pre_rotation_ax", i, 0.0, -360.0, 360.0, morphAkima, paramStandard);
 		par->addParam("mutation_pre_rotation_ay", i, 0.0, -360.0, 360.0, morphAkima, paramStandard);
@@ -502,6 +504,22 @@ void InitParams(std::shared_ptr<cParameterContainer> par)
 		par->addParam("mutation_sm_param_d", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
 		par->addParam("mutation_sm_iter_start", i, 0, 0, 10000, morphAkima, paramStandard);
 		par->addParam("mutation_sm_iter_stop", i, 10000, 0, 10000, morphAkima, paramStandard);
+		par->addParam("mutation_blockify_type", i, 0, 0, 50, morphAkima, paramStandard);
+		par->addParam("mutation_blockify_factor", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_blockify_param_a", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_blockify_param_b", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_blockify_param_c", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_blockify_param_d", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_blockify_iter_start", i, 0, 0, 10000, morphAkima, paramStandard);
+		par->addParam("mutation_blockify_iter_stop", i, 10000, 0, 10000, morphAkima, paramStandard);
+		par->addParam("mutation_tile_type", i, 0, 0, 50, morphAkima, paramStandard);
+		par->addParam("mutation_tile_factor", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_tile_param_a", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_tile_param_b", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_tile_param_c", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_tile_param_d", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_tile_iter_start", i, 0, 0, 10000, morphAkima, paramStandard);
+		par->addParam("mutation_tile_iter_stop", i, 10000, 0, 10000, morphAkima, paramStandard);
 
 		par->addParam("julia_mode", i, false, morphLinear, paramStandard);
 		par->addParam("julia_c", i, CVector3(0.0, 0.0, 0.0), morphAkima, paramStandard);

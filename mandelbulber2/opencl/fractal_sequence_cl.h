@@ -356,6 +356,14 @@ typedef struct
 	cl_float smFactor;
 	cl_float smParamA, smParamB, smParamC, smParamD;
 	cl_int smIterStart, smIterStop;
+	cl_int blkType;
+	cl_float blkFactor;
+	cl_float blkParamA, blkParamB, blkParamC, blkParamD;
+	cl_int blkIterStart, blkIterStop;
+	cl_int tilType;
+	cl_float tilFactor;
+	cl_float tilParamA, tilParamB, tilParamC, tilParamD;
+	cl_int tilIterStart, tilIterStop;
 	// Pre-computed rotation matrices
 	matrix33 preRotMatrix;
 	matrix33 postRotMatrix;

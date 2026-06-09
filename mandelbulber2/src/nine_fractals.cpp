@@ -470,6 +470,22 @@ cNineFractals::cNineFractals(std::shared_ptr<const cFractalContainer> par,
 		mutationParams[i].smParamD = generalPar->Get<double>("mutation_sm_param_d", i + 1);
 		mutationParams[i].smIterStart = generalPar->Get<int>("mutation_sm_iter_start", i + 1);
 		mutationParams[i].smIterStop = generalPar->Get<int>("mutation_sm_iter_stop", i + 1);
+		mutationParams[i].blkType = generalPar->Get<int>("mutation_blockify_type", i + 1);
+		mutationParams[i].blkFactor = generalPar->Get<double>("mutation_blockify_factor", i + 1);
+		mutationParams[i].blkParamA = generalPar->Get<double>("mutation_blockify_param_a", i + 1);
+		mutationParams[i].blkParamB = generalPar->Get<double>("mutation_blockify_param_b", i + 1);
+		mutationParams[i].blkParamC = generalPar->Get<double>("mutation_blockify_param_c", i + 1);
+		mutationParams[i].blkParamD = generalPar->Get<double>("mutation_blockify_param_d", i + 1);
+		mutationParams[i].blkIterStart = generalPar->Get<int>("mutation_blockify_iter_start", i + 1);
+		mutationParams[i].blkIterStop = generalPar->Get<int>("mutation_blockify_iter_stop", i + 1);
+		mutationParams[i].tilType = generalPar->Get<int>("mutation_tile_type", i + 1);
+		mutationParams[i].tilFactor = generalPar->Get<double>("mutation_tile_factor", i + 1);
+		mutationParams[i].tilParamA = generalPar->Get<double>("mutation_tile_param_a", i + 1);
+		mutationParams[i].tilParamB = generalPar->Get<double>("mutation_tile_param_b", i + 1);
+		mutationParams[i].tilParamC = generalPar->Get<double>("mutation_tile_param_c", i + 1);
+		mutationParams[i].tilParamD = generalPar->Get<double>("mutation_tile_param_d", i + 1);
+		mutationParams[i].tilIterStart = generalPar->Get<int>("mutation_tile_iter_start", i + 1);
+		mutationParams[i].tilIterStop = generalPar->Get<int>("mutation_tile_iter_stop", i + 1);
 
 		// Smart defaults: PK/JK formulas get Möbius (Bilinear) math preset
 		fractal::enumFractalFormula f = fractals[i]->formula;
@@ -1585,6 +1601,22 @@ void cNineFractals::CopyToOpenclData(sClFractalSequence *sequence) const
 		sequence->mutationParams[i].smParamD = mutationParams[i].smParamD;
 		sequence->mutationParams[i].smIterStart = mutationParams[i].smIterStart;
 		sequence->mutationParams[i].smIterStop = mutationParams[i].smIterStop;
+		sequence->mutationParams[i].blkType = mutationParams[i].blkType;
+		sequence->mutationParams[i].blkFactor = mutationParams[i].blkFactor;
+		sequence->mutationParams[i].blkParamA = mutationParams[i].blkParamA;
+		sequence->mutationParams[i].blkParamB = mutationParams[i].blkParamB;
+		sequence->mutationParams[i].blkParamC = mutationParams[i].blkParamC;
+		sequence->mutationParams[i].blkParamD = mutationParams[i].blkParamD;
+		sequence->mutationParams[i].blkIterStart = mutationParams[i].blkIterStart;
+		sequence->mutationParams[i].blkIterStop = mutationParams[i].blkIterStop;
+		sequence->mutationParams[i].tilType = mutationParams[i].tilType;
+		sequence->mutationParams[i].tilFactor = mutationParams[i].tilFactor;
+		sequence->mutationParams[i].tilParamA = mutationParams[i].tilParamA;
+		sequence->mutationParams[i].tilParamB = mutationParams[i].tilParamB;
+		sequence->mutationParams[i].tilParamC = mutationParams[i].tilParamC;
+		sequence->mutationParams[i].tilParamD = mutationParams[i].tilParamD;
+		sequence->mutationParams[i].tilIterStart = mutationParams[i].tilIterStart;
+		sequence->mutationParams[i].tilIterStop = mutationParams[i].tilIterStop;
 
 		// Copy rotation matrices using matrix33 type
 		if (mutationParams[i].enabled)
