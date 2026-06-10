@@ -1,15 +1,6 @@
 #include "dock_mutation_tab.h"
 #include "ui_dock_mutation_tab.h"
 
-#include <QSettings>
-#include <QToolBox>
-#include <QScrollBar>
-#include <QTimer>
-#include <QFont>
-#include <QRandomGenerator>
-#include <QPushButton>
-#include <QHash>
-
 #include "src/automated_widgets.hpp"
 #include "src/fractal_container.hpp"
 #include "src/initparameters.hpp"
@@ -23,13 +14,6 @@ cDockMutationTab::cDockMutationTab(QWidget *parent)
 {
 	ui->setupUi(this);
 	automatedWidgets = new cAutomatedWidgets(this);
-	// Larger, more legible font across the whole mutation panel.
-	if (ui->scrollAreaWidgetContents_mutation)
-	{
-		QFont mutFont = ui->scrollAreaWidgetContents_mutation->font();
-		mutFont.setPointSizeF((mutFont.pointSizeF() > 0 ? mutFont.pointSizeF() : 10.0) + 1.0);
-		ui->scrollAreaWidgetContents_mutation->setFont(mutFont);
-	}
 	tabIndex = 0;
 }
 
@@ -90,10 +74,6 @@ void cDockMutationTab::Init(int _tabIndex)
 	connectMutationCombo(ui->comboBox_mutation_noise_type, "mutation_noise_type");
 	connectMutationCombo(ui->comboBox_mutation_orbit_trap_type, "mutation_orbit_trap_type");
 	connectMutationCombo(ui->comboBox_mutation_torus_type, "mutation_torus_type");
-	connectMutationCombo(ui->comboBox_mutation_as_type, "mutation_as_type");
-	connectMutationCombo(ui->comboBox_mutation_sm_type, "mutation_sm_type");
-	connectMutationCombo(ui->comboBox_mutation_blockify_type, "mutation_blockify_type");
-	connectMutationCombo(ui->comboBox_mutation_tile_type, "mutation_tile_type");
 
 	QList<QComboBox *> mutationTypeCombos = {
 		ui->comboBox_mutation_inv_type,
@@ -107,10 +87,6 @@ void cDockMutationTab::Init(int _tabIndex)
 		ui->comboBox_mutation_noise_type,
 		ui->comboBox_mutation_orbit_trap_type,
 		ui->comboBox_mutation_torus_type,
-		ui->comboBox_mutation_as_type,
-		ui->comboBox_mutation_sm_type,
-		ui->comboBox_mutation_blockify_type,
-		ui->comboBox_mutation_tile_type,
 		ui->comboBox_mutation_fold_type,
 		ui->comboBox_mutation_warp_type,
 		ui->comboBox_mutation_math_type,
@@ -139,80 +115,45 @@ void cDockMutationTab::Init(int _tabIndex)
 		ui->groupCheck_mutation_noise_enabled,
 		ui->groupCheck_mutation_orbit_trap_enabled,
 		ui->groupCheck_mutation_torus_enabled,
-		ui->groupCheck_mutation_as_enabled,
-		ui->groupCheck_mutation_sm_enabled,
-		ui->groupCheck_mutation_blockify_enabled,
-		ui->groupCheck_mutation_tile_enabled,
 	};
 	for (QGroupBox *group : mutationGroups)
 	{
-		if (group) connect(group, &QGroupBox::toggled, this, &cDockMutationTab::UpdateMutationGrayOut);
+		if (!group) continue;
+
+		// Accordion: gebruik setMaximumHeight zodat layout echt krimpt
+		// Gesloten = alleen titelbar (20px), open = geen limiet
+		auto collapseGroup = [](QGroupBox *g, bool open) {
+			if (open)
+			{
+				g->setMaximumHeight(16777215); // QWIDGETSIZE_MAX
+				g->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+			}
+			else
+			{
+				g->setMaximumHeight(22); // alleen titelbar
+				g->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+			}
+		};
+
+		connect(group, &QGroupBox::toggled, this, [group, collapseGroup](bool checked) {
+			collapseGroup(group, checked);
+		});
+
+		connect(group, &QGroupBox::toggled, this, &cDockMutationTab::UpdateMutationGrayOut);
+
+		// Initieel instellen
+		collapseGroup(group, group->isChecked());
 	}
 
 	connect(ui->pushButton_mutation_reset, &QPushButton::clicked, this,
 		&cDockMutationTab::slotPressedButtonMutationReset);
-	connect(ui->pushButton_mutation_randomize_weights, &QPushButton::clicked, this,
-		&cDockMutationTab::slotPressedButtonRandomizeWeights);
-	connect(ui->pushButton_mutation_reset_weights, &QPushButton::clicked, this,
-		&cDockMutationTab::slotPressedButtonResetWeights);
-	for (QPushButton *b : this->findChildren<QPushButton *>())
-	{
-		const QString n = b->objectName();
-		if (n.startsWith("pushButton_mutation_") && n.endsWith("_reset_weights")
-			&& n != "pushButton_mutation_reset_weights")
-		{
-			connect(b, &QPushButton::clicked, this,
-				&cDockMutationTab::slotPressedButtonResetSectionWeights);
-		}
-	}
 
-	// Remember which mutation section (toolbox page) was last opened, per fractal tab,
-	// and restore it the next time this dock is built.
-	if (ui->toolBox_mutation_sections)
+	// Zorg dat alle spinboxen breed genoeg zijn om cijfers te tonen
+	const int minSpinWidth = 72;
+	for (QAbstractSpinBox *sb : findChildren<QAbstractSpinBox *>())
 	{
-		QSettings settings(QStringLiteral("Mandelbulber"), QStringLiteral("mandelbulber2"));
-		const QString toolBoxKey =
-			QStringLiteral("mutationDock/toolBoxIndex_%1").arg(tabIndex + 1);
-		const int savedIndex = settings.value(toolBoxKey, 0).toInt();
-		if (savedIndex >= 0 && savedIndex < ui->toolBox_mutation_sections->count())
-		{
-			ui->toolBox_mutation_sections->setCurrentIndex(savedIndex);
-		}
-		connect(ui->toolBox_mutation_sections, &QToolBox::currentChanged, this,
-			[this](int index) {
-				QSettings store(QStringLiteral("Mandelbulber"), QStringLiteral("mandelbulber2"));
-				store.setValue(
-					QStringLiteral("mutationDock/toolBoxIndex_%1").arg(tabIndex + 1), index);
-			});
-		// When a section opens, scroll it to the top so ALL its parameters are visible.
-		connect(ui->toolBox_mutation_sections, &QToolBox::currentChanged, this,
-			[this](int) {
-				QTimer::singleShot(0, this, [this]() {
-					if (!ui->toolBox_mutation_sections || !ui->scrollArea_mutation
-						|| !ui->scrollAreaWidgetContents_mutation) return;
-					QWidget *page = ui->toolBox_mutation_sections->currentWidget();
-					if (!page || !page->isVisible()) return;
-					const QPoint top = page->mapTo(ui->scrollAreaWidgetContents_mutation, QPoint(0, 0));
-					ui->scrollArea_mutation->verticalScrollBar()->setValue(qMax(0, top.y() - 36));
-				});
-			});
-	}
-
-	// Compact overview: collapse every section down to just its title bar so all
-	// section names are visible at a glance without scrolling.
-	if (ui->toolBox_mutation_sections && ui->pushButton_mutation_compact)
-	{
-		QToolBox *toolBox = ui->toolBox_mutation_sections;
-		auto applyCompact = [toolBox](bool compact) {
-			if (QWidget *page = toolBox->currentWidget()) page->setVisible(!compact);
-		};
-		connect(ui->pushButton_mutation_compact, &QPushButton::toggled, this,
-			[applyCompact](bool checked) { applyCompact(checked); });
-		// Keep the newly selected section collapsed too while compact mode is on.
-		connect(toolBox, &QToolBox::currentChanged, this,
-			[this, applyCompact](int) {
-				applyCompact(ui->pushButton_mutation_compact->isChecked());
-			});
+		sb->setMinimumWidth(minSpinWidth);
+		sb->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
 	}
 }
 
@@ -319,31 +260,29 @@ void cDockMutationTab::UpdateMutationFieldVisibility(int formulaIndex) const
 
 void cDockMutationTab::UpdateMutationGrayOut() const
 {
-	// Master gate: when global Mutation is off, NOTHING should be orange.
-	const bool mutationMasterOn =
-		ui->groupCheck_mutation_enabled && ui->groupCheck_mutation_enabled->isChecked();
-	// Slightly larger font for active/inactive parameters (legibility).
-	const int mutBaseFs = (this->font().pointSize() > 0) ? this->font().pointSize() : 10;
-	const int mutBigFs = mutBaseFs + 1;
 	// Helper: set enabled state AND orange color for active parameters
 	auto styleWidget = [&](QWidget *w, bool enabled) {
 		if (!w) return;
 		w->setEnabled(enabled);
 		if (enabled) {
-			w->setStyleSheet(QString("color: #FFA500; font-weight: bold; font-size: %1pt;").arg(mutBigFs));
+			w->setStyleSheet("color: #FFA500; font-weight: bold;");
 		} else {
-			w->setStyleSheet(QString("color: #AAAAAA; font-size: %1pt;").arg(mutBigFs));
+			w->setStyleSheet("color: #AAAAAA;");
 		}
 	};
 
 	// Helper for systems with their own GroupBox (simple on/off based on type==0)
 	auto grayOutGroupSystem = [&](QComboBox *combo, QGroupBox *group) {
 		if (!combo || !group) return;
-		bool systemActive = mutationMasterOn && group->isChecked() && combo->currentIndex() != 0;
+		bool systemActive = group->isChecked() && combo->currentIndex() != 0;
 		QList<QWidget *> children = group->findChildren<QWidget *>();
 		for (QWidget *w : children)
 		{
 			if (w == combo || w == group) continue;
+			// Sla nested groupboxen over: die hebben eigen checked-state
+			if (qobject_cast<QGroupBox *>(w)) continue;
+			// Sla QFrame/QAbstractScrollArea over: dit zijn popup containers van QComboBox
+			if (qobject_cast<QFrame *>(w) && w->windowFlags() & Qt::Popup) continue;
 			styleWidget(w, systemActive);
 		}
 	};
@@ -359,10 +298,6 @@ void cDockMutationTab::UpdateMutationGrayOut() const
 	grayOutGroupSystem(ui->comboBox_mutation_noise_type, ui->groupCheck_mutation_noise_enabled);
 	grayOutGroupSystem(ui->comboBox_mutation_orbit_trap_type, ui->groupCheck_mutation_orbit_trap_enabled);
 	grayOutGroupSystem(ui->comboBox_mutation_torus_type, ui->groupCheck_mutation_torus_enabled);
-	grayOutGroupSystem(ui->comboBox_mutation_as_type, ui->groupCheck_mutation_as_enabled);
-	grayOutGroupSystem(ui->comboBox_mutation_sm_type, ui->groupCheck_mutation_sm_enabled);
-	grayOutGroupSystem(ui->comboBox_mutation_blockify_type, ui->groupCheck_mutation_blockify_enabled);
-	grayOutGroupSystem(ui->comboBox_mutation_tile_type, ui->groupCheck_mutation_tile_enabled);
 
 	// --- Clip System: per-type gray-out ---
 	{
@@ -370,7 +305,7 @@ void cDockMutationTab::UpdateMutationGrayOut() const
 		QComboBox *clipCombo = ui->comboBox_mutation_clip_type;
 		if (clipGroup && clipCombo)
 		{
-			bool clipActive = mutationMasterOn && clipGroup->isChecked() && clipCombo->currentIndex() != 0;
+			bool clipActive = clipGroup->isChecked() && clipCombo->currentIndex() != 0;
 			int clipType = clipCombo->currentIndex();
 
 			auto setClipWidget = [&](const QString &baseName, bool enabled) {
@@ -465,7 +400,7 @@ void cDockMutationTab::UpdateMutationGrayOut() const
 		QComboBox *invCombo = ui->comboBox_mutation_inv_type;
 		if (invGroup && invCombo)
 		{
-			bool invActive = mutationMasterOn && invGroup->isChecked() && invCombo->currentIndex() != 0;
+			bool invActive = invGroup->isChecked() && invCombo->currentIndex() != 0;
 			int invType = invCombo->currentIndex();
 
 			auto setInvWidget = [&](const QString &baseName, bool enabled) {
@@ -1081,132 +1016,60 @@ void cDockMutationTab::slotPressedButtonMutationReset()
 	setI("mutation_torus_iter_start", 0);
 	setI("mutation_torus_iter_stop", 10000);
 
-	// Blockify reset
-	setI("mutation_blockify_type", 0);
-	setD("mutation_blockify_factor", 1.0);
-	setD("mutation_blockify_param_a", 1.0);
-	setD("mutation_blockify_param_b", 1.0);
-	setD("mutation_blockify_param_c", 1.0);
-	setD("mutation_blockify_param_d", 1.0);
-	setI("mutation_blockify_iter_start", 0);
-	setI("mutation_blockify_iter_stop", 10000);
-
-	// Tile reset
-	setI("mutation_tile_type", 0);
-	setD("mutation_tile_factor", 1.0);
-	setD("mutation_tile_param_a", 1.0);
-	setD("mutation_tile_param_b", 1.0);
-	setD("mutation_tile_param_c", 1.0);
-	setD("mutation_tile_param_d", 1.0);
-	setI("mutation_tile_iter_start", 0);
-	setI("mutation_tile_iter_stop", 10000);
-
 	// Write defaults back to UI widgets
 	SynchronizeInterface(params, qInterface::write);
 	UpdateMutationGrayOut();
 }
 
-namespace
-{
-// All mutation weight parameters (master + per-section + per-parameter) used by
-// the Randomize / Reset Weights buttons.
-const QStringList &mutationWeightParams()
-{
-	static const QStringList list = {
-		"mutation_master_weight", "mutation_inversion_weight", "mutation_clip_weight",
-		"mutation_jos_leys_weight", "mutation_pk_weight", "mutation_mb_math_weight",
-		"mutation_warp_dist_weight", "mutation_symmetry_weight", "mutation_abox_weight",
-		"mutation_noise_weight", "mutation_orbit_trap_weight", "mutation_torus_weight",
-		"mutation_as_weight", "mutation_sm_weight", "mutation_blockify_weight",
-		"mutation_tile_weight", "mutation_ab_factor_weight", "mutation_ab_param_a_weight",
-		"mutation_ab_param_b_weight", "mutation_ab_param_c_weight", "mutation_ab_param_d_weight",
-		"mutation_ab_param_e_weight", "mutation_ab_param_f_weight", "mutation_ab_param_g_weight",
-		"mutation_ab_param_h_weight", "mutation_as_factor_weight", "mutation_as_param_a_weight",
-		"mutation_as_param_b_weight", "mutation_as_param_c_weight", "mutation_as_param_d_weight",
-		"mutation_blockify_factor_weight", "mutation_blockify_param_a_weight", "mutation_blockify_param_b_weight",
-		"mutation_blockify_param_c_weight", "mutation_blockify_param_d_weight", "mutation_clip_param_a_weight",
-		"mutation_clip_param_b_weight", "mutation_clip_param_c_weight", "mutation_inv_param_a_weight",
-		"mutation_inv_param_b_weight", "mutation_inv_param_c_weight", "mutation_jos_factor_weight",
-		"mutation_jos_param_a_weight", "mutation_jos_param_b_weight", "mutation_jos_param_c_weight",
-		"mutation_jos_param_d_weight", "mutation_mb_factor_weight", "mutation_mb_param_a_weight",
-		"mutation_mb_param_b_weight", "mutation_mb_param_c_weight", "mutation_mb_param_d_weight",
-		"mutation_mb_param_e_weight", "mutation_mb_param_f_weight", "mutation_mb_param_g_weight",
-		"mutation_mb_param_h_weight", "mutation_noise_factor_weight", "mutation_noise_param_a_weight",
-		"mutation_noise_param_b_weight", "mutation_noise_param_c_weight", "mutation_noise_param_d_weight",
-		"mutation_orbit_factor_weight", "mutation_orbit_param_a_weight", "mutation_orbit_param_b_weight",
-		"mutation_orbit_param_c_weight", "mutation_orbit_param_d_weight", "mutation_pk_factor_weight",
-		"mutation_pk_param_a_weight", "mutation_pk_param_b_weight", "mutation_pk_param_c_weight",
-		"mutation_pk_param_d_weight", "mutation_sk_factor_weight", "mutation_sk_param_a_weight",
-		"mutation_sk_param_b_weight", "mutation_sk_param_c_weight", "mutation_sk_param_d_weight",
-		"mutation_sm_factor_weight", "mutation_sm_param_a_weight", "mutation_sm_param_b_weight",
-		"mutation_sm_param_c_weight", "mutation_sm_param_d_weight", "mutation_tile_factor_weight",
-		"mutation_tile_param_a_weight", "mutation_tile_param_b_weight", "mutation_tile_param_c_weight",
-		"mutation_tile_param_d_weight", "mutation_torus_factor_weight", "mutation_torus_param_a_weight",
-		"mutation_torus_param_b_weight", "mutation_torus_param_c_weight", "mutation_torus_param_d_weight",
-		"mutation_wd_factor_weight", "mutation_wd_param_a_weight", "mutation_wd_param_b_weight",
-		"mutation_wd_param_c_weight", "mutation_wd_param_d_weight"
-	};
-	return list;
-}
-
-const QHash<QString, QStringList> &mutationSectionWeightMap()
-{
-	static const QHash<QString, QStringList> m = {
-		{ "inversion", { "mutation_inversion_weight", "mutation_inv_param_a_weight", "mutation_inv_param_b_weight", "mutation_inv_param_c_weight" } },
-		{ "clip", { "mutation_clip_weight", "mutation_clip_param_a_weight", "mutation_clip_param_b_weight", "mutation_clip_param_c_weight" } },
-		{ "jos", { "mutation_jos_leys_weight", "mutation_jos_factor_weight", "mutation_jos_param_a_weight", "mutation_jos_param_b_weight", "mutation_jos_param_c_weight", "mutation_jos_param_d_weight" } },
-		{ "pk", { "mutation_pk_weight", "mutation_pk_factor_weight", "mutation_pk_param_a_weight", "mutation_pk_param_b_weight", "mutation_pk_param_c_weight", "mutation_pk_param_d_weight" } },
-		{ "mb", { "mutation_mb_math_weight", "mutation_mb_factor_weight", "mutation_mb_param_a_weight", "mutation_mb_param_b_weight", "mutation_mb_param_c_weight", "mutation_mb_param_d_weight", "mutation_mb_param_e_weight", "mutation_mb_param_f_weight", "mutation_mb_param_g_weight", "mutation_mb_param_h_weight" } },
-		{ "wd", { "mutation_warp_dist_weight", "mutation_wd_factor_weight", "mutation_wd_param_a_weight", "mutation_wd_param_b_weight", "mutation_wd_param_c_weight", "mutation_wd_param_d_weight" } },
-		{ "sk", { "mutation_symmetry_weight", "mutation_sk_factor_weight", "mutation_sk_param_a_weight", "mutation_sk_param_b_weight", "mutation_sk_param_c_weight", "mutation_sk_param_d_weight" } },
-		{ "ab", { "mutation_abox_weight", "mutation_ab_factor_weight", "mutation_ab_param_a_weight", "mutation_ab_param_b_weight", "mutation_ab_param_c_weight", "mutation_ab_param_d_weight", "mutation_ab_param_e_weight", "mutation_ab_param_f_weight", "mutation_ab_param_g_weight", "mutation_ab_param_h_weight" } },
-		{ "noise", { "mutation_noise_weight", "mutation_noise_factor_weight", "mutation_noise_param_a_weight", "mutation_noise_param_b_weight", "mutation_noise_param_c_weight", "mutation_noise_param_d_weight" } },
-		{ "orbit", { "mutation_orbit_trap_weight", "mutation_orbit_factor_weight", "mutation_orbit_param_a_weight", "mutation_orbit_param_b_weight", "mutation_orbit_param_c_weight", "mutation_orbit_param_d_weight" } },
-		{ "torus", { "mutation_torus_weight", "mutation_torus_factor_weight", "mutation_torus_param_a_weight", "mutation_torus_param_b_weight", "mutation_torus_param_c_weight", "mutation_torus_param_d_weight" } },
-		{ "as", { "mutation_as_weight", "mutation_as_factor_weight", "mutation_as_param_a_weight", "mutation_as_param_b_weight", "mutation_as_param_c_weight", "mutation_as_param_d_weight" } },
-		{ "sm", { "mutation_sm_weight", "mutation_sm_factor_weight", "mutation_sm_param_a_weight", "mutation_sm_param_b_weight", "mutation_sm_param_c_weight", "mutation_sm_param_d_weight" } },
-		{ "blockify", { "mutation_blockify_weight", "mutation_blockify_factor_weight", "mutation_blockify_param_a_weight", "mutation_blockify_param_b_weight", "mutation_blockify_param_c_weight", "mutation_blockify_param_d_weight" } },
-		{ "tile", { "mutation_tile_weight", "mutation_tile_factor_weight", "mutation_tile_param_a_weight", "mutation_tile_param_b_weight", "mutation_tile_param_c_weight", "mutation_tile_param_d_weight" } },
-	};
-	return m;
-}
-} // namespace
-
-void cDockMutationTab::slotPressedButtonResetWeights()
-{
-	const int idx = tabIndex + 1;
-	for (const QString &name : mutationWeightParams())
-		params->Set(name + "_" + QString::number(idx), 1.0);
-	SynchronizeInterface(params, qInterface::write);
-	UpdateMutationGrayOut();
-}
 
 void cDockMutationTab::slotPressedButtonRandomizeWeights()
 {
-	const int idx = tabIndex + 1;
-	for (const QString &name : mutationWeightParams())
+	// Randomiseer alle weight spinboxen in deze tab
+	QList<QDoubleSpinBox *> spinboxes = findChildren<QDoubleSpinBox *>();
+	for (QDoubleSpinBox *sb : spinboxes)
 	{
-		// keep the global master weight at full so randomized sections stay visible
-		const double v = (name == "mutation_master_weight")
-			? 1.0
-			: QRandomGenerator::global()->generateDouble();
-		params->Set(name + "_" + QString::number(idx), v);
+		if (sb->objectName().contains("weight", Qt::CaseInsensitive))
+		{
+			double range = sb->maximum() - sb->minimum();
+			sb->setValue(sb->minimum() + (double)rand() / RAND_MAX * range);
+		}
 	}
-	SynchronizeInterface(params, qInterface::write);
-	UpdateMutationGrayOut();
+}
+
+void cDockMutationTab::slotPressedButtonResetWeights()
+{
+	// Reset alle weight spinboxen naar 1.0
+	QList<QDoubleSpinBox *> spinboxes = findChildren<QDoubleSpinBox *>();
+	for (QDoubleSpinBox *sb : spinboxes)
+	{
+		if (sb->objectName().contains("weight", Qt::CaseInsensitive))
+		{
+			sb->setValue(1.0);
+		}
+	}
 }
 
 void cDockMutationTab::slotPressedButtonResetSectionWeights()
 {
+	// Reset weight spinboxen in de actieve sectie naar 1.0
+	// Zoek de parent groupbox van de knop die het signaal stuurde
 	QPushButton *btn = qobject_cast<QPushButton *>(sender());
 	if (!btn) return;
-	QString key = btn->objectName().mid(QString("pushButton_mutation_").length());
-	key.chop(QString("_reset_weights").length());
-	const QStringList names = mutationSectionWeightMap().value(key);
-	if (names.isEmpty()) return;
-	const int idx = tabIndex + 1;
-	for (const QString &n : names) params->Set(n + "_" + QString::number(idx), 1.0);
-	SynchronizeInterface(params, qInterface::write);
-	UpdateMutationGrayOut();
+	QGroupBox *parentGroup = nullptr;
+	QWidget *p = btn->parentWidget();
+	while (p)
+	{
+		parentGroup = qobject_cast<QGroupBox *>(p);
+		if (parentGroup) break;
+		p = p->parentWidget();
+	}
+	if (!parentGroup) return;
+	QList<QDoubleSpinBox *> spinboxes = parentGroup->findChildren<QDoubleSpinBox *>();
+	for (QDoubleSpinBox *sb : spinboxes)
+	{
+		if (sb->objectName().contains("weight", Qt::CaseInsensitive))
+		{
+			sb->setValue(1.0);
+		}
+	}
 }
-
