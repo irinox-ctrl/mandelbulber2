@@ -53,6 +53,7 @@ MyDoubleSpinBox::MyDoubleSpinBox(QWidget *parent)
 	valueBeforeSliderDrag = 0.0;
 	precision = enumSliderPrecision::precisionNormal;
 	defaultSingleStep = 1.0;
+	setMinimumWidth(60);
 };
 
 MyDoubleSpinBox::~MyDoubleSpinBox()

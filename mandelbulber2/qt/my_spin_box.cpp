@@ -46,6 +46,7 @@ MySpinBox::MySpinBox(QWidget *parent) : QSpinBox(parent), CommonMyWidgetWrapper(
 {
 	defaultValue = 0;
 	slider = nullptr;
+	setMinimumWidth(60);
 }
 
 MySpinBox::~MySpinBox()
