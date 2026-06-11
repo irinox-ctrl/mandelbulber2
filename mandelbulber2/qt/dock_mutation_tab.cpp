@@ -120,29 +120,28 @@ void cDockMutationTab::Init(int _tabIndex)
 	{
 		if (!group) continue;
 
-		// Accordion: gebruik setMaximumHeight zodat layout echt krimpt
-		// Gesloten = alleen titelbar (20px), open = geen limiet
-		auto collapseGroup = [](QGroupBox *g, bool open) {
-			if (open)
-			{
-				g->setMaximumHeight(16777215); // QWIDGETSIZE_MAX
-				g->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+		// Accordion: als 1 sectie open gaat, sluiten alle andere
+		connect(group, &QGroupBox::toggled, this, [this, group, mutationGroups](bool checked) {
+			// Als deze group wordt GEOPEND, sluit alle ANDERE groups
+			if (checked) {
+				for (QGroupBox *other : mutationGroups) {
+					if (other != group && other->isChecked()) {
+						other->setChecked(false);
+					}
+				}
 			}
-			else
-			{
-				g->setMaximumHeight(22); // alleen titelbar
-				g->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-			}
-		};
 
-		connect(group, &QGroupBox::toggled, this, [group, collapseGroup](bool checked) {
-			collapseGroup(group, checked);
+			// Pas de hoogte aan
+			int height = checked ? 16777215 : 28; // 28px voor titelbar
+			group->setMaximumHeight(height);
+			group->setSizePolicy(QSizePolicy::Expanding, 
+			                    checked ? QSizePolicy::Preferred : QSizePolicy::Fixed);
 		});
 
-		connect(group, &QGroupBox::toggled, this, &cDockMutationTab::UpdateMutationGrayOut);
-
 		// Initieel instellen
-		collapseGroup(group, group->isChecked());
+		group->setMaximumHeight(group->isChecked() ? 16777215 : 28);
+		group->setSizePolicy(QSizePolicy::Expanding, 
+		                    group->isChecked() ? QSizePolicy::Preferred : QSizePolicy::Fixed);
 	}
 
 	connect(ui->pushButton_mutation_reset, &QPushButton::clicked, this,
