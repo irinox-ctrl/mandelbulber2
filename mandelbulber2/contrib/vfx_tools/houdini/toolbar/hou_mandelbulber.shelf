@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<shelfDocument>
+  <!-- This file contains definitions of shelves, toolbars, and tools.
+ It should not be hand-edited when it is being used by the application.
+ Note, that two definitions of the same element are not allowed in
+ a single file. -->
+
+  <toolshelf name="hou_mandelbulber" label="HOU Mandelbulber">
+    <memberTool name="reload_som_mandelbulber"/>
+    <memberTool name="import_anim"/>
+    <memberTool name="export_anim"/>
+    <memberTool name="create_render_dir"/>
+    <memberTool name="create_mdb_cam0"/>
+    <memberTool name="import_mdb_lights0"/>
+  </toolshelf>
+
+  <tool name="reload_som_mandelbulber" label="Reload Module" icon="SOP_python">
+    <script scriptType="python"><![CDATA[import hou_mandelbulber
+reload(hou_mandelbulber)]]></script>
+  </tool>
+
+  <tool name="import_anim" label="Import Animation" icon="ROP_channel">
+    <helpText><![CDATA["""Imports Animation from Mandelbulber .fract File"""]]></helpText>
+    <script scriptType="python"><![CDATA[import hou_mandelbulber
+
+hou_mandelbulber.import_animation()]]></script>
+  </tool>
+
+  <tool name="export_anim" label="Export Animation" icon="ROP_channel">
+    <helpText><![CDATA["""Exports edited Animation back to Mandelbulber .fract File"""]]></helpText>
+    <script scriptType="python"><![CDATA[import hou_mandelbulber
+
+hou_mandelbulber.export_animation()]]></script>
+  </tool>
+
+  <tool name="create_render_dir" label="Create Render Dir" icon="SOP_file">
+    <helpText><![CDATA["""Helper Tool to create non existent Render Directory, when editing the 'path for images' String in Mandelbulber. Mandelbulber does not create the Directory on render and throws an Error."""]]></helpText>
+    <script scriptType="python"><![CDATA[import hou_mandelbulber
+
+hou_mandelbulber.create_render_dir()]]></script>
+  </tool>
+
+  <tool name="create_mdb_cam0" label="Create MDB Cam" icon="OBJ_camera">
+    <helpText><![CDATA["""Recreates Houdini Camera from rendered Mandelbulber .exr Sequence using .exr Metadata. Sets up Scene Animation Range based on Sequence. Supports Perspective, Stereo, Equirectangular and Stereo Equirectangular Cameras."""]]></helpText>
+    <script scriptType="python"><![CDATA[import hou_mandelbulber
+
+hou_mandelbulber.create_cam()]]></script>
+  </tool>
+
+  <tool name="import_mdb_lights0" label="Import MDB Lights" icon="OBJ_light">
+    <script scriptType="python"><![CDATA[import hou_mandelbulber
+
+hou_mandelbulber.import_lights()]]></script>
+  </tool>
+</shelfDocument>
