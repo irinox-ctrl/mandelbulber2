@@ -97,7 +97,7 @@ cMaterial::cMaterial()
 	roughSurface = false;
 	insideColoringEnable = false;
 	subsurfaceScattering = false;
-	surfaceGradientEnable = false;
+	surfaceGradientEnable = true;
 	specularGradientEnable = false;
 	diffuseGradientEnable = false;
 	luminosityGradientEnable = false;
