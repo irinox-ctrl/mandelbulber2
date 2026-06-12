@@ -126,6 +126,33 @@ void cDockMutationTab::Init(int _tabIndex)
 			if (checked) {
 				for (QGroupBox *other : mutationGroups) {
 					if (other != group && other->isChecked()) {
+						other->blockSignals(true);
+						other->setChecked(false);
+						other->blockSignals(false);
+					}
+				}
+			}
+
+			// Pas de hoogte aan
+			int height = checked ? 16777215 : 28; // 28px voor titelbar
+			group->setMaximumHeight(height);
+			group->setSizePolicy(QSizePolicy::Expanding,
+			                    checked ? QSizePolicy::Preferred : QSizePolicy::Fixed);
+		});
+
+		// Initieel instellen
+		group->setMaximumHeight(group->isChecked() ? 16777215 : 28);
+		group->setSizePolicy(QSizePolicy::Expanding,
+		                    group->isChecked() ? QSizePolicy::Preferred : QSizePolicy::Fixed);
+	}
+		if (!group) continue;
+
+		// Accordion: als 1 sectie open gaat, sluiten alle andere
+		connect(group, &QGroupBox::toggled, this, [this, group, mutationGroups](bool checked) {
+			// Als deze group wordt GEOPEND, sluit alle ANDERE groups
+			if (checked) {
+				for (QGroupBox *other : mutationGroups) {
+					if (other != group && other->isChecked()) {
 						other->setChecked(false);
 					}
 				}
