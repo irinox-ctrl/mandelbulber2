@@ -121,24 +121,16 @@ void cDockMutationTab::Init(int _tabIndex)
 		if (!group) continue;
 
 		// Accordion: gebruik setMaximumHeight zodat layout echt krimpt
-		// Als 1 sectie open gaat, sluiten alle andere secties
-		auto collapseGroup = [this, mutationGroups](QGroupBox *g, bool open) {
+		// Gesloten = alleen titelbar (20px), open = geen limiet
+		auto collapseGroup = [](QGroupBox *g, bool open) {
 			if (open)
 			{
-				// Sluit alle andere secties als deze open gaat
-				for (QGroupBox *other : mutationGroups) {
-					if (other != g && other->isChecked()) {
-						other->blockSignals(true);
-						other->setChecked(false);
-						other->blockSignals(false);
-					}
-				}
-				g->setMaximumHeight(16777215);
+				g->setMaximumHeight(16777215); // QWIDGETSIZE_MAX
 				g->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
 			}
 			else
 			{
-				g->setMaximumHeight(28);
+				g->setMaximumHeight(22); // alleen titelbar
 				g->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 			}
 		};
@@ -151,32 +143,6 @@ void cDockMutationTab::Init(int _tabIndex)
 
 		// Initieel instellen
 		collapseGroup(group, group->isChecked());
-	}
-	}
-		if (!group) continue;
-
-		// Accordion: als 1 sectie open gaat, sluiten alle andere
-		connect(group, &QGroupBox::toggled, this, [this, group, mutationGroups](bool checked) {
-			// Als deze group wordt GEOPEND, sluit alle ANDERE groups
-			if (checked) {
-				for (QGroupBox *other : mutationGroups) {
-					if (other != group && other->isChecked()) {
-						other->setChecked(false);
-					}
-				}
-			}
-
-			// Pas de hoogte aan
-			int height = checked ? 16777215 : 28; // 28px voor titelbar
-			group->setMaximumHeight(height);
-			group->setSizePolicy(QSizePolicy::Expanding, 
-			                    checked ? QSizePolicy::Preferred : QSizePolicy::Fixed);
-		});
-
-		// Initieel instellen
-		group->setMaximumHeight(group->isChecked() ? 16777215 : 28);
-		group->setSizePolicy(QSizePolicy::Expanding, 
-		                    group->isChecked() ? QSizePolicy::Preferred : QSizePolicy::Fixed);
 	}
 
 	connect(ui->pushButton_mutation_reset, &QPushButton::clicked, this,
