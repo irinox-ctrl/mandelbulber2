@@ -120,6 +120,40 @@ void cDockMutationTab::Init(int _tabIndex)
 	{
 		if (!group) continue;
 
+		// Accordion: gebruik setMaximumHeight zodat layout echt krimpt
+		// Als 1 sectie open gaat, sluiten alle andere secties
+		auto collapseGroup = [this, mutationGroups](QGroupBox *g, bool open) {
+			if (open)
+			{
+				// Sluit alle andere secties als deze open gaat
+				for (QGroupBox *other : mutationGroups) {
+					if (other != g && other->isChecked()) {
+						other->blockSignals(true);
+						other->setChecked(false);
+						other->blockSignals(false);
+					}
+				}
+				g->setMaximumHeight(16777215); // QWIDGETSIZE_MAX
+				g->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+			}
+			else
+			{
+				g->setMaximumHeight(28); // alleen titelbar (22 was te klein)
+				g->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+			}
+		};
+
+		connect(group, &QGroupBox::toggled, this, [group, collapseGroup](bool checked) {
+			collapseGroup(group, checked);
+		});
+
+		connect(group, &QGroupBox::toggled, this, &cDockMutationTab::UpdateMutationGrayOut);
+
+		// Initieel instellen
+		collapseGroup(group, group->isChecked());
+	}
+		if (!group) continue;
+
 		// Accordion: als 1 sectie open gaat, sluiten alle andere
 		connect(group, &QGroupBox::toggled, this, [this, group, mutationGroups](bool checked) {
 			// Als deze group wordt GEOPEND, sluit alle ANDERE groups
