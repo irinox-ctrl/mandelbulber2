@@ -1,0 +1,3362 @@
+<?xml version='1.0' encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>483</width>
+    <height>802</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>2</number>
+   </property>
+   <property name="leftMargin">
+    <number>2</number>
+   </property>
+   <property name="topMargin">
+    <number>2</number>
+   </property>
+   <property name="rightMargin">
+    <number>2</number>
+   </property>
+   <property name="bottomMargin">
+    <number>2</number>
+   </property>
+   <item>
+    <layout class="QGridLayout" name="gridLayout">
+     <property name="spacing">
+      <number>2</number>
+     </property>
+     <item row="0" column="0" colspan="3">
+      <widget class="QLabel" name="label_section_transform">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>26</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>26</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgba(55, 138, 221, 35); color: #215284; font-weight: bold; font-size: 11px; font-family: 'Segoe UI', 'Ubuntu', sans-serif; letter-spacing: 2px; padding-left: 10px; border-left: 4px solid #378ADD; border-bottom: 1px solid rgba(55, 138, 221, 80);</string>
+       </property>
+       <property name="text">
+        <string>TRANSFORM</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0" colspan="3">
+      <widget class="QLabel" name="label_section_repeat">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>26</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>26</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgba(29, 158, 117, 35); color: #115E46; font-weight: bold; font-size: 11px; font-family: 'Segoe UI', 'Ubuntu', sans-serif; letter-spacing: 2px; padding-left: 10px; border-left: 4px solid #1D9E75; border-bottom: 1px solid rgba(29, 158, 117, 80);</string>
+       </property>
+       <property name="text">
+        <string>REPEAT</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0" colspan="3">
+      <widget class="QLabel" name="label_section_cloner">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>26</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>26</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgba(216, 90, 48, 35); color: #81361C; font-weight: bold; font-size: 11px; font-family: 'Segoe UI', 'Ubuntu', sans-serif; letter-spacing: 2px; padding-left: 10px; border-left: 4px solid #D85A30; border-bottom: 1px solid rgba(216, 90, 48, 80);</string>
+       </property>
+       <property name="text">
+        <string>CLONER</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0" colspan="3">
+      <widget class="QLabel" name="label_section_boolean">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>26</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>26</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgba(127, 119, 221, 35); color: #4C4784; font-weight: bold; font-size: 11px; font-family: 'Segoe UI', 'Ubuntu', sans-serif; letter-spacing: 2px; padding-left: 10px; border-left: 4px solid #7F77DD; border-bottom: 1px solid rgba(127, 119, 221, 80);</string>
+       </property>
+       <property name="text">
+        <string>BOOLEAN</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0" colspan="3">
+      <widget class="QLabel" name="label_section_emissie">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>26</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>26</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgba(186, 117, 23, 35); color: #6F460D; font-weight: bold; font-size: 11px; font-family: 'Segoe UI', 'Ubuntu', sans-serif; letter-spacing: 2px; padding-left: 10px; border-left: 4px solid #BA7517; border-bottom: 1px solid rgba(186, 117, 23, 80);</string>
+       </property>
+       <property name="text">
+        <string>EMISSIE</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="0">
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>Object ID</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="2">
+      <widget class="MySpinBox" name="spinboxInt_object_id">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="maximum">
+        <number>99999</number>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="0" colspan="3">
+      <widget class="QLabel" name="label_section_boolean">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>26</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>26</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgba(127, 119, 221, 35); color: #4C4784; font-weight: bold; font-size: 11px; font-family: 'Segoe UI', 'Ubuntu', sans-serif; letter-spacing: 2px; padding-left: 10px; border-left: 4px solid #7F77DD; border-bottom: 1px solid rgba(127, 119, 221, 80);</string>
+       </property>
+       <property name="text">
+        <string>BOOLEAN</string>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="0">
+      <widget class="QLabel" name="label_21">
+       <property name="text">
+        <string>Boolean operator:</string>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="1" colspan="2">
+      <widget class="MyComboBox" name="comboBox_boolean_operator">
+       <item>
+        <property name="text">
+         <string>AND (Intersection)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>OR (Union)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>SUB (Complement)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>rev SUB (B-A)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Smooth OR</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Smooth AND</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Smooth SUB</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="8" column="0">
+      <widget class="QLabel" name="label_22">
+       <property name="text">
+        <string>Calculation order:</string>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="8" column="2">
+      <widget class="MySpinBox" name="spinboxInt_calculation_order">
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>9999</number>
+       </property>
+      </widget>
+     </item>
+     <item row="9" column="0" colspan="3">
+      <widget class="MyGroupBox" name="groupCheck_smooth_de_combine_enable">
+       <property name="title">
+        <string>Smooth DE combine</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_4">
+        <property name="spacing">
+         <number>2</number>
+        </property>
+        <item row="5" column="0">
+         <widget class="QLabel" name="label_306">
+          <property name="text">
+           <string>Smooth distance:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="1">
+         <widget class="MyLineEdit" name="logedit_smooth_de_combine_distance" />
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item row="10" column="0" colspan="3">
+      <widget class="QLabel" name="label_section_transform">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>26</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>26</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgba(55, 138, 221, 35); color: #215284; font-weight: bold; font-size: 11px; font-family: 'Segoe UI', 'Ubuntu', sans-serif; letter-spacing: 2px; padding-left: 10px; border-left: 4px solid #378ADD; border-bottom: 1px solid rgba(55, 138, 221, 80);</string>
+       </property>
+       <property name="text">
+        <string>TRANSFORM</string>
+       </property>
+      </widget>
+     </item>
+     <item row="11" column="0">
+      <widget class="QLabel" name="label_10">
+       <property name="text">
+        <string>Position:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="11" column="1">
+      <widget class="QLabel" name="label_11">
+       <property name="text">
+        <string>x:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="11" column="2">
+      <widget class="MyLineEdit" name="vect3_position_x" />
+     </item>
+     <item row="12" column="1">
+      <widget class="QLabel" name="label_12">
+       <property name="text">
+        <string>y:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="12" column="2">
+      <widget class="MyLineEdit" name="vect3_position_y" />
+     </item>
+     <item row="13" column="1">
+      <widget class="QLabel" name="label_13">
+       <property name="text">
+        <string>z:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="13" column="2">
+      <widget class="MyLineEdit" name="vect3_position_z" />
+     </item>
+     <item row="14" column="0">
+      <widget class="QLabel" name="label_7">
+       <property name="text">
+        <string>Radius:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="14" column="2">
+      <widget class="MyLineEdit" name="logedit_radius" />
+     </item>
+     <item row="15" column="0">
+      <widget class="QLabel" name="label_8">
+       <property name="text">
+        <string>Height:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="15" column="2">
+      <widget class="MyLineEdit" name="logedit_height" />
+     </item>
+     <item row="27" column="0">
+      <widget class="QLabel" name="label_x_rotation">
+       <property name="text">
+        <string>X-axis rotation:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="27" column="2">
+      <widget class="MyDoubleSpinBox" name="spinboxd3_rotation_x">
+       <property name="decimals">
+        <number>2</number>
+       </property>
+       <property name="minimum">
+        <double>-36000.000000000000000</double>
+       </property>
+       <property name="maximum">
+        <double>36000.000000000000000</double>
+       </property>
+       <property name="singleStep">
+        <double>0.100000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="31" column="1">
+      <widget class="QLabel" name="label_scale_y">
+       <property name="text">
+        <string>y:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="31" column="2">
+      <widget class="MyLineEdit" name="vect3_scale_y">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+     <item row="32" column="1">
+      <widget class="QLabel" name="label_scale_z">
+       <property name="text">
+        <string>z:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="32" column="2">
+      <widget class="MyLineEdit" name="vect3_scale_z">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+     <item row="33" column="0" colspan="3">
+      <widget class="QLabel" name="label_section_repeat">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>26</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>26</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgba(29, 158, 117, 35); color: #115E46; font-weight: bold; font-size: 11px; font-family: 'Segoe UI', 'Ubuntu', sans-serif; letter-spacing: 2px; padding-left: 10px; border-left: 4px solid #1D9E75; border-bottom: 1px solid rgba(29, 158, 117, 80);</string>
+       </property>
+       <property name="text">
+        <string>REPEAT</string>
+       </property>
+      </widget>
+     </item>
+     <item row="34" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Repeat</string>
+       </property>
+      </widget>
+     </item>
+     <item row="34" column="0">
+      <widget class="QLabel" name="label_repeat_mode">
+       <property name="text">
+        <string>Repeat mode:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="34" column="2">
+      <widget class="MyComboBox" name="comboBox_repeat_mode">
+       <item>
+        <property name="text">
+         <string>Linear</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Mirror</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Rotation</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Fibonacci</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Brick</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Random</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Scale</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Honeycomb</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>RadialMirror</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Twist</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Shell</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>RadialGrid</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Spiral</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Wave</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Spherical</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>ProgressiveScale</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>MirrorGrid</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Kaleidoscope</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>VoronoiScatter</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>FractalTree</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Cylindrical</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+      <item row="34" column="1">
+      <widget class="QLabel" name="label_repeat_x_2">
+       <property name="text">
+        <string>x:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="34" column="2">
+      <widget class="MyLineEdit" name="vect3_repeat_x" />
+     </item>
+     <item row="35" column="1">
+      <widget class="QLabel" name="label_repeat_y_2">
+       <property name="text">
+        <string>y:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="35" column="2">
+      <widget class="MyLineEdit" name="vect3_repeat_y" />
+     </item>
+     <item row="36" column="1">
+      <widget class="QLabel" name="label_repeat_z_2">
+       <property name="text">
+        <string>z:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="36" column="2">
+      <widget class="MyLineEdit" name="vect3_repeat_z" />
+     </item>
+     <item row="37" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>Wall thickness:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="37" column="2">
+      <widget class="MyLineEdit" name="logedit_wall_thickness" />
+     </item>
+     <item row="38" column="0" colspan="3">
+      <widget class="MyCheckBox" name="checkBox_empty">
+       <property name="text">
+        <string>Empty inside</string>
+       </property>
+      </widget>
+     </item>
+     <item row="39" column="0" colspan="3">
+      <widget class="MyGroupBox" name="groupCheck_limits_enable">
+       <property name="title">
+        <string>Bounding box</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_5">
+        <property name="spacing">
+         <number>2</number>
+        </property>
+        <item row="5" column="1">
+         <widget class="QLabel" name="label_307">
+          <property name="text">
+           <string>Min</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="2">
+         <widget class="QLabel" name="label_308">
+          <property name="text">
+           <string>x:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="3">
+         <widget class="MyLineEdit" name="vect3_limits_min_x" />
+        </item>
+        <item row="7" column="2">
+         <widget class="QLabel" name="label_309">
+          <property name="text">
+           <string>y:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="3">
+         <widget class="MyLineEdit" name="vect3_limits_min_y" />
+        </item>
+        <item row="8" column="2">
+         <widget class="QLabel" name="label_310">
+          <property name="text">
+           <string>z:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="8" column="3">
+         <widget class="MyLineEdit" name="vect3_limits_min_z" />
+        </item>
+        <item row="9" column="2">
+         <widget class="QLabel" name="label_312">
+          <property name="text">
+           <string>x:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="9" column="3">
+         <widget class="MyLineEdit" name="vect3_limits_max_x" />
+        </item>
+        <item row="9" column="1">
+         <widget class="QLabel" name="label_311">
+          <property name="text">
+           <string>Max</string>
+          </property>
+         </widget>
+        </item>
+        <item row="11" column="2">
+         <widget class="QLabel" name="label_313">
+          <property name="text">
+           <string>y:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="11" column="3">
+         <widget class="MyLineEdit" name="vect3_limits_max_y" />
+        </item>
+        <item row="12" column="2">
+         <widget class="QLabel" name="label_314">
+          <property name="text">
+           <string>z:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="12" column="3">
+         <widget class="MyLineEdit" name="vect3_limits_max_z" />
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item row="41" column="0" colspan="3">
+      <widget class="QLabel" name="label_section_material">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>26</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>26</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgba(201, 122, 31, 35); color: #784912; font-weight: bold; font-size: 11px; font-family: 'Segoe UI', 'Ubuntu', sans-serif; letter-spacing: 2px; padding-left: 10px; border-left: 4px solid #C97A1F; border-bottom: 1px solid rgba(201, 122, 31, 80);</string>
+       </property>
+       <property name="text">
+        <string>MATERIAL</string>
+       </property>
+      </widget>
+     </item>
+     <item row="42" column="0">
+      <widget class="QLabel" name="label_20">
+       <property name="text">
+        <string>Material:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="42" column="1" colspan="2">
+      <widget class="cMaterialSelector" name="materialselector_material_id" native="true" />
+     </item>
+     <item row="43" column="0" rowspan="3">
+      <widget class="QLabel" name="label_align_p1">
+       <property name="text">
+        <string>Align P1:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="43" column="1">
+      <widget class="QLabel" name="label_align_p1_x">
+       <property name="text">
+        <string>x</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="43" column="2">
+      <widget class="MyLineEdit" name="vect3_align_p1_x">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+     <item row="44" column="1">
+      <widget class="QLabel" name="label_align_p1_y">
+       <property name="text">
+        <string>y</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="44" column="2">
+      <widget class="MyLineEdit" name="vect3_align_p1_y">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+     <item row="45" column="1">
+      <widget class="QLabel" name="label_align_p1_z">
+       <property name="text">
+        <string>z</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="45" column="2">
+      <widget class="MyLineEdit" name="vect3_align_p1_z">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+     <item row="46" column="0" rowspan="3">
+      <widget class="QLabel" name="label_align_p2">
+       <property name="text">
+        <string>Align P2:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="46" column="1">
+      <widget class="QLabel" name="label_align_p2_x">
+       <property name="text">
+        <string>x</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="46" column="2">
+      <widget class="MyLineEdit" name="vect3_align_p2_x">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+     <item row="47" column="1">
+      <widget class="QLabel" name="label_align_p2_y">
+       <property name="text">
+        <string>y</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="47" column="2">
+      <widget class="MyLineEdit" name="vect3_align_p2_y">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+     <item row="48" column="1">
+      <widget class="QLabel" name="label_align_p2_z">
+       <property name="text">
+        <string>z</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="48" column="2">
+      <widget class="MyLineEdit" name="vect3_align_p2_z">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+     <item row="49" column="0" rowspan="3">
+      <widget class="QLabel" name="label_align_p3">
+       <property name="text">
+        <string>Align P3:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="49" column="1">
+      <widget class="QLabel" name="label_align_p3_x">
+       <property name="text">
+        <string>x</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="49" column="2">
+      <widget class="MyLineEdit" name="vect3_align_p3_x">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+     <item row="50" column="1">
+      <widget class="QLabel" name="label_align_p3_y">
+       <property name="text">
+        <string>y</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="50" column="2">
+      <widget class="MyLineEdit" name="vect3_align_p3_y">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+     <item row="51" column="1">
+      <widget class="QLabel" name="label_align_p3_z">
+       <property name="text">
+        <string>z</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="51" column="2">
+      <widget class="MyLineEdit" name="vect3_align_p3_z">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+     <item row="52" column="2">
+      <widget class="QPushButton" name="pushButton_pushButton_align_execute">
+       <property name="text">
+        <string>Align to plane</string>
+       </property>
+      </widget>
+     </item>
+     <item row="53" column="0" colspan="3">
+      <widget class="QLabel" name="label_section_emissie">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>26</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>26</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgba(186, 117, 23, 35); color: #6F460D; font-weight: bold; font-size: 11px; font-family: 'Segoe UI', 'Ubuntu', sans-serif; letter-spacing: 2px; padding-left: 10px; border-left: 4px solid #BA7517; border-bottom: 1px solid rgba(186, 117, 23, 80);</string>
+       </property>
+       <property name="text">
+        <string>EMISSIE</string>
+       </property>
+      </widget>
+     </item>
+     <item row="54" column="0" colspan="3">
+      <widget class="QLabel" name="label_section_emissie">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>26</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>26</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgba(186, 117, 23, 35); color: #6F460D; font-weight: bold; font-size: 11px; font-family: 'Segoe UI', 'Ubuntu', sans-serif; letter-spacing: 2px; padding-left: 10px; border-left: 4px solid #BA7517; border-bottom: 1px solid rgba(186, 117, 23, 80);</string>
+       </property>
+       <property name="text">
+        <string>EMISSIE</string>
+       </property>
+      </widget>
+     </item>
+     <item row="55" column="0">
+      <widget class="QLabel" name="label_emission_mode">
+       <property name="text">
+        <string>Emission mode:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="55" column="2">
+      <widget class="QComboBox" name="comboBox_emission_mode">
+       <item>
+        <property name="text">
+         <string>Off</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Visible + Light</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Light shape only</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="56" column="0">
+      <widget class="QLabel" name="label_emission_color">
+       <property name="text">
+        <string>Emission color:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="56" column="2">
+      <widget class="MyColorButton" name="colorButton_emission_color" />
+     </item>
+     <item row="57" column="0">
+      <widget class="QLabel" name="label_material_luminosity">
+       <property name="text">
+        <string>Emission intensity:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="57" column="2">
+      <widget class="MyLineEdit" name="logedit_material_luminosity" />
+     </item>
+     <item row="58" column="0" colspan="3">
+      <widget class="MyCheckBox" name="checkBox_mirror_x">
+       <property name="text">
+        <string>Mirror X</string>
+       </property>
+      </widget>
+     </item>
+     <item row="59" column="0" colspan="3">
+      <widget class="MyCheckBox" name="checkBox_mirror_y">
+       <property name="text">
+        <string>Mirror Y</string>
+       </property>
+      </widget>
+     </item>
+     <item row="60" column="0" colspan="3">
+      <widget class="MyCheckBox" name="checkBox_mirror_z">
+       <property name="text">
+        <string>Mirror Z</string>
+       </property>
+      </widget>
+     </item>
+     <item row="61" column="0">
+      <widget class="QLabel" name="label_pivot_preset">
+       <property name="text">
+        <string>Pivot preset:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="61" column="2">
+      <widget class="QComboBox" name="comboBox_pivot_preset">
+       <item>
+        <property name="text">
+         <string>Custom</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Center</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Bottom</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Top</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Front</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Back</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Left</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Right</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="62" column="0" colspan="3">
+      <widget class="MyCheckBox" name="checkBox_jitter_enable">
+       <property name="text">
+        <string>Jitter enable</string>
+       </property>
+      </widget>
+     </item>
+     <item row="63" column="0" rowspan="3">
+      <widget class="QLabel" name="label_jitter_position">
+       <property name="text">
+        <string>Jitter position:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="63" column="1">
+      <widget class="QLabel" name="label_jitter_position_x">
+       <property name="text">
+        <string>x</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="63" column="2">
+      <widget class="MyLineEdit" name="vect3_jitter_position_x">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+     <item row="64" column="1">
+      <widget class="QLabel" name="label_jitter_position_y">
+       <property name="text">
+        <string>y</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="64" column="2">
+      <widget class="MyLineEdit" name="vect3_jitter_position_y">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+     <item row="65" column="1">
+      <widget class="QLabel" name="label_jitter_position_z">
+       <property name="text">
+        <string>z</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="65" column="2">
+      <widget class="MyLineEdit" name="vect3_jitter_position_z">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+     <item row="66" column="0" rowspan="3">
+      <widget class="QLabel" name="label_jitter_rotation">
+       <property name="text">
+        <string>Jitter rotation:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="66" column="1">
+      <widget class="QLabel" name="label_jitter_rotation_x">
+       <property name="text">
+        <string>x</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="66" column="2">
+      <widget class="MyLineEdit" name="vect3_jitter_rotation_x">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+     <item row="67" column="1">
+      <widget class="QLabel" name="label_jitter_rotation_y">
+       <property name="text">
+        <string>y</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="67" column="2">
+      <widget class="MyLineEdit" name="vect3_jitter_rotation_y">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+     <item row="68" column="1">
+      <widget class="QLabel" name="label_jitter_rotation_z">
+       <property name="text">
+        <string>z</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="68" column="2">
+      <widget class="MyLineEdit" name="vect3_jitter_rotation_z">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+     <item row="69" column="0">
+      <widget class="QLabel" name="label_jitter_seed">
+       <property name="text">
+        <string>Jitter seed:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="69" column="2">
+      <widget class="MySpinBox" name="spinboxInt_jitter_seed" />
+     </item>
+     <item row="70" column="0" colspan="3">
+      <widget class="MyCheckBox" name="checkBox_bounds_enable">
+       <property name="text">
+        <string>Bounds clamp</string>
+       </property>
+      </widget>
+     </item>
+     <item row="71" column="0" rowspan="3">
+      <widget class="QLabel" name="label_bounds_min">
+       <property name="text">
+        <string>Bounds min:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="71" column="1">
+      <widget class="QLabel" name="label_bounds_min_x">
+       <property name="text">
+        <string>x</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="71" column="2">
+      <widget class="MyLineEdit" name="vect3_bounds_min_x">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+     <item row="72" column="1">
+      <widget class="QLabel" name="label_bounds_min_y">
+       <property name="text">
+        <string>y</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="72" column="2">
+      <widget class="MyLineEdit" name="vect3_bounds_min_y">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+     <item row="73" column="1">
+      <widget class="QLabel" name="label_bounds_min_z">
+       <property name="text">
+        <string>z</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="73" column="2">
+      <widget class="MyLineEdit" name="vect3_bounds_min_z">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+     <item row="74" column="0" rowspan="3">
+      <widget class="QLabel" name="label_bounds_max">
+       <property name="text">
+        <string>Bounds max:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="74" column="1">
+      <widget class="QLabel" name="label_bounds_max_x">
+       <property name="text">
+        <string>x</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="74" column="2">
+      <widget class="MyLineEdit" name="vect3_bounds_max_x">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+     <item row="75" column="1">
+      <widget class="QLabel" name="label_bounds_max_y">
+       <property name="text">
+        <string>y</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="75" column="2">
+      <widget class="MyLineEdit" name="vect3_bounds_max_y">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+     <item row="76" column="1">
+      <widget class="QLabel" name="label_bounds_max_z">
+       <property name="text">
+        <string>z</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="76" column="2">
+      <widget class="MyLineEdit" name="vect3_bounds_max_z">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+     <item row="77" column="0">
+      <widget class="QLabel" name="label_cloner">
+       <property name="text">
+        <string>Cloner:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="77" column="1" colspan="2">
+      <widget class="MyCheckBox" name="checkBox_cloner_enabled">
+       <property name="text">
+        <string>Enabled</string>
+       </property>
+      </widget>
+     </item>
+     <item row="78" column="0" colspan="3">
+      <widget class="QLabel" name="label_section_cloner">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>26</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>26</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgba(216, 90, 48, 35); color: #81361C; font-weight: bold; font-size: 11px; font-family: 'Segoe UI', 'Ubuntu', sans-serif; letter-spacing: 2px; padding-left: 10px; border-left: 4px solid #D85A30; border-bottom: 1px solid rgba(216, 90, 48, 80);</string>
+       </property>
+       <property name="text">
+        <string>CLONER</string>
+       </property>
+      </widget>
+     </item>
+     <item row="79" column="0">
+      <widget class="QLabel" name="label_cloner_count">
+       <property name="text">
+        <string>Cloner count:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="79" column="2">
+      <widget class="MySpinBox" name="spinboxInt_cloner_count" />
+     </item>
+     <item row="80" column="0" rowspan="3">
+      <widget class="QLabel" name="label_cloner_offset">
+       <property name="text">
+        <string>Cloner offset:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="80" column="1">
+      <widget class="QLabel" name="label_cloner_offset_x">
+       <property name="text">
+        <string>x</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="80" column="2">
+      <widget class="MyLineEdit" name="vect3_cloner_offset_x">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+     <item row="81" column="1">
+      <widget class="QLabel" name="label_cloner_offset_y">
+       <property name="text">
+        <string>y</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="81" column="2">
+      <widget class="MyLineEdit" name="vect3_cloner_offset_y">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+     <item row="82" column="1">
+      <widget class="QLabel" name="label_cloner_offset_z">
+       <property name="text">
+        <string>z</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="82" column="2">
+      <widget class="MyLineEdit" name="vect3_cloner_offset_z">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+     <item row="83" column="0" rowspan="3">
+      <widget class="QLabel" name="label_cloner_grid_count">
+       <property name="text">
+        <string>Grid count:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="83" column="1">
+      <widget class="QLabel" name="label_cloner_grid_count_x">
+       <property name="text">
+        <string>x</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="83" column="2">
+      <widget class="MyLineEdit" name="vect3_cloner_grid_count_x">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+     <item row="84" column="1">
+      <widget class="QLabel" name="label_cloner_grid_count_y">
+       <property name="text">
+        <string>y</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="84" column="2">
+      <widget class="MyLineEdit" name="vect3_cloner_grid_count_y">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+     <item row="85" column="1">
+      <widget class="QLabel" name="label_cloner_grid_count_z">
+       <property name="text">
+        <string>z</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="85" column="2">
+      <widget class="MyLineEdit" name="vect3_cloner_grid_count_z">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+     <item row="86" column="0" rowspan="3">
+      <widget class="QLabel" name="label_cloner_grid_size">
+       <property name="text">
+        <string>Grid size:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="86" column="1">
+      <widget class="QLabel" name="label_cloner_grid_size_x">
+       <property name="text">
+        <string>x</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="86" column="2">
+      <widget class="MyLineEdit" name="vect3_cloner_grid_size_x">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+     <item row="87" column="1">
+      <widget class="QLabel" name="label_cloner_grid_size_y">
+       <property name="text">
+        <string>y</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="87" column="2">
+      <widget class="MyLineEdit" name="vect3_cloner_grid_size_y">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+     <item row="88" column="1">
+      <widget class="QLabel" name="label_cloner_grid_size_z">
+       <property name="text">
+        <string>z</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="88" column="2">
+      <widget class="MyLineEdit" name="vect3_cloner_grid_size_z">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+     <item row="89" column="0">
+      <widget class="QLabel" name="label_cloner_radius">
+       <property name="text">
+        <string>Cloner radius:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="89" column="2">
+      <widget class="MyLineEdit" name="logedit_cloner_radius">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+     <item row="90" column="0">
+      <widget class="QLabel" name="label_cloner_start_angle">
+       <property name="text">
+        <string>Start angle:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="90" column="2">
+      <widget class="MyLineEdit" name="logedit_cloner_start_angle">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+     <item row="91" column="0">
+      <widget class="QLabel" name="label_cloner_end_angle">
+       <property name="text">
+        <string>End angle:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="91" column="2">
+      <widget class="MyLineEdit" name="logedit_cloner_end_angle">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+     <item row="92" column="0">
+      <widget class="QLabel" name="label_cloner_mode">
+       <property name="text">
+        <string>Cloner mode:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="92" column="2">
+      <widget class="QComboBox" name="comboBox_cloner_mode">
+       <item>
+        <property name="text">
+         <string>Linear</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Radial</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Grid</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="93" column="0">
+      <widget class="QLabel" name="label_cloner_plane">
+       <property name="text">
+        <string>Cloner plane:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="93" column="2">
+      <widget class="QComboBox" name="comboBox_cloner_plane">
+       <item>
+        <property name="text">
+         <string>XY</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>XZ</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>YZ</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="94" column="0" rowspan="3">
+      <widget class="QLabel" name="label_repeat_spiral_step">
+       <property name="text">
+        <string>Spiral step:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="94" column="1">
+      <widget class="QLabel" name="label_repeat_spiral_step_x">
+       <property name="text">
+        <string>x</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="94" column="2">
+      <widget class="MyDoubleSpinBox" name="spinboxd3_repeat_spiral_step_x" />
+     </item>
+     <item row="95" column="1">
+      <widget class="QLabel" name="label_repeat_spiral_step_y">
+       <property name="text">
+        <string>y</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="95" column="2">
+      <widget class="MyDoubleSpinBox" name="spinboxd3_repeat_spiral_step_y" />
+     </item>
+     <item row="96" column="1">
+      <widget class="QLabel" name="label_repeat_spiral_step_z">
+       <property name="text">
+        <string>z</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="96" column="2">
+      <widget class="MyDoubleSpinBox" name="spinboxd3_repeat_spiral_step_z" />
+     </item>
+     <item row="97" column="0" rowspan="3">
+      <widget class="QLabel" name="label_repeat_spiral_angle">
+       <property name="text">
+        <string>Spiral angle:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="97" column="1">
+      <widget class="QLabel" name="label_repeat_spiral_angle_x">
+       <property name="text">
+        <string>x</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="97" column="2">
+      <widget class="MyDoubleSpinBox" name="spinboxd3_repeat_spiral_angle_x" />
+     </item>
+     <item row="98" column="1">
+      <widget class="QLabel" name="label_repeat_spiral_angle_y">
+       <property name="text">
+        <string>y</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="98" column="2">
+      <widget class="MyDoubleSpinBox" name="spinboxd3_repeat_spiral_angle_y" />
+     </item>
+     <item row="99" column="1">
+      <widget class="QLabel" name="label_repeat_spiral_angle_z">
+       <property name="text">
+        <string>z</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="99" column="2">
+      <widget class="MyDoubleSpinBox" name="spinboxd3_repeat_spiral_angle_z" />
+     </item>
+     <item row="100" column="0" rowspan="3">
+      <widget class="QLabel" name="label_repeat_spiral_radius">
+       <property name="text">
+        <string>Spiral radius:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="100" column="1">
+      <widget class="QLabel" name="label_repeat_spiral_radius_x">
+       <property name="text">
+        <string>x</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="100" column="2">
+      <widget class="MyDoubleSpinBox" name="spinboxd3_repeat_spiral_radius_x" />
+     </item>
+     <item row="101" column="1">
+      <widget class="QLabel" name="label_repeat_spiral_radius_y">
+       <property name="text">
+        <string>y</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="101" column="2">
+      <widget class="MyDoubleSpinBox" name="spinboxd3_repeat_spiral_radius_y" />
+     </item>
+     <item row="102" column="1">
+      <widget class="QLabel" name="label_repeat_spiral_radius_z">
+       <property name="text">
+        <string>z</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="102" column="2">
+      <widget class="MyDoubleSpinBox" name="spinboxd3_repeat_spiral_radius_z" />
+     </item>
+     <item row="103" column="0" rowspan="3">
+      <widget class="QLabel" name="label_repeat_wave_amplitude">
+       <property name="text">
+        <string>Wave amplitude:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="103" column="1">
+      <widget class="QLabel" name="label_repeat_wave_amplitude_x">
+       <property name="text">
+        <string>x</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="103" column="2">
+      <widget class="MyDoubleSpinBox" name="spinboxd3_repeat_wave_amplitude_x" />
+     </item>
+     <item row="104" column="1">
+      <widget class="QLabel" name="label_repeat_wave_amplitude_y">
+       <property name="text">
+        <string>y</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="104" column="2">
+      <widget class="MyDoubleSpinBox" name="spinboxd3_repeat_wave_amplitude_y" />
+     </item>
+     <item row="105" column="1">
+      <widget class="QLabel" name="label_repeat_wave_amplitude_z">
+       <property name="text">
+        <string>z</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="105" column="2">
+      <widget class="MyDoubleSpinBox" name="spinboxd3_repeat_wave_amplitude_z" />
+     </item>
+     <item row="106" column="0" rowspan="3">
+      <widget class="QLabel" name="label_repeat_wave_frequency">
+       <property name="text">
+        <string>Wave frequency:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="106" column="1">
+      <widget class="QLabel" name="label_repeat_wave_frequency_x">
+       <property name="text">
+        <string>x</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="106" column="2">
+      <widget class="MyDoubleSpinBox" name="spinboxd3_repeat_wave_frequency_x" />
+     </item>
+     <item row="107" column="1">
+      <widget class="QLabel" name="label_repeat_wave_frequency_y">
+       <property name="text">
+        <string>y</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="107" column="2">
+      <widget class="MyDoubleSpinBox" name="spinboxd3_repeat_wave_frequency_y" />
+     </item>
+     <item row="108" column="1">
+      <widget class="QLabel" name="label_repeat_wave_frequency_z">
+       <property name="text">
+        <string>z</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="108" column="2">
+      <widget class="MyDoubleSpinBox" name="spinboxd3_repeat_wave_frequency_z" />
+     </item>
+     <item row="109" column="0" rowspan="3">
+      <widget class="QLabel" name="label_repeat_wave_phase">
+       <property name="text">
+        <string>Wave phase:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="109" column="1">
+      <widget class="QLabel" name="label_repeat_wave_phase_x">
+       <property name="text">
+        <string>x</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="109" column="2">
+      <widget class="MyDoubleSpinBox" name="spinboxd3_repeat_wave_phase_x" />
+     </item>
+     <item row="110" column="1">
+      <widget class="QLabel" name="label_repeat_wave_phase_y">
+       <property name="text">
+        <string>y</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="110" column="2">
+      <widget class="MyDoubleSpinBox" name="spinboxd3_repeat_wave_phase_y" />
+     </item>
+     <item row="111" column="1">
+      <widget class="QLabel" name="label_repeat_wave_phase_z">
+       <property name="text">
+        <string>z</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="111" column="2">
+      <widget class="MyDoubleSpinBox" name="spinboxd3_repeat_wave_phase_z" />
+     </item>
+     <item row="112" column="0">
+      <widget class="QLabel" name="label_repeat_wave_axis">
+       <property name="text">
+        <string>Wave axis:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="112" column="2">
+      <widget class="MySpinBox" name="spinboxInt_repeat_wave_axis" />
+     </item>
+     <item row="113" column="0">
+      <widget class="QLabel" name="label_repeat_spherical_count">
+       <property name="text">
+        <string>Spherical count:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="113" column="2">
+      <widget class="MySpinBox" name="spinboxInt_repeat_spherical_count" />
+     </item>
+     <item row="114" column="0" rowspan="3">
+      <widget class="QLabel" name="label_repeat_spherical_radius">
+       <property name="text">
+        <string>Spherical radius:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="114" column="1">
+      <widget class="QLabel" name="label_repeat_spherical_radius_x">
+       <property name="text">
+        <string>x</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="114" column="2">
+      <widget class="MyDoubleSpinBox" name="spinboxd3_repeat_spherical_radius_x" />
+     </item>
+     <item row="115" column="1">
+      <widget class="QLabel" name="label_repeat_spherical_radius_y">
+       <property name="text">
+        <string>y</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="115" column="2">
+      <widget class="MyDoubleSpinBox" name="spinboxd3_repeat_spherical_radius_y" />
+     </item>
+     <item row="116" column="1">
+      <widget class="QLabel" name="label_repeat_spherical_radius_z">
+       <property name="text">
+        <string>z</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="116" column="2">
+      <widget class="MyDoubleSpinBox" name="spinboxd3_repeat_spherical_radius_z" />
+     </item>
+     <item row="117" column="0" rowspan="3">
+      <widget class="QLabel" name="label_repeat_progressive_scale">
+       <property name="text">
+        <string>Progressive scale:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="117" column="1">
+      <widget class="QLabel" name="label_repeat_progressive_scale_x">
+       <property name="text">
+        <string>x</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="117" column="2">
+      <widget class="MyDoubleSpinBox" name="spinboxd3_repeat_progressive_scale_x" />
+     </item>
+     <item row="118" column="1">
+      <widget class="QLabel" name="label_repeat_progressive_scale_y">
+       <property name="text">
+        <string>y</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="118" column="2">
+      <widget class="MyDoubleSpinBox" name="spinboxd3_repeat_progressive_scale_y" />
+     </item>
+     <item row="119" column="1">
+      <widget class="QLabel" name="label_repeat_progressive_scale_z">
+       <property name="text">
+        <string>z</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="119" column="2">
+      <widget class="MyDoubleSpinBox" name="spinboxd3_repeat_progressive_scale_z" />
+     </item>
+     <item row="120" column="0">
+      <widget class="QLabel" name="label_repeat_progressive_axis">
+       <property name="text">
+        <string>Progressive axis:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="120" column="2">
+      <widget class="MySpinBox" name="spinboxInt_repeat_progressive_axis" />
+     </item>
+     <item row="121" column="0" colspan="3">
+      <widget class="MyCheckBox" name="checkBox_repeat_mirror_grid_x">
+       <property name="text">
+        <string>Mirror X cells</string>
+       </property>
+      </widget>
+     </item>
+     <item row="122" column="0" colspan="3">
+      <widget class="MyCheckBox" name="checkBox_repeat_mirror_grid_y">
+       <property name="text">
+        <string>Mirror Y cells</string>
+       </property>
+      </widget>
+     </item>
+     <item row="123" column="0" colspan="3">
+      <widget class="MyCheckBox" name="checkBox_repeat_mirror_grid_z">
+       <property name="text">
+        <string>Mirror Z cells</string>
+       </property>
+      </widget>
+     </item>
+     <item row="124" column="0">
+      <widget class="QLabel" name="label_repeat_kaleidoscope_segments">
+       <property name="text">
+        <string>Segments (2-32):</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="124" column="2">
+      <widget class="MyDoubleSpinBox" name="spinbox_repeat_kaleidoscope_segments" />
+     </item>
+     <item row="125" column="0" colspan="3">
+      <widget class="MyCheckBox" name="checkBox_repeat_kaleidoscope_mirror">
+       <property name="text">
+        <string>Mirror in sectors</string>
+       </property>
+      </widget>
+     </item>
+     <item row="126" column="0">
+      <widget class="QLabel" name="label_repeat_voronoi_seed">
+       <property name="text">
+        <string>Seed:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="126" column="2">
+      <widget class="MyDoubleSpinBox" name="spinbox_repeat_voronoi_seed" />
+     </item>
+     <item row="127" column="0">
+      <widget class="QLabel" name="label_repeat_tree_depth">
+       <property name="text">
+        <string>Depth (1-6):</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="127" column="2">
+      <widget class="MyDoubleSpinBox" name="spinbox_repeat_tree_depth" />
+     </item>
+     <item row="128" column="0">
+      <widget class="QLabel" name="label_repeat_cylindrical_count_theta">
+       <property name="text">
+        <string>Count Theta:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="128" column="2">
+      <widget class="MyDoubleSpinBox" name="spinbox_repeat_cylindrical_count_theta" />
+     </item>
+     <item row="129" column="0">
+      <widget class="QLabel" name="label_repeat_cylindrical_count_height">
+       <property name="text">
+        <string>Count Height:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="129" column="2">
+      <widget class="MyDoubleSpinBox" name="spinbox_repeat_cylindrical_count_height" />
+     </item>
+     <item row="130" column="0">
+      <widget class="QLabel" name="label_repeat_kaleidoscope_axis">
+       <property name="text">
+        <string>Kaleidoscope axis (0=X,1=Y,2=Z):</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="130" column="2">
+      <widget class="MySpinBox" name="spinboxInt_repeat_kaleidoscope_axis" />
+     </item>
+     <item row="131" column="0">
+      <widget class="QLabel" name="label_repeat_voronoi_cell_size">
+       <property name="text">
+        <string>Voronoi cell size:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="131" column="2">
+      <widget class="MyDoubleSpinBox" name="spinbox_repeat_voronoi_cell_size" />
+     </item>
+     <item row="132" column="0">
+      <widget class="QLabel" name="label_repeat_voronoi_jitter">
+       <property name="text">
+        <string>Voronoi jitter (0-1):</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="132" column="2">
+      <widget class="MyDoubleSpinBox" name="spinbox_repeat_voronoi_jitter" />
+     </item>
+     <item row="133" column="0">
+      <widget class="QLabel" name="label_repeat_tree_scale">
+       <property name="text">
+        <string>Tree branch scale:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="133" column="2">
+      <widget class="MyDoubleSpinBox" name="spinbox_repeat_tree_scale" />
+     </item>
+     <item row="134" column="0">
+      <widget class="QLabel" name="label_repeat_tree_angle">
+       <property name="text">
+        <string>Tree branch angle:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="134" column="2">
+      <widget class="MyDoubleSpinBox" name="spinbox_repeat_tree_angle" />
+     </item>
+     <item row="135" column="0">
+      <widget class="QLabel" name="label_repeat_tree_offset">
+       <property name="text">
+        <string>Tree branch offset:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="135" column="2">
+      <widget class="MyDoubleSpinBox" name="spinbox_repeat_tree_offset" />
+     </item>
+     <item row="136" column="0">
+      <widget class="QLabel" name="label_repeat_cylindrical_radius">
+       <property name="text">
+        <string>Cylindrical radius:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="136" column="2">
+      <widget class="MyDoubleSpinBox" name="spinbox_repeat_cylindrical_radius" />
+     </item>
+     <item row="137" column="0">
+      <widget class="QLabel" name="label_repeat_cylindrical_height">
+       <property name="text">
+        <string>Cylindrical height:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="137" column="2">
+      <widget class="MyDoubleSpinBox" name="spinbox_repeat_cylindrical_height" />
+     </item>
+    </layout>
+   </item>
+   <item row="43" column="0" colspan="3">
+    <widget class="MyGroupBox" name="groupCheck_emission_enabled">
+     <property name="title">
+      <string>Light Emission</string>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_emission">
+      <property name="leftMargin">
+       <number>2</number>
+      </property>
+      <property name="topMargin">
+       <number>2</number>
+      </property>
+      <property name="rightMargin">
+       <number>2</number>
+      </property>
+      <property name="bottomMargin">
+       <number>2</number>
+      </property>
+      <property name="spacing">
+       <number>2</number>
+      </property>
+      <item row="5" column="0" colspan="3">
+       <widget class="MyCheckBox" name="checkBox_emission_light_only">
+        <property name="text">
+         <string>Light only (hide primitive)</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="0">
+       <widget class="QLabel" name="label_emission_color">
+        <property name="text">
+         <string>Color:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="1" colspan="2">
+       <widget class="MyColorButton" name="colorButton_emission_color" native="true">
+        <property name="minimumSize">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="0">
+       <widget class="QLabel" name="label_emission_intensity">
+        <property name="text">
+         <string>Intensity:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="1" colspan="2">
+       <widget class="MyLineEdit" name="logedit_emission_intensity">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="0">
+       <widget class="QLabel" name="label_emission_decay">
+        <property name="text">
+         <string>Decay:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="1" colspan="2">
+       <widget class="MyComboBox" name="comboBox_emission_decay">
+        <item>
+         <property name="text">
+          <string>1/r (linear)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>1/r² (quadratic)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>1/r³ (cubic)</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="11" column="0">
+       <widget class="QLabel" name="label_emission_size">
+        <property name="text">
+         <string>Size:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="11" column="1" colspan="2">
+       <widget class="MyLineEdit" name="logedit_emission_size">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+       </widget>
+      </item>
+      <item row="12" column="0">
+       <widget class="MyCheckBox" name="checkBox_emission_cast_shadows">
+        <property name="text">
+         <string>Cast shadows</string>
+        </property>
+       </widget>
+      </item>
+      <item row="12" column="1">
+       <widget class="MyCheckBox" name="checkBox_emission_volumetric">
+        <property name="text">
+         <string>Volumetric</string>
+        </property>
+       </widget>
+      </item>
+      <item row="13" column="0">
+       <widget class="QLabel" name="label_emission_visibility">
+        <property name="text">
+         <string>Visibility:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="13" column="1" colspan="2">
+       <widget class="MyLineEdit" name="logedit_emission_visibility">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+       </widget>
+      </item>
+      <item row="14" column="0">
+       <widget class="QLabel" name="label_emission_samples">
+        <property name="text">
+         <string>Samples:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="14" column="1" colspan="2">
+       <widget class="MySpinBox" name="spinboxInt_emission_samples">
+        <property name="minimum">
+         <number>4</number>
+        </property>
+        <property name="maximum">
+         <number>64</number>
+        </property>
+        <property name="value">
+         <number>16</number>
+        </property>
+       </widget>
+      </item>
+      <item row="28" column="0" rowspan="3">
+       <widget class="QLabel" name="label_prim_scale">
+        <property name="text">
+         <string>Scale:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="28" column="1">
+       <widget class="QLabel" name="label_prim_scale_x">
+        <property name="text">
+         <string>x</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="28" column="2">
+       <widget class="MyLineEdit" name="vect3_prim_scale_x">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+       </widget>
+      </item>
+      <item row="29" column="1">
+       <widget class="QLabel" name="label_prim_scale_y">
+        <property name="text">
+         <string>y</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="29" column="2">
+       <widget class="MyLineEdit" name="vect3_prim_scale_y">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+       </widget>
+      </item>
+      <item row="30" column="1">
+       <widget class="QLabel" name="label_prim_scale_z">
+        <property name="text">
+         <string>z</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="30" column="2">
+       <widget class="MyLineEdit" name="vect3_prim_scale_z">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+       </widget>
+      </item>
+     <item row="201" column="0" rowspan="3">
+      <widget class="QLabel" name="label_pivot">
+       <property name="text">
+        <string>Pivot:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="201" column="1">
+      <widget class="QLabel" name="label_pivot_x">
+       <property name="text">
+        <string>x</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="201" column="2">
+      <widget class="MyLineEdit" name="vect3_pivot_x">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+     <item row="202" column="1">
+      <widget class="QLabel" name="label_pivot_y">
+       <property name="text">
+        <string>y</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="202" column="2">
+      <widget class="MyLineEdit" name="vect3_pivot_y">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+     <item row="203" column="1">
+      <widget class="QLabel" name="label_pivot_z">
+       <property name="text">
+        <string>z</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="203" column="2">
+      <widget class="MyLineEdit" name="vect3_pivot_z">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+     <item row="300" column="0">
+      <widget class="QLabel" name="label_deform_bend_enable">
+       <property name="text">
+        <string>Bend Enable:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="300" column="1" colspan="2">
+      <widget class="MyCheckBox" name="checkBox_deform_bend_enable">
+       <property name="toolTip">
+        <string>Enable bend deformation</string>
+       </property>
+      </widget>
+     </item>
+     <item row="301" column="0">
+      <widget class="QLabel" name="label_deform_bend_angle">
+       <property name="text">
+        <string>Bend Angle:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="301" column="1" colspan="2">
+      <widget class="MyDoubleSpinBox" name="spinboxd_deform_bend_angle">
+       <property name="toolTip">
+        <string>Bend angle in degrees</string>
+       </property>
+       <property name="decimals">
+        <number>1</number>
+       </property>
+       <property name="minimum">
+        <double>-360.0</double>
+       </property>
+       <property name="maximum">
+        <double>360.0</double>
+       </property>
+      </widget>
+     </item>
+     <item row="302" column="0">
+      <widget class="QLabel" name="label_deform_twist_enable">
+       <property name="text">
+        <string>Twist Enable:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="302" column="1" colspan="2">
+      <widget class="MyCheckBox" name="checkBox_deform_twist_enable">
+       <property name="toolTip">
+        <string>Enable twist deformation</string>
+       </property>
+      </widget>
+     </item>
+     <item row="303" column="0">
+      <widget class="QLabel" name="label_deform_twist_angle">
+       <property name="text">
+        <string>Twist Angle:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="303" column="1" colspan="2">
+      <widget class="MyDoubleSpinBox" name="spinboxd_deform_twist_angle">
+       <property name="toolTip">
+        <string>Twist amount (degrees per unit)</string>
+       </property>
+       <property name="decimals">
+        <number>1</number>
+       </property>
+       <property name="minimum">
+        <double>-360.0</double>
+       </property>
+       <property name="maximum">
+        <double>360.0</double>
+       </property>
+      </widget>
+     </item>
+     <item row="304" column="0">
+      <widget class="QLabel" name="label_deform_taper_enable">
+       <property name="text">
+        <string>Taper Enable:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="304" column="1" colspan="2">
+      <widget class="MyCheckBox" name="checkBox_deform_taper_enable">
+       <property name="toolTip">
+        <string>Enable taper deformation</string>
+       </property>
+      </widget>
+     </item>
+     <item row="305" column="0">
+      <widget class="QLabel" name="label_deform_taper_rate">
+       <property name="text">
+        <string>Taper Rate:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="305" column="1" colspan="2">
+      <widget class="MyDoubleSpinBox" name="spinboxd_deform_taper_rate">
+       <property name="toolTip">
+        <string>Taper rate (scale change per unit)</string>
+       </property>
+       <property name="decimals">
+        <number>2</number>
+       </property>
+       <property name="minimum">
+        <double>-10.0</double>
+       </property>
+       <property name="maximum">
+        <double>10.0</double>
+       </property>
+      </widget>
+     </item>
+     </layout>
+    </widget>
+   </item>
+        <item row="306" column="0" colspan="3">
+      <widget class="Line" name="line_effector">
+       <property name="orientation"><enum>Qt::Horizontal</enum></property>
+      </widget>
+     </item>
+     <item row="307" column="0" colspan="3">
+      <widget class="QLabel" name="label_effectors">
+       <property name="text"><string>Effectors (MoGraph)</string></property>
+       <property name="styleSheet"><string notr="true">font-weight: bold;</string></property>
+      </widget>
+     </item>
+     <item row="308" column="0" colspan="3">
+      <widget class="QLabel" name="label_effector_1">
+       <property name="text"><string>Effector 1</string></property>
+      </widget>
+     </item>
+     <item row="309" column="0">
+      <widget class="QLabel" name="label_effector_1_type"><property name="text"><string>Type:</string></property></widget>
+     </item>
+     <item row="309" column="1" colspan="2">
+      <widget class="QComboBox" name="comboBox_effector_1_type">
+       <item><property name="text"><string>None</string></property></item>
+       <item><property name="text"><string>Random</string></property></item>
+       <item><property name="text"><string>Step</string></property></item>
+       <item><property name="text"><string>Formula</string></property></item>
+       <item><property name="text"><string>Time</string></property></item>
+      </widget>
+     </item>
+     <item row="310" column="0">
+      <widget class="QLabel" name="label_effector_1_enabled"><property name="text"><string>Enabled:</string></property></widget>
+     </item>
+     <item row="310" column="1" colspan="2">
+      <widget class="MyCheckBox" name="checkBox_effector_1_enabled"><property name="text"><string>Enabled</string></property></widget>
+     </item>
+     <item row="311" column="0">
+      <widget class="QLabel" name="label_effector_1_mode"><property name="text"><string>Mode:</string></property></widget>
+     </item>
+     <item row="311" column="1" colspan="2">
+      <widget class="QComboBox" name="comboBox_effector_1_mode">
+       <item><property name="text"><string>Position</string></property></item>
+       <item><property name="text"><string>Rotation</string></property></item>
+       <item><property name="text"><string>Scale</string></property></item>
+       <item><property name="text"><string>All</string></property></item>
+      </widget>
+     </item>
+     <item row="312" column="0">
+      <widget class="QLabel" name="label_effector_1_strength"><property name="text"><string>Strength:</string></property></widget>
+     </item>
+     <item row="312" column="1" colspan="2">
+      <widget class="MyDoubleSpinBox" name="spinboxd_effector_1_strength"><property name="decimals"><number>2</number></property></widget>
+     </item>
+     <item row="313" column="0">
+      <widget class="QLabel" name="label_effector_1_random_seed"><property name="text"><string>Seed:</string></property></widget>
+     </item>
+     <item row="313" column="1" colspan="2">
+      <widget class="MySpinBox" name="spinboxInt_effector_1_random_seed"><property name="maximum"><number>999999</number></property></widget>
+     </item>
+     <item row="314" column="0">
+      <widget class="QLabel" name="label_effector_1_random_position_amp_x"><property name="text"><string>Pos Amp X:</string></property></widget>
+     </item>
+     <item row="314" column="1" colspan="2">
+      <widget class="MyLineEdit" name="vect3_effector_1_random_position_amp_x"/>
+     </item>
+     <item row="315" column="0">
+      <widget class="QLabel" name="label_effector_1_random_position_amp_y"><property name="text"><string>Pos Amp Y:</string></property></widget>
+     </item>
+     <item row="315" column="1" colspan="2">
+      <widget class="MyLineEdit" name="vect3_effector_1_random_position_amp_y"/>
+     </item>
+     <item row="316" column="0">
+      <widget class="QLabel" name="label_effector_1_random_position_amp_z"><property name="text"><string>Pos Amp Z:</string></property></widget>
+     </item>
+     <item row="316" column="1" colspan="2">
+      <widget class="MyLineEdit" name="vect3_effector_1_random_position_amp_z"/>
+     </item>
+     <item row="317" column="0">
+      <widget class="QLabel" name="label_effector_1_random_rotation_amp_x"><property name="text"><string>Rot Amp X:</string></property></widget>
+     </item>
+     <item row="317" column="1" colspan="2">
+      <widget class="MyLineEdit" name="vect3_effector_1_random_rotation_amp_x"/>
+     </item>
+     <item row="318" column="0">
+      <widget class="QLabel" name="label_effector_1_random_rotation_amp_y"><property name="text"><string>Rot Amp Y:</string></property></widget>
+     </item>
+     <item row="318" column="1" colspan="2">
+      <widget class="MyLineEdit" name="vect3_effector_1_random_rotation_amp_y"/>
+     </item>
+     <item row="319" column="0">
+      <widget class="QLabel" name="label_effector_1_random_rotation_amp_z"><property name="text"><string>Rot Amp Z:</string></property></widget>
+     </item>
+     <item row="319" column="1" colspan="2">
+      <widget class="MyLineEdit" name="vect3_effector_1_random_rotation_amp_z"/>
+     </item>
+     <item row="320" column="0">
+      <widget class="QLabel" name="label_effector_1_random_scale_amp_x"><property name="text"><string>Scale Amp X:</string></property></widget>
+     </item>
+     <item row="320" column="1" colspan="2">
+      <widget class="MyLineEdit" name="vect3_effector_1_random_scale_amp_x"/>
+     </item>
+     <item row="321" column="0">
+      <widget class="QLabel" name="label_effector_1_random_scale_amp_y"><property name="text"><string>Scale Amp Y:</string></property></widget>
+     </item>
+     <item row="321" column="1" colspan="2">
+      <widget class="MyLineEdit" name="vect3_effector_1_random_scale_amp_y"/>
+     </item>
+     <item row="322" column="0">
+      <widget class="QLabel" name="label_effector_1_random_scale_amp_z"><property name="text"><string>Scale Amp Z:</string></property></widget>
+     </item>
+     <item row="322" column="1" colspan="2">
+      <widget class="MyLineEdit" name="vect3_effector_1_random_scale_amp_z"/>
+     </item>
+     <item row="323" column="0" colspan="3">
+      <widget class="QLabel" name="label_effector_2">
+       <property name="text"><string>Effector 2</string></property>
+      </widget>
+     </item>
+     <item row="324" column="0">
+      <widget class="QLabel" name="label_effector_2_type"><property name="text"><string>Type:</string></property></widget>
+     </item>
+     <item row="324" column="1" colspan="2">
+      <widget class="QComboBox" name="comboBox_effector_2_type">
+       <item><property name="text"><string>None</string></property></item>
+       <item><property name="text"><string>Random</string></property></item>
+       <item><property name="text"><string>Step</string></property></item>
+       <item><property name="text"><string>Formula</string></property></item>
+       <item><property name="text"><string>Time</string></property></item>
+      </widget>
+     </item>
+     <item row="325" column="0">
+      <widget class="QLabel" name="label_effector_2_enabled"><property name="text"><string>Enabled:</string></property></widget>
+     </item>
+     <item row="325" column="1" colspan="2">
+      <widget class="MyCheckBox" name="checkBox_effector_2_enabled"><property name="text"><string>Enabled</string></property></widget>
+     </item>
+     <item row="326" column="0">
+      <widget class="QLabel" name="label_effector_2_mode"><property name="text"><string>Mode:</string></property></widget>
+     </item>
+     <item row="326" column="1" colspan="2">
+      <widget class="QComboBox" name="comboBox_effector_2_mode">
+       <item><property name="text"><string>Position</string></property></item>
+       <item><property name="text"><string>Rotation</string></property></item>
+       <item><property name="text"><string>Scale</string></property></item>
+       <item><property name="text"><string>All</string></property></item>
+      </widget>
+     </item>
+     <item row="327" column="0">
+      <widget class="QLabel" name="label_effector_2_strength"><property name="text"><string>Strength:</string></property></widget>
+     </item>
+     <item row="327" column="1" colspan="2">
+      <widget class="MyDoubleSpinBox" name="spinboxd_effector_2_strength"><property name="decimals"><number>2</number></property></widget>
+     </item>
+     <item row="328" column="0">
+      <widget class="QLabel" name="label_effector_2_random_seed"><property name="text"><string>Seed:</string></property></widget>
+     </item>
+     <item row="328" column="1" colspan="2">
+      <widget class="MySpinBox" name="spinboxInt_effector_2_random_seed"><property name="maximum"><number>999999</number></property></widget>
+     </item>
+     <item row="329" column="0">
+      <widget class="QLabel" name="label_effector_2_random_position_amp_x"><property name="text"><string>Pos Amp X:</string></property></widget>
+     </item>
+     <item row="329" column="1" colspan="2">
+      <widget class="MyLineEdit" name="vect3_effector_2_random_position_amp_x"/>
+     </item>
+     <item row="330" column="0">
+      <widget class="QLabel" name="label_effector_2_random_position_amp_y"><property name="text"><string>Pos Amp Y:</string></property></widget>
+     </item>
+     <item row="330" column="1" colspan="2">
+      <widget class="MyLineEdit" name="vect3_effector_2_random_position_amp_y"/>
+     </item>
+     <item row="331" column="0">
+      <widget class="QLabel" name="label_effector_2_random_position_amp_z"><property name="text"><string>Pos Amp Z:</string></property></widget>
+     </item>
+     <item row="331" column="1" colspan="2">
+      <widget class="MyLineEdit" name="vect3_effector_2_random_position_amp_z"/>
+     </item>
+     <item row="332" column="0">
+      <widget class="QLabel" name="label_effector_2_random_rotation_amp_x"><property name="text"><string>Rot Amp X:</string></property></widget>
+     </item>
+     <item row="332" column="1" colspan="2">
+      <widget class="MyLineEdit" name="vect3_effector_2_random_rotation_amp_x"/>
+     </item>
+     <item row="333" column="0">
+      <widget class="QLabel" name="label_effector_2_random_rotation_amp_y"><property name="text"><string>Rot Amp Y:</string></property></widget>
+     </item>
+     <item row="333" column="1" colspan="2">
+      <widget class="MyLineEdit" name="vect3_effector_2_random_rotation_amp_y"/>
+     </item>
+     <item row="334" column="0">
+      <widget class="QLabel" name="label_effector_2_random_rotation_amp_z"><property name="text"><string>Rot Amp Z:</string></property></widget>
+     </item>
+     <item row="334" column="1" colspan="2">
+      <widget class="MyLineEdit" name="vect3_effector_2_random_rotation_amp_z"/>
+     </item>
+     <item row="335" column="0">
+      <widget class="QLabel" name="label_effector_2_random_scale_amp_x"><property name="text"><string>Scale Amp X:</string></property></widget>
+     </item>
+     <item row="335" column="1" colspan="2">
+      <widget class="MyLineEdit" name="vect3_effector_2_random_scale_amp_x"/>
+     </item>
+     <item row="336" column="0">
+      <widget class="QLabel" name="label_effector_2_random_scale_amp_y"><property name="text"><string>Scale Amp Y:</string></property></widget>
+     </item>
+     <item row="336" column="1" colspan="2">
+      <widget class="MyLineEdit" name="vect3_effector_2_random_scale_amp_y"/>
+     </item>
+     <item row="337" column="0">
+      <widget class="QLabel" name="label_effector_2_random_scale_amp_z"><property name="text"><string>Scale Amp Z:</string></property></widget>
+     </item>
+     <item row="337" column="1" colspan="2">
+      <widget class="MyLineEdit" name="vect3_effector_2_random_scale_amp_z"/>
+     </item>
+     <item row="338" column="0" colspan="3">
+      <widget class="QLabel" name="label_effector_3">
+       <property name="text"><string>Effector 3</string></property>
+      </widget>
+     </item>
+     <item row="339" column="0">
+      <widget class="QLabel" name="label_effector_3_type"><property name="text"><string>Type:</string></property></widget>
+     </item>
+     <item row="339" column="1" colspan="2">
+      <widget class="QComboBox" name="comboBox_effector_3_type">
+       <item><property name="text"><string>None</string></property></item>
+       <item><property name="text"><string>Random</string></property></item>
+       <item><property name="text"><string>Step</string></property></item>
+       <item><property name="text"><string>Formula</string></property></item>
+       <item><property name="text"><string>Time</string></property></item>
+      </widget>
+     </item>
+     <item row="340" column="0">
+      <widget class="QLabel" name="label_effector_3_enabled"><property name="text"><string>Enabled:</string></property></widget>
+     </item>
+     <item row="340" column="1" colspan="2">
+      <widget class="MyCheckBox" name="checkBox_effector_3_enabled"><property name="text"><string>Enabled</string></property></widget>
+     </item>
+     <item row="341" column="0">
+      <widget class="QLabel" name="label_effector_3_mode"><property name="text"><string>Mode:</string></property></widget>
+     </item>
+     <item row="341" column="1" colspan="2">
+      <widget class="QComboBox" name="comboBox_effector_3_mode">
+       <item><property name="text"><string>Position</string></property></item>
+       <item><property name="text"><string>Rotation</string></property></item>
+       <item><property name="text"><string>Scale</string></property></item>
+       <item><property name="text"><string>All</string></property></item>
+      </widget>
+     </item>
+     <item row="342" column="0">
+      <widget class="QLabel" name="label_effector_3_strength"><property name="text"><string>Strength:</string></property></widget>
+     </item>
+     <item row="342" column="1" colspan="2">
+      <widget class="MyDoubleSpinBox" name="spinboxd_effector_3_strength"><property name="decimals"><number>2</number></property></widget>
+     </item>
+     <item row="343" column="0">
+      <widget class="QLabel" name="label_effector_3_random_seed"><property name="text"><string>Seed:</string></property></widget>
+     </item>
+     <item row="343" column="1" colspan="2">
+      <widget class="MySpinBox" name="spinboxInt_effector_3_random_seed"><property name="maximum"><number>999999</number></property></widget>
+     </item>
+     <item row="344" column="0">
+      <widget class="QLabel" name="label_effector_3_random_position_amp_x"><property name="text"><string>Pos Amp X:</string></property></widget>
+     </item>
+     <item row="344" column="1" colspan="2">
+      <widget class="MyLineEdit" name="vect3_effector_3_random_position_amp_x"/>
+     </item>
+     <item row="345" column="0">
+      <widget class="QLabel" name="label_effector_3_random_position_amp_y"><property name="text"><string>Pos Amp Y:</string></property></widget>
+     </item>
+     <item row="345" column="1" colspan="2">
+      <widget class="MyLineEdit" name="vect3_effector_3_random_position_amp_y"/>
+     </item>
+     <item row="346" column="0">
+      <widget class="QLabel" name="label_effector_3_random_position_amp_z"><property name="text"><string>Pos Amp Z:</string></property></widget>
+     </item>
+     <item row="346" column="1" colspan="2">
+      <widget class="MyLineEdit" name="vect3_effector_3_random_position_amp_z"/>
+     </item>
+     <item row="347" column="0">
+      <widget class="QLabel" name="label_effector_3_random_rotation_amp_x"><property name="text"><string>Rot Amp X:</string></property></widget>
+     </item>
+     <item row="347" column="1" colspan="2">
+      <widget class="MyLineEdit" name="vect3_effector_3_random_rotation_amp_x"/>
+     </item>
+     <item row="348" column="0">
+      <widget class="QLabel" name="label_effector_3_random_rotation_amp_y"><property name="text"><string>Rot Amp Y:</string></property></widget>
+     </item>
+     <item row="348" column="1" colspan="2">
+      <widget class="MyLineEdit" name="vect3_effector_3_random_rotation_amp_y"/>
+     </item>
+     <item row="349" column="0">
+      <widget class="QLabel" name="label_effector_3_random_rotation_amp_z"><property name="text"><string>Rot Amp Z:</string></property></widget>
+     </item>
+     <item row="349" column="1" colspan="2">
+      <widget class="MyLineEdit" name="vect3_effector_3_random_rotation_amp_z"/>
+     </item>
+     <item row="350" column="0">
+      <widget class="QLabel" name="label_effector_3_random_scale_amp_x"><property name="text"><string>Scale Amp X:</string></property></widget>
+     </item>
+     <item row="350" column="1" colspan="2">
+      <widget class="MyLineEdit" name="vect3_effector_3_random_scale_amp_x"/>
+     </item>
+     <item row="351" column="0">
+      <widget class="QLabel" name="label_effector_3_random_scale_amp_y"><property name="text"><string>Scale Amp Y:</string></property></widget>
+     </item>
+     <item row="351" column="1" colspan="2">
+      <widget class="MyLineEdit" name="vect3_effector_3_random_scale_amp_y"/>
+     </item>
+     <item row="352" column="0">
+      <widget class="QLabel" name="label_effector_3_random_scale_amp_z"><property name="text"><string>Scale Amp Z:</string></property></widget>
+     </item>
+     <item row="352" column="1" colspan="2">
+      <widget class="MyLineEdit" name="vect3_effector_3_random_scale_amp_z"/>
+     </item>
+     <item row="353" column="0" colspan="3">
+      <widget class="QLabel" name="label_effector_4">
+       <property name="text"><string>Effector 4</string></property>
+      </widget>
+     </item>
+     <item row="354" column="0">
+      <widget class="QLabel" name="label_effector_4_type"><property name="text"><string>Type:</string></property></widget>
+     </item>
+     <item row="354" column="1" colspan="2">
+      <widget class="QComboBox" name="comboBox_effector_4_type">
+       <item><property name="text"><string>None</string></property></item>
+       <item><property name="text"><string>Random</string></property></item>
+       <item><property name="text"><string>Step</string></property></item>
+       <item><property name="text"><string>Formula</string></property></item>
+       <item><property name="text"><string>Time</string></property></item>
+      </widget>
+     </item>
+     <item row="355" column="0">
+      <widget class="QLabel" name="label_effector_4_enabled"><property name="text"><string>Enabled:</string></property></widget>
+     </item>
+     <item row="355" column="1" colspan="2">
+      <widget class="MyCheckBox" name="checkBox_effector_4_enabled"><property name="text"><string>Enabled</string></property></widget>
+     </item>
+     <item row="356" column="0">
+      <widget class="QLabel" name="label_effector_4_mode"><property name="text"><string>Mode:</string></property></widget>
+     </item>
+     <item row="356" column="1" colspan="2">
+      <widget class="QComboBox" name="comboBox_effector_4_mode">
+       <item><property name="text"><string>Position</string></property></item>
+       <item><property name="text"><string>Rotation</string></property></item>
+       <item><property name="text"><string>Scale</string></property></item>
+       <item><property name="text"><string>All</string></property></item>
+      </widget>
+     </item>
+     <item row="357" column="0">
+      <widget class="QLabel" name="label_effector_4_strength"><property name="text"><string>Strength:</string></property></widget>
+     </item>
+     <item row="357" column="1" colspan="2">
+      <widget class="MyDoubleSpinBox" name="spinboxd_effector_4_strength"><property name="decimals"><number>2</number></property></widget>
+     </item>
+     <item row="358" column="0">
+      <widget class="QLabel" name="label_effector_4_random_seed"><property name="text"><string>Seed:</string></property></widget>
+     </item>
+     <item row="358" column="1" colspan="2">
+      <widget class="MySpinBox" name="spinboxInt_effector_4_random_seed"><property name="maximum"><number>999999</number></property></widget>
+     </item>
+     <item row="359" column="0">
+      <widget class="QLabel" name="label_effector_4_random_position_amp_x"><property name="text"><string>Pos Amp X:</string></property></widget>
+     </item>
+     <item row="359" column="1" colspan="2">
+      <widget class="MyLineEdit" name="vect3_effector_4_random_position_amp_x"/>
+     </item>
+     <item row="360" column="0">
+      <widget class="QLabel" name="label_effector_4_random_position_amp_y"><property name="text"><string>Pos Amp Y:</string></property></widget>
+     </item>
+     <item row="360" column="1" colspan="2">
+      <widget class="MyLineEdit" name="vect3_effector_4_random_position_amp_y"/>
+     </item>
+     <item row="361" column="0">
+      <widget class="QLabel" name="label_effector_4_random_position_amp_z"><property name="text"><string>Pos Amp Z:</string></property></widget>
+     </item>
+     <item row="361" column="1" colspan="2">
+      <widget class="MyLineEdit" name="vect3_effector_4_random_position_amp_z"/>
+     </item>
+     <item row="362" column="0">
+      <widget class="QLabel" name="label_effector_4_random_rotation_amp_x"><property name="text"><string>Rot Amp X:</string></property></widget>
+     </item>
+     <item row="362" column="1" colspan="2">
+      <widget class="MyLineEdit" name="vect3_effector_4_random_rotation_amp_x"/>
+     </item>
+     <item row="363" column="0">
+      <widget class="QLabel" name="label_effector_4_random_rotation_amp_y"><property name="text"><string>Rot Amp Y:</string></property></widget>
+     </item>
+     <item row="363" column="1" colspan="2">
+      <widget class="MyLineEdit" name="vect3_effector_4_random_rotation_amp_y"/>
+     </item>
+     <item row="364" column="0">
+      <widget class="QLabel" name="label_effector_4_random_rotation_amp_z"><property name="text"><string>Rot Amp Z:</string></property></widget>
+     </item>
+     <item row="364" column="1" colspan="2">
+      <widget class="MyLineEdit" name="vect3_effector_4_random_rotation_amp_z"/>
+     </item>
+     <item row="365" column="0">
+      <widget class="QLabel" name="label_effector_4_random_scale_amp_x"><property name="text"><string>Scale Amp X:</string></property></widget>
+     </item>
+     <item row="365" column="1" colspan="2">
+      <widget class="MyLineEdit" name="vect3_effector_4_random_scale_amp_x"/>
+     </item>
+     <item row="366" column="0">
+      <widget class="QLabel" name="label_effector_4_random_scale_amp_y"><property name="text"><string>Scale Amp Y:</string></property></widget>
+     </item>
+     <item row="366" column="1" colspan="2">
+      <widget class="MyLineEdit" name="vect3_effector_4_random_scale_amp_y"/>
+     </item>
+     <item row="367" column="0">
+      <widget class="QLabel" name="label_effector_4_random_scale_amp_z"><property name="text"><string>Scale Amp Z:</string></property></widget>
+     </item>
+     <item row="367" column="1" colspan="2">
+      <widget class="MyLineEdit" name="vect3_effector_4_random_scale_amp_z"/>
+     </item>
+<item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>MyDoubleSpinBox</class>
+   <extends>QDoubleSpinBox</extends>
+   <header>my_double_spin_box.h</header>
+  </customwidget>
+  <customwidget>
+   <class>MyCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>my_check_box.h</header>
+  </customwidget>
+  <customwidget>
+   <class>MyLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>my_line_edit.h</header>
+  </customwidget>
+  <customwidget>
+   <class>cMaterialSelector</class>
+   <extends>QWidget</extends>
+   <header>material_selector.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>MyComboBox</class>
+   <extends>QComboBox</extends>
+   <header>my_combo_box.h</header>
+  </customwidget>
+  <customwidget>
+   <class>MySpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>my_spin_box.h</header>
+  </customwidget>
+  <customwidget>
+   <class>MyGroupBox</class>
+   <extends>QGroupBox</extends>
+   <header>my_group_box.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources />
+ <connections />
+</ui>

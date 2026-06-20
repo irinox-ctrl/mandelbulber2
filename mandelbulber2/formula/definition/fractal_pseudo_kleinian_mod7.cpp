@@ -1,0 +1,148 @@
+/**
+ * Mandelbulber v2, a 3D fractal generator  _%}}i*<.         ______
+ * Copyright (C) 2020 Mandelbulber Team   _>]|=||i=i<,      / ____/ __    __
+ *                                        \><||i|=>>%)     / /   __/ /___/ /_
+ * This file is part of Mandelbulber.     )<=i=]=|=i<>    / /__ /_  __/_  __/
+ * The project is licensed under GPLv3,   -<>>=|><|||`    \____/ /_/   /_/
+ * see also COPYING file in this folder.    ~+{i%+++
+ *
+ * Pseudo Kleinian Mod7, Knighty - Theli-at's Pseudo Kleinian (Scale 1 JuliaBox + Something
+ * @reference https://github.com/Syntopia/Fragmentarium/blob/master/
+ * Fragmentarium-Source/Examples/Knighty%20Collection/PseudoKleinian.frag
+ */
+
+#include "all_fractal_definitions.h"
+
+cFractalPseudoKleinianMod7::cFractalPseudoKleinianMod7() : cAbstractFractal()
+{
+	nameInComboBox = "Pseudo Kleinian - Mod 7";
+	internalName = "pseudo_kleinian_mod7";
+	internalID = fractal::pseudoKleinianMod7;
+	DEType = analyticDEType;
+	DEFunctionType = customDEFunction;
+	cpixelAddition = cpixelDisabledByDefault;
+	defaultBailout = 100.0;
+	DEAnalyticFunction = analyticFunctionCustomDE;
+	coloringFunction = coloringFunctionDefault;
+}
+
+void cFractalPseudoKleinianMod7::FormulaCode(
+	CVector4 &z, const sFractal *fractal, sExtendedAux &aux)
+{
+	double oldZz = z.z;
+	if (aux.i >= fractal->transformCommon.startIterationsF
+			&& aux.i < fractal->transformCommon.stopIterationsF)
+	{
+		z =
+			fabs(z + fractal->transformCommon.offset111) - fabs(z - fractal->transformCommon.offset111) - z;
+	}
+
+	CVector4 signs = z;
+	signs.x = sign(z.x);
+	signs.y = sign(z.y);
+	signs.z = sign(z.z);
+	signs.w = sign(z.w);
+	double k = 0.0;
+	if (aux.i >= fractal->transformCommon.startIterationsS
+			&& aux.i < fractal->transformCommon.stopIterationsS)
+	{
+		z = fabs(z);
+		CVector4 tt = z - fractal->mandelbox.offset;
+
+		double trr = tt.Dot(tt);
+		k = min(max(1.0 / trr, 1.0), 1.0 / fractal->transformCommon.offsetR0);
+
+		z += fractal->transformCommon.offsetA000;
+
+		z *= k;
+		aux.DE *= k;
+		z *= signs;
+	}
+
+	if (fractal->transformCommon.functionEnabledCFalse
+			&& aux.i >= fractal->transformCommon.startIterationsC
+			&& aux.i < fractal->transformCommon.stopIterationsC)
+		z.z = -z.z;
+
+	if (fractal->transformCommon.functionEnabledRFalse
+			&& aux.i >= fractal->transformCommon.startIterationsR
+			&& aux.i < fractal->transformCommon.stopIterationsR)
+		z = fractal->transformCommon.rotationMatrix.RotateVector(z);
+
+	// DE tweak
+	if (fractal->analyticDE.enabledFalse)
+		aux.DE = aux.DE * fractal->analyticDE.scale1 + fractal->analyticDE.offset0;
+
+	aux.pseudoKleinianDE = fractal->transformCommon.offsetA1; // for pkDE function
+
+	//	aux->dist = min(length(z.xy), fabs (z.z - fractal->transformCommon.offsetA0) )  / aux->DE-
+	//.001;
+
+	if (fractal->analyticDE.enabled && aux.i >= fractal->analyticDE.startIterationsA
+			&& aux.i < fractal->analyticDE.stopIterationsA) // customDE
+	{
+		double tx = z.x - fractal->transformCommon.offsetD0;
+		double ty = z.y - fractal->transformCommon.offsetD0;
+		double rxy = sqrt(tx * tx + ty * ty)
+				- fractal->transformCommon.offsetC0;
+
+		double tp = 0.0;
+		if (fractal->transformCommon.functionEnabledBFalse && aux.i >= fractal->transformCommon.startIterationsB
+				&& aux.i < fractal->transformCommon.stopIterationsB)
+		{
+			tp = min(rxy, fabs(z.z - fractal->transformCommon.offsetA0)) / aux.DE
+								 - fractal->transformCommon.offsetB0;
+
+			aux.DE0 = tp; // mmmmmmmmmmmmmmmmmmm
+			aux.dist = min(aux.dist, tp);
+		}
+		else // pk
+		{
+			double tp2 = 0.0;
+			if (!fractal->transformCommon.functionEnabledEFalse)
+			{
+				tp = (rxy * z.z - fractal->transformCommon.offsetA0);
+				tp2 = fabs(tp);
+			}
+			else
+			{
+				tp2 = (rxy * z.z - fractal->transformCommon.offsetA0);
+				tp = fabs(tp2);
+			}
+			if (fractal->transformCommon.functionEnabledDFalse)
+			{
+				if (aux.i >= fractal->transformCommon.startIterationsD
+						&& aux.i < fractal->transformCommon.stopIterationsD)
+					tp2 = tp;
+			}
+			tp = max(rxy - fractal->transformCommon.offsetA1, tp2 / z.Length()) / aux.DE
+								 - fractal->transformCommon.offsetB0;
+			aux.DE0 = tp; // mmmmmmmmmmmmmmmmmmm
+			aux.dist = min(aux.dist, tp);
+		}
+	}
+
+
+
+	// color
+	if (fractal->foldColor.auxColorEnabledFalse && aux.i >= fractal->foldColor.startIterationsA
+		&& aux.i < fractal->foldColor.stopIterationsA)
+	{
+		double addCol = fractal->foldColor.difs0000.y + aux.i * fractal->foldColor.difs0
+			+ fractal->foldColor.difs0000.x * k
+			+ fractal->foldColor.difs0000.w * fabs(z.z)
+			+ fractal->foldColor.difs0000.z * fabs(z.z - oldZz);
+
+//		if (oldZz == z.z) addCol += fractal->foldColor.difs0000.w * aux.i;
+
+		if (!fractal->foldColor.auxColorEnabledBFalse)
+		{
+			aux.color += addCol;
+		}
+		else
+		{
+			if ((fractal->foldColor.int0 + aux.i) % fractal->foldColor.int2 == 0)
+				aux.color += addCol;
+		}
+	}
+}

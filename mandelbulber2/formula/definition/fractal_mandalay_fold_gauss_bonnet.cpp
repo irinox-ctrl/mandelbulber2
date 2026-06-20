@@ -1,0 +1,69 @@
+/**
+ * Mandelbulber v2, a 3D fractal generator
+ * Copyright (C) 2025 3x3lion Team
+ * This file is part of Mandelbulber. Licensed under GPLv3.
+ *
+ * Mandalay Fold: Gauss-Bonnet in Mandalay Fold.
+ * Math: z = z + integral(K) = 2*pi*chi * Chern * intrinsic * total_curvature
+ */
+
+#include "all_fractal_definitions.h"
+
+cFractalMandalayFoldGaussBonnet::cFractalMandalayFoldGaussBonnet() : cAbstractFractal()
+{
+	nameInComboBox = "Mandalay Fold V44 Gauss-Bonnet";
+	internalName = "mandalay_fold_gauss_bonnet";
+	internalID = fractal::mandalayFoldGaussBonnet;
+	DEType = analyticDEType;
+	DEFunctionType = linearDEFunction;
+	cpixelAddition = cpixelEnabledByDefault;
+	defaultBailout = 100.0;
+	DEAnalyticFunction = analyticFunctionLinear;
+	coloringFunction = coloringFunctionDefault;
+}
+
+void cFractalMandalayFoldGaussBonnet::FormulaCode(CVector4 &z, const sFractal *fractal, sExtendedAux &aux)
+{
+	// Mandalay base: abs fold
+	z = fabs(z);
+
+	// Sort for Mandalay clip
+	if (z.z > z.y) swap(z.y, z.z);
+	if (z.y > z.x) swap(z.x, z.y);
+	if (z.z > z.y) swap(z.y, z.z);
+
+	// Gauss-Bonnet fold: integral(K) = 2*pi*chi
+	double s = fractal->transformCommon.scale08;
+	double r2 = z.x*z.x + z.y*z.y + z.z*z.z;
+	double K = 1.0 / (r2 + 1e-21);
+	double integral_K = K * 4.0 * 3.14159;
+	z.x += z.x * integral_K * s * 0.001;
+	z.y += z.y * integral_K * s * 0.001;
+	z.z += z.z * integral_K * s * 0.001;
+
+	// Spherical fold
+	double rr = z.Dot(z);
+	if (rr < fractal->transformCommon.minR2p25)
+	{
+		double tglad_factor1 = fractal->transformCommon.maxR2d1 / fractal->transformCommon.minR2p25;
+		z *= tglad_factor1;
+		aux.DE *= tglad_factor1;
+	}
+	else if (rr < fractal->transformCommon.maxR2d1)
+	{
+		double tglad_factor2 = fractal->transformCommon.maxR2d1 / rr;
+		z *= tglad_factor2;
+		aux.DE *= tglad_factor2;
+	}
+
+	// Scale
+	double useScale = fractal->transformCommon.scale2;
+	z *= useScale;
+	aux.DE = aux.DE * fabs(useScale) + 1.0;
+
+	// Rotation
+	if (fractal->transformCommon.rotationEnabled)
+	{
+		z = fractal->transformCommon.rotationMatrix.RotateVector(z);
+	}
+}

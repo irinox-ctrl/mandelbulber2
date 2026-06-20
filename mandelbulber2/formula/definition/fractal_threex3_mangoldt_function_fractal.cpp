@@ -1,0 +1,43 @@
+/**
+ * Mandelbulber v2, a 3D fractal generator
+ * Copyright (C) 2025 3x3lion Team
+ * This file is part of Mandelbulber. Licensed under GPLv3.
+ *
+ * Mangoldt-functie fractaal.
+ * Math: z = Lambda(z) + c met Lambda(n) = log(p) als n = p^k
+ */
+
+#include "all_fractal_definitions.h"
+
+cFractalThreex3MangoldtFunctionFractal::cFractalThreex3MangoldtFunctionFractal() : cAbstractFractal()
+{
+	nameInComboBox = "3x3 V313 Mangoldt Function Fractal";
+	internalName = "threex3_mangoldt_function_fractal";
+	internalID = fractal::threex3MangoldtFunctionFractal;
+	DEType = analyticDEType;
+	DEFunctionType = logarithmicDEFunction;
+	cpixelAddition = cpixelEnabledByDefault;
+	defaultBailout = 10.0;
+	DEAnalyticFunction = analyticFunctionLogarithmic;
+	coloringFunction = coloringFunctionDefault;
+}
+
+void cFractalThreex3MangoldtFunctionFractal::FormulaCode(CVector4 &z, const sFractal *fractal, sExtendedAux &aux)
+{
+	// Mangoldt Function Fractal: z = Lambda(z) + c met Lambda(n) = log(p) als n = p^k
+	double power = fractal->bulb.power;
+	if (power < 2.0) power = 2.0;
+	double r = aux.r;
+	if (r < 1e-21) r = 1e-21;
+	// Number theory: Collatz-inspired branching
+	double th = asin(z.z / r) * power;
+	double ph = atan2(z.y, z.x) * power;
+	double rp = pow(r, power);
+	// Parity-based perturbation
+	int parity = ((int)floor(fabs(z.x * 100.0))) % 2;
+	double shift = parity ? fractal->transformCommon.scale1 * 0.01 : -fractal->transformCommon.scale1 * 0.01;
+	aux.DE = power * pow(r, power - 1.0) * aux.DE + 1.0;
+	z.x = cos(th) * cos(ph) * rp + shift;
+	z.y = cos(th) * sin(ph) * rp;
+	z.z = sin(th) * rp;
+}

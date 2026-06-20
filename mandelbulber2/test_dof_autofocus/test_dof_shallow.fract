@@ -1,0 +1,28 @@
+# Mandelbulber settings file
+# version 2.33
+# only modified parameters
+[description]
+Test scene for DOF auto-focus: shallow depth.
+Camera is very close to a small Sierpinski-like fractal.
+All geometry is within 0.5 units of camera.
+Expected auto-focus: small value (~0.3).
+Expected radius: small (tight scene).
+[main_parameters]
+image_width 800;
+image_height 600;
+camera 0.3 0.2 0.3;
+target 0 0 0;
+camera_top 0 0 1;
+camera_distance_to_target 0.3;
+fov 60;
+perspective_type three_point;
+mat1_is_defined true;
+mat1_surface_color 0000 ff00 0000;
+formula_1 3;
+DE_factor 0.5;
+DOF_enabled true;
+DOF_focus 6.0;
+DOF_radius 10.0;
+DOF_max_radius 250.0;
+DOF_blur_opacity 4.0;
+DOF_number_of_passes 1;

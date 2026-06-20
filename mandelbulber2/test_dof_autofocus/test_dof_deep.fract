@@ -1,0 +1,29 @@
+# Mandelbulber settings file
+# version 2.33
+# only modified parameters
+[description]
+Test scene for DOF auto-focus: deep scene.
+Camera is far away from a large Kleinian-like fractal.
+All geometry is at large distance (>20 units).
+Expected auto-focus: large value (~25).
+Expected radius: large (scene is deep).
+Expected blur opacity: low (spread blur over large radius).
+[main_parameters]
+image_width 800;
+image_height 600;
+camera 25 10 15;
+target 0 0 0;
+camera_top 0 0 1;
+camera_distance_to_target 25;
+fov 60;
+perspective_type three_point;
+mat1_is_defined true;
+mat1_surface_color 0000 0000 ff00;
+formula_1 4;
+DE_factor 0.3;
+DOF_enabled true;
+DOF_focus 6.0;
+DOF_radius 10.0;
+DOF_max_radius 250.0;
+DOF_blur_opacity 4.0;
+DOF_number_of_passes 1;

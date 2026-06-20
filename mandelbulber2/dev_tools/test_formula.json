@@ -1,0 +1,46 @@
+{
+  "formula": {
+    "internal_name": "transf_demo_scale_v2",
+    "display_name": "T>Demo Scale V2",
+    "type": "transform",
+    "de_type": "analyticDEType",
+    "de_function": "linearDEFunction",
+    "cpixel_addition": "cpixelEnabledByDefault",
+    "default_bailout": 100.0,
+    "de_analytic_function": "analyticFunctionLinear",
+    "coloring_function": "coloringFunctionDefault"
+  },
+  "parameters": [
+    {
+      "name": "scale",
+      "type": "double",
+      "label": "Scale",
+      "default": 2.0,
+      "min": 0.001,
+      "max": 100.0,
+      "morph": "morphAkima"
+    },
+    {
+      "name": "offset",
+      "type": "cvector3",
+      "label": "Offset",
+      "default": [0.0, 0.0, 0.0],
+      "morph": "morphAkima"
+    },
+    {
+      "name": "iterations",
+      "type": "int",
+      "label": "Iterations",
+      "default": 10,
+      "min": 1,
+      "max": 250
+    },
+    {
+      "name": "enabled",
+      "type": "bool",
+      "label": "Enable transform",
+      "default": true
+    }
+  ],
+  "formula_code": "\tz *= fractal->transformCommon.scale;\n\taux.DE = aux.DE * fabs(fractal->transformCommon.scale) + 1.0;"
+}

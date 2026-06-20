@@ -1,0 +1,32 @@
+--- a/mandelbulber2/src/fractal_coloring.cpp
++++ b/mandelbulber2/src/fractal_coloring.cpp
+@@ -331,11 +331,25 @@ double CalculateColorIndex(bool isHybrid, double r, CVector4 z, double colorMin,
+ 				// ABOX extendedAux.color is f(i), change bailout = change value
+ 				break;
+-			case coloringFunctionIFS: colorIndex = colorMin * 1000.0; break;
+-			case coloringFunctionAmazingSurf: colorIndex = colorMin * 200.0; break;
++			case coloringFunctionIFS:
++				// colorMin is altijd 1000.0 als geen orbit trap hit - gebruik r als variabele component
++				colorIndex = (colorMin < 999.9)
++						? colorMin * 1000.0  // orbit trap had een hit
++						: r * 100.0;  // geen orbit trap: gebruik radius
++				break;
++			case coloringFunctionAmazingSurf:
++				// colorMin is altijd 1000.0 als geen orbit trap hit - gebruik r als variabele component
++				colorIndex = (colorMin < 999.9)
++						? colorMin * 200.0  // orbit trap had een hit
++						: r * 100.0;  // geen orbit trap: gebruik radius
++				break;
+ 			case coloringFunctionDonut: colorIndex = extendedAux.color * 2000.0 / extendedAux.i; break;
+-			case coloringFunctionDefault: colorIndex = colorMin * 5000.0; break;
+-			case coloringFunctionUndefined: colorIndex = 0.0; break;
++			case coloringFunctionDefault:
++				// colorMin is altijd 1000.0 bij Standard mode - gebruik r als variabele component
++				colorIndex = (colorMin < 999.9)
++						? colorMin * 5000.0  // orbit trap had een hit
++						: r * 100.0;  // geen orbit trap: gebruik radius
++				break;
++			case coloringFunctionUndefined: colorIndex = 0.0; break;
+ 		}
+ 	}
+ 

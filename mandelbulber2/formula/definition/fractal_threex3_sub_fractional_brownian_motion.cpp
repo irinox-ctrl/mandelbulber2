@@ -1,0 +1,44 @@
+/**
+ * Mandelbulber v2, a 3D fractal generator
+ * Copyright (C) 2025 3x3lion Team
+ * This file is part of Mandelbulber. Licensed under GPLv3.
+ *
+ * Sub-fractionele Brownse beweging.
+ * Math: E[xi(s)xi(t)] = s^(2H) + t^(2H) - 0.5*(s+t)^(2H) - 0.5*|s-t|^(2H)
+ */
+
+#include "all_fractal_definitions.h"
+
+cFractalThreex3SubFractionalBrownianMotion::cFractalThreex3SubFractionalBrownianMotion() : cAbstractFractal()
+{
+	nameInComboBox = "3x3 V399 Sub-fractional Brownian Motion";
+	internalName = "threex3_sub_fractional_brownian_motion";
+	internalID = fractal::threex3SubFractionalBrownianMotion;
+	DEType = analyticDEType;
+	DEFunctionType = logarithmicDEFunction;
+	cpixelAddition = cpixelEnabledByDefault;
+	defaultBailout = 10.0;
+	DEAnalyticFunction = analyticFunctionLogarithmic;
+	coloringFunction = coloringFunctionDefault;
+}
+
+void cFractalThreex3SubFractionalBrownianMotion::FormulaCode(CVector4 &z, const sFractal *fractal, sExtendedAux &aux)
+{
+	// Sub-fractional Brownian Motion: E[xi(s)xi(t)] = s^(2H) + t^(2H) - 0.5*(s+t)^(2H) - 0.5*|s-t|^(2H)
+	double power = fractal->bulb.power;
+	if (power < 2.0) power = 2.0;
+	double r = aux.r;
+	if (r < 1e-21) r = 1e-21;
+	// Tiling: periodic fold pattern
+	double period = fractal->transformCommon.scale1;
+	if (period < 0.01) period = 1.0;
+	z.x = fmod(z.x + period * 0.5, period) - period * 0.5;
+	z.y = fmod(z.y + period * 0.5, period) - period * 0.5;
+	double th = asin(z.z / r) * power;
+	double ph = atan2(z.y, z.x) * power;
+	double rp = pow(r, power);
+	aux.DE = power * pow(r, power - 1.0) * aux.DE + 1.0;
+	z.x = cos(th) * cos(ph) * rp;
+	z.y = cos(th) * sin(ph) * rp;
+	z.z = sin(th) * rp;
+}

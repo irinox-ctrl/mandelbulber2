@@ -1,0 +1,30 @@
+# Mandelbulber settings file
+# version 2.33
+# only modified parameters
+[description]
+Test scene for DOF auto-focus: Mandelbox tunnel.
+Wide depth range — objects from very close to far away.
+Expected auto-focus: median depth between near and far walls.
+Camera is inside the tunnel looking forward.
+[main_parameters]
+image_width 800;
+image_height 600;
+camera 0.5 0.5 0.5;
+target 3 0.5 0.5;
+camera_top 0 0 1;
+camera_distance_to_target 2.5;
+fov 60;
+perspective_type three_point;
+mat1_is_defined true;
+mat1_surface_color ff00 8000 0000;
+formula_1 2;
+basic_fog_enabled false;
+ambient_occlusion_enabled true;
+ambient_occlusion_mode 0;
+ambient_occlusion_fast_mode true;
+DOF_enabled true;
+DOF_focus 6.0;
+DOF_radius 10.0;
+DOF_max_radius 250.0;
+DOF_blur_opacity 4.0;
+DOF_number_of_passes 1;
