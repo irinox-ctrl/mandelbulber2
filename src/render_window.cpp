@@ -1,0 +1,158 @@
+/**
+ * Mandelbulber v2, a 3D fractal generator       ,=#MKNmMMKmmßMNWy,
+ *                                             ,B" ]L,,p%%%,,,§;, "K
+ * Copyright (C) 2014-22 Mandelbulber Team     §R-==%w["'~5]m%=L.=~5N
+ *                                        ,=mm=§M ]=4 yJKA"/-Nsaj  "Bw,==,,
+ * This file is part of Mandelbulber.    §R.r= jw",M  Km .mM  FW ",§=ß., ,TN
+ *                                     ,4R =%["w[N=7]J '"5=],""]]M,w,-; T=]M
+ * Mandelbulber is free software:     §R.ß~-Q/M=,=5"v"]=Qf,'§"M= =,M.§ Rz]M"Kw
+ * you can redistribute it and/or     §w "xDY.J ' -"m=====WeC=\ ""%""y=%"]"" §
+ * modify it under the terms of the    "§M=M =D=4"N #"%==A%p M§ M6  R' #"=~.4M
+ * GNU General Public License as        §W =, ][T"]C  §  § '§ e===~ U  !§[Z ]N
+ * published by the                    4M",,Jm=,"=e~  §  §  j]]""N  BmM"py=ßM
+ * Free Software Foundation,          ]§ T,M=& 'YmMMpM9MMM%=w=,,=MT]M m§;'§,
+ * either version 3 of the License,    TWw [.j"5=~N[=§%=%W,T ]R,"=="Y[LFT ]N
+ * or (at your option)                   TW=,-#"%=;[  =Q:["V""  ],,M.m == ]N
+ * any later version.                      J§"mr"] ,=,," =="""J]= M"M"]==ß"
+ *                                          §= "=C=4 §"eM "=B:m|4"]#F,§~
+ * Mandelbulber is distributed in            "9w=,,]w em%wJ '"~" ,=,,ß"
+ * the hope that it will be useful,                 . "K=  ,=RMMMßM"""
+ * but WITHOUT ANY WARRANTY;                            .'''
+ * without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * See the GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with Mandelbulber. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * ###########################################################################
+ *
+ * Authors: Krzysztof Marczak (buddhi1980@gmail.com)
+ *
+ * RenderWindow class - main program window
+ *
+ * This file contains implementation of constructor and destructor
+ * of the RenderWindow class.
+ * See also header render_window.hpp and whole implementation of class
+ * spread over render_window_*.cpp
+ */
+
+#include "render_window.hpp"
+
+#include "ui_render_window.h"
+
+#include "automated_widgets.hpp"
+#include "interface.hpp"
+#include "manipulations.h"
+
+RenderWindow::RenderWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::RenderWindow)
+{
+	ui->setupUi(this);
+
+	manipulations = new cManipulations(this);
+
+	preferencesDialog = nullptr;
+	voxelExportDialog = nullptr;
+	meshExportDialog = nullptr;
+	automatedWidgets = new cAutomatedWidgets(this);
+	automatedWidgets->ConnectSignalsForSlidersInWindow(this);
+
+	buttonPressTimer = new QTimer(this);
+	connect(buttonPressTimer, &QTimer::timeout, this, &RenderWindow::slotButtonLongPress);
+	buttonPressTimer->start(100);
+
+	m_auxOffsetDragStartRenderDebounce = new QTimer(this);
+	m_auxOffsetDragStartRenderDebounce->setSingleShot(true);
+	m_auxOffsetDragStartRenderDebounce->setInterval(120);
+	connect(m_auxOffsetDragStartRenderDebounce, &QTimer::timeout, this, []() {
+		if (gMainInterface) gMainInterface->StartRenderFromCurrentParams(true);
+	});
+
+#ifndef USE_GAMEPAD
+	ui->menuView->removeAction(ui->actionShow_gamepad_dock);
+	removeDockWidget(ui->dockWidget_gamepad_dock);
+#endif
+}
+
+void RenderWindow::CaptureDefaultWindowLayout()
+{
+	defaultGeometry = saveGeometry();
+	defaultState = saveState();
+}
+
+RenderWindow::~RenderWindow()
+{
+	delete ui;
+}
+
+cDockAnimation *RenderWindow::GetWidgetDockAnimation() const
+{
+	return ui->widgetDockAnimation;
+}
+
+QWidget *RenderWindow::GetCentralWidget() const
+{
+	return ui->centralwidget;
+}
+
+cDockNavigation *RenderWindow::GetWidgetDockNavigation() const
+{
+	return ui->widgetDockNavigation;
+}
+
+cDockStatistics *RenderWindow::GetWidgetDockStatistics() const
+{
+	return ui->widgetDockStatistics;
+}
+
+cDockQueue *RenderWindow::GetWidgetDockQueue() const
+{
+	return ui->widgetDockQueue;
+}
+
+cDockImageAdjustments *RenderWindow::GetWidgetDockImageAdjustments() const
+{
+	return ui->widgetImageAdjustments;
+}
+
+cDockRenderingEngine *RenderWindow::GetWidgetDockRenderingEngine() const
+{
+	return ui->widgetDockRenderingEngine;
+}
+
+cDockFractal *RenderWindow::GetWidgetDockFractal() const
+{
+	return ui->widgetDockFractal;
+}
+
+cDockEffects *RenderWindow::GetWidgetDockEffects() const
+{
+	return ui->widgetEffects;
+}
+
+cDockMutation *RenderWindow::GetWidgetDockMutation() const
+{
+	return ui->widgetDockMutation;
+}
+
+cDockPatternLines *RenderWindow::GetWidgetDockPatternLines() const
+{
+	return ui->widgetPatternLines;
+}
+
+QComboBox *RenderWindow::GetComboBoxMouseClickFunction() const
+{
+	return ui->comboBox_mouse_click_function;
+}
+
+// Check for deep zoom precision issues
+void RenderWindow::CheckZoomPrecision(double zoom)
+{
+	const double FLOAT_PRECISION_LIMIT = 1e7;
+	if (zoom > FLOAT_PRECISION_LIMIT)
+	{
+		qWarning() << "Deep zoom warning: zoom level" << zoom
+			<< "exceeds float32 precision limits (~1e7). "
+			<< "Visual artifacts may occur. Consider enabling perturbation mode for zoom > 1e8.";
+	}
+}

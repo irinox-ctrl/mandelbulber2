@@ -1,0 +1,41 @@
+# Example mutation schema (Phase 2 stub — NOT wired to codegen yet)
+#
+# Target: one file drives registration, struct fields, OpenCL mirror, and docs.
+# Pilot candidate: inversion (small, well-bounded type range).
+
+schema_version: 1
+source_of_truth: manual  # until generate_switch.py is activated
+
+systems:
+  inversion:
+    enabled_param: mutation_inversion_enabled
+    type_param: mutation_inv_type
+    type_range: [0, 36]
+    iter_start_param: mutation_inv_iter_start
+    iter_stop_param: mutation_inv_iter_stop
+    weight_param: mutation_inversion_weight
+    layout: std
+    params:
+      - name: mutation_inv_param_a
+        field: invParamA
+        type: double
+        default: 1.0
+        min: -100.0
+        max: 100.0
+      - name: mutation_inv_param_b
+        field: invParamB
+        type: double
+        default: 1.0
+        min: -100.0
+        max: 100.0
+      - name: mutation_inv_radius
+        field: invRadius
+        type: double
+        default: 1.0
+        min: 0.001
+        max: 100.0
+
+# Next steps (Phase 3+):
+# - generate initparameters addParam blocks
+# - generate nine_fractals.cpp Get<> reads
+# - generate mutation_inversion_cpu.inc / _gpu.inc from .mut files

@@ -1,0 +1,31 @@
+# Mandelbulber settings file
+# version 2.21
+# only modified parameters
+[main_parameters]
+aux_light_colour_1 6600 bf00 e800;
+aux_light_enabled_1 true;
+aux_light_intensity_1 2,69153e-08;
+aux_light_position_1 0,1891468267524694 -1,242691197425736 0,5491883585923704;
+aux_light_visibility 6,0256;
+aux_light_visibility_size 0,213796;
+camera 0,1892342505770582 -1,242925056261947 0,5494768634420503;
+camera_distance_to_target 0,0003795143825782064;
+camera_rotation 20,14883796225741 -48,0976791735518 -7,933079251459286;
+camera_top -0,3834926485962063 0,6445069521302884 0,6614712216932742;
+DOF_enabled true;
+DOF_focus 0,0003930834354832768;
+DOF_HDR true;
+DOF_radius 22,68;
+flight_last_to_render 0;
+formula_1 67;
+hdr true;
+image_height 1200;
+image_width 1600;
+keyframe_last_to_render 0;
+main_light_enable false;
+mat1_coloring_speed 2;
+mat1_is_defined true;
+mat1_specular 1;
+mat1_surface_color_gradient 0 8e998a 1999 a8c3a2 3999 796f70 5999 cddbdc 7999 44383d;
+target 0,1891469425296436 -1,242687104477778 0,5491943967717133;
+view_distance_max 13,81473177672692;

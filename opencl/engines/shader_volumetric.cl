@@ -1,0 +1,990 @@
+/**
+ * Mandelbulber v2, a 3D fractal generator       ,=#MKNmMMKmmßMNWy,
+ *                                             ,B" ]L,,p%%%,,,§;, "K
+ * Copyright (C) 2018-24 Mandelbulber Team     §R-==%w["'~5]m%=L.=~5N
+ *                                        ,=mm=§M ]=4 yJKA"/-Nsaj  "Bw,==,,
+ * This file is part of Mandelbulber.    §R.r= jw",M  Km .mM  FW ",§=ß., ,TN
+ *                                     ,4R =%["w[N=7]J '"5=],""]]M,w,-; T=]M
+ * Mandelbulber is free software:     §R.ß~-Q/M=,=5"v"]=Qf,'§"M= =,M.§ Rz]M"Kw
+ * you can redistribute it and/or     §w "xDY.J ' -"m=====WeC=\ ""%""y=%"]"" §
+ * modify it under the terms of the    "§M=M =D=4"N #"%==A%p M§ M6  R' #"=~.4M
+ * GNU General Public License as        §W =, ][T"]C  §  § '§ e===~ U  !§[Z ]N
+ * published by the                    4M",,Jm=,"=e~  §  §  j]]""N  BmM"py=ßM
+ * Free Software Foundation,          ]§ T,M=& 'YmMMpM9MMM%=w=,,=MT]M m§;'§,
+ * either version 3 of the License,    TWw [.j"5=~N[=§%=%W,T ]R,"=="Y[LFT ]N
+ * or (at your option)                   TW=,-#"%=;[  =Q:["V""  ],,M.m == ]N
+ * any later version.                      J§"mr"] ,=,," =="""J]= M"M"]==ß"
+ *                                          §= "=C=4 §"eM "=B:m|4"]#F,§~
+ * Mandelbulber is distributed in            "9w=,,]w em%wJ '"~" ,=,,ß"
+ * the hope that it will be useful,                 . "K=  ,=RMMMßM"""
+ * but WITHOUT ANY WARRANTY;                            .'''
+ * without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * See the GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with Mandelbulber. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * ###########################################################################
+ *
+ * Authors: Krzysztof Marczak (buddhi1980@gmail.com)
+ *
+ * calculation of all volumetric shaders
+ */
+
+#ifdef FULL_ENGINE
+
+#ifdef RAYLEIGH_SCATTERING
+void RayleighScattering(__constant sClInConstants *consts, float3 lightVectorTemp,
+	sShaderInputDataCl *input, float3 *raleighScatteringRGB, float3 *mieScatteringRGB)
+{
+	if (consts->params.rayleighScatteringBlue > 0.0f)
+	{
+		float raleighScattering = (1.0f + pow(dot(lightVectorTemp, input->viewVector), 2.0f))
+															* consts->params.rayleighScatteringBlue;
+		raleighScatteringRGB->s0 = 1.0f;
+		raleighScatteringRGB->s1 = (1.0f + 0.2f * raleighScattering);
+		raleighScatteringRGB->s2 = (1.0f + 2.0f * raleighScattering);
+	}
+	if (consts->params.rayleighScatteringRed > 0.0f)
+	{
+		float mieScatteringR = pow(dot(lightVectorTemp, input->viewVector) * 0.5f + 0.5f, 15.0f)
+													 * consts->params.rayleighScatteringRed;
+		float mieScatteringG = pow(dot(lightVectorTemp, input->viewVector) * 0.5f + 0.5f, 10.0f)
+													 * consts->params.rayleighScatteringRed;
+		mieScatteringRGB->s0 = (1.0f + 5.0f * mieScatteringR);
+		mieScatteringRGB->s1 = (1.0f + mieScatteringG);
+		mieScatteringRGB->s2 = 1.0f;
+	}
+}
+#endif // RAYLEIGH_SCATTERING
+
+//------------ Volumetric shader ----------------
+float VolumetricAlpha(float opticalDepth)
+{
+	opticalDepth = clamp(opticalDepth, 0.0f, 12.0f);
+	return 1.0f - exp(-opticalDepth);
+}
+
+float VolumetricStepJitterScale(__constant sClInConstants *consts, sShaderInputDataCl *input,
+	int stepIndex)
+{
+	float strength = consts->params.volumetricJitterStrength * 0.01f;
+	float t;
+	if (consts->params.volumetricBlueNoiseJitter)
+	{
+		int w = max(consts->params.imageWidth, 1);
+		int x = input->randomSeed % w;
+		int y = input->randomSeed / w;
+		float v = x * 0.06711056f + y * 0.00583715f + stepIndex * 0.1293105f;
+		v = v - floor(v);
+		t = fmod(52.9829189f * fmod(v, 1.0f), 1.0f);
+	}
+	else
+	{
+#ifdef MONTE_CARLO
+		t = Random(1000, &input->randomSeed) / 4000.0f;
+#else
+		t = Random(1000, &input->randomSeed) / 10000.0f;
+#endif
+	}
+	return 1.0f - strength * t;
+}
+
+float4 VolumetricShader(__constant sClInConstants *consts, sRenderData *renderData,
+	sShaderInputDataCl *input, sClCalcParams *calcParam, image2d_t image2dBackground, float4 oldPixel,
+	float *opacityOut)
+{
+	float4 out4 = oldPixel;
+	float3 output = oldPixel.xyz;
+	float totalOpacity = 0.0f;
+	float transmittance = 1.0f;
+
+	// visible lights init
+	int numberOfLights = renderData->numberOfLights;
+
+#ifdef GLOW
+	// glow init
+	float glow = input->stepCount * consts->params.glowIntensity / 512.0f * consts->params.DEFactor;
+	float glowN = 1.0f - glow;
+	if (glowN < 0.0f) glowN = 0.0f;
+
+	float3 glowColor;
+
+	glowColor = (glowN * consts->params.glowColor1 + consts->params.glowColor2 * glow);
+
+#endif // GLOW
+
+#ifdef SIMPLE_GLOW // only simple glow, no another shaders
+#ifdef GLOW
+	glow *= 0.7f;
+	float glowOpacity = 1.0f * glow;
+	if (glowOpacity > 1.0f) glowOpacity = 1.0f;
+	output = glow * glowColor + (1.0f - glowOpacity) * output;
+	out4.s3 += glowOpacity;
+#endif // GLOW
+
+#else // not SIMPLE_GLOW
+	float totalStep = 0.0f;
+	float scan = CalcDistThresh(input->point, consts);
+	float lastCloudDistance = consts->params.cloudsPeriod;
+
+	sShaderInputDataCl input2 = *input;
+
+	for (int i = 0; i < MAX_RAYMARCHING; i++)
+	{
+		int maxVolumetricSteps = consts->params.volumetricMaxSteps;
+		if (consts->params.volumetricPreviewActive)
+		{
+			if (maxVolumetricSteps > 0)
+				maxVolumetricSteps = max(maxVolumetricSteps / 2, 12);
+			else
+				maxVolumetricSteps = 48;
+		}
+		if (maxVolumetricSteps > 0 && i >= maxVolumetricSteps) break;
+
+		float3 point = input->point - input->viewVector * scan;
+
+		input2.point = point;
+		input2.distThresh = CalcDistThresh(point, consts);
+		input2.delta = CalcDelta(point, consts);
+
+		calcParam->distThresh = input2.distThresh;
+		calcParam->detailSize = input2.distThresh;
+
+		formulaOut outF;
+		outF = CalculateDistance(consts, point, calcParam, renderData);
+		float distance = outF.distance;
+
+		float step = (min(distance, lastCloudDistance) - 0.5f * input2.distThresh)
+								 * consts->params.DEFactor * consts->params.volumetricLightDEFactor;
+
+		step *= VolumetricStepJitterScale(consts, input, i);
+
+		if (consts->params.volumetricPreviewActive)
+			step *= max(consts->params.volumetricPreviewStepMul, 1.0f);
+
+#ifdef ADVANCED_QUALITY
+		step = clamp(step, consts->params.absMinMarchingStep, consts->params.absMaxMarchingStep);
+
+		if (input2.distThresh > consts->params.absMinMarchingStep)
+			step = clamp(step, consts->params.relMinMarchingStep * input2.distThresh,
+				consts->params.relMaxMarchingStep * input2.distThresh);
+#endif
+
+		step = max(step, input2.distThresh);
+
+		bool end = false;
+		if (step > input->depth - scan)
+		{
+			step = input->depth - scan;
+			end = true;
+		}
+		scan += step;
+
+//------------------- glow
+#ifdef GLOW
+		{
+			if (input->stepCount > 0)
+			{
+				float glowOpacity = glow / input->stepCount * consts->params.volumetricLightDEFactor;
+				if (glowOpacity > 1.0f) glowOpacity = 1.0f;
+
+				output = glowOpacity * glowColor + (1.0f - glowOpacity) * output;
+				out4.s3 += glowOpacity;
+			}
+		}
+#endif // GLOW
+
+#ifdef BASIC_FOG
+		float basicFogOpacity = 0.0f;
+		if (consts->params.fogEnabled)
+		{
+			basicFogOpacity = step / consts->params.fogVisibility;
+
+#if (defined(USE_PRIMITIVES) && defined(BASIC_FOG_SHAPE_FROM_PRIMITIVE))
+			if (renderData->primitivesGlobalData->primitiveIndexForBasicFog >= 0)
+			{
+				int closestId = -1;
+
+				if (TotalDistanceToPrimitives(consts, renderData, point, distance, input2.delta, false,
+							&closestId, renderData->primitivesGlobalData->primitiveIndexForBasicFog)
+						> input2.delta)
+					basicFogOpacity = 0.0f;
+			}
+#endif // USE_PRIMITIVES
+		}
+#endif // BASIC_FOG
+
+#ifdef ITER_FOG
+		float iterFogOpacity = 0.0f;
+		float3 iterFogCol = 0.0f;
+
+		if (consts->params.iterFogEnabled)
+		{
+			int L = outF.iters;
+			iterFogOpacity = IterOpacity(step, L, consts->params.iterFogEffectiveN,
+				consts->params.iterFogOpacityTrim, consts->params.iterFogOpacityTrimHigh,
+				consts->params.iterFogOpacity);
+
+#if (defined(USE_PRIMITIVES) && defined(ITER_FOG_SHAPE_FROM_PRIMITIVE))
+			if (iterFogOpacity > 0.0f && renderData->primitivesGlobalData->primitiveIndexForIterFog >= 0)
+			{
+				int closestId = -1;
+
+				if (TotalDistanceToPrimitives(consts, renderData, point, distance, input2.delta, false,
+							&closestId, renderData->primitivesGlobalData->primitiveIndexForIterFog)
+						> input2.delta)
+					iterFogOpacity = 0.0f;
+			}
+#endif // USE_PRIMITIVES
+
+			if (iterFogOpacity > 0.0f)
+			{
+				// fog colour
+				float denom1 = max(1e-3f,
+					consts->params.iterFogColor1Maxiter - consts->params.iterFogOpacityTrim);
+				float iterFactor1 = (L - consts->params.iterFogOpacityTrim) / denom1;
+				float k = iterFactor1;
+				if (k > 1.0f) k = 1.0f;
+				if (k < 0.0f) k = 0.0f;
+				float kn = 1.0f - k;
+				iterFogCol = consts->params.iterFogColour1 * kn + consts->params.iterFogColour2 * k;
+
+				float denom2 = max(1e-3f,
+					consts->params.iterFogColor2Maxiter - consts->params.iterFogColor1Maxiter);
+				float iterFactor2 = (L - consts->params.iterFogColor1Maxiter) / denom2;
+				float k2 = iterFactor2;
+				if (k2 < 0.0f) k2 = 0.0f;
+				if (k2 > 1.0f) k2 = 1.0f;
+				kn = 1.0f - k2;
+				iterFogCol = iterFogCol * kn + consts->params.iterFogColour3 * k2;
+				//----
+			}
+		}
+#endif // ITER_FOG
+
+		//--------- clouds --------
+#ifdef CLOUDS
+		float cloudsOpacity = 0.0f;
+		float cloudDensity = 0.0;
+		float3 deltaCloud = 0.0f;
+
+		{
+			// perlin noise clouds
+			float distanceToClouds = 0.0f;
+			bool calculateClouds = true;
+
+#if (defined(USE_PRIMITIVES) && defined(CLOUDS_SHAPE_FROM_PRIMITIVE))
+			if (renderData->primitivesGlobalData->primitiveIndexForClouds >= 0)
+			{
+				int closestId = -1;
+
+				if (TotalDistanceToPrimitives(consts, renderData, point, distance, input2.delta, false,
+							&closestId, renderData->primitivesGlobalData->primitiveIndexForClouds)
+						> input2.delta)
+				{
+					cloudDensity = 0.0f;
+					calculateClouds = false;
+				}
+			}
+#endif // USE_PRIMITIVES
+
+			if (calculateClouds)
+			{
+				cloudDensity = CloudOpacity(
+					consts, renderData->perlinNoiseSeeds, point, distance, input2.delta, &distanceToClouds);
+			}
+			else
+			{
+				distanceToClouds = distance;
+			}
+
+#ifndef CLOUDSSHADOWS
+			if (cloudDensity > 0.0f)
+			{
+				float delta =
+					consts->params.cloudsPeriod / pown(2.0f, consts->params.cloudsIterations) * 5.0f;
+				float distanceToCloudsDummy = 0.0f;
+
+				deltaCloud.x =
+					CloudOpacity(consts, renderData->perlinNoiseSeeds, point + (float3){delta, 0.0f, 0.0f},
+						distance, input2.delta, &distanceToCloudsDummy)
+					- cloudDensity;
+
+				deltaCloud.y =
+					CloudOpacity(consts, renderData->perlinNoiseSeeds, point + (float3){0.0f, delta, 0.0f},
+						distance, input2.delta, &distanceToCloudsDummy)
+					- cloudDensity;
+
+				deltaCloud.z =
+					CloudOpacity(consts, renderData->perlinNoiseSeeds, point + (float3){0.0f, 0.0f, delta},
+						distance, input2.delta, &distanceToCloudsDummy)
+					- cloudDensity;
+
+				if (length(deltaCloud) > 0.0f)
+				{
+					deltaCloud = normalize(deltaCloud);
+				}
+			}
+#endif // CLOUDSSHADOWS
+
+			cloudsOpacity = cloudDensity * step;
+
+			lastCloudDistance = distanceToClouds;
+		}
+#endif // CLOUDS
+
+//-------------------- volumetric fog
+#ifdef VOLUMETRIC_FOG
+		float distFogOpacity = 0.0f;
+		float3 distFogColor = 0.0f;
+
+		{
+			float distanceShifted;
+			float depthAlongRay = dot(point - consts->params.camera, input->viewVector);
+			if (depthAlongRay < 0.0f) depthAlongRay = 0.0f;
+			distFogOpacity = DistanceFogOpacity(step, distance, consts->params.volFogDistanceFromSurface,
+				consts->params.volFogDistanceFactor, consts->params.volFogDensity, consts->params.volFogMode,
+				depthAlongRay, point, consts->params.camera, &distanceShifted);
+
+#if (defined(USE_PRIMITIVES) && defined(DIST_FOG_SHAPE_FROM_PRIMITIVE))
+			if (distFogOpacity > 0.0f && renderData->primitivesGlobalData->primitiveIndexForDistFog >= 0)
+			{
+				int closestId = -1;
+
+				if (TotalDistanceToPrimitives(consts, renderData, point, distance, input2.delta, false,
+							&closestId, renderData->primitivesGlobalData->primitiveIndexForDistFog)
+						> input2.delta)
+					distFogOpacity = 0.0f;
+			}
+#endif // USE_PRIMITIVES
+
+			float k = distanceShifted / consts->params.volFogColour1Distance;
+			if (k > 1.0f) k = 1.0f;
+			float kn = 1.0f - k;
+			float3 fogTemp;
+			fogTemp = consts->params.volFogColour1 * kn + consts->params.volFogColour2 * k;
+
+			float k2 = distanceShifted / consts->params.volFogColour2Distance * k;
+			if (k2 > 1.0f) k2 = 1.0f;
+			kn = 1.0f - k2;
+			distFogColor = fogTemp * kn + consts->params.volFogColour3 * k2;
+		}
+#endif // VOLUMETRIC_FOG
+
+		float3 totalLightsWithShadows = 0.0f;
+		float3 totalLights = 0.0f;
+		float3 totalLightsClouds = 0.0f;
+
+// loop for proceessing all lights and volumetric effects
+#ifdef AUX_LIGHTS
+#if (defined(VOLUMETRIC_LIGHTS) || defined(ITER_FOG) || defined(DIST_FOG_SHADOWS) \
+		 || defined(CLOUDS) || defined(BASIC_FOG))
+		for (int i = 0; i < numberOfLights; i++)
+		{
+			__global sLightCl *light = &renderData->lights[i];
+
+			if (light->enabled)
+			{
+				bool shadowNeeded = false;
+				bool lightNeeded = false;
+
+#ifdef VOLUMETRIC_LIGHTS
+				if (light->volumetric)
+				{
+					shadowNeeded = true;
+					lightNeeded = true;
+				}
+#endif
+
+#ifdef ITER_FOG
+				if (iterFogOpacity > 0.0f)
+				{
+					lightNeeded = true;
+					if (consts->params.iterFogShadows) shadowNeeded = true;
+				}
+#endif
+
+#ifdef CLOUDS
+				if (cloudsOpacity > 0.0)
+				{
+					lightNeeded = true;
+					if (consts->params.cloudsCastShadows) shadowNeeded = true;
+				}
+#endif
+
+#ifdef VOLUMETRIC_FOG
+				if (consts->params.distanceFogShadows && distFogOpacity > 0.0f)
+				{
+					lightNeeded = true;
+					shadowNeeded = true;
+				}
+#endif
+
+#ifdef BASIC_FOG
+				if (consts->params.fogCastShadows && basicFogOpacity > 0.0f)
+				{
+					lightNeeded = true;
+					shadowNeeded = true;
+				}
+#endif
+
+				if (!light->castShadows) shadowNeeded = false;
+
+				if (lightNeeded)
+				{
+					float distanceLight = 0.0f;
+
+					float3 lightVectorTemp =
+						CalculateLightVector(light, point, input2.delta, consts->params.resolution,
+							consts->params.viewDistanceMax, &distanceLight, &input->randomSeed, 0);
+
+					float lightIntensity = 0.0f;
+					if (light->type == lightDirectional)
+						lightIntensity = light->intensity;
+					else if (light->type == lightConical || light->type == lightProjection)
+						lightIntensity = light->intensity * 10.0;
+					else
+						lightIntensity =
+							light->intensity / LightDecay(distanceLight, light->decayFunction) * 4.0f;
+
+					float3 textureColor;
+					lightIntensity *=
+						CalculateLightCone(light, renderData, point, lightVectorTemp, &textureColor);
+
+					float3 lightShadow = 1.0f;
+
+#ifdef SHADOWS
+					if (shadowNeeded)
+					{
+						if (lightIntensity > 1e-3)
+							lightShadow = AuxShadow(consts, renderData, &input2, light, distanceLight,
+								lightVectorTemp, calcParam, light->intensity);
+						else
+							lightShadow = 0.0f;
+					}
+#endif
+
+					float3 raleighScatteringRGB = 1.0f;
+					float3 mieScatteringRGB = 1.0f;
+
+#ifdef RAYLEIGH_SCATTERING
+					RayleighScattering(
+						consts, lightVectorTemp, input, &raleighScatteringRGB, &mieScatteringRGB);
+#endif
+
+					float3 calculatedLight =
+						light->color * lightIntensity * textureColor * raleighScatteringRGB * mieScatteringRGB;
+					totalLightsWithShadows += calculatedLight * lightShadow;
+					totalLights += calculatedLight;
+
+#ifdef CLOUDS
+					float shadeClouds = clamp(-dot(lightVectorTemp, deltaCloud), 0.0f, 1.0f);
+					totalLightsClouds += calculatedLight * shadeClouds;
+#endif
+
+					if (light->volumetric)
+					{
+						output += calculatedLight * light->volumetricVisibility * lightShadow * step;
+						out4.s3 += lightShadow.s0 * step * lightIntensity * light->volumetricVisibility;
+					}
+				} // if light needed
+			} // if light enabled
+		}
+
+#endif // VOLUMETRIC_LIGHTS
+#endif // AUX_LIGHTS
+
+#if !defined(MC_GI_VOLUMETRIC) && defined(MC_GI_FOG_ILLUMINATION) \
+	&& defined(MONTE_CARLO_DOF_GLOBAL_ILLUMINATION)
+		{
+			float3 gi =
+				GlobalIlumination(consts, renderData, &input2, calcParam, image2dBackground, 1.0f, true);
+			totalLights += gi;
+			totalLightsWithShadows += gi;
+		}
+#endif
+
+		float3 AO = 0.0f;
+		bool aoNeeded = false;
+#ifdef ITER_FOG
+		if (iterFogOpacity > 0.0f) aoNeeded = true;
+#endif
+		// #ifdef VOLUMETRIC_FOG
+		//		if (distFogOpacity > 0.0f) aoNeeded = true;
+		// #endif
+
+#ifdef AO_MODE_MULTIPLE_RAYS
+		if (aoNeeded)
+		{
+			AO =
+				AmbientOcclusion(consts, renderData, &input2, calcParam) * consts->params.ambientOcclusion;
+		}
+#endif // AO_MODE_MULTIPLE_RAYS
+
+#ifdef ITER_FOG
+		if (iterFogOpacity > 0.0f)
+		{
+			float3 light = (consts->params.iterFogShadows) ? totalLightsWithShadows : totalLights;
+			float alpha = VolumetricAlpha(iterFogOpacity);
+
+			output = output * (1.0f - alpha)
+							 + (light * consts->params.iterFogBrightnessBoost + AO) * alpha * iterFogCol;
+
+			totalOpacity = alpha + (1.0f - alpha) * totalOpacity;
+			out4.s3 = alpha + (1.0f - alpha) * out4.s3;
+			transmittance *= (1.0f - alpha);
+		}
+
+#endif // ITER_FOG
+
+#ifdef CLOUDS
+		if (cloudsOpacity > 0.0f)
+		{
+			float3 light =
+				(consts->params.cloudsCastShadows) ? totalLightsWithShadows : totalLightsClouds;
+
+			float ambient = consts->params.cloudsAmbientLight;
+			float nAmbient = 1.0f - consts->params.cloudsAmbientLight;
+
+			light = ambient * totalLights + nAmbient * light;
+
+			float alpha = VolumetricAlpha(cloudsOpacity);
+
+			output =
+				output * (1.0f - alpha) + (light + AO) * alpha * consts->params.cloudsColor;
+
+			totalOpacity = alpha + (1.0f - alpha) * totalOpacity;
+			out4.s3 = alpha + (1.0f - alpha) * out4.s3;
+			transmittance *= (1.0f - alpha);
+		}
+#endif // CLOUDS
+
+#ifdef VOLUMETRIC_FOG
+		if (distFogOpacity > 0.0f)
+		{
+			float3 light = totalLights;
+#ifdef VOXEL_FOG_CACHE
+			if (consts->params.voxelFogCacheEnabled)
+			{
+				float3 cachedLight = LookupVoxelFogIrradiance(point, renderData->voxelCache,
+					consts->params.voxelFogCacheMin, consts->params.voxelFogCacheSize,
+					consts->params.voxelFogCacheResolution);
+				if (dot(cachedLight, cachedLight) > 0.0f) light = cachedLight;
+			}
+			else
+#endif
+			if (consts->params.distanceFogShadows) light = totalLightsWithShadows;
+
+			float alpha = VolumetricAlpha(distFogOpacity);
+
+			output = alpha * distFogColor * (light + AO) + (1.0f - alpha) * output;
+
+			totalOpacity = alpha + (1.0f - alpha) * totalOpacity;
+			out4.s3 = alpha + (1.0f - alpha) * out4.s3;
+			transmittance *= (1.0f - alpha);
+		}
+#endif
+
+//----------------------- basic fog
+#ifdef BASIC_FOG
+		if (basicFogOpacity > 0)
+		{
+			float3 light = (consts->params.fogCastShadows) ? totalLightsWithShadows : 1.0f;
+
+			float alpha = VolumetricAlpha(basicFogOpacity);
+
+			output = alpha * consts->params.fogColor * (light + AO)
+							 + (1.0f - alpha) * output;
+
+			totalOpacity = alpha + (1.0f - alpha) * totalOpacity;
+			out4.s3 = alpha + (1.0f - alpha) * out4.s3;
+			transmittance *= (1.0f - alpha);
+		}
+#endif // BASIC_FOG
+
+#ifdef VISIBLE_AUX_LIGHTS
+		//------------------ visible light
+		{
+			for (int i = 0; i < numberOfLights; ++i)
+			{
+				__global sLightCl *light = &renderData->lights[i];
+				if (light->enabled && light->intensity > 0.0f && light->visibility > 0.0f
+						&& light->type != lightDirectional)
+				{
+					float lastMiniSteps = -1.0f;
+					float miniStep = 0.0f;
+
+					float beamFade = 1.0f;
+					float3 lightPosition =
+						CalculateBeam(light, light->position, light->target, &input->randomSeed, &beamFade);
+
+					for (float miniSteps = 0.0f; miniSteps < step; miniSteps += miniStep)
+					{
+						float3 lightDistVect = point - input->viewVector * miniSteps - lightPosition;
+						float lightDist = fast_length(lightDistVect);
+						float lightSize = native_sqrt(light->intensity) * light->size;
+
+						float distToLightSurface = lightDist - lightSize;
+						distToLightSurface = max(distToLightSurface, 0.0f);
+
+						miniStep = 0.1f * (distToLightSurface + 0.1f * distToLightSurface);
+						miniStep = clamp(miniStep, step * 0.01f, step - miniSteps);
+						miniStep = max(miniStep, 1e-6f);
+
+						float r2 = lightDist / lightSize;
+						float bellFunction;
+						if (light->type == lightConical || light->type == lightProjection)
+						{
+							bellFunction = 1.0f;
+						}
+						else
+						{
+							bellFunction = 1.0f / (1.0f + pown(r2, ((int)light->decayFunction + 1) * 2));
+						}
+
+						float3 lightDirection = normalize(lightDistVect);
+
+						float3 textureColor;
+						bellFunction *=
+							CalculateLightCone(light, renderData, point, (-1.0f) * lightDirection, &textureColor);
+						bellFunction *= beamFade;
+
+						float lightDensity = miniStep * bellFunction * light->visibility / lightSize;
+
+#ifdef CLOUDS
+						lightDensity *= 1.0f + consts->params.cloudsLightsBoost * cloudsOpacity;
+#endif
+
+						output += lightDensity * light->color * textureColor;
+						out4.s3 += lightDensity;
+
+						if (miniSteps == lastMiniSteps)
+						{
+							// Dead computation
+							break;
+						}
+						lastMiniSteps = miniSteps;
+					}
+				}
+			}
+		}
+#endif
+
+#ifdef FAKE_LIGHTS
+		// fake lights (orbit trap) — match CPU: single-trap off and fake lights enabled
+		if (!consts->params.singleTrapLights.enabled && consts->params.fakeLightsEnabled)
+		{
+			// V2: Adjust orbit trap position for all modes using per-mode params
+			float3 orbitTrapAdjusted;
+			if (consts->params.common.fakeLightsOrbitTrapPreTransformed)
+			{
+				orbitTrapAdjusted = consts->params.common.fakeLightsOrbitTrap;
+			}
+			else
+			{
+				float3 baseOrbitTrap = consts->params.common.fakeLightsOrbitTrap;
+				int posMode = consts->params.common.fakeLightsPositionMode;
+				sFakeLightsModeParamsCl modeParams = consts->params.common.fakeLightsModes[posMode];
+				float3 transformedTrap = Matrix33MulFloat3(modeParams.mRot, baseOrbitTrap * modeParams.scale)
+					+ modeParams.offset;
+
+				if (posMode == 1) // Camera Relative
+				{
+					orbitTrapAdjusted = consts->params.camera + transformedTrap;
+				}
+				else if (posMode == 2) // Target Point
+				{
+					orbitTrapAdjusted = consts->params.target + transformedTrap;
+				}
+				else if (posMode == 4) // Path Circle
+				{
+					orbitTrapAdjusted = transformedTrap;
+					float angle = modeParams.rotation.y * M_PI_F / 180.0f;
+					float3 pathOffset = (float3){cos(angle) * modeParams.pathRadius, 0.0f, sin(angle) * modeParams.pathRadius};
+					orbitTrapAdjusted += pathOffset;
+				}
+				else if (posMode == 5) // Path Spiral
+				{
+					orbitTrapAdjusted = transformedTrap;
+					float angle = modeParams.rotation.y * M_PI_F / 180.0f;
+					float yOffset = angle * modeParams.pathRadius * 0.1f;
+					float3 pathOffset = (float3){cos(angle) * modeParams.pathRadius, yOffset, sin(angle) * modeParams.pathRadius};
+					orbitTrapAdjusted += pathOffset;
+				}
+				else if (posMode == 6) // Orbit Around Target
+				{
+					orbitTrapAdjusted = transformedTrap;
+					float angle = modeParams.rotation.y * M_PI_F / 180.0f;
+					float3 pathOffset = (float3){cos(angle) * modeParams.pathRadius, 0.0f, sin(angle) * modeParams.pathRadius};
+					orbitTrapAdjusted = consts->params.target + orbitTrapAdjusted + pathOffset;
+				}
+				else // World (0) and Fractal Center (3)
+				{
+					orbitTrapAdjusted = transformedTrap;
+				}
+			}
+
+			// Store original values to restore later
+			float3 originalOrbitTrap = calcParam->orbitTrap;
+			int originalOrbitTrapIndex = calcParam->orbitTrapIndex;
+
+			int fakeLightMaxLoop = 1;
+			if (consts->params.common.fakeLightsColor2Enabled) fakeLightMaxLoop = 2;
+			if (consts->params.common.fakeLightsColor3Enabled) fakeLightMaxLoop = 3;
+
+			int centerIndex = 0;
+			for (int fakeLightLoop = 0; fakeLightLoop < fakeLightMaxLoop; fakeLightLoop++)
+			{
+				calcParam->orbitTrapIndex = fakeLightLoop;
+				calcParam->orbitTrap = orbitTrapAdjusted; // V2: Use adjusted orbit trap
+				formulaOut outF;
+				outF = Fractal(consts, input2.point, calcParam, calcModeOrbitTrap, NULL, -1);
+				float r = outF.orbitTrapR;
+				if (fakeLightLoop == 0) centerIndex = outF.orbitTrapCenterIndex;
+				r = sqrt(1.0f / (r + 1.0e-20f));
+				float fakeLight = 1.0f
+													/ (pow(r, 10.0f / consts->params.fakeLightsVisibilitySize)
+															 * pow(10.0f, 10.0f / consts->params.fakeLightsVisibilitySize)
+														 + 0.1f);
+
+				// V2: Distance-based intensity mask
+				float maskRadius = consts->params.common.fakeLightsShapeMaskRadius;
+				float maskSoftness = consts->params.common.fakeLightsShapeMaskSoftness;
+				if (maskRadius > 1e-10f)
+				{
+					float edge = maskRadius + maskSoftness;
+					float factor = 1.0f;
+					if (r < maskRadius)
+						factor = 0.0f;
+					else if (r < edge && maskSoftness > 1e-10f)
+						factor = (r - maskRadius) / maskSoftness;
+					if (factor < 0.0f) factor = 0.0f;
+					if (factor > 1.0f) factor = 1.0f;
+					fakeLight *= factor;
+				}
+
+				// V2: Distance masking based on DE from fractal surface
+				if (consts->params.fakeLightsMaskEnabled)
+				{
+					float normalizedDist = distance / (consts->params.fakeLightsMaskThreshold + 1e-10f);
+					float maskFactor = 1.0f / (1.0f + pow(normalizedDist, consts->params.fakeLightsMaskSharpness));
+					fakeLight *= maskFactor;
+				}
+
+				float3 light = fakeLight * step * consts->params.fakeLightsVisibility;
+#ifdef CLOUDS
+				light *= 1.0f + consts->params.cloudsLightsBoost * cloudDensity;
+#endif
+
+				float3 color;
+				if (fakeLightLoop == 0 && consts->params.common.fakeLightsMultiCenterEnabled
+					&& centerIndex >= 0 && centerIndex < 24)
+				{
+					color = consts->params.fakeLightsMultiCenterColor[centerIndex];
+				}
+				else
+				{
+					switch (fakeLightLoop)
+					{
+						case 0: color = consts->params.fakeLightsColor; break;
+						case 1: color = consts->params.fakeLightsColor2; break;
+						case 2: color = consts->params.fakeLightsColor3; break;
+						default: color = consts->params.fakeLightsColor; break;
+					}
+				}
+
+				output += light * color;
+				out4.s3 += fakeLight * step * consts->params.fakeLightsVisibility;
+			}
+
+			// V2: Restore original orbit trap
+			calcParam->orbitTrap = originalOrbitTrap;
+			calcParam->orbitTrapIndex = originalOrbitTrapIndex;
+		}
+#endif // FAKE_LIGHTS
+
+		// Single Trap Lights (volumetric)
+		if (consts->params.singleTrapLights.enabled)
+		{
+			int soloL = consts->params.singleTrapLights.soloLayerIndex;
+			int combine = consts->params.singleTrapLights.combineMode;
+			float3 stlAccum = (float3)(0.0f, 0.0f, 0.0f);
+			int layerCount = 0;
+			for (int i = 0; i < consts->params.singleTrapLights.activeLayerCount; i++)
+			{
+				__constant sSingleTrapLightLayerCl *layer = &consts->params.singleTrapLights.layers[i];
+				if (!layer->enabled) continue;
+				if (soloL > 0 && soloL != i + 1) continue;
+
+				float3 effectivePosition = layer->position.xyz;
+				if (!layer->preTransformed)
+				{
+					if (layer->positionMode == 1)
+						effectivePosition += consts->params.camera;
+					else if (layer->positionMode == 2)
+						effectivePosition += consts->params.common.fractalPosition;
+					else if (layer->positionMode == 3)
+						effectivePosition += consts->params.target;
+				}
+
+				// Apply animation
+				float time = (float)consts->params.frameNo;
+				float animSize = layer->size;
+				if (layer->animOrbitSpeed != 0.0f || layer->animPulsateSpeed != 0.0f)
+				{
+					float orbitAngle = time * layer->animOrbitSpeed * 0.01f + i * 0.7f;
+					effectivePosition.x += cos(orbitAngle) * layer->animOrbitRadius;
+					effectivePosition.y += sin(orbitAngle) * layer->animOrbitRadius;
+
+					float pulsate = 1.0f + sin(time * layer->animPulsateSpeed * 0.1f + i * 1.3f) * layer->animPulsateAmount;
+					animSize *= pulsate;
+				}
+
+				if (layer->maxDistance > 1e-30f)
+				{
+					float rs = fabs(layer->relativeSize);
+					float sz = max(fabs(animSize), fabs(layer->size2)) * rs + fabs(layer->edgeSoftness) * rs;
+					float margin = sz + layer->maxDistance * rs + fabs(layer->animOrbitRadius);
+					float3 dC = point - effectivePosition;
+					if (length(dC) > margin * 2.8f) continue;
+				}
+
+				float3 adjustedPoint = point - effectivePosition + layer->position.xyz * layer->relativeSize;
+				float3 scaledPoint = adjustedPoint / layer->relativeSize;
+				float rawDist = SingleTrapLightDistanceCl(scaledPoint, layer, animSize) * layer->relativeSize;
+				float dist = rawDist;
+				if (dist < 0.0f) dist = 0.0f;
+
+				float maxDistFade = layer->maxDistance;
+				float volFade = 1.0f;
+				if (maxDistFade > 1e-30f && dist > 0.0f)
+				{
+					float tVol = dist / maxDistFade;
+					if (tVol >= 1.0f) continue;
+					tVol = tVol * tVol * (3.0f - 2.0f * tVol);
+					volFade = 1.0f - tVol;
+				}
+
+				float blur = layer->blur;
+				float distForFalloff = dist;
+				if (blur > 1e-20f)
+				{
+					float blurScale = blur * (0.4f + 0.65f * fabs(layer->relativeSize));
+					distForFalloff = sqrt(dist * dist + blurScale * blurScale);
+				}
+				float effectiveSharpening =
+					layer->sharpening / (1.0f + blur * 1.75f + blur * blur * 0.4f);
+				float effectiveDist = distForFalloff;
+				float falloff;
+				int ft = layer->falloffType;
+				if (ft == 1)
+				{
+					falloff = 1.0f / (1.0f + effectiveDist * effectiveDist * effectiveSharpening);
+				}
+				else if (ft == 2)
+				{
+					falloff = max(0.0f, 1.0f - effectiveDist * sqrt(effectiveSharpening) * 1.35f);
+				}
+				else if (ft == 3)
+				{
+					falloff = exp(-effectiveDist * sqrt(effectiveSharpening) * 1.15f);
+				}
+				else if (ft == 4)
+				{
+					float edge = 1.0f / sqrt(effectiveSharpening + 1e-10f);
+					float tSm = effectiveDist / edge;
+					if (tSm >= 1.0f) falloff = 0.0f;
+					else if (tSm <= 0.0f) falloff = 1.0f;
+					else falloff = 1.0f - tSm * tSm * (3.0f - 2.0f * tSm);
+				}
+				else
+				{
+					falloff = exp(-effectiveDist * effectiveDist * effectiveSharpening);
+				}
+				if (layer->softness > 1e-10f && distForFalloff > 0.0f)
+					falloff *= exp(-distForFalloff * layer->softness * 1.2f);
+				float solidBoost = (rawDist < 0.0f) ? layer->solidIntensity : 1.0f;
+				float innerGlow = 1.0f;
+				if (rawDist < 0.0f)
+				{
+					float depth = min(1.0f, -rawDist / 2.0f);
+					innerGlow = 1.0f + layer->softness * depth * 3.2f;
+				}
+				float light =
+					layer->intensity * layer->visibility * falloff * solidBoost * innerGlow * volFade;
+				float gradT = 0.0f;
+				if (layer->maxDistance > 1e-30f)
+				{
+					gradT = dist / layer->maxDistance;
+					if (gradT > 1.0f) gradT = 1.0f;
+				}
+				float3 layerColor = layer->color.xyz * (1.0f - gradT) + layer->gradientColor.xyz * gradT;
+				// Orbit coloring: same distance proxy as CPU volumetric (surface/GPU use orbitTrapR).
+				if (layer->coloringMode == 1 || layer->coloringMode == 2)
+				{
+					layerColor *= (1.0f - gradT);
+				}
+
+				float3 contrib = light * layerColor;
+				if (combine == 1)
+				{
+					stlAccum.x = max(stlAccum.x, contrib.x);
+					stlAccum.y = max(stlAccum.y, contrib.y);
+					stlAccum.z = max(stlAccum.z, contrib.z);
+				}
+				else if (combine == 2)
+				{
+					// Screen: softer addition that never blows out as fast
+					stlAccum = stlAccum + contrib - stlAccum * contrib;
+				}
+				else if (combine == 3)
+				{
+					// Average: cumulative mean so first layer is not halved
+					stlAccum = (stlAccum * (float)(layerCount) + contrib) / (float)(layerCount + 1);
+					layerCount++;
+				}
+				else if (combine == 4)
+				{
+					// Multiply: guard first layer so accumulation doesn't start from 0
+					if (layerCount == 0) stlAccum = contrib;
+					else stlAccum = stlAccum * contrib;
+					layerCount++;
+				}
+				else
+				{
+					stlAccum += contrib;
+				}
+			}
+			output += stlAccum * step;
+		}
+
+		if (consts->params.patternLineTraps.enabled)
+		{
+			output += PatternLineTrapsShader(consts, point, NULL, NULL) * step;
+		}
+
+		// Glow sphere volumetric contribution
+		float3 glowSphereColor = GlowSphereShaderGPU(consts, point);
+		float glowSphereLenSq = dot(glowSphereColor, glowSphereColor);
+		if (glowSphereLenSq > 0.0f)
+		{
+			output += glowSphereColor * step;
+			out4.s3 += sqrt(glowSphereLenSq) * step;
+		}
+
+		if (totalOpacity > 1.0f) totalOpacity = 1.0f;
+		if (out4.s3 > 1.0f) out4.s3 = 1.0f; // alpha channel
+
+		*opacityOut = totalOpacity;
+
+		if (totalOpacity > 0.98f || transmittance < 0.02f) end = true;
+		if (end) break;
+	}
+#endif // not SIMPLE_GLOW
+
+	out4.xyz = output;
+	return out4;
+}
+#endif // FULL_ENGINE

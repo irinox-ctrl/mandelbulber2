@@ -1,0 +1,52 @@
+{
+  "param_read_exempt": [
+    "mutation_orbit_trap_enabled",
+    "mutation_inversion_enabled",
+    "mutation_jos_leys_enabled",
+    "mutation_abox_enabled",
+    "mutation_symmetry_enabled",
+    "mutation_warp_dist_enabled",
+    "mutation_mb_math_enabled",
+    "mutation_pk_enabled",
+    "mutation_noise_enabled",
+    "mutation_torus_enabled",
+    "mutation_as_enabled",
+    "mutation_sm_enabled",
+    "mutation_clamp_enabled",
+    "mutation_jb_enabled",
+    "mutation_md_enabled",
+    "mutation_blockify_enabled",
+    "mutation_tile_enabled",
+    "mutation_clip_enabled",
+    "mutation_inv_enabled",
+    "mutation_jos_enabled",
+    "mutation_mb_enabled",
+    "mutation_wd_enabled",
+    "mutation_sk_enabled",
+    "mutation_ab_enabled",
+    "mutation_orbit_enabled"
+  ],
+    "param_ui_exempt": [
+    "mutation_color_accum_mode",
+    "mutation_color_accum_weight",
+    "mutation_color_softness",
+    "mutation_de_tweak",
+    "mutation_iteration",
+    "mutation_julia_iter",
+    "mutation_post_iter",
+    "mutation_pre_iter"
+  ],
+  "ui_widget_prefix_exempt": [
+    "pushButton_mutation_",
+    "label_mutation_",
+    "horizontalSpacer_",
+    "verticalSpacer_",
+    "tab_mutation_",
+    "scrollArea_mutation_",
+    "widget_mutation_",
+    "groupCheck_mutation_",
+    "gridLayout_",
+    "verticalLayout_",
+    "horizontalLayout_"
+  ]
+}

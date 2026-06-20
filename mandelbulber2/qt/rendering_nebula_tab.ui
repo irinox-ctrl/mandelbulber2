@@ -1,0 +1,510 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>cRenderingNebulaTab</class>
+ <widget class="QWidget" name="cRenderingNebulaTab">
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <property name="spacing">
+        <number>2</number>
+       </property>
+       <property name="leftMargin">
+        <number>2</number>
+       </property>
+       <property name="topMargin">
+        <number>2</number>
+       </property>
+       <property name="rightMargin">
+        <number>2</number>
+       </property>
+       <property name="bottomMargin">
+        <number>2</number>
+       </property>
+       <item>
+        <widget class="QScrollArea" name="scrollArea_2">
+         <property name="widgetResizable">
+          <bool>true</bool>
+         </property>
+         <widget class="QWidget" name="scrollAreaWidgetContents_2">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>417</width>
+            <height>1082</height>
+           </rect>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_16">
+           <property name="spacing">
+            <number>2</number>
+           </property>
+           <property name="leftMargin">
+            <number>2</number>
+           </property>
+           <property name="topMargin">
+            <number>2</number>
+           </property>
+           <property name="rightMargin">
+            <number>2</number>
+           </property>
+           <property name="bottomMargin">
+            <number>2</number>
+           </property>
+           <item>
+            <widget class="MyGroupBox" name="groupCheck_nebula_mode">
+             <property name="toolTip">
+              <string>Enables rendering of nebula-style fractals, allowing for volumetric and cloud-like effects with additional controls for brightness and color.</string>
+             </property>
+             <property name="title">
+              <string>Nebula fractals</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_8">
+              <property name="spacing">
+               <number>2</number>
+              </property>
+              <property name="leftMargin">
+               <number>2</number>
+              </property>
+              <property name="topMargin">
+               <number>2</number>
+              </property>
+              <property name="rightMargin">
+               <number>2</number>
+              </property>
+              <property name="bottomMargin">
+               <number>2</number>
+              </property>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout">
+                <property name="spacing">
+                 <number>2</number>
+                </property>
+                <item>
+                 <widget class="QPushButton" name="pushButton_nebula_auto_brightness_dark">
+                  <property name="text">
+                   <string>Auto
+dark</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="pushButton_nebula_auto_brightness_medium">
+                  <property name="text">
+                   <string>Auto
+medium</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="pushButton_nebula_auto_brightness_bright">
+                  <property name="text">
+                   <string>Auto
+bright</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QGridLayout" name="gridLayout_3">
+                <property name="topMargin">
+                 <number>5</number>
+                </property>
+                <item row="3" column="0">
+                 <widget class="QLabel" name="label_3">
+                  <property name="text">
+                   <string>Min. iteration to draw:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="5" column="0" colspan="2">
+                 <widget class="MyCheckBox" name="checkBox_nebula_inner_enabled">
+                  <property name="text">
+                   <string>Inner fractal iterations</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="1">
+                 <widget class="MyLineEdit" name="logedit_nebula_samples_per_pixel">
+                  <property name="toolTip">
+                   <string>Number of samples per pixel for nebula rendering. Higher values reduce noise but increase rendering time.</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="label">
+                  <property name="text">
+                   <string>Brightness:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="4" column="0" colspan="2">
+                 <widget class="MyCheckBox" name="checkBox_nebula_outer_enabled">
+                  <property name="text">
+                   <string>Outer fractal iterations</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="6" column="1">
+                 <widget class="MyComboBox" name="comboBox_nebula_color_mixing">
+                  <property name="enabled">
+                   <bool>true</bool>
+                  </property>
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <item>
+                   <property name="text">
+                    <string>Lighten</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Darken</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Darken by brighness</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+                <item row="6" column="0">
+                 <widget class="QLabel" name="label_4">
+                  <property name="text">
+                   <string>Color mining:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="0">
+                 <widget class="QLabel" name="label_2">
+                  <property name="text">
+                   <string>Number of samples per pixel:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="MyLineEdit" name="logedit_nebula_brightness">
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;body&gt;Sets the brightness of the nebula effect. Use the auto buttons to adjust based on current image brightness.&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="1">
+                 <widget class="MySpinBox" name="spinboxInt_nebula_min_iteration">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="toolTip">
+                   <string>Minimum iteration count required to draw nebula pixels. Increase to ignore low-iteration regions.</string>
+                  </property>
+                  <property name="minimum">
+                   <number>0</number>
+                  </property>
+                  <property name="maximum">
+                   <number>9999</number>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="0" colspan="2">
+                 <widget class="MyCheckBox" name="checkBox_nebula_constant_brightness">
+                  <property name="acceptDrops">
+                   <bool>true</bool>
+                  </property>
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;It tries to keep image brighness constant.&lt;/p&gt;&lt;p&gt;It is not recommended for animations because can cause unintended flickering.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                  <property name="text">
+                   <string>Constant brightness mode</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <widget class="MyGroupBox" name="groupCheck_nebula_x_axis_colors_enabled">
+                <property name="toolTip">
+                 <string>Enable and configure a color gradient for the nebula based on the X axis position.</string>
+                </property>
+                <property name="title">
+                 <string>X axis colors</string>
+                </property>
+                <property name="checkable">
+                 <bool>true</bool>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_9">
+                 <property name="spacing">
+                  <number>2</number>
+                 </property>
+                 <property name="leftMargin">
+                  <number>2</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>2</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>2</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>2</number>
+                 </property>
+                 <item>
+                  <widget class="cGradientEditWidget" name="colorpalette_nebula_x_axis_colors" native="true">
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Gradient which defines the colors of the fractal surface.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <widget class="MyGroupBox" name="groupCheck_nebula_y_axis_colors_enabled">
+                <property name="toolTip">
+                 <string>Enable and configure a color gradient for the nebula based on the Y axis position.</string>
+                </property>
+                <property name="title">
+                 <string>Y axis colors</string>
+                </property>
+                <property name="checkable">
+                 <bool>true</bool>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_10">
+                 <property name="spacing">
+                  <number>2</number>
+                 </property>
+                 <property name="leftMargin">
+                  <number>2</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>2</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>2</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>2</number>
+                 </property>
+                 <item>
+                  <widget class="cGradientEditWidget" name="colorpalette_nebula_y_axis_colors" native="true">
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Gradient which defines the colors of the fractal surface.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <widget class="MyGroupBox" name="groupCheck_nebula_z_axis_colors_enabled">
+                <property name="toolTip">
+                 <string>Enable and configure a color gradient for the nebula based on the Z axis position.</string>
+                </property>
+                <property name="title">
+                 <string>Z axis colors</string>
+                </property>
+                <property name="checkable">
+                 <bool>true</bool>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_11">
+                 <property name="spacing">
+                  <number>2</number>
+                 </property>
+                 <property name="leftMargin">
+                  <number>2</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>2</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>2</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>2</number>
+                 </property>
+                 <item>
+                  <widget class="cGradientEditWidget" name="colorpalette_nebula_z_axis_colors" native="true">
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Gradient which defines the colors of the fractal surface.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <widget class="MyGroupBox" name="groupCheck_nebula_iterations_colors_enabled">
+                <property name="toolTip">
+                 <string>Enable and configure a color gradient for the nebula based on the number of fractal iterations.</string>
+                </property>
+                <property name="title">
+                 <string>Colors of iterations</string>
+                </property>
+                <property name="checkable">
+                 <bool>true</bool>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_12">
+                 <property name="spacing">
+                  <number>2</number>
+                 </property>
+                 <property name="leftMargin">
+                  <number>2</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>2</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>2</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>2</number>
+                 </property>
+                 <item>
+                  <widget class="cGradientEditWidget" name="colorpalette_nebula_iterations_colors" native="true">
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Gradient which defines the colors of the fractal surface.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <widget class="MyGroupBox" name="groupCheck_nebula_grid_domain_enabled">
+                <property name="toolTip">
+                 <string>Enable grid-based domain calculation for the nebula, allowing control over grid spacing along each axis.</string>
+                </property>
+                <property name="title">
+                 <string>Domain as grid</string>
+                </property>
+                <property name="checkable">
+                 <bool>true</bool>
+                </property>
+                <layout class="QGridLayout" name="gridLayout_4">
+                 <property name="leftMargin">
+                  <number>2</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>2</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>2</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>2</number>
+                 </property>
+                 <property name="spacing">
+                  <number>2</number>
+                 </property>
+                 <item row="2" column="0">
+                  <widget class="QLabel" name="label_7">
+                   <property name="text">
+                    <string>Grid spacing z:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="0">
+                  <widget class="QLabel" name="label_6">
+                   <property name="text">
+                    <string>Grid spacing y:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="0">
+                  <widget class="QLabel" name="label_5">
+                   <property name="text">
+                    <string>Grid spacing x:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="1">
+                  <widget class="MyLineEdit" name="logedit_nebula_x_grid_size">
+                   <property name="toolTip">
+                    <string>Size of the grid along the X axis for nebula domain calculation.</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="1">
+                  <widget class="MyLineEdit" name="logedit_nebula_y_grid_size">
+                   <property name="toolTip">
+                    <string>Size of the grid along the Y axis for nebula domain calculation.</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="1">
+                  <widget class="MyLineEdit" name="logedit_nebula_z_grid_size">
+                   <property name="toolTip">
+                    <string>Size of the grid along the Z axis for nebula domain calculation.</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_3">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+       </item>
+      </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>cGradientEditWidget</class>
+   <extends>QWidget</extends>
+   <header>gradient_edit_widget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+     <class>MyCheckBox</class>
+     <extends>QCheckBox</extends>
+     <header>my_check_box.h</header>
+    </customwidget>
+  <customwidget>
+     <class>MyComboBox</class>
+     <extends>QComboBox</extends>
+     <header>my_combo_box.h</header>
+    </customwidget>
+  <customwidget>
+     <class>MyGroupBox</class>
+     <extends>QGroupBox</extends>
+     <header>my_group_box.h</header>
+     <container>1</container>
+    </customwidget>
+  <customwidget>
+     <class>MyLineEdit</class>
+     <extends>QLineEdit</extends>
+     <header>my_line_edit.h</header>
+    </customwidget>
+  <customwidget>
+     <class>MySpinBox</class>
+     <extends>QSpinBox</extends>
+     <header>my_spin_box.h</header>
+    </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

@@ -1,0 +1,716 @@
+/**
+ * Mandelbulber v2, a 3D fractal generator       ,=#MKNmMMKmmßMNWy,
+ *                                             ,B" ]L,,p%%%,,,§;, "K
+ * Copyright (C) 2014-24 Mandelbulber Team     §R-==%w["'~5]m%=L.=~5N
+ *                                        ,=mm=§M ]=4 yJKA"/-Nsaj  "Bw,==,,
+ * This file is part of Mandelbulber.    §R.r= jw",M  Km .mM  FW ",§=ß., ,TN
+ *                                     ,4R =%["w[N=7]J '"5=],""]]M,w,-; T=]M
+ * Mandelbulber is free software:     §R.ß~-Q/M=,=5"v"]=Qf,'§"M= =,M.§ Rz]M"Kw
+ * you can redistribute it and/or     §w "xDY.J ' -"m=====WeC=\ ""%""y=%"]"" §
+ * modify it under the terms of the    "§M=M =D=4"N #"%==A%p M§ M6  R' #"=~.4M
+ * GNU General Public License as        §W =, ][T"]C  §  § '§ e===~ U  !§[Z ]N
+ * published by the                    4M",,Jm=,"=e~  §  §  j]]""N  BmM"py=ßM
+ * Free Software Foundation,          ]§ T,M=& 'YmMMpM9MMM%=w=,,=MT]M m§;'§,
+ * either version 3 of the License,    TWw [.j"5=~N[=§%=%W,T ]R,"=="Y[LFT ]N
+ * or (at your option)                   TW=,-#"%=;[  =Q:["V""  ],,M.m == ]N
+ * any later version.                      J§"mr"] ,=,," =="""J]= M"M"]==ß"
+ *                                          §= "=C=4 §"eM "=B:m|4"]#F,§~
+ * Mandelbulber is distributed in            "9w=,,]w em%wJ '"~" ,=,,ß"
+ * the hope that it will be useful,                 . "K=  ,=RMMMßM"""
+ * but WITHOUT ANY WARRANTY;                            .'''
+ * without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * See the GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with Mandelbulber. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * ###########################################################################
+ *
+ * Authors: Krzysztof Marczak (buddhi1980@gmail.com)
+ *
+ * definitions of primitive objects
+ */
+
+#include "primitives.h"
+
+#include <QComboBox>
+#include <QObject>
+#include <QtAlgorithms>
+
+#include "common_math.h"
+#include "displacement_map.hpp"
+#include "objects_tree.h"
+#include "parameters.hpp"
+#include "shader_perlin_noise_for_shaders.hpp"
+#include "write_log.hpp"
+
+using namespace fractal;
+using namespace std;
+
+QString cPrimitives::PrimitiveNames(enumObjectType primitiveType)
+{
+	switch (primitiveType)
+	{
+		case objPlane: return "plane";
+		case objWater: return "water";
+		case objSphere: return "sphere";
+		case objBox: return "box";
+		case objRectangle: return "rectangle";
+		case objCircle: return "circle";
+		case objCone: return "cone";
+		case objCylinder: return "cylinder";
+		case objTorus: return "torus";
+		case objPrism: return "prism";
+		case objEllipsoid: return "ellipsoid";
+		case objCapsule: return "capsule";
+		case objHexPrism: return "hexprism";
+		case objLavaPlane: return "lava_plane";
+		case objOctahedron: return "octahedron";
+		case objPyramid: return "pyramid";
+		case objTerrainPlane: return "terrain_plane";
+		default: return "";
+	}
+}
+
+enumObjectType cPrimitives::PrimitiveNameToEnum(const QString &primitiveType)
+{
+	enumObjectType type = objNone;
+	if (primitiveType == QString("plane"))
+		type = objPlane;
+	else if (primitiveType == QString("water"))
+		type = objWater;
+	else if (primitiveType == QString("sphere"))
+		type = objSphere;
+	else if (primitiveType == QString("box"))
+		type = objBox;
+	else if (primitiveType == QString("rectangle"))
+		type = objRectangle;
+	else if (primitiveType == QString("circle"))
+		type = objCircle;
+	else if (primitiveType == QString("cone"))
+		type = objCone;
+	else if (primitiveType == QString("cylinder"))
+		type = objCylinder;
+	else if (primitiveType == QString("torus"))
+		type = objTorus;
+	else if (primitiveType == QString("prism"))
+		type = objPrism;
+	else if (primitiveType == QString("ellipsoid"))
+		type = objEllipsoid;
+	else if (primitiveType == QString("capsule"))
+		type = objCapsule;
+	else if (primitiveType == QString("hexprism"))
+		type = objHexPrism;
+	else if (primitiveType == QString("lava_plane"))
+		type = objLavaPlane;
+	else if (primitiveType == QString("octahedron"))
+		type = objOctahedron;
+	else if (primitiveType == QString("pyramid"))
+		type = objPyramid;
+	else if (primitiveType == QString("terrain_plane"))
+		type = objTerrainPlane;
+	else
+		qCritical() << "Wrong primitive name: " << primitiveType;
+
+	return type;
+}
+
+cPrimitives::cPrimitives(const std::shared_ptr<cParameterContainer> par,
+	std::vector<cObjectData> *objectData,
+	std::vector<cObjectsTree::sNodeDataForRendering> *objectTreeNodes)
+{
+	WriteLog("cPrimitives::cPrimitives(const std::shared_ptr<cParameterContainer> par) started", 3);
+	isAnyPrimitive = false;
+
+	Set(par, objectData, objectTreeNodes);
+
+	WriteLog("cPrimitives::cPrimitives(const std::shared_ptr<cParameterContainer> par) finished", 3);
+}
+
+void cPrimitives::Set(const std::shared_ptr<cParameterContainer> par,
+	std::vector<cObjectData> *objectData,
+	std::vector<cObjectsTree::sNodeDataForRendering> *objectTreeNodes)
+{
+	allPrimitives.clear();
+	namesOfPrimitives.clear();
+
+	QList<QString> listOfParameters = par->GetListOfParameters();
+	QList<sPrimitiveItem> listOfPrimitives = GetListOfPrimitives(par);
+
+	int basicFogShapeIndex = par->Get<int>("basic_fog_primitive");
+	int distFogShapeIndex = par->Get<int>("distance_fog_primitive");
+	int iterFogShapeIndex = par->Get<int>("iteration_fog_primitive");
+	int cloudsShapeIndex = par->Get<int>("clouds_primitive");
+
+	QString basicFogShapeName;
+	if (basicFogShapeIndex > 0 && basicFogShapeIndex - 1 < listOfPrimitives.count())
+		basicFogShapeName =
+			listOfPrimitives.at(basicFogShapeIndex - 1).fullName; //-1 because 0 is "None"
+
+	QString distFogShapeName;
+	if (distFogShapeIndex > 0 && distFogShapeIndex - 1 < listOfPrimitives.count())
+		distFogShapeName = listOfPrimitives.at(distFogShapeIndex - 1).fullName; //-1 because 0 is "None"
+
+	QString iterFogShapeName;
+	if (iterFogShapeIndex > 0 && iterFogShapeIndex - 1 < listOfPrimitives.count())
+		iterFogShapeName = listOfPrimitives.at(iterFogShapeIndex - 1).fullName; //-1 because 0 is "None"
+
+	QString cloudsShapeName;
+	if (cloudsShapeIndex > 0 && cloudsShapeIndex - 1 < listOfPrimitives.count())
+		cloudsShapeName = listOfPrimitives.at(cloudsShapeIndex - 1).fullName; //-1 because 0 is "None"
+
+	// bubble sort by calculation order
+	for (int i = listOfPrimitives.size() - 1; i > 0; i--)
+	{
+		for (int j = 0; j < listOfPrimitives.size() - 1; j++)
+		{
+			int order1 = par->Get<int>(listOfPrimitives.at(j).fullName + "_calculation_order");
+			int order2 = par->Get<int>(listOfPrimitives.at(j + 1).fullName + "_calculation_order");
+
+			if (order1 > order2)
+			{
+#if QT_VERSION < QT_VERSION_CHECK(5, 13, 0)
+				listOfPrimitives.swap(j, j + 1);
+#else
+				listOfPrimitives.swapItemsAt(j, j + 1);
+#endif
+			}
+		}
+	}
+
+	for (auto item : listOfPrimitives)
+	{
+		using namespace fractal;
+		std::shared_ptr<sPrimitiveBasic> primitive;
+
+		switch (item.type)
+		{
+			case objPlane:
+			{
+				primitive.reset(new sPrimitivePlane(item.fullName, par));
+				break;
+			}
+			case objBox:
+			{
+				primitive.reset(new sPrimitiveBox(item.fullName, par));
+				break;
+			}
+			case objSphere:
+			{
+				primitive.reset(new sPrimitiveSphere(item.fullName, par));
+				break;
+			}
+			case objWater:
+			{
+				primitive.reset(new sPrimitiveWater(item.fullName, par));
+				break;
+			}
+			case objCone:
+			{
+				primitive.reset(new sPrimitiveCone(item.fullName, par));
+				break;
+			}
+			case objCylinder:
+			{
+				primitive.reset(new sPrimitiveCylinder(item.fullName, par));
+				break;
+			}
+			case objTorus:
+			{
+				primitive.reset(new sPrimitiveTorus(item.fullName, par));
+				break;
+			}
+			case objCircle:
+			{
+				primitive.reset(new sPrimitiveCircle(item.fullName, par));
+				break;
+			}
+			case objRectangle:
+			{
+				primitive.reset(new sPrimitiveRectangle(item.fullName, par));
+				break;
+			}
+			case objPrism:
+			{
+				primitive.reset(new sPrimitivePrism(item.fullName, par));
+				break;
+			}
+			case objEllipsoid:
+			{
+				primitive.reset(new sPrimitiveEllipsoid(item.fullName, par));
+				break;
+			}
+			case objCapsule:
+			{
+				primitive.reset(new sPrimitiveCapsule(item.fullName, par));
+				break;
+			}
+			case objHexPrism:
+			{
+				primitive.reset(new sPrimitiveHexPrism(item.fullName, par));
+				break;
+			}
+			case objLavaPlane:
+			{
+				primitive.reset(new sPrimitiveLavaPlane(item.fullName, par));
+				break;
+			}
+			case objOctahedron:
+			{
+				primitive.reset(new sPrimitiveOctahedron(item.fullName, par));
+				break;
+			}
+			case objPyramid:
+			{
+				primitive.reset(new sPrimitivePyramid(item.fullName, par));
+				break;
+			}
+			case objTerrainPlane:
+			{
+				primitive.reset(new sPrimitiveTerrainPlane(item.fullName, par));
+				break;
+			}
+			default:
+			{
+				qCritical() << "cannot handle " << PrimitiveNames(item.type)
+										<< " in cPrimitives::cPrimitives()";
+				return;
+			}
+		}
+
+		primitive->objectType = item.type;
+
+		if (objectData)
+		{
+			objectData->push_back(*primitive.get());
+			primitive->objectId = objectData->size() - 1;
+		}
+
+		if (objectTreeNodes)
+		{
+			cObjectsTree::WriteInternalNodeID(
+				primitive->userObjectId, primitive->objectId, allPrimitives.size(), objectTreeNodes);
+		}
+
+		if (item.fullName == basicFogShapeName)
+		{
+			primitive->usedForVolumetric = true;
+			primitiveIndexForBasicFog = primitive->objectId;
+		}
+
+		if (item.fullName == distFogShapeName)
+		{
+			primitive->usedForVolumetric = true;
+			primitiveIndexForDistFog = primitive->objectId;
+		}
+
+		if (item.fullName == iterFogShapeName)
+		{
+			primitive->usedForVolumetric = true;
+			primitiveIndexForIterFog = primitive->objectId;
+		}
+
+		if (item.fullName == cloudsShapeName)
+		{
+			primitive->usedForVolumetric = true;
+			primitiveIndexForClouds = primitive->objectId;
+		}
+
+		allPrimitives.push_back(primitive);
+		namesOfPrimitives.push_back(item.fullName);
+	}
+
+	allPrimitivesPosition = par->Get<CVector3>("all_primitives_position");
+	allPrimitivesRotation = par->Get<CVector3>("all_primitives_rotation");
+	mRotAllPrimitivesRotation.SetRotation2(allPrimitivesRotation / 180.0 * M_PI);
+}
+
+cPrimitives::~cPrimitives()
+{
+	// nothing to do
+}
+
+// Evaluate a single primitive's raw distance (including cloner instances)
+double cPrimitives::EvaluatePrimitiveDistance(
+	const std::shared_ptr<sPrimitiveBasic> &primitive, CVector3 point2, double currentDist) const
+{
+	sPrimitiveWater *water = dynamic_cast<sPrimitiveWater *>(primitive.get());
+	double distTemp;
+	if (water)
+		distTemp = water->PrimitiveDistanceWater(point2, currentDist);
+	else
+		distTemp = primitive->PrimitiveDistance(point2);
+
+	if (primitive->cloner.enabled && primitive->cloner.count > 1)
+	{
+		for (int ci = 1; ci < primitive->cloner.count; ci++)
+		{
+			CVector3 cloneRotation, cloneScale;
+			CVector3 cloneOffset = primitive->ApplyCloneTransform(ci, cloneRotation, cloneScale);
+			CVector3 pointClone = point2 - cloneOffset;
+
+			if (cloneRotation.Length() > 1e-10)
+			{
+				CRotationMatrix cloneRotMatrix;
+				cloneRotMatrix.SetRotation2(cloneRotation * M_PI / 180.0);
+				pointClone = cloneRotMatrix.RotateVector(pointClone);
+			}
+
+			double minCloneScale = 1.0;
+			if (cloneScale.x > 1e-10 && cloneScale.y > 1e-10 && cloneScale.z > 1e-10)
+			{
+				pointClone.x /= cloneScale.x;
+				pointClone.y /= cloneScale.y;
+				pointClone.z /= cloneScale.z;
+				minCloneScale = cloneScale.x;
+				if (cloneScale.y < minCloneScale) minCloneScale = cloneScale.y;
+				if (cloneScale.z < minCloneScale) minCloneScale = cloneScale.z;
+			}
+
+			double d;
+			if (water)
+				d = water->PrimitiveDistanceWater(pointClone, currentDist);
+			else
+				d = primitive->PrimitiveDistance(pointClone);
+			d *= minCloneScale;
+			if (d < distTemp) distTemp = d;
+		}
+	}
+	return distTemp;
+}
+
+// Apply boolean operator to combine distTemp into distance
+void cPrimitives::ApplyBooleanOp(int booleanOp, double &distance, double distTemp,
+	double detailSize, bool normalCalculationMode, int &closestObject, int objectId,
+	bool smoothEnable, double smoothDist) const
+{
+	using namespace fractal;
+	switch (booleanOp)
+	{
+		case primBooleanOperatorOR:
+		{
+			if (distTemp < distance) closestObject = objectId;
+			if (smoothEnable)
+				distance = opSmoothUnion(distance, distTemp, smoothDist);
+			else
+				distance = min(distance, distTemp);
+			break;
+		}
+		case primBooleanOperatorAND:
+		{
+			if (distTemp > distance) closestObject = objectId;
+			distance = max(distance, distTemp);
+			break;
+		}
+		case primBooleanOperatorSUB:
+		{
+			const double limit = 1.5;
+			if (distance < detailSize)
+			{
+				if (distTemp < detailSize * limit * 1.5) closestObject = objectId;
+				if (distTemp < detailSize * limit)
+				{
+					if (normalCalculationMode)
+						distance = max(detailSize * limit - distTemp, distance);
+					else
+						distance = detailSize * limit;
+				}
+				else
+				{
+					distance = max(detailSize * limit - distTemp, distance);
+					if (distance < 0) distance = 0;
+				}
+			}
+			break;
+		}
+		case primBooleanOperatorRevSUB:
+		{
+			int closestObjectTemp = closestObject;
+			closestObject = objectId;
+			const double limit = 1.5;
+			if (distTemp < detailSize)
+			{
+				if (distance < detailSize * limit * 1.5) closestObject = closestObjectTemp;
+				if (distance < detailSize * limit)
+				{
+					if (normalCalculationMode)
+						distance = max(detailSize * limit - distance, distTemp);
+					else
+						distance = detailSize * limit;
+				}
+				else
+				{
+					distTemp = max(detailSize * limit - distance, distTemp);
+					distance = distTemp;
+					if (distance < 0) distance = 0;
+				}
+			}
+			else
+			{
+				distance = distTemp;
+			}
+			break;
+		}
+		case primBooleanOperatorSmoothOR:
+		{
+			if (distTemp < distance) closestObject = objectId;
+			distance = opSmoothUnion(distance, distTemp, smoothDist);
+			break;
+		}
+		case primBooleanOperatorSmoothAND:
+		{
+			if (distTemp > distance) closestObject = objectId;
+			distance = opSmoothIntersection(distance, distTemp, smoothDist);
+			break;
+		}
+		case primBooleanOperatorSmoothSUB:
+		{
+			if (-distTemp > distance) closestObject = objectId;
+			distance = opSmoothSubtraction(distTemp, distance, smoothDist);
+			break;
+		}
+	}
+}
+
+double cPrimitives::TotalDistance(CVector3 point, double fractalDistance, double detailSize,
+	bool normalCalculationMode, int *closestObjectId, sRenderData *data,
+	int objectIdForVolumetrics) const
+{
+	using namespace fractal;
+	int closestObject = *closestObjectId;
+	double distance = fractalDistance;
+
+	if (allPrimitives.size() > 0)
+	{
+		CVector3 point2 = point - allPrimitivesPosition;
+		point2 = mRotAllPrimitivesRotation.RotateVector(point2);
+
+		// Collect unique group IDs and sort primitives by priority
+		QMap<int, QVector<std::shared_ptr<sPrimitiveBasic>>> groups;
+		QVector<std::shared_ptr<sPrimitiveBasic>> ungrouped;
+
+		for (auto primitive : allPrimitives)
+		{
+			if (!primitive->enable) continue;
+			if (!primitive->groupEnabled) continue;
+
+			if (primitive->groupId > 0)
+				groups[primitive->groupId].append(primitive);
+			else
+				ungrouped.append(primitive);
+		}
+
+		// Sort each group by priority
+		auto sortByPriority = [](const std::shared_ptr<sPrimitiveBasic> &a,
+								  const std::shared_ptr<sPrimitiveBasic> &b) {
+			return a->groupPriority < b->groupPriority;
+		};
+
+		for (auto &group : groups)
+			std::sort(group.begin(), group.end(), sortByPriority);
+		std::sort(ungrouped.begin(), ungrouped.end(), sortByPriority);
+
+		// Evaluate each group to produce a single group distance
+		QMap<int, double> groupDistances;
+		QMap<int, int> groupClosestObjects;
+		int groupBoolOp = primBooleanOperatorOR;
+		double groupSmoothR = 0.1;
+
+		for (auto it = groups.begin(); it != groups.end(); ++it)
+		{
+			int gid = it.key();
+			const auto &members = it.value();
+			double gDist = 1e20;
+			int gClosest = -1;
+			bool firstInGroup = true;
+
+			for (const auto &prim : members)
+			{
+				double distTemp = EvaluatePrimitiveDistance(prim, point2, gDist);
+
+				if (objectIdForVolumetrics == prim->objectId)
+				{
+					*closestObjectId = prim->objectId;
+					return distTemp;
+				}
+				if (prim->usedForVolumetric) continue;
+
+				distTemp = DisplacementMap(distTemp, point2, prim->objectId, data);
+				distTemp = PerlinNoiseDisplacement(distTemp, point2, data, prim->objectId);
+
+				if (firstInGroup)
+				{
+					gDist = distTemp;
+					gClosest = prim->objectId;
+					groupBoolOp = prim->groupBooleanOperator;
+					groupSmoothR = prim->groupSmoothRadius;
+					firstInGroup = false;
+				}
+				else
+				{
+					ApplyBooleanOp(prim->booleanOperator, gDist, distTemp,
+						detailSize, normalCalculationMode, gClosest, prim->objectId,
+						prim->smoothDeCombineEnable, prim->smoothDeCombineDistance);
+				}
+			}
+
+			if (!firstInGroup)
+			{
+				groupDistances[gid] = gDist;
+				groupClosestObjects[gid] = gClosest;
+			}
+		}
+
+		// Combine group results into scene distance
+		for (auto it = groupDistances.begin(); it != groupDistances.end(); ++it)
+		{
+			int gid = it.key();
+			double gDist = it.value();
+			int gClosest = groupClosestObjects[gid];
+			ApplyBooleanOp(groupBoolOp, distance, gDist,
+				detailSize, normalCalculationMode, closestObject, gClosest,
+				true, groupSmoothR);
+		}
+
+		// Evaluate ungrouped primitives (flat chain, backward compatible)
+		for (const auto &primitive : ungrouped)
+		{
+			double distTemp = EvaluatePrimitiveDistance(primitive, point2, distance);
+
+			if (objectIdForVolumetrics == primitive->objectId)
+			{
+				*closestObjectId = primitive->objectId;
+				return distTemp;
+			}
+			if (primitive->usedForVolumetric) continue;
+
+			distTemp = DisplacementMap(distTemp, point2, primitive->objectId, data);
+			distTemp = PerlinNoiseDisplacement(distTemp, point2, data, primitive->objectId);
+
+			// Boolean target: if targeting a specific group, combine with that group's result
+			if (primitive->booleanTargetGroupId >= 0
+				&& groupDistances.contains(primitive->booleanTargetGroupId))
+			{
+				double targetDist = groupDistances[primitive->booleanTargetGroupId];
+				int targetClosest = groupClosestObjects[primitive->booleanTargetGroupId];
+				ApplyBooleanOp(primitive->booleanOperator, targetDist, distTemp,
+					detailSize, normalCalculationMode, targetClosest, primitive->objectId,
+					primitive->smoothDeCombineEnable, primitive->smoothDeCombineDistance);
+				groupDistances[primitive->booleanTargetGroupId] = targetDist;
+				groupClosestObjects[primitive->booleanTargetGroupId] = targetClosest;
+				// Re-combine updated group into scene
+				distance = fractalDistance;
+				closestObject = *closestObjectId;
+				for (auto git = groupDistances.begin(); git != groupDistances.end(); ++git)
+				{
+					ApplyBooleanOp(groupBoolOp, distance, git.value(),
+						detailSize, normalCalculationMode, closestObject,
+						groupClosestObjects[git.key()], true, groupSmoothR);
+				}
+			}
+			else
+			{
+				ApplyBooleanOp(primitive->booleanOperator, distance, distTemp,
+					detailSize, normalCalculationMode, closestObject, primitive->objectId,
+					primitive->smoothDeCombineEnable, primitive->smoothDeCombineDistance);
+			}
+		}
+	}
+
+	*closestObjectId = closestObject;
+	return distance;
+}
+
+QList<sPrimitiveItem> cPrimitives::GetListOfPrimitives(
+	const std::shared_ptr<cParameterContainer> par)
+{
+	QList<sPrimitiveItem> listOfPrimitives;
+
+	QList<QString> listOfParameters = par->GetListOfParameters();
+	for (auto &parameterName : listOfParameters)
+	{
+		if (parameterName.left(parameterName.indexOf('_')) == "primitive")
+		{
+			QStringList split = parameterName.split('_');
+			QString primitiveName = split.at(0) + "_" + split.at(1) + "_" + split.at(2);
+			QString objectTypeString = split.at(1);
+			int index = split.at(2).toInt();
+
+			bool found = false;
+			for (const auto &listOfPrimitive : listOfPrimitives)
+			{
+				if (listOfPrimitive.fullName == primitiveName)
+				{
+					found = true;
+					break;
+				}
+			}
+
+			if (!found)
+			{
+				fractal::enumObjectType objectType = PrimitiveNameToEnum(objectTypeString);
+				sPrimitiveItem newItem(objectType, index, primitiveName, objectTypeString);
+				listOfPrimitives.append(newItem);
+			}
+		}
+	}
+	return listOfPrimitives;
+}
+
+QList<QString> cPrimitives::GetListOfPrimitiveParams(
+	const sPrimitiveItem &item, const std::shared_ptr<cParameterContainer> par)
+{
+	QList<QString> listOfPrimitiveParams;
+
+	QList<QString> listOfParameters = par->GetListOfParameters();
+	for (auto &parameterName : listOfParameters)
+	{
+		if (parameterName.contains(item.fullName + "_"))
+		{
+			listOfPrimitiveParams.push_back(parameterName);
+		}
+	}
+	return listOfPrimitiveParams;
+}
+
+int cPrimitives::NewPrimitiveIndex(
+	const QString &primitiveType, const QList<sPrimitiveItem> &listOfPrimitives)
+{
+	QString primitiveName = QString("primitive_") + primitiveType;
+	fractal::enumObjectType objectType = PrimitiveNameToEnum(primitiveType);
+
+	int newId = 0;
+
+	// look for the lowest free id
+	bool occupied = true;
+
+	while (occupied)
+	{
+		newId++;
+		occupied = false;
+		for (const auto &primitiveItem : listOfPrimitives)
+		{
+			if (objectType == primitiveItem.type && newId == primitiveItem.id) occupied = true;
+		}
+	}
+
+	return newId;
+}
+
+void cPrimitives::PrepareComboBox(
+	QComboBox *comboBox, const std::shared_ptr<cParameterContainer> par)
+{
+	QList<sPrimitiveItem> listOfPrimitives = GetListOfPrimitives(par);
+	comboBox->clear();
+
+	comboBox->addItem(QObject::tr("None"));
+
+	for (const sPrimitiveItem &item : listOfPrimitives)
+	{
+		QString primitiveName = par->Get<QString>(item.fullName + "_name");
+		QString text = QString("%1 #%2").arg(item.typeName).arg(item.id);
+		if (text != primitiveName) text += " (" + primitiveName + ")";
+		comboBox->addItem(text, QVariant(primitiveName));
+	}
+}

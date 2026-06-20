@@ -1,0 +1,62 @@
+# Mandelbulber settings file
+# version 2.26
+# only modified parameters
+[main_parameters]
+all_lights_intensity 4;
+brightness 0,8;
+camera 0,301461093798435 0,177076998080256 0,0455654348433263;
+camera_distance_to_target 0,00663512356646762;
+camera_rotation -50,3839776373738 69,3149427478998 166,252635360496;
+camera_top 0,8515604296253374 0,3963824967685703 -0,3431118636127655;
+DE_factor 0,169824;
+DOF_radius 0,01;
+flight_last_to_render 0;
+formula_1 8;
+formula_2 7;
+formula_3 3;
+formula_iterations_1 2;
+formula_iterations_2 3;
+gamma 0,94;
+hdr true;
+hybrid_fractal_enable true;
+image_height 1080;
+image_proportion 4;
+image_width 1920;
+iteration_fog_opacity 24547,1;
+keyframe_last_to_render 0;
+light1_enabled false;
+light1_is_defined true;
+light2_color d000 8600 4900;
+light2_enabled true;
+light2_intensity 1,4752655292575e-08;
+light2_is_defined true;
+light2_position 0,302586436082229 0,177136184947546 0,0497894311224917;
+light2_visibility 16,5959;
+light2_volumetric true;
+light2_volumetric_visibility 19104,2218780675;
+light3_color ff00 d200 1a00;
+light3_enabled true;
+light3_intensity 4,71592486128178e-10;
+light3_is_defined true;
+light3_position 0,30248732833448 0,181731932569923 0,0488291544327716;
+light3_visibility 16,5959;
+light3_volumetric true;
+light3_volumetric_visibility 413458,665554319;
+light4_color fd00 9400 6a00;
+light4_enabled true;
+light4_intensity 1,37501261274619e-08;
+light4_is_defined true;
+light4_position 0,302682171642319 0,176762844714145 0,0475739990401383;
+light4_visibility 16,5959;
+mat1_is_defined true;
+mat1_metallic false;
+mat1_specular 1;
+mat1_specular_width 1;
+mat1_surface_color_gradient 0 fd6029 999 698403 1999 fff59b 2999 f5bd22 3999 0b5e87 5000 c68876 5999 a51c64 7000 3b9fee 7999 d4ffd4 9000 aba53c;
+target 0,303266551308621 0,178571453040018 0,0517728330337482;
+volumetric_fog_colour_2_distance 0,00164394715764329;
+[fractal_1]
+IFS_rotation_enabled true;
+mandelbox_scale -0,4;
+[fractal_2]
+IFS_rotation_enabled true;

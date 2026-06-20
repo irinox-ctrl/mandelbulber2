@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='utf-8'?>
+<ui version="4.0">
+ <class>cMutationSystemsPanel</class>
+ <widget class="QWidget" name="cMutationSystemsPanel">
+  <layout class="QVBoxLayout" name="verticalLayout_mutation_systems">
+   <property name="spacing">
+    <number>2</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="cMutationSystemsGroup1" name="widget_mutation_systems_group1" native="true"/>
+   </item>
+   <item>
+    <widget class="cMutationSystemsGroup2" name="widget_mutation_systems_group2" native="true"/>
+   </item>
+   <item>
+    <widget class="cMutationSystemsGroup3" name="widget_mutation_systems_group3" native="true"/>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>cMutationSystemsGroup1</class>
+   <extends>QWidget</extends>
+   <header location="global">mutation_systems_group1.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>cMutationSystemsGroup2</class>
+   <extends>QWidget</extends>
+   <header location="global">mutation_systems_group2.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>cMutationSystemsGroup3</class>
+   <extends>QWidget</extends>
+   <header location="global">mutation_systems_group3.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

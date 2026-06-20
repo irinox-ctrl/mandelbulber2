@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>cEffectsPostTab</class>
+ <widget class="QWidget" name="cEffectsPostTab">
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <property name="leftMargin">
+        <number>2</number>
+       </property>
+       <property name="rightMargin">
+        <number>2</number>
+       </property>
+       <property name="bottomMargin">
+        <number>2</number>
+       </property>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_15">
+         <item>
+          <widget class="cButtonLoadSettingsFromWidget" name="pushButton_local_load_7">
+           <property name="text">
+            <string>Laden</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="cButtonSaveSettingsFromWidget" name="pushButton_local_save_7">
+           <property name="text">
+            <string>Opslaan</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="cButtonResetSettingsFromWidget" name="pushButton_local_reset_7">
+           <property name="text">
+            <string>Reset</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="cButtonRandomSettingsFromWidget" name="pushButton_local_randomize_6">
+           <property name="text">
+            <string>Randomize</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_8">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QScrollArea" name="scrollArea">
+         <property name="widgetResizable">
+          <bool>true</bool>
+         </property>
+         <widget class="QWidget" name="scrollAreaWidgetContents">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>442</width>
+            <height>1050</height>
+           </rect>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_3">
+           <property name="leftMargin">
+            <number>2</number>
+           </property>
+           <property name="topMargin">
+            <number>2</number>
+           </property>
+           <property name="rightMargin">
+            <number>2</number>
+           </property>
+           <property name="bottomMargin">
+            <number>2</number>
+           </property>
+           <item>
+            <widget class="QPushButton" name="pushButton_post_effects_update">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Update image after changes of DOF settings. Can be updated even after image rendering.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="text">
+              <string>Update image</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="MyGroupBox" name="groupCheck_hdr_blur_enabled">
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable the HDR Blur post effect (bloom-like glow on bright areas).&lt;/p&gt;&lt;p&gt;This applies a weighted blur in HDR space after rendering. Controls below: - Radius: overall spread of the blur (image-size relative). - Intensity: strength/threshold of the blur contribution.&lt;/p&gt;&lt;p&gt;Notes: - Operates on HDR image data; does not change lighting or exposure. - Uses OpenCL if available, otherwise CPU. - Larger Radius increases render time.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="title">
+              <string>HDR Bl&amp;ur</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_74">
+              <property name="spacing">
+               <number>2</number>
+              </property>
+              <property name="leftMargin">
+               <number>2</number>
+              </property>
+              <property name="topMargin">
+               <number>2</number>
+              </property>
+              <property name="rightMargin">
+               <number>2</number>
+              </property>
+              <property name="bottomMargin">
+               <number>2</number>
+              </property>
+              <item>
+               <layout class="QGridLayout" name="gridLayout_36" columnstretch="0,0">
+                <property name="spacing">
+                 <number>2</number>
+                </property>
+                <item row="0" column="1">
+                 <widget class="MyDoubleSpinBox" name="spinbox_hdr_blur_radius">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the radius (spread) of the HDR Blur bloom.&lt;/p&gt;&lt;p&gt;The blur size is relative to image dimensions. Approximate pixel radius = radius × (image width + image height) × 0.001.&lt;/p&gt;&lt;p&gt;Larger values give a wider, softer glow; smaller values keep highlights tight. Bigger radius increases processing time. Works with Intensity to control strength.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                  <property name="prefix">
+                   <string></string>
+                  </property>
+                  <property name="suffix">
+                   <string></string>
+                  </property>
+                  <property name="decimals">
+                   <number>3</number>
+                  </property>
+                  <property name="minimum">
+                   <double>0.001000000000000</double>
+                  </property>
+                  <property name="maximum">
+                   <double>1000.000000000000000</double>
+                  </property>
+                  <property name="singleStep">
+                   <double>1.000000000000000</double>
+                  </property>
+                  <property name="value">
+                   <double>1.000000000000000</double>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label_137">
+                  <property name="text">
+                   <string>Blur radius:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="label_352">
+                  <property name="text">
+                   <string>Intensiteit:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="MyDoubleSpinBox" name="spinbox_hdr_blur_intensity">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Copilot said: &lt;/p&gt;&lt;p&gt;Controls the strength/threshold of the HDR Blur &lt;/p&gt;&lt;p&gt;Controls the strength/threshold of the HDR Blur contribution.&lt;/p&gt;&lt;p&gt;Lower values produce a stronger, brighter bloom; higher values dampen the effect. Works together with Radius (spread) but does not change blur size.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                  <property name="prefix">
+                   <string></string>
+                  </property>
+                  <property name="suffix">
+                   <string></string>
+                  </property>
+                  <property name="decimals">
+                   <number>4</number>
+                  </property>
+                  <property name="minimum">
+                   <double>0.000000000000000</double>
+                  </property>
+                  <property name="maximum">
+                   <double>100.000000000000000</double>
+                  </property>
+                  <property name="singleStep">
+                   <double>0.010000000000000</double>
+                  </property>
+                  <property name="value">
+                   <double>0.100000000000000</double>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="MyGroupBox" name="groupCheck_post_chromatic_aberration_enabled">
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable the Chromatic Aberration post effect (RGB channel separation).&lt;/p&gt;&lt;p&gt;This simulates lens dispersion by shifting color channels radially from the image center.&lt;/p&gt;&lt;p&gt;Controls inside: - Radius: overall spread of the separation (relative to image size). - Aberration intensity: strength of the channel offset. - Reverse: flip direction (outward vs inward shift).&lt;/p&gt;&lt;p&gt;Notes: - Post-processing only; does not affect lighting or geometry. - Uses OpenCL if available.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="title">
+              <string>Chromatic aberration</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_76">
+              <property name="spacing">
+               <number>2</number>
+              </property>
+              <property name="leftMargin">
+               <number>2</number>
+              </property>
+              <property name="topMargin">
+               <number>2</number>
+              </property>
+              <property name="rightMargin">
+               <number>2</number>
+              </property>
+              <property name="bottomMargin">
+               <number>2</number>
+              </property>
+              <item>
+               <layout class="QGridLayout" name="gridLayout_37" columnstretch="0,0">
+                <property name="spacing">
+                 <number>2</number>
+                </property>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="label_353">
+                  <property name="text">
+                   <string>Aberration intensity:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="MyDoubleSpinBox" name="spinbox_post_chromatic_aberration_intensity">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Controls the strength of RGB channel separation (color fringing) in Chromatic Aberration.&lt;/p&gt;&lt;p&gt;Higher values increase the offset between color channels and widen the visible fringes, especially toward the image edges. Lower values keep the effect subtle. Works together with Radius (spread) and does not change direction (use Reverse to flip).&lt;/p&gt;&lt;p&gt;Notes: - Stronger intensity can increase processing time. - Post-processing only; does not affect lighting or geometry.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                  <property name="prefix">
+                   <string></string>
+                  </property>
+                  <property name="suffix">
+                   <string></string>
+                  </property>
+                  <property name="decimals">
+                   <number>3</number>
+                  </property>
+                  <property name="minimum">
+                   <double>0.000000000000000</double>
+                  </property>
+                  <property name="maximum">
+                   <double>100.000000000000000</double>
+                  </property>
+                  <property name="singleStep">
+                   <double>0.010000000000000</double>
+                  </property>
+                  <property name="value">
+                   <double>1.000000000000000</double>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="MyDoubleSpinBox" name="spinbox_post_chromatic_aberration_radius">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the base radius (spread) of Chromatic Aberration.&lt;/p&gt;&lt;p&gt;The effective spread is relative to image size and grows with distance from the image center, producing wider color fringing toward the edges. Increase for more pronounced, wider separation; decrease to keep fringes tight.&lt;/p&gt;&lt;p&gt;Notes: - Works with Aberration intensity (strength); does not change direction (see Reverse). - Larger values increase processing time.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                  <property name="prefix">
+                   <string></string>
+                  </property>
+                  <property name="suffix">
+                   <string></string>
+                  </property>
+                  <property name="decimals">
+                   <number>3</number>
+                  </property>
+                  <property name="minimum">
+                   <double>0.000000000000000</double>
+                  </property>
+                  <property name="maximum">
+                   <double>1000.000000000000000</double>
+                  </property>
+                  <property name="singleStep">
+                   <double>0.100000000000000</double>
+                  </property>
+                  <property name="value">
+                   <double>1.000000000000000</double>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label_139">
+                  <property name="text">
+                   <string>Blur radius:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="0" colspan="2">
+                 <widget class="MyCheckBox" name="checkBox_post_chromatic_aberration_reverse">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string>Reverse color order</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+ <customwidgets>
+  <customwidget>
+     <class>MyGroupBox</class>
+     <extends>QGroupBox</extends>
+     <header>my_group_box.h</header>
+     <container>1</container>
+    </customwidget>
+  <customwidget>
+     <class>MyCheckBox</class>
+     <extends>QCheckBox</extends>
+     <header>my_check_box.h</header>
+    </customwidget>
+  <customwidget>
+     <class>MyDoubleSpinBox</class>
+     <extends>QDoubleSpinBox</extends>
+     <header>my_double_spin_box.h</header>
+    </customwidget>
+  <customwidget>
+   <class>cButtonLoadSettingsFromWidget</class>
+   <extends>QPushButton</extends>
+   <header>buton_load_settings_from_widget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>cButtonSaveSettingsFromWidget</class>
+   <extends>QPushButton</extends>
+   <header>buton_save_settings_from_widget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>cButtonResetSettingsFromWidget</class>
+   <extends>QPushButton</extends>
+   <header>buton_reset_settings_from_widget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>cButtonRandomSettingsFromWidget</class>
+   <extends>QPushButton</extends>
+   <header>buton_random_settings_from_widget.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

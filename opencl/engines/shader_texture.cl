@@ -1,0 +1,119 @@
+/**
+ * Mandelbulber v2, a 3D fractal generator       ,=#MKNmMMKmmßMNWy,
+ *                                             ,B" ]L,,p%%%,,,§;, "K
+ * Copyright (C) 2018-23 Mandelbulber Team     §R-==%w["'~5]m%=L.=~5N
+ *                                        ,=mm=§M ]=4 yJKA"/-Nsaj  "Bw,==,,
+ * This file is part of Mandelbulber.    §R.r= jw",M  Km .mM  FW ",§=ß., ,TN
+ *                                     ,4R =%["w[N=7]J '"5=],""]]M,w,-; T=]M
+ * Mandelbulber is free software:     §R.ß~-Q/M=,=5"v"]=Qf,'§"M= =,M.§ Rz]M"Kw
+ * you can redistribute it and/or     §w "xDY.J ' -"m=====WeC=\ ""%""y=%"]"" §
+ * modify it under the terms of the    "§M=M =D=4"N #"%==A%p M§ M6  R' #"=~.4M
+ * GNU General Public License as        §W =, ][T"]C  §  § '§ e===~ U  !§[Z ]N
+ * published by the                    4M",,Jm=,"=e~  §  §  j]]""N  BmM"py=ßM
+ * Free Software Foundation,          ]§ T,M=& 'YmMMpM9MMM%=w=,,=MT]M m§;'§,
+ * either version 3 of the License,    TWw [.j"5=~N[=§%=%W,T ]R,"=="Y[LFT ]N
+ * or (at your option)                   TW=,-#"%=;[  =Q:["V""  ],,M.m == ]N
+ * any later version.                      J§"mr"] ,=,," =="""J]= M"M"]==ß"
+ *                                          §= "=C=4 §"eM "=B:m|4"]#F,§~
+ * Mandelbulber is distributed in            "9w=,,]w em%wJ '"~" ,=,,ß"
+ * the hope that it will be useful,                 . "K=  ,=RMMMßM"""
+ * but WITHOUT ANY WARRANTY;                            .'''
+ * without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * See the GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with Mandelbulber. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * ###########################################################################
+ *
+ * Authors: Krzysztof Marczak (buddhi1980@gmail.com)
+ *
+ * calculation of texture
+ */
+
+#ifdef USE_TEXTURES
+#if defined(USE_COLOR_TEXTURE) || defined(USE_DIFFUSION_TEXTURE)         \
+	|| defined(USE_LUMINOSITY_TEXTURE) || defined(USE_REFLECTANCE_TEXTURE) \
+	|| defined(USE_TRANSPARENCY_TEXTURE) || defined(USE_TRANSPARENCY_ALPHA_TEXTURE)
+float3 TextureShader(__constant sClInConstants *consts, sClCalcParams *calcParams,
+	sShaderInputDataCl *input, sRenderData *renderData, __global sObjectDataCl *objectData,
+	int textureIndex, float3 substituteColor)
+{
+	float3 texOut = substituteColor;
+
+	if (textureIndex >= 0)
+	{
+		float3 textureVectorX = 0.0f;
+		float3 textureVectorY = 0.0f;
+
+		float3 pointModified = input->point;
+		float3 fractalNormal = input->normal; // default: gebruik surface normal
+
+#ifdef FRACTALIZE_TEXTURE
+		if (input->material->textureFractalize)
+		{
+			formulaOut outF;
+			outF = Fractal(consts, input->point, calcParams, calcModeCubeOrbitTrap, input->material, -1);
+			pointModified = outF.z.xyz;
+			if (any(isnan(pointModified)) || any(isinf(pointModified)))
+			{
+				return (float3){0.0f, 0.0f, 0.0f};
+			}
+
+			// Voor triplanar: leid pseudo-normaal af uit fractal-iteratieruimte
+			// via finite differences op de accumulator output (Cinema4D aanpak)
+			if (input->material->textureMappingType == mappingTriplanar)
+			{
+				float eps = input->material->textureFractalizeCubeSize * 0.01f;
+				formulaOut outFx, outFy, outFz;
+				float3 px = input->point + (float3){eps, 0.0f, 0.0f};
+				float3 py = input->point + (float3){0.0f, eps, 0.0f};
+				float3 pz = input->point + (float3){0.0f, 0.0f, eps};
+				outFx = Fractal(consts, px, calcParams, calcModeCubeOrbitTrap, input->material, -1);
+				outFy = Fractal(consts, py, calcParams, calcModeCubeOrbitTrap, input->material, -1);
+				outFz = Fractal(consts, pz, calcParams, calcModeCubeOrbitTrap, input->material, -1);
+				// Gradient van de z-lengte = richting van snelste verandering = pseudo-normaal
+				float3 grad;
+				grad.x = length(outFx.z.xyz) - length(outF.z.xyz);
+				grad.y = length(outFy.z.xyz) - length(outF.z.xyz);
+				grad.z = length(outFz.z.xyz) - length(outF.z.xyz);
+				float gradLen = length(grad);
+				if (gradLen > 1e-10f)
+					fractalNormal = grad / gradLen;
+				else
+					fractalNormal = input->normal;
+			}
+		}
+#endif
+
+		if (objectData->objectType > objFractal)
+		{
+			pointModified = pointModified - renderData->primitivesGlobalData->allPrimitivesPosition;
+			pointModified = Matrix33MulFloat3(
+				renderData->primitivesGlobalData->mRotAllPrimitivesRotation, pointModified);
+		}
+		else
+		{
+			pointModified = pointModified - consts->params.common.fractalPosition;
+			pointModified = Matrix33MulFloat3(consts->params.common.mRotFractalRotation, pointModified);
+		}
+
+		float2 texturePoint = TextureMapping(
+			pointModified, fractalNormal, objectData, input->material, &textureVectorX, &textureVectorY);
+
+		texturePoint += (float2){0.5f, 0.5f};
+
+		int2 textureSize = renderData->textureSizes[textureIndex];
+		__global uchar4 *texture = renderData->textures[textureIndex];
+
+		texOut =
+			BicubicInterpolation(texturePoint.x, texturePoint.y, texture, textureSize.x, textureSize.y);
+	}
+
+	return texOut;
+}
+
+#endif
+#endif
+

@@ -1,0 +1,409 @@
+/**
+ * Mandelbulber v2, a 3D fractal generator       ,=#MKNmMMKmmßMNWy,
+ *                                             ,B" ]L,,p%%%,,,§;, "K
+ * Copyright (C) 2018-24 Mandelbulber Team     §R-==%w["'~5]m%=L.=~5N
+ *                                        ,=mm=§M ]=4 yJKA"/-Nsaj  "Bw,==,,
+ * This file is part of Mandelbulber.    §R.r= jw",M  Km .mM  FW ",§=ß., ,TN
+ *                                     ,4R =%["w[N=7]J '"5=],""]]M,w,-; T=]M
+ * Mandelbulber is free software:     §R.ß~-Q/M=,=5"v"]=Qf,'§"M= =,M.§ Rz]M"Kw
+ * you can redistribute it and/or     §w "xDY.J ' -"m=====WeC=\ ""%""y=%"]"" §
+ * modify it under the terms of the    "§M=M =D=4"N #"%==A%p M§ M6  R' #"=~.4M
+ * GNU General Public License as        §W =, ][T"]C  §  § '§ e===~ U  !§[Z ]N
+ * published by the                    4M",,Jm=,"=e~  §  §  j]]""N  BmM"py=ßM
+ * Free Software Foundation,          ]§ T,M=& 'YmMMpM9MMM%=w=,,=MT]M m§;'§,
+ * either version 3 of the License,    TWw [.j"5=~N[=§%=%W,T ]R,"=="Y[LFT ]N
+ * or (at your option)                   TW=,-#"%=;[  =Q:["V""  ],,M.m == ]N
+ * any later version.                      J§"mr"] ,=,," =="""J]= M"M"]==ß"
+ *                                          §= "=C=4 §"eM "=B:m|4"]#F,§~
+ * Mandelbulber is distributed in            "9w=,,]w em%wJ '"~" ,=,,ß"
+ * the hope that it will be useful,                 . "K=  ,=RMMMßM"""
+ * but WITHOUT ANY WARRANTY;                            .'''
+ * without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * See the GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with Mandelbulber. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * ###########################################################################
+ *
+ * Authors: Krzysztof Marczak (buddhi1980@gmail.com)
+ *
+ * cRenderWorker::SurfaceColour method - calculates color of fractal surface
+ */
+#include "compute_fractal.hpp"
+#include "fractparams.hpp"
+#include "render_data.hpp"
+#include "render_worker.hpp"
+
+// Helper: apply gradient scale, offset, and repeat mode
+static float ApplyGradientTransform(float pos, float scale, float offset, int repeatMode)
+{
+	float p = pos * scale + offset;
+	switch (repeatMode)
+	{
+		case 1: // Repeat
+		{
+			float f = fmodf(p, 1.0f);
+			return f < 0.0f ? f + 1.0f : f;
+		}
+		case 2: // Mirror
+		{
+			float f = fmodf(p, 2.0f);
+			if (f < 0.0f) f += 2.0f;
+			return f > 1.0f ? 2.0f - f : f;
+		}
+		case 3: // MirrorOnce
+		{
+			if (p < 0.0f) return 0.0f;
+			if (p > 2.0f) return 1.0f;
+			float f = fmodf(p, 2.0f);
+			return f > 1.0f ? 2.0f - f : f;
+		}
+		case 4: // Extend
+			return p < 0.0f ? 0.0f : (p > 1.0f ? 1.0f : p);
+		case 0: // Wrap (default, matches legacy fmod behavior for full gradient range)
+		default:
+		{
+			float f = fmodf(p, 1.0f);
+			return f < 0.0f ? f + 1.0f : f;
+		}
+	}
+}
+
+// Helper: deterministic 3D hash for gradient dithering
+static float Hash3D(float x, float y, float z)
+{
+	float h = sinf(x * 127.1f + y * 311.7f + z * 74.7f) * 43758.5453f;
+	return h - floorf(h);
+}
+
+static sRGBFloat ApplyGradientNoise(sRGBFloat color, CVector3 worldPos, float amount)
+{
+	if (amount > 0.0f)
+	{
+		float noise = (Hash3D(worldPos.x, worldPos.y, worldPos.z) - 0.5f) * 2.0f * amount;
+		color.R += noise;
+		color.G += noise;
+		color.B += noise;
+	}
+	return color;
+}
+
+// Helper: apply brightness, contrast, saturation, gamma to RGB
+static sRGBFloat ApplyGradientPostProcess(sRGBFloat color, float brightness, float contrast,
+	float saturation, float gamma)
+{
+	// Brightness
+	color.R *= brightness;
+	color.G *= brightness;
+	color.B *= brightness;
+	// Contrast
+	color.R = (color.R - 0.5f) * contrast + 0.5f;
+	color.G = (color.G - 0.5f) * contrast + 0.5f;
+	color.B = (color.B - 0.5f) * contrast + 0.5f;
+	// Saturation (in HSL)
+	if (saturation != 1.0f)
+	{
+		float maxVal = fmaxf(color.R, fmaxf(color.G, color.B));
+		float minVal = fminf(color.R, fminf(color.G, color.B));
+		float l = (maxVal + minVal) * 0.5f;
+		color.R = l + (color.R - l) * saturation;
+		color.G = l + (color.G - l) * saturation;
+		color.B = l + (color.B - l) * saturation;
+	}
+	// Gamma
+	if (gamma != 1.0f)
+	{
+		color.R = powf(fmaxf(0.0f, color.R), gamma);
+		color.G = powf(fmaxf(0.0f, color.G), gamma);
+		color.B = powf(fmaxf(0.0f, color.B), gamma);
+	}
+	return color;
+}
+
+// Helper: apply mask post-processing (invert, contrast, black/white point)
+static float ApplyMaskPostProcess(float opacity, bool invert, float contrast, float blackPoint,
+	float whitePoint)
+{
+	if (invert) opacity = 1.0f - opacity;
+	// Black/white point remap
+	if (whitePoint > blackPoint)
+		opacity = (opacity - blackPoint) / (whitePoint - blackPoint);
+	// Contrast
+	opacity = (opacity - 0.5f) * contrast + 0.5f;
+	// Clamp
+	return opacity < 0.0f ? 0.0f : (opacity > 1.0f ? 1.0f : opacity);
+}
+
+sRGBAFloat cRenderWorker::SurfaceColour(
+	CVector3 point, const sShaderInputData &input, sGradientsCollection *gradients) const
+{
+	sRGBAFloat out;
+
+	switch (data->objectData[input.objectId].objectType)
+	{
+		case fractal::objFractal:
+		{
+			sRGBFloat colour(1.0, 1.0, 1.0);
+			if (input.material->useColorsFromPalette)
+			{
+				int formulaIndex = input.objectId;
+
+				CVector3 tempPoint = point;
+
+				if (!params->booleanOperatorsEnabled)
+					formulaIndex = -1;
+				else
+				{
+					tempPoint = tempPoint - params->formulaPosition[formulaIndex];
+					tempPoint = params->mRotFormulaRotation[formulaIndex].RotateVector(tempPoint);
+					tempPoint = tempPoint.repeatMod(params->formulaRepeat[formulaIndex]);
+					tempPoint *= params->formulaScale[formulaIndex];
+				}
+
+				sFractalIn fractIn(
+					tempPoint, 0, -1, 4, 0, &params->common, formulaIndex, false, input.material);
+				sFractalOut fractOut;
+	fractOut.normal = CVector3(0, 0, 0);
+				Compute<fractal::calcModeColouring>(*fractal, nullptr, fractIn, &fractOut);
+				gradients->colorIndex = fractOut.colorIndex;
+				gradients->iters = fractOut.iters;
+				double nrCol = fmod(fabs(fractOut.colorIndex), 248.0 * 256.0); // kept for compatibility
+
+				double rawColorPosition = nrCol / 256.0 / 10.0 * input.material->coloring_speed
+																	+ input.material->paletteOffset;
+				float colorPosition = ApplyGradientTransform(static_cast<float>(rawColorPosition),
+					input.material->gradientScale, input.material->gradientOffset,
+					input.material->gradientRepeatMode);
+
+				if (input.material->surfaceGradientEnable)
+				{
+					sRGBFloat gradientColor = input.material->gradientSurface.GetColorFloat(colorPosition, false);
+					gradientColor = ApplyGradientPostProcess(gradientColor,
+						input.material->gradientBrightness, input.material->gradientContrast,
+						input.material->gradientSaturation, input.material->gradientGamma);
+					gradientColor = ApplyGradientNoise(gradientColor, point, input.material->gradientNoiseAmount);
+					float opacity = 1.0f;
+					if (input.material->surfaceGradientMaskEnable)
+					{
+						opacity = input.material->gradientSurface.GetOpacity(colorPosition, false);
+						opacity = ApplyMaskPostProcess(opacity, input.material->opacityInvert,
+							input.material->maskContrast, input.material->maskBlackPoint,
+							input.material->maskWhitePoint);
+					}
+					float baseR = input.material->color.R;
+					float baseG = input.material->color.G;
+					float baseB = input.material->color.B;
+					float blendR = gradientColor.R;
+					float blendG = gradientColor.G;
+					float blendB = gradientColor.B;
+					float outR, outG, outB;
+					switch (input.material->surfaceGradientBlendMode)
+					{
+						case 1: // Multiply
+							outR = baseR * blendR;
+							outG = baseG * blendG;
+							outB = baseB * blendB;
+							break;
+						case 2: // Screen
+							outR = 1.0f - (1.0f - baseR) * (1.0f - blendR);
+							outG = 1.0f - (1.0f - baseG) * (1.0f - blendG);
+							outB = 1.0f - (1.0f - baseB) * (1.0f - blendB);
+							break;
+						case 3: // Overlay
+							outR = baseR < 0.5f ? 2.0f * baseR * blendR : 1.0f - 2.0f * (1.0f - baseR) * (1.0f - blendR);
+							outG = baseG < 0.5f ? 2.0f * baseG * blendG : 1.0f - 2.0f * (1.0f - baseG) * (1.0f - blendG);
+							outB = baseB < 0.5f ? 2.0f * baseB * blendB : 1.0f - 2.0f * (1.0f - baseB) * (1.0f - blendB);
+							break;
+						case 4: // Soft Light
+							outR = blendR < 0.5f
+									 ? 2.0f * baseR * blendR + baseR * baseR * (1.0f - 2.0f * blendR)
+									 : 2.0f * baseR * (1.0f - blendR) + sqrtf(baseR) * (2.0f * blendR - 1.0f);
+							outG = blendG < 0.5f
+									 ? 2.0f * baseG * blendG + baseG * baseG * (1.0f - 2.0f * blendG)
+									 : 2.0f * baseG * (1.0f - blendG) + sqrtf(baseG) * (2.0f * blendG - 1.0f);
+							outB = blendB < 0.5f
+									 ? 2.0f * baseB * blendB + baseB * baseB * (1.0f - 2.0f * blendB)
+									 : 2.0f * baseB * (1.0f - blendB) + sqrtf(baseB) * (2.0f * blendB - 1.0f);
+							break;
+						case 5: // Hard Light
+							outR = blendR < 0.5f ? 2.0f * baseR * blendR
+												 : 1.0f - 2.0f * (1.0f - baseR) * (1.0f - blendR);
+							outG = blendG < 0.5f ? 2.0f * baseG * blendG
+												 : 1.0f - 2.0f * (1.0f - baseG) * (1.0f - blendG);
+							outB = blendB < 0.5f ? 2.0f * baseB * blendB
+												 : 1.0f - 2.0f * (1.0f - baseB) * (1.0f - blendB);
+							break;
+						default: // Normal
+							outR = blendR;
+							outG = blendG;
+							outB = blendB;
+							break;
+					}
+					colour.R = baseR * (1.0f - opacity) + outR * opacity;
+					colour.G = baseG * (1.0f - opacity) + outG * opacity;
+					colour.B = baseB * (1.0f - opacity) + outB * opacity;
+					gradients->surface = colour;
+				}
+				else
+				{
+					colour.R = input.material->color.R;
+					colour.G = input.material->color.G;
+					colour.B = input.material->color.B;
+				}
+
+				if (input.material->specularGradientEnable)
+				{
+					sRGBFloat gradientColor =
+						input.material->gradientSpecular.GetColorFloat(colorPosition, false);
+					float opacity = 1.0f;
+					if (input.material->specularGradientMaskEnable)
+					{
+						opacity = input.material->gradientSpecular.GetOpacity(colorPosition, false);
+						opacity = ApplyMaskPostProcess(opacity, input.material->opacityInvert,
+							input.material->maskContrast, input.material->maskBlackPoint,
+							input.material->maskWhitePoint);
+					}
+					float baseR = input.material->specularColor.R;
+					float baseG = input.material->specularColor.G;
+					float baseB = input.material->specularColor.B;
+					gradients->specular.R = baseR * (1.0f - opacity) + gradientColor.R * opacity;
+					gradients->specular.G = baseG * (1.0f - opacity) + gradientColor.G * opacity;
+					gradients->specular.B = baseB * (1.0f - opacity) + gradientColor.B * opacity;
+				}
+
+				if (input.material->diffuseGradientEnable)
+				{
+					sRGBFloat gradientColor = input.material->gradientDiffuse.GetColorFloat(colorPosition, false);
+					float opacity = 1.0f;
+					if (input.material->diffuseGradientMaskEnable)
+					{
+						opacity = input.material->gradientDiffuse.GetOpacity(colorPosition, false);
+						opacity = ApplyMaskPostProcess(opacity, input.material->opacityInvert,
+							input.material->maskContrast, input.material->maskBlackPoint,
+							input.material->maskWhitePoint);
+					}
+					float baseR = input.material->color.R;
+					float baseG = input.material->color.G;
+					float baseB = input.material->color.B;
+					gradients->diffuse.R = baseR * (1.0f - opacity) + gradientColor.R * opacity;
+					gradients->diffuse.G = baseG * (1.0f - opacity) + gradientColor.G * opacity;
+					gradients->diffuse.B = baseB * (1.0f - opacity) + gradientColor.B * opacity;
+				}
+
+				if (input.material->luminosityGradientEnable)
+				{
+					sRGBFloat gradientColor =
+						input.material->gradientLuminosity.GetColorFloat(colorPosition, false);
+					float opacity = 1.0f;
+					if (input.material->luminosityGradientMaskEnable)
+					{
+						opacity = input.material->gradientLuminosity.GetOpacity(colorPosition, false);
+						opacity = ApplyMaskPostProcess(opacity, input.material->opacityInvert,
+							input.material->maskContrast, input.material->maskBlackPoint,
+							input.material->maskWhitePoint);
+					}
+					float baseR = input.material->luminosityColor.R;
+					float baseG = input.material->luminosityColor.G;
+					float baseB = input.material->luminosityColor.B;
+					gradients->luminosity.R = baseR * (1.0f - opacity) + gradientColor.R * opacity;
+					gradients->luminosity.G = baseG * (1.0f - opacity) + gradientColor.G * opacity;
+					gradients->luminosity.B = baseB * (1.0f - opacity) + gradientColor.B * opacity;
+				}
+
+				if (input.material->roughnessGradientEnable)
+				{
+					sRGBFloat gradientColor =
+						input.material->gradientRoughness.GetColorFloat(colorPosition, false);
+					float opacity = 1.0f;
+					if (input.material->roughnessGradientMaskEnable)
+					{
+						opacity = input.material->gradientRoughness.GetOpacity(colorPosition, false);
+						opacity = ApplyMaskPostProcess(opacity, input.material->opacityInvert,
+							input.material->maskContrast, input.material->maskBlackPoint,
+							input.material->maskWhitePoint);
+					}
+					float baseVal = input.material->surfaceRoughness;
+					gradients->roughness.R = baseVal * (1.0f - opacity) + gradientColor.R * opacity;
+					gradients->roughness.G = baseVal * (1.0f - opacity) + gradientColor.G * opacity;
+					gradients->roughness.B = baseVal * (1.0f - opacity) + gradientColor.B * opacity;
+				}
+
+				if (input.material->reflectanceGradientEnable)
+				{
+					sRGBFloat gradientColor =
+						input.material->gradientReflectance.GetColorFloat(colorPosition, false);
+					float opacity = 1.0f;
+					if (input.material->reflectanceGradientMaskEnable)
+					{
+						opacity = input.material->gradientReflectance.GetOpacity(colorPosition, false);
+						opacity = ApplyMaskPostProcess(opacity, input.material->opacityInvert,
+							input.material->maskContrast, input.material->maskBlackPoint,
+							input.material->maskWhitePoint);
+					}
+					float baseVal = input.material->reflectance;
+					gradients->reflectance.R = baseVal * (1.0f - opacity) + gradientColor.R * opacity;
+					gradients->reflectance.G = baseVal * (1.0f - opacity) + gradientColor.G * opacity;
+					gradients->reflectance.B = baseVal * (1.0f - opacity) + gradientColor.B * opacity;
+				}
+
+				if (input.material->transparencyGradientEnable)
+				{
+					sRGBFloat gradientColor =
+						input.material->gradientTransparency.GetColorFloat(colorPosition, false);
+					float opacity = 1.0f;
+					if (input.material->transparencyGradientMaskEnable)
+					{
+						opacity = input.material->gradientTransparency.GetOpacity(colorPosition, false);
+						opacity = ApplyMaskPostProcess(opacity, input.material->opacityInvert,
+							input.material->maskContrast, input.material->maskBlackPoint,
+							input.material->maskWhitePoint);
+					}
+					float baseR = input.material->transparencyColor.R;
+					float baseG = input.material->transparencyColor.G;
+					float baseB = input.material->transparencyColor.B;
+					gradients->trasparency.R = baseR * (1.0f - opacity) + gradientColor.R * opacity;
+					gradients->trasparency.G = baseG * (1.0f - opacity) + gradientColor.G * opacity;
+					gradients->trasparency.B = baseB * (1.0f - opacity) + gradientColor.B * opacity;
+				}
+			}
+			else
+			{
+				colour.R = input.material->color.R;
+				colour.G = input.material->color.G;
+				colour.B = input.material->color.B;
+			}
+
+			out.R = colour.R;
+			out.G = colour.G;
+			out.B = colour.B;
+			break;
+		}
+
+		case fractal::objPlane:
+		case fractal::objWater:
+		case fractal::objSphere:
+		case fractal::objBox:
+		case fractal::objRectangle:
+		case fractal::objCircle:
+		case fractal::objCone:
+		case fractal::objTorus:
+		case fractal::objCylinder:
+		case fractal::objPrism:
+		case fractal::objEllipsoid:
+		{
+			out.R = input.material->color.R;
+			out.G = input.material->color.G;
+			out.B = input.material->color.B;
+			break;
+		}
+		case fractal::objNone:
+		{
+			out = sRGBAFloat();
+			break;
+		}
+	};
+
+	return out;
+}

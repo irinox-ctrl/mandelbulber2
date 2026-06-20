@@ -1,0 +1,904 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>cRenderingLimitsTab</class>
+ <widget class="QWidget" name="cRenderingLimitsTab">
+      <layout class="QVBoxLayout" name="verticalLayout_4">
+       <property name="spacing">
+        <number>2</number>
+       </property>
+       <property name="leftMargin">
+        <number>2</number>
+       </property>
+       <property name="topMargin">
+        <number>2</number>
+       </property>
+       <property name="rightMargin">
+        <number>2</number>
+       </property>
+       <property name="bottomMargin">
+        <number>2</number>
+       </property>
+       <item>
+        <widget class="QScrollArea" name="scrollArea_3">
+         <property name="widgetResizable">
+          <bool>true</bool>
+         </property>
+         <widget class="QWidget" name="scrollAreaWidgetContents_3">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>417</width>
+            <height>1082</height>
+           </rect>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_13">
+           <property name="spacing">
+            <number>2</number>
+           </property>
+           <property name="leftMargin">
+            <number>2</number>
+           </property>
+           <property name="topMargin">
+            <number>2</number>
+           </property>
+           <property name="rightMargin">
+            <number>2</number>
+           </property>
+           <property name="bottomMargin">
+            <number>2</number>
+           </property>
+           <item>
+            <widget class="QGroupBox" name="groupBox_4">
+             <property name="title">
+              <string>View distance limits</string>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_43">
+              <property name="spacing">
+               <number>2</number>
+              </property>
+              <property name="leftMargin">
+               <number>2</number>
+              </property>
+              <property name="topMargin">
+               <number>2</number>
+              </property>
+              <property name="rightMargin">
+               <number>2</number>
+              </property>
+              <property name="bottomMargin">
+               <number>2</number>
+              </property>
+              <item>
+               <layout class="QGridLayout" name="gridLayout_19" columnstretch="0,0">
+                <property name="spacing">
+                 <number>2</number>
+                </property>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="label_108">
+                  <property name="text">
+                   <string>minimum view distance:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="MyLineEdit" name="logedit_view_distance_min">
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;All objects closer than this distance won't be visible&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label_107">
+                  <property name="text">
+                   <string>maximum view distance:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="MyLineEdit" name="logedit_view_distance_max">
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Defines visibility distance. All objects farther  than this distance won't be visible. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="MyGroupBox" name="groupCheck_limits_enabled">
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enables rendering of fractal cross sections.&lt;/p&gt;&lt;p&gt;Example cross sections of Buffalo fractal:&lt;/p&gt;&lt;table border=&quot;0&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;&quot; cellspacing=&quot;2&quot; cellpadding=&quot;0&quot;&gt;&lt;tr&gt;&lt;td&gt;&lt;p&gt;x = {-10; 10}, y = {-10, 10}, z = {-10, 0}&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;x = {-10, 0}, y = {0, 10}, z = {-0.1; 0.1}&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;p&gt;&lt;img src=&quot;:/tooltips/tooltips_images/image - limits z.jpeg&quot;/&gt;&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;&lt;img src=&quot;:/tooltips/tooltips_images/image - limits x, y, z.jpeg&quot;/&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="title">
+              <string>Limits (bounding bo&amp;x)</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_45">
+              <property name="spacing">
+               <number>2</number>
+              </property>
+              <property name="leftMargin">
+               <number>2</number>
+              </property>
+              <property name="topMargin">
+               <number>2</number>
+              </property>
+              <property name="rightMargin">
+               <number>2</number>
+              </property>
+              <property name="bottomMargin">
+               <number>2</number>
+              </property>
+              <item>
+               <widget class="QPushButton" name="bu_bounding_box_to_limit">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="toolTip">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculates the bounding box of the fractal and sets these as the limit values. This can be helpful to automatically set the limits for the voxel export&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
+                <property name="text">
+                 <string>Bounding Box to limit</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <layout class="QGridLayout" name="gridLayout_bounding_box_layout" columnstretch="0,0">
+                <property name="spacing">
+                 <number>2</number>
+                </property>
+                <item row="0" column="1">
+                 <widget class="MyLineEdit" name="logedit_limit_outer_bounding"/>
+                </item>
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label_maximum_bounding_boy">
+                  <property name="text">
+                   <string>maximum bounding box:</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_bounding_box_limit_manioulation">
+                <property name="text">
+                 <string>Resize and move the bounding box axes:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <layout class="QGridLayout" name="gridLayout_bounding_box_size" columnstretch="0,0,0,0,0">
+                <property name="spacing">
+                 <number>2</number>
+                </property>
+                <item row="0" column="0">
+                 <widget class="QLabel" name="bounding_box_x_label">
+                  <property name="text">
+                   <string>X</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QToolButton" name="bu_bounding_box_size_x_up">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="icons.qrc">
+                    <normaloff>:/navigation/icons/size-up.png</normaloff>:/navigation/icons/size-up.png</iconset>
+                  </property>
+                  <property name="iconSize">
+                   <size>
+                    <width>24</width>
+                    <height>24</height>
+                   </size>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="2">
+                 <widget class="QToolButton" name="bu_bounding_box_size_x_down">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="icons.qrc">
+                    <normaloff>:/navigation/icons/size-down.png</normaloff>:/navigation/icons/size-down.png</iconset>
+                  </property>
+                  <property name="iconSize">
+                   <size>
+                    <width>24</width>
+                    <height>24</height>
+                   </size>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="3">
+                 <widget class="QToolButton" name="bu_bounding_box_move_x_neg">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="icons.qrc">
+                    <normaloff>:/navigation/icons/go-previous.png</normaloff>:/navigation/icons/go-previous.png</iconset>
+                  </property>
+                  <property name="iconSize">
+                   <size>
+                    <width>24</width>
+                    <height>24</height>
+                   </size>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="4">
+                 <widget class="QToolButton" name="bu_bounding_box_move_x_pos">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="icons.qrc">
+                    <normaloff>:/navigation/icons/go-next.png</normaloff>:/navigation/icons/go-next.png</iconset>
+                  </property>
+                  <property name="iconSize">
+                   <size>
+                    <width>24</width>
+                    <height>24</height>
+                   </size>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="bounding_box_y_label">
+                  <property name="text">
+                   <string>Y</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="QToolButton" name="bu_bounding_box_size_y_up">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="icons.qrc">
+                    <normaloff>:/navigation/icons/size-up.png</normaloff>:/navigation/icons/size-up.png</iconset>
+                  </property>
+                  <property name="iconSize">
+                   <size>
+                    <width>24</width>
+                    <height>24</height>
+                   </size>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="2">
+                 <widget class="QToolButton" name="bu_bounding_box_size_y_down">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="icons.qrc">
+                    <normaloff>:/navigation/icons/size-down.png</normaloff>:/navigation/icons/size-down.png</iconset>
+                  </property>
+                  <property name="iconSize">
+                   <size>
+                    <width>24</width>
+                    <height>24</height>
+                   </size>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="3">
+                 <widget class="QToolButton" name="bu_bounding_box_move_y_neg">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="icons.qrc">
+                    <normaloff>:/navigation/icons/go-previous.png</normaloff>:/navigation/icons/go-previous.png</iconset>
+                  </property>
+                  <property name="iconSize">
+                   <size>
+                    <width>24</width>
+                    <height>24</height>
+                   </size>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="4">
+                 <widget class="QToolButton" name="bu_bounding_box_move_y_pos">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="icons.qrc">
+                    <normaloff>:/navigation/icons/go-next.png</normaloff>:/navigation/icons/go-next.png</iconset>
+                  </property>
+                  <property name="iconSize">
+                   <size>
+                    <width>24</width>
+                    <height>24</height>
+                   </size>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="0">
+                 <widget class="QLabel" name="bounding_box_z_label">
+                  <property name="text">
+                   <string>Z</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="1">
+                 <widget class="QToolButton" name="bu_bounding_box_size_z_up">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="icons.qrc">
+                    <normaloff>:/navigation/icons/size-up.png</normaloff>:/navigation/icons/size-up.png</iconset>
+                  </property>
+                  <property name="iconSize">
+                   <size>
+                    <width>24</width>
+                    <height>24</height>
+                   </size>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="2">
+                 <widget class="QToolButton" name="bu_bounding_box_size_z_down">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="icons.qrc">
+                    <normaloff>:/navigation/icons/size-down.png</normaloff>:/navigation/icons/size-down.png</iconset>
+                  </property>
+                  <property name="iconSize">
+                   <size>
+                    <width>24</width>
+                    <height>24</height>
+                   </size>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="3">
+                 <widget class="QToolButton" name="bu_bounding_box_move_z_neg">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="icons.qrc">
+                    <normaloff>:/navigation/icons/go-previous.png</normaloff>:/navigation/icons/go-previous.png</iconset>
+                  </property>
+                  <property name="iconSize">
+                   <size>
+                    <width>24</width>
+                    <height>24</height>
+                   </size>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="4">
+                 <widget class="QToolButton" name="bu_bounding_box_move_z_pos">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="icons.qrc">
+                    <normaloff>:/navigation/icons/go-next.png</normaloff>:/navigation/icons/go-next.png</iconset>
+                  </property>
+                  <property name="iconSize">
+                   <size>
+                    <width>24</width>
+                    <height>24</height>
+                   </size>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QGridLayout" name="gridLayout_21">
+                <property name="spacing">
+                 <number>2</number>
+                </property>
+                <item row="0" column="1">
+                 <widget class="QLabel" name="label_110">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string>x:</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="2">
+                 <widget class="MyLineEdit" name="vect3_limit_max_x">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="2">
+                 <widget class="MyLineEdit" name="vect3_limit_min_z">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label_109">
+                  <property name="text">
+                   <string>bottom left front corner:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="2">
+                 <widget class="MyLineEdit" name="vect3_limit_min_y">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="QLabel" name="label_111">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string>y:</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="1">
+                 <widget class="QLabel" name="label_112">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string>z:</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="2">
+                 <widget class="MyLineEdit" name="vect3_limit_min_x">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                 </widget>
+                </item>
+                <item row="4" column="2">
+                 <widget class="MyLineEdit" name="vect3_limit_max_y">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                 </widget>
+                </item>
+                <item row="5" column="2">
+                 <widget class="MyLineEdit" name="vect3_limit_max_z">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="0">
+                 <widget class="QLabel" name="label_114">
+                  <property name="text">
+                   <string>top right back corner:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="1">
+                 <widget class="QLabel" name="label_117">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string>x:</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="4" column="1">
+                 <widget class="QLabel" name="label_118">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string>y:</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="5" column="1">
+                 <widget class="QLabel" name="label_119">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string>z:</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="groupBox_auto_fog">
+             <property name="title">
+              <string>Auto fog tuning</string>
+             </property>
+             <property name="toolTip">
+              <string>Probe the current view and auto-tune fog parameters. Uses a small off-screen render to measure iteration and distance statistics, then applies fractal-class modifiers (Mandelbox, Kleinian, etc.). Basic and iteration fog toggle instantly in the Full OpenCL engine; clouds and volumetric fog may trigger a kernel recompile when enabled.</string>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_autoFog">
+              <property name="spacing">
+               <number>4</number>
+              </property>
+              <property name="leftMargin">
+               <number>4</number>
+              </property>
+              <property name="topMargin">
+               <number>4</number>
+              </property>
+              <property name="rightMargin">
+               <number>4</number>
+              </property>
+              <property name="bottomMargin">
+               <number>4</number>
+              </property>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_autoFogQuality">
+                <item>
+                 <widget class="QLabel" name="label_auto_fog_quality">
+                  <property name="text">
+                   <string>Probe quality:</string>
+                  </property>
+                  <property name="toolTip">
+                   <string>Resolution of the probe render used to measure fog statistics. Preview is fastest; Cinematic is slowest but most accurate for final tuning.</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="MyComboBox" name="comboBox_auto_fog_quality">
+                  <property name="toolTip">
+                   <string>Preview = 16×16 probe, 48 volumetric steps. Balanced = 32×32 probe, 96 steps (default). Cinematic = 48×48 probe, 192 steps. Higher quality gives more reliable auto-tuning but takes longer.</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_volumetricMaxSteps">
+                <item>
+                 <widget class="QLabel" name="label_volumetric_max_steps">
+                  <property name="text">
+                   <string>Volumetric max steps:</string>
+                  </property>
+                  <property name="toolTip">
+                   <string>Maximum ray-marching steps for all volumetric effects (fog, clouds, glow). Lower = faster preview; higher = fewer banding artifacts. 0 = follow probe quality defaults.</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="MySpinBox" name="spinboxInt_volumetric_max_steps">
+                  <property name="toolTip">
+                   <string>Caps volumetric ray steps per pixel (0 = auto from probe quality: Preview 48, Balanced 96, Cinematic 192). Rendering stops early when transmittance is nearly zero.</string>
+                  </property>
+                  <property name="maximum">
+                   <number>2000</number>
+                  </property>
+                  <property name="value">
+                   <number>96</number>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <widget class="MyCheckBox" name="checkBox_volumetric_preview_fast">
+                <property name="toolTip">
+                 <string>When the main preview is downscaled (Preview scale &gt; 1:1), march volumetric effects with fewer, larger steps for faster navigation. Final renders at 1:1 are unaffected.</string>
+                </property>
+                <property name="text">
+                 <string>Fast volumetric preview</string>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_volumetricPreviewStepMul">
+                <item>
+                 <widget class="QLabel" name="label_volumetric_preview_step_mul">
+                  <property name="text">
+                   <string>Preview step multiplier:</string>
+                  </property>
+                  <property name="toolTip">
+                   <string>Larger steps during preview volumetric marching (2 = half the samples). Preview is upscaled by the existing Preview scale control.</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="MyDoubleSpinBox" name="spinbox_volumetric_preview_step_mul">
+                  <property name="toolTip">
+                   <string>Step size multiplier while fast preview is active. Increase for speed, decrease for smoother fog during navigation.</string>
+                  </property>
+                  <property name="minimum">
+                   <double>1.000000000000000</double>
+                  </property>
+                  <property name="maximum">
+                   <double>8.000000000000000</double>
+                  </property>
+                  <property name="singleStep">
+                   <double>0.100000000000000</double>
+                  </property>
+                  <property name="value">
+                   <double>2.000000000000000</double>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <widget class="MyCheckBox" name="checkBox_volumetric_blue_noise_jitter">
+                <property name="toolTip">
+                 <string>Use IGN (interleaved gradient noise) for volumetric step jitter instead of white noise. Reduces banding and sparkle in fog, clouds, and glow marching.</string>
+                </property>
+                <property name="text">
+                 <string>Blue-noise volumetric jitter</string>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_volumetricJitterStrength">
+                <item>
+                 <widget class="QLabel" name="label_volumetric_jitter_strength">
+                  <property name="text">
+                   <string>Jitter strength (%):</string>
+                  </property>
+                  <property name="toolTip">
+                   <string>How much each volumetric march step is randomly shortened (0 = off, 2 = default). Higher values reduce banding faster but add more noise.</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="MyDoubleSpinBox" name="spinbox_volumetric_jitter_strength">
+                  <property name="toolTip">
+                   <string>Percentage of step-size variation applied per volumetric sample. Works with both blue-noise and white-noise jitter modes.</string>
+                  </property>
+                  <property name="decimals">
+                   <number>1</number>
+                  </property>
+                  <property name="maximum">
+                   <double>10.000000000000000</double>
+                  </property>
+                  <property name="value">
+                   <double>2.000000000000000</double>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_autoFogButtons2">
+                <item>
+                 <widget class="QPushButton" name="pushButton_auto_clouds">
+                  <property name="toolTip">
+                   <string>Applies the &quot;Volumetric Clouds&quot; preset (softer opacity, moderate sharpness, adaptive stepping) and enables clouds. Note: enabling clouds in OpenCL may recompile the render kernel.</string>
+                  </property>
+                  <property name="text">
+                   <string>Auto Clouds</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_autoFogButtons">
+                <item>
+                 <widget class="QPushButton" name="pushButton_auto_iteration_fog">
+                  <property name="toolTip">
+                   <string>Probe the scene and tune iteration fog (trim, opacity, color thresholds) using percentile statistics plus fractal-class modifiers. Results appear below. In Full OpenCL engine, toggling iteration fog afterward is instant (no kernel rebuild).</string>
+                  </property>
+                  <property name="text">
+                   <string>Auto Iteration Fog</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="pushButton_auto_volumetric_fog">
+                  <property name="toolTip">
+                   <string>Probe the scene and tune distance-based volumetric fog (density, distance factor, surface offset). Enabling volumetric fog in OpenCL may recompile the render kernel.</string>
+                  </property>
+                  <property name="text">
+                   <string>Auto Volumetric Fog</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="pushButton_auto_all_fog">
+                  <property name="toolTip">
+                   <string>Runs iteration fog, volumetric fog, and basic fog auto-tuning in one pass using the selected probe quality.</string>
+                  </property>
+                  <property name="text">
+                   <string>Auto All Fog</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_auto_fog_result">
+                <property name="text">
+                 <string>-</string>
+                </property>
+                <property name="toolTip">
+                 <string>Summary of the last auto-fog probe: detected fractal modifiers, tuned parameter values, and probe timing.</string>
+                </property>
+                <property name="wordWrap">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_2">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+ <customwidgets>
+  <customwidget>
+     <class>MyGroupBox</class>
+     <extends>QGroupBox</extends>
+     <header>my_group_box.h</header>
+     <container>1</container>
+    </customwidget>
+  <customwidget>
+     <class>MyLineEdit</class>
+     <extends>QLineEdit</extends>
+     <header>my_line_edit.h</header>
+    </customwidget>
+  <customwidget>
+     <class>MyComboBox</class>
+     <extends>QComboBox</extends>
+     <header>my_combo_box.h</header>
+    </customwidget>
+  <customwidget>
+     <class>MySpinBox</class>
+     <extends>QSpinBox</extends>
+     <header>my_spin_box.h</header>
+    </customwidget>
+  <customwidget>
+     <class>MyCheckBox</class>
+     <extends>QCheckBox</extends>
+     <header>my_check_box.h</header>
+    </customwidget>
+  <customwidget>
+     <class>MyDoubleSpinBox</class>
+     <extends>QDoubleSpinBox</extends>
+     <header>my_double_spin_box.h</header>
+    </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

@@ -1,0 +1,62 @@
+{
+  "comment": "Known formula gaps — excluded from CI failure. Update baseline when intentionally adding formulas.",
+  "baseline_registry_count": 1009,
+  "missing_opencl_ok": [
+    "none",
+    "custom",
+    "transf_demo_scale_v2",
+    "transf_wizard_demo"
+  ],
+  "missing_ui_ok": [
+    "none",
+    "custom",
+    "transf_demo_scale_v2",
+    "transf_wizard_demo"
+  ],
+  "orphan_opencl_ok": [
+    "imaginary_scator_power2",
+    "transf_poly_fold_sym",
+    "transf_scale_vary_abox_v2"
+  ],
+  "orphan_ui_ok": [
+    "primitive_box",
+    "primitive_capsule",
+    "primitive_circle",
+    "primitive_cone",
+    "primitive_cylinder",
+    "primitive_ellipsoid",
+    "primitive_hexprism",
+    "primitive_lava_plane",
+    "primitive_octahedron",
+    "primitive_plane",
+    "primitive_prism",
+    "primitive_pyramid",
+    "primitive_rectangle",
+    "primitive_sphere",
+    "primitive_terrain_plane",
+    "primitive_torus",
+    "primitive_water",
+    "transf_abs_rec_foldXY"
+  ],
+  "unused_enum_ok": [
+    "angleMultiplyX",
+    "angleMultiplyY",
+    "angleMultiplyZ",
+    "fastMandelbulb",
+    "hybrid",
+    "invertR",
+    "invertX",
+    "invertY",
+    "invertZ",
+    "minusFastTrig",
+    "oclCustom",
+    "offsetX",
+    "offsetY",
+    "offsetZ",
+    "powXYZ",
+    "scaleX",
+    "scaleY",
+    "scaleZ",
+    "sphericalFold"
+  ]
+}

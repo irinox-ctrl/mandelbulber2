@@ -1,0 +1,24 @@
+{
+  "comment": "Maps mutation subsystems to CPU section markers and engine expectations.",
+  "subsystems": [
+    { "id": "clip", "section_prefix": "v7.6 — Clip", "enabled_param": "mutation_clip_enabled", "nebula": "partial" },
+    { "id": "inv", "section_prefix": "v7.6 — Inversion", "enabled_param": "mutation_inversion_enabled", "nebula": "partial" },
+    { "id": "jos", "section_prefix": "v7.7 — Jos Leys", "enabled_param": "mutation_jos_leys_enabled", "nebula": "absent" },
+    { "id": "pk", "section_prefix": "v7.7 — Pseudokleinian", "enabled_param": "mutation_pk_enabled", "nebula": "absent" },
+    { "id": "mb", "section_prefix": "v7.8 — Mandelbox Math", "enabled_param": "mutation_mb_math_enabled", "nebula": "absent" },
+    { "id": "wd", "section_prefix": "v7.9 — Warp Distortion", "enabled_param": "mutation_warp_dist_enabled", "nebula": "absent" },
+    { "id": "sk", "section_prefix": "v7.9 — Symmetry/Kaleidoscope", "enabled_param": "mutation_symmetry_enabled", "nebula": "absent" },
+    { "id": "ab", "section_prefix": "v7.9 — Abox DE", "enabled_param": "mutation_abox_enabled", "nebula": "absent" },
+    { "id": "noise", "section_prefix": "v7.10 — Noise", "enabled_param": "mutation_noise_enabled", "nebula": "absent" },
+    { "id": "orbit", "section_prefix": "v7.10 — Orbit Trap", "enabled_param": "mutation_orbit_trap_enabled", "nebula": "absent" },
+    { "id": "torus", "section_prefix": "v7.12 — MandelTorus", "enabled_param": "mutation_torus_enabled", "nebula": "absent" },
+    { "id": "as", "section_prefix": "v7.13 — Amazing Surf", "enabled_param": "mutation_as_enabled", "nebula": "absent" },
+    { "id": "sm", "section_prefix": "v7.13 — SphereTree/Menger", "enabled_param": "mutation_sm_enabled", "nebula": "absent" },
+    { "id": "clamp", "section_prefix": "v7.14 — T Clamp", "enabled_param": "mutation_clamp_enabled", "nebula": "partial" },
+    { "id": "jb", "section_prefix": "v7.14 — T Julia Box", "enabled_param": "mutation_jb_enabled", "nebula": "partial" },
+    { "id": "md", "section_prefix": "v7.14 — T Mandalay", "enabled_param": "mutation_md_enabled", "nebula": "partial" },
+    { "id": "blockify", "section_prefix": "v7.15 — Blockify", "enabled_param": "mutation_blockify_enabled", "nebula": "absent" },
+    { "id": "tile", "section_prefix": "v7.15 — Tile", "enabled_param": "mutation_tile_enabled", "nebula": "absent" }
+  ],
+  "nebula_note": "Nebula kernel intentionally implements transform stack (clip/inv) + v7.14 tail systems only; DE-heavy subsystems are absent by design until nebula parity phase."
+}

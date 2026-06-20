@@ -1,0 +1,240 @@
+/**
+ * Mandelbulber v2, a 3D fractal generator       ,=#MKNmMMKmmßMNWy,
+ *                                             ,B" ]L,,p%%%,,,§;, "K
+ * Copyright (C) 2014-22 Mandelbulber Team     §R-==%w["'~5]m%=L.=~5N
+ *                                        ,=mm=§M ]=4 yJKA"/-Nsaj  "Bw,==,,
+ * This file is part of Mandelbulber.    §R.r= jw",M  Km .mM  FW ",§=ß., ,TN
+ *                                     ,4R =%["w[N=7]J '"5=],""]]M,w,-; T=]M
+ * Mandelbulber is free software:     §R.ß~-Q/M=,=5"v"]=Qf,'§"M= =,M.§ Rz]M"Kw
+ * you can redistribute it and/or     §w "xDY.J ' -"m=====WeC=\ ""%""y=%"]"" §
+ * modify it under the terms of the    "§M=M =D=4"N #"%==A%p M§ M6  R' #"=~.4M
+ * GNU General Public License as        §W =, ][T"]C  §  § '§ e===~ U  !§[Z ]N
+ * published by the                    4M",,Jm=,"=e~  §  §  j]]""N  BmM"py=ßM
+ * Free Software Foundation,          ]§ T,M=& 'YmMMpM9MMM%=w=,,=MT]M m§;'§,
+ * either version 3 of the License,    TWw [.j"5=~N[=§%=%W,T ]R,"=="Y[LFT ]N
+ * or (at your option)                   TW=,-#"%=;[  =Q:["V""  ],,M.m == ]N
+ * any later version.                      J§"mr"] ,=,," =="""J]= M"M"]==ß"
+ *                                          §= "=C=4 §"eM "=B:m|4"]#F,§~
+ * Mandelbulber is distributed in            "9w=,,]w em%wJ '"~" ,=,,ß"
+ * the hope that it will be useful,                 . "K=  ,=RMMMßM"""
+ * but WITHOUT ANY WARRANTY;                            .'''
+ * without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * See the GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with Mandelbulber. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * ###########################################################################
+ *
+ * Authors: Krzysztof Marczak (buddhi1980@gmail.com)
+ *
+ * RenderedImage class - extension for QWidget class. Widget prepared for displaying rendered image
+ * and 3D cursor
+ */
+
+#ifndef MANDELBULBER2_SRC_RENDERED_IMAGE_WIDGET_HPP_
+#define MANDELBULBER2_SRC_RENDERED_IMAGE_WIDGET_HPP_
+
+#include <memory>
+
+#include <QWidget>
+
+#include "QVariant"
+#include "algebra.hpp"
+#include "animation_path_data.hpp"
+#include "primitive_item.h"
+#include "rendered_tile_data.hpp"
+#include "stereo.h"
+
+// forward declarations
+class cImage;
+class cParameterContainer;
+class cFractalContainer;
+struct sAnimationPathData;
+struct sPrimitiveTorus;
+
+class RenderedImage : public QWidget
+{
+	Q_OBJECT
+
+public:
+	enum enumClickMode
+	{
+		clickDoNothing = 0,
+		clickMoveCamera = 1,
+		clickFogVisibility = 2,
+		clickDOFFocus = 3,
+		clickGetJuliaConstant = 4,
+		clickPlaceLight = 5,
+		clickPlacePrimitive = 6,
+		clickFlightSpeedControl = 7,
+		clickPlaceRandomLightCenter = 8,
+		clickGetPoint = 9,
+		clickWrapLimitsAroundObject = 10,
+		/** Place pattern line trap layer N (mode.at(1) = 1…PATTERN_LINE_TRAP_COUNT); Z-buffer + view vector. */
+		clickPlacePatternLineTrap = 11,
+	};
+
+	enum enumGridType
+	{
+		gridTypeCrosshair = 0,
+		gridTypeThirds = 1,
+		gridTypeGolden = 2
+	};
+
+	struct sFlightData
+	{
+		// numbers
+		int frame;
+		CVector3 camera;
+		double speed;
+		double distance;
+		double speedSp;
+
+		// HUD
+		CVector3 rotation;
+		CVector3 speedVector;
+		CVector3 forwardVector;
+		CVector3 topVector;
+	};
+
+	RenderedImage(QWidget *parent = nullptr);
+	void AssignImage(std::shared_ptr<cImage> _image) { image = _image; }
+
+	// 3x3lion depth visualization
+	void SetDepthOverlay(bool enable) { depthOverlayEnabled = enable; update(); }
+	bool GetDepthOverlay() const { return depthOverlayEnabled; }
+	void AssignParameters(
+		std::shared_ptr<cParameterContainer> _mainParams, std::shared_ptr<cFractalContainer> _fractals)
+	{
+		params = _mainParams;
+		fractals = _fractals;
+	}
+	void setNewZ(double z) { smoothLastZMouse = z; }
+	void setClickMode(QList<QVariant> _clickMode);
+	/** Actieve muisactie (zelfde als in setClickMode); bron van waarheid naast combo (sync kan combo resetten). */
+	QList<QVariant> GetClickModeData() const { return clickModeData; }
+	void SetEnableClickModes(bool enable) { clickModesEnables = enable; }
+	bool GetEnableClickModes() const { return clickModesEnables; }
+	void SetFrontDist(double dist) { frontDist = dist; }
+	void SetCursorVisibility(bool enable) { cursorVisible = enable; }
+	void SetLightsVisibility(bool enable) { lightsVisible = enable; }
+	void SetPrimitivesVisibility(bool enable) { primitivesVisible = enable; }
+	void SetPatternLineTrapsVisibility(bool enable) { patternLineTrapsVisible = enable; }
+	void SetGridType(enumGridType gridType);
+	void SetFlightData(const sFlightData &fData) { flightData = fData; }
+	void SetPlaceBehindObjects(bool behind) { placeLightBehind = behind; }
+	void SetCameraMovementMode(int index) { cameraMovementMode = index; }
+	void SetAnimationPath(const sAnimationPathData &_animationPath);
+	void SetCurrentLightIndex(int index) { currentLightIndex = index; }
+	int GetCurrentLightIndex() { return currentLightIndex; }
+	void SetCurrentPrimitiveItem(const sPrimitiveItem &item) { currentPrimitiveItem = item; }
+	const sPrimitiveItem &GetCurrentPrimitiveItem() { return currentPrimitiveItem; }
+	// CVector2<double> GetLastMousePositionScaled();
+
+public slots:
+	void slotSetMinimumSize(int width, int height);
+	void showRenderedTilesList(QList<sRenderedTileData> listOfRenderedTiles);
+	void slotSetMCNoiseVisibility(bool);
+
+signals:
+	void SpeedChanged(double amount);
+	void SpeedSet(double amount);
+	void StrafeChanged(CVector2<double> arrows);
+	void YawAndPitchChanged(CVector2<double> yawAndPitch);
+	void RotationChanged(double direction);
+	void ShiftModeChanged(bool shiftPressed);
+	void Pause();
+	void doubleClicked();
+
+protected:
+	void paintEvent(QPaintEvent *event) override;
+	void mouseMoveEvent(QMouseEvent *event) override;
+	void mousePressEvent(QMouseEvent *event) override;
+	void mouseReleaseEvent(QMouseEvent *event) override;
+	void keyPressEvent(QKeyEvent *event) override;
+	void keyReleaseEvent(QKeyEvent *event) override;
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+	void enterEvent(QEnterEvent *event) override;
+#else
+	void enterEvent(QEvent *event) override;
+#endif
+	void leaveEvent(QEvent *event) override;
+	void mouseDoubleClickEvent(QMouseEvent *event) override;
+	void wheelEvent(QWheelEvent *event) override;
+
+private:
+	void DisplayCoordinates();
+	void Display3DCursor(CVector2<int> screenPoint, double z);
+	void DisplayCrosshair() const;
+	void Compass(CVector3 rotation, QPointF center, double size);
+	void Draw3DBox(
+		float scale, float fov, CVector2<float> point, float z, cStereo::enumEye eye) const;
+	static QPointF CalcPointPersp(const CVector3 &point, const CRotationMatrix &rot, double persp);
+	void DrawAnimationPath();
+	void PaintLastRenderedTilesInfo();
+	void PaintDepthOverlay();
+	void DisplayAllLights();
+	void DisplayAllPrimitives();
+	void DisplayPatternLineTraps();
+	void line3D(const CVector3 &p1, const CVector3 &p2, const CVector3 &camera,
+		const CVector3 &target, const CRotationMatrix &mRotInv,
+		params::enumPerspectiveType perspectiveType, double fov, double imgWidth, double imgHeight,
+		sRGB8 color, double thickness, sRGBFloat opacity, int numberOfSegments, int layer);
+	void DrawWireframeTorus(const std::shared_ptr<sPrimitiveTorus> &primitive, const CVector3 &camera,
+		const CVector3 &target, const CRotationMatrix &mRotInv,
+		params::enumPerspectiveType perspectiveType, double fov, int width, int height, sRGB8 color,
+		double thickness);
+
+	bool anaglyphMode;
+	bool cursorVisible;
+	bool lightsVisible;
+	bool primitivesVisible;
+	bool patternLineTrapsVisible = false;
+	bool mcNoiseVisible = false;
+	bool depthOverlayEnabled = false;
+	bool isFocus;
+	bool isOnObject;
+	bool placeLightBehind;
+	bool redrawed;
+	bool clickModesEnables;
+	int draggingStarted;
+	bool draggingInitStarted;
+	std::shared_ptr<cFractalContainer> fractals;
+	std::shared_ptr<cImage> image;
+	std::shared_ptr<cParameterContainer> params;
+	CVector2<double> keyArrows;
+	CVector2<int> lastMousePosition;
+	CVector2<int> dragStartPosition;
+	int buttonsPressed;
+	CVector3 lastCoordinates;
+	Qt::MouseButtons dragButtons;
+	double flightRotationDirection;
+	double frontDist;
+	double lastDepth;
+	double smoothLastZMouse;
+	enumClickMode clickMode;
+	enumGridType gridType;
+	int cameraMovementMode;
+	QList<QVariant> clickModeData;
+	QTimer *timerRefreshImage;
+	sFlightData flightData;
+	sAnimationPathData animationPathData;
+	QList<sRenderedTileData> listOfRenderedTilesData;
+	int tileArea = 0;
+	int currentLightIndex;
+	sPrimitiveItem currentPrimitiveItem;
+
+signals:
+	void mouseMoved(int x, int y);
+	void singleClick(int x, int y, Qt::MouseButton button);
+	void keyPress(QKeyEvent *event);
+	void keyRelease(QKeyEvent *event);
+	void mouseWheelRotatedWithKey(int x, int y, int delta, Qt::KeyboardModifiers keyModifiers);
+	void mouseDragStart(int x, int y, Qt::MouseButtons button);
+	void mouseDragFinish();
+	void mouseDragDelta(int dx, int dy);
+};
+
+#endif /* MANDELBULBER2_SRC_RENDERED_IMAGE_WIDGET_HPP_ */

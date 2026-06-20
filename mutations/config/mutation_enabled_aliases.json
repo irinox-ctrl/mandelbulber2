@@ -1,0 +1,12 @@
+{
+  "canonical_rule": "UI groupCheck_* widgets bind to canonical names; runtime reads canonical first.",
+  "aliases": [
+    { "canonical": "mutation_inversion_enabled", "legacy": "mutation_inv_enabled", "ui_widget": "groupCheck_mutation_inversion_enabled" },
+    { "canonical": "mutation_jos_leys_enabled", "legacy": "mutation_jos_enabled", "ui_widget": "groupCheck_mutation_jos_leys_enabled" },
+    { "canonical": "mutation_mb_math_enabled", "legacy": "mutation_mb_enabled", "ui_widget": "groupCheck_mutation_mb_math_enabled" },
+    { "canonical": "mutation_warp_dist_enabled", "legacy": "mutation_wd_enabled", "ui_widget": "groupCheck_mutation_warp_dist_enabled" },
+    { "canonical": "mutation_symmetry_enabled", "legacy": "mutation_sk_enabled", "ui_widget": "groupCheck_mutation_symmetry_enabled" },
+    { "canonical": "mutation_abox_enabled", "legacy": "mutation_ab_enabled", "ui_widget": "groupCheck_mutation_abox_enabled" },
+    { "canonical": "mutation_orbit_trap_enabled", "legacy": "mutation_orbit_enabled", "ui_widget": "groupCheck_mutation_orbit_trap_enabled" }
+  ]
+}

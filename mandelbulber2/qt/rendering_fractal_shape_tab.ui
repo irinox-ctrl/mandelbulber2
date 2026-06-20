@@ -1,0 +1,924 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>cRenderingFractalShapeTab</class>
+ <widget class="QWidget" name="cRenderingFractalShapeTab">
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <property name="spacing">
+        <number>2</number>
+       </property>
+       <property name="leftMargin">
+        <number>2</number>
+       </property>
+       <property name="topMargin">
+        <number>2</number>
+       </property>
+       <property name="rightMargin">
+        <number>2</number>
+       </property>
+       <property name="bottomMargin">
+        <number>2</number>
+       </property>
+       <item>
+        <widget class="QScrollArea" name="scrollArea">
+         <property name="widgetResizable">
+          <bool>true</bool>
+         </property>
+         <widget class="QWidget" name="scrollAreaWidgetContents">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>417</width>
+            <height>1082</height>
+           </rect>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_6">
+           <property name="spacing">
+            <number>2</number>
+           </property>
+           <property name="leftMargin">
+            <number>2</number>
+           </property>
+           <property name="topMargin">
+            <number>2</number>
+           </property>
+           <property name="rightMargin">
+            <number>2</number>
+           </property>
+           <property name="bottomMargin">
+            <number>2</number>
+           </property>
+           <item>
+            <widget class="QGroupBox" name="groupBox">
+             <property name="title">
+              <string>Fractal formula iterations</string>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_114">
+              <property name="spacing">
+               <number>2</number>
+              </property>
+              <property name="leftMargin">
+               <number>2</number>
+              </property>
+              <property name="topMargin">
+               <number>2</number>
+              </property>
+              <property name="rightMargin">
+               <number>2</number>
+              </property>
+              <property name="bottomMargin">
+               <number>2</number>
+              </property>
+              <item>
+               <layout class="QGridLayout" name="gridLayout_69" columnstretch="0,0">
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <property name="spacing">
+                 <number>2</number>
+                </property>
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label_284">
+                  <property name="text">
+                   <string>Maximum number
+of fractal iterations
+(maxiter):</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="MyLineEdit" name="logedit_bailout">
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The vector values are checked during each iteration of fractal formula to see if they have reached a critical 'escape' condition or 'bailout'. If that condition is reached, the calculation is stopped. Condition is: if length of vector is greater than bailout, then break iteration loop.&lt;/p&gt;&lt;p&gt;In some cases higher value can increase image quality, but it will increase rendering time.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="0" colspan="2">
+                 <widget class="MyCheckBox" name="checkBox_use_default_bailout">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enables using default (recommended) bailout value. Each fractal formula has different optimal bailout value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                  <property name="text">
+                   <string>Use default bailout for
+each fractal formula</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="MySpinBox" name="spinboxInt_N">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The higher the maximum number of iterations (&amp;quot;maxiter&amp;quot;) is, the more detail and subtlety emerge in the final image, but also the longer time it will take to calculate the fractal image. &lt;/p&gt;&lt;p&gt;In normal operation this should be set as high as possible because &amp;quot;Distance estimation&amp;quot; algorithm limits number of iteration (almost no influence on rendering speed)&lt;/p&gt;&lt;p&gt;When &lt;span style=&quot; font-style:italic;&quot;&gt;Stop at maximum iteration&lt;/span&gt; is selected, then this parameter controls detail level.&lt;br/&gt;&lt;/p&gt;&lt;table border=&quot;0&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;&quot; cellspacing=&quot;2&quot; cellpadding=&quot;0&quot;&gt;&lt;tr&gt;&lt;td&gt;&lt;p&gt;maxiter = 10&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;maxiter = 15&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;p&gt;&lt;img src=&quot;:/tooltips/tooltips_images/image - maxiter - 10.jpg&quot;/&gt;&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;&lt;img src=&quot;:/tooltips/tooltips_images/image - maxiter - 15.jpg&quot;/&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                  <property name="minimum">
+                   <number>1</number>
+                  </property>
+                  <property name="maximum">
+                   <number>9999</number>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="label_222">
+                  <property name="text">
+                   <string>Bailout
+(escape condition):</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_auto_iter">
+                <property name="spacing">
+                 <number>4</number>
+                </property>
+                <item>
+                 <widget class="QPushButton" name="pushButton_auto_iter_bailout">
+                  <property name="toolTip">
+                   <string>Automatically estimates optimal maxiter (N) and bailout for the current fractal and camera position.</string>
+                  </property>
+                  <property name="text">
+                   <string>Auto N + Bailout</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="pushButton_auto_slot_iter">
+                  <property name="toolTip">
+                   <string>Estimates formula_maxiter for each enabled hybrid formula slot.</string>
+                  </property>
+                  <property name="text">
+                   <string>Auto slot maxiter</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_auto_iter_result">
+                <property name="text">
+                 <string>-</string>
+                </property>
+                <property name="wordWrap">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="groupBox_distanceEstimation">
+             <property name="title">
+              <string>Distance estimation (quality control)</string>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_115">
+              <property name="spacing">
+               <number>2</number>
+              </property>
+              <property name="leftMargin">
+               <number>2</number>
+              </property>
+              <property name="topMargin">
+               <number>2</number>
+              </property>
+              <property name="rightMargin">
+               <number>2</number>
+              </property>
+              <property name="bottomMargin">
+               <number>2</number>
+              </property>
+              <item>
+               <layout class="QGridLayout" name="gridLayout_70" columnstretch="0,0,0">
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <property name="spacing">
+                 <number>2</number>
+                </property>
+                <item row="2" column="1" colspan="2">
+                 <widget class="QPushButton" name="pushButton_optimization_MQ">
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Optimize 'Raymarching step multiplier' for medium image quality.&lt;/p&gt;&lt;p&gt;It gives 0.1% of wrong distance estimations (pixels with potential noise)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                  <property name="text">
+                   <string>Medium quality</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="5" column="1" colspan="2">
+                 <widget class="MyComboBox" name="comboBox_delta_DE_method">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Distance estimation is a method which calculates approximate distance to fractal surface from any point in space.&lt;/p&gt;&lt;p&gt;- Automatic mode uses distance estimation method defined for selected fractal&lt;/p&gt;&lt;p&gt;- Force &amp;quot;Delta DE&amp;quot; method uses  Delta DE algorithm which is slower but works also with untypical fractal configurations&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                  <item>
+                   <property name="text">
+                    <string>Automatic (analytic if possible)</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Force &quot;Delta DE&quot; method</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Force &quot;Analytic DE&quot; method</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+                <item row="5" column="0">
+                 <widget class="QLabel" name="label_291">
+                  <property name="text">
+                   <string>Distance estimation
+method:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="2">
+                 <widget class="MyLineEdit" name="logedit_DE_factor">
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This parameter has the biggest influence on overall quality of image and rendering speed.&lt;/p&gt;&lt;p&gt;Higher value gives faster rendering but more noise on image.&lt;/p&gt;&lt;p&gt;When rays are traced, for each step there are estimated distances to the fractal surface. Optimally , the jump distance for every ray-marching step would be equal to the estimated distance. This would produce a small number of steps and good quality. However the distance can be only estimated, so it's not always accurate. It can produce oversteppings which will be visible on the image as random noise.&lt;/p&gt;&lt;p&gt;In some cases you need to adjust  this parameter to find a balance between acceptable image quality and a reasonable rendering time.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;table border=&quot;0&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;&quot; cellspacing=&quot;2&quot; cellpadding=&quot;0&quot;&gt;&lt;tr&gt;&lt;td&gt;&lt;p&gt;step multiplier = 1.0 (optimal - good quality and fast)&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;step multiplier = 5 (visible strong noise on image)&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;p&gt;&lt;img src=&quot;:/tooltips/tooltips_images/image - DE step factor 1.jpg&quot;/&gt;&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;&lt;img src=&quot;:/tooltips/tooltips_images/image - DE step factor 4.jpg&quot;/&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;p&gt;As a quality indicator, the&lt;span style=&quot; font-style:italic;&quot;&gt;Percentage of wrong distance estimations&lt;/span&gt; ( visible in &lt;span style=&quot; font-style:italic;&quot;&gt;Statistics&lt;/span&gt; dock ) can be used . &lt;/p&gt;&lt;p&gt;To optimize this parameter the histograms of iteration count and ray-marching step count,  can be used .&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="4" column="0" colspan="3">
+                 <widget class="QLabel" name="label_wrong_DE_percentage">
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Percentage of points on image which are probably calculated wrong.&lt;/p&gt;&lt;p&gt;Higher value usually means more visible noise or artifacts on image.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                  <property name="text">
+                   <string>Percentage of wrong distance estimations:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="7" column="0" colspan="3">
+                 <widget class="QLabel" name="label_used_distance_estimation">
+                  <property name="text">
+                   <string>Used distance estimation algorithm:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0" rowspan="3">
+                 <widget class="QLabel" name="label_292">
+                  <property name="text">
+                   <string>Optimization:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label_105">
+                  <property name="text">
+                   <string>Raymarching step mult.
+(controls quality):</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="6" column="0">
+                 <widget class="QLabel" name="label_290">
+                  <property name="text">
+                   <string>Distance estimation
+function:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1" colspan="2">
+                 <widget class="QPushButton" name="pushButton_optimization_LQ">
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Optimize 'Raymarching step multiplier' for low image quality and fast rendering&lt;/p&gt;&lt;p&gt;It gives 1% of wrong distance estimations (pixels with potential noise)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                  <property name="text">
+                   <string>Low quality</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="6" column="1" colspan="2">
+                 <widget class="MyComboBox" name="comboBox_delta_DE_function">
+                  <property name="enabled">
+                   <bool>true</bool>
+                  </property>
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Distance estimation function is specific to the fractal formula calculations.&lt;/p&gt;&lt;p&gt;In some fractal fomulas the length of the iteration vector increases exponentially and some in a linear manner.&lt;/p&gt;&lt;p&gt;- Automatic mode - finds the probable best function based on the fractal formulas used.&lt;/p&gt;&lt;p&gt;- Logarithmic - the best for fractals with exponential growth of iteration vector (e.g. Mandelbulb)&lt;/p&gt;&lt;p&gt;- Linear - the best for fractals with linear growth of iteration vector (e.g. Mandelbox, IFS)&lt;/p&gt;&lt;p&gt;- Pseudo Kleinian - linear growth distance estimation function for working with Pseudo Kleinian formulas&lt;/p&gt;&lt;p&gt;- JosKleinian - linear growth distance estimation function for working with JosKleinian formulas&lt;/p&gt;&lt;p&gt;- Custom - distance estimation function where the distance estimation out.distance is calculated entirely in the formula. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                  <item>
+                   <property name="text">
+                    <string>Automatic</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Linear</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Logarithmic</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Pseudo Kleinian</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>JosKleinian</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Custom</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>MaxAxis</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+                <item row="3" column="1" colspan="2">
+                 <widget class="QPushButton" name="pushButton_optimization_HQ">
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Optimize 'Raymarching step multiplier' for high image quality and slow rendering&lt;/p&gt;&lt;p&gt;It gives 0.01% of wrong distance estimations (pixels with potential noise)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                  <property name="text">
+                   <string>High quality</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="groupBox_detailLevel">
+             <property name="title">
+              <string>Detail level</string>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_7">
+              <property name="leftMargin">
+               <number>2</number>
+              </property>
+              <property name="topMargin">
+               <number>2</number>
+              </property>
+              <property name="rightMargin">
+               <number>2</number>
+              </property>
+              <property name="bottomMargin">
+               <number>2</number>
+              </property>
+              <item>
+               <layout class="QGridLayout" name="gridLayout">
+                <item row="0" column="1">
+                 <widget class="MyLineEdit" name="logedit_detail_level">
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Controls how much detail will be visible on fractal surface. When it is set to 1.0, then minimum visible detail has size of 2 pixels.&lt;/p&gt;&lt;p&gt;Higher value gives more detailed image, but slows down rendering.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;table border=&quot;0&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;&quot; cellspacing=&quot;2&quot; cellpadding=&quot;0&quot;&gt;&lt;tr&gt;&lt;td&gt;&lt;p&gt;detail level 0.2&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;detail level 0.5&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;detail level 1.0&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;p&gt;&lt;img src=&quot;:/tooltips/tooltips_images/image - resolution 0.2.jpg&quot;/&gt;&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;&lt;img src=&quot;:/tooltips/tooltips_images/image - resolution 0.5.jpg&quot;/&gt;&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;&lt;img src=&quot;:/tooltips/tooltips_images/image - resolution 1.jpg&quot;/&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label_104">
+                  <property name="text">
+                   <string>Detail level:</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <widget class="MyCheckBox" name="checkBox_connect_detail_level_2">
+                <property name="toolTip">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When this option is enabled, the fractal appearance is maintained at all resolutions. &lt;/p&gt;&lt;p&gt;The fractal detail level will be automatically adjusted to match any change of image resolution. &lt;/p&gt;&lt;p&gt;For instance, if the resolution is doubled then the detail level will be reduced by half.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
+                <property name="text">
+                 <string>Connect fractal detail level
+with image resolution</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="MyGroupBox" name="groupCheck_constant_DE_threshold">
+                <property name="toolTip">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When not enabled, the program automatically reduces the level of detail for the farthest regions of the fractal. If you go closer to the fractal surface, the program increases the level of detail.&lt;/p&gt;&lt;p&gt;If enabled, then in every region of the fractal,  the detail level (size) will be the same.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
+                <property name="title">
+                 <string>Constant detai&amp;l size</string>
+                </property>
+                <property name="checkable">
+                 <bool>true</bool>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_44">
+                 <property name="spacing">
+                  <number>2</number>
+                 </property>
+                 <property name="leftMargin">
+                  <number>2</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>2</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>2</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>2</number>
+                 </property>
+                 <item>
+                  <layout class="QGridLayout" name="gridLayout_20" columnstretch="0,0">
+                   <property name="spacing">
+                    <number>2</number>
+                   </property>
+                   <item row="0" column="1">
+                    <widget class="MyLineEdit" name="logedit_DE_thresh">
+                     <property name="toolTip">
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Distance threshold which defines detail size.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="0">
+                    <widget class="QLabel" name="label_99">
+                     <property name="text">
+                      <string>distance threshold:</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="pushButton_calculate_dist_thresh">
+                   <property name="text">
+                    <string>Calculate threshold</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="groupBox_3">
+             <property name="title">
+              <string>Shape control</string>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_15">
+              <property name="leftMargin">
+               <number>2</number>
+              </property>
+              <property name="topMargin">
+               <number>2</number>
+              </property>
+              <property name="rightMargin">
+               <number>2</number>
+              </property>
+              <property name="bottomMargin">
+               <number>2</number>
+              </property>
+              <item>
+               <widget class="MyCheckBox" name="checkBox_iteration_threshold_mode">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="toolTip">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Switches off stopping of ray-marching at distance threshold. When it's checked detail level is controlled with &lt;span style=&quot; font-style:italic;&quot;&gt;Max. fractal iterations&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
+                <property name="text">
+                 <string>Stop at maximum iteration (at maxiter)</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="MyCheckBox" name="checkBox_interior_mode">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="toolTip">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Makes fractals hollow inside. It gives interesting results when a  cross section of the fractal is rendered using &lt;span style=&quot; font-style:italic;&quot;&gt;Limits (box)&lt;/span&gt; feature. &lt;/p&gt;&lt;p&gt;This effect is very slow to render because of the high number of iterations required to render the inside of the fractal. To speed up rendering try  reducing Max. fractal iterations .&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;table border=&quot;0&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;&quot; cellspacing=&quot;2&quot; cellpadding=&quot;0&quot;&gt;&lt;tr&gt;&lt;td&gt;&lt;p&gt;interior mode enabled&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;interior mode disabled&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;p&gt;&lt;img src=&quot;:/tooltips/tooltips_images/image - interior enabled.jpg&quot;/&gt;&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;&lt;img src=&quot;:/tooltips/tooltips_images/image - interior disabled.jpg&quot;/&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
+                <property name="text">
+                 <string>Interior mode</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="groupBox_10">
+             <property name="title">
+              <string>Surface (normal vector) calculation:</string>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_116">
+              <property name="spacing">
+               <number>2</number>
+              </property>
+              <property name="leftMargin">
+               <number>2</number>
+              </property>
+              <property name="topMargin">
+               <number>2</number>
+              </property>
+              <property name="rightMargin">
+               <number>2</number>
+              </property>
+              <property name="bottomMargin">
+               <number>2</number>
+              </property>
+              <item>
+               <layout class="QGridLayout" name="gridLayout_71" columnstretch="0,0">
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label_106">
+                  <property name="text">
+                   <string>Smoothness:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0" colspan="2">
+                 <widget class="MyCheckBox" name="checkBox_slow_shading">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enables mode dedicated for fractals where it is difficult to calculate surface normal vectors. Rendering is much slower, but fractal surface is much smoother.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                  <property name="text">
+                   <string>Non-DE shading mode (slow)</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="MyLineEdit" name="logedit_smoothness">
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Smoothness parameter defines averaging area for normal vector calculation.&lt;/p&gt;&lt;p&gt;Higher value gives smoother fractal surface.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;table border=&quot;0&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;&quot; cellspacing=&quot;2&quot; cellpadding=&quot;0&quot;&gt;&lt;tr&gt;&lt;td&gt;&lt;p&gt;smoothness = 0.1&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;smoothness = 1.0&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;smoothness = 5.0&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;p&gt;&lt;img src=&quot;:/tooltips/tooltips_images/image - smoothness 0.1.jpg&quot;/&gt;&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;&lt;img src=&quot;:/tooltips/tooltips_images/image - smoothness 1.jpg&quot;/&gt;&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;&lt;img src=&quot;:/tooltips/tooltips_images/image - smoothness 5.jpg&quot;/&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="MyGroupBox" name="groupCheck_advanced_quality">
+             <property name="toolTip">
+              <string>Access advanced quality settings for fine-tuning raymarching steps, detail size, and rendering precision.</string>
+             </property>
+             <property name="title">
+              <string>Advanced &amp;quality settings</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_14">
+              <property name="leftMargin">
+               <number>2</number>
+              </property>
+              <property name="topMargin">
+               <number>2</number>
+              </property>
+              <property name="rightMargin">
+               <number>2</number>
+              </property>
+              <property name="bottomMargin">
+               <number>2</number>
+              </property>
+              <item>
+               <layout class="QGridLayout" name="gridLayout_2">
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <property name="spacing">
+                 <number>2</number>
+                </property>
+                <item row="2" column="1">
+                 <widget class="MyLineEdit" name="logedit_rel_max_marching_step">
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Maximum relative step for raymarching. It is related to local detail size. Close to the camera, the limit is lower (visible details are smaller).&lt;/p&gt;&lt;p&gt;Lower value can improve calculation accuracy far from the fractal surface.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="5" column="0">
+                 <widget class="QLabel" name="label_122">
+                  <property name="text">
+                   <string>Minimum detail size:</string>
+                  </property>
+                  <property name="wordWrap">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="0">
+                 <widget class="QLabel" name="label_115">
+                  <property name="text">
+                   <string>Relative maximum step:</string>
+                  </property>
+                  <property name="wordWrap">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="label_120">
+                  <property name="text">
+                   <string>Absolute minimum step:</string>
+                  </property>
+                  <property name="wordWrap">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="0">
+                 <widget class="QLabel" name="label_116">
+                  <property name="text">
+                   <string>Relative minimum step:</string>
+                  </property>
+                  <property name="wordWrap">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item row="5" column="1">
+                 <widget class="MyLineEdit" name="logedit_detail_size_min">
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Higher value can produce less detail in areas close to the camera.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="1">
+                 <widget class="MyLineEdit" name="logedit_rel_min_marching_step">
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum relative step for raymarching. It is related to local detail size. Close to the camera, the limit is lower (visible details are smaller).&lt;/p&gt;&lt;p&gt;Higher value can speed up calculation of raymarching in areas close to the fractal surface.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="6" column="1">
+                 <widget class="MyLineEdit" name="logedit_deltade_relative_delta">
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Controls delta used in DeltaDE distance algorithm. Tuning of this parameter can improve quality when there is noise caused by inaccurate distance estimation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label_113">
+                  <property name="text">
+                   <string>Absolute maximum step:</string>
+                  </property>
+                  <property name="wordWrap">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="MyLineEdit" name="logedit_abs_max_marching_step">
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Maximum step for raymarching. Lower value can improve calculation accuracy in areas far from the fractal surface.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="4" column="0">
+                 <widget class="QLabel" name="label_123">
+                  <property name="text">
+                   <string>Maximum detail size:</string>
+                  </property>
+                  <property name="wordWrap">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item row="4" column="1">
+                 <widget class="MyLineEdit" name="logedit_detail_size_max">
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Lower value can produce more detail in areas far from the camera.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="6" column="0">
+                 <widget class="QLabel" name="label_124">
+                  <property name="text">
+                   <string>deltaDE relative delta:</string>
+                  </property>
+                  <property name="wordWrap">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="MyLineEdit" name="logedit_abs_min_marching_step">
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum step for raymarching. Higher value can speed up rendering. It will reduce the number of raymarching steps close to the fractal surface.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="7" column="0">
+                 <widget class="QLabel" name="label_125">
+                  <property name="text">
+                   <string>maximum number
+of raymarching steps</string>
+                  </property>
+                  <property name="wordWrap">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item row="7" column="1">
+                 <widget class="MySpinBox" name="spinboxInt_max_raymarching_steps">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="toolTip">
+                   <string>Maximum number of raymarching steps per pixel. Limits how many steps are taken when rendering each pixel.</string>
+                  </property>
+                  <property name="minimum">
+                   <number>1</number>
+                  </property>
+                  <property name="maximum">
+                   <number>10000000</number>
+                  </property>
+                  <property name="value">
+                   <number>10000</number>
+                  </property>
+                 </widget>
+                </item>
+                <item row="8" column="0">
+                 <widget class="QLabel" name="label_marching_omega">
+                  <property name="toolTip">
+                   <string>Sphere tracing over-relaxation factor. Values above 1.0 allow larger steps when the distance field is reliable, reducing march iterations. Too high may cause surface overshoot.</string>
+                  </property>
+                  <property name="text">
+                   <string>Marching omega
+(over-relaxation):</string>
+                  </property>
+                  <property name="wordWrap">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item row="8" column="1">
+                 <widget class="QWidget" name="widget_marching_omega" native="true">
+                  <layout class="QHBoxLayout" name="horizontalLayout_marching_omega">
+                   <property name="spacing">
+                    <number>4</number>
+                   </property>
+                   <property name="leftMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="topMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="rightMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>0</number>
+                   </property>
+                   <item>
+                    <widget class="QSlider" name="slider_marching_omega">
+                     <property name="toolTip">
+                      <string>Sphere tracing over-relaxation (1.0 = disabled, ~1.2 = faster).</string>
+                     </property>
+                     <property name="minimum">
+                      <number>100</number>
+                     </property>
+                     <property name="maximum">
+                      <number>200</number>
+                     </property>
+                     <property name="value">
+                      <number>120</number>
+                     </property>
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="MyDoubleSpinBox" name="spinbox_marching_omega">
+                     <property name="toolTip">
+                      <string>Sphere tracing over-relaxation factor (1.0–2.0). Used by Fast and Limited OpenCL engines.</string>
+                     </property>
+                     <property name="decimals">
+                      <number>2</number>
+                     </property>
+                     <property name="minimum">
+                      <double>1.000000000000000</double>
+                     </property>
+                     <property name="maximum">
+                      <double>2.000000000000000</double>
+                     </property>
+                     <property name="singleStep">
+                      <double>0.050000000000000</double>
+                     </property>
+                     <property name="value">
+                      <double>1.200000000000000</double>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+ <customwidgets>
+  <customwidget>
+     <class>MyCheckBox</class>
+     <extends>QCheckBox</extends>
+     <header>my_check_box.h</header>
+    </customwidget>
+  <customwidget>
+     <class>MyComboBox</class>
+     <extends>QComboBox</extends>
+     <header>my_combo_box.h</header>
+    </customwidget>
+  <customwidget>
+     <class>MyDoubleSpinBox</class>
+     <extends>QDoubleSpinBox</extends>
+     <header>my_double_spin_box.h</header>
+    </customwidget>
+  <customwidget>
+     <class>MyGroupBox</class>
+     <extends>QGroupBox</extends>
+     <header>my_group_box.h</header>
+     <container>1</container>
+    </customwidget>
+  <customwidget>
+     <class>MyLineEdit</class>
+     <extends>QLineEdit</extends>
+     <header>my_line_edit.h</header>
+    </customwidget>
+  <customwidget>
+     <class>MySpinBox</class>
+     <extends>QSpinBox</extends>
+     <header>my_spin_box.h</header>
+    </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
