@@ -2477,7 +2477,7 @@
     </widget>
    </item>
    <item>
-    <widget class="MyGroupBox" name="groupCheck_transf_function_enabled_Bx_false">
+    <widget class="MyGroupBox" name="groupCheck_transf_function_enabledBx_false">
      <property name="title"><string>Multiplier 1</string></property>
      <property name="checkable"><bool>true</bool></property>
      <property name="checked"><bool>false</bool></property>
@@ -2514,7 +2514,7 @@
     </widget>
    </item>
    <item>
-    <widget class="MyGroupBox" name="groupCheck_transf_function_enabled_By_false">
+    <widget class="MyGroupBox" name="groupCheck_transf_function_enabledBy_false">
      <property name="title"><string>Multiplier 2</string></property>
      <property name="checkable"><bool>true</bool></property>
      <property name="checked"><bool>false</bool></property>
@@ -2551,7 +2551,7 @@
     </widget>
    </item>
    <item>
-    <widget class="MyGroupBox" name="groupCheck_transf_function_enabled_Bz_false">
+    <widget class="MyGroupBox" name="groupCheck_transf_function_enabledBz_false">
      <property name="title"><string>Multiplier 3</string></property>
      <property name="checkable"><bool>true</bool></property>
      <property name="checked"><bool>false</bool></property>
@@ -2588,7 +2588,7 @@
     </widget>
    </item>
    <item>
-    <widget class="MyGroupBox" name="groupCheck_transf_function_enabled_Bw_false">
+    <widget class="MyGroupBox" name="groupCheck_transf_function_enabledBw_false">
      <property name="title"><string>Multiplier 4</string></property>
      <property name="checkable"><bool>true</bool></property>
      <property name="checked"><bool>false</bool></property>
@@ -2625,7 +2625,7 @@
     </widget>
    </item>
    <item>
-    <widget class="MyGroupBox" name="groupCheck_transf_function_enabled_Cz_false">
+    <widget class="MyGroupBox" name="groupCheck_transf_function_enabledCz_false">
      <property name="title"><string>Multiplier 5</string></property>
      <property name="checkable"><bool>true</bool></property>
      <property name="checked"><bool>false</bool></property>
