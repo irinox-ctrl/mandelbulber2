@@ -20,5 +20,51 @@ REAL4 TransfSphericalOffsetIteration(REAL4 z, __constant sFractalCl *fractal, sE
 	z *= 1.0f + fractal->transformCommon.offset / -length(z);
 	z *= fractal->transformCommon.scale;
 	aux->DE = aux->DE * fractal->transformCommon.scale + fractal->analyticDE.offset1;
+
+	// === General Purpose Multiplier 1 ===
+	if (fractal->transformCommon.functionEnabledBxFalse
+		&& aux->i >= fractal->transformCommon.startIterationsB
+		&& aux->i < fractal->transformCommon.stopIterationsB)
+	{
+		z *= fractal->transformCommon.scale4;
+		aux->DE *= fabs(fractal->transformCommon.scale4);
+	}
+
+	// === General Purpose Multiplier 2 ===
+	if (fractal->transformCommon.functionEnabledByFalse
+		&& aux->i >= fractal->transformCommon.startIterationsC
+		&& aux->i < fractal->transformCommon.stopIterationsC)
+	{
+		z *= fractal->transformCommon.scale5;
+		aux->DE *= fabs(fractal->transformCommon.scale5);
+	}
+
+	// === General Purpose Multiplier 3 ===
+	if (fractal->transformCommon.functionEnabledBzFalse
+		&& aux->i >= fractal->transformCommon.startIterationsD
+		&& aux->i < fractal->transformCommon.stopIterationsD)
+	{
+		z *= fractal->transformCommon.scale6;
+		aux->DE *= fabs(fractal->transformCommon.scale6);
+	}
+
+	// === General Purpose Multiplier 4 ===
+	if (fractal->transformCommon.functionEnabledBwFalse
+		&& aux->i >= fractal->transformCommon.startIterationsE
+		&& aux->i < fractal->transformCommon.stopIterationsE)
+	{
+		z *= fractal->transformCommon.scale8;
+		aux->DE *= fabs(fractal->transformCommon.scale8);
+	}
+
+	// === General Purpose Multiplier 5 ===
+	if (fractal->transformCommon.functionEnabledCzFalse
+		&& aux->i >= fractal->transformCommon.startIterationsF
+		&& aux->i < fractal->transformCommon.stopIterationsF)
+	{
+		z *= fractal->transformCommon.scale16;
+		aux->DE *= fabs(fractal->transformCommon.scale16);
+	}
+
 	return z;
 }
