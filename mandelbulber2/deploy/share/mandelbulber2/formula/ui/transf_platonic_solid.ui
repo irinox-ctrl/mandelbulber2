@@ -498,6 +498,7 @@
      </layout>
     </widget>
    </item>
+
    <item>
     <widget class="MyGroupBox" name="groupCheck_transf_function_enabledBx_false">
      <property name="title"><string>Multiplier 1</string></property>
@@ -548,6 +549,7 @@
      </layout>
     </widget>
    </item>
+
    <item>
     <widget class="MyGroupBox" name="groupCheck_transf_function_enabledBy_false">
      <property name="title"><string>Multiplier 2</string></property>
@@ -598,6 +600,7 @@
      </layout>
     </widget>
    </item>
+
    <item>
     <widget class="MyGroupBox" name="groupCheck_transf_function_enabledBz_false">
      <property name="title"><string>Multiplier 3</string></property>
@@ -648,6 +651,7 @@
      </layout>
     </widget>
    </item>
+
    <item>
     <widget class="MyGroupBox" name="groupCheck_transf_function_enabledBw_false">
      <property name="title"><string>Multiplier 4</string></property>
@@ -698,6 +702,7 @@
      </layout>
     </widget>
    </item>
+
    <item>
     <widget class="MyGroupBox" name="groupCheck_transf_function_enabledCz_false">
      <property name="title"><string>Multiplier 5</string></property>
@@ -748,33 +753,6 @@
      </layout>
     </widget>
    </item>
-      <item row="0" column="1">
-       <widget class="MyDoubleSpinBox" name="spinbox_transf_scale_16">
-        <property name="minimum"><double>-100.0</double></property><property name="maximum"><double>100.0</double></property>
-        <property name="singleStep"><double>0.01</double></property><property name="value"><double>1.0</double></property>
-       </widget>
-      </item>
-      <item row="0" column="2">
-       <widget class="QLabel"><property name="text"><string>Start iter:</string></property></widget>
-      </item>
-      <item row="0" column="3">
-       <widget class="MySpinBox" name="spinboxInt_transf_start_iterations_F">
-        <property name="minimum"><number>0</number></property><property name="maximum"><number>10000</number></property>
-        <property name="value"><number>0</number></property>
-       </widget>
-      </item>
-      <item row="0" column="4">
-       <widget class="QLabel"><property name="text"><string>Stop iter:</string></property></widget>
-      </item>
-      <item row="0" column="5">
-       <widget class="MySpinBox" name="spinboxInt_transf_stop_iterations_F">
-        <property name="minimum"><number>0</number></property><property name="maximum"><number>10000</number></property>
-        <property name="value"><number>250</number></property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
 
    <item>
     <spacer name="verticalSpacer">
@@ -808,12 +786,7 @@
    <extends>QCheckBox</extends>
    <header>my_check_box.h</header>
   </customwidget>
-   <customwidget>
-   <class>MySpinBox</class>
-   <extends>QSpinBox</extends>
-   <header>my_spin_box.h</header>
-  </customwidget>
-   <customwidget>
+    <customwidget>
    <class>MyComboBox</class>
    <extends>QComboBox</extends>
    <header>my_combo_box.h</header>
