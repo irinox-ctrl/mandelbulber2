@@ -1,0 +1,60 @@
+# Mandelbulber settings file
+# version 2.33
+# only modified parameters
+[main_parameters]
+background_3_colors_enable false;
+background_color_1 0000 0000 0000;
+basic_fog_visibility 0,88716471195221;
+box_folding true;
+brightness 0,7;
+camera 3,45018077789221 0,238522425468072 -0,468092880614059;
+camera_distance_to_target 0,00169435381915594;
+camera_rotation 113,784896111506 26,2336997476389 -1,01498513460813;
+camera_top 0,411570475113718 0,162036559555479 0,896857791058366;
+DE_factor 0,65625;
+distance_fog_shadows true;
+DOF_max_noise 2;
+DOF_MC_global_illumination true;
+DOF_monte_carlo true;
+flight_last_to_render 0;
+fog_color_1 ff00 ff00 ff00;
+fog_color_2 ff00 ff00 ff00;
+formula_1 8;
+fov 61,93;
+fractal_constant_factor 1,5 1,5 1,5;
+gamma 0,8;
+hdr true;
+image_height 1200;
+image_width 1600;
+keyframe_last_to_render 0;
+light1_enabled false;
+light1_intensity 2;
+light1_is_defined true;
+light1_rotation -45 -45 0;
+mat1_is_defined true;
+mat1_luminosity_gradient 0 89c1fd 429 000000 5444 1a010c 5823 391390 7888 6257e5;
+mat1_luminosity_gradient_enable true;
+mat1_metallic false;
+mat1_perlin_noise_abs true;
+mat1_perlin_noise_color_enable true;
+mat1_perlin_noise_color_intensity 2;
+mat1_perlin_noise_enable true;
+mat1_perlin_noise_iterations 8;
+mat1_perlin_noise_luminosity_enable true;
+mat1_perlin_noise_luminosity_intensity 8;
+mat1_perlin_noise_period 0,25 0,25 0,25;
+mat1_specular 1;
+mat1_specular_width 1;
+mat1_surface_color_gradient 0 89c1fd 429 5d0ab1 5444 000000 5823 391390 7888 6257e5;
+MC_fog_illumination true;
+reflections_max 2;
+target 3,44879003046444 0,237909470651017 -0,467343919434231;
+volumetric_fog_colour_1_distance 0,000782980305732505;
+volumetric_fog_colour_2_distance 0,00156596061146501;
+volumetric_fog_density 8;
+volumetric_fog_distance_factor 0,00156596061146501;
+volumetric_fog_distance_from_surface 1,5625E-17;
+volumetric_fog_enabled true;
+[fractal_1]
+mandelbox_color 0,1 0,05 0,07;
+mandelbox_scale 4;

@@ -1,0 +1,56 @@
+# Mandelbulber settings file
+# version 2.26
+# only modified parameters
+[main_parameters]
+basic_fog_color 5600 5e00 6600;
+basic_fog_enabled true;
+basic_fog_visibility 1,88518905639648;
+brightness 2;
+camera 2,27622868037902 1,85392015680765 -1,87497435139913;
+camera_distance_to_target 0,213998602195545;
+camera_rotation -56,2491774454584 -10,7968474004977 1,01777749806832e-13;
+camera_top 0,1557554348391771 0,1040756887213831 0,9822975595690078;
+DE_factor 0,125;
+DOF_max_noise 5;
+DOF_monte_carlo true;
+flight_last_to_render 0;
+formula_1 122;
+formula_2 1603;
+formula_3 1600;
+formula_iterations_1 2;
+gamma 0,7;
+glow_color_1 0000 0000 0000;
+glow_color_2 0000 0000 0000;
+glow_intensity 12,8;
+hdr true;
+hybrid_fractal_enable true;
+image_height 1080;
+image_proportion 4;
+image_width 1920;
+keyframe_last_to_render 0;
+light1_color ff00 d400 2900;
+light1_intensity 2;
+light1_is_defined true;
+light1_rotation -99,35 34,1 0;
+light2_enabled true;
+light2_intensity 0,00278099455272052;
+light2_is_defined true;
+light2_penetrating false;
+light2_position 2,48684945102669 1,99465683021375 -1,93437822937765;
+mat1_is_defined true;
+mat1_reflectance 1;
+mat1_reflectance_gradient 0 e5f8f8 2523 cc8888 4829 d28b91 8922 edc5e5;
+mat1_reflectance_gradient_enable true;
+mat1_rough_surface true;
+mat1_specular_plastic_enable false;
+mat1_surface_color_gradient 0 86b4b4 2523 7d5a4f 4829 714d5c 8922 e9dfe9;
+MC_denoiser_enable true;
+raytraced_reflections true;
+reflections_max 2;
+target 2,45101048428028 1,97070925399564 -1,9150621244064;
+view_distance_max 7,65685424949238;
+[fractal_2]
+transf_offset_0005 0,01;
+transf_scale_1 0,25;
+[fractal_3]
+transf_addition_constant_111 0,0625 0,5 4;

@@ -1,0 +1,63 @@
+# Mandelbulber settings file
+# version 2.33
+# only modified parameters
+[main_parameters]
+ambient_occlusion 0,5;
+ambient_occlusion_enabled true;
+ambient_occlusion_mode 0;
+camera -0,201182879384107 -3,76820586004189 -0,626454631315866;
+camera_distance_to_target 0,799999999999996;
+camera_rotation 30,5135356553728 -21,956454349379 -0,487577134608078;
+camera_top -0,197169948373258 0,317787456913412 0,927434711279987;
+detail_level 2;
+DOF_enabled true;
+DOF_focus 0,867783784866332;
+DOF_monte_carlo true;
+DOF_radius 18,1;
+flight_last_to_render 0;
+fog_color_1 718c 718c 718c;
+formula_1 8;
+formula_2 3;
+formula_iterations_1 2;
+fov 28,07;
+gamma 0,7;
+glow_color_1 210d 9009 0000;
+glow_color_2 f6dd ffff 0000;
+glow_intensity 0,5;
+hybrid_fractal_enable true;
+image_height 1200;
+image_width 1600;
+iteration_fog_color_1 718c 718c 718c;
+iteration_fog_color_1_maxiter 82;
+iteration_fog_color_2 0000 7530 ffff;
+iteration_fog_color_2_maxiter 165;
+julia_c -1 0 0;
+julia_mode true;
+keyframe_last_to_render 0;
+light1_is_defined true;
+light1_rotation 30 -30 0;
+light1_volumetric_visibility 100;
+mat1_is_defined true;
+mat1_metallic false;
+mat1_specular 1;
+mat1_specular_width 1;
+mat1_surface_color_gradient 0 6b5e1c 600 a4944a 1040 2817af 1107 a8bd89 1938 7bc64a 2870 991a39 3259 2890b7 3281 86246e 4030 137953 4231 af7e3f 5219 1b300a 5629 769a27 5683 74a13e 5875 617b44 6322 80987f 8111 5a7680 8135 7cc400 9715 140d8c 9948 90b974;
+smoothness 3;
+target -0,577914491332079 -3,12898786037095 -0,925576080656694;
+volumetric_fog_colour_1_distance 0,0200457116613039;
+volumetric_fog_colour_2_distance 0,0400914233226079;
+volumetric_fog_density 0,1;
+volumetric_fog_distance_factor 0,0400914233226079;
+volumetric_fog_enabled true;
+[fractal_1]
+IFS_rotation_enabled true;
+mandelbox_generalized_fold_type fold_cube;
+[fractal_2]
+IFS_rotation_enabled true;
+mandelbox_generalized_fold_type fold_cube;
+[fractal_3]
+IFS_rotation_enabled true;
+mandelbox_generalized_fold_type fold_cube;
+[fractal_4]
+IFS_rotation_enabled true;
+mandelbox_generalized_fold_type fold_cube;

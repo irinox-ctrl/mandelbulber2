@@ -1,0 +1,45 @@
+# Mandelbulber settings file
+# version 2.33
+# only modified parameters
+[main_parameters]
+ambient_occlusion 4;
+ambient_occlusion_enabled true;
+ambient_occlusion_mode 1;
+ambient_occlusion_quality 6;
+basic_fog_color d00a c0bc 90ad;
+basic_fog_enabled true;
+basic_fog_visibility 0,367403507232665;
+brightness 0,8;
+camera 0,279041310454611 -0,462320908071636 5,10016960784589;
+camera_distance_to_target 0,141547598846171;
+camera_rotation 135,566760141338 8,82302692631234 2,14410905550369;
+camera_top 0,080589438566236 0,135641025119319 0,98747498940285;
+DE_factor 0,5;
+detail_level 2;
+flight_last_to_render 0;
+formula_1 8;
+fov 61,93;
+fractal_constant_factor 1,8 1,8 1,8;
+gamma 0,6;
+glow_color_1 9e96 87d8 344b;
+glow_intensity 1;
+image_height 1080;
+image_proportion 4;
+image_width 1920;
+keyframe_last_to_render 0;
+light1_intensity 0,7;
+light1_is_defined true;
+light1_rotation -29,65 22,52 0;
+mat1_coloring_speed 2;
+mat1_is_defined true;
+mat1_metallic false;
+mat1_specular 1;
+mat1_specular_width 1;
+mat1_surface_color_gradient 0 916125 4267 d7a314;
+N 255;
+target 0,181119591312328 -0,562199296174003 5,12188060159121;
+view_distance_max 60,6610066359606;
+[fractal_1]
+mandelbox_color_Sp1 0,5;
+mandelbox_main_rotation_enabled true;
+mandelbox_rotation_main -1 -2 -3;

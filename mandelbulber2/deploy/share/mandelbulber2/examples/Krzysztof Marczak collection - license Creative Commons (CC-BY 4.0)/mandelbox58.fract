@@ -1,0 +1,38 @@
+# Mandelbulber settings file
+# version 2.33
+# only modified parameters
+[description]
+This fractal has to be rendered with disabled OpenCL. The camera is too close to the fractal.
+[main_parameters]
+background_color_2 0000 0000 0000;
+camera -2,39863688463898 -5,69460366008412 -4,76191226928565;
+camera_distance_to_target 8,47873187999189E-14;
+camera_rotation -76,2637316943774 13,9416415582046 -180;
+camera_top 0,234042541669053 0,0572103990746575 -0,970541631732925;
+DOF_enabled true;
+DOF_focus 2,41022789850831E-05;
+DOF_radius 3,6;
+flight_last_to_render 0;
+formula_1 8;
+fov 61,93;
+fractal_constant_factor -0,5 -0,5 -0,5;
+gamma 0,7;
+image_height 1080;
+image_width 1920;
+iteration_fog_enable true;
+iteration_fog_opacity 100000000;
+iteration_fog_opacity_trim 20;
+keyframe_last_to_render 0;
+light1_color a2b9 b956 e9cf;
+light1_intensity 1,5;
+light1_is_defined true;
+light1_rotation 140 30 0;
+mat1_is_defined true;
+mat1_metallic false;
+mat1_specular 0,3;
+mat1_specular_width 1;
+mat1_surface_color_gradient 0 312392 1331 80706e 1410 f182d4 1815 4f872a 2284 d5ffe3 2902 620a6d 3468 ea5b33 3886 1d9edb 5812 d3dad8 6141 e0f711 6538 b63d16 6782 cdc7fa 7242 b911b2 7565 f84dc6 7956 86bbc8 8788 2a7e4e;
+target -2,3986368846389 -5,6946036600841 -4,76191226928563;
+view_distance_max 56,2648503206948;
+[fractal_1]
+mandelbox_scale -2;

@@ -1,0 +1,252 @@
+
+                              MANDELBULBER 2.34
+
+1. What is Mandelbulber
+-----------------------
+
+In summary, Mandelbulber generates three-dimensional fractals.
+Explore  trigonometric, hyper-complex, Mandelbox, IFS, Kleinian  and many other
+3D fractals.  Render with a great palette  of customizable materials  to create
+stunning images and videos. The possibilities are literally   i n f i n i t e !
+
+2. Project Members and Links
+----------------------------
+
+PROJECT LEADER:  Krzysztof Marczak
+PROJECT MEMBERS: Sebastian Jennen, Graeme McLaren, Bernardo Martelli,
+                 Robert Pancoast, knighty, makemeunsee, Marius Schilder,
+                 Ryan Hitchman, Jeff Epler, Martin Reinecke, Quazgaa, Adrian Meyer
+                 github:rikardfalkeborn, github:orbitcowboy, github:brunetton,
+                 github:biberino, github:luchansky, github:jeroenrijckaert,
+                 github:KoviRobi, github:psyriccio, github:valera-rozuvan, 
+                 github:probonopd, github:mia-0, github:gitter-badger, 
+                 github:danuni, github:Starmute
+
+CONTACT:         buddhi1980@gmail.com
+DOWNLOAD:        https://sourceforge.net/projects/mandelbulber/
+DEVELOPMENT:     https://github.com/buddhi1980/mandelbulber2/
+COMMUNITY:       http://www.fractalforums.com/mandelbulber/
+                 https://www.facebook.com/groups/mandelbulber/
+FANSITE:         http://www.mandelbulber.com
+                 http://www.mandelbulber.org
+
+LICENCE:         GNU GPL v3.0
+
+3. REQUIREMENTS
+---------------
+
+- Linux OS with installed Qt 5 libraries (version >5.7)
+- very fast CPU (recommended 3GHz, 4 cores)
+- 4GB RAM
+
+4. COMPILING stable version
+---------------------------
+
+4.1. Compilation with qmake
+packages needed to RUN
+Ubuntu:
+    libqt5gui5 libpng16-16, libgsl2 liblzo2-2 libgomp1 libqt5multimedia5
+    libqt5multimedia5-plugins libsndfile1 liblzo2-2 libqt5concurrent5
+    
+Debian Bullseye:
+    libQt5Widgets libQt5Multimedia libQt5Test libQt5Concurrent
+
+packages needed to COMPILE
+	qtchooser qt5-qmake qtbase5-dev-tools qttools5-dev libqt5gui5 qtmultimedia5-dev  
+	libpng-dev libgsl-dev libsndfile1-dev liblzo2-dev qtdeclarative5-dev
+
+Installing packages on Ubuntu, Debian stable (bookworm) or Mint: 
+sudo apt-get install build-essential qtbase5-dev \
+	qtchooser qt5-qmake qtbase5-dev-tools qttools5-dev libqt5gui5 qtmultimedia5-dev \ 
+	libpng16-16 libpng-dev libgomp1 libgsl-dev libsndfile1-dev libqt5multimedia5-plugins \
+	liblzo2-2 liblzo2-dev qtdeclarative5-dev libqt5concurrent5
+
+Compiling from source:
+cd makefiles
+qmake mandelbulber.pro
+make all
+cd ..
+
+4.2. Alternative compilation with cmake
+
+note: compilation with cmake is only beta and not feature complete
+
+In order to compile OpenEXR with cmake the ECM should be present
+to install on Debian / Ubuntu:
+sudo apt-get install extra-cmake-modules
+
+4.3. Optional packages
+
+TIFF:     install libtiff5-dev to have TIFF format support
+EXR:      install libopenexr-dev to have EXR format support
+QGAMEPAD: for gamepad support qt is required in version 5.7 and above
+
+4.3.2 OpenCL
+
+Mandelbulber can utilize OpenCL to accelerate rendering.
+To compile Mandelbulber with OpenCL support, the headers need to be present.
+To use an OpenCL device you need to install a current driver for the CPU/GPU.
+
+required packages:
+    opencl-headers ocl-icd-libopencl1 ocl-icd-opencl-dev
+
+Compiling from source:
+cd makefiles
+qmake mandelbulber-opencl.pro
+make all
+cd ..
+
+4.4 Installation
+
+Run the install script:
+./install
+(This will also run the compilation if program was not compiled)
+
+5. COMPILING development version
+--------------------------------
+
+Get actual code from GitHub:
+git clone https://github.com/buddhi1980/mandelbulber2.git
+
+Install all needed packages to compile the program listed in section 4.1 and 4.3
+
+5.1 Compile the program and install to /usr (/usr/bin, /usr/share...)
+
+Clone git repository
+git clone https://github.com/buddhi1980/mandelbulber2.git
+
+Compiling from source:
+cd mandelbulber2/mandelbulber2/qmake
+qmake mandelbulber.pro (or qmake mandelbulber-opencl.pro for OpenCL version)
+make -j4
+
+installation in the system:
+sudo make install
+
+run:
+mandelbulber2
+
+5.2 Compile and install the program to custom location (example for /usr/local)
+
+Compiling from source. PREFIX specifies where the program will be installed.
+qmake PREFIX=/usr/local mandelbulber-opencl.pro
+make -j4
+
+installation in specified directory:
+sudo make install
+
+run:
+/usr/local/bin/mandelbulber2
+
+5.3 Compile and install the program to custom location and specify custom program
+data directory. SHARED_PATH specifies where the program will look for data files.
+
+Create directory for the program:
+mkdir mandelbulberStandalone
+
+Compiling from source (example):
+qmake SHARED_PATH="/tmp/customDataDirectory" PREFIX=/tmp/mandelbulber mandelbulber-opencl.pro
+make -j8
+
+installation in specified directory:
+make install
+
+6. TESTED ON
+------------
+
+- Debian Trixie x64
+- Ubuntu 24
+
+- gcc 14.2
+- clang 19.1.7
+- msvc19
+- Qt 6.8.2
+
+7. USAGE
+--------
+
+The main documentation is the PDF file  Mandelbulber_Manual.pdf,  which you can
+find in this very folder.
+Also you can open it from Mandelbulber under: [Menu > Help > User Manual]
+A lot of useful information you can find  in the tooltips.  Just hover with the
+mouse pointer over the edit fields.
+More useful material can be found in the wiki documentation for old
+Mandelbulber (v1) here: http://wiki.mandelbulber.com/index.php?title=Main_Page
+
+8. COMMAND LINE INTERFACE
+-------------------------
+
+The program can be used "headless" from the console. This way the program can
+be integrated in scripts or toolchains and even be run without a x-server
+completely.
+
+Usage: ./mandelbulber2 [options] settings_file
+
+Options:
+  -h, --help             Displays this help.
+  -v, --version          Displays version information.
+  -n, --nogui            Starts the program without a GUI.
+  -o, --output <N>       Saves rendered image(s) to this file / folder.
+  --logfilepath <N>      Specify custom system log filepath (default is:
+                         ~/.mandelbulber_log.txt).
+  -K, --keyframe         Renders keyframe animation.
+  -F, --flight           Renders flight animation.
+  -X, --never-delete     Never delete data, instead Exit CLI application.
+  -s, --start <N>        Starts rendering from frame number <N>.
+  -e, --end <N>          Stops rendering on frame number <N>.
+  -L, --list             Lists all possible parameters '<KEY>' with
+                         corresponding default value '<VALUE>'.
+  -f, --format <FORMAT>  Image output format:
+                          jpg  - JPEG format (default)
+                          png  - PNG format
+                          exr  - EXR format
+                          tiff - TIFF format
+                         Legacy formats for still frames:
+                          png16 - 16-bit PNG format
+                          png16alpha - 16-bit PNG with alpha channel format
+  -r, --res <WxH>        Overrides image resolution. Specify as width and
+                         height separated by 'x'
+  --fpk <N>              Overrides frames per key parameter.
+  -S, --server           Sets application as a server listening for clients.
+  -H, --host <N.N.N.N>   Sets application as a client connected to server of
+                         given host address (Host can be of type IPv4, IPv6 and
+                         Domain name address).
+  -p, --port <N>         Sets network port number for netrender (default 5555).
+  -C, --no-cli-color     Starts program without ANSI colors, when execution on
+                         CLI.
+  -q, --queue            Renders all images from common queue.
+  -t, --test             Runs testcases on the mandelbulber instance
+  -b, --benchmark        Runs benchmarks on the mandelbulber instance, specify
+                         optional parameter difficulty (1 -> very easy, > 20 ->
+                         very hard, 10 -> default). When [output] option is set
+                         to a folder, the example-test images will be stored
+                         there.
+  -T, --touch            Resaves a settings file (can be used to update a
+                         settings file)
+  -V, --voxel <FORMAT>   Renders the voxel volume. Output formats are:
+                          slice - stack of PNG images into one folder (default)
+                          ply   - Polygon File Format (single 3d file)
+
+  -O, --override <...>   <KEY=VALUE> overrides item '<KEY>' from settings file
+                         with new value '<VALUE>'.
+                         Specify multiple KEY=VALUE pairs by separating with a
+                         '#': <KEY1=VALUE1#KEY2=VALUE2>. Quote whole expression
+                         to avoid whitespace parsing issues
+                         Override fractal parameter in the form
+                         'fractal<N>_KEY=VALUE' with <N> being index of fractal
+  --stats                Shows statistics while rendering in CLI mode.
+  -g, --gpu              Runs the program in opencl mode and selects first
+                         available gpu device.
+  -G, --gpuall           Runs the program in opencl mode and selects all
+                         available gpu devices.
+  --help-input           Shows help about input.
+  --help-examples        Shows example commands.
+  --help-opencl          Shows commands regarding OpenCL.
+
+Arguments:
+  settings_file          file with fractal settings (program also tries
+                         to find file in ./mandelbulber/settings directory)
+                         When settings_file is put as a command line argument
+                         then program will start in noGUI mode<settings_file>
+                         can also be specified as a list, see all options with
+                         --help-input

@@ -1,0 +1,35 @@
+# Mandelbulber settings file
+# version 2.33
+# only modified parameters
+[main_parameters]
+basic_fog_enabled true;
+basic_fog_visibility 0,00431630853563547;
+camera -1,64299263382596 -0,000287486059865126 -0,000310785056874946;
+camera_distance_to_target 0,00104166666667043;
+camera_rotation -80,0000000000377 9,99999999996355 -180;
+camera_top 0,171010071662237 0,0301536896068247 -0,984807753012318;
+constant_DE_threshold true;
+DE_thresh 1E-06;
+DOF_enabled true;
+DOF_focus 0,00136458908673376;
+DOF_max_noise 2;
+DOF_monte_carlo true;
+DOF_radius 11;
+flight_last_to_render 0;
+formula_1 21;
+fov 61,93;
+glow_intensity 1;
+image_height 1200;
+image_width 1600;
+keyframe_last_to_render 0;
+light1_intensity 0,7;
+light1_is_defined true;
+light1_rotation -53,9 39,57 0;
+mat1_is_defined true;
+mat1_metallic false;
+mat1_specular 1;
+mat1_specular_width 1;
+mat1_surface_color_gradient 0 602205 89 2341b3 484 19815a 643 cf7077 1186 9e4340 1405 a6c356 2380 eb8b2a 2588 b22a4f 3292 886f5c 4697 ebc65a 4773 9dd7f7 4987 cd6bba 5638 2316fa 6580 87f059 8412 ae49ea 9164 b9cf78 9762 c3f504;
+MC_denoiser_enable true;
+target -1,64198237725263 -0,000109350568549675 -0,000129901538471893;
+view_distance_max 0,390625;

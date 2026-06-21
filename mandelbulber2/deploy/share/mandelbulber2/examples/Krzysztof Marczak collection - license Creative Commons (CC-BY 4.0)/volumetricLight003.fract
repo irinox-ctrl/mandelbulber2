@@ -1,0 +1,61 @@
+# Mandelbulber settings file
+# version 2.33
+# only modified parameters
+[main_parameters]
+ambient_occlusion_enabled true;
+ambient_occlusion_mode 1;
+camera 1,05944933707466 -0,513205916148599 -0,857273374214066;
+camera_distance_to_target 2,03476032637093E-11;
+camera_rotation 60,0050609297814 19,9961031826121 -0,00170673550258584;
+camera_top 0,2961991433319391 -0,1710101672425395 0,9396922848406833;
+DE_factor 0,78125;
+DE_thresh 1;
+detail_level 2;
+flight_last_to_render 0;
+formula_1 10;
+fov 61,93;
+glow_intensity 0,390625;
+hdr true;
+image_height 1080;
+image_width 1920;
+keyframe_last_to_render 0;
+light1_intensity 0;
+light1_is_defined true;
+light2_enabled true;
+light2_intensity 1,25070782271233E-06;
+light2_is_defined true;
+light2_position 1,05126854894031 -0,503073816983166 -0,850137171330369;
+light2_volumetric true;
+light2_volumetric_visibility 799,547249837587;
+light3_enabled true;
+light3_intensity 4,25484640426529E-10;
+light3_is_defined true;
+light3_position 1,04805613900024 -0,513432712187597 -0,855353941300748;
+light3_volumetric true;
+light3_volumetric_visibility 3055339,43292715;
+light5_is_defined true;
+light5_position 0 -1 3;
+mat1_is_defined true;
+mat1_metallic false;
+mat1_specular 1;
+mat1_specular_width 1;
+mat1_surface_color_gradient 0 f4964c 4596 ba2be8;
+reflections_max 2;
+target 1,0594493370581 -0,51320591613904 -0,857273374207108;
+view_distance_max 5,59583601372309;
+[fractal_1]
+IFS_abs_x true;
+IFS_abs_z true;
+IFS_direction_0 0,632 0,632 0,447;
+IFS_direction_1 0,632 -0,632 -0,447;
+IFS_direction_2 -0,632 -0,447 0,632;
+IFS_enabled_0 true;
+IFS_enabled_1 true;
+IFS_enabled_2 true;
+IFS_offset 1 -1 1;
+[fractal_3]
+IFS_abs_x true;
+IFS_offset 1 -1 1;
+[fractal_4]
+IFS_abs_x true;
+mandelbox_generalized_fold_type fold_cube;

@@ -1,0 +1,56 @@
+# Mandelbulber settings file
+# version 2.33
+# only modified parameters
+[main_parameters]
+ambient_occlusion_enabled true;
+ambient_occlusion_fast_tune 0,5;
+ambient_occlusion_mode 0;
+antialiasing_enabled true;
+camera -1,85504348045244 -1,887763091667 -1,67359314738732;
+camera_distance_to_target 7,46666666607081E-05;
+camera_rotation 20,0000000058315 40,0000000038634 -180;
+camera_top -0,219846310472098 0,604022773581217 -0,766044443075635;
+detail_level 8;
+DOF_focus 1,47910838816821E-14;
+flight_last_to_render 0;
+formula_1 8;
+fov 61,93;
+glow_color_1 7708 2d15 f729;
+glow_intensity 1;
+image_height 1080;
+image_proportion 4;
+image_width 1920;
+iteration_fog_color_2 0000 7530 ffff;
+keyframe_last_to_render 0;
+light1_color ff00 bf00 6600;
+light1_is_defined true;
+light1_rotation 49,13 39,92 0;
+light2_color 2100 9400 ff00;
+light2_enabled true;
+light2_intensity 1;
+light2_is_defined true;
+light2_position 0 0 0;
+light2_relative_position true;
+light2_rotation -48,07 34,8 0;
+light2_target 0 0 0;
+light2_type directional;
+mat1_coloring_palette_offset 0,32734;
+mat1_is_defined true;
+mat1_metallic false;
+mat1_specular 1;
+mat1_specular_width 1;
+mat1_surface_color_gradient 0 7e2915 499 9e3221 999 c52c0c 1498 8a2515 1999 ad4f11 2500 b75b10 2999 db720c 3500 8c241c 3999 b12912 4500 941d1a 5000 972809 5500 bd3002 5999 ca820c 6500 eca625 7000 e9c553 7500 e7b256 7999 e8b056 8500 e36a09 9000 c4600f 9500 83431c;
+target -1,8550630433155 -1,8877093431425 -1,67354515257913;
+[fractal_1]
+mandelbox_folding_min_radius 0,2;
+mandelbox_generalized_fold_type fold_cube;
+mandelbox_rotation_neg_1 5 3 3;
+mandelbox_rotation_pos_1 -5 -3 -3;
+mandelbox_rotations_enabled true;
+mandelbox_scale -1,2;
+[fractal_2]
+IFS_rotation_enabled true;
+[fractal_3]
+mandelbox_scale -1,2;
+[fractal_4]
+mandelbox_rotation_neg_1 5 3 3;
