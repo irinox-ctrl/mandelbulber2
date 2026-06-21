@@ -769,6 +769,12 @@ typedef struct
 	cl_int int16;
 	cl_int int32;
 
+	cl_int multiplierMode1;
+	cl_int multiplierMode2;
+	cl_int multiplierMode3;
+	cl_int multiplierMode4;
+	cl_int multiplierMode5;
+
 	cl_float4 additionConstant0555;
 	cl_float4 additionConstant0777;
 	cl_float4 additionConstant000;
@@ -1768,6 +1774,11 @@ inline sFractalTransformCommonCl clCopySFractalTransformCommonCl(
 	target.rotation2EnabledFalse = source.rotation2EnabledFalse;
 	target.sphereInversionEnabledFalse = source.sphereInversionEnabledFalse;
 	target.spheresEnabled = source.spheresEnabled;
+	target.multiplierMode1 = source.multiplierMode1;
+	target.multiplierMode2 = source.multiplierMode2;
+	target.multiplierMode3 = source.multiplierMode3;
+	target.multiplierMode4 = source.multiplierMode4;
+	target.multiplierMode5 = source.multiplierMode5;
 	return target;
 }
 

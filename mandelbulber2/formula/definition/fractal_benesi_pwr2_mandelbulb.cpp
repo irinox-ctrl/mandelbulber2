@@ -160,8 +160,17 @@ void cFractalBenesiPwr2Mandelbulb::FormulaCode(
 		&& aux.i >= fractal->transformCommon.startIterationsB
 		&& aux.i < fractal->transformCommon.stopIterationsB)
 	{
-		z *= fractal->transformCommon.scale4;
-		aux.DE *= fabs(fractal->transformCommon.scale4);
+		double val = fractal->transformCommon.scale4;
+		switch (fractal->transformCommon.multiplierMode1)
+		{
+			default:
+			case 0: z *= val; aux.DE *= fabs(val); break;
+			case 1: z.x *= val; break;
+			case 2: z.y *= val; break;
+			case 3: z.z *= val; break;
+			case 4: aux.DE *= val; break;
+			case 5: aux.color *= val; break;
+		}
 	}
 
 	// === General Purpose Multiplier 2 ===
@@ -169,8 +178,17 @@ void cFractalBenesiPwr2Mandelbulb::FormulaCode(
 		&& aux.i >= fractal->transformCommon.startIterationsC
 		&& aux.i < fractal->transformCommon.stopIterationsC)
 	{
-		z *= fractal->transformCommon.scale5;
-		aux.DE *= fabs(fractal->transformCommon.scale5);
+		double val = fractal->transformCommon.scale5;
+		switch (fractal->transformCommon.multiplierMode2)
+		{
+			default:
+			case 0: z *= val; aux.DE *= fabs(val); break;
+			case 1: z.x *= val; break;
+			case 2: z.y *= val; break;
+			case 3: z.z *= val; break;
+			case 4: aux.DE *= val; break;
+			case 5: aux.color *= val; break;
+		}
 	}
 
 	// === General Purpose Multiplier 3 ===
@@ -178,8 +196,17 @@ void cFractalBenesiPwr2Mandelbulb::FormulaCode(
 		&& aux.i >= fractal->transformCommon.startIterationsD
 		&& aux.i < fractal->transformCommon.stopIterationsD)
 	{
-		z *= fractal->transformCommon.scale6;
-		aux.DE *= fabs(fractal->transformCommon.scale6);
+		double val = fractal->transformCommon.scale6;
+		switch (fractal->transformCommon.multiplierMode3)
+		{
+			default:
+			case 0: z *= val; aux.DE *= fabs(val); break;
+			case 1: z.x *= val; break;
+			case 2: z.y *= val; break;
+			case 3: z.z *= val; break;
+			case 4: aux.DE *= val; break;
+			case 5: aux.color *= val; break;
+		}
 	}
 
 	// === General Purpose Multiplier 4 ===
@@ -187,8 +214,17 @@ void cFractalBenesiPwr2Mandelbulb::FormulaCode(
 		&& aux.i >= fractal->transformCommon.startIterationsE
 		&& aux.i < fractal->transformCommon.stopIterationsE)
 	{
-		z *= fractal->transformCommon.scale8;
-		aux.DE *= fabs(fractal->transformCommon.scale8);
+		double val = fractal->transformCommon.scale8;
+		switch (fractal->transformCommon.multiplierMode4)
+		{
+			default:
+			case 0: z *= val; aux.DE *= fabs(val); break;
+			case 1: z.x *= val; break;
+			case 2: z.y *= val; break;
+			case 3: z.z *= val; break;
+			case 4: aux.DE *= val; break;
+			case 5: aux.color *= val; break;
+		}
 	}
 
 	// === General Purpose Multiplier 5 ===
@@ -196,8 +232,17 @@ void cFractalBenesiPwr2Mandelbulb::FormulaCode(
 		&& aux.i >= fractal->transformCommon.startIterationsF
 		&& aux.i < fractal->transformCommon.stopIterationsF)
 	{
-		z *= fractal->transformCommon.scale16;
-		aux.DE *= fabs(fractal->transformCommon.scale16);
+		double val = fractal->transformCommon.scale16;
+		switch (fractal->transformCommon.multiplierMode5)
+		{
+			default:
+			case 0: z *= val; aux.DE *= fabs(val); break;
+			case 1: z.x *= val; break;
+			case 2: z.y *= val; break;
+			case 3: z.z *= val; break;
+			case 4: aux.DE *= val; break;
+			case 5: aux.color *= val; break;
+		}
 	}
 
 }

@@ -345,49 +345,94 @@ void cFractalAmazingSurf::FormulaCode(CVector4 &z, const sFractal *fractal, sExt
 	// === CAT 5 #26: Quaternion Rotatie ===
 	// (implemented via the existing rotationMatrix — users set rotation angles)
 
-	// === CAT 7 #31: General Purpose Multiplier 1 ===
+	// === General Purpose Multiplier 1 ===
 	if (fractal->transformCommon.functionEnabledBxFalse
 		&& aux.i >= fractal->transformCommon.startIterationsA
 		&& aux.i < fractal->transformCommon.stopIterationsA)
 	{
-		z *= fractal->transformCommon.scale4;
-		aux.DE *= fabs(fractal->transformCommon.scale4);
+		double val = fractal->transformCommon.scale4;
+		switch (fractal->transformCommon.multiplierMode1)
+		{
+			default:
+			case 0: z *= val; aux.DE *= fabs(val); break;
+			case 1: z.x *= val; break;
+			case 2: z.y *= val; break;
+			case 3: z.z *= val; break;
+			case 4: aux.DE *= val; break;
+			case 5: aux.color *= val; break;
+		}
 	}
 
-	// === CAT 7 #32: General Purpose Multiplier 2 ===
+	// === General Purpose Multiplier 2 ===
 	if (fractal->transformCommon.functionEnabledByFalse
 		&& aux.i >= fractal->transformCommon.startIterationsB
 		&& aux.i < fractal->transformCommon.stopIterationsB)
 	{
-		z *= fractal->transformCommon.scale5;
-		aux.DE *= fabs(fractal->transformCommon.scale5);
+		double val = fractal->transformCommon.scale5;
+		switch (fractal->transformCommon.multiplierMode2)
+		{
+			default:
+			case 0: z *= val; aux.DE *= fabs(val); break;
+			case 1: z.x *= val; break;
+			case 2: z.y *= val; break;
+			case 3: z.z *= val; break;
+			case 4: aux.DE *= val; break;
+			case 5: aux.color *= val; break;
+		}
 	}
 
-	// === CAT 7 #33: General Purpose Multiplier 3 ===
+	// === General Purpose Multiplier 3 ===
 	if (fractal->transformCommon.functionEnabledBzFalse
 		&& aux.i >= fractal->transformCommon.startIterationsC
 		&& aux.i < fractal->transformCommon.stopIterationsC)
 	{
-		z *= fractal->transformCommon.scale6;
-		aux.DE *= fabs(fractal->transformCommon.scale6);
+		double val = fractal->transformCommon.scale6;
+		switch (fractal->transformCommon.multiplierMode3)
+		{
+			default:
+			case 0: z *= val; aux.DE *= fabs(val); break;
+			case 1: z.x *= val; break;
+			case 2: z.y *= val; break;
+			case 3: z.z *= val; break;
+			case 4: aux.DE *= val; break;
+			case 5: aux.color *= val; break;
+		}
 	}
 
-	// === CAT 7 #34: General Purpose Multiplier 4 ===
+	// === General Purpose Multiplier 4 ===
 	if (fractal->transformCommon.functionEnabledBwFalse
 		&& aux.i >= fractal->transformCommon.startIterationsS
 		&& aux.i < fractal->transformCommon.stopIterationsS)
 	{
-		z *= fractal->transformCommon.scale8;
-		aux.DE *= fabs(fractal->transformCommon.scale8);
+		double val = fractal->transformCommon.scale8;
+		switch (fractal->transformCommon.multiplierMode4)
+		{
+			default:
+			case 0: z *= val; aux.DE *= fabs(val); break;
+			case 1: z.x *= val; break;
+			case 2: z.y *= val; break;
+			case 3: z.z *= val; break;
+			case 4: aux.DE *= val; break;
+			case 5: aux.color *= val; break;
+		}
 	}
 
-	// === CAT 7 #35: General Purpose Multiplier 5 ===
+	// === General Purpose Multiplier 5 ===
 	if (fractal->transformCommon.functionEnabledCzFalse
 		&& aux.i >= fractal->transformCommon.startIterationsY
 		&& aux.i < fractal->transformCommon.stopIterationsY)
 	{
-		z *= fractal->transformCommon.scale16;
-		aux.DE *= fabs(fractal->transformCommon.scale16);
+		double val = fractal->transformCommon.scale16;
+		switch (fractal->transformCommon.multiplierMode5)
+		{
+			default:
+			case 0: z *= val; aux.DE *= fabs(val); break;
+			case 1: z.x *= val; break;
+			case 2: z.y *= val; break;
+			case 3: z.z *= val; break;
+			case 4: aux.DE *= val; break;
+			case 5: aux.color *= val; break;
+		}
 	}
 
 	// Post-Rotation (original)
