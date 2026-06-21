@@ -1,0 +1,1469 @@
+/**
+ * Mandelbulber v2, a 3D fractal generator       ,=#MKNmMMKmmßMNWy,
+ *                                             ,B" ]L,,p%%%,,,§;, "K
+ * Copyright (C) 2024 Mandelbulber Team        §R-==%w["'~5]m%=L.=~5N
+ *                                        ,=mm=§M ]=4 yJKA"/-Nsaj  "Bw,==,,
+ * This file is part of Mandelbulber.    §R.r= jw",M  Km .mM  FW ",§=ß., ,TN
+ *                                     ,4R =%["w[N=7]J '"5=],""]]M,w,-; T=]M
+ * Mandelbulber is free software:     §R.ß~-Q/M=,=5"v"]=Qf,'§"M= =,M.§ Rz]M"Kw
+ * you can redistribute it and/or     §w "xDY.J ' -"m=====WeC=\ ""%""y=%"]"" §
+ * modify it under the terms of the    "§M=M =D=4"N #"%==A%p M§ M6  R' #"=~.4M
+ * GNU General Public License as        §W =, ][T"]C  §  § '§ e===~ U  !§[Z ]N
+ * published by the                    4M",,Jm=,"=e~  §  §  j]]""N  BmM"py=ßM
+ * Free Software Foundation,          ]§ T,M=& 'YmMMpM9MMM%=w=,,=MT]M m§;'§,
+ * either version 3 of the License,    TWw [.j"5=~N[=§%=%W,T ]R,"=="Y[LFT ]N
+ * or (at your option)                   TW=,-#"%=;[  =Q:["V""  ],,M.m == ]N
+ * any later version.                      J§"mr"] ,=,," =="""J]= M"M"]==ß"
+ *                                          §= "=C=4 §"eM "=B:m|4"]#F,§~
+ * Mandelbulber is distributed in            "9w=,,]w em%wJ '"~" ,=,,ß"
+ * the hope that it will be useful,                 . "K=  ,=RMMMßM"""
+ * but WITHOUT ANY WARRANTY;                            .'''
+ * without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * See the GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with Mandelbulber. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * ###########################################################################
+ *
+ * Authors: Krzysztof Marczak (buddhi1980@gmail.com)
+ *
+ * TODO: description
+ */
+
+#include "manipulations.h"
+
+#include <algorithm>
+#include <cmath>
+#include <memory>
+#include <vector>
+
+#include "camera_movement_modes.h"
+#include "camera_target.hpp"
+#include "cimage.hpp"
+#include "fractal_container.hpp"
+#include "interface.hpp"
+#include "light.h"
+#include "pattern_line_traps.hpp"
+#include "parameters.hpp"
+#include "projection_3d.hpp"
+#include "rendered_image_widget.hpp"
+#include "trace_behind.h"
+#include "write_log.hpp"
+
+#include "qt/dock_effects.h"
+#include "qt/dock_fractal.h"
+#include "qt/dock_navigation.h"
+
+namespace
+{
+static float BilinearZBufferAt(
+	const std::shared_ptr<cImage> &img, double x, double y, int w, int h)
+{
+	if (w < 1 || h < 1) return 1.0e20f;
+	if (x < 0) x = 0;
+	if (y < 0) y = 0;
+	if (x > w - 1.0) x = w - 1.0;
+	if (y > h - 1.0) y = h - 1.0;
+	int x0 = int(floor(x));
+	int y0 = int(floor(y));
+	if (x0 < 0) x0 = 0;
+	if (y0 < 0) y0 = 0;
+	int x1 = (std::min)(x0 + 1, w - 1);
+	int y1 = (std::min)(y0 + 1, h - 1);
+	const float z00 = img->GetPixelZBuffer((quint64)x0, (quint64)y0);
+	const float z10 = img->GetPixelZBuffer((quint64)x1, (quint64)y0);
+	const float z01 = img->GetPixelZBuffer((quint64)x0, (quint64)y1);
+	const float z11 = img->GetPixelZBuffer((quint64)x1, (quint64)y1);
+	const double fx = x - (double)x0;
+	const double fy = y - (double)y0;
+	return float(
+		(1.0 - fx) * (1.0 - fy) * z00 + fx * (1.0 - fy) * z10 + (1.0 - fx) * fy * z01 + fx * fy * z11);
+}
+} // namespace
+
+cManipulations::cManipulations(QObject *parent) : QObject(parent)
+{
+	// TODO Auto-generated constructor stub
+}
+
+cManipulations::~cManipulations()
+{
+	// TODO Auto-generated destructor stub
+}
+
+void cManipulations::AssignParameterContainers(
+	std::shared_ptr<cParameterContainer> _params, std::shared_ptr<cFractalContainer> _fractalParams)
+{
+	par = _params;
+	parFractal = _fractalParams;
+}
+
+void cManipulations::AssingImage(std::shared_ptr<cImage> _image)
+{
+	image = _image;
+}
+
+void cManipulations::AssignWidgets(RenderedImage *_imageWidget, cDockNavigation *_navigationWidget,
+	cDockEffects *_effectsWidget, cDockFractal *_fractalWidget)
+{
+	renderedImageWidget = _imageWidget;
+	navigationWidget = _navigationWidget;
+	effectsWidget = _effectsWidget;
+	fractalWidget = _fractalWidget;
+}
+
+void cManipulations::MoveCamera(QString buttonName)
+{
+	using namespace cameraMovementEnums;
+
+	WriteLog("cInterface::MoveCamera(QString buttonName): button: " + buttonName, 2);
+
+	CVector3 camera = par->Get<CVector3>("camera");
+	CVector3 target = par->Get<CVector3>("target");
+	CVector3 topVector = par->Get<CVector3>("camera_top");
+	cCameraTarget cameraTarget(camera, target, topVector);
+
+	bool legacyCoordinateSystem = par->Get<bool>("legacy_coordinate_system");
+	double reverse = legacyCoordinateSystem ? -1.0 : 1.0;
+
+	// get direction vector
+	CVector3 direction;
+	if (buttonName == "bu_move_left")
+		direction = cameraTarget.GetRightVector() * (-1.0);
+	else if (buttonName == "bu_move_right")
+		direction = cameraTarget.GetRightVector() * (1.0);
+	else if (buttonName == "bu_move_up")
+		direction = cameraTarget.GetTopVector() * (1.0) * reverse;
+	else if (buttonName == "bu_move_down")
+		direction = cameraTarget.GetTopVector() * (-1.0) * reverse;
+	else if (buttonName == "bu_move_forward")
+		direction = cameraTarget.GetForwardVector() * (1.0);
+	else if (buttonName == "bu_move_backward")
+		direction = cameraTarget.GetForwardVector() * (-1.0);
+
+	enumCameraMovementStepMode stepMode =
+		enumCameraMovementStepMode(par->Get<int>("camera_absolute_distance_mode"));
+	enumCameraMovementMode movementMode =
+		enumCameraMovementMode(par->Get<int>("camera_movement_mode"));
+
+	// movement step
+	double step;
+	if (stepMode == absolute)
+	{
+		step = par->Get<double>("camera_movement_step");
+	}
+	else
+	{
+		double relativeStep = par->Get<double>("camera_movement_step");
+
+		CVector3 point;
+		if (movementMode == moveTarget)
+			point = target;
+		else
+			point = camera;
+
+		double distance = cInterface::GetDistanceForPoint(point, par, parFractal);
+
+		step = relativeStep * distance;
+	}
+
+	// movement
+	if (movementMode == moveCamera)
+		camera += direction * step;
+	else if (movementMode == moveTarget)
+		target += direction * step;
+	else if (movementMode == fixedDistance)
+	{
+		camera += direction * step;
+		target += direction * step;
+	}
+
+	// put data to interface
+	par->Set("camera", camera);
+	par->Set("target", target);
+
+	// recalculation of camera-target
+	cCameraTarget::enumRotationMode rollMode =
+		cCameraTarget::enumRotationMode(par->Get<int>("camera_straight_rotation"));
+	if (movementMode == moveCamera)
+		cameraTarget.SetCamera(camera, rollMode);
+	else if (movementMode == moveTarget)
+		cameraTarget.SetTarget(target, rollMode);
+	else if (movementMode == fixedDistance)
+		cameraTarget.SetCameraTargetTop(camera, target, topVector);
+
+	topVector = cameraTarget.GetTopVector();
+	par->Set("camera_top", topVector);
+	CVector3 rotation = cameraTarget.GetRotation();
+	par->Set("camera_rotation", rotation * (180.0 / M_PI));
+	double dist = cameraTarget.GetDistance();
+	par->Set("camera_distance_to_target", dist);
+}
+
+void cManipulations::RotateCamera(QString buttonName)
+{
+	using namespace cameraMovementEnums;
+
+	WriteLog("cInterface::RotateCamera(QString buttonName): button: " + buttonName, 2);
+
+	CVector3 camera = par->Get<CVector3>("camera");
+	CVector3 target = par->Get<CVector3>("target");
+	CVector3 topVector = par->Get<CVector3>("camera_top");
+	cCameraTarget cameraTarget(camera, target, topVector);
+	double distance = cameraTarget.GetDistance();
+
+	enumCameraRotationMode rotationMode =
+		enumCameraRotationMode(par->Get<int>("camera_rotation_mode"));
+	cCameraTarget::enumRotationMode rollMode =
+		cCameraTarget::enumRotationMode(par->Get<int>("camera_straight_rotation"));
+
+	bool legacyCoordinateSystem = par->Get<bool>("legacy_coordinate_system");
+	double reverse = legacyCoordinateSystem ? -1.0 : 1.0;
+
+	CVector3 rotationAxis;
+	if (rollMode == cCameraTarget::constantRoll)
+	{
+		if (buttonName == "bu_rotate_left")
+			rotationAxis = CVector3(0.0, 0.0, 1.0);
+		else if (buttonName == "bu_rotate_right")
+			rotationAxis = CVector3(0.0, 0.0, -1.0);
+		else if (buttonName == "bu_rotate_up")
+		{
+			rotationAxis = CVector3(1.0 * reverse, 0.0, 0.0);
+			rotationAxis = rotationAxis.RotateAroundVectorByAngle(
+				CVector3(0.0, 0.0, 1.0), cameraTarget.GetRotation().x);
+		}
+		else if (buttonName == "bu_rotate_down")
+		{
+			rotationAxis = CVector3(-1.0 * reverse, 0.0, 0.0);
+			rotationAxis = rotationAxis.RotateAroundVectorByAngle(
+				CVector3(0.0, 0.0, 1.0), cameraTarget.GetRotation().x);
+		}
+		else if (buttonName == "bu_rotate_roll_left")
+			rotationAxis = cameraTarget.GetForwardVector() * (-1.0) * reverse;
+		else if (buttonName == "bu_rotate_roll_right")
+			rotationAxis = cameraTarget.GetForwardVector() * (1.0) * reverse;
+	}
+	else
+	{
+		if (buttonName == "bu_rotate_left")
+			rotationAxis = cameraTarget.GetTopVector() * (1.0);
+		else if (buttonName == "bu_rotate_right")
+			rotationAxis = cameraTarget.GetTopVector() * (-1.0);
+		else if (buttonName == "bu_rotate_up")
+			rotationAxis = cameraTarget.GetRightVector() * (1.0) * reverse;
+		else if (buttonName == "bu_rotate_down")
+			rotationAxis = cameraTarget.GetRightVector() * (-1.0) * reverse;
+		else if (buttonName == "bu_rotate_roll_left")
+			rotationAxis = cameraTarget.GetForwardVector() * (-1.0) * reverse;
+		else if (buttonName == "bu_rotate_roll_right")
+			rotationAxis = cameraTarget.GetForwardVector() * (1.0) * reverse;
+	}
+
+	if (rotationMode == rotateAroundTarget) rotationAxis *= -1.0;
+
+	// rotation of vectors
+	CVector3 forwardVector = cameraTarget.GetForwardVector();
+	double rotationStep = par->Get<double>("camera_rotation_step") * (M_PI / 180.0);
+	forwardVector = forwardVector.RotateAroundVectorByAngle(rotationAxis, rotationStep);
+	topVector = topVector.RotateAroundVectorByAngle(rotationAxis, rotationStep);
+
+	if (rotationMode == rotateCamera)
+	{
+		target = camera + forwardVector * distance;
+	}
+	else
+	{
+		camera = target - forwardVector * distance;
+	}
+
+	// recalculation of camera-target
+	cameraTarget.SetCameraTargetTop(camera, target, topVector);
+
+	par->Set("camera", camera);
+	par->Set("target", target);
+	par->Set("camera_top", topVector);
+	CVector3 rotation = cameraTarget.GetRotation();
+	par->Set("camera_rotation", rotation * (180.0 / M_PI));
+	double dist = cameraTarget.GetDistance();
+	par->Set("camera_distance_to_target", dist);
+}
+
+void cManipulations::CameraOrTargetEdited()
+{
+	WriteLog("cInterface::CameraOrTargetEdited(void)", 2);
+
+	// get data from interface before synchronization
+	CVector3 camera = par->Get<CVector3>("camera");
+	CVector3 target = par->Get<CVector3>("target");
+	CVector3 topVector = par->Get<CVector3>("camera_top");
+	cCameraTarget cameraTarget(camera, target, topVector);
+
+	SynchronizeInterfaceWindow(navigationWidget, par, qInterface::read);
+
+	camera = par->Get<CVector3>("camera");
+	target = par->Get<CVector3>("target");
+
+	// recalculation of camera-target
+	cCameraTarget::enumRotationMode rollMode =
+		cCameraTarget::enumRotationMode(par->Get<int>("camera_straight_rotation"));
+	cameraTarget.SetCamera(camera, rollMode);
+	cameraTarget.SetTarget(target, rollMode);
+
+	topVector = cameraTarget.GetTopVector();
+	par->Set("camera_top", topVector);
+	CVector3 rotation = cameraTarget.GetRotation();
+	par->Set("camera_rotation", rotation * (180.0 / M_PI));
+	double dist = cameraTarget.GetDistance();
+	par->Set("camera_distance_to_target", dist);
+
+	SynchronizeInterfaceWindow(navigationWidget, par, qInterface::write);
+}
+
+void cManipulations::RotationEdited()
+{
+	using namespace cameraMovementEnums;
+
+	WriteLog("cInterface::RotationEdited(void)", 2);
+	// get data from interface before synchronization
+	SynchronizeInterfaceWindow(navigationWidget, par, qInterface::read);
+	CVector3 camera = par->Get<CVector3>("camera");
+	CVector3 target = par->Get<CVector3>("target");
+	CVector3 topVector = par->Get<CVector3>("camera_top");
+	cCameraTarget cameraTarget(camera, target, topVector);
+	double distance = cameraTarget.GetDistance();
+	CVector3 rotation = par->Get<CVector3>("camera_rotation") * (M_PI / 180.0);
+
+	enumCameraRotationMode rotationMode =
+		enumCameraRotationMode(par->Get<int>("camera_rotation_mode"));
+
+	CVector3 forwardVector(0.0, 1.0, 0.0);
+	forwardVector = forwardVector.RotateAroundVectorByAngle(CVector3(0.0, 1.0, 0.0), rotation.z);
+	forwardVector = forwardVector.RotateAroundVectorByAngle(CVector3(1.0, 0.0, 0.0), rotation.y);
+	forwardVector = forwardVector.RotateAroundVectorByAngle(CVector3(0.0, 0.0, 1.0), rotation.x);
+
+	if (rotationMode == rotateCamera)
+	{
+		target = camera + forwardVector * distance;
+	}
+	else
+	{
+		camera = target - forwardVector * distance;
+	}
+	cameraTarget.SetCameraTargetRotation(camera, target, rotation.z);
+	par->Set("camera", camera);
+	par->Set("target", target);
+	par->Set("camera_top", cameraTarget.GetTopVector());
+	SynchronizeInterfaceWindow(navigationWidget, par, qInterface::write);
+}
+
+void cManipulations::CameraDistanceEdited()
+{
+	using namespace cameraMovementEnums;
+
+	WriteLog("cInterface::CameraDistanceEdited()", 2);
+
+	SynchronizeInterfaceWindow(navigationWidget, par, qInterface::read);
+	CVector3 camera = par->Get<CVector3>("camera");
+	CVector3 target = par->Get<CVector3>("target");
+	CVector3 topVector = par->Get<CVector3>("camera_top");
+	cCameraTarget cameraTarget(camera, target, topVector);
+	CVector3 forwardVector = cameraTarget.GetForwardVector();
+
+	double distance = par->Get<double>("camera_distance_to_target");
+
+	enumCameraMovementMode movementMode =
+		enumCameraMovementMode(par->Get<int>("camera_movement_mode"));
+	if (movementMode == moveTarget)
+	{
+		target = camera + forwardVector * distance;
+	}
+	else
+	{
+		camera = target - forwardVector * distance;
+	}
+
+	cameraTarget.SetCameraTargetTop(camera, target, topVector);
+	par->Set("camera", camera);
+	par->Set("target", target);
+	par->Set("camera_top", cameraTarget.GetTopVector());
+	SynchronizeInterfaceWindow(navigationWidget, par, qInterface::write);
+}
+
+void cManipulations::MovementStepModeChanged(int mode)
+{
+	using namespace cameraMovementEnums;
+
+	SynchronizeInterfaceWindow(navigationWidget, par, qInterface::read);
+	enumCameraMovementStepMode stepMode = enumCameraMovementStepMode(mode);
+	double distance = cInterface::GetDistanceForPoint(par->Get<CVector3>("camera"), par, parFractal);
+	double oldStep = par->Get<double>("camera_movement_step");
+	double newStep;
+	if (stepMode == absolute)
+	{
+		newStep = oldStep * distance;
+		if (distance > 1.0 && newStep > distance * 0.5) newStep = distance * 0.5;
+	}
+	else
+	{
+		newStep = oldStep / distance;
+		if (distance > 1.0 && newStep > 0.5) newStep = 0.5;
+	}
+	par->Set("camera_movement_step", newStep);
+	SynchronizeInterfaceWindow(navigationWidget, par, qInterface::write);
+}
+
+void cManipulations::SetByMouse(
+	CVector2<double> screenPoint, Qt::MouseButton button, const QList<QVariant> &mode)
+{
+	using namespace cameraMovementEnums;
+
+	WriteLog(
+		QString("MoveCameraByMouse(CVector2<double> screenPoint, Qt::MouseButton button): button: ")
+			+ QString::number(int(button)),
+		2);
+	// get data from interface (alle docks: o.a. patroonlijnen X/Y/Z, Effects-afstand, navigatie)
+	RenderedImage::enumClickMode clickMode = RenderedImage::enumClickMode(mode.at(0).toInt());
+
+	gMainInterface->SynchronizeInterface(par, parFractal, qInterface::read);
+	CVector3 camera = par->Get<CVector3>("camera");
+	CVector3 target = par->Get<CVector3>("target");
+	CVector3 topVector = par->Get<CVector3>("camera_top");
+	cCameraTarget cameraTarget(camera, target, topVector);
+
+	enumCameraMovementStepMode stepMode =
+		enumCameraMovementStepMode(par->Get<int>("camera_absolute_distance_mode"));
+	enumCameraMovementMode movementMode =
+		enumCameraMovementMode(par->Get<int>("camera_movement_mode"));
+	params::enumPerspectiveType perspType =
+		params::enumPerspectiveType(par->Get<int>("perspective_type"));
+	cCameraTarget::enumRotationMode rollMode =
+		cCameraTarget::enumRotationMode(par->Get<int>("camera_straight_rotation"));
+	double movementStep = par->Get<double>("camera_movement_step");
+	double fov = CalcFOV(par->Get<double>("fov"), perspType);
+	bool legacyCoordinateSystem = par->Get<bool>("legacy_coordinate_system");
+	double reverse = legacyCoordinateSystem ? -1.0 : 1.0;
+
+	double sweetSpotHAngle = par->Get<double>("sweet_spot_horizontal_angle") / 180.0 * M_PI;
+	double sweetSpotVAngle = par->Get<double>("sweet_spot_vertical_angle") / 180.0 * M_PI;
+
+	CVector2<double> imagePoint;
+	imagePoint = screenPoint / image->GetPreviewScale();
+
+	const int width = int(image->GetWidth());
+	const int height = int(image->GetHeight());
+
+	if (imagePoint.x >= 0 && imagePoint.x < image->GetWidth() && imagePoint.y >= 0
+			&& imagePoint.y < image->GetHeight())
+	{
+		CVector2<double> pointForNormal = imagePoint;
+		double depth;
+		if (clickMode == RenderedImage::clickPlacePatternLineTrap)
+		{
+			const bool subPrec = (par->Get<int>("pattern_line_precision_mode") != 0);
+			if (subPrec)
+			{
+				// Midden van pixel + bilineaire Z: dichter op de klik
+				const double w = double(width);
+				const double h = double(height);
+				pointForNormal.x = (std::min)((std::max)(imagePoint.x + 0.5, 0.5), w - 0.5);
+				pointForNormal.y = (std::min)((std::max)(imagePoint.y + 0.5, 0.5), h - 0.5);
+				depth = BilinearZBufferAt(image, pointForNormal.x, pointForNormal.y, width, height);
+			}
+			else
+			{
+				// Eerdere stijl: zelfde resolutie/offset-gedrag, leuke zachte offset mogelijk
+				pointForNormal = imagePoint;
+				depth = image->GetPixelZBuffer(
+					quint64(imagePoint.x + 0.0), quint64(imagePoint.y + 0.0));
+			}
+		}
+		else
+		{
+			depth = image->GetPixelZBuffer(
+				quint64(imagePoint.x + 0.0), quint64(imagePoint.y + 0.0));
+		}
+		if (depth < 1e10 || true)
+		{
+			CVector3 viewVector;
+			double aspectRatio = double(width) / height;
+
+			if (perspType == params::perspEquirectangular) aspectRatio = 2.0;
+
+			double wheelDistance = 1.0;
+			if (clickMode == RenderedImage::clickMoveCamera)
+			{
+
+				if (mode.length() > 1) // if mouse wheel delta is available
+				{
+					int wheelDelta = mode.at(1).toInt();
+					wheelDistance = 0.001 * fabs(wheelDelta);
+				}
+			}
+
+			CVector3 angles = cameraTarget.GetRotation();
+			CRotationMatrix mRot;
+			mRot.SetRotation(angles);
+			mRot.RotateZ(-sweetSpotHAngle);
+			mRot.RotateX(sweetSpotVAngle);
+
+			CVector2<double> normalizedPoint;
+			normalizedPoint.x = (pointForNormal.x / double(width) - 0.5) * aspectRatio;
+			normalizedPoint.y = (pointForNormal.y / double(height) - 0.5) * (-1.0) * reverse;
+
+			normalizedPoint *= wheelDistance;
+
+			viewVector = CalculateViewVector(normalizedPoint, fov, perspType, mRot);
+
+			CVector3 point = camera + viewVector * depth;
+
+			if (depth > 1000.0)
+			{
+				double estDistance = cInterface::GetDistanceForPoint(camera, par, parFractal);
+				point = camera + viewVector * estDistance;
+			}
+
+			switch (clickMode)
+			{
+				case RenderedImage::clickMoveCamera:
+				{
+					double distance = (camera - point).Length();
+
+					double moveDistance = (stepMode == absolute) ? movementStep : distance * movementStep;
+					moveDistance *= wheelDistance;
+
+					if (stepMode == relative)
+					{
+						if (moveDistance > depth * 0.99) moveDistance = depth * 0.99;
+					}
+
+					if (button == Qt::RightButton)
+					{
+						moveDistance *= -1.0;
+					}
+
+					switch (movementMode)
+					{
+						case moveTarget: target = point; break;
+
+						case moveCamera: camera += viewVector * moveDistance; break;
+
+						case fixedDistance:
+							camera += viewVector * moveDistance;
+							target = point;
+							break;
+					}
+
+					// recalculation of camera-target
+					if (movementMode == moveCamera)
+						cameraTarget.SetCamera(camera, rollMode);
+					else if (movementMode == moveTarget)
+						cameraTarget.SetTarget(target, rollMode);
+					else if (movementMode == fixedDistance)
+						cameraTarget.SetCameraTargetTop(camera, target, topVector);
+
+					if (rollMode == cCameraTarget::constantRoll)
+					{
+						cameraTarget.SetCameraTargetRotation(camera, target, angles.z);
+					}
+
+					par->Set("camera", camera);
+					par->Set("target", target);
+
+					topVector = cameraTarget.GetTopVector();
+					par->Set("camera_top", topVector);
+					CVector3 rotation = cameraTarget.GetRotation();
+					par->Set("camera_rotation", rotation * (180.0 / M_PI));
+					double dist = cameraTarget.GetDistance();
+					par->Set("camera_distance_to_target", dist);
+
+					SynchronizeInterfaceWindow(navigationWidget, par, qInterface::write);
+
+					renderedImageWidget->setNewZ(depth - moveDistance);
+
+					emit signalRender();
+
+					break;
+				}
+				case RenderedImage::clickFogVisibility:
+				{
+					double fogDepth = depth;
+					par->Set("basic_fog_visibility", fogDepth);
+					emit signalWriteInterfaceBasicFog(par);
+					emit signalRender();
+					break;
+				}
+				case RenderedImage::clickDOFFocus:
+				{
+					emit signalDisablePeriodicRefresh();
+
+					// IMPROVED AUTO-FOCUS: Multi-sample area analysis
+					// Sample 9x9 area around click point for robust depth detection
+					// Verified against DOF_NUCLEAR_ANALYSIS_NIVEAU_5_EDGE_CASES.md (Edge Case 4: infinity z-values)
+					WriteLog("DOF Auto-Focus: Starting 9x9 multi-sample analysis...", 2);
+					std::vector<double> depthSamples;
+					depthSamples.reserve(81); // 9x9 = 81 samples max
+
+					const int sampleRadius = 4; // 9x9 area (4 pixels in each direction + center)
+					const int centerX = int(imagePoint.x);
+					const int centerY = int(imagePoint.y);
+
+					for (int dy = -sampleRadius; dy <= sampleRadius; ++dy)
+					{
+						for (int dx = -sampleRadius; dx <= sampleRadius; ++dx)
+						{
+							int sampleX = centerX + dx;
+							int sampleY = centerY + dy;
+
+							// Bounds check
+							if (sampleX >= 0 && sampleX < width && sampleY >= 0 && sampleY < height)
+							{
+								double sampleDepth = image->GetPixelZBuffer(quint64(sampleX), quint64(sampleY));
+								// Filter out infinity/invalid values (see NIVEAU_5 Edge Case 4)
+								if (sampleDepth < 1e10 && sampleDepth > 0.0)
+								{
+									depthSamples.push_back(sampleDepth);
+								}
+							}
+						}
+					}
+
+					double DOF;
+					if (!depthSamples.empty())
+					{
+						// Use median for robustness against outliers
+						std::sort(depthSamples.begin(), depthSamples.end());
+						size_t medianIndex = depthSamples.size() / 2;
+						if (depthSamples.size() % 2 == 0 && depthSamples.size() > 1)
+						{
+							// Even number: average of two middle values
+							DOF = (depthSamples[medianIndex - 1] + depthSamples[medianIndex]) / 2.0;
+						}
+						else
+						{
+							// Odd number: middle value
+							DOF = depthSamples[medianIndex];
+						}
+						WriteLog(QString("DOF Auto-Focus: Calculated median from %1 samples, focus distance = %2")
+							.arg(depthSamples.size()).arg(DOF), 2);
+					}
+					else
+					{
+						// Fallback: use single-pixel depth if no valid samples found
+						DOF = depth;
+						WriteLog(QString("DOF Auto-Focus: No valid samples, using single pixel depth = %1").arg(DOF), 2);
+					}
+
+					par->Set("DOF_focus", DOF);
+					emit signalWriteInterfaceDOF(par);
+					emit signalRefreshPostEffects();
+					emit signalReEnablePeriodicRefresh();
+					break;
+				}
+				case RenderedImage::clickPlaceLight:
+				{
+					int lightIndex = mode.at(1).toInt();
+					double frontDist = par->Get<double>("aux_light_manual_placement_dist");
+					bool placeBehind = par->Get<bool>("aux_light_place_behind");
+					double distanceLimit = par->Get<double>("view_distance_max");
+					bool relativePosition = par->Get<bool>(cLight::Name("relative_position", lightIndex));
+					bool snapToSurface = par->Get<bool>(cLight::Name("snap_to_surface", lightIndex));
+					double surfaceOffset = par->Get<double>(cLight::Name("surface_offset", lightIndex));
+
+					CVector3 pointCorrected;
+
+					if (snapToSurface)
+					{
+						// Snap to fractal surface + offset along view direction
+						pointCorrected = point - viewVector * surfaceOffset;
+					}
+					else if (!placeBehind)
+					{
+						pointCorrected = point - viewVector * frontDist;
+					}
+					else
+					{
+						frontDist = traceBehindFractal(par, parFractal, frontDist, viewVector, depth,
+																			1.0 / image->GetHeight(), distanceLimit)
+																			* (-1.0);
+						pointCorrected = point - viewVector * frontDist;
+					}
+
+					double estDistance = cInterface::GetDistanceForPoint(pointCorrected, par, parFractal);
+					double intensity = estDistance * estDistance;
+
+					if (relativePosition)
+					{
+						// without rotation
+						CVector3 viewVectorTemp =
+							CalculateViewVector(normalizedPoint, fov, perspType, CRotationMatrix());
+
+						if (snapToSurface)
+						{
+							CVector3 point2 = viewVectorTemp * depth;
+							pointCorrected = CVector3(point2.x, point2.z, point2.y)
+																			 - viewVectorTemp * surfaceOffset;
+						}
+						else
+						{
+							CVector3 point2 = viewVectorTemp * (depth - frontDist);
+							pointCorrected = CVector3(point2.x, point2.z, point2.y);
+						}
+					}
+
+					par->Set(cLight::Name("position", lightIndex), pointCorrected);
+					par->Set(cLight::Name("intensity", lightIndex), intensity);
+					emit signalWriteInterfaceLights(par);
+					emit signalRender();
+					break;
+				}
+				case RenderedImage::clickPlacePatternLineTrap:
+				{
+					const int layerIndex = mode.at(1).toInt();
+					if (layerIndex < 1 || layerIndex > PATTERN_LINE_TRAP_COUNT) break;
+
+					double frontDist = par->Get<double>("aux_light_manual_placement_dist");
+					const bool placeBehind = par->Get<bool>("aux_light_place_behind");
+					const double distanceLimit = par->Get<double>("view_distance_max");
+
+					CVector3 pointCorrected;
+					if (!placeBehind)
+					{
+						pointCorrected = point - viewVector * frontDist;
+					}
+					else
+					{
+						frontDist = traceBehindFractal(par, parFractal, frontDist, viewVector, depth,
+													1.0 / image->GetHeight(), distanceLimit)
+												* (-1.0);
+						pointCorrected = point - viewVector * frontDist;
+					}
+
+					par->Set("pattern_line_traps_enabled", true);
+					par->Set(QString("pattern_line_trap_%1_enabled").arg(layerIndex), true);
+					par->Set(QString("pattern_line_trap_%1_position").arg(layerIndex), pointCorrected);
+					emit signalWriteInterfacePatternLineTraps(par);
+					emit signalRender();
+					break;
+				}
+				case RenderedImage::clickGetJuliaConstant:
+				{
+					par->Set("julia_c", point);
+					emit signalEnableJuliaMode();
+					emit signalWriteInterfaceJulia(par);
+
+					// StartRender();
+					break;
+				}
+				case RenderedImage::clickPlacePrimitive:
+				{
+					QString parameterName = mode.at(3).toString() + "_position";
+					par->Set(parameterName, point);
+					emit signalWriteInterfacePrimitives(par);
+					break;
+				}
+				case RenderedImage::clickDoNothing:
+					// nothing
+					break;
+				case RenderedImage::clickFlightSpeedControl:
+					// nothing
+					break;
+				case RenderedImage::clickPlaceRandomLightCenter:
+				{
+					double distanceCameraToCenter = CVector3(camera - point).Length();
+					par->Set("random_lights_distribution_center", point);
+					par->Set("random_lights_distribution_radius", 0.5 * distanceCameraToCenter);
+					par->Set("random_lights_max_distance_from_fractal", 0.1 * distanceCameraToCenter);
+					emit signalWriteInterfaceRandomLights(par);
+					emit signalRender();
+					break;
+				}
+				case RenderedImage::clickGetPoint:
+				{
+					emit signalDisablePeriodicRefresh();
+					SynchronizeInterfaceWindow(navigationWidget, par, qInterface::read);
+					CVector3 oldPoint = par->Get<CVector3>("meas_point");
+					double distanceFromLast = (point - oldPoint).Length();
+					double distanceFromCamera = (point - camera).Length();
+					CVector3 midPoint = 0.5 * (point + oldPoint);
+					par->Set("meas_point", point);
+					par->Set("meas_midpoint", midPoint);
+					par->Set("meas_distance_from_last", distanceFromLast);
+					par->Set("meas_distance_from_camera", distanceFromCamera);
+					emit signalWriteInterfaceMeasuremets(par);
+					emit signalShowMeasuremetsDock();
+					emit signalReEnablePeriodicRefresh();
+					break;
+				}
+				case RenderedImage::clickWrapLimitsAroundObject:
+				{
+					double distanceCameraToCenter = CVector3(camera - point).Length();
+					CVector3 distanceV111_100 = CVector3(1.0 * distanceCameraToCenter,
+						1.0 * distanceCameraToCenter, 1.0 * distanceCameraToCenter);
+					CVector3 limitMin = point - distanceV111_100;
+					CVector3 limitMax = point + distanceV111_100;
+					// try to find object close limits in the bounding box defined by point +- 100% distance
+					// to view vector
+					gMainInterface->SetBoundingBoxAsLimits(limitMin, limitMax, par, parFractal);
+					break;
+				}
+			}
+		}
+	}
+}
+
+void cManipulations::MouseDragStart(
+	CVector2<double> screenPoint, Qt::MouseButtons button, const QList<QVariant> &mode)
+{
+	mouseDragData = sMouseDragInitData();
+
+	RenderedImage::enumClickMode clickMode = RenderedImage::enumClickMode(mode.at(0).toInt());
+
+	int lightIndex = -1;
+	sPrimitiveItem primitiveItem;
+
+	if (clickMode == RenderedImage::clickPlaceLight)
+	{
+		lightIndex = mode.at(1).toInt();
+		mouseDragData.lightDrag = true;
+
+		mouseDragData.objectStartPosition = par->Get<CVector3>(cLight::Name("position", lightIndex));
+	}
+	else if (clickMode == RenderedImage::clickPlacePrimitive)
+	{
+		primitiveItem.type = fractal::enumObjectType(mode.at(1).toInt());
+		primitiveItem.id = mode.at(2).toInt();
+		primitiveItem.fullName = mode.at(3).toString();
+		mouseDragData.primitiveDrag = true;
+		mouseDragData.objectStartPosition = par->Get<CVector3>(primitiveItem.fullName + "_position");
+	}
+	else
+	{
+		mouseDragData.cameraDrag = true;
+	}
+
+	SynchronizeInterfaceWindow(navigationWidget, par, qInterface::read);
+	CVector3 camera = par->Get<CVector3>("camera");
+	CVector3 target = par->Get<CVector3>("target");
+	CVector3 topVector = par->Get<CVector3>("camera_top");
+	cCameraTarget cameraTarget(camera, target, topVector);
+
+	params::enumPerspectiveType perspType =
+		params::enumPerspectiveType(par->Get<int>("perspective_type"));
+	double sweetSpotHAngle = par->Get<double>("sweet_spot_horizontal_angle") / 180.0 * M_PI;
+	double sweetSpotVAngle = par->Get<double>("sweet_spot_vertical_angle") / 180.0 * M_PI;
+	double fov = CalcFOV(par->Get<double>("fov"), perspType);
+	bool legacyCoordinateSystem = par->Get<bool>("legacy_coordinate_system");
+	double reverse = legacyCoordinateSystem ? -1.0 : 1.0;
+
+	CVector2<double> imagePoint;
+	imagePoint = screenPoint / image->GetPreviewScale();
+
+	int width = image->GetWidth();
+	int height = image->GetHeight();
+
+	if (imagePoint.x >= 0 && imagePoint.x < image->GetWidth() && imagePoint.y >= 0
+			&& imagePoint.y < image->GetHeight())
+	{
+		double depth = image->GetPixelZBuffer(imagePoint.x, imagePoint.y);
+		if (depth < 1e10 || clickMode == RenderedImage::clickPlaceLight || true)
+		{
+			CVector3 viewVector;
+			double aspectRatio = double(width) / height;
+
+			if (perspType == params::perspEquirectangular) aspectRatio = 2.0;
+
+			CVector3 angles = cameraTarget.GetRotation();
+			CRotationMatrix mRot;
+			mRot.SetRotation(angles);
+			mRot.RotateZ(-sweetSpotHAngle);
+			mRot.RotateX(sweetSpotVAngle);
+
+			CVector2<double> normalizedPoint;
+			normalizedPoint.x = (imagePoint.x / width - 0.5) * aspectRatio;
+			normalizedPoint.y = (imagePoint.y / height - 0.5) * (-1.0) * reverse;
+
+			viewVector = CalculateViewVector(normalizedPoint, fov, perspType, mRot);
+
+			CVector3 point = camera + viewVector * depth;
+
+			if (depth > 1000.0)
+			{
+				double estDistance = cInterface::GetDistanceForPoint(camera, par, parFractal);
+				point = camera + viewVector * estDistance;
+				depth = estDistance;
+			}
+
+			mouseDragData.startCamera = camera;
+			mouseDragData.startTarget = target;
+			mouseDragData.startTopVector = topVector;
+			mouseDragData.startIndicatedPoint = point;
+			mouseDragData.button = button;
+			mouseDragData.startScreenPoint = screenPoint;
+			mouseDragData.startNormalizedPoint = normalizedPoint;
+			mouseDragData.startZ = depth;
+			mouseDragData.lastRefreshTime.restart();
+			mouseDragData.lastStartRenderingTime = 0;
+			mouseDragData.lightIndex = lightIndex;
+			mouseDragData.primitiveItem = primitiveItem;
+
+			if (clickMode == RenderedImage::clickMoveCamera || clickMode == RenderedImage::clickPlaceLight
+					|| clickMode == RenderedImage::clickPlacePrimitive)
+			{
+				mouseDragData.draggingStarted = true;
+			}
+		}
+	}
+}
+
+void cManipulations::MouseDragFinish()
+{
+	mouseDragData.draggingStarted = false;
+}
+
+void cManipulations::MouseDragCameraRorate(const sMouseDragTempData &dragTempData)
+{
+	CVector3 camera = mouseDragData.startCamera;
+	cCameraTarget cameraTarget(camera, mouseDragData.startTarget, mouseDragData.startTopVector);
+
+	CVector3 angles = cameraTarget.GetRotation();
+	CRotationMatrix mRot;
+	mRot.SetRotation(angles);
+	mRot.RotateZ(-dragTempData.sweetSpotHAngle);
+	mRot.RotateX(dragTempData.sweetSpotVAngle);
+
+	CVector2<double> normalizedPoint;
+	normalizedPoint.x =
+		(dragTempData.imagePoint.x / dragTempData.width - 0.5) * dragTempData.aspectRatio;
+	normalizedPoint.y =
+		(dragTempData.imagePoint.y / dragTempData.height - 0.5) * (-1.0) * dragTempData.reverse;
+
+	CVector3 viewVector =
+		CalculateViewVector(normalizedPoint, dragTempData.fov, dragTempData.perspType, mRot);
+
+	CVector3 point = camera + viewVector * mouseDragData.startZ;
+	CVector3 deltaPoint = point - mouseDragData.startIndicatedPoint;
+	CVector3 pointCamera = camera - point;
+	pointCamera.Normalize();
+
+	CVector3 relativeVector;
+	relativeVector.z = pointCamera.Dot(deltaPoint);
+	relativeVector.x = pointCamera.Cross(cameraTarget.GetTopVector()).Dot(deltaPoint);
+	relativeVector.y = pointCamera.Cross(cameraTarget.GetRightVector()).Dot(deltaPoint);
+
+	double ratio = (camera - mouseDragData.startTarget).Length() / (camera - point).Length();
+	if (dragTempData.perspType == params::perspThreePoint)
+	{
+		ratio /= -pointCamera.Dot(cameraTarget.GetForwardVector());
+	}
+	relativeVector *= ratio;
+
+	CVector3 newTarget = mouseDragData.startTarget;
+	newTarget -= relativeVector.x * cameraTarget.GetRightVector();
+	newTarget += relativeVector.y * cameraTarget.GetTopVector();
+	newTarget += relativeVector.z * cameraTarget.GetForwardVector();
+
+	cameraTarget.SetTarget(newTarget, dragTempData.rollMode);
+
+	par->Set("camera", camera);
+	par->Set("target", newTarget);
+	CVector3 topVector = cameraTarget.GetTopVector();
+	par->Set("camera_top", topVector);
+	CVector3 rotation = cameraTarget.GetRotation();
+	par->Set("camera_rotation", rotation * (180.0 / M_PI));
+	double dist = cameraTarget.GetDistance();
+	par->Set("camera_distance_to_target", dist);
+}
+
+void cManipulations::MouseDragCaneraRotateAroundPoint(
+	double dx, double dy, const sMouseDragTempData &dragTempData)
+{
+	cCameraTarget cameraTarget(
+		mouseDragData.startCamera, mouseDragData.startTarget, mouseDragData.startTopVector);
+
+	CVector3 shiftedCamera = mouseDragData.startCamera - mouseDragData.startIndicatedPoint;
+	CVector3 shiftedTarget = mouseDragData.startTarget - mouseDragData.startIndicatedPoint;
+	shiftedCamera = shiftedCamera.RotateAroundVectorByAngle(
+		cameraTarget.GetTopVector(), dx / image->GetPreviewWidth() * M_PI_2);
+	shiftedTarget = shiftedTarget.RotateAroundVectorByAngle(
+		cameraTarget.GetTopVector(), dx / image->GetPreviewWidth() * M_PI_2);
+
+	CVector3 newCamera = shiftedCamera + mouseDragData.startIndicatedPoint;
+	CVector3 newTarget = shiftedTarget + mouseDragData.startIndicatedPoint;
+	cameraTarget.SetCamera(newCamera, dragTempData.rollMode);
+	cameraTarget.SetTarget(newTarget, dragTempData.rollMode);
+
+	shiftedCamera = shiftedCamera.RotateAroundVectorByAngle(
+		cameraTarget.GetRightVector(), dy / image->GetPreviewHeight() * M_PI_2);
+	shiftedTarget = shiftedTarget.RotateAroundVectorByAngle(
+		cameraTarget.GetRightVector(), dy / image->GetPreviewHeight() * M_PI_2);
+
+	newCamera = shiftedCamera + mouseDragData.startIndicatedPoint;
+	newTarget = shiftedTarget + mouseDragData.startIndicatedPoint;
+
+	cameraTarget.SetCamera(newCamera, dragTempData.rollMode);
+	cameraTarget.SetTarget(newTarget, dragTempData.rollMode);
+
+	par->Set("camera", cameraTarget.GetCamera());
+	par->Set("target", cameraTarget.GetTarget());
+	CVector3 topVector = cameraTarget.GetTopVector();
+	par->Set("camera_top", topVector);
+	CVector3 rotation = cameraTarget.GetRotation();
+	par->Set("camera_rotation", rotation * (180.0 / M_PI));
+	double dist = cameraTarget.GetDistance();
+	par->Set("camera_distance_to_target", dist);
+}
+
+void cManipulations::MouseDragCameraRoll(double dx)
+{
+	double angle = -dx / image->GetPreviewHeight() * M_PI_2;
+	cCameraTarget cameraTarget(
+		mouseDragData.startCamera, mouseDragData.startTarget, mouseDragData.startTopVector);
+	CVector3 newTopVector =
+		mouseDragData.startTopVector.RotateAroundVectorByAngle(cameraTarget.GetForwardVector(), angle);
+	cameraTarget.SetCameraTargetTop(
+		mouseDragData.startCamera, mouseDragData.startTarget, newTopVector);
+	par->Set("camera_top", newTopVector);
+	CVector3 rotation = cameraTarget.GetRotation();
+	par->Set("camera_rotation", rotation * (180.0 / M_PI));
+}
+
+void cManipulations::MouseDragCameraMove(const sMouseDragTempData &dragTempData)
+{
+	CVector3 camera = mouseDragData.startCamera;
+	cCameraTarget cameraTarget(camera, mouseDragData.startTarget, mouseDragData.startTopVector);
+
+	CVector3 angles = cameraTarget.GetRotation();
+	CRotationMatrix mRot;
+	mRot.SetRotation(angles);
+	mRot.RotateZ(-dragTempData.sweetSpotHAngle);
+	mRot.RotateX(dragTempData.sweetSpotVAngle);
+
+	CVector2<double> normalizedPoint;
+	normalizedPoint.x =
+		(dragTempData.imagePoint.x / dragTempData.width - 0.5) * dragTempData.aspectRatio;
+	normalizedPoint.y =
+		(dragTempData.imagePoint.y / dragTempData.height - 0.5) * (-1.0) * dragTempData.reverse;
+
+	CVector3 viewVector =
+		CalculateViewVector(normalizedPoint, dragTempData.fov, dragTempData.perspType, mRot);
+
+	CVector3 point = camera + viewVector * mouseDragData.startZ;
+	CVector3 deltaPoint = point - mouseDragData.startIndicatedPoint;
+	CVector3 newTarget = mouseDragData.startTarget + deltaPoint;
+	CVector3 newCamera = mouseDragData.startCamera + deltaPoint;
+
+	cameraTarget.SetCameraTargetTop(newCamera, newTarget, cameraTarget.GetTopVector());
+
+	par->Set("camera", newCamera);
+	par->Set("target", newTarget);
+	CVector3 topVector = cameraTarget.GetTopVector();
+	par->Set("camera_top", topVector);
+	CVector3 rotation = cameraTarget.GetRotation();
+	par->Set("camera_rotation", rotation * (180.0 / M_PI));
+	double dist = cameraTarget.GetDistance();
+	par->Set("camera_distance_to_target", dist);
+}
+
+void cManipulations::LightDragLeftButton(
+	const sMouseDragTempData &dragTempData, double dx, double dy)
+{
+	bool relativePosition =
+		par->Get<bool>(cLight::Name("relative_position", mouseDragData.lightIndex));
+
+	cCameraTarget cameraTarget(
+		mouseDragData.startCamera, mouseDragData.startTarget, mouseDragData.startTopVector);
+
+	CVector3 lightPosition = mouseDragData.objectStartPosition;
+
+	if (relativePosition)
+	{
+		CVector3 deltaPositionRotated = cameraTarget.GetForwardVector() * lightPosition.z
+																		+ cameraTarget.GetTopVector() * lightPosition.y
+																		+ cameraTarget.GetRightVector() * lightPosition.x;
+		lightPosition = mouseDragData.startCamera + deltaPositionRotated;
+	}
+
+	CRotationMatrix mRotInv;
+	CVector3 rotation = cameraTarget.GetRotation();
+	mRotInv.RotateY(-rotation.z);
+	mRotInv.RotateX(-rotation.y);
+	mRotInv.RotateZ(-rotation.x);
+
+	CVector3 lightScreenPosition = InvProjection3D(lightPosition, mouseDragData.startCamera, mRotInv,
+		dragTempData.perspType, dragTempData.fov, image->GetPreviewWidth(), image->GetPreviewHeight());
+	CVector3 newLightScreenPosition = lightScreenPosition + CVector3(dx, dy, 0.0);
+
+	CRotationMatrix mRot;
+	mRot.SetRotation(rotation);
+
+	CVector2<double> normalizedPoint;
+	normalizedPoint.x =
+		(newLightScreenPosition.x / image->GetPreviewWidth() - 0.5) * dragTempData.aspectRatio;
+	normalizedPoint.y =
+		(newLightScreenPosition.y / image->GetPreviewHeight() - 0.5) * (-1.0) * dragTempData.reverse;
+
+	CVector3 viewVector =
+		CalculateViewVector(normalizedPoint, dragTempData.fov, dragTempData.perspType, mRot);
+
+	CVector3 newLightPosition;
+	if (relativePosition)
+	{
+		// without rotation
+		CVector3 viewVectorTemp = CalculateViewVector(
+			normalizedPoint, dragTempData.fov, dragTempData.perspType, CRotationMatrix());
+		CVector3 point2 = viewVectorTemp * lightScreenPosition.z;
+		newLightPosition = CVector3(point2.x, point2.z, point2.y);
+	}
+	else
+	{
+		newLightPosition = mouseDragData.startCamera + viewVector * lightScreenPosition.z;
+	}
+
+	par->Set(cLight::Name("position", mouseDragData.lightIndex), newLightPosition);
+}
+
+void cManipulations::PrimitiveDragLeftButton(
+	const sMouseDragTempData &dragTempData, double dx, double dy)
+{
+	cCameraTarget cameraTarget(
+		mouseDragData.startCamera, mouseDragData.startTarget, mouseDragData.startTopVector);
+
+	CVector3 primitivePosition = mouseDragData.objectStartPosition;
+
+	CRotationMatrix mRotInv;
+	CVector3 rotation = cameraTarget.GetRotation();
+	mRotInv.RotateY(-rotation.z);
+	mRotInv.RotateX(-rotation.y);
+	mRotInv.RotateZ(-rotation.x);
+
+	CVector3 primitiveScreenPosition =
+		InvProjection3D(primitivePosition, mouseDragData.startCamera, mRotInv, dragTempData.perspType,
+			dragTempData.fov, image->GetPreviewWidth(), image->GetPreviewHeight());
+	CVector3 newPrimitiveScreenPosition = primitiveScreenPosition + CVector3(dx, dy, 0.0);
+
+	CRotationMatrix mRot;
+	mRot.SetRotation(rotation);
+
+	CVector2<double> normalizedPoint;
+	normalizedPoint.x =
+		(newPrimitiveScreenPosition.x / image->GetPreviewWidth() - 0.5) * dragTempData.aspectRatio;
+	normalizedPoint.y = (newPrimitiveScreenPosition.y / image->GetPreviewHeight() - 0.5) * (-1.0)
+											* dragTempData.reverse;
+
+	CVector3 viewVector =
+		CalculateViewVector(normalizedPoint, dragTempData.fov, dragTempData.perspType, mRot);
+
+	CVector3 newPrimitivePosition =
+		mouseDragData.startCamera + viewVector * primitiveScreenPosition.z;
+
+	par->Set(mouseDragData.primitiveItem.fullName + "_position", newPrimitivePosition);
+}
+
+void cManipulations::MouseDragDelta(int dx, int dy)
+{
+	double ddx = double(dx);
+	double ddy = double(dy);
+	if (preciseRotation)
+	{
+		ddx *= 0.1;
+		ddy *= 0.1;
+	}
+
+	if (mouseDragData.draggingStarted)
+	{
+		if (GetNumberOfStartedRenders() > 1) emit signalStop();
+
+		//		if ((mouseDragData.lastRefreshTime.elapsed()
+		//						> par->Get<double>("auto_refresh_period") * 1000 +
+		// mouseDragData.lastStartRenderingTime
+		//					|| smallPartRendered)
+		//				&& GetNumberOfStartedRenders() < 2)
+		if (smallPartRendered && GetNumberOfStartedRenders() < 2)
+		{
+
+			sMouseDragTempData dragTempData;
+
+			mouseDragData.lastRefreshTime.restart();
+			dragTempData.perspType = params::enumPerspectiveType(par->Get<int>("perspective_type"));
+			dragTempData.sweetSpotHAngle = par->Get<double>("sweet_spot_horizontal_angle") / 180.0 * M_PI;
+			dragTempData.sweetSpotVAngle = par->Get<double>("sweet_spot_vertical_angle") / 180.0 * M_PI;
+			dragTempData.legacyCoordinateSystem = par->Get<bool>("legacy_coordinate_system");
+			dragTempData.reverse = dragTempData.legacyCoordinateSystem ? -1.0 : 1.0;
+			dragTempData.fov = CalcFOV(par->Get<double>("fov"), dragTempData.perspType);
+			dragTempData.rollMode =
+				cCameraTarget::enumRotationMode(par->Get<int>("camera_straight_rotation"));
+
+			dragTempData.newScreenPoint = CVector2<double>(
+				mouseDragData.startScreenPoint.x - ddx, mouseDragData.startScreenPoint.y - ddy);
+			dragTempData.imagePoint = dragTempData.newScreenPoint / image->GetPreviewScale();
+
+			dragTempData.width = image->GetWidth();
+			dragTempData.height = image->GetHeight();
+			dragTempData.aspectRatio = double(dragTempData.width) / dragTempData.height;
+			if (dragTempData.perspType == params::perspEquirectangular) dragTempData.aspectRatio = 2.0;
+
+			enumDragMode dragMode;
+
+			if (mouseDragData.cameraDrag)
+			{
+				switch (dragOption)
+				{
+					case enumDragOption::multi:
+					{
+						switch (mouseDragData.button)
+						{
+							case Qt::LeftButton: dragMode = enumDragMode::rotate; break;
+							case Qt::RightButton: dragMode = enumDragMode::rotateAroundPoint; break;
+							case Qt::MiddleButton: dragMode = enumDragMode::roll; break;
+							case (Qt::LeftButton | Qt::RightButton): dragMode = enumDragMode::move; break;
+							default: dragMode = enumDragMode::rotate; break;
+						}
+						break;
+					}
+					case enumDragOption::rotate: dragMode = enumDragMode::rotate; break;
+					case enumDragOption::rotateAroundPoint: dragMode = enumDragMode::rotateAroundPoint; break;
+					case enumDragOption::roll: dragMode = enumDragMode::roll; break;
+					case enumDragOption::move: dragMode = enumDragMode::move; break;
+				}
+			}
+
+			if (mouseDragData.cameraDrag)
+			{
+				switch (dragMode)
+				{
+					case enumDragMode::rotate:
+					{
+						MouseDragCameraRorate(dragTempData);
+						break;
+					}
+					case enumDragMode::rotateAroundPoint:
+					{
+						MouseDragCaneraRotateAroundPoint(ddx, ddy, dragTempData);
+						break;
+					}
+					case enumDragMode::roll:
+					{
+						MouseDragCameraRoll(ddx);
+						break;
+					}
+
+					case (enumDragMode::move):
+					{
+						MouseDragCameraMove(dragTempData);
+						break;
+					}
+					default: break;
+				}
+
+				QElapsedTimer timerStartRender;
+				timerStartRender.start();
+				SynchronizeInterfaceWindow(navigationWidget, par, qInterface::write);
+
+				smallPartRendered = false;
+				emit signalRender();
+				mouseDragData.lastStartRenderingTime = timerStartRender.elapsed();
+			}
+			else if (mouseDragData.lightDrag)
+			{
+				switch (mouseDragData.button)
+				{
+					case Qt::LeftButton:
+					{
+						LightDragLeftButton(dragTempData, ddx, ddy);
+						break;
+					}
+					default:
+					{
+						break;
+					}
+				}
+				QElapsedTimer timerStartRender;
+				timerStartRender.start();
+				if (effectsWidget) SynchronizeInterfaceWindow(effectsWidget, par, qInterface::write);
+				renderedImageWidget->update();
+				mouseDragData.lastStartRenderingTime = timerStartRender.elapsed();
+			}
+			else if (mouseDragData.primitiveDrag)
+			{
+				switch (mouseDragData.button)
+				{
+					case Qt::LeftButton:
+					{
+						PrimitiveDragLeftButton(dragTempData, ddx, ddy);
+						break;
+					}
+					default:
+					{
+						break;
+					}
+				}
+				QElapsedTimer timerStartRender;
+				timerStartRender.start();
+				if (fractalWidget)
+					fractalWidget->SynchronizeInterfaceFractals(par, parFractal, qInterface::write);
+				renderedImageWidget->update();
+				mouseDragData.lastStartRenderingTime = timerStartRender.elapsed();
+			}
+		}
+	}
+}
+
+void cManipulations::MoveLightByWheel(double deltaWheel)
+{
+	double deltaLog = exp(deltaWheel * 0.0001);
+
+	CVector3 lightPosition =
+		par->Get<CVector3>(cLight::Name("position", renderedImageWidget->GetCurrentLightIndex()));
+
+	bool relativePosition =
+		par->Get<bool>(cLight::Name("relative_position", renderedImageWidget->GetCurrentLightIndex()));
+
+	CVector3 newLightPosition;
+
+	if (relativePosition)
+	{
+		newLightPosition = lightPosition * deltaLog;
+	}
+	else
+	{
+		CVector3 cameraPosition = par->Get<CVector3>("camera");
+		CVector3 lightVector = lightPosition - cameraPosition;
+		CVector3 newLightVector = lightVector * deltaLog;
+		newLightPosition = cameraPosition + newLightVector;
+	}
+
+	par->Set(cLight::Name("position", renderedImageWidget->GetCurrentLightIndex()), newLightPosition);
+
+	if (effectsWidget)
+	{
+		SynchronizeInterfaceWindow(effectsWidget, par, qInterface::write);
+	}
+	renderedImageWidget->update();
+}
+
+void cManipulations::MovePatternLineTrapByWheel(double deltaWheel)
+{
+	double deltaLog = exp(deltaWheel * 0.0001);
+
+	QList<QVariant> mode = renderedImageWidget->GetClickModeData();
+	if (mode.size() < 2) return;
+	int layerIndex = mode.at(1).toInt();
+	if (layerIndex < 1 || layerIndex > PATTERN_LINE_TRAP_COUNT) return;
+
+	QString pPos = QString("pattern_line_trap_%1_position").arg(layerIndex);
+	CVector3 linePosition = par->Get<CVector3>(pPos);
+
+	CVector3 cameraPosition = par->Get<CVector3>("camera");
+	CVector3 lineVector = linePosition - cameraPosition;
+	CVector3 newLineVector = lineVector * deltaLog;
+	CVector3 newLinePosition = cameraPosition + newLineVector;
+
+	par->Set(pPos, newLinePosition);
+
+	emit signalWriteInterfacePatternLineTraps(par);
+	renderedImageWidget->update();
+}
+
+void cManipulations::MovePatternLineTrapByKey(int key, Qt::KeyboardModifiers modifiers)
+{
+	QList<QVariant> mode = renderedImageWidget->GetClickModeData();
+	if (mode.size() < 2) return;
+	int layerIndex = mode.at(1).toInt();
+	if (layerIndex < 1 || layerIndex > PATTERN_LINE_TRAP_COUNT) return;
+
+	gMainInterface->SynchronizeInterface(par, parFractal, qInterface::read);
+
+	QString pPos = QString("pattern_line_trap_%1_position").arg(layerIndex);
+	CVector3 pos = par->Get<CVector3>(pPos);
+
+	CVector3 camera = par->Get<CVector3>("camera");
+	CVector3 target = par->Get<CVector3>("target");
+	CVector3 topVector = par->Get<CVector3>("camera_top");
+	cCameraTarget cameraTarget(camera, target, topVector);
+
+	CVector3 forward = cameraTarget.GetForwardVector();
+	CVector3 right = cameraTarget.GetRightVector();
+	CVector3 up = cameraTarget.GetTopVector();
+
+	double step = (camera - target).Length() * 0.005;
+	if (step < 1e-10) step = 0.001;
+
+	if (modifiers & Qt::ShiftModifier)
+	{
+		if (key == Qt::Key_Up) pos += forward * step;
+		else if (key == Qt::Key_Down) pos -= forward * step;
+	}
+	else
+	{
+		if (key == Qt::Key_Left) pos -= right * step;
+		else if (key == Qt::Key_Right) pos += right * step;
+		else if (key == Qt::Key_Up) pos += up * step;
+		else if (key == Qt::Key_Down) pos -= up * step;
+	}
+
+	par->Set(pPos, pos);
+
+	emit signalWriteInterfacePatternLineTraps(par);
+	renderedImageWidget->update();
+}
+
+void cManipulations::MovePrimitiveByWheel(double deltaWheel)
+{
+	double deltaLog = exp(deltaWheel * 0.0001);
+
+	QString actualPrimitiveName = renderedImageWidget->GetCurrentPrimitiveItem().fullName;
+	CVector3 lightPosition = par->Get<CVector3>(actualPrimitiveName + "_position");
+
+	CVector3 cameraPosition = par->Get<CVector3>("camera");
+	CVector3 lightVector = lightPosition - cameraPosition;
+	CVector3 newLightVector = lightVector * deltaLog;
+	CVector3 newLightPosition = cameraPosition + newLightVector;
+
+	par->Set(actualPrimitiveName + "_position", newLightPosition);
+
+	if (fractalWidget)
+	{
+		fractalWidget->SynchronizeInterfaceFractals(par, parFractal, qInterface::write);
+	}
+	renderedImageWidget->update();
+}
+
+void cManipulations::slotSmallPartRendered(double time)
+{
+	Q_UNUSED(time);
+	smallPartRendered = true;
+}
+
+void cManipulations::SetDragOption(enumDragOption option)
+{
+	dragOption = option;
+}
+
+void cManipulations::slotToggledOtpionMulti(bool checked)
+{
+	if (checked) SetDragOption(enumDragOption::multi);
+}
+void cManipulations::slotToggledOtpionRotate(bool checked)
+{
+	if (checked) SetDragOption(enumDragOption::rotate);
+}
+void cManipulations::slotToggledOtpionRotateAround(bool checked)
+{
+	if (checked) SetDragOption(enumDragOption::rotateAroundPoint);
+}
+void cManipulations::slotToggledOtpionRoll(bool checked)
+{
+	if (checked) SetDragOption(enumDragOption::roll);
+}
+void cManipulations::slotToggledOtpionMove(bool checked)
+{
+	if (checked) SetDragOption(enumDragOption::move);
+}
+
+void cManipulations::slotToggledOPtionPreciseRotation(bool checked)
+{
+	preciseRotation = checked;
+}

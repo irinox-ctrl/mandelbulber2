@@ -1,0 +1,2169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>cEffectsVolumetricTab</class>
+ <widget class="QWidget" name="cEffectsVolumetricTab">
+      <layout class="QVBoxLayout" name="verticalLayout_65">
+       <property name="spacing">
+        <number>2</number>
+       </property>
+       <property name="leftMargin">
+        <number>2</number>
+       </property>
+       <property name="topMargin">
+        <number>2</number>
+       </property>
+       <property name="rightMargin">
+        <number>2</number>
+       </property>
+       <property name="bottomMargin">
+        <number>2</number>
+       </property>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_11">
+         <item>
+          <widget class="cButtonLoadSettingsFromWidget" name="pushButton_local_load_3">
+           <property name="text">
+            <string>Laden</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="cButtonSaveSettingsFromWidget" name="pushButton_local_save_3">
+           <property name="text">
+            <string>Opslaan</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="cButtonResetSettingsFromWidget" name="pushButton_local_reset_3">
+           <property name="text">
+            <string>Reset</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="cButtonRandomSettingsFromWidget" name="pushButton_local_randomize_3">
+           <property name="text">
+            <string>Randomize</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_3">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QScrollArea" name="scrollArea_8">
+         <property name="widgetResizable">
+          <bool>true</bool>
+         </property>
+         <widget class="QWidget" name="scrollAreaWidgetContents_9">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>421</width>
+            <height>2227</height>
+           </rect>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_35">
+           <property name="spacing">
+            <number>2</number>
+           </property>
+           <property name="leftMargin">
+            <number>2</number>
+           </property>
+           <property name="topMargin">
+            <number>2</number>
+           </property>
+           <property name="rightMargin">
+            <number>2</number>
+           </property>
+           <property name="bottomMargin">
+            <number>2</number>
+           </property>
+           <item>
+            <layout class="QGridLayout" name="gridLayout_2">
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <item row="0" column="1">
+              <widget class="MyLineEdit" name="logedit_volumetric_light_DE_Factor">
+               <property name="toolTip">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This value controls the quality of the volumetric light effect.  The step for volumetric light is calculated in each iteration as: &lt;/p&gt;&lt;p&gt;step = DE * DE_FACTOR[global] * DE_FACTOR[volumetric].&lt;/p&gt;&lt;p&gt;A higher value gives a faster render but of poorer quality.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_custom_step_multiplier">
+               <property name="text">
+                <string>Custom DE Step multiplier
+for volumetric effects:</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <widget class="MyGroupBox" name="groupCheck_basic_fog_enabled">
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Uniform fog with constant density throughout space.&lt;/p&gt;&lt;p&gt;In the &lt;b&gt;Full OpenCL&lt;/b&gt; engine, enabling/disabling basic fog is instant (runtime toggle, no kernel recompile).&lt;/p&gt;&lt;p&gt;Example:&lt;/p&gt;&lt;p&gt;&lt;img src=&quot;:/tooltips/tooltips_images/image - shader - fog.jpeg&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="title">
+              <string>Basic fog</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_30">
+              <property name="spacing">
+               <number>2</number>
+              </property>
+              <property name="leftMargin">
+               <number>2</number>
+              </property>
+              <property name="topMargin">
+               <number>2</number>
+              </property>
+              <property name="rightMargin">
+               <number>2</number>
+              </property>
+              <property name="bottomMargin">
+               <number>2</number>
+              </property>
+              <item>
+               <layout class="QGridLayout" name="gridLayout_10" columnstretch="0,0">
+                <property name="spacing">
+                 <number>2</number>
+                </property>
+                <item row="0" column="1">
+                 <widget class="MyLineEdit" name="logedit_basic_fog_visibility">
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Visibility distance of fog. Visibility can be set by using '&lt;span style=" font-style:italic;"&gt;Set visibility distance by mouse'&lt;/span&gt; button&lt;/p&gt;&lt;p&gt;Lower values produce denser fog,&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="1">
+                 <widget class="MyComboBox" name="comboBox_basic_fog_primitive">
+                  <property name="toolTip">
+                   <string>Selects the geometric primitive used to define the spatial boundaries of basic fog. The chosen shape (such as box, sphere, or other available primitives) determines where in the scene the basic fog effect will be applied, allowing for precise control over the fog’s location and extent.</string>
+                  </property>
+                  <item>
+                   <property name="text">
+                    <string>None</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label_63">
+                  <property name="text">
+                   <string>Visibility distance:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="label_64">
+                  <property name="text">
+                   <string>Kleur:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="0">
+                 <widget class="QLabel" name="label_72">
+                  <property name="text">
+                   <string>Shape from primitive:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="MyColorButton" name="colorButton_basic_fog_color" native="true">
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Color of fog effect&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                  <property name="text" stdset="0">
+                   <string>PushButton</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="0" colspan="2">
+                 <widget class="MyCheckBox" name="checkBox_basic_fog_cast_shadows">
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enables full shadow interaction for basic fog. &lt;/p&gt;&lt;p&gt;When activated, basic fog volumes will both cast shadows onto scene geometry and receive shadows from other objects and light sources. &lt;/p&gt;&lt;p&gt;This affects how light propagates through the fog, allowing occlusion effects and shadowed regions within and behind fog areas. &lt;/p&gt;&lt;p&gt;The result is a more physically accurate and visually integrated rendering of fog, though enabling this may increase computational complexity and rendering time due to additional light and shadow sampling.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                  <property name="text">
+                   <string>Cast / receive shadows</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <widget class="QPushButton" name="pushButton_set_fog_by_mouse">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="toolTip">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets visibility distance using mouse pointer. Point the object which should be the farthest visible.&lt;/p&gt;&lt;p&gt;After using it don't forget to change &lt;span style=" font-style:italic;"&gt;Navigation&lt;/span&gt; / &lt;span style=" font-style:italic;"&gt;Mouse click function&lt;/span&gt; to continue work with the camera.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
+                <property name="text">
+                 <string>Set visibility distance by mouse</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="MyGroupBox" name="groupCheck_glow_enabled">
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Glow effect based on ray-marching step count&lt;/p&gt;&lt;p&gt;Example:&lt;/p&gt;&lt;p&gt;&lt;img src=":/tooltips/tooltips_images/image - shader - glow.jpeg"/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="title">
+              <string>&amp;Glow</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_28">
+              <property name="spacing">
+               <number>2</number>
+              </property>
+              <property name="leftMargin">
+               <number>2</number>
+              </property>
+              <property name="topMargin">
+               <number>2</number>
+              </property>
+              <property name="rightMargin">
+               <number>2</number>
+              </property>
+              <property name="bottomMargin">
+               <number>2</number>
+              </property>
+              <item>
+               <layout class="QGridLayout" name="gridLayout_14" columnstretch="0,0">
+                <property name="spacing">
+                 <number>2</number>
+                </property>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="label_88">
+                  <property name="text">
+                   <string>Color #1:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="0">
+                 <widget class="QLabel" name="label_89">
+                  <property name="text">
+                   <string>Color #2:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="MyLineEdit" name="logedit_glow_intensity">
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Intensity of effect&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label_87">
+                  <property name="text">
+                   <string>Intensiteit:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="MyColorButton" name="colorButton_glow_color_1" native="true">
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Color of dark areas&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                  <property name="text" stdset="0">
+                   <string>PushButton</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="1">
+                 <widget class="MyColorButton" name="colorButton_glow_color_2" native="true">
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Color of bright areas&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                  <property name="text" stdset="0">
+                   <string>PushButton</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="MyGroupBox" name="groupCheck_volumetric_fog_enabled">
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fog density depends on distance from the fractal surface.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; enabling volumetric fog in OpenCL compiles extra shader code and may trigger a kernel rebuild.&lt;/p&gt;&lt;table border=&quot;0&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;&quot; cellspacing=&quot;2&quot; cellpadding=&quot;0&quot;&gt;&lt;tr&gt;&lt;td&gt;&lt;p&gt;High distance values&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;Low distance values&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;p&gt;&lt;img src=&quot;:/tooltips/tooltips_images/image - shader - distance glow.jpg&quot;/&gt;&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;&lt;img src=&quot;:/tooltips/tooltips_images/image - shader - distance glow 2.jpeg&quot;/&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="title">
+              <string>Fog based on dis&amp;tance</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_33">
+              <property name="spacing">
+               <number>2</number>
+              </property>
+              <property name="leftMargin">
+               <number>2</number>
+              </property>
+              <property name="topMargin">
+               <number>2</number>
+              </property>
+              <property name="rightMargin">
+               <number>2</number>
+              </property>
+              <property name="bottomMargin">
+               <number>2</number>
+              </property>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_4">
+                <property name="spacing">
+                 <number>2</number>
+                </property>
+                <item>
+                 <widget class="QPushButton" name="button_calculateFog">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculates optimal settings for fog effect.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                  <property name="text">
+                   <string>Optimal distances calculation</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QToolButton" name="toolButton_fog_distance_double">
+                  <property name="text">
+                   <string>x2</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QToolButton" name="toolButton_fog_distance_half">
+                  <property name="text">
+                   <string>÷2</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_volumetricFogMode">
+                <property name="spacing">
+                 <number>4</number>
+                </property>
+                <item>
+                 <widget class="QLabel" name="label_volumetric_fog_mode">
+                  <property name="text">
+                   <string>Fog falloff mode:</string>
+                  </property>
+                  <property name="toolTip">
+                   <string>Controls how volumetric fog density varies in space. Surface shell wraps the fractal (default). Other modes use ray depth, world height, camera distance, or a hybrid blend.</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QComboBox" name="comboBox_volumetric_fog_mode">
+                  <property name="toolTip">
+                   <string>Surface shell = Lorentzian around DE surface. Exponential depth = uniform haze along the view ray. Height fog = denser below a Y threshold. Camera distance = fog increases with distance from camera. Hybrid = 50/50 shell + depth.</string>
+                  </property>
+                  <item>
+                   <property name="text">
+                    <string>Surface shell</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Exponential depth</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Height fog</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Camera distance</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Hybrid shell + depth</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <widget class="MyCheckBox" name="checkBox_voxel_fog_cache_enabled">
+                <property name="toolTip">
+                 <string>Precomputes a coarse 3D light cache for volumetric fog. Reduces per-step light marching cost in scenes with many lights (approximate, no volumetric shadows).</string>
+                </property>
+                <property name="text">
+                 <string>Enable voxel fog light cache</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_voxel_fog_cache_resolution">
+                <property name="spacing">
+                 <number>4</number>
+                </property>
+                <item>
+                 <widget class="QLabel" name="label_voxel_fog_cache_resolution">
+                  <property name="text">
+                   <string>Cache resolution:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QSlider" name="sliderInt_voxel_fog_cache_resolution">
+                  <property name="minimum">
+                   <number>16</number>
+                  </property>
+                  <property name="maximum">
+                   <number>64</number>
+                  </property>
+                  <property name="value">
+                   <number>32</number>
+                  </property>
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="MySpinBox" name="spinboxInt_voxel_fog_cache_resolution">
+                  <property name="minimum">
+                   <number>16</number>
+                  </property>
+                  <property name="maximum">
+                   <number>64</number>
+                  </property>
+                  <property name="value">
+                   <number>32</number>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QGridLayout" name="gridLayout_13" columnstretch="0,0">
+                <property name="spacing">
+                 <number>2</number>
+                </property>
+                <item row="7" column="0">
+                 <widget class="QLabel" name="label_75">
+                  <property name="text">
+                   <string>Shape from primitive:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="9" column="1">
+                 <widget class="MyColorButton" name="colorButton_fog_color_2" native="true">
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Color of fog which is used between distance #1  and distance #2&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                  <property name="text" stdset="0">
+                   <string>PushButton</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="5" column="0">
+                 <widget class="QLabel" name="label_100">
+                  <property name="text">
+                   <string>Distance from fractal surface:</string>
+                  </property>
+                  <property name="wordWrap">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="MyLineEdit" name="logedit_volumetric_fog_density">
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Density of fog. Higher values produce denser fog. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="8" column="0">
+                 <widget class="QLabel" name="label_66">
+                  <property name="text">
+                   <string>Color #1:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="label_65">
+                  <property name="text">
+                   <string>Density:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="1">
+                 <widget class="MyLineEdit" name="logedit_volumetric_fog_colour_2_distance">
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Maximum fog distance of color #2 from the fractal surface, and minimum fog distance for color #3.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="9" column="0">
+                 <widget class="QLabel" name="label_78">
+                  <property name="text">
+                   <string>Color #2:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="6" column="0" colspan="2">
+                 <widget class="MyCheckBox" name="checkBox_distance_fog_shadows">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enables full shadow interaction for basic fog. &lt;/p&gt;&lt;p&gt;When activated, basic fog volumes will both cast shadows onto scene geometry and receive shadows from other objects and light sources. &lt;/p&gt;&lt;p&gt;This affects how light propagates through the fog, allowing occlusion effects and shadowed regions within and behind fog areas. &lt;/p&gt;&lt;p&gt;The result is a more physically accurate and visually integrated rendering of fog, though enabling this may increase computational complexity and rendering time due to additional light and shadow sampling.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                  <property name="text">
+                   <string>Cast/receive shadows</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="1">
+                 <widget class="MyLineEdit" name="logedit_volumetric_fog_colour_1_distance">
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Maximum fog distance of color #1 from the fractal surface, and minimum fog distance for color #2.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="10" column="0">
+                 <widget class="QLabel" name="label_79">
+                  <property name="text">
+                   <string>Color #3:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="4" column="1">
+                 <widget class="MyLineEdit" name="logedit_volumetric_fog_distance_factor">
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Adjusts the density of fog based on  the  distance from the fractal surface. Higher values produces fog which reaches further from the fractal surface.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="0">
+                 <widget class="QLabel" name="label_67">
+                  <property name="text">
+                   <string>Distance of color #1:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="8" column="1">
+                 <widget class="MyColorButton" name="colorButton_fog_color_1" native="true">
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Color of fog which is used from fractal surface to distance #1&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                  <property name="text" stdset="0">
+                   <string>PushButton</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="0">
+                 <widget class="QLabel" name="label_76">
+                  <property name="text">
+                   <string>Distance of color #2:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="4" column="0">
+                 <widget class="QLabel" name="label_77">
+                  <property name="text">
+                   <string>Fog distance factor:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="5" column="1">
+                 <widget class="MyLineEdit" name="logedit_volumetric_fog_distance_from_surface">
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Adjusts the density of fog based on  the  distance from the fractal surface. Higher values produces fog which reaches further from the fractal surface.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="7" column="1">
+                 <widget class="MyComboBox" name="comboBox_distance_fog_primitive">
+                  <property name="toolTip">
+                   <string>Selects the geometric primitive used to define the spatial boundaries of basic fog. The chosen shape (such as box, sphere, or other available primitives) determines where in the scene the basic fog effect will be applied, allowing for precise control over the fog’s location and extent.</string>
+                  </property>
+                  <item>
+                   <property name="text">
+                    <string>None</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+                <item row="10" column="1">
+                 <widget class="MyColorButton" name="colorButton_fog_color_3" native="true">
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Color of fog which is used farther than distance #2&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                  <property name="text" stdset="0">
+                   <string>PushButton</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="MyGroupBox" name="groupCheck_iteration_fog_enable">
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fog density depends on fractal iteration count — denser near high-iteration regions. Receives and casts shadows.&lt;/p&gt;&lt;p&gt;In the &lt;b&gt;Full OpenCL&lt;/b&gt; engine, toggling iteration fog is instant (runtime toggle). Use &lt;i&gt;Auto Detect&lt;/i&gt; or Render Settings → Auto Iteration Fog for one-click tuning.&lt;/p&gt;&lt;p&gt;Example with lights:&lt;br/&gt;&lt;img src=&quot;:/tooltips/tooltips_images/image - shader - iterfog - lights.jpeg&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="title">
+              <string>Fog based on iteration co&amp;unt</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_27">
+              <property name="spacing">
+               <number>2</number>
+              </property>
+              <property name="leftMargin">
+               <number>2</number>
+              </property>
+              <property name="topMargin">
+               <number>2</number>
+              </property>
+              <property name="rightMargin">
+               <number>2</number>
+              </property>
+              <property name="bottomMargin">
+               <number>2</number>
+              </property>
+              <item>
+               <layout class="QGridLayout" name="gridLayout_8" columnstretch="0,0">
+                <property name="spacing">
+                 <number>2</number>
+                </property>
+                <item row="7" column="0">
+                 <widget class="QLabel" name="label_86">
+                  <property name="text">
+                   <string>Color #3:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="MyDoubleSpinBox" name="spinbox_iteration_fog_opacity_trim">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;There is no fog in volume where iteration count is lower than this value. When this parameter is high then fog is only just by fractal surface.&lt;/p&gt;&lt;table border="0" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;" cellspacing="2" cellpadding="0"&gt;&lt;tr&gt;&lt;td&gt;&lt;p&gt;trim = 4&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;trim = 6&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;trim = 8&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;p&gt;&lt;img src=":/tooltips/tooltips_images/image - shader - iterfog - 4 - 16000.jpg"/&gt;&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;&lt;img src=":/tooltips/tooltips_images/image - shader - iterfog - 6 - 30000.jpg"/&gt;&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;&lt;img src=":/tooltips/tooltips_images/image - shader - iterfog - 8 - 40000.jpg"/&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                  <property name="prefix">
+                   <string></string>
+                  </property>
+                  <property name="suffix">
+                   <string></string>
+                  </property>
+                  <property name="decimals">
+                   <number>2</number>
+                  </property>
+                  <property name="maximum">
+                   <double>1000.000000000000000</double>
+                  </property>
+                  <property name="singleStep">
+                   <double>1.000000000000000</double>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="1">
+                 <widget class="MyDoubleSpinBox" name="spinbox_iteration_fog_color_1_maxiter">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Color #1 is used for iteration count lower than this value&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                  <property name="prefix">
+                   <string></string>
+                  </property>
+                  <property name="suffix">
+                   <string></string>
+                  </property>
+                  <property name="decimals">
+                   <number>2</number>
+                  </property>
+                  <property name="maximum">
+                   <double>1000.000000000000000</double>
+                  </property>
+                  <property name="singleStep">
+                   <double>1.000000000000000</double>
+                  </property>
+                 </widget>
+                </item>
+                <item row="6" column="0">
+                 <widget class="QLabel" name="label_85">
+                  <property name="text">
+                   <string>Color #2:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label_80">
+                  <property name="text">
+                   <string>Opacity:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="1">
+                 <widget class="MyDoubleSpinBox" name="spinbox_iteration_fog_opacity_trim_high">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;There is no fog in volume where iteration count is lower than this value. When this parameter is high then fog is only just by fractal surface.&lt;/p&gt;&lt;table border="0" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;" cellspacing="2" cellpadding="0"&gt;&lt;tr&gt;&lt;td&gt;&lt;p&gt;trim = 4&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;trim = 6&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;trim = 8&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;p&gt;&lt;img src=":/tooltips/tooltips_images/image - shader - iterfog - 4 - 16000.jpg"/&gt;&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;&lt;img src=":/tooltips/tooltips_images/image - shader - iterfog - 6 - 30000.jpg"/&gt;&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;&lt;img src=":/tooltips/tooltips_images/image - shader - iterfog - 8 - 40000.jpg"/&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                  <property name="prefix">
+                   <string></string>
+                  </property>
+                  <property name="suffix">
+                   <string></string>
+                  </property>
+                  <property name="decimals">
+                   <number>2</number>
+                  </property>
+                  <property name="maximum">
+                   <double>1000.000000000000000</double>
+                  </property>
+                  <property name="singleStep">
+                   <double>1.000000000000000</double>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="0">
+                 <widget class="QLabel" name="label_101">
+                  <property name="text">
+                   <string>High iterations trim:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="label_81">
+                  <property name="text">
+                   <string>Low iterations trim:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="10" column="1">
+                 <widget class="MyDoubleSpinBox" name="spinbox_iteration_fog_brightness_boost">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This parameter can be used to increase brightness of fog illuminated by auxiliary light sources.&lt;/p&gt;&lt;p&gt;In Mandelbulber version &amp;lt;= 2.12 this value was hardcoded and default value was 100. &lt;/p&gt;&lt;p&gt;When brightness boost is 1.0 then there is correct proportion of illuminating fractal surface and fog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                  <property name="prefix">
+                   <string></string>
+                  </property>
+                  <property name="suffix">
+                   <string></string>
+                  </property>
+                  <property name="decimals">
+                   <number>2</number>
+                  </property>
+                  <property name="maximum">
+                   <double>1000000.000000000000000</double>
+                  </property>
+                  <property name="singleStep">
+                   <double>10.000000000000000</double>
+                  </property>
+                 </widget>
+                </item>
+                <item row="5" column="1">
+                 <widget class="MyColorButton" name="colorButton_iteration_fog_color_1" native="true">
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Color #1 of fog effect&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                  <property name="text" stdset="0">
+                   <string>PushButton</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="8" column="0" colspan="2">
+                 <widget class="MyCheckBox" name="checkBox_iteration_fog_shadows">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enables full shadow interaction for basic fog. &lt;/p&gt;&lt;p&gt;When activated, basic fog volumes will both cast shadows onto scene geometry and receive shadows from other objects and light sources. &lt;/p&gt;&lt;p&gt;This affects how light propagates through the fog, allowing occlusion effects and shadowed regions within and behind fog areas. &lt;/p&gt;&lt;p&gt;The result is a more physically accurate and visually integrated rendering of fog, though enabling this may increase computational complexity and rendering time due to additional light and shadow sampling.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                  <property name="text">
+                   <string>Cast/receive shadows</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="6" column="1">
+                 <widget class="MyColorButton" name="colorButton_iteration_fog_color_2" native="true">
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Color #2 of fog effect&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                  <property name="text" stdset="0">
+                   <string>PushButton</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="4" column="1">
+                 <widget class="MyDoubleSpinBox" name="spinbox_iteration_fog_color_2_maxiter">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Color #2 is used for iteration count lower than this value. &lt;/p&gt;&lt;p&gt;Color #3 is used for iteration count greater than this value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                  <property name="prefix">
+                   <string></string>
+                  </property>
+                  <property name="suffix">
+                   <string></string>
+                  </property>
+                  <property name="decimals">
+                   <number>2</number>
+                  </property>
+                  <property name="maximum">
+                   <double>1000.000000000000000</double>
+                  </property>
+                  <property name="singleStep">
+                   <double>1.000000000000000</double>
+                  </property>
+                 </widget>
+                </item>
+                <item row="4" column="0">
+                 <widget class="QLabel" name="label_83">
+                  <property name="text">
+                   <string>Max iter. for color#2:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="0">
+                 <widget class="QLabel" name="label_82">
+                  <property name="text">
+                   <string>Max iter. for color#1:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="7" column="1">
+                 <widget class="MyColorButton" name="colorButton_iteration_fog_color_3" native="true">
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Color #3 of fog effect&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                  <property name="text" stdset="0">
+                   <string>PushButton</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="10" column="0">
+                 <widget class="QLabel" name="label_99">
+                  <property name="text">
+                   <string>Brightness boost.
+Set 100 to keep compatibility with version &lt;=2.12</string>
+                  </property>
+                  <property name="wordWrap">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="MyLineEdit" name="logedit_iteration_fog_opacity">
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opacity of fog. Higher value gives denser fog.&lt;br/&gt;&lt;/p&gt;&lt;table border="0" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;" cellspacing="2" cellpadding="0"&gt;&lt;tr&gt;&lt;td&gt;&lt;p&gt;opacity = 1000&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;opacity = 4000&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;opacity = 16000&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;p&gt;&lt;img src=":/tooltips/tooltips_images/image - shader - iterfog - 4 - 1000.jpg"/&gt;&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;&lt;img src=":/tooltips/tooltips_images/image - shader - iterfog - 4 - 4000.jpg"/&gt;&lt;/p&gt;&lt;/td&gt;&lt;td&gt;&lt;p&gt;&lt;img src=":/tooltips/tooltips_images/image - shader - iterfog - 4 - 16000.jpg"/&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="5" column="0">
+                 <widget class="QLabel" name="label_84">
+                  <property name="text">
+                   <string>Color #1:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="9" column="0">
+                 <widget class="QLabel" name="label_74">
+                  <property name="text">
+                   <string>Shape from primitive:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="9" column="1">
+                 <widget class="MyComboBox" name="comboBox_iteration_fog_primitive">
+                  <property name="toolTip">
+                   <string>Selects the geometric primitive used to define the spatial boundaries of basic fog. The chosen shape (such as box, sphere, or other available primitives) determines where in the scene the basic fog effect will be applied, allowing for precise control over the fog’s location and extent.</string>
+                  </property>
+                  <item>
+                   <property name="text">
+                    <string>None</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <widget class="QPushButton" name="pushButton_autoFog_iteration">
+                <property name="toolTip">
+                 <string>Probe the current view and calculate optimal iteration fog parameters (trim, opacity, color thresholds). Uses fractal-type detection and percentile statistics. Adjust bias spinboxes below to fine-tune results.</string>
+                </property>
+                <property name="text">
+                 <string>Auto Detect Iteration Fog</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_autoFogScale">
+                <item>
+                 <widget class="QLabel" name="label_autoFogOpacityScale">
+                  <property name="text">
+                   <string>Auto-fog opacity scale:</string>
+                  </property>
+                  <property name="toolTip">
+                   <string>Global multiplier applied to auto-calculated fog opacity. 1.0 = use probe result as-is.</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="MyDoubleSpinBox" name="spinbox_auto_fog_opacity_scale">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="toolTip">
+                   <string>Multiplier for auto-calculated fog opacity. Default 1.0 = use calculated value. Increase if fog is too faint, decrease if too dense.</string>
+                  </property>
+                  <property name="decimals">
+                   <number>2</number>
+                  </property>
+                  <property name="minimum">
+                   <double>0.01</double>
+                  </property>
+                  <property name="maximum">
+                   <double>1000.0</double>
+                  </property>
+                  <property name="singleStep">
+                   <double>0.1</double>
+                  </property>
+                  <property name="value">
+                   <double>1.0</double>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_autoFogTrimBias">
+                <item>
+                 <widget class="QLabel" name="label_autoFogTrimBias">
+                  <property name="text">
+                   <string>Trim bias:</string>
+                  </property>
+                  <property name="toolTip">
+                   <string>Added to auto-calculated lower trim. Negative = fog starts at lower iterations; positive = tighter around the surface.</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="MyDoubleSpinBox" name="spinbox_auto_fog_trim_bias">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="toolTip">
+                   <string>Offset for auto-calculated trim. Negative = show more low-iteration fog. Positive = cut off more low iterations. Default 0.</string>
+                  </property>
+                  <property name="decimals">
+                   <number>1</number>
+                  </property>
+                  <property name="minimum">
+                   <double>-500.0</double>
+                  </property>
+                  <property name="maximum">
+                   <double>500.0</double>
+                  </property>
+                  <property name="singleStep">
+                   <double>0.5</double>
+                  </property>
+                  <property name="value">
+                   <double>0.0</double>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_autoFogTrimHighBias">
+                <item>
+                 <widget class="QLabel" name="label_autoFogTrimHighBias">
+                  <property name="text">
+                   <string>Trim high bias:</string>
+                  </property>
+                  <property name="toolTip">
+                   <string>Added to auto-calculated upper trim. Controls where high-iteration fog saturates.</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="MyDoubleSpinBox" name="spinbox_auto_fog_trim_high_bias">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="toolTip">
+                   <string>Offset for auto-calculated trim high. Negative = softer fall-off. Positive = harder fall-off at high iterations. Default 0.</string>
+                  </property>
+                  <property name="decimals">
+                   <number>1</number>
+                  </property>
+                  <property name="minimum">
+                   <double>-2000.0</double>
+                  </property>
+                  <property name="maximum">
+                   <double>2000.0</double>
+                  </property>
+                  <property name="singleStep">
+                   <double>1.0</double>
+                  </property>
+                  <property name="value">
+                   <double>0.0</double>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_autoFogColorSpread">
+                <item>
+                 <widget class="QLabel" name="label_autoFogColorSpread">
+                  <property name="text">
+                   <string>Color spread:</string>
+                  </property>
+                  <property name="toolTip">
+                   <string>Scales the spacing between iteration-fog color thresholds after auto-tuning.</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="MyDoubleSpinBox" name="spinbox_auto_fog_color_spread">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="toolTip">
+                   <string>Multiplier for color maxiter spread. &lt;1 = colors closer together, &gt;1 = colors more spread out. Default 1.0.</string>
+                  </property>
+                  <property name="decimals">
+                   <number>2</number>
+                  </property>
+                  <property name="minimum">
+                   <double>0.1</double>
+                  </property>
+                  <property name="maximum">
+                   <double>2.0</double>
+                  </property>
+                  <property name="singleStep">
+                   <double>0.1</double>
+                  </property>
+                  <property name="value">
+                   <double>1.0</double>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_autoFogBoostScale">
+                <item>
+                 <widget class="QLabel" name="label_autoFogBoostScale">
+                  <property name="text">
+                   <string>Boost scale:</string>
+                  </property>
+                  <property name="toolTip">
+                   <string>Scales the auto-calculated fog brightness boost applied to lit fog regions.</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="MyDoubleSpinBox" name="spinbox_auto_fog_boost_scale">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="toolTip">
+                   <string>Multiplier for auto-calculated brightness boost. Default 1.0 = use calculated value. Increase for brighter fog, decrease for subtler fog.</string>
+                  </property>
+                  <property name="decimals">
+                   <number>2</number>
+                  </property>
+                  <property name="minimum">
+                   <double>0.0</double>
+                  </property>
+                  <property name="maximum">
+                   <double>3.0</double>
+                  </property>
+                  <property name="singleStep">
+                   <double>0.1</double>
+                  </property>
+                  <property name="value">
+                   <double>1.0</double>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="MyGroupBox" name="groupCheck_clouds_enable">
+             <property name="toolTip">
+              <string>Procedural volumetric clouds along view rays, with per-light illumination and optional shadows. &lt;b&gt;Note:&lt;/b&gt; enabling clouds in OpenCL compiles extra shader code and may trigger a kernel recompile. Use presets for safer starting values; tune density gamma and softness for edge quality.</string>
+             </property>
+             <property name="title">
+              <string>Clouds</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_6">
+              <property name="spacing">
+               <number>2</number>
+              </property>
+              <property name="leftMargin">
+               <number>2</number>
+              </property>
+              <property name="topMargin">
+               <number>2</number>
+              </property>
+              <property name="rightMargin">
+               <number>2</number>
+              </property>
+              <property name="bottomMargin">
+               <number>2</number>
+              </property>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_cloudsPreset">
+                <item>
+                 <widget class="QLabel" name="label_clouds_preset">
+                  <property name="text">
+                   <string>Preset:</string>
+                  </property>
+                  <property name="toolTip">
+                   <string>Starting styles: Soft Mist (light haze), Volumetric Clouds (balanced), Hard Fractal Smoke (sharp edges), Nebula Dust (sparse colored wisps).</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QComboBox" name="comboBox_clouds_preset">
+                  <property name="toolTip">
+                   <string>Cloud style presets with tuned opacity, sharpness, gamma, and softness. Select a style and click Apply — does not change your random seed.</string>
+                  </property>
+                  <item>
+                   <property name="text">
+                    <string>Soft Mist</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Volumetric Clouds</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Hard Fractal Smoke</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Nebula Dust</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="pushButton_clouds_apply_preset">
+                  <property name="toolTip">
+                   <string>Apply the selected cloud preset to opacity, sharpness, density gamma, softness, and related parameters.</string>
+                  </property>
+                  <property name="text">
+                   <string>Apply</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QGridLayout" name="gridLayout_19">
+                <property name="bottomMargin">
+                 <number>2</number>
+                </property>
+                <property name="spacing">
+                 <number>2</number>
+                </property>
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label_124">
+                  <property name="text">
+                   <string>Color</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="MySpinBox" name="spinboxInt_clouds_noise_iterations">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of noise octaves used to generate cloud density. &lt;/p&gt;&lt;p&gt;Higher values add finer, more turbulent detail and richer structure, but increase computation time due to additional noise sampling. Typical useful range: 5–12. Adjust together with Cloud Period and Detail Accuracy; higher iterations with a small period produce very high-frequency features. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                  <property name="minimum">
+                   <number>1</number>
+                  </property>
+                  <property name="maximum">
+                   <number>100</number>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="label_110">
+                  <property name="text">
+                   <string>Noise iterations:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="5" column="1">
+                 <widget class="MyDoubleSpinBox" name="spinbox_clouds_density">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Base density/coverage of the volumetric cloud field (0–1). Higher values produce thicker, more continuous clouds; lower values yield sparse, broken clouds. &lt;/p&gt;&lt;p&gt;Tune together with Cloud Opacity (overall strength), Period (scale), and Noise Iterations (detail). Typical range: 0.15–0.60; 0 = clear, 1 = near-solid overcast.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                  <property name="prefix">
+                   <string></string>
+                  </property>
+                  <property name="suffix">
+                   <string></string>
+                  </property>
+                  <property name="decimals">
+                   <number>3</number>
+                  </property>
+                  <property name="maximum">
+                   <double>1.000000000000000</double>
+                  </property>
+                  <property name="singleStep">
+                   <double>0.001000000000000</double>
+                  </property>
+                 </widget>
+                </item>
+                <item row="6" column="0">
+                 <widget class="QLabel" name="label_114">
+                  <property name="text">
+                   <string>Period:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="6" column="1">
+                 <widget class="MyLineEdit" name="logedit_clouds_period">
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Spatial scale of the procedural cloud noise (period, in scene units). Larger values yield bigger, smoother cloud structures; smaller values create finer, more turbulent detail. &lt;/p&gt;&lt;p&gt;Interacts with Noise Iterations and Detail Accuracy; very small periods may increase render time and require higher Detail Accuracy to avoid aliasing.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="5" column="0">
+                 <widget class="QLabel" name="label_113">
+                  <property name="text">
+                   <string>Density:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="1">
+                 <widget class="MySpinBox" name="spinboxInt_clouds_random_seed">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Random seed for the procedural noise field driving clouds. Changing it generates a different (statistically equivalent) cloud layout/phase without altering density, scale (period), or octave structure. Keep constant for deterministic, reproducible renders and animations; vary to explore alternative compositions. Integer value, typically 0–1,000,000.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                  <property name="maximum">
+                   <number>100000</number>
+                  </property>
+                 </widget>
+                </item>
+                <item row="7" column="1">
+                 <widget class="MyDoubleSpinBox" name="spinbox_clouds_ambient_light">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ambient light contribution for clouds (0–1). &lt;/p&gt;&lt;p&gt;Blends uniform ambient illumination into cloud lighting: &lt;/p&gt;&lt;p&gt;0 = only direct lights with full shadow contrast; &lt;/p&gt;&lt;p&gt;1 = fully ambient, very soft/flat shadows. &lt;/p&gt;&lt;p&gt;Increase to brighten interiors and soften shadows; decrease for crisper shading. &lt;/p&gt;&lt;p&gt;Does not affect opacity. &lt;/p&gt;&lt;p&gt;Typical range: 0.05–0.30.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                  <property name="prefix">
+                   <string></string>
+                  </property>
+                  <property name="suffix">
+                   <string></string>
+                  </property>
+                  <property name="decimals">
+                   <number>3</number>
+                  </property>
+                  <property name="maximum">
+                   <double>1.000000000000000</double>
+                  </property>
+                  <property name="singleStep">
+                   <double>0.010000000000000</double>
+                  </property>
+                 </widget>
+                </item>
+                <item row="8" column="0">
+                 <widget class="QLabel" name="label_144">
+                  <property name="text">
+                   <string>Visible light and trap light boost:</string>
+                  </property>
+                  <property name="wordWrap">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item row="8" column="1">
+                 <widget class="MyLineEdit" name="logedit_clouds_lights_boost">
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Boosts intensity of visible light beams and orbit‑trap “fake lights” inside clouds. Scales their contribution with cloud density/opacity: higher values make light shafts brighter and more pronounced, especially in dense regions. &lt;/p&gt;&lt;p&gt;Does not affect direct/ambient light or cloud opacity. &lt;/p&gt;&lt;p&gt;0 = no boost. Typical range 0–2; use higher for strong god‑ray effects (may increase noise).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="MyColorButton" name="colorButton_clouds_color" native="true">
+                  <property name="text" stdset="0">
+                   <string>PushButton</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="0" colspan="2">
+                 <widget class="QPushButton" name="pushButton_clouds_randomize">
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Generates a new random seed for the procedural cloud noise, changing the cloud pattern without altering density, period, or noise iterations. &lt;/p&gt;&lt;p&gt;Click repeatedly to explore variations; keep the chosen seed fixed for reproducible renders and animations.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                  <property name="text">
+                   <string>Randomize</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="4" column="0">
+                 <widget class="QLabel" name="label_112">
+                  <property name="text">
+                   <string>Opacity:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="0">
+                 <widget class="QLabel" name="label_111">
+                  <property name="text">
+                   <string>Random seed:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="4" column="1">
+                 <widget class="MyLineEdit" name="logedit_clouds_opacity">
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Global multiplier for volumetric cloud opacity. Typical range 0.5–5. Default 2.0. Lower = more transparent clouds.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="7" column="0">
+                 <widget class="QLabel" name="label_143">
+                  <property name="text">
+                   <string>Ambient light:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="9" column="0" colspan="2">
+                 <widget class="MyCheckBox" name="checkBox_clouds_cast_shadows">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable cloud shadowing. When checked, clouds receive and cast shadows from scene lights, giving more realistic occlusion and higher contrast; this is slower. When unchecked, faster shading without shadows. Tip: raise Clouds Ambient Light to soften shadows; use Lights Boost to emphasize light shafts.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                  <property name="text">
+                   <string>Receive shadows</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="10" column="0">
+                 <widget class="QLabel" name="label_clouds_density_gamma">
+                  <property name="text">
+                   <string>Density gamma:</string>
+                  </property>
+                  <property name="toolTip">
+                   <string>Remaps cloud density before opacity. &lt;1 = more low-density wisps; &gt;1 = punchier cores. Default 1.0.</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="10" column="1">
+                 <widget class="MyDoubleSpinBox" name="spinbox_clouds_density_gamma">
+                  <property name="toolTip">
+                   <string>Power curve on cloud density (0.3–3.0). Lower = softer, more transparent clouds; higher = denser, more contrasty volumes.</string>
+                  </property>
+                  <property name="decimals">
+                   <number>2</number>
+                  </property>
+                  <property name="minimum">
+                   <double>0.300000000000000</double>
+                  </property>
+                  <property name="maximum">
+                   <double>3.000000000000000</double>
+                  </property>
+                  <property name="singleStep">
+                   <double>0.100000000000000</double>
+                  </property>
+                  <property name="value">
+                   <double>1.000000000000000</double>
+                  </property>
+                 </widget>
+                </item>
+                <item row="11" column="0">
+                 <widget class="QLabel" name="label_clouds_softness">
+                  <property name="text">
+                   <string>Density softness:</string>
+                  </property>
+                  <property name="toolTip">
+                   <string>Smoothstep blend between empty space and full density. Higher = softer cloud edges; lower = harder transitions.</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="11" column="1">
+                 <widget class="MyDoubleSpinBox" name="spinbox_clouds_softness">
+                  <property name="toolTip">
+                   <string>Edge softness for cloud density (0.05–1.0). Works with density gamma to control how gradual cloud boundaries appear.</string>
+                  </property>
+                  <property name="decimals">
+                   <number>2</number>
+                  </property>
+                  <property name="minimum">
+                   <double>0.050000000000000</double>
+                  </property>
+                  <property name="maximum">
+                   <double>1.000000000000000</double>
+                  </property>
+                  <property name="singleStep">
+                   <double>0.050000000000000</double>
+                  </property>
+                  <property name="value">
+                   <double>0.400000000000000</double>
+                  </property>
+                 </widget>
+                </item>
+                <item row="12" column="0" colspan="2">
+                 <widget class="MyCheckBox" name="checkBox_clouds_adaptive_detail">
+                  <property name="text">
+                   <string>Adaptive cloud stepping</string>
+                  </property>
+                  <property name="toolTip">
+                   <string>Varies ray step size with local cloud density — larger steps in empty regions, smaller steps inside clouds. Faster with similar visual quality; disable for maximum uniformity at higher cost.</string>
+                  </property>
+                  <property name="checked">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <widget class="MyGroupBox" name="groupCheck_clouds_sharp_edges">
+                <property name="toolTip">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable hard‑edged clouds by sharpening the density threshold. When on, use Sharpness to control edge steepness: higher values produce crisper, thinner transitions; lower values keep edges softer. &lt;/p&gt;&lt;p&gt;Great for dramatic silhouettes and pronounced shadows. &lt;/p&gt;&lt;p&gt;May increase noise/aliasing—raise Clouds Noise Iterations or Detail Accuracy if needed.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
+                <property name="title">
+                 <string>Sharp edges</string>
+                </property>
+                <property name="checkable">
+                 <bool>true</bool>
+                </property>
+                <layout class="QFormLayout" name="formLayout_2">
+                 <property name="horizontalSpacing">
+                  <number>2</number>
+                 </property>
+                 <property name="verticalSpacing">
+                  <number>2</number>
+                 </property>
+                 <property name="leftMargin">
+                  <number>2</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>2</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>2</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>2</number>
+                 </property>
+                 <item row="0" column="0">
+                  <widget class="QLabel" name="label_142">
+                   <property name="text">
+                    <string>Sharpness:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="1">
+                  <widget class="MyDoubleSpinBox" name="spinbox_clouds_sharpness">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Edge steepness for Sharp edges clouds. Higher values sharpen the density threshold (crisper, thinner cloud contours); lower values keep transitions soft. &lt;/p&gt;&lt;p&gt;Very high values may introduce aliasing/noise—consider increasing Clouds Noise Iterations or Clouds Detail Accuracy.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                   <property name="prefix">
+                    <string></string>
+                   </property>
+                   <property name="suffix">
+                    <string></string>
+                   </property>
+                   <property name="decimals">
+                    <number>1</number>
+                   </property>
+                   <property name="minimum">
+                    <double>1.000000000000000</double>
+                   </property>
+                   <property name="maximum">
+                    <double>1000000.000000000000000</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>1.000000000000000</double>
+                   </property>
+                   <property name="value">
+                    <double>20.000000000000000</double>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <layout class="QGridLayout" name="gridLayout_6">
+                <property name="spacing">
+                 <number>2</number>
+                </property>
+                <item row="1" column="3">
+                 <widget class="MyLineEdit" name="vect3_clouds_speed_y"></widget>
+                </item>
+                <item row="1" column="2">
+                 <widget class="QLabel" name="label_140">
+                  <property name="text">
+                   <string>y</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="2">
+                 <widget class="QLabel" name="label_141">
+                  <property name="text">
+                   <string>z</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="3">
+                 <widget class="MyLineEdit" name="vect3_clouds_speed_x">
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;X-axis drift speed of the clouds. Controls how fast the noise field moves along +X over time (animation). &lt;/p&gt;&lt;p&gt;Positive = moves toward +X, negative = toward −X; 0 = no motion. &lt;/p&gt;&lt;p&gt;Effective speed scales with Clouds Period. &lt;/p&gt;&lt;p&gt;Use small values (e.g., ±0.001 to ±0.05). &lt;/p&gt;&lt;p&gt;Combine with Y/Z for wind direction.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="2">
+                 <widget class="QLabel" name="label_135">
+                  <property name="text">
+                   <string>x</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="3">
+                 <widget class="MyLineEdit" name="vect3_clouds_speed_z"></widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="QLabel" name="label_133">
+                  <property name="text">
+                   <string>Clouds movement speed:</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QGridLayout" name="gridLayout_12">
+                <property name="topMargin">
+                 <number>10</number>
+                </property>
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label_145">
+                  <property name="text">
+                   <string>Shape from primitive:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="MyComboBox" name="comboBox_clouds_primitive">
+                  <property name="toolTip">
+                   <string>Selects the geometric primitive used to define the spatial boundaries of basic fog. The chosen shape (such as box, sphere, or other available primitives) determines where in the scene the basic fog effect will be applied, allowing for precise control over the fog’s location and extent.</string>
+                  </property>
+                  <item>
+                   <property name="text">
+                    <string>None</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <widget class="MyGroupBox" name="groupCheck_clouds_plane_shape">
+                <property name="toolTip">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable planar cloud layer. Constrains clouds to a band around a rotated plane with a soft vertical falloff. &lt;/p&gt;&lt;p&gt;Use Height to set layer thickness, and Center/Rotation to position and tilt the layer. &lt;/p&gt;&lt;p&gt;Useful for horizon-like cloud sheets and can speed up rendering by limiting the cloud volume.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
+                <property name="title">
+                 <string>Plane shape</string>
+                </property>
+                <property name="checkable">
+                 <bool>true</bool>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_7" stretch="0">
+                 <property name="spacing">
+                  <number>2</number>
+                 </property>
+                 <property name="leftMargin">
+                  <number>2</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>2</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>2</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>2</number>
+                 </property>
+                 <item>
+                  <layout class="QGridLayout" name="gridLayout_20">
+                   <property name="spacing">
+                    <number>2</number>
+                   </property>
+                   <item row="4" column="1">
+                    <widget class="QLabel" name="label_121">
+                     <property name="text">
+                      <string>alpha</string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="6" column="2">
+                    <widget class="MyDoubleSpinBox" name="spinboxd3_clouds_rotation_z">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="accelerated">
+                      <bool>true</bool>
+                     </property>
+                     <property name="prefix">
+                      <string></string>
+                     </property>
+                     <property name="suffix">
+                      <string></string>
+                     </property>
+                     <property name="decimals">
+                      <number>2</number>
+                     </property>
+                     <property name="minimum">
+                      <double>-180.000000000000000</double>
+                     </property>
+                     <property name="maximum">
+                      <double>180.000000000000000</double>
+                     </property>
+                     <property name="singleStep">
+                      <double>1.000000000000000</double>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="0" rowspan="3">
+                    <widget class="QLabel" name="label_116">
+                     <property name="text">
+                      <string>Clouds center:</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="3" column="2">
+                    <widget class="MyLineEdit" name="vect3_clouds_center_z">
+                     <property name="toolTip">
+                      <string>Vertical position (Z axis) of the center of the clouds volume relative to the fractal.</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="4" column="0" rowspan="3">
+                    <widget class="QLabel" name="label_120">
+                     <property name="text">
+                      <string>Geometry rotation:</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="3" column="1">
+                    <widget class="QLabel" name="label_119">
+                     <property name="text">
+                      <string>z</string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="5" column="1">
+                    <widget class="QLabel" name="label_122">
+                     <property name="text">
+                      <string>beta</string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="2" column="1">
+                    <widget class="QLabel" name="label_118">
+                     <property name="text">
+                      <string>y</string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="0">
+                    <widget class="QLabel" name="label_115">
+                     <property name="text">
+                      <string>Clouds layer height:</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="2">
+                    <widget class="MyLineEdit" name="vect3_clouds_center_x">
+                     <property name="toolTip">
+                      <string>Vertical position (X axis) of the center of the clouds volume relative to the fractal.</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="5" column="2">
+                    <widget class="MyDoubleSpinBox" name="spinboxd3_clouds_rotation_y">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="accelerated">
+                      <bool>true</bool>
+                     </property>
+                     <property name="prefix">
+                      <string></string>
+                     </property>
+                     <property name="suffix">
+                      <string></string>
+                     </property>
+                     <property name="decimals">
+                      <number>2</number>
+                     </property>
+                     <property name="minimum">
+                      <double>-180.000000000000000</double>
+                     </property>
+                     <property name="maximum">
+                      <double>180.000000000000000</double>
+                     </property>
+                     <property name="singleStep">
+                      <double>1.000000000000000</double>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="6" column="1">
+                    <widget class="QLabel" name="label_123">
+                     <property name="text">
+                      <string>gamma</string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="4" column="2">
+                    <widget class="MyDoubleSpinBox" name="spinboxd3_clouds_rotation_x">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="accelerated">
+                      <bool>true</bool>
+                     </property>
+                     <property name="prefix">
+                      <string></string>
+                     </property>
+                     <property name="suffix">
+                      <string></string>
+                     </property>
+                     <property name="decimals">
+                      <number>2</number>
+                     </property>
+                     <property name="minimum">
+                      <double>-180.000000000000000</double>
+                     </property>
+                     <property name="maximum">
+                      <double>180.000000000000000</double>
+                     </property>
+                     <property name="singleStep">
+                      <double>1.000000000000000</double>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="1">
+                    <widget class="QLabel" name="label_117">
+                     <property name="text">
+                      <string>x</string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="2" column="2">
+                    <widget class="MyLineEdit" name="vect3_clouds_center_y">
+                     <property name="toolTip">
+                      <string>Vertical position (Y axis) of the center of the clouds volume relative to the fractal.</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="2">
+                    <widget class="MyLineEdit" name="logedit_clouds_height">
+                     <property name="toolTip">
+                      <string>Height above the fractal base at which the main cloud layer appears.</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <widget class="MyGroupBox" name="groupCheck_clouds_distance_mode">
+                <property name="toolTip">
+                 <string>Generate clouds which are within specified distance from the fractal.</string>
+                </property>
+                <property name="title">
+                 <string>Clouds at distance from fractal</string>
+                </property>
+                <property name="checkable">
+                 <bool>true</bool>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_13">
+                 <property name="leftMargin">
+                  <number>2</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>2</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>2</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>2</number>
+                 </property>
+                 <item>
+                  <layout class="QGridLayout" name="gridLayout_21">
+                   <property name="spacing">
+                    <number>2</number>
+                   </property>
+                   <item row="0" column="0">
+                    <widget class="QLabel" name="label_125">
+                     <property name="text">
+                      <string>Distance from fractal</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="1">
+                    <widget class="MyLineEdit" name="logedit_clouds_distance">
+                     <property name="toolTip">
+                      <string>Distance from the fractal surface to the start of the clouds volume.</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="0">
+                    <widget class="QLabel" name="label_126">
+                     <property name="text">
+                      <string>Clouds layer height</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="1">
+                    <widget class="MyLineEdit" name="logedit_clouds_distance_layer">
+                     <property name="toolTip">
+                      <string>Vertical thickness of the clouds layer, controlling how deep clouds extend from their base.</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <widget class="QGroupBox" name="groupBox">
+                <property name="title">
+                 <string>Accuracy control</string>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_14">
+                 <property name="leftMargin">
+                  <number>2</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>2</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>2</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>2</number>
+                 </property>
+                 <item>
+                  <layout class="QGridLayout" name="gridLayout_22">
+                   <property name="spacing">
+                    <number>2</number>
+                   </property>
+                   <item row="1" column="1">
+                    <widget class="MyLineEdit" name="logedit_clouds_DE_approaching">
+                     <property name="toolTip">
+                      <string>Step size for distance estimation when approaching the clouds; lower values increase accuracy but reduce performance.</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="0">
+                    <widget class="QLabel" name="label_128">
+                     <property name="text">
+                      <string>Details accuracy</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="1">
+                    <widget class="MyLineEdit" name="logedit_clouds_detail_accuracy">
+                     <property name="toolTip">
+                      <string>Controls the rendering accuracy for fine details in the clouds; higher values improve detail but increase render time.</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="0">
+                    <widget class="QLabel" name="label_129">
+                     <property name="text">
+                      <string>Approaching DE multiplier</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="2" column="0">
+                    <widget class="QLabel" name="label_130">
+                     <property name="text">
+                      <string>Clouds DE multiplier</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="2" column="1">
+                    <widget class="MyLineEdit" name="logedit_clouds_DE_multiplier">
+                     <property name="toolTip">
+                      <string>Multiplier for the distance estimation step size in clouds rendering. Increasing this value can speed up rendering but may reduce accuracy and detail in cloud boundaries. Lower values provide more precise results at the cost of performance.</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_4">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+ <customwidgets>
+ <customwidget>
+    <class>MyGroupBox</class>
+    <extends>QGroupBox</extends>
+    <header>my_group_box.h</header>
+    <container>1</container>
+   </customwidget>
+ <customwidget>
+    <class>MySpinBox</class>
+    <extends>QSpinBox</extends>
+    <header>my_spin_box.h</header>
+   </customwidget>
+ <customwidget>
+    <class>MyCheckBox</class>
+    <extends>QCheckBox</extends>
+    <header>my_check_box.h</header>
+   </customwidget>
+ <customwidget>
+    <class>MyLineEdit</class>
+    <extends>QLineEdit</extends>
+    <header>my_line_edit.h</header>
+   </customwidget>
+ <customwidget>
+    <class>MyDoubleSpinBox</class>
+    <extends>QDoubleSpinBox</extends>
+    <header>my_double_spin_box.h</header>
+   </customwidget>
+ <customwidget>
+    <class>MyComboBox</class>
+    <extends>QComboBox</extends>
+    <header>my_combo_box.h</header>
+   </customwidget>
+ <customwidget>
+    <class>MyColorButton</class>
+    <extends>QWidget</extends>
+    <header>my_color_button.h</header>
+   </customwidget>
+  <customwidget>
+   <class>cButtonLoadSettingsFromWidget</class>
+   <extends>QPushButton</extends>
+   <header>buton_load_settings_from_widget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>cButtonSaveSettingsFromWidget</class>
+   <extends>QPushButton</extends>
+   <header>buton_save_settings_from_widget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>cButtonResetSettingsFromWidget</class>
+   <extends>QPushButton</extends>
+   <header>buton_reset_settings_from_widget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>cButtonRandomSettingsFromWidget</class>
+   <extends>QPushButton</extends>
+   <header>buton_random_settings_from_widget.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

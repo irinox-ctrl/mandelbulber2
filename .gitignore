@@ -1,3 +1,7 @@
-mandelbulber2/deploy/
-mandelbulber2/src/
-mandelbulber2/qt/
+# Build artifacts
+*.o
+*.d
+moc_*
+qrc_*
+Makefile
+mandelbulber2

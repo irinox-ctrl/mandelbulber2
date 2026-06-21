@@ -1,0 +1,85 @@
+/**
+ * Mandelbulber v2, a 3D fractal generator       ,=#MKNmMMKmmßMNWy,
+ *                                             ,B" ]L,,p%%%,,,§;, "K
+ * Copyright (C) 2014-20 Mandelbulber Team     §R-==%w["'~5]m%=L.=~5N
+ *                                        ,=mm=§M ]=4 yJKA"/-Nsaj  "Bw,==,,
+ * This file is part of Mandelbulber.    §R.r= jw",M  Km .mM  FW ",§=ß., ,TN
+ *                                     ,4R =%["w[N=7]J '"5=],""]]M,w,-; T=]M
+ * Mandelbulber is free software:     §R.ß~-Q/M=,=5"v"]=Qf,'§"M= =,M.§ Rz]M"Kw
+ * you can redistribute it and/or     §w "xDY.J ' -"m=====WeC=\ ""%""y=%"]"" §
+ * modify it under the terms of the    "§M=M =D=4"N #"%==A%p M§ M6  R' #"=~.4M
+ * GNU General Public License as        §W =, ][T"]C  §  § '§ e===~ U  !§[Z ]N
+ * published by the                    4M",,Jm=,"=e~  §  §  j]]""N  BmM"py=ßM
+ * Free Software Foundation,          ]§ T,M=& 'YmMMpM9MMM%=w=,,=MT]M m§;'§,
+ * either version 3 of the License,    TWw [.j"5=~N[=§%=%W,T ]R,"=="Y[LFT ]N
+ * or (at your option)                   TW=,-#"%=;[  =Q:["V""  ],,M.m == ]N
+ * any later version.                      J§"mr"] ,=,," =="""J]= M"M"]==ß"
+ *                                          §= "=C=4 §"eM "=B:m|4"]#F,§~
+ * Mandelbulber is distributed in            "9w=,,]w em%wJ '"~" ,=,,ß"
+ * the hope that it will be useful,                 . "K=  ,=RMMMßM"""
+ * but WITHOUT ANY WARRANTY;                            .'''
+ * without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * See the GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with Mandelbulber. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * ###########################################################################
+ *
+ * Authors: Krzysztof Marczak (buddhi1980@gmail.com)
+ *
+ * CalculateDistanceSimple() function calculates approximate distance to
+ * the fractal surface using fractal computation functions.
+ *
+ * CalculateDistance() function calculates resultant distance to all
+ * objects on scene including boolean operators.
+ */
+
+#ifndef MANDELBULBER2_SRC_CALCULATE_DISTANCE_HPP_
+#define MANDELBULBER2_SRC_CALCULATE_DISTANCE_HPP_
+
+#include <memory>
+
+#include "common_math.h"
+#include "hybrid_fractal_sequences.h"
+
+// forward declarations
+class cNineFractals;
+struct sParamRender;
+struct sRenderData;
+
+struct sDistanceIn
+{
+	CVector3 point;
+	double detailSize;
+	bool normalCalculationMode;
+	sDistanceIn(CVector3 _point, double _detailSize, bool _normalCalculationMode)
+			: point(_point), detailSize(_detailSize), normalCalculationMode(_normalCalculationMode)
+	{
+	}
+};
+
+struct sDistanceOut
+{
+	double distance;
+	double colorIndex;
+	int iters;
+	int totalIters;
+	int objectId;
+	bool maxiter;
+};
+
+double CalculateDistance(const sParamRender &params, const cNineFractals &fractals,
+	const sDistanceIn &in, sDistanceOut *out, sRenderData *data = nullptr);
+double CalculateDistanceSimple(const sParamRender &params, const cNineFractals &fractals,
+	const sDistanceIn &in, sDistanceOut *out, int forcedFormulaIndex,
+	const cHybridFractalSequences::sSequence *sequence);
+double CalculateDistanceMinPlane(std::shared_ptr<const sParamRender> params,
+	std::shared_ptr<const cNineFractals> fractals, const CVector3 point, const CVector3 direction,
+	const CVector3 orthDirection, bool *stopRequest);
+
+double CalculateDistanceFromObjectsTree(const sParamRender &params, const cNineFractals &fractals,
+	const sDistanceIn &in, sDistanceOut *out, sRenderData *data);
+
+#endif /* MANDELBULBER2_SRC_CALCULATE_DISTANCE_HPP_ */

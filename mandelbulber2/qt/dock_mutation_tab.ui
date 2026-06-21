@@ -1,0 +1,3324 @@
+<?xml version='1.0' encoding='utf-8'?>
+<ui version="4.0">
+ <class>cDockMutationTab</class>
+ <widget class="QWidget" name="cDockMutationTab">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>460</width>
+    <height>3000</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Mutation</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_mutation_dock">
+   <property name="spacing">
+    <number>2</number>
+   </property>
+   <property name="leftMargin">
+    <number>2</number>
+   </property>
+   <property name="topMargin">
+    <number>2</number>
+   </property>
+   <property name="rightMargin">
+    <number>2</number>
+   </property>
+   <property name="bottomMargin">
+    <number>2</number>
+   </property>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_mutation_top">
+     <item>
+      <widget class="QPushButton" name="pushButton_mutation_randomize_weights">
+       <property name="toolTip"><string>Randomize every section and per-parameter weight</string></property>
+       <property name="text"><string>Randomize Weights</string></property>
+       <property name="styleSheet"><string>font-weight: bold; color: #FF8C00;</string></property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_mutation_reset_weights">
+       <property name="toolTip"><string>Reset all mutation weights back to 1.0</string></property>
+       <property name="text"><string>Reset Weights</string></property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_mutation_reset_all_top">
+       <property name="toolTip"><string>Reset ALL mutation parameters to defaults (types, factors, weights, everything)</string></property>
+       <property name="text"><string>Reset All Parameters</string></property>
+       <property name="styleSheet"><string>font-weight: bold; color: #FF4444;</string></property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_mutation_master_weight">
+       <property name="text"><string>Master Weight:</string></property>
+      </widget>
+     </item>
+     <item>
+      <widget class="MyDoubleSpinBox" name="spinbox_mutation_master_weight">
+       <property name="toolTip"><string>Global master weight multiplied into every section weight (1=full, 0=all off)</string></property>
+       <property name="minimum"><double>0.0</double></property>
+       <property name="maximum"><double>1.0</double></property>
+       <property name="singleStep"><double>0.05</double></property>
+       <property name="value"><double>1.0</double></property>
+       <property name="decimals"><number>4</number></property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_mutation_top">
+       <property name="orientation"><enum>Qt::Horizontal</enum></property>
+       <property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="MyGroupBox" name="groupCheck_mutation_enabled">
+     <property name="title">
+      <string>Formula Mutation</string>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <property name="checked">
+      <bool>false</bool>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_mutation">
+      <property name="spacing">
+       <number>2</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_mutation_pre_rotation">
+        <property name="text">
+         <string>Pre-Rotation:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLabel" name="label_mutation_pre_rot_ax">
+        <property name="text">
+         <string>X:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_pre_rotation_ax">
+        <property name="decimals">
+         <number>2</number>
+        </property>
+        <property name="minimum">
+         <double>-360.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>360.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>5.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="3">
+       <widget class="QLabel" name="label_mutation_pre_rot_ay">
+        <property name="text">
+         <string>Y:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="4">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_pre_rotation_ay">
+        <property name="decimals">
+         <number>2</number>
+        </property>
+        <property name="minimum">
+         <double>-360.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>360.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>5.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="5">
+       <widget class="QLabel" name="label_mutation_pre_rot_az">
+        <property name="text">
+         <string>Z:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="6">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_pre_rotation_az">
+        <property name="decimals">
+         <number>2</number>
+        </property>
+        <property name="minimum">
+         <double>-360.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>360.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>5.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_mutation_pre_scale">
+        <property name="text">
+         <string>Pre-Scale:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1" colspan="5">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_pre_scale">
+        <property name="decimals">
+         <number>4</number>
+        </property>
+        <property name="minimum">
+         <double>0.001000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>100.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.100000000000000</double>
+        </property>
+        <property name="value">
+         <double>1.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_mutation_pre_offset">
+        <property name="text">
+         <string>Pre-Offset:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLabel" name="label_mutation_preoff_ax">
+        <property name="text">
+         <string>X:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_pre_offset_ax">
+        <property name="decimals">
+         <number>4</number>
+        </property>
+        <property name="minimum">
+         <double>-100.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>100.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.010000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="3">
+       <widget class="QLabel" name="label_mutation_preoff_ay">
+        <property name="text">
+         <string>Y:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="4">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_pre_offset_ay">
+        <property name="decimals">
+         <number>4</number>
+        </property>
+        <property name="minimum">
+         <double>-100.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>100.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.010000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="5">
+       <widget class="QLabel" name="label_mutation_preoff_az">
+        <property name="text">
+         <string>Z:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="6">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_pre_offset_az">
+        <property name="decimals">
+         <number>4</number>
+        </property>
+        <property name="minimum">
+         <double>-100.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>100.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.010000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_mutation_pre_abs">
+        <property name="text">
+         <string>Pre-Abs:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1" colspan="2">
+       <widget class="MyCheckBox" name="checkBox_mutation_pre_abs_ax">
+        <property name="text">
+         <string>X</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="3" colspan="2">
+       <widget class="MyCheckBox" name="checkBox_mutation_pre_abs_ay">
+        <property name="text">
+         <string>Y</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="5">
+       <widget class="MyCheckBox" name="checkBox_mutation_pre_abs_az">
+        <property name="text">
+         <string>Z</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="label_mutation_post_rotation">
+        <property name="text">
+         <string>Post-Rotation:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QLabel" name="label_mutation_post_rot_ax">
+        <property name="text">
+         <string>X:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="2">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_post_rotation_ax">
+        <property name="decimals">
+         <number>2</number>
+        </property>
+        <property name="minimum">
+         <double>-360.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>360.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>5.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="3">
+       <widget class="QLabel" name="label_mutation_post_rot_ay">
+        <property name="text">
+         <string>Y:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="4">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_post_rotation_ay">
+        <property name="decimals">
+         <number>2</number>
+        </property>
+        <property name="minimum">
+         <double>-360.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>360.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>5.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="5">
+       <widget class="QLabel" name="label_mutation_post_rot_az">
+        <property name="text">
+         <string>Z:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="6">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_post_rotation_az">
+        <property name="decimals">
+         <number>2</number>
+        </property>
+        <property name="minimum">
+         <double>-360.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>360.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>5.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QLabel" name="label_mutation_post_scale">
+        <property name="text">
+         <string>Post-Scale:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1" colspan="5">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_post_scale">
+        <property name="decimals">
+         <number>4</number>
+        </property>
+        <property name="minimum">
+         <double>0.001000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>100.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.100000000000000</double>
+        </property>
+        <property name="value">
+         <double>1.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0">
+       <widget class="QLabel" name="label_mutation_post_offset">
+        <property name="text">
+         <string>Post-Offset:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="1">
+       <widget class="QLabel" name="label_mutation_postoff_ax">
+        <property name="text">
+         <string>X:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="2">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_post_offset_ax">
+        <property name="decimals">
+         <number>4</number>
+        </property>
+        <property name="minimum">
+         <double>-100.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>100.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.010000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="3">
+       <widget class="QLabel" name="label_mutation_postoff_ay">
+        <property name="text">
+         <string>Y:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="4">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_post_offset_ay">
+        <property name="decimals">
+         <number>4</number>
+        </property>
+        <property name="minimum">
+         <double>-100.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>100.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.010000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="5">
+       <widget class="QLabel" name="label_mutation_postoff_az">
+        <property name="text">
+         <string>Z:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="6">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_post_offset_az">
+        <property name="decimals">
+         <number>4</number>
+        </property>
+        <property name="minimum">
+         <double>-100.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>100.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.010000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="0">
+       <widget class="QLabel" name="label_mutation_swizzle">
+        <property name="text">
+         <string>Swizzle:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="1" colspan="5">
+       <widget class="QComboBox" name="comboBox_mutation_swizzle">
+        <item>
+         <property name="text">
+          <string>XYZ (default)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>XZY</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>YXZ</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>YZX</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>ZXY</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>ZYX</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="8" column="0">
+       <widget class="QLabel" name="label_mutation_fold_type">
+        <property name="text">
+         <string>Fold Inject:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="1" colspan="2">
+       <widget class="QComboBox" name="comboBox_mutation_fold_type">
+        <item>
+         <property name="text">
+          <string>None</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Box Fold</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Sphere Fold</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Menger Fold</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Sierpinski Fold</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Abs Fold (tglad)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Kaleidoscope</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Octahedral</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Smooth (tanh)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Polynomial (Chebyshev)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Circular</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Spiral</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Sinusoidal</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Exponential (Gaussian)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Logarithmic</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Power</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Smooth Abs (tanh)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Modulo Wrap (tiling)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Nested Abs</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Sawtooth</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Bipolar</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Radial Box</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Fold+Shear</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>3D Cross</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Conformal</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Fold+Rotation</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Scale Pulse</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Triangle Wave</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="8" column="3">
+       <widget class="QLabel" name="label_mutation_fold_limit">
+        <property name="text">
+         <string>Limit:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="4">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_fold_limit">
+        <property name="decimals">
+         <number>4</number>
+        </property>
+        <property name="minimum">
+         <double>0.001000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>100.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.100000000000000</double>
+        </property>
+        <property name="value">
+         <double>1.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="5">
+       <widget class="QLabel" name="label_mutation_fold_value">
+        <property name="text">
+         <string>Value:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="6">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_fold_value">
+        <property name="decimals">
+         <number>4</number>
+        </property>
+        <property name="minimum">
+         <double>0.001000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>200.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.100000000000000</double>
+        </property>
+        <property name="value">
+         <double>2.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="0">
+       <widget class="QLabel" name="label_mutation_warp_type">
+        <property name="text">
+         <string>Warp:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="1" colspan="2">
+       <widget class="QComboBox" name="comboBox_mutation_warp_type">
+        <item>
+         <property name="text">
+          <string>None</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Sine</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Twist</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Spiral</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Radial</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Cylindrical</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Spherical Inversion</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Möbius</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>IFS Contraction</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>IFS Rotation (Golden)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Polar IFS</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Shear IFS</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="9" column="3">
+       <widget class="QLabel" name="label_mutation_warp_freq">
+        <property name="text">
+         <string>Freq:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="4">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_warp_frequency">
+        <property name="decimals">
+         <number>4</number>
+        </property>
+        <property name="minimum">
+         <double>0.001000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>100.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.100000000000000</double>
+        </property>
+        <property name="value">
+         <double>1.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="5">
+       <widget class="QLabel" name="label_mutation_warp_amp">
+        <property name="text">
+         <string>Amp:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="6">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_warp_amplitude">
+        <property name="decimals">
+         <number>4</number>
+        </property>
+        <property name="minimum">
+         <double>0.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>100.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.010000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="10" column="0">
+       <widget class="QLabel" name="label_mutation_fold_position">
+        <property name="text">
+         <string>Fold Position:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="10" column="1" colspan="2">
+       <widget class="QComboBox" name="comboBox_mutation_fold_position">
+        <item>
+         <property name="text">
+          <string>Pre-formula</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Post-formula</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Both</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="10" column="3">
+       <widget class="QLabel" name="label_mutation_kaleidoscope_sides">
+        <property name="text">
+         <string>Kal. Sides:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="10" column="4" colspan="2">
+       <widget class="MySpinBox" name="spinboxInt_mutation_kaleidoscope_sides">
+        <property name="minimum">
+         <number>3</number>
+        </property>
+        <property name="maximum">
+         <number>24</number>
+        </property>
+        <property name="value">
+         <number>6</number>
+        </property>
+       </widget>
+      </item>
+      <item row="11" column="0">
+       <widget class="QLabel" name="label_mutation_iter_range">
+        <property name="text">
+         <string>Iter Range:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="11" column="1">
+       <widget class="QLabel" name="label_mutation_iter_start">
+        <property name="text">
+         <string>Start:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="11" column="2">
+       <widget class="MySpinBox" name="spinboxInt_mutation_iteration_start">
+        <property name="minimum">
+         <number>0</number>
+        </property>
+        <property name="maximum">
+         <number>10000</number>
+        </property>
+        <property name="value">
+         <number>0</number>
+        </property>
+       </widget>
+      </item>
+      <item row="11" column="3">
+       <widget class="QLabel" name="label_mutation_iter_stop">
+        <property name="text">
+         <string>Stop:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="11" column="4" colspan="2">
+       <widget class="MySpinBox" name="spinboxInt_mutation_iteration_stop">
+        <property name="minimum">
+         <number>0</number>
+        </property>
+        <property name="maximum">
+         <number>10000</number>
+        </property>
+        <property name="value">
+         <number>250</number>
+        </property>
+       </widget>
+      </item>
+      <item row="12" column="0">
+       <widget class="QLabel" name="label_mutation_math_type">
+        <property name="text">
+         <string>Math:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="12" column="1" colspan="2">
+       <widget class="QComboBox" name="comboBox_mutation_math_type">
+        <item>
+         <property name="text">
+          <string>None</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Sin Power</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Cosh Field</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Exp Map</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Log Spiral</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Power N</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Complex Mul</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Quaternion Mul</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Bilinear (Möbius)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Inv Cylindrical</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Spiral Power</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Hyperbolic Rot</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Sphere Inversion 3D</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Loxodromic</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Parabolic (Horocycle)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Schottky Dual</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Fibonacci Word</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Maskit Bend</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Ellipsoid Inversion</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Torus Inversion</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Quat Julia-Kleinian</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Poincaré Ball (H³)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Lorentz Boost</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Conformal Flow</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Fractional Power</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Anisotrope Power</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Hyperbolic Trig Power</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Logarithmic Radius</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Polar Swap (θ↔φ)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Radial Modulation</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Dual Quaternion</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Octonion Power</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Quaternion Möbius</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Split Quaternion</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Ford Circles</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Apollonian Net</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Conformal Wedge</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Circle Inv Chain</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Hyperbolic Sine</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Bessel Approx</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Lambert W</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Error Function</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="12" column="3">
+       <widget class="QLabel" name="label_mutation_math_mix">
+        <property name="text">
+         <string>Math Mix:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="12" column="4" colspan="2">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_math_mix">
+        <property name="decimals">
+         <number>4</number>
+        </property>
+        <property name="minimum">
+         <double>0.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>1.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.010000000000000</double>
+        </property>
+        <property name="value">
+         <double>1.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="13" column="0">
+       <widget class="QLabel" name="label_mutation_math_p1">
+        <property name="text">
+         <string>P1:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="13" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_math_p1">
+        <property name="decimals">
+         <number>4</number>
+        </property>
+        <property name="minimum">
+         <double>-100.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>100.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.100000000000000</double>
+        </property>
+        <property name="value">
+         <double>2.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="13" column="2">
+       <widget class="QLabel" name="label_mutation_math_p2">
+        <property name="text">
+         <string>P2:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="13" column="3">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_math_p2">
+        <property name="decimals">
+         <number>4</number>
+        </property>
+        <property name="minimum">
+         <double>-100.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>100.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.100000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="13" column="4">
+       <widget class="QLabel" name="label_mutation_math_p3">
+        <property name="text">
+         <string>P3:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="13" column="5">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_math_p3">
+        <property name="decimals">
+         <number>4</number>
+        </property>
+        <property name="minimum">
+         <double>-100.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>100.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.100000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="13" column="6">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_math_p4">
+        <property name="decimals">
+         <number>4</number>
+        </property>
+        <property name="minimum">
+         <double>-100.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>100.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.100000000000000</double>
+        </property>
+        <property name="toolTip">
+         <string>P4 (quaternion w, bilinear d)</string>
+        </property>
+       </widget>
+      </item>
+      <item row="14" column="0">
+       <widget class="QLabel" name="label_mutation_math_p5">
+        <property name="text">
+         <string>P5:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="14" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_math_p5">
+        <property name="decimals">
+         <number>4</number>
+        </property>
+        <property name="minimum">
+         <double>-100.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>100.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.100000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="14" column="2">
+       <widget class="QLabel" name="label_mutation_math_p6">
+        <property name="text">
+         <string>P6:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="14" column="3">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_math_p6">
+        <property name="decimals">
+         <number>4</number>
+        </property>
+        <property name="minimum">
+         <double>-100.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>100.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.100000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="14" column="4">
+       <widget class="QLabel" name="label_mutation_math_p7">
+        <property name="text">
+         <string>P7:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="14" column="5">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_math_p7">
+        <property name="decimals">
+         <number>4</number>
+        </property>
+        <property name="minimum">
+         <double>-100.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>100.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.100000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="14" column="6">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_math_p8">
+        <property name="decimals">
+         <number>4</number>
+        </property>
+        <property name="minimum">
+         <double>-100.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>100.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.100000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="15" column="0">
+       <widget class="QLabel" name="label_mutation_z_mix">
+        <property name="text">
+         <string>Z-Mix:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="15" column="1" colspan="2">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_z_mix">
+        <property name="decimals">
+         <number>4</number>
+        </property>
+        <property name="minimum">
+         <double>0.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>1.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.050000000000000</double>
+        </property>
+        <property name="value">
+         <double>1.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="15" column="3">
+       <widget class="QLabel" name="label_mutation_de_scale">
+        <property name="text">
+         <string>DE Scale:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="15" column="4" colspan="2">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_de_scale">
+        <property name="decimals">
+         <number>4</number>
+        </property>
+        <property name="minimum">
+         <double>0.001000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>100.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.100000000000000</double>
+        </property>
+        <property name="value">
+         <double>1.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="16" column="0">
+       <widget class="QLabel" name="label_mutation_de_tweak">
+        <property name="text">
+         <string>DE Tweak:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="16" column="1" colspan="2">
+       <widget class="QComboBox" name="comboBox_mutation_de_tweak">
+        <item>
+         <property name="text">
+          <string>None</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Logarithmic (soft/misty)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Exponential (hard)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Noise (eroded)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Modulation (ripple)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Slack (0.9x understep)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Aggressive (1.1x overstep)</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="16" column="3">
+       <widget class="QLabel" name="label_mutation_de_tweak_p1">
+        <property name="text">
+         <string>Amp:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="16" column="4">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_de_tweak_p1">
+        <property name="decimals">
+         <number>4</number>
+        </property>
+        <property name="minimum">
+         <double>0.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>10.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.010000000000000</double>
+        </property>
+        <property name="value">
+         <double>0.100000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="16" column="5">
+       <widget class="QLabel" name="label_mutation_de_tweak_p2">
+        <property name="text">
+         <string>Freq:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="16" column="6">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_de_tweak_p2">
+        <property name="decimals">
+         <number>4</number>
+        </property>
+        <property name="minimum">
+         <double>0.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>1000.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>1.000000000000000</double>
+        </property>
+        <property name="value">
+         <double>10.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="17" column="0">
+       <widget class="QLabel" name="label_mutation_orbit_trap">
+        <property name="text">
+         <string>Orbit Trap:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="17" column="1" colspan="2">
+       <widget class="QComboBox" name="comboBox_mutation_orbit_trap">
+        <item>
+         <property name="text">
+          <string>None</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Sphere</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Cross (axes)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Line (Y-axis)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Torus</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Angle</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="17" column="3">
+       <widget class="QLabel" name="label_mutation_trap_radius">
+        <property name="text">
+         <string>Radius:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="17" column="4" colspan="2">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_trap_radius">
+        <property name="decimals">
+         <number>4</number>
+        </property>
+        <property name="minimum">
+         <double>0.001000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>100.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.100000000000000</double>
+        </property>
+        <property name="value">
+         <double>1.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="18" column="0">
+       <widget class="QCheckBox" name="checkBox_mutation_curvature_coloring">
+        <property name="text">
+         <string>Curvature Coloring</string>
+        </property>
+       </widget>
+      </item>
+      <item row="19" column="0">
+       <widget class="QLabel" name="label_mutation_julia_injection">
+        <property name="text">
+         <string>Julia Injection Point</string>
+        </property>
+       </widget>
+      </item>
+      <item row="19" column="1">
+       <widget class="QComboBox" name="comboBox_mutation_julia_injection">
+        <item>
+         <property name="text">
+          <string>None</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Pre-Fold</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Mid-Fold</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Post-Scale</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Dual (Pre+Post)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Pre-Scale Damped</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Post-Fold</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Alternating</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Radial</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Conditional</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Gradient</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Layered</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="20" column="0">
+       <widget class="QLabel" name="label_mutation_julia_start">
+        <property name="text">
+         <string>Julia Start Mode</string>
+        </property>
+       </widget>
+      </item>
+      <item row="20" column="1">
+       <widget class="QComboBox" name="comboBox_mutation_julia_start">
+        <item>
+         <property name="text">
+          <string>Ray (default)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>z₀ = c (Classic Julia)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>z₀ = ray + c</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>z₀ = 0, c = ray (Pure Julia)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>z₀ = 4D (c.x,c.y,c.z,c.w)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Inversion (z₀ = c/|c|²)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Spherical (z₀ = c/|c|)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Bipolar</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Lattice</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Perturb (z₀ = ray + ε·rand)</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="21" column="0">
+       <widget class="QLabel" name="label_mutation_julia_c_transform">
+        <property name="text">
+         <string>C-Pixel Transform</string>
+        </property>
+       </widget>
+      </item>
+      <item row="21" column="1">
+       <widget class="QComboBox" name="comboBox_mutation_julia_c_transform">
+        <item>
+         <property name="text">
+          <string>None</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Spherical Projection</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Möbius</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Rotation</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Power (c^p)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Quaternion</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Logarithmic</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Exponential</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Inversion (c/|c|²)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>BoxFold</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Spiral (XY rotation)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Mandelbrot (c²+c₀)</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="22" column="0">
+       <widget class="QLabel" name="label_mutation_julia_dynamic">
+        <property name="text">
+         <string>Dynamic Julia</string>
+        </property>
+       </widget>
+      </item>
+      <item row="22" column="1">
+       <widget class="QComboBox" name="comboBox_mutation_julia_dynamic">
+        <item>
+         <property name="text">
+          <string>None</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Orbit-Modulated</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Pulse (sin iter)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Fold-Triggered Boost</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Absorption</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Orbit Memory</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Exp Decay</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Sawtooth</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>SmoothStep</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Chaos (Logistic)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Spiral</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Bounce (|sin|)</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="23" column="0">
+       <widget class="QLabel" name="label_mutation_julia_multi">
+        <property name="text">
+         <string>Multi-C Mode</string>
+        </property>
+       </widget>
+      </item>
+      <item row="23" column="1">
+       <widget class="QComboBox" name="comboBox_mutation_julia_multi">
+        <item>
+         <property name="text">
+          <string>None</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Bipolar (L/R seeds)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>4D Component Swap</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Fourier Harmonics</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Noise</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Recursive</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Octave (layered noise)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Phase Shift</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Orbit Split (quadrant)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Iter Modulo (3-phase)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Distance Band</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Random</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="24" column="0">
+       <widget class="QLabel" name="label_mutation_julia_c_mul">
+        <property name="text">
+         <string>C Multiplier</string>
+        </property>
+       </widget>
+      </item>
+      <item row="24" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_julia_c_mul">
+        <property name="minimum">
+         <double>-10.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>10.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.100000000000000</double>
+        </property>
+        <property name="value">
+         <double>1.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="25" column="0">
+       <widget class="QLabel" name="label_mutation_julia_pulse_freq">
+        <property name="text">
+         <string>Pulse Frequency</string>
+        </property>
+       </widget>
+      </item>
+      <item row="25" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_julia_pulse_freq">
+        <property name="minimum">
+         <double>0.010000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>100.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.100000000000000</double>
+        </property>
+        <property name="value">
+         <double>1.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="26" column="0">
+       <widget class="QLabel" name="label_mutation_julia_absorb">
+        <property name="text">
+         <string>Julia Absorb Rate</string>
+        </property>
+       </widget>
+      </item>
+      <item row="26" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_julia_absorb">
+        <property name="minimum">
+         <double>0.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>1.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.010000000000000</double>
+        </property>
+        <property name="value">
+         <double>0.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="27" column="0">
+       <widget class="QLabel" name="label_mutation_julia_c_power">
+        <property name="text">
+         <string>C Power (for c^p)</string>
+        </property>
+       </widget>
+      </item>
+      <item row="27" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_julia_c_power">
+        <property name="minimum">
+         <double>0.100000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>10.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.100000000000000</double>
+        </property>
+        <property name="value">
+         <double>2.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="28" column="0">
+       <widget class="QLabel" name="label_mutation_julia_c_radius">
+        <property name="text">
+         <string>C Sphere Radius</string>
+        </property>
+       </widget>
+      </item>
+      <item row="28" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_julia_c_radius">
+        <property name="minimum">
+         <double>0.010000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>100.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.100000000000000</double>
+        </property>
+        <property name="value">
+         <double>1.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="50" column="0" colspan="7">
+       <widget class="QLabel" name="label_mutation_section_iter_header">
+        <property name="text">
+         <string>— Per-Section Iteration Ranges —</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="51" column="0">
+       <widget class="QLabel" name="label_mutation_pre_iter">
+        <property name="text">
+         <string>Pre-Transform:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="51" column="1">
+       <widget class="QLabel" name="label_mutation_pre_iter_s">
+        <property name="text">
+         <string>Start:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="51" column="2">
+       <widget class="MySpinBox" name="spinboxInt_mutation_pre_iter_start">
+        <property name="minimum">
+         <number>0</number>
+        </property>
+        <property name="maximum">
+         <number>10000</number>
+        </property>
+        <property name="value">
+         <number>0</number>
+        </property>
+       </widget>
+      </item>
+      <item row="51" column="3">
+       <widget class="QLabel" name="label_mutation_pre_iter_e">
+        <property name="text">
+         <string>Stop:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="51" column="4" colspan="2">
+       <widget class="MySpinBox" name="spinboxInt_mutation_pre_iter_stop">
+        <property name="minimum">
+         <number>0</number>
+        </property>
+        <property name="maximum">
+         <number>10000</number>
+        </property>
+        <property name="value">
+         <number>10000</number>
+        </property>
+       </widget>
+      </item>
+      <item row="52" column="0">
+       <widget class="QLabel" name="label_mutation_fold_iter">
+        <property name="text">
+         <string>Fold:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="52" column="1">
+       <widget class="QLabel" name="label_mutation_fold_iter_s">
+        <property name="text">
+         <string>Start:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="52" column="2">
+       <widget class="MySpinBox" name="spinboxInt_mutation_fold_iter_start">
+        <property name="minimum">
+         <number>0</number>
+        </property>
+        <property name="maximum">
+         <number>10000</number>
+        </property>
+        <property name="value">
+         <number>0</number>
+        </property>
+       </widget>
+      </item>
+      <item row="52" column="3">
+       <widget class="QLabel" name="label_mutation_fold_iter_e">
+        <property name="text">
+         <string>Stop:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="52" column="4" colspan="2">
+       <widget class="MySpinBox" name="spinboxInt_mutation_fold_iter_stop">
+        <property name="minimum">
+         <number>0</number>
+        </property>
+        <property name="maximum">
+         <number>10000</number>
+        </property>
+        <property name="value">
+         <number>10000</number>
+        </property>
+       </widget>
+      </item>
+      <item row="53" column="0">
+       <widget class="QLabel" name="label_mutation_warp_iter">
+        <property name="text">
+         <string>Warp:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="53" column="1">
+       <widget class="QLabel" name="label_mutation_warp_iter_s">
+        <property name="text">
+         <string>Start:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="53" column="2">
+       <widget class="MySpinBox" name="spinboxInt_mutation_warp_iter_start">
+        <property name="minimum">
+         <number>0</number>
+        </property>
+        <property name="maximum">
+         <number>10000</number>
+        </property>
+        <property name="value">
+         <number>0</number>
+        </property>
+       </widget>
+      </item>
+      <item row="53" column="3">
+       <widget class="QLabel" name="label_mutation_warp_iter_e">
+        <property name="text">
+         <string>Stop:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="53" column="4" colspan="2">
+       <widget class="MySpinBox" name="spinboxInt_mutation_warp_iter_stop">
+        <property name="minimum">
+         <number>0</number>
+        </property>
+        <property name="maximum">
+         <number>10000</number>
+        </property>
+        <property name="value">
+         <number>10000</number>
+        </property>
+       </widget>
+      </item>
+      <item row="54" column="0">
+       <widget class="QLabel" name="label_mutation_math_iter">
+        <property name="text">
+         <string>Math:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="54" column="1">
+       <widget class="QLabel" name="label_mutation_math_iter_s">
+        <property name="text">
+         <string>Start:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="54" column="2">
+       <widget class="MySpinBox" name="spinboxInt_mutation_math_iter_start">
+        <property name="minimum">
+         <number>0</number>
+        </property>
+        <property name="maximum">
+         <number>10000</number>
+        </property>
+        <property name="value">
+         <number>0</number>
+        </property>
+       </widget>
+      </item>
+      <item row="54" column="3">
+       <widget class="QLabel" name="label_mutation_math_iter_e">
+        <property name="text">
+         <string>Stop:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="54" column="4" colspan="2">
+       <widget class="MySpinBox" name="spinboxInt_mutation_math_iter_stop">
+        <property name="minimum">
+         <number>0</number>
+        </property>
+        <property name="maximum">
+         <number>10000</number>
+        </property>
+        <property name="value">
+         <number>10000</number>
+        </property>
+       </widget>
+      </item>
+      <item row="55" column="0">
+       <widget class="QLabel" name="label_mutation_post_iter">
+        <property name="text">
+         <string>Post-Transform:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="55" column="1">
+       <widget class="QLabel" name="label_mutation_post_iter_s">
+        <property name="text">
+         <string>Start:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="55" column="2">
+       <widget class="MySpinBox" name="spinboxInt_mutation_post_iter_start">
+        <property name="minimum">
+         <number>0</number>
+        </property>
+        <property name="maximum">
+         <number>10000</number>
+        </property>
+        <property name="value">
+         <number>0</number>
+        </property>
+       </widget>
+      </item>
+      <item row="55" column="3">
+       <widget class="QLabel" name="label_mutation_post_iter_e">
+        <property name="text">
+         <string>Stop:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="55" column="4" colspan="2">
+       <widget class="MySpinBox" name="spinboxInt_mutation_post_iter_stop">
+        <property name="minimum">
+         <number>0</number>
+        </property>
+        <property name="maximum">
+         <number>10000</number>
+        </property>
+        <property name="value">
+         <number>10000</number>
+        </property>
+       </widget>
+      </item>
+      <item row="56" column="0">
+       <widget class="QLabel" name="label_mutation_julia_iter">
+        <property name="text">
+         <string>Julia:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="56" column="1">
+       <widget class="QLabel" name="label_mutation_julia_iter_s">
+        <property name="text">
+         <string>Start:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="56" column="2">
+       <widget class="MySpinBox" name="spinboxInt_mutation_julia_iter_start">
+        <property name="minimum">
+         <number>0</number>
+        </property>
+        <property name="maximum">
+         <number>10000</number>
+        </property>
+        <property name="value">
+         <number>0</number>
+        </property>
+       </widget>
+      </item>
+      <item row="56" column="3">
+       <widget class="QLabel" name="label_mutation_julia_iter_e">
+        <property name="text">
+         <string>Stop:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="56" column="4" colspan="2">
+       <widget class="MySpinBox" name="spinboxInt_mutation_julia_iter_stop">
+        <property name="minimum">
+         <number>0</number>
+        </property>
+        <property name="maximum">
+         <number>10000</number>
+        </property>
+        <property name="value">
+         <number>10000</number>
+        </property>
+       </widget>
+      </item>
+      <item row="57" column="0">
+       <widget class="QLabel" name="label_mutation_julia_ext_header">
+        <property name="text">
+         <string>Julia Extended:</string>
+        </property>
+        <property name="font">
+         <font><bold>true</bold></font>
+        </property>
+       </widget>
+      </item>
+      <item row="58" column="0">
+       <widget class="QLabel" name="label_mutation_julia_decay_rate_l">
+        <property name="text">
+         <string>Decay Rate:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="58" column="1" colspan="2">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_julia_decay_rate">
+        <property name="decimals">
+         <number>4</number>
+        </property>
+        <property name="minimum">
+         <double>0.001</double>
+        </property>
+        <property name="maximum">
+         <double>10.0</double>
+        </property>
+        <property name="singleStep">
+         <double>0.01</double>
+        </property>
+        <property name="value">
+         <double>0.1</double>
+        </property>
+       </widget>
+      </item>
+      <item row="58" column="3">
+       <widget class="QLabel" name="label_mutation_julia_spiral_angle_l">
+        <property name="text">
+         <string>Spiral Angle:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="58" column="4" colspan="2">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_julia_spiral_angle">
+        <property name="decimals">
+         <number>2</number>
+        </property>
+        <property name="minimum">
+         <double>-360.0</double>
+        </property>
+        <property name="maximum">
+         <double>360.0</double>
+        </property>
+        <property name="singleStep">
+         <double>1.0</double>
+        </property>
+        <property name="value">
+         <double>15.0</double>
+        </property>
+       </widget>
+      </item>
+      <item row="59" column="0">
+       <widget class="QLabel" name="label_mutation_julia_chaos_r_l">
+        <property name="text">
+         <string>Chaos R:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="59" column="1" colspan="2">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_julia_chaos_r">
+        <property name="decimals">
+         <number>3</number>
+        </property>
+        <property name="minimum">
+         <double>2.5</double>
+        </property>
+        <property name="maximum">
+         <double>4.0</double>
+        </property>
+        <property name="singleStep">
+         <double>0.01</double>
+        </property>
+        <property name="value">
+         <double>3.8</double>
+        </property>
+       </widget>
+      </item>
+      <item row="59" column="3">
+       <widget class="QLabel" name="label_mutation_julia_threshold_l">
+        <property name="text">
+         <string>Threshold:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="59" column="4" colspan="2">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_julia_threshold">
+        <property name="decimals">
+         <number>3</number>
+        </property>
+        <property name="minimum">
+         <double>0.0</double>
+        </property>
+        <property name="maximum">
+         <double>100.0</double>
+        </property>
+        <property name="singleStep">
+         <double>0.1</double>
+        </property>
+        <property name="value">
+         <double>1.0</double>
+        </property>
+       </widget>
+      </item>
+      <item row="60" column="0">
+       <widget class="QLabel" name="label_mutation_julia_gradient_end_l">
+        <property name="text">
+         <string>Gradient End:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="60" column="1" colspan="2">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_julia_gradient_end">
+        <property name="decimals">
+         <number>3</number>
+        </property>
+        <property name="minimum">
+         <double>-10.0</double>
+        </property>
+        <property name="maximum">
+         <double>10.0</double>
+        </property>
+        <property name="singleStep">
+         <double>0.1</double>
+        </property>
+        <property name="value">
+         <double>0.0</double>
+        </property>
+       </widget>
+      </item>
+      <item row="60" column="3">
+       <widget class="QLabel" name="label_mutation_julia_box_fold_limit_l">
+        <property name="text">
+         <string>BoxFold Limit:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="60" column="4" colspan="2">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_julia_box_fold_limit">
+        <property name="decimals">
+         <number>3</number>
+        </property>
+        <property name="minimum">
+         <double>0.01</double>
+        </property>
+        <property name="maximum">
+         <double>100.0</double>
+        </property>
+        <property name="singleStep">
+         <double>0.1</double>
+        </property>
+        <property name="value">
+         <double>1.0</double>
+        </property>
+       </widget>
+      </item>
+      <item row="61" column="0">
+       <widget class="QLabel" name="label_mutation_julia_start_epsilon_l">
+        <property name="text">
+         <string>Start Epsilon:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="61" column="1" colspan="2">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_julia_start_epsilon">
+        <property name="decimals">
+         <number>5</number>
+        </property>
+        <property name="minimum">
+         <double>0.0001</double>
+        </property>
+        <property name="maximum">
+         <double>1.0</double>
+        </property>
+        <property name="singleStep">
+         <double>0.001</double>
+        </property>
+        <property name="value">
+         <double>0.001</double>
+        </property>
+       </widget>
+      </item>
+      <item row="61" column="3">
+       <widget class="QLabel" name="label_mutation_julia_layer_c2_l">
+        <property name="text">
+         <string>Layer C2:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="61" column="4" colspan="2">
+       <widget class="MyDoubleSpinBox" name="spinboxd3_mutation_julia_layer_c2_x">
+        <property name="decimals">
+         <number>4</number>
+        </property>
+        <property name="minimum">
+         <double>-10.0</double>
+        </property>
+        <property name="maximum">
+         <double>10.0</double>
+        </property>
+        <property name="singleStep">
+         <double>0.1</double>
+        </property>
+       </widget>
+      </item>
+      <item row="62" column="0">
+       <widget class="QLabel" name="label_mutation_julia_layer_c2_yz_l">
+        <property name="text">
+         <string>Layer C2 Y/Z:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="62" column="1" colspan="2">
+       <widget class="MyDoubleSpinBox" name="spinboxd3_mutation_julia_layer_c2_y">
+        <property name="decimals">
+         <number>4</number>
+        </property>
+        <property name="minimum">
+         <double>-10.0</double>
+        </property>
+        <property name="maximum">
+         <double>10.0</double>
+        </property>
+        <property name="singleStep">
+         <double>0.1</double>
+        </property>
+       </widget>
+      </item>
+      <item row="62" column="3" colspan="3">
+       <widget class="MyDoubleSpinBox" name="spinboxd3_mutation_julia_layer_c2_z">
+        <property name="decimals">
+         <number>4</number>
+        </property>
+        <property name="minimum">
+         <double>-10.0</double>
+        </property>
+        <property name="maximum">
+         <double>10.0</double>
+        </property>
+        <property name="singleStep">
+         <double>0.1</double>
+        </property>
+       </widget>
+      </item>
+      <item row="63" column="0">
+       <widget class="QLabel" name="label_mutation_julia_dist_band_l">
+        <property name="text">
+         <string>Dist Band Mid:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="63" column="1" colspan="2">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_julia_dist_band_mid">
+        <property name="decimals">
+         <number>3</number>
+        </property>
+        <property name="minimum">
+         <double>0.0</double>
+        </property>
+        <property name="maximum">
+         <double>100.0</double>
+        </property>
+        <property name="singleStep">
+         <double>0.1</double>
+        </property>
+        <property name="value">
+         <double>1.0</double>
+        </property>
+       </widget>
+      </item>
+      <item row="63" column="3">
+       <widget class="QLabel" name="label_mutation_julia_dist_band_far_l">
+        <property name="text">
+         <string>Dist Band Far:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="63" column="4" colspan="2">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_julia_dist_band_far">
+        <property name="decimals">
+         <number>3</number>
+        </property>
+        <property name="minimum">
+         <double>0.0</double>
+        </property>
+        <property name="maximum">
+         <double>100.0</double>
+        </property>
+        <property name="singleStep">
+         <double>0.1</double>
+        </property>
+        <property name="value">
+         <double>2.0</double>
+        </property>
+       </widget>
+      </item>
+      <item row="64" column="0">
+       <widget class="QLabel" name="label_julia_finetune_header">
+        <property name="text">
+         <string>Julia Fine-Tune:</string>
+        </property>
+        <property name="font">
+         <font><bold>true</bold></font>
+        </property>
+       </widget>
+      </item>
+      <item row="65" column="0">
+       <widget class="QLabel" name="label_mutation_julia_ctransform_iter_start_l">
+        <property name="text">
+         <string>C-Transf Iter Start:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="65" column="1">
+       <widget class="MySpinBox" name="spinboxInt_mutation_julia_ctransform_iter_start">
+        <property name="minimum"><number>0</number></property>
+        <property name="maximum"><number>10000</number></property>
+        <property name="value"><number>0</number></property>
+       </widget>
+      </item>
+      <item row="66" column="0">
+       <widget class="QLabel" name="label_mutation_julia_ctransform_iter_stop_l">
+        <property name="text">
+         <string>C-Transf Iter Stop:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="66" column="1">
+       <widget class="MySpinBox" name="spinboxInt_mutation_julia_ctransform_iter_stop">
+        <property name="minimum"><number>0</number></property>
+        <property name="maximum"><number>10000</number></property>
+        <property name="value"><number>10000</number></property>
+       </widget>
+      </item>
+      <item row="67" column="0">
+       <widget class="QLabel" name="label_mutation_julia_dynamic_iter_start_l">
+        <property name="text">
+         <string>Dynamic Iter Start:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="67" column="1">
+       <widget class="MySpinBox" name="spinboxInt_mutation_julia_dynamic_iter_start">
+        <property name="minimum"><number>0</number></property>
+        <property name="maximum"><number>10000</number></property>
+        <property name="value"><number>0</number></property>
+       </widget>
+      </item>
+      <item row="68" column="0">
+       <widget class="QLabel" name="label_mutation_julia_dynamic_iter_stop_l">
+        <property name="text">
+         <string>Dynamic Iter Stop:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="68" column="1">
+       <widget class="MySpinBox" name="spinboxInt_mutation_julia_dynamic_iter_stop">
+        <property name="minimum"><number>0</number></property>
+        <property name="maximum"><number>10000</number></property>
+        <property name="value"><number>10000</number></property>
+       </widget>
+      </item>
+      <item row="69" column="0">
+       <widget class="QLabel" name="label_mutation_julia_multi_iter_start_l">
+        <property name="text">
+         <string>Multi-C Iter Start:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="69" column="1">
+       <widget class="MySpinBox" name="spinboxInt_mutation_julia_multi_iter_start">
+        <property name="minimum"><number>0</number></property>
+        <property name="maximum"><number>10000</number></property>
+        <property name="value"><number>0</number></property>
+       </widget>
+      </item>
+      <item row="70" column="0">
+       <widget class="QLabel" name="label_mutation_julia_multi_iter_stop_l">
+        <property name="text">
+         <string>Multi-C Iter Stop:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="70" column="1">
+       <widget class="MySpinBox" name="spinboxInt_mutation_julia_multi_iter_stop">
+        <property name="minimum"><number>0</number></property>
+        <property name="maximum"><number>10000</number></property>
+        <property name="value"><number>10000</number></property>
+       </widget>
+      </item>
+      <item row="71" column="0">
+       <widget class="QLabel" name="label_mutation_julia_ctransform_strength_l">
+        <property name="text">
+         <string>C-Transform Strength:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="71" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_julia_ctransform_strength">
+        <property name="decimals"><number>3</number></property>
+        <property name="minimum"><double>0.0</double></property>
+        <property name="maximum"><double>2.0</double></property>
+        <property name="singleStep"><double>0.05</double></property>
+        <property name="value"><double>1.0</double></property>
+       </widget>
+      </item>
+      <item row="72" column="0">
+       <widget class="QLabel" name="label_mutation_julia_dynamic_strength_l">
+        <property name="text">
+         <string>Dynamic Strength:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="72" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_julia_dynamic_strength">
+        <property name="decimals"><number>3</number></property>
+        <property name="minimum"><double>0.0</double></property>
+        <property name="maximum"><double>5.0</double></property>
+        <property name="singleStep"><double>0.05</double></property>
+        <property name="value"><double>1.0</double></property>
+       </widget>
+      </item>
+      <item row="73" column="0">
+       <widget class="QLabel" name="label_mutation_julia_multi_strength_l">
+        <property name="text">
+         <string>Multi-C Strength:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="73" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_julia_multi_strength">
+        <property name="decimals"><number>3</number></property>
+        <property name="minimum"><double>0.0</double></property>
+        <property name="maximum"><double>2.0</double></property>
+        <property name="singleStep"><double>0.05</double></property>
+        <property name="value"><double>1.0</double></property>
+       </widget>
+      </item>
+      <item row="74" column="0">
+       <widget class="QLabel" name="label_mutation_julia_injection_strength_l">
+        <property name="text">
+         <string>Injection Strength:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="74" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_julia_injection_strength">
+        <property name="decimals"><number>3</number></property>
+        <property name="minimum"><double>0.0</double></property>
+        <property name="maximum"><double>10.0</double></property>
+        <property name="singleStep"><double>0.1</double></property>
+        <property name="value"><double>1.0</double></property>
+       </widget>
+      </item>
+      <item row="75" column="0">
+       <widget class="QLabel" name="label_mutation_julia_de_factor_l">
+        <property name="text">
+         <string>DE Factor:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="75" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_mutation_julia_de_factor">
+        <property name="decimals"><number>3</number></property>
+        <property name="minimum"><double>0.1</double></property>
+        <property name="maximum"><double>2.0</double></property>
+        <property name="singleStep"><double>0.05</double></property>
+        <property name="value"><double>1.0</double></property>
+       </widget>
+      </item>
+      <item row="76" column="0">
+       <widget class="QLabel" name="label_mutation_de_iter">
+        <property name="text">
+         <string>DE/Output:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="57" column="1">
+       <widget class="QLabel" name="label_mutation_de_iter_s">
+        <property name="text">
+         <string>Start:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="57" column="2">
+       <widget class="MySpinBox" name="spinboxInt_mutation_de_iter_start">
+        <property name="minimum">
+         <number>0</number>
+        </property>
+        <property name="maximum">
+         <number>10000</number>
+        </property>
+        <property name="value">
+         <number>0</number>
+        </property>
+       </widget>
+      </item>
+      <item row="57" column="3">
+       <widget class="QLabel" name="label_mutation_de_iter_e">
+        <property name="text">
+         <string>Stop:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="57" column="4" colspan="2">
+       <widget class="MySpinBox" name="spinboxInt_mutation_de_iter_stop">
+        <property name="minimum">
+         <number>0</number>
+        </property>
+        <property name="maximum">
+         <number>10000</number>
+        </property>
+        <property name="value">
+         <number>10000</number>
+        </property>
+       </widget>
+      </item>
+      <item row="29" column="0">
+       <widget class="QLabel" name="label_c_rotation">
+        <property name="text">
+         <string>C-Rotation</string>
+        </property>
+       </widget>
+      </item>
+      <item row="29" column="1">
+       <widget class="MyDoubleSpinBox" name="spinboxd3_mutation_julia_c_rot_x">
+        <property name="decimals"><number>2</number></property>
+        <property name="minimum"><double>-360.000000</double></property>
+        <property name="maximum"><double>360.000000</double></property>
+        <property name="singleStep"><double>1.000000</double></property>
+       </widget>
+      </item>
+      <item row="29" column="2">
+       <widget class="MyDoubleSpinBox" name="spinboxd3_mutation_julia_c_rot_y">
+        <property name="decimals"><number>2</number></property>
+        <property name="minimum"><double>-360.000000</double></property>
+        <property name="maximum"><double>360.000000</double></property>
+        <property name="singleStep"><double>1.000000</double></property>
+       </widget>
+      </item>
+      <item row="29" column="3">
+       <widget class="MyDoubleSpinBox" name="spinboxd3_mutation_julia_c_rot_z">
+        <property name="decimals"><number>2</number></property>
+        <property name="minimum"><double>-360.000000</double></property>
+        <property name="maximum"><double>360.000000</double></property>
+        <property name="singleStep"><double>1.000000</double></property>
+       </widget>
+      </item>
+      <item row="30" column="0">
+       <widget class="QLabel" name="label_m_bius_a">
+        <property name="text">
+         <string>Möbius A</string>
+        </property>
+       </widget>
+      </item>
+      <item row="30" column="1" colspan="2">
+       <widget class="MyDoubleSpinBox" name="spinboxd_mutation_julia_c_mobius_a" />
+      </item>
+      <item row="31" column="0">
+       <widget class="QLabel" name="label_m_bius_b">
+        <property name="text">
+         <string>Möbius B</string>
+        </property>
+       </widget>
+      </item>
+      <item row="31" column="1" colspan="2">
+       <widget class="MyDoubleSpinBox" name="spinboxd_mutation_julia_c_mobius_b" />
+      </item>
+      <item row="32" column="0">
+       <widget class="QLabel" name="label_m_bius_d">
+        <property name="text">
+         <string>Möbius D</string>
+        </property>
+       </widget>
+      </item>
+      <item row="32" column="1" colspan="2">
+       <widget class="MyDoubleSpinBox" name="spinboxd_mutation_julia_c_mobius_d" />
+      </item>
+      <item row="33" column="0">
+       <widget class="QLabel" name="label_pulse_amp">
+        <property name="text">
+         <string>Pulse Amp</string>
+        </property>
+       </widget>
+      </item>
+      <item row="33" column="1" colspan="2">
+       <widget class="MyDoubleSpinBox" name="spinboxd_mutation_julia_pulse_amp" />
+      </item>
+      <item row="34" column="0">
+       <widget class="QLabel" name="label_noise_freq">
+        <property name="text">
+         <string>Noise Freq</string>
+        </property>
+       </widget>
+      </item>
+      <item row="34" column="1" colspan="2">
+       <widget class="MyDoubleSpinBox" name="spinboxd_mutation_julia_noise_freq" />
+      </item>
+      <item row="35" column="0">
+       <widget class="QLabel" name="label_noise_amp">
+        <property name="text">
+         <string>Noise Amp</string>
+        </property>
+       </widget>
+      </item>
+      <item row="35" column="1" colspan="2">
+       <widget class="MyDoubleSpinBox" name="spinboxd_mutation_julia_noise_amp" />
+      </item>
+      <item row="36" column="0">
+       <widget class="QLabel" name="label_fourier_c2">
+        <property name="text">
+         <string>Fourier C2</string>
+        </property>
+       </widget>
+      </item>
+      <item row="36" column="1">
+       <widget class="MyDoubleSpinBox" name="spinboxd3_mutation_julia_fourier_c2_x">
+        <property name="decimals"><number>3</number></property>
+        <property name="minimum"><double>-10.000000</double></property>
+        <property name="maximum"><double>10.000000</double></property>
+        <property name="singleStep"><double>0.100000</double></property>
+       </widget>
+      </item>
+      <item row="36" column="2">
+       <widget class="MyDoubleSpinBox" name="spinboxd3_mutation_julia_fourier_c2_y">
+        <property name="decimals"><number>3</number></property>
+        <property name="minimum"><double>-10.000000</double></property>
+        <property name="maximum"><double>10.000000</double></property>
+        <property name="singleStep"><double>0.100000</double></property>
+       </widget>
+      </item>
+      <item row="36" column="3">
+       <widget class="MyDoubleSpinBox" name="spinboxd3_mutation_julia_fourier_c2_z">
+        <property name="decimals"><number>3</number></property>
+        <property name="minimum"><double>-10.000000</double></property>
+        <property name="maximum"><double>10.000000</double></property>
+        <property name="singleStep"><double>0.100000</double></property>
+       </widget>
+      </item>
+      <item row="37" column="0">
+       <widget class="QLabel" name="label_fourier_c3">
+        <property name="text">
+         <string>Fourier C3</string>
+        </property>
+       </widget>
+      </item>
+      <item row="37" column="1">
+       <widget class="MyDoubleSpinBox" name="spinboxd3_mutation_julia_fourier_c3_x">
+        <property name="decimals"><number>3</number></property>
+        <property name="minimum"><double>-10.000000</double></property>
+        <property name="maximum"><double>10.000000</double></property>
+        <property name="singleStep"><double>0.100000</double></property>
+       </widget>
+      </item>
+      <item row="37" column="2">
+       <widget class="MyDoubleSpinBox" name="spinboxd3_mutation_julia_fourier_c3_y">
+        <property name="decimals"><number>3</number></property>
+        <property name="minimum"><double>-10.000000</double></property>
+        <property name="maximum"><double>10.000000</double></property>
+        <property name="singleStep"><double>0.100000</double></property>
+       </widget>
+      </item>
+      <item row="37" column="3">
+       <widget class="MyDoubleSpinBox" name="spinboxd3_mutation_julia_fourier_c3_z">
+        <property name="decimals"><number>3</number></property>
+        <property name="minimum"><double>-10.000000</double></property>
+        <property name="maximum"><double>10.000000</double></property>
+        <property name="singleStep"><double>0.100000</double></property>
+       </widget>
+      </item>
+      <item row="38" column="0">
+       <widget class="QLabel" name="label_bipolar_cr">
+        <property name="text">
+         <string>Bipolar CR</string>
+        </property>
+       </widget>
+      </item>
+      <item row="38" column="1">
+       <widget class="MyDoubleSpinBox" name="spinboxd3_mutation_julia_bipolar_cr_x">
+        <property name="decimals"><number>3</number></property>
+        <property name="minimum"><double>-10.000000</double></property>
+        <property name="maximum"><double>10.000000</double></property>
+        <property name="singleStep"><double>0.100000</double></property>
+       </widget>
+      </item>
+      <item row="38" column="2">
+       <widget class="MyDoubleSpinBox" name="spinboxd3_mutation_julia_bipolar_cr_y">
+        <property name="decimals"><number>3</number></property>
+        <property name="minimum"><double>-10.000000</double></property>
+        <property name="maximum"><double>10.000000</double></property>
+        <property name="singleStep"><double>0.100000</double></property>
+       </widget>
+      </item>
+      <item row="38" column="3">
+       <widget class="MyDoubleSpinBox" name="spinboxd3_mutation_julia_bipolar_cr_z">
+        <property name="decimals"><number>3</number></property>
+        <property name="minimum"><double>-10.000000</double></property>
+        <property name="maximum"><double>10.000000</double></property>
+        <property name="singleStep"><double>0.100000</double></property>
+       </widget>
+      </item>
+      <item row="58" column="0" colspan="6">
+       <widget class="QWidget" name="widget_mutation_sections">
+        <layout class="QVBoxLayout" name="vboxLayout_mutation_sections">
+         <property name="spacing">
+          <number>2</number>
+         </property>
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_mutation_sections_top">
+           <item>
+            <widget class="QPushButton" name="pushButton_mutation_randomize_weights_2">
+             <property name="toolTip"><string>Randomize all weights</string></property>
+             <property name="text"><string>Randomize</string></property>
+             <property name="styleSheet"><string>font-weight: bold; color: #FF8C00;</string></property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButton_mutation_reset_all">
+             <property name="toolTip"><string>Reset all mutation parameters to defaults</string></property>
+             <property name="text"><string>Reset All</string></property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel"><property name="text"><string>Master:</string></property></widget>
+           </item>
+           <item>
+            <widget class="MyDoubleSpinBox" name="footerMasterWeightSpin">
+             <property name="minimum"><double>0.0</double></property>
+             <property name="maximum"><double>1.0</double></property>
+             <property name="singleStep"><double>0.05</double></property>
+             <property name="value"><double>1.0</double></property>
+             <property name="decimals"><number>2</number></property>
+            </widget>
+           </item>
+           <item>
+            <spacer><property name="orientation"><enum>Qt::Horizontal</enum></property><property name="sizeHint" stdset="0"><size><width>20</width><height>20</height></size></property></spacer>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="cMutationClipInvPanel" name="widget_mutation_clip_inv_panel" native="true"/>
+         </item>
+         <item>
+          <widget class="cMutationJosPkPanel" name="widget_mutation_jos_pk_panel" native="true"/>
+         </item>
+         <item>
+          <widget class="cMutationSystemsPanel" name="widget_mutation_systems_panel" native="true"/>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="cMutationTailPanel" name="widget_mutation_tail_panel" native="true"/>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>MyGroupBox</class>
+   <extends>QGroupBox</extends>
+   <header>my_group_box.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>MySpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>my_spin_box.h</header>
+  </customwidget>
+  <customwidget>
+   <class>MyCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>my_check_box.h</header>
+  </customwidget>
+  <customwidget>
+   <class>cMutationSystemsPanel</class>
+   <extends>QWidget</extends>
+   <header location="global">mutation_systems_panel.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>cMutationTailPanel</class>
+   <extends>QWidget</extends>
+   <header location="global">mutation_tail_panel.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>cMutationJosPkPanel</class>
+   <extends>QWidget</extends>
+   <header location="global">mutation_jos_pk_panel.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>cMutationClipInvPanel</class>
+   <extends>QWidget</extends>
+   <header location="global">mutation_clip_inv_panel.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>MyDoubleSpinBox</class>
+   <extends>QDoubleSpinBox</extends>
+   <header>my_double_spin_box.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources />
+ <connections />
+</ui>

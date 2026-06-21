@@ -1,0 +1,102 @@
+/**
+ * Mandelbulber v2, a 3D fractal generator       ,=#MKNmMMKmmßMNWy,
+ *                                             ,B" ]L,,p%%%,,,§;, "K
+ * Copyright (C) 2014-24 Mandelbulber Team     §R-==%w["'~5]m%=L.=~5N
+ *                                        ,=mm=§M ]=4 yJKA"/-Nsaj  "Bw,==,,
+ * This file is part of Mandelbulber.    §R.r= jw",M  Km .mM  FW ",§=ß., ,TN
+ *                                     ,4R =%["w[N=7]J '"5=],""]]M,w,-; T=]M
+ * Mandelbulber is free software:     §R.ß~-Q/M=,=5"v"]=Qf,'§"M= =,M.§ Rz]M"Kw
+ * you can redistribute it and/or     §w "xDY.J ' -"m=====WeC=\ ""%""y=%"]"" §
+ * modify it under the terms of the    "§M=M =D=4"N #"%==A%p M§ M6  R' #"=~.4M
+ * GNU General Public License as        §W =, ][T"]C  §  § '§ e===~ U  !§[Z ]N
+ * published by the                    4M",,Jm=,"=e~  §  §  j]]""N  BmM"py=ßM
+ * Free Software Foundation,          ]§ T,M=& 'YmMMpM9MMM%=w=,,=MT]M m§;'§,
+ * either version 3 of the License,    TWw [.j"5=~N[=§%=%W,T ]R,"=="Y[LFT ]N
+ * or (at your option)                   TW=,-#"%=;[  =Q:["V""  ],,M.m == ]N
+ * any later version.                      J§"mr"] ,=,," =="""J]= M"M"]==ß"
+ *                                          §= "=C=4 §"eM "=B:m|4"]#F,§~
+ * Mandelbulber is distributed in            "9w=,,]w em%wJ '"~" ,=,,ß"
+ * the hope that it will be useful,                 . "K=  ,=RMMMßM"""
+ * but WITHOUT ANY WARRANTY;                            .'''
+ * without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * See the GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with Mandelbulber. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * ###########################################################################
+ *
+ * Authors: Krzysztof Marczak (buddhi1980@gmail.com)
+ *
+ * Compute - function fractal computation
+ */
+
+#ifndef MANDELBULBER2_SRC_COMPUTE_FRACTAL_HPP_
+#define MANDELBULBER2_SRC_COMPUTE_FRACTAL_HPP_
+
+#include <utility>
+
+#include "algebra.hpp"
+#include "calculation_mode.h"
+#include "common_params.hpp"
+#include "hybrid_fractal_sequences.h"
+
+// forward declarations
+class cNineFractals;
+class cMaterial;
+
+struct sFractalIn
+{
+	CVector3 point;
+	int minN;
+	int forcedMaxiter;
+	int maxiterMultiplier;
+	int orbitTrapIndex;
+	const sCommonParams *common;
+	int forcedFormulaIndex;
+	bool normalCalculationMode;
+	const cMaterial *material;
+
+	sFractalIn(CVector3 _point, int _minN, int _forcedMaxiter, int _maxiterMultiplier,
+		int _orbitTrapIndex, const sCommonParams *_common, int _forcedFormulaIndex,
+		bool _normalCalculationMode, const cMaterial *_material = nullptr)
+			: point(_point),
+				minN(_minN),
+				forcedMaxiter(_forcedMaxiter),
+				maxiterMultiplier(_maxiterMultiplier),
+				orbitTrapIndex(_orbitTrapIndex),
+				common(_common),
+				forcedFormulaIndex(_forcedFormulaIndex),
+				normalCalculationMode(_normalCalculationMode),
+				material(_material)
+	{
+	}
+};
+
+struct sFractalOut
+{
+	CVector3 z;
+	CVector3 normal; // Fractal normal vector (used by sphere orbit trap)
+	double distance;
+	double colorIndex;
+	double fakeAO;
+	double orbitTrapR;
+	double pseudoKleinianDE; // passed through from aux for deltaDE path
+	double finalDE;          // aux.DE at end of iteration (for weight system)
+	int iters;
+	bool maxiter;
+	int orbitTrapMinIter;  // iteration at which orbit trap distance was smallest
+	int orbitTrapCenterIndex;  // multi-center index (0-23) that had minimum distance
+	// Orbit sample buffer for multi-depth texture blending
+	static const int maxOrbitSamples = 4;
+	CVector3 orbitSamples[4];   // z-snapshots at 4 iteration depths
+	int orbitSampleIters[4];    // at which iteration each sample was taken
+	int orbitSampleCount;       // valid samples (0-4)
+};
+
+template <fractal::enumCalculationMode Mode>
+void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequence *sequence,
+	const sFractalIn &in, sFractalOut *out);
+
+#endif /* MANDELBULBER2_SRC_COMPUTE_FRACTAL_HPP_ */

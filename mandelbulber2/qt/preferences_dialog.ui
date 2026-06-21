@@ -1,0 +1,2202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>cPreferencesDialog</class>
+ <widget class="QDialog" name="cPreferencesDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>658</width>
+    <height>942</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Program Preferences</string>
+  </property>
+  <property name="windowIcon">
+   <iconset theme="preferences-system" resource="icons.qrc">
+    <normaloff>:/system/icons/preferences-system.svg</normaloff>:/system/icons/preferences-system.svg</iconset>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="leftMargin">
+    <number>2</number>
+   </property>
+   <property name="topMargin">
+    <number>2</number>
+   </property>
+   <property name="rightMargin">
+    <number>2</number>
+   </property>
+   <property name="bottomMargin">
+    <number>2</number>
+   </property>
+   <item>
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="tabGeneral">
+      <attribute name="icon">
+       <iconset theme="preferences-system" resource="icons.qrc">
+        <normaloff>:/system/icons/preferences-system.svg</normaloff>:/system/icons/preferences-system.svg</iconset>
+      </attribute>
+      <attribute name="title">
+       <string>General</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_7">
+       <item>
+        <widget class="QScrollArea" name="scrollArea_general">
+         <property name="widgetResizable">
+          <bool>true</bool>
+         </property>
+         <widget class="QWidget" name="scrollAreaWidgetContents_general">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>630</width>
+            <height>858</height>
+           </rect>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_general">
+           <property name="spacing">
+            <number>2</number>
+           </property>
+           <property name="leftMargin">
+            <number>2</number>
+           </property>
+           <property name="topMargin">
+            <number>2</number>
+           </property>
+           <property name="rightMargin">
+            <number>2</number>
+           </property>
+           <property name="bottomMargin">
+            <number>2</number>
+           </property>
+           <item>
+            <widget class="QGroupBox" name="groupBox_file_paths">
+             <property name="title">
+              <string>Default file paths</string>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_3">
+              <property name="spacing">
+               <number>2</number>
+              </property>
+              <property name="leftMargin">
+               <number>2</number>
+              </property>
+              <property name="topMargin">
+               <number>2</number>
+              </property>
+              <property name="rightMargin">
+               <number>2</number>
+              </property>
+              <property name="bottomMargin">
+               <number>2</number>
+              </property>
+              <item>
+               <layout class="QGridLayout" name="gridLayout_file_paths">
+                <property name="spacing">
+                 <number>2</number>
+                </property>
+                <item row="2" column="2">
+                 <widget class="MyLineEdit" name="text_default_textures_path"/>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="label_settings_path">
+                  <property name="text">
+                   <string>Settings:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="4" column="2">
+                 <widget class="MyLineEdit" name="text_toolbar_path"/>
+                </item>
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label_image_path">
+                  <property name="text">
+                   <string>Images:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="2">
+                 <widget class="MyLineEdit" name="text_default_settings_path"/>
+                </item>
+                <item row="2" column="0">
+                 <widget class="QLabel" name="label_textures_path">
+                  <property name="text">
+                   <string>Default textures:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="4" column="0">
+                 <widget class="QLabel" name="label_textures_path_2">
+                  <property name="text">
+                   <string>Toolbar</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="3">
+                 <widget class="QPushButton" name="pushButton_select_textures_path">
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="icon">
+                   <iconset theme="folder" resource="icons.qrc">
+                    <normaloff>:/system/icons/folder.svg</normaloff>:/system/icons/folder.svg</iconset>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="0">
+                 <widget class="QLabel" name="label_textures_path_3">
+                  <property name="text">
+                   <string>User textures:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="2">
+                 <widget class="MyLineEdit" name="text_default_image_path"/>
+                </item>
+                <item row="0" column="3">
+                 <widget class="QPushButton" name="pushButton_select_image_path">
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="icon">
+                   <iconset theme="folder" resource="icons.qrc">
+                    <normaloff>:/system/icons/folder.svg</normaloff>:/system/icons/folder.svg</iconset>
+                  </property>
+                 </widget>
+                </item>
+                <item row="4" column="3">
+                 <widget class="QPushButton" name="pushButton_select_toolbar_path">
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="icon">
+                   <iconset theme="folder" resource="icons.qrc">
+                    <normaloff>:/system/icons/folder.svg</normaloff>:/system/icons/folder.svg</iconset>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="3">
+                 <widget class="QPushButton" name="pushButton_select_settings_path">
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="icon">
+                   <iconset theme="folder" resource="icons.qrc">
+                    <normaloff>:/system/icons/folder.svg</normaloff>:/system/icons/folder.svg</iconset>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="2">
+                 <widget class="MyLineEdit" name="text_default_user_textures_path"/>
+                </item>
+                <item row="3" column="3">
+                 <widget class="QPushButton" name="pushButton_select_user_textures_path">
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="icon">
+                   <iconset theme="folder" resource="icons.qrc">
+                    <normaloff>:/system/icons/folder.svg</normaloff>:/system/icons/folder.svg</iconset>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="groupBox_system_look_and_feel">
+             <property name="title">
+              <string>System Look and Feel</string>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_5">
+              <property name="spacing">
+               <number>2</number>
+              </property>
+              <property name="leftMargin">
+               <number>2</number>
+              </property>
+              <property name="topMargin">
+               <number>2</number>
+              </property>
+              <property name="rightMargin">
+               <number>2</number>
+              </property>
+              <property name="bottomMargin">
+               <number>2</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="label">
+                <property name="text">
+                 <string>To apply changes of these settings you need to restart the application</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <layout class="QGridLayout" name="gridLayout_system_look_and_feel">
+                <property name="spacing">
+                 <number>2</number>
+                </property>
+                <item row="2" column="1">
+                 <widget class="MyComboBox" name="comboBox_ui_skin">
+                  <item>
+                   <property name="text">
+                    <string>normal</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>dark</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>light</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>space light</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>space dark</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>space dark green</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>space dark blue</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>space dark red</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>3x3lion</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+                <item row="3" column="1">
+                 <widget class="MySpinBox" name="spinboxInt_ui_font_size">
+                  <property name="minimum">
+                   <number>5</number>
+                  </property>
+                  <property name="maximum">
+                   <number>50</number>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QComboBox" name="comboboxLanguage">
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Language of application texts.&lt;/p&gt;&lt;p&gt;You need to restart application to apply changes.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="6" column="0">
+                 <widget class="QLabel" name="label_toolbar_icon_size">
+                  <property name="text">
+                   <string>Toolbar icon size (pixels)</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="MyComboBox" name="comboBox_ui_style_type"/>
+                </item>
+                <item row="6" column="1">
+                 <widget class="MySpinBox" name="spinboxInt_toolbar_icon_size">
+                  <property name="minimum">
+                   <number>20</number>
+                  </property>
+                  <property name="maximum">
+                   <number>400</number>
+                  </property>
+                  <property name="value">
+                   <number>40</number>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="label_6">
+                  <property name="text">
+                   <string>UI Style type</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="0">
+                 <widget class="QLabel" name="label_7">
+                  <property name="text">
+                   <string>UI font size (points)</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="0">
+                 <widget class="QLabel" name="label_4">
+                  <property name="text">
+                   <string>UI Skin</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="5" column="0">
+                 <widget class="QLabel" name="label_19">
+                  <property name="text">
+                   <string>Custom formula editor font size (points)</string>
+                  </property>
+                  <property name="wordWrap">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item row="8" column="0" colspan="2">
+                 <widget class="MyGroupBox" name="groupCheck_ui_colorize">
+                  <property name="title">
+                   <string>Colorize group&amp;Boxes</string>
+                  </property>
+                  <property name="checkable">
+                   <bool>true</bool>
+                  </property>
+                  <layout class="QVBoxLayout" name="verticalLayout_2">
+                   <property name="leftMargin">
+                    <number>2</number>
+                   </property>
+                   <property name="topMargin">
+                    <number>2</number>
+                   </property>
+                   <property name="rightMargin">
+                    <number>2</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>2</number>
+                   </property>
+                   <item>
+                    <layout class="QGridLayout" name="gridLayout_3">
+                     <item row="0" column="0">
+                      <widget class="QLabel" name="label_16">
+                       <property name="text">
+                        <string>Seed for random colors</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="1">
+                      <widget class="MySpinBox" name="spinboxInt_ui_colorize_random_seed">
+                       <property name="minimum">
+                        <number>0</number>
+                       </property>
+                       <property name="maximum">
+                        <number>65535</number>
+                       </property>
+                       <property name="value">
+                        <number>0</number>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+                <item row="5" column="1">
+                 <widget class="MySpinBox" name="spinboxInt_custom_formula_font_size">
+                  <property name="minimum">
+                   <number>5</number>
+                  </property>
+                  <property name="maximum">
+                   <number>50</number>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label_11">
+                  <property name="text">
+                   <string>Language</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="7" column="0" colspan="2">
+                 <widget class="MyCheckBox" name="checkBox_display_tooltips">
+                  <property name="text">
+                   <string>Display tooltips</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="4" column="1">
+                 <widget class="MySpinBox" name="spinboxInt_ui_layout_spacing">
+                  <property name="minimum">
+                   <number>1</number>
+                  </property>
+                  <property name="maximum">
+                   <number>50</number>
+                  </property>
+                 </widget>
+                </item>
+                <item row="4" column="0">
+                 <widget class="QLabel" name="label_37">
+                  <property name="text">
+                   <string>UI layout spacing</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="groupBox">
+             <property name="title">
+              <string>Randomizer</string>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_11">
+              <property name="leftMargin">
+               <number>2</number>
+              </property>
+              <property name="topMargin">
+               <number>2</number>
+              </property>
+              <property name="rightMargin">
+               <number>2</number>
+              </property>
+              <property name="bottomMargin">
+               <number>2</number>
+              </property>
+              <item>
+               <layout class="QGridLayout" name="gridLayout_5">
+                <property name="spacing">
+                 <number>0</number>
+                </property>
+                <item row="0" column="1">
+                 <widget class="MyComboBox" name="comboBox_randomizer_preview_size">
+                  <item>
+                   <property name="text">
+                    <string>Small</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Medium</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Big</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label_17">
+                  <property name="text">
+                   <string>Preview size</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="label_18">
+                  <property name="text">
+                   <string>Preview quality</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="MyComboBox" name="comboBox_randomizer_preview_quality">
+                  <item>
+                   <property name="text">
+                    <string>Low</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Medium</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>High</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="groupBox_system_look_and_feel_2">
+             <property name="title">
+              <string>Advanced</string>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_9">
+              <property name="spacing">
+               <number>2</number>
+              </property>
+              <property name="leftMargin">
+               <number>2</number>
+              </property>
+              <property name="topMargin">
+               <number>2</number>
+              </property>
+              <property name="rightMargin">
+               <number>2</number>
+              </property>
+              <property name="bottomMargin">
+               <number>2</number>
+              </property>
+              <item>
+               <layout class="QGridLayout" name="gridLayout">
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <property name="spacing">
+                 <number>2</number>
+                </property>
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label_14">
+                  <property name="text">
+                   <string>Max. number of CPU cores to use</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="MySpinBox" name="spinboxInt_limit_CPU_cores">
+                  <property name="minimum">
+                   <number>1</number>
+                  </property>
+                  <property name="maximum">
+                   <number>1000</number>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="label_20">
+                  <property name="text">
+                   <string>Max. RAM for texture cache (GB)</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="MySpinBox" name="spinboxInt_maximum_texture_cache_size">
+                  <property name="minimum">
+                   <number>1</number>
+                  </property>
+                  <property name="maximum">
+                   <number>1024</number>
+                  </property>
+                  <property name="singleStep">
+                   <number>1</number>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QGridLayout" name="gridLayout_system_look_and_feel_2">
+                <property name="spacing">
+                 <number>2</number>
+                </property>
+                <item row="2" column="0">
+                 <widget class="QLabel" name="label_13">
+                  <property name="text">
+                   <string>Logging verbosity level</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="MyComboBox" name="comboBox_threads_priority">
+                  <property name="frame">
+                   <bool>true</bool>
+                  </property>
+                  <item>
+                   <property name="text">
+                    <string>Lowest priority</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Low priority</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Normal priority</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>High priority</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="MyDoubleSpinBox" name="spinbox_auto_refresh_period">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Multiplies fractal c constant by this value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                  <property name="prefix">
+                   <string/>
+                  </property>
+                  <property name="suffix">
+                   <string/>
+                  </property>
+                  <property name="decimals">
+                   <number>2</number>
+                  </property>
+                  <property name="minimum">
+                   <double>0.010000000000000</double>
+                  </property>
+                  <property name="maximum">
+                   <double>100.000000000000000</double>
+                  </property>
+                  <property name="singleStep">
+                   <double>0.100000000000000</double>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="label_15">
+                  <property name="text">
+                   <string>Image auto-refresh period [seconds]</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label_threads_priority">
+                  <property name="text">
+                   <string>Rendering threads priority</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="1">
+                 <widget class="MySpinBox" name="spinboxInt_logging_verbosity">
+                  <property name="minimum">
+                   <number>0</number>
+                  </property>
+                  <property name="maximum">
+                   <number>3</number>
+                  </property>
+                  <property name="value">
+                   <number>1</number>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="0" colspan="2">
+                 <widget class="MyCheckBox" name="checkBox_console_output_enable">
+                  <property name="text">
+                   <string>Console debug output</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_path_to_logfile">
+                <property name="text">
+                 <string>Path to log file:</string>
+                </property>
+                <property name="wordWrap">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="MyCheckBox" name="checkBox_quit_do_not_ask_again">
+             <property name="text">
+              <string>Do not ask for quit confirmation</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="MyCheckBox" name="checkBox_description_popup_do_not_show_again">
+             <property name="text">
+              <string>Do not show description on settings load</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButton_retrieve_toolbar">
+             <property name="text">
+              <string>Retrieve default toolbar presets</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButton_retrieve_materials">
+             <property name="text">
+              <string>Retrieve default materials in material folder</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tabImage">
+      <attribute name="icon">
+       <iconset theme="image-x-generic" resource="icons.qrc">
+        <normaloff>:/system/icons/image-x-generic.svg</normaloff>:/system/icons/image-x-generic.svg</iconset>
+      </attribute>
+      <attribute name="title">
+       <string>Image</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_8">
+       <item>
+        <widget class="QScrollArea" name="scrollArea_image">
+         <property name="widgetResizable">
+          <bool>true</bool>
+         </property>
+         <widget class="QWidget" name="scrollAreaWidgetContents_image">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>329</width>
+            <height>830</height>
+           </rect>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_image">
+           <property name="spacing">
+            <number>2</number>
+           </property>
+           <property name="leftMargin">
+            <number>2</number>
+           </property>
+           <property name="topMargin">
+            <number>2</number>
+           </property>
+           <property name="rightMargin">
+            <number>2</number>
+           </property>
+           <property name="bottomMargin">
+            <number>2</number>
+           </property>
+           <item>
+            <widget class="QGroupBox" name="groupBox_4">
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;JPG&lt;/span&gt;&lt;/p&gt;&lt;p&gt;The quality value will be ignored, since JPG only supports 8 bit precision.&lt;/p&gt;&lt;p&gt;Every image channel will be saved as a separate file with appended postfix.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;PNG&lt;/span&gt;&lt;/p&gt;&lt;p&gt;The quality value can be 8 bit or 16 bit (32 bit will result in 16 bit precision).&lt;/p&gt;&lt;p&gt;Every image channel will be saved as a separate file. &lt;/p&gt;&lt;p&gt;Only exception can be alpha channel:&lt;/p&gt;&lt;p&gt;If both Color and Alpha channel are selected and &amp;quot;Append alpha to image (only PNG and TIFF)&amp;quot;, then color + alpha will be saved to a RGBA image with quality and postfix of color row.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;TIFF&lt;/span&gt;&lt;/p&gt;&lt;p&gt;The quality value can be 8 bit, 16 bit or 32 bit.&lt;/p&gt;&lt;p&gt;Every image channel will be saved as a separate file. &lt;/p&gt;&lt;p&gt;Only exception can be alpha channel:&lt;/p&gt;&lt;p&gt;If both Color and Alpha channel are selected and &amp;quot;Append alpha to image (only PNG and TIFF)&amp;quot;, then color + alpha will be saved to a RGBA image with quality and postfix of color row.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;EXR&lt;/span&gt;&lt;/p&gt;&lt;p&gt;The quality value can be 16 bit or 32 bit (8 bit will result in 16 bit precision).&lt;/p&gt;&lt;p&gt;The postfix will be ignored since all image channels will be saved to one file.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="title">
+              <string>Image Settings</string>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_6">
+              <property name="spacing">
+               <number>2</number>
+              </property>
+              <property name="leftMargin">
+               <number>2</number>
+              </property>
+              <property name="topMargin">
+               <number>2</number>
+              </property>
+              <property name="rightMargin">
+               <number>2</number>
+              </property>
+              <property name="bottomMargin">
+               <number>2</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="label_12">
+                <property name="text">
+                 <string>These settings affect &quot;Save as JPG/PNG/EXR/TIFF&quot; actions
+ and saving animation frames.</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <layout class="QGridLayout" name="gridLayout_4">
+                <property name="spacing">
+                 <number>2</number>
+                </property>
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label_10">
+                  <property name="text">
+                   <string>Image Channel</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QLabel" name="label_8">
+                  <property name="text">
+                   <string>Quality</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="2">
+                 <widget class="QLabel" name="label_9">
+                  <property name="text">
+                   <string>Postfix</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="MyCheckBox" name="checkBox_color_enabled">
+                  <property name="text">
+                   <string>Color</string>
+                  </property>
+                  <property name="checked">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="MyComboBox" name="comboBox_color_quality">
+                  <item>
+                   <property name="text">
+                    <string>8 bit</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>16 bit</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>32 bit</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+                <item row="1" column="2">
+                 <widget class="MyLineEdit" name="text_color_postfix">
+                  <property name="text">
+                   <string/>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="0">
+                 <widget class="MyCheckBox" name="checkBox_alpha_enabled">
+                  <property name="text">
+                   <string>Alpha</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="1">
+                 <widget class="MyComboBox" name="comboBox_alpha_quality">
+                  <item>
+                   <property name="text">
+                    <string>8 bit</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>16 bit</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>32 bit</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+                <item row="2" column="2">
+                 <widget class="MyLineEdit" name="text_alpha_postfix">
+                  <property name="text">
+                   <string/>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="0">
+                 <widget class="MyCheckBox" name="checkBox_zbuffer_enabled">
+                  <property name="text">
+                   <string>Z Buffer</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="1">
+                 <widget class="MyComboBox" name="comboBox_zbuffer_quality">
+                  <item>
+                   <property name="text">
+                    <string>8 bit</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>16 bit</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>32 bit</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+                <item row="3" column="2">
+                 <widget class="MyLineEdit" name="text_zbuffer_postfix">
+                  <property name="text">
+                   <string/>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="groupBox_3">
+             <property name="title">
+              <string>Z-buffer options</string>
+             </property>
+             <layout class="QGridLayout" name="gridLayout_6">
+              <property name="leftMargin">
+               <number>2</number>
+              </property>
+              <property name="topMargin">
+               <number>2</number>
+              </property>
+              <property name="rightMargin">
+               <number>2</number>
+              </property>
+              <property name="bottomMargin">
+               <number>2</number>
+              </property>
+              <property name="spacing">
+               <number>2</number>
+              </property>
+              <item row="0" column="0">
+               <widget class="MyCheckBox" name="checkBox_zbuffer_invert">
+                <property name="text">
+                 <string>Invert z-buffer</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="MyCheckBox" name="checkBox_zbuffer_logarithmic">
+                <property name="text">
+                 <string>Logarithmic scale</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="0">
+               <widget class="MyGroupBox" name="groupCheck_zbuffer_constant_range">
+                <property name="title">
+                 <string>Use constant depth range</string>
+                </property>
+                <property name="checkable">
+                 <bool>true</bool>
+                </property>
+                <layout class="QGridLayout" name="gridLayout_7">
+                 <property name="leftMargin">
+                  <number>2</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>2</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>2</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>2</number>
+                 </property>
+                 <property name="spacing">
+                  <number>2</number>
+                 </property>
+                 <item row="1" column="0">
+                  <widget class="QLabel" name="label_2">
+                   <property name="text">
+                    <string>maximum z-depth</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="0">
+                  <widget class="QLabel" name="label_3">
+                   <property name="text">
+                    <string>minimum z-depth</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="1">
+                  <widget class="MyLineEdit" name="logedit_zbuffer_min_depth"/>
+                 </item>
+                 <item row="1" column="1">
+                  <widget class="MyLineEdit" name="logedit_zbuffer_max_depth"/>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout_10">
+             <item>
+              <widget class="MyGroupBox" name="groupCheck_optional_image_channels_enabled">
+               <property name="title">
+                <string>Op&amp;tional Image Channels</string>
+               </property>
+               <property name="checkable">
+                <bool>true</bool>
+               </property>
+               <layout class="QGridLayout" name="gridLayout_optional_image_channels">
+                <property name="spacing">
+                 <number>2</number>
+                </property>
+                <item row="5" column="0">
+                 <widget class="MyCheckBox" name="checkBox_diffuse_enabled">
+                  <property name="text">
+                   <string>Diffuse</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="1">
+                 <widget class="MyComboBox" name="comboBox_normal_quality">
+                  <item>
+                   <property name="text">
+                    <string>8 bit</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>16 bit</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>32 bit</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+                <item row="0" column="0" colspan="3">
+                 <widget class="QLabel" name="label_rerender_required_info">
+                  <property name="text">
+                   <string>Following channels are only rendered on demand
+and will only be present after enabling and re-render.</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="4" column="0">
+                 <widget class="MyCheckBox" name="checkBox_world_enabled">
+                  <property name="text">
+                   <string>World</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="9" column="0">
+                 <widget class="MyCheckBox" name="checkBox_not_denoised_channel_enabled">
+                  <property name="text">
+                   <string>Not denoised</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="label_image_channel_optional">
+                  <property name="text">
+                   <string>Image Channel</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="8" column="0">
+                 <widget class="MyCheckBox" name="checkBox_gi_channel_enabled">
+                  <property name="text">
+                   <string>Global illumination</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="QLabel" name="label_image_quality_optional">
+                  <property name="text">
+                   <string>Quality</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="6" column="1">
+                 <widget class="MyComboBox" name="comboBox_normalWorld_quality">
+                  <item>
+                   <property name="text">
+                    <string>8 bit</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>16 bit</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>32 bit</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+                <item row="2" column="0">
+                 <widget class="MyCheckBox" name="checkBox_normal_enabled">
+                  <property name="text">
+                   <string>Surface Normal</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="4" column="1">
+                 <widget class="MyComboBox" name="comboBox_world_quality">
+                  <item>
+                   <property name="text">
+                    <string>8 bit</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>16 bit</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>32 bit</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+                <item row="7" column="1">
+                 <widget class="MyComboBox" name="comboBox_shadow_channel_quality">
+                  <item>
+                   <property name="text">
+                    <string>8 bit</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>16 bit</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>32 bit</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+                <item row="9" column="1">
+                 <widget class="MyComboBox" name="comboBox_not_denoised_channel_quality">
+                  <item>
+                   <property name="text">
+                    <string>8 bit</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>16 bit</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>32 bit</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+                <item row="3" column="2">
+                 <widget class="MyLineEdit" name="text_specular_postfix">
+                  <property name="text">
+                   <string/>
+                  </property>
+                 </widget>
+                </item>
+                <item row="4" column="2">
+                 <widget class="MyLineEdit" name="text_world_postfix">
+                  <property name="text">
+                   <string/>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="0">
+                 <widget class="MyCheckBox" name="checkBox_specular_enabled">
+                  <property name="text">
+                   <string>Specular</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="5" column="2">
+                 <widget class="MyLineEdit" name="text_diffuse_postfix">
+                  <property name="text">
+                   <string/>
+                  </property>
+                 </widget>
+                </item>
+                <item row="5" column="1">
+                 <widget class="MyComboBox" name="comboBox_diffuse_quality">
+                  <item>
+                   <property name="text">
+                    <string>8 bit</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>16 bit</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>32 bit</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+                <item row="7" column="2">
+                 <widget class="MyLineEdit" name="text_shadow_channel_postfix">
+                  <property name="text">
+                   <string/>
+                  </property>
+                 </widget>
+                </item>
+                <item row="6" column="2">
+                 <widget class="MyLineEdit" name="text_normalWorld_postfix">
+                  <property name="text">
+                   <string/>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="2">
+                 <widget class="QLabel" name="label_image_postfix_optional">
+                  <property name="text">
+                   <string>Postfix</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="6" column="0">
+                 <widget class="MyCheckBox" name="checkBox_normalWorld_enabled">
+                  <property name="text">
+                   <string>World Normal</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="8" column="2">
+                 <widget class="MyLineEdit" name="text_gi_channel_postfix">
+                  <property name="text">
+                   <string/>
+                  </property>
+                 </widget>
+                </item>
+                <item row="7" column="0">
+                 <widget class="MyCheckBox" name="checkBox_shadow_channel_enabled">
+                  <property name="text">
+                   <string>Shadows</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="1">
+                 <widget class="MyComboBox" name="comboBox_specular_quality">
+                  <item>
+                   <property name="text">
+                    <string>8 bit</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>16 bit</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>32 bit</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+                <item row="2" column="2">
+                 <widget class="MyLineEdit" name="text_normal_postfix">
+                  <property name="text">
+                   <string/>
+                  </property>
+                 </widget>
+                </item>
+                <item row="8" column="1">
+                 <widget class="MyComboBox" name="comboBox_gi_channel_quality">
+                  <item>
+                   <property name="text">
+                    <string>8 bit</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>16 bit</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>32 bit</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+                <item row="9" column="2">
+                 <widget class="MyLineEdit" name="text_not_denoised_channel_postfix">
+                  <property name="text">
+                   <string/>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="groupBox_2">
+             <property name="title">
+              <string>Misc Image Settings</string>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_4">
+              <property name="spacing">
+               <number>2</number>
+              </property>
+              <property name="leftMargin">
+               <number>2</number>
+              </property>
+              <property name="topMargin">
+               <number>2</number>
+              </property>
+              <property name="rightMargin">
+               <number>2</number>
+              </property>
+              <property name="bottomMargin">
+               <number>2</number>
+              </property>
+              <item>
+               <layout class="QGridLayout" name="gridLayout_2">
+                <property name="spacing">
+                 <number>2</number>
+                </property>
+                <item row="4" column="0" colspan="2">
+                 <widget class="MyCheckBox" name="checkBox_linear_colorspace">
+                  <property name="text">
+                   <string>Use linear colorspace (only EXR)</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="0" colspan="2">
+                 <widget class="MyCheckBox" name="checkBox_save_channels_in_separate_folders">
+                  <property name="text">
+                   <string>Save each channel in separate folder</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="5" column="0" colspan="2">
+                 <widget class="MyCheckBox" name="checkBox_stereoscopic_in_separate_files">
+                  <property name="text">
+                   <string>Save stereoscopic left and right images in separate files
+(stereoscopic mode has to be &quot;left-right&quot;)</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label_5">
+                  <property name="text">
+                   <string>JPEG quality:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="0">
+                 <widget class="MyCheckBox" name="checkBox_append_alpha_png">
+                  <property name="text">
+                   <string>Append alpha to image (only PNG and TIFF)</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="MySpinBox" name="spinboxInt_jpeg_quality">
+                  <property name="minimum">
+                   <number>1</number>
+                  </property>
+                  <property name="maximum">
+                   <number>100</number>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QCheckBox" name="checkBox_save_settings_with_image">
+                  <property name="text">
+                   <string>Save fractal settings together with the image</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="groupBox_thumbnail_options">
+             <property name="title">
+              <string>Thumbnail options</string>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_thumbnail_options">
+              <property name="spacing">
+               <number>2</number>
+              </property>
+              <property name="leftMargin">
+               <number>2</number>
+              </property>
+              <property name="topMargin">
+               <number>2</number>
+              </property>
+              <property name="rightMargin">
+               <number>2</number>
+              </property>
+              <property name="bottomMargin">
+               <number>2</number>
+              </property>
+              <item>
+               <layout class="QGridLayout" name="gridLayout_thumbnail_options">
+                <property name="spacing">
+                 <number>2</number>
+                </property>
+                <item row="1" column="0" colspan="2">
+                 <widget class="MyCheckBox" name="checkBox_thumbnails_with_opencl">
+                  <property name="text">
+                   <string>Render thumbnails with OpenCL (if OpenCL enabled)</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QPushButton" name="pushButton_generate_thumbnail_cache">
+                  <property name="text">
+                   <string>Generate</string>
+                  </property>
+                  <property name="icon">
+                   <iconset theme="applications-graphics" resource="icons.qrc">
+                    <normaloff>:/system/icons/applications-graphics.svg</normaloff>:/system/icons/applications-graphics.svg</iconset>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="0">
+                 <widget class="QPushButton" name="pushButton_clear_thumbnail_cache">
+                  <property name="text">
+                   <string>Clear</string>
+                  </property>
+                  <property name="icon">
+                   <iconset theme="process-stop" resource="icons.qrc">
+                    <normaloff>:/system/icons/process-stop.svg</normaloff>:/system/icons/process-stop.svg</iconset>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_2">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tabOpenCL">
+      <attribute name="icon">
+       <iconset resource="icons.qrc">
+        <normaloff>:/system/icons/gpu.png</normaloff>:/system/icons/gpu.png</iconset>
+      </attribute>
+      <attribute name="title">
+       <string>OpenCL (GPU)</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_outer_OpenCL">
+       <item>
+        <widget class="QScrollArea" name="scrollArea_OpenCL">
+         <property name="widgetResizable">
+          <bool>true</bool>
+         </property>
+         <widget class="QWidget" name="scrollAreaWidgetContents_OpenCL">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>233</width>
+            <height>774</height>
+           </rect>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_OpenCL">
+           <property name="spacing">
+            <number>2</number>
+           </property>
+           <property name="leftMargin">
+            <number>2</number>
+           </property>
+           <property name="topMargin">
+            <number>2</number>
+           </property>
+           <property name="rightMargin">
+            <number>2</number>
+           </property>
+           <property name="bottomMargin">
+            <number>2</number>
+           </property>
+           <item>
+            <widget class="MyGroupBox" name="groupCheck_opencl_enabled">
+             <property name="title">
+              <string>OpenCL ena&amp;ble</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_opencl_inner">
+              <property name="spacing">
+               <number>2</number>
+              </property>
+              <property name="leftMargin">
+               <number>2</number>
+              </property>
+              <property name="topMargin">
+               <number>2</number>
+              </property>
+              <property name="rightMargin">
+               <number>2</number>
+              </property>
+              <property name="bottomMargin">
+               <number>2</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="label_explanation_opencl">
+                <property name="text">
+                 <string>This will offload the rendering to an OpenCL device (GPU, CPU, Accelerator Card).</string>
+                </property>
+                <property name="wordWrap">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <layout class="QGridLayout" name="gridLayout_opencl_settings">
+                <property name="spacing">
+                 <number>2</number>
+                </property>
+                <item row="4" column="1">
+                 <widget class="QSlider" name="sliderInt_opencl_memory_limit">
+                  <property name="minimum">
+                   <number>1</number>
+                  </property>
+                  <property name="maximum">
+                   <number>100000</number>
+                  </property>
+                  <property name="singleStep">
+                   <number>8</number>
+                  </property>
+                  <property name="pageStep">
+                   <number>64</number>
+                  </property>
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="2">
+                 <widget class="MySpinBox" name="spinboxInt_opencl_job_size_multiplier">
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Job size multiplier increases size of OpenCL jobs (size of tiles).&lt;/p&gt;&lt;p&gt;Higher value can increase rendering speed, but too high can slow down rendering.&lt;/p&gt;&lt;p&gt;Too high value can cause higher GPU memory usage makeing the program unstable. It also increases the time of rendering a single tile, which can cause GPU driver timeouts.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                  <property name="minimum">
+                   <number>1</number>
+                  </property>
+                  <property name="maximum">
+                   <number>100000</number>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="label_opencl_device">
+                  <property name="text">
+                   <string>Device</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="0">
+                 <widget class="QLabel" name="label_precision">
+                  <property name="text">
+                   <string>Precision</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="8" column="2">
+                 <widget class="QPushButton" name="pushButton_select_clang_format_path">
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="icon">
+                   <iconset theme="folder" resource="icons.qrc">
+                    <normaloff>:/system/icons/folder.svg</normaloff>:/system/icons/folder.svg</iconset>
+                  </property>
+                 </widget>
+                </item>
+                <item row="8" column="1">
+                 <widget class="MyLineEdit" name="text_clang_format_path"/>
+                </item>
+                <item row="5" column="0" colspan="3">
+                 <widget class="QLabel" name="label_opencl_suggested_memory_limit">
+                  <property name="text">
+                   <string>Suggested memory limit:</string>
+                  </property>
+                  <property name="wordWrap">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label_opencl_device_2">
+                  <property name="text">
+                   <string>Platforms</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="0" colspan="2">
+                 <widget class="QLabel" name="label_opencl_memory_limit_2">
+                  <property name="text">
+                   <string>Job size multiplier:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1" colspan="2">
+                 <layout class="QVBoxLayout" name="verticalLayout_opencl_device">
+                  <item>
+                   <widget class="MyComboBox" name="comboBox_opencl_device_type">
+                    <item>
+                     <property name="text">
+                      <string>All GPU devices</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>Default device</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>All devices</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>All CPU devices</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>All accelerators</string>
+                     </property>
+                    </item>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QListWidget" name="listWidget_opencl_device_list">
+                    <property name="selectionMode">
+                     <enum>QAbstractItemView::ExtendedSelection</enum>
+                    </property>
+                    <property name="layoutMode">
+                     <enum>QListView::SinglePass</enum>
+                    </property>
+                    <property name="viewMode">
+                     <enum>QListView::ListMode</enum>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item row="7" column="0" colspan="3">
+                 <widget class="MyCheckBox" name="checkBox_opencl_disable_build_cache">
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;It disables 'compute cache' used by NVidia driver. It is sometimes needed to use this option to refresh precompiled OpenCL programs after changing OpenCL source files (e.g. after upgrade of the program).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                  <property name="text">
+                   <string>Disable cache for OpenCL programs</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="6" column="0" colspan="3">
+                 <widget class="MyCheckBox" name="checkBox_opencl_use_fast_relaxed_math">
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;It enables -cl-fast-relaxed-math OpenCL flag. It provides additional speed by removing some checks to the math operations like division by zero or Not-a-Number. In some cases it can lead to unpredictable results.&lt;/p&gt;&lt;p&gt;It is needed to restart the program to apply this option.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                  <property name="text">
+                   <string>Use fast relaxed math</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="1" colspan="2">
+                 <widget class="MyComboBox" name="comboBox_opencl_precision">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
+                  <property name="editable">
+                   <bool>false</bool>
+                  </property>
+                  <item>
+                   <property name="text">
+                    <string>single</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>double</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+                <item row="4" column="0">
+                 <widget class="QLabel" name="label_opencl_memory_limit">
+                  <property name="text">
+                   <string>Memory Limit:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="8" column="0">
+                 <widget class="QLabel" name="label_clang_format_path">
+                  <property name="text">
+                   <string>clang-format path:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1" colspan="2">
+                 <widget class="QListWidget" name="listWidget_opencl_platform_list">
+                  <property name="selectionMode">
+                   <enum>QAbstractItemView::SingleSelection</enum>
+                  </property>
+                  <property name="resizeMode">
+                   <enum>QListView::Adjust</enum>
+                  </property>
+                  <property name="layoutMode">
+                   <enum>QListView::SinglePass</enum>
+                  </property>
+                  <property name="viewMode">
+                   <enum>QListView::ListMode</enum>
+                  </property>
+                 </widget>
+                </item>
+                <item row="4" column="2">
+                 <widget class="MySpinBox" name="spinboxInt_opencl_memory_limit">
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Memory limit for single memory buffer used by OpenCL programs.&lt;/p&gt;&lt;p&gt;It should be set not higher than suggested memory limit showed below.&lt;/p&gt;&lt;p&gt;If SSAO or DOF effects need more memory than limit, they will be rendered using CPU.&lt;/p&gt;&lt;p&gt;Higher memory limit can allow rendering SSAO and DOF effects using GPU at higher resolution, but program can produce errors or be unstable.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                  <property name="minimum">
+                   <number>1</number>
+                  </property>
+                  <property name="maximum">
+                   <number>100000</number>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_explanation_opencl_missing_features">
+                <property name="text">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Mandelbulber can use OpenCL to accelerate rendering.&lt;br/&gt;For more information about setup and workflow see the User Manual&lt;br/&gt;under Menu &amp;gt; Help &amp;gt; User Manual.&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
+                <property name="wordWrap">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_opencl">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab">
+      <attribute name="icon">
+       <iconset theme="input-keyboard">
+        <normaloff>.</normaloff>.</iconset>
+      </attribute>
+      <attribute name="title">
+       <string>Shortcuts</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_12">
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QPushButton" name="pushButton_key_layout_default">
+           <property name="text">
+            <string>Default layout</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_key_layout_mb3d">
+           <property name="text">
+            <string>MB3D layout</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QScrollArea" name="scrollArea">
+         <property name="widgetResizable">
+          <bool>true</bool>
+         </property>
+         <widget class="QWidget" name="scrollAreaWidgetContents">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>136</width>
+            <height>460</height>
+           </rect>
+          </property>
+          <layout class="QFormLayout" name="formLayout">
+           <item row="0" column="0">
+            <widget class="QKeySequenceEdit" name="keySequenceEdit_key_render"/>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLabel" name="label_21">
+             <property name="text">
+              <string>Render</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QKeySequenceEdit" name="keySequenceEdit_key_stop"/>
+           </item>
+           <item row="1" column="1">
+            <widget class="QLabel" name="label_22">
+             <property name="text">
+              <string>Stop</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QKeySequenceEdit" name="keySequenceEdit_key_move_forward"/>
+           </item>
+           <item row="2" column="1">
+            <widget class="QLabel" name="label_23">
+             <property name="text">
+              <string>Move forward</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0">
+            <widget class="QKeySequenceEdit" name="keySequenceEdit_key_move_backward"/>
+           </item>
+           <item row="3" column="1">
+            <widget class="QLabel" name="label_24">
+             <property name="text">
+              <string>Move backward</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="0">
+            <widget class="QKeySequenceEdit" name="keySequenceEdit_key_move_left"/>
+           </item>
+           <item row="4" column="1">
+            <widget class="QLabel" name="label_25">
+             <property name="text">
+              <string>Move left</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="0">
+            <widget class="QKeySequenceEdit" name="keySequenceEdit_key_move_right"/>
+           </item>
+           <item row="5" column="1">
+            <widget class="QLabel" name="label_26">
+             <property name="text">
+              <string>Move right</string>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="0">
+            <widget class="QKeySequenceEdit" name="keySequenceEdit_key_move_up"/>
+           </item>
+           <item row="6" column="1">
+            <widget class="QLabel" name="label_27">
+             <property name="text">
+              <string>Move up</string>
+             </property>
+            </widget>
+           </item>
+           <item row="7" column="0">
+            <widget class="QKeySequenceEdit" name="keySequenceEdit_key_move_down"/>
+           </item>
+           <item row="7" column="1">
+            <widget class="QLabel" name="label_28">
+             <property name="text">
+              <string>Move down</string>
+             </property>
+            </widget>
+           </item>
+           <item row="8" column="0">
+            <widget class="QKeySequenceEdit" name="keySequenceEdit_key_rotate_left"/>
+           </item>
+           <item row="8" column="1">
+            <widget class="QLabel" name="label_29">
+             <property name="text">
+              <string>Rotate left</string>
+             </property>
+            </widget>
+           </item>
+           <item row="9" column="0">
+            <widget class="QKeySequenceEdit" name="keySequenceEdit_key_rotate_right"/>
+           </item>
+           <item row="9" column="1">
+            <widget class="QLabel" name="label_30">
+             <property name="text">
+              <string>Rotate right</string>
+             </property>
+            </widget>
+           </item>
+           <item row="10" column="0">
+            <widget class="QKeySequenceEdit" name="keySequenceEdit_key_rotate_up"/>
+           </item>
+           <item row="10" column="1">
+            <widget class="QLabel" name="label_33">
+             <property name="text">
+              <string>Rotate up</string>
+             </property>
+            </widget>
+           </item>
+           <item row="11" column="0">
+            <widget class="QKeySequenceEdit" name="keySequenceEdit_key_rotate_down"/>
+           </item>
+           <item row="14" column="0">
+            <widget class="QKeySequenceEdit" name="keySequenceEdit_key_add_keyframe"/>
+           </item>
+           <item row="14" column="1">
+            <widget class="QLabel" name="label_31">
+             <property name="text">
+              <string>Add keyframe</string>
+             </property>
+            </widget>
+           </item>
+           <item row="15" column="0">
+            <widget class="QKeySequenceEdit" name="keySequenceEdit_key_modify_keyframe"/>
+           </item>
+           <item row="15" column="1">
+            <widget class="QLabel" name="label_32">
+             <property name="text">
+              <string>Modify keyframe</string>
+             </property>
+            </widget>
+           </item>
+           <item row="11" column="1">
+            <widget class="QLabel" name="label_34">
+             <property name="text">
+              <string>Rotate down</string>
+             </property>
+            </widget>
+           </item>
+           <item row="12" column="0">
+            <widget class="QKeySequenceEdit" name="keySequenceEdit_key_roll_left"/>
+           </item>
+           <item row="13" column="0">
+            <widget class="QKeySequenceEdit" name="keySequenceEdit_key_roll_right"/>
+           </item>
+           <item row="12" column="1">
+            <widget class="QLabel" name="label_35">
+             <property name="text">
+              <string>Roll left</string>
+             </property>
+            </widget>
+           </item>
+           <item row="13" column="1">
+            <widget class="QLabel" name="label_36">
+             <property name="text">
+              <string>Roll right</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>MySpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>my_spin_box.h</header>
+  </customwidget>
+  <customwidget>
+   <class>MyCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>my_check_box.h</header>
+  </customwidget>
+  <customwidget>
+   <class>MyLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>my_line_edit.h</header>
+  </customwidget>
+  <customwidget>
+   <class>MyComboBox</class>
+   <extends>QComboBox</extends>
+   <header>my_combo_box.h</header>
+  </customwidget>
+  <customwidget>
+   <class>MyGroupBox</class>
+   <extends>QGroupBox</extends>
+   <header>my_group_box.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>MyDoubleSpinBox</class>
+   <extends>QDoubleSpinBox</extends>
+   <header>my_double_spin_box.h</header>
+  </customwidget>
+ </customwidgets>
+ <tabstops>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>scrollArea_general</tabstop>
+  <tabstop>text_default_image_path</tabstop>
+  <tabstop>pushButton_select_image_path</tabstop>
+  <tabstop>text_default_settings_path</tabstop>
+  <tabstop>pushButton_select_settings_path</tabstop>
+  <tabstop>text_default_textures_path</tabstop>
+  <tabstop>pushButton_select_textures_path</tabstop>
+  <tabstop>comboboxLanguage</tabstop>
+  <tabstop>comboBox_ui_style_type</tabstop>
+  <tabstop>comboBox_ui_skin</tabstop>
+  <tabstop>spinboxInt_ui_font_size</tabstop>
+  <tabstop>spinboxInt_toolbar_icon_size</tabstop>
+  <tabstop>spinboxInt_limit_CPU_cores</tabstop>
+  <tabstop>comboBox_threads_priority</tabstop>
+  <tabstop>spinboxInt_logging_verbosity</tabstop>
+  <tabstop>checkBox_quit_do_not_ask_again</tabstop>
+  <tabstop>checkBox_description_popup_do_not_show_again</tabstop>
+  <tabstop>pushButton_retrieve_toolbar</tabstop>
+  <tabstop>pushButton_retrieve_materials</tabstop>
+  <tabstop>scrollArea_image</tabstop>
+  <tabstop>checkBox_color_enabled</tabstop>
+  <tabstop>comboBox_color_quality</tabstop>
+  <tabstop>text_color_postfix</tabstop>
+  <tabstop>checkBox_alpha_enabled</tabstop>
+  <tabstop>comboBox_alpha_quality</tabstop>
+  <tabstop>text_alpha_postfix</tabstop>
+  <tabstop>checkBox_zbuffer_enabled</tabstop>
+  <tabstop>comboBox_zbuffer_quality</tabstop>
+  <tabstop>text_zbuffer_postfix</tabstop>
+  <tabstop>checkBox_normal_enabled</tabstop>
+  <tabstop>comboBox_normal_quality</tabstop>
+  <tabstop>text_normal_postfix</tabstop>
+  <tabstop>checkBox_specular_enabled</tabstop>
+  <tabstop>comboBox_specular_quality</tabstop>
+  <tabstop>text_specular_postfix</tabstop>
+  <tabstop>spinboxInt_jpeg_quality</tabstop>
+  <tabstop>checkBox_save_channels_in_separate_folders</tabstop>
+  <tabstop>pushButton_clear_thumbnail_cache</tabstop>
+  <tabstop>pushButton_generate_thumbnail_cache</tabstop>
+  <tabstop>scrollArea_OpenCL</tabstop>
+  <tabstop>groupCheck_opencl_enabled</tabstop>
+  <tabstop>comboBox_opencl_precision</tabstop>
+  <tabstop>sliderInt_opencl_memory_limit</tabstop>
+  <tabstop>spinboxInt_opencl_memory_limit</tabstop>
+ </tabstops>
+ <resources>
+  <include location="icons.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>cPreferencesDialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>250</x>
+     <y>457</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>157</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>cPreferencesDialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>318</x>
+     <y>457</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>286</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
