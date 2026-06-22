@@ -2105,7 +2105,7 @@ cosine</string>
    </item>
 
       <item>
-    <widget class="MyGroupCheck" name="groupCheck_transf_jk_params_false">
+    <widget class="MyGroupBox" name="groupCheck_transf_jk_params_false">
      <property name="title"><string>Jos Kleinian Extensions</string></property>
      <property name="checked"><bool>false</bool></property>
      <layout class="QGridLayout">

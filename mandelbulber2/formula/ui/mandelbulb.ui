@@ -229,7 +229,7 @@
    </item>
 
       <item>
-    <widget class="MyGroupCheck" name="groupCheck_transf_mb_params_false">
+    <widget class="MyGroupBox" name="groupCheck_transf_mb_params_false">
      <property name="title"><string>Mandelbulb Extensions</string></property>
      <property name="checked"><bool>false</bool></property>
      <layout class="QGridLayout">
