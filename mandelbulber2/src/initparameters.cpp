@@ -2210,6 +2210,18 @@ void InitFractalParams(std::shared_ptr<cParameterContainer> par)
 	par->addParam("transf_jk_wrap_softness", 0.0, morphLinear, paramStandard);
 	par->addParam("transf_jk_anisotropic_inv", 0.0, morphLinear, paramStandard);
 
+	// Mandelbulb specific parameters
+	par->addParam("transf_mb_power_osc", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_mb_power_osc_freq", 1.0, morphLinear, paramStandard);
+	par->addParam("transf_mb_theta_warp", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_mb_phi_warp", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_mb_radial_stretch", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_mb_pre_twist_z", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_mb_turbulence", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_mb_gradient_color", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_mb_de_tweak", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_mb_cpixel_scale", 0.0, morphLinear, paramStandard);
+
 	par->addParam("transf_start_iterations", 0, morphLinear, paramStandard);
 	par->addParam("transf_start_iterations_250", 250, morphLinear, paramStandard);
 	par->addParam("transf_stop_iterations", 250, morphLinear, paramStandard);

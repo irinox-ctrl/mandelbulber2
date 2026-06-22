@@ -544,6 +544,18 @@ sFractal::sFractal(const std::shared_ptr<cParameterContainer> container)
 	transformCommon.jkWrapSoftness = container->Get<double>("transf_jk_wrap_softness");
 	transformCommon.jkAnisotropicInv = container->Get<double>("transf_jk_anisotropic_inv");
 
+	// Mandelbulb specific parameters
+	transformCommon.mbPowerOsc = container->Get<double>("transf_mb_power_osc");
+	transformCommon.mbPowerOscFreq = container->Get<double>("transf_mb_power_osc_freq");
+	transformCommon.mbThetaWarp = container->Get<double>("transf_mb_theta_warp");
+	transformCommon.mbPhiWarp = container->Get<double>("transf_mb_phi_warp");
+	transformCommon.mbRadialStretch = container->Get<double>("transf_mb_radial_stretch");
+	transformCommon.mbPreTwistZ = container->Get<double>("transf_mb_pre_twist_z");
+	transformCommon.mbTurbulence = container->Get<double>("transf_mb_turbulence");
+	transformCommon.mbGradientColor = container->Get<double>("transf_mb_gradient_color");
+	transformCommon.mbDETweak = container->Get<double>("transf_mb_de_tweak");
+	transformCommon.mbCpixelScale = container->Get<double>("transf_mb_cpixel_scale");
+
 	transformCommon.startIterations = container->Get<int>("transf_start_iterations");
 	transformCommon.startIterations250 = container->Get<int>("transf_start_iterations_250");
 	transformCommon.stopIterations = container->Get<int>("transf_stop_iterations");

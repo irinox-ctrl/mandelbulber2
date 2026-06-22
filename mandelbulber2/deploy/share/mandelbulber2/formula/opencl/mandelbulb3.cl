@@ -42,6 +42,115 @@ REAL4 Mandelbulb3Iteration(REAL4 z, __constant sFractalCl *fractal, sExtendedAux
 
 	z *= aux->r;
 
+	// =============================================
+	// === MANDELBULB EXTENSIONS (#1-#10) ===
+	// =============================================
+
+	// === MB #1-2: Power Oscillation ===
+	if (fractal->transformCommon.mbPowerOsc != 0.0f)
+	{
+		REAL powerOsc = fractal->transformCommon.mbPowerOsc * native_sin((REAL)aux->i * fractal->transformCommon.mbPowerOscFreq);
+		REAL rr = dot(z, z);
+		if (rr > 1e-21f)
+		{
+			REAL factor = native_powr(native_sqrt(rr), powerOsc);
+			z *= factor;
+			aux->DE *= fabs(factor);
+		}
+	}
+
+	// === MB #3: Theta Warp ===
+	if (fractal->transformCommon.mbThetaWarp != 0.0f)
+	{
+		REAL r2 = z.x * z.x + z.y * z.y + z.z * z.z;
+		if (r2 > 1e-21f)
+		{
+			REAL r = native_sqrt(r2);
+			REAL theta = asin(z.z / r);
+			REAL phi = atan2(z.y, z.x);
+			theta += fractal->transformCommon.mbThetaWarp * native_sin(theta * 3.0f);
+			z.x = r * native_cos(theta) * native_cos(phi);
+			z.y = r * native_cos(theta) * native_sin(phi);
+			z.z = r * native_sin(theta);
+		}
+	}
+
+	// === MB #4: Phi Warp ===
+	if (fractal->transformCommon.mbPhiWarp != 0.0f)
+	{
+		REAL r2 = z.x * z.x + z.y * z.y + z.z * z.z;
+		if (r2 > 1e-21f)
+		{
+			REAL r = native_sqrt(r2);
+			REAL theta = asin(z.z / r);
+			REAL phi = atan2(z.y, z.x);
+			phi += fractal->transformCommon.mbPhiWarp * native_sin(phi * 2.0f);
+			z.x = r * native_cos(theta) * native_cos(phi);
+			z.y = r * native_cos(theta) * native_sin(phi);
+			z.z = r * native_sin(theta);
+		}
+	}
+
+	// === MB #5: Radial Stretch ===
+	if (fractal->transformCommon.mbRadialStretch != 0.0f)
+	{
+		REAL r = native_sqrt(z.x * z.x + z.y * z.y + z.z * z.z + 1e-21f);
+		REAL stretch = 1.0f + fractal->transformCommon.mbRadialStretch * native_sin(r * 2.0f);
+		z *= stretch;
+		aux->DE *= fabs(stretch);
+	}
+
+	// === MB #6: Pre-Twist Z ===
+	if (fractal->transformCommon.mbPreTwistZ != 0.0f)
+	{
+		REAL angle = fractal->transformCommon.mbPreTwistZ * M_PI_F / 180.0f * (REAL)aux->i;
+		REAL cosA = native_cos(angle);
+		REAL sinA = native_sin(angle);
+		REAL xn = z.x * cosA - z.y * sinA;
+		REAL yn = z.x * sinA + z.y * cosA;
+		z.x = xn;
+		z.y = yn;
+	}
+
+	// === MB #7: Turbulence ===
+	if (fractal->transformCommon.mbTurbulence != 0.0f)
+	{
+		REAL turb = fractal->transformCommon.mbTurbulence;
+		int hx = (int)(z.x * 1000.0f) * 73856093;
+		int hy = (int)(z.y * 1000.0f) * 19349663;
+		int hz = (int)(z.z * 1000.0f) * 83492791;
+		int h = hx ^ hy ^ hz;
+		h = (h ^ (h >> 13)) * 1274126177;
+		h = h ^ (h >> 16);
+		REAL noise = ((REAL)(h & 0xFFFF) / 32767.5f) - 1.0f;
+		z.x += turb * noise;
+		h = h * 1103515245 + 12345;
+		noise = ((REAL)(h & 0xFFFF) / 32767.5f) - 1.0f;
+		z.y += turb * noise;
+		h = h * 1103515245 + 12345;
+		noise = ((REAL)(h & 0xFFFF) / 32767.5f) - 1.0f;
+		z.z += turb * noise;
+	}
+
+	// === MB #8: Gradient Color ===
+	if (fractal->transformCommon.mbGradientColor != 0.0f)
+	{
+		REAL rCol = native_sqrt(z.x * z.x + z.y * z.y + z.z * z.z + 1e-21f);
+		aux->color += rCol * fractal->transformCommon.mbGradientColor;
+	}
+
+	// === MB #9: DE Tweak ===
+	if (fractal->transformCommon.mbDETweak != 0.0f)
+	{
+		aux->DE += fractal->transformCommon.mbDETweak;
+	}
+
+	// === MB #10: C-Pixel Scale ===
+	if (fractal->transformCommon.mbCpixelScale != 0.0f)
+	{
+		z += aux->const_c * fractal->transformCommon.mbCpixelScale;
+	}
+
 	// GPU bypass: skip if all multipliers disabled
 	if (fractal->transformCommon.functionEnabledBxFalse || fractal->transformCommon.functionEnabledByFalse || fractal->transformCommon.functionEnabledBzFalse || fractal->transformCommon.functionEnabledBwFalse || fractal->transformCommon.functionEnabledCzFalse)
 	{

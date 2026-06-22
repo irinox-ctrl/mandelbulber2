@@ -881,6 +881,18 @@ typedef struct
 	cl_float jkWrapSoftness;
 	cl_float jkAnisotropicInv;
 
+	// Mandelbulb specific parameters
+	cl_float mbPowerOsc;
+	cl_float mbPowerOscFreq;
+	cl_float mbThetaWarp;
+	cl_float mbPhiWarp;
+	cl_float mbRadialStretch;
+	cl_float mbPreTwistZ;
+	cl_float mbTurbulence;
+	cl_float mbGradientColor;
+	cl_float mbDETweak;
+	cl_float mbCpixelScale;
+
 	cl_float4 additionConstant0555;
 	cl_float4 additionConstant0777;
 	cl_float4 additionConstant000;
@@ -1975,6 +1987,16 @@ inline sFractalTransformCommonCl clCopySFractalTransformCommonCl(
 	target.jkCpixelInject = source.jkCpixelInject;
 	target.jkWrapSoftness = source.jkWrapSoftness;
 	target.jkAnisotropicInv = source.jkAnisotropicInv;
+	target.mbPowerOsc = source.mbPowerOsc;
+	target.mbPowerOscFreq = source.mbPowerOscFreq;
+	target.mbThetaWarp = source.mbThetaWarp;
+	target.mbPhiWarp = source.mbPhiWarp;
+	target.mbRadialStretch = source.mbRadialStretch;
+	target.mbPreTwistZ = source.mbPreTwistZ;
+	target.mbTurbulence = source.mbTurbulence;
+	target.mbGradientColor = source.mbGradientColor;
+	target.mbDETweak = source.mbDETweak;
+	target.mbCpixelScale = source.mbCpixelScale;
 	return target;
 }
 

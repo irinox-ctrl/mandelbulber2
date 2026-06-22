@@ -871,6 +871,18 @@ struct sFractalTransformCommon
 	double jkWrapSoftness;
 	double jkAnisotropicInv;
 
+	// Mandelbulb specific parameters
+	double mbPowerOsc;
+	double mbPowerOscFreq;
+	double mbThetaWarp;
+	double mbPhiWarp;
+	double mbRadialStretch;
+	double mbPreTwistZ;
+	double mbTurbulence;
+	double mbGradientColor;
+	double mbDETweak;
+	double mbCpixelScale;
+
 	CVector4 additionConstant0555;
 	CVector4 additionConstant0777;
 	CVector4 additionConstant000;
