@@ -883,6 +883,28 @@ struct sFractalTransformCommon
 	double mbDETweak;
 	double mbCpixelScale;
 
+	// Koch specific parameters
+	double kochFoldAngle;
+	double kochFoldAngleFreq;
+	double kochScaleOsc;
+	double kochScaleOscFreq;
+	double kochOffsetOscX;
+	double kochOffsetOscY;
+	double kochOffsetOscZ;
+	double kochOffsetOscFreq;
+	double kochPreRotAngle;
+	double kochPostRotAngle;
+	double kochYOffWarp;
+	double kochTwistZ;
+	double kochRadialDistort;
+	double kochTurbulence;
+	double kochGradientColor;
+	double kochDETweak;
+	double kochCpixelInject;
+	double kochAnisotropic;
+	double kochSphereFold;
+	double kochEdgeSoftness;
+
 	CVector4 additionConstant0555;
 	CVector4 additionConstant0777;
 	CVector4 additionConstant000;

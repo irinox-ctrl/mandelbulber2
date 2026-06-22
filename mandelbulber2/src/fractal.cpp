@@ -556,6 +556,28 @@ sFractal::sFractal(const std::shared_ptr<cParameterContainer> container)
 	transformCommon.mbDETweak = container->Get<double>("transf_mb_de_tweak");
 	transformCommon.mbCpixelScale = container->Get<double>("transf_mb_cpixel_scale");
 
+	// Koch specific parameters
+	transformCommon.kochFoldAngle = container->Get<double>("transf_koch_fold_angle");
+	transformCommon.kochFoldAngleFreq = container->Get<double>("transf_koch_fold_angle_freq");
+	transformCommon.kochScaleOsc = container->Get<double>("transf_koch_scale_osc");
+	transformCommon.kochScaleOscFreq = container->Get<double>("transf_koch_scale_osc_freq");
+	transformCommon.kochOffsetOscX = container->Get<double>("transf_koch_offset_osc_x");
+	transformCommon.kochOffsetOscY = container->Get<double>("transf_koch_offset_osc_y");
+	transformCommon.kochOffsetOscZ = container->Get<double>("transf_koch_offset_osc_z");
+	transformCommon.kochOffsetOscFreq = container->Get<double>("transf_koch_offset_osc_freq");
+	transformCommon.kochPreRotAngle = container->Get<double>("transf_koch_pre_rot_angle");
+	transformCommon.kochPostRotAngle = container->Get<double>("transf_koch_post_rot_angle");
+	transformCommon.kochYOffWarp = container->Get<double>("transf_koch_yoff_warp");
+	transformCommon.kochTwistZ = container->Get<double>("transf_koch_twist_z");
+	transformCommon.kochRadialDistort = container->Get<double>("transf_koch_radial_distort");
+	transformCommon.kochTurbulence = container->Get<double>("transf_koch_turbulence");
+	transformCommon.kochGradientColor = container->Get<double>("transf_koch_gradient_color");
+	transformCommon.kochDETweak = container->Get<double>("transf_koch_de_tweak");
+	transformCommon.kochCpixelInject = container->Get<double>("transf_koch_cpixel_inject");
+	transformCommon.kochAnisotropic = container->Get<double>("transf_koch_anisotropic");
+	transformCommon.kochSphereFold = container->Get<double>("transf_koch_sphere_fold");
+	transformCommon.kochEdgeSoftness = container->Get<double>("transf_koch_edge_softness");
+
 	transformCommon.startIterations = container->Get<int>("transf_start_iterations");
 	transformCommon.startIterations250 = container->Get<int>("transf_start_iterations_250");
 	transformCommon.stopIterations = container->Get<int>("transf_stop_iterations");

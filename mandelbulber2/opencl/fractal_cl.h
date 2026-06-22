@@ -893,6 +893,28 @@ typedef struct
 	cl_float mbDETweak;
 	cl_float mbCpixelScale;
 
+	// Koch specific parameters
+	cl_float kochFoldAngle;
+	cl_float kochFoldAngleFreq;
+	cl_float kochScaleOsc;
+	cl_float kochScaleOscFreq;
+	cl_float kochOffsetOscX;
+	cl_float kochOffsetOscY;
+	cl_float kochOffsetOscZ;
+	cl_float kochOffsetOscFreq;
+	cl_float kochPreRotAngle;
+	cl_float kochPostRotAngle;
+	cl_float kochYOffWarp;
+	cl_float kochTwistZ;
+	cl_float kochRadialDistort;
+	cl_float kochTurbulence;
+	cl_float kochGradientColor;
+	cl_float kochDETweak;
+	cl_float kochCpixelInject;
+	cl_float kochAnisotropic;
+	cl_float kochSphereFold;
+	cl_float kochEdgeSoftness;
+
 	cl_float4 additionConstant0555;
 	cl_float4 additionConstant0777;
 	cl_float4 additionConstant000;
@@ -1997,6 +2019,26 @@ inline sFractalTransformCommonCl clCopySFractalTransformCommonCl(
 	target.mbGradientColor = source.mbGradientColor;
 	target.mbDETweak = source.mbDETweak;
 	target.mbCpixelScale = source.mbCpixelScale;
+	target.kochFoldAngle = source.kochFoldAngle;
+	target.kochFoldAngleFreq = source.kochFoldAngleFreq;
+	target.kochScaleOsc = source.kochScaleOsc;
+	target.kochScaleOscFreq = source.kochScaleOscFreq;
+	target.kochOffsetOscX = source.kochOffsetOscX;
+	target.kochOffsetOscY = source.kochOffsetOscY;
+	target.kochOffsetOscZ = source.kochOffsetOscZ;
+	target.kochOffsetOscFreq = source.kochOffsetOscFreq;
+	target.kochPreRotAngle = source.kochPreRotAngle;
+	target.kochPostRotAngle = source.kochPostRotAngle;
+	target.kochYOffWarp = source.kochYOffWarp;
+	target.kochTwistZ = source.kochTwistZ;
+	target.kochRadialDistort = source.kochRadialDistort;
+	target.kochTurbulence = source.kochTurbulence;
+	target.kochGradientColor = source.kochGradientColor;
+	target.kochDETweak = source.kochDETweak;
+	target.kochCpixelInject = source.kochCpixelInject;
+	target.kochAnisotropic = source.kochAnisotropic;
+	target.kochSphereFold = source.kochSphereFold;
+	target.kochEdgeSoftness = source.kochEdgeSoftness;
 	return target;
 }
 

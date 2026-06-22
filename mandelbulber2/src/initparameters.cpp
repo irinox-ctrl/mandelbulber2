@@ -2222,6 +2222,28 @@ void InitFractalParams(std::shared_ptr<cParameterContainer> par)
 	par->addParam("transf_mb_de_tweak", 0.0, morphLinear, paramStandard);
 	par->addParam("transf_mb_cpixel_scale", 0.0, morphLinear, paramStandard);
 
+	// Koch specific parameters
+	par->addParam("transf_koch_fold_angle", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_koch_fold_angle_freq", 1.0, morphLinear, paramStandard);
+	par->addParam("transf_koch_scale_osc", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_koch_scale_osc_freq", 1.0, morphLinear, paramStandard);
+	par->addParam("transf_koch_offset_osc_x", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_koch_offset_osc_y", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_koch_offset_osc_z", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_koch_offset_osc_freq", 1.0, morphLinear, paramStandard);
+	par->addParam("transf_koch_pre_rot_angle", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_koch_post_rot_angle", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_koch_yoff_warp", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_koch_twist_z", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_koch_radial_distort", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_koch_turbulence", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_koch_gradient_color", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_koch_de_tweak", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_koch_cpixel_inject", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_koch_anisotropic", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_koch_sphere_fold", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_koch_edge_softness", 0.0, morphLinear, paramStandard);
+
 	par->addParam("transf_start_iterations", 0, morphLinear, paramStandard);
 	par->addParam("transf_start_iterations_250", 250, morphLinear, paramStandard);
 	par->addParam("transf_stop_iterations", 250, morphLinear, paramStandard);

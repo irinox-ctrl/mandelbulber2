@@ -291,6 +291,177 @@ REAL4 KochV5Iteration(REAL4 z, __constant sFractalCl *fractal, sExtendedAuxCl *a
 		}
 	}
 
+		// --- Koch Extensions (20 parameters) ---
+	{
+		REAL kFoldAngle = fractal->transformCommon.kochFoldAngle;
+		REAL kFoldAngleFreq = fractal->transformCommon.kochFoldAngleFreq;
+		REAL kScaleOsc = fractal->transformCommon.kochScaleOsc;
+		REAL kScaleOscFreq = fractal->transformCommon.kochScaleOscFreq;
+		REAL kOffOscX = fractal->transformCommon.kochOffsetOscX;
+		REAL kOffOscY = fractal->transformCommon.kochOffsetOscY;
+		REAL kOffOscZ = fractal->transformCommon.kochOffsetOscZ;
+		REAL kOffOscFreq = fractal->transformCommon.kochOffsetOscFreq;
+		REAL kPreRot = fractal->transformCommon.kochPreRotAngle;
+		REAL kPostRot = fractal->transformCommon.kochPostRotAngle;
+		REAL kYOffWarp = fractal->transformCommon.kochYOffWarp;
+		REAL kTwistZ = fractal->transformCommon.kochTwistZ;
+		REAL kRadDist = fractal->transformCommon.kochRadialDistort;
+		REAL kTurb = fractal->transformCommon.kochTurbulence;
+		REAL kGradColor = fractal->transformCommon.kochGradientColor;
+		REAL kDETweak = fractal->transformCommon.kochDETweak;
+		REAL kCpixel = fractal->transformCommon.kochCpixelInject;
+		REAL kAniso = fractal->transformCommon.kochAnisotropic;
+		REAL kSphere = fractal->transformCommon.kochSphereFold;
+		REAL kEdgeSoft = fractal->transformCommon.kochEdgeSoftness;
+
+		// 1. Fold angle oscillation
+		if (kFoldAngle != 0.0f)
+		{
+			REAL angle = kFoldAngle * native_sin(aux->i * kFoldAngleFreq * 0.5f);
+			REAL cosA = native_cos(angle);
+			REAL sinA = native_sin(angle);
+			REAL nx = z.x * cosA - z.y * sinA;
+			REAL ny = z.x * sinA + z.y * cosA;
+			z.x = nx;
+			z.y = ny;
+		}
+
+		// 2-3. Scale oscillation
+		if (kScaleOsc != 0.0f)
+		{
+			REAL sOsc = 1.0f + kScaleOsc * native_sin(aux->i * kScaleOscFreq * 0.5f);
+			z *= sOsc;
+			aux->DE *= fabs(sOsc);
+		}
+
+		// 4-7. Offset oscillation (per axis)
+		if (kOffOscX != 0.0f || kOffOscY != 0.0f || kOffOscZ != 0.0f)
+		{
+			REAL oPhase = aux->i * kOffOscFreq * 0.5f;
+			z.x += kOffOscX * native_sin(oPhase);
+			z.y += kOffOscY * native_sin(oPhase * 1.3f);
+			z.z += kOffOscZ * native_sin(oPhase * 0.7f);
+		}
+
+		// 8. Pre-rotation
+		if (kPreRot != 0.0f)
+		{
+			REAL a = kPreRot * M_PI_F / 180.0f * aux->i;
+			REAL ca = native_cos(a); REAL sa = native_sin(a);
+			REAL px = z.x * ca - z.z * sa;
+			REAL pz = z.x * sa + z.z * ca;
+			z.x = px; z.z = pz;
+		}
+
+		// 9. Post-rotation
+		if (kPostRot != 0.0f)
+		{
+			REAL a = kPostRot * M_PI_F / 180.0f;
+			REAL ca = native_cos(a); REAL sa = native_sin(a);
+			REAL py = z.y * ca - z.z * sa;
+			REAL pzz = z.y * sa + z.z * ca;
+			z.y = py; z.z = pzz;
+		}
+
+		// 10. YOff warp
+		if (kYOffWarp != 0.0f)
+		{
+			z.y += kYOffWarp * native_sin(z.x * 3.0f + aux->i);
+		}
+
+		// 11. Twist Z
+		if (kTwistZ != 0.0f)
+		{
+			REAL tw = kTwistZ * M_PI_F / 180.0f * z.z;
+			REAL ct = native_cos(tw); REAL st = native_sin(tw);
+			REAL tx = z.x * ct - z.y * st;
+			REAL ty = z.x * st + z.y * ct;
+			z.x = tx; z.y = ty;
+		}
+
+		// 12. Radial distortion
+		if (kRadDist != 0.0f)
+		{
+			REAL r = length(z);
+			if (r > 1e-15f)
+			{
+				REAL distort = 1.0f + kRadDist * native_sin(r * 5.0f);
+				z *= distort;
+				aux->DE *= fabs(distort);
+			}
+		}
+
+		// 13. Turbulence
+		if (kTurb != 0.0f)
+		{
+			REAL hx = native_sin(z.x * 12.9898f + z.y * 78.233f) * 43758.5453f;
+			hx = hx - floor(hx);
+			REAL hy = native_sin(z.y * 12.9898f + z.z * 78.233f) * 43758.5453f;
+			hy = hy - floor(hy);
+			REAL hz = native_sin(z.z * 12.9898f + z.x * 78.233f) * 43758.5453f;
+			hz = hz - floor(hz);
+			z.x += (hx - 0.5f) * kTurb;
+			z.y += (hy - 0.5f) * kTurb;
+			z.z += (hz - 0.5f) * kTurb;
+		}
+
+		// 14. Gradient color
+		if (kGradColor != 0.0f)
+		{
+			aux->color += kGradColor * length(z);
+		}
+
+		// 15. DE tweak
+		if (kDETweak != 0.0f)
+		{
+			aux->DE += kDETweak;
+		}
+
+		// 16. C-pixel injection
+		if (kCpixel != 0.0f)
+		{
+			z += aux->const_c * kCpixel;
+		}
+
+		// 17. Anisotropic scaling
+		if (kAniso != 0.0f)
+		{
+			z.z *= (1.0f + kAniso);
+		}
+
+		// 18. Sphere fold
+		if (kSphere != 0.0f)
+		{
+			REAL r2 = dot(z, z);
+			REAL minR2 = 0.25f;
+			REAL fixedR2 = 1.0f;
+			if (r2 < minR2)
+			{
+				REAL t = fixedR2 / minR2;
+				z *= t * kSphere;
+				aux->DE *= fabs(t * kSphere);
+			}
+			else if (r2 < fixedR2)
+			{
+				REAL t = fixedR2 / r2;
+				z *= t * kSphere;
+				aux->DE *= fabs(t * kSphere);
+			}
+		}
+
+		// 19. Edge softness
+		if (kEdgeSoft != 0.0f)
+		{
+			REAL r = length(z);
+			if (r > 1e-15f)
+			{
+				REAL soft = r / (r + kEdgeSoft);
+				z *= soft;
+				aux->DE *= soft;
+			}
+		}
+	}
+
 	// GPU bypass: skip if all multipliers disabled
 	if (fractal->transformCommon.functionEnabledBxFalse || fractal->transformCommon.functionEnabledByFalse || fractal->transformCommon.functionEnabledBzFalse || fractal->transformCommon.functionEnabledBwFalse || fractal->transformCommon.functionEnabledCzFalse)
 	{
