@@ -241,7 +241,7 @@
             <number>2</number>
            </property>
            <item row="0" column="1">
-            <widget class="MySpinBox" name="spinboxInt_transf_start_iterations_D">
+            <widget class="MySpinBox" name="spinboxInt_transf_multiplier_start_iter_3">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
                <horstretch>0</horstretch>
@@ -268,7 +268,7 @@
             </widget>
            </item>
            <item row="0" column="3">
-            <widget class="MySpinBox" name="spinboxInt_transf_stop_iterations_D1">
+            <widget class="MySpinBox" name="spinboxInt_transf_multiplier_stop_iter_31">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
                <horstretch>0</horstretch>
@@ -1113,7 +1113,7 @@
          </widget>
         </item>
         <item row="2" column="4">
-         <widget class="MySpinBox" name="spinboxInt_transf_stop_iterations_B">
+         <widget class="MySpinBox" name="spinboxInt_transf_multiplier_stop_iter_1">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
             <horstretch>0</horstretch>
@@ -1203,7 +1203,7 @@
        <widget class="QLabel"><property name="text"><string notr="true">(Y/Z: 0=use main val)</string></property></widget>
       </item>
         <item row="2" column="2">
-         <widget class="MySpinBox" name="spinboxInt_transf_start_iterations_B">
+         <widget class="MySpinBox" name="spinboxInt_transf_multiplier_start_iter_1">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
             <horstretch>0</horstretch>
@@ -1434,7 +1434,7 @@
          <number>2</number>
         </property>
         <item row="3" column="3">
-         <widget class="MySpinBox" name="spinboxInt_transf_stop_iterations_C">
+         <widget class="MySpinBox" name="spinboxInt_transf_multiplier_stop_iter_2">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
             <horstretch>0</horstretch>
@@ -1531,7 +1531,7 @@
          </widget>
         </item>
         <item row="3" column="1">
-         <widget class="MySpinBox" name="spinboxInt_transf_start_iterations_C">
+         <widget class="MySpinBox" name="spinboxInt_transf_multiplier_start_iter_2">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
             <horstretch>0</horstretch>
@@ -2185,7 +2185,7 @@ Multiplier:</string>
    </item>
 
    <item>
-    <widget class="MyGroupBox" name="groupCheck_transf_function_enabledBx_false">
+    <widget class="MyGroupBox" name="groupCheck_transf_multiplier_enabled_1_false">
      <property name="title"><string>Multiplier 1</string></property>
      <property name="checkable"><bool>true</bool></property>
      <property name="checked"><bool>false</bool></property>
@@ -2213,7 +2213,7 @@ Multiplier:</string>
        <widget class="QLabel"><property name="text"><string>Value:</string></property></widget>
       </item>
       <item row="0" column="3">
-       <widget class="MyDoubleSpinBox" name="spinbox_transf_scale_4">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_scale_1">
         <property name="minimum"><double>-100.0</double></property><property name="maximum"><double>100.0</double></property>
         <property name="singleStep"><double>0.01</double></property><property name="value"><double>1.0</double></property>
        </widget>
@@ -2222,7 +2222,7 @@ Multiplier:</string>
        <widget class="QLabel"><property name="text"><string>Start iter:</string></property></widget>
       </item>
       <item row="0" column="5">
-       <widget class="MySpinBox" name="spinboxInt_transf_start_iterations_B">
+       <widget class="MySpinBox" name="spinboxInt_transf_multiplier_start_iter_1">
         <property name="minimum"><number>0</number></property><property name="maximum"><number>10000</number></property>
         <property name="value"><number>0</number></property>
        </widget>
@@ -2231,7 +2231,7 @@ Multiplier:</string>
        <widget class="QLabel"><property name="text"><string>Stop iter:</string></property></widget>
       </item>
       <item row="0" column="7">
-       <widget class="MySpinBox" name="spinboxInt_transf_stop_iterations_B">
+       <widget class="MySpinBox" name="spinboxInt_transf_multiplier_stop_iter_1">
         <property name="minimum"><number>0</number></property><property name="maximum"><number>10000</number></property>
         <property name="value"><number>250</number></property>
        </widget>
@@ -2241,7 +2241,7 @@ Multiplier:</string>
    </item>
 
    <item>
-    <widget class="MyGroupBox" name="groupCheck_transf_function_enabledBy_false">
+    <widget class="MyGroupBox" name="groupCheck_transf_multiplier_enabled_2_false">
      <property name="title"><string>Multiplier 2</string></property>
      <property name="checkable"><bool>true</bool></property>
      <property name="checked"><bool>false</bool></property>
@@ -2269,7 +2269,7 @@ Multiplier:</string>
        <widget class="QLabel"><property name="text"><string>Value:</string></property></widget>
       </item>
       <item row="0" column="3">
-       <widget class="MyDoubleSpinBox" name="spinbox_transf_scale_5">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_scale_2">
         <property name="minimum"><double>-100.0</double></property><property name="maximum"><double>100.0</double></property>
         <property name="singleStep"><double>0.01</double></property><property name="value"><double>1.0</double></property>
        </widget>
@@ -2278,7 +2278,7 @@ Multiplier:</string>
        <widget class="QLabel"><property name="text"><string>Start iter:</string></property></widget>
       </item>
       <item row="0" column="5">
-       <widget class="MySpinBox" name="spinboxInt_transf_start_iterations_C">
+       <widget class="MySpinBox" name="spinboxInt_transf_multiplier_start_iter_2">
         <property name="minimum"><number>0</number></property><property name="maximum"><number>10000</number></property>
         <property name="value"><number>0</number></property>
        </widget>
@@ -2287,7 +2287,7 @@ Multiplier:</string>
        <widget class="QLabel"><property name="text"><string>Stop iter:</string></property></widget>
       </item>
       <item row="0" column="7">
-       <widget class="MySpinBox" name="spinboxInt_transf_stop_iterations_C">
+       <widget class="MySpinBox" name="spinboxInt_transf_multiplier_stop_iter_2">
         <property name="minimum"><number>0</number></property><property name="maximum"><number>10000</number></property>
         <property name="value"><number>250</number></property>
        </widget>
@@ -2297,7 +2297,7 @@ Multiplier:</string>
    </item>
 
    <item>
-    <widget class="MyGroupBox" name="groupCheck_transf_function_enabledBz_false">
+    <widget class="MyGroupBox" name="groupCheck_transf_multiplier_enabled_3_false">
      <property name="title"><string>Multiplier 3</string></property>
      <property name="checkable"><bool>true</bool></property>
      <property name="checked"><bool>false</bool></property>
@@ -2325,7 +2325,7 @@ Multiplier:</string>
        <widget class="QLabel"><property name="text"><string>Value:</string></property></widget>
       </item>
       <item row="0" column="3">
-       <widget class="MyDoubleSpinBox" name="spinbox_transf_scale_6">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_scale_3">
         <property name="minimum"><double>-100.0</double></property><property name="maximum"><double>100.0</double></property>
         <property name="singleStep"><double>0.01</double></property><property name="value"><double>1.0</double></property>
        </widget>
@@ -2334,7 +2334,7 @@ Multiplier:</string>
        <widget class="QLabel"><property name="text"><string>Start iter:</string></property></widget>
       </item>
       <item row="0" column="5">
-       <widget class="MySpinBox" name="spinboxInt_transf_start_iterations_D">
+       <widget class="MySpinBox" name="spinboxInt_transf_multiplier_start_iter_3">
         <property name="minimum"><number>0</number></property><property name="maximum"><number>10000</number></property>
         <property name="value"><number>0</number></property>
        </widget>
@@ -2343,7 +2343,7 @@ Multiplier:</string>
        <widget class="QLabel"><property name="text"><string>Stop iter:</string></property></widget>
       </item>
       <item row="0" column="7">
-       <widget class="MySpinBox" name="spinboxInt_transf_stop_iterations_D">
+       <widget class="MySpinBox" name="spinboxInt_transf_multiplier_stop_iter_3">
         <property name="minimum"><number>0</number></property><property name="maximum"><number>10000</number></property>
         <property name="value"><number>250</number></property>
        </widget>
@@ -2353,7 +2353,7 @@ Multiplier:</string>
    </item>
 
    <item>
-    <widget class="MyGroupBox" name="groupCheck_transf_function_enabledBw_false">
+    <widget class="MyGroupBox" name="groupCheck_transf_multiplier_enabled_4_false">
      <property name="title"><string>Multiplier 4</string></property>
      <property name="checkable"><bool>true</bool></property>
      <property name="checked"><bool>false</bool></property>
@@ -2381,7 +2381,7 @@ Multiplier:</string>
        <widget class="QLabel"><property name="text"><string>Value:</string></property></widget>
       </item>
       <item row="0" column="3">
-       <widget class="MyDoubleSpinBox" name="spinbox_transf_scale_8">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_scale_4">
         <property name="minimum"><double>-100.0</double></property><property name="maximum"><double>100.0</double></property>
         <property name="singleStep"><double>0.01</double></property><property name="value"><double>1.0</double></property>
        </widget>
@@ -2390,7 +2390,7 @@ Multiplier:</string>
        <widget class="QLabel"><property name="text"><string>Start iter:</string></property></widget>
       </item>
       <item row="0" column="5">
-       <widget class="MySpinBox" name="spinboxInt_transf_start_iterations_E">
+       <widget class="MySpinBox" name="spinboxInt_transf_multiplier_start_iter_4">
         <property name="minimum"><number>0</number></property><property name="maximum"><number>10000</number></property>
         <property name="value"><number>0</number></property>
        </widget>
@@ -2399,7 +2399,7 @@ Multiplier:</string>
        <widget class="QLabel"><property name="text"><string>Stop iter:</string></property></widget>
       </item>
       <item row="0" column="7">
-       <widget class="MySpinBox" name="spinboxInt_transf_stop_iterations_E">
+       <widget class="MySpinBox" name="spinboxInt_transf_multiplier_stop_iter_4">
         <property name="minimum"><number>0</number></property><property name="maximum"><number>10000</number></property>
         <property name="value"><number>250</number></property>
        </widget>
@@ -2486,7 +2486,7 @@ Multiplier:</string>
    </item>
 
    <item>
-    <widget class="MyGroupBox" name="groupCheck_transf_function_enabledCz_false">
+    <widget class="MyGroupBox" name="groupCheck_transf_multiplier_enabled_5_false">
      <property name="title"><string>Multiplier 5</string></property>
      <property name="checkable"><bool>true</bool></property>
      <property name="checked"><bool>false</bool></property>
@@ -2514,7 +2514,7 @@ Multiplier:</string>
        <widget class="QLabel"><property name="text"><string>Value:</string></property></widget>
       </item>
       <item row="0" column="3">
-       <widget class="MyDoubleSpinBox" name="spinbox_transf_scale_16">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_scale_5">
         <property name="minimum"><double>-100.0</double></property><property name="maximum"><double>100.0</double></property>
         <property name="singleStep"><double>0.01</double></property><property name="value"><double>1.0</double></property>
        </widget>
@@ -2523,7 +2523,7 @@ Multiplier:</string>
        <widget class="QLabel"><property name="text"><string>Start iter:</string></property></widget>
       </item>
       <item row="0" column="5">
-       <widget class="MySpinBox" name="spinboxInt_transf_start_iterations_F">
+       <widget class="MySpinBox" name="spinboxInt_transf_multiplier_start_iter_5">
         <property name="minimum"><number>0</number></property><property name="maximum"><number>10000</number></property>
         <property name="value"><number>0</number></property>
        </widget>
@@ -2532,7 +2532,7 @@ Multiplier:</string>
        <widget class="QLabel"><property name="text"><string>Stop iter:</string></property></widget>
       </item>
       <item row="0" column="7">
-       <widget class="MySpinBox" name="spinboxInt_transf_stop_iterations_F">
+       <widget class="MySpinBox" name="spinboxInt_transf_multiplier_stop_iter_5">
         <property name="minimum"><number>0</number></property><property name="maximum"><number>10000</number></property>
         <property name="value"><number>250</number></property>
        </widget>
@@ -2632,7 +2632,7 @@ Multiplier:</string>
     </spacer>
    </item>
   </layout>
-   <widget class="QGroupBox" name="groupCheck_abox_extensions">
+   <widget class="MyGroupBox" name="groupCheck_abox_extensions">
     <property name="title">
      <string>Amazing Box Extensions</string>
     </property>
@@ -2878,8 +2878,8 @@ Multiplier:</string>
   <tabstop>spinbox3_transf_addition_constant_y</tabstop>
   <tabstop>spinbox3_transf_addition_constant_z</tabstop>
   <tabstop>groupCheck_transf_addCpixel_enabled</tabstop>
-  <tabstop>spinboxInt_transf_start_iterations_C</tabstop>
-  <tabstop>spinboxInt_transf_stop_iterations_C</tabstop>
+  <tabstop>spinboxInt_transf_multiplier_start_iter_2</tabstop>
+  <tabstop>spinboxInt_transf_multiplier_stop_iter_2</tabstop>
   <tabstop>checkBox_transf_alternate_enabled_false</tabstop>
   <tabstop>spinbox3_transf_constant_multiplier_111_x</tabstop>
   <tabstop>spinbox3_transf_constant_multiplier_111_y</tabstop>

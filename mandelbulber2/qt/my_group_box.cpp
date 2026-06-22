@@ -34,6 +34,7 @@
 
 #include "my_group_box.h"
 
+#include <QTimer>
 #include <qaction.h>
 #include <qicon.h>
 #include <qlist.h>
@@ -55,8 +56,10 @@ MyGroupBox::MyGroupBox(QWidget *parent) : QGroupBox(parent), CommonMyWidgetWrapp
 	actionSaveFromThisGroupbox = nullptr;
 	actionRandomize = nullptr;
 	connect(this, &QGroupBox::toggled, this, &MyGroupBox::slotToggled);
-	// Delay initial visibility update until all children are created
-	QMetaObject::invokeMethod(this, "slotToggled", Qt::QueuedConnection, Q_ARG(bool, isChecked()));
+	// Delay initial visibility update until all children are created.
+	// Use current isChecked() at invocation time (not capture time) to avoid
+	// race with SynchronizeInterfaceWindow setting checked=true before this fires.
+	QTimer::singleShot(0, this, [this]() { slotToggled(isChecked()); });
 }
 
 void MyGroupBox::resetToDefault()

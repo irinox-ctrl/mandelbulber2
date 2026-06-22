@@ -32,29 +32,29 @@ REAL4 TransfScaleOffsetV2Iteration(REAL4 z, __constant sFractalCl *fractal, sExt
 							+ fractal->analyticDE.offset0;
 
 	// GPU bypass: skip if all multipliers disabled
-	if (fractal->transformCommon.functionEnabledBxFalse || fractal->transformCommon.functionEnabledByFalse || fractal->transformCommon.functionEnabledBzFalse || fractal->transformCommon.functionEnabledBwFalse || fractal->transformCommon.functionEnabledCzFalse)
+	if (fractal->transformCommon.multiplierEnabled1 || fractal->transformCommon.multiplierEnabled2 || fractal->transformCommon.multiplierEnabled3 || fractal->transformCommon.multiplierEnabled4 || fractal->transformCommon.multiplierEnabled5)
 	{
 		REAL prevMultVal = 1.0;
 		// === General Purpose Multiplier 1 ===
-		if (fractal->transformCommon.functionEnabledBxFalse
-				&& aux->i >= fractal->transformCommon.startIterationsB
-				&& aux->i < fractal->transformCommon.stopIterationsB)
+		if (fractal->transformCommon.multiplierEnabled1
+				&& aux->i >= fractal->transformCommon.multiplierStartIter1
+				&& aux->i < fractal->transformCommon.multiplierStopIter1)
 		{
 			int tmode = fractal->transformCommon.multiplierThresholdMode1;
 			REAL threshR = length(z);
 			if (tmode == 0 || (tmode == 1 && threshR > fractal->transformCommon.multiplierThreshold1)
 				|| (tmode == 2 && threshR < fractal->transformCommon.multiplierThreshold1))
 			{
-				REAL val = fractal->transformCommon.scale4;
+				REAL val = fractal->transformCommon.multiplierScale1;
 
 				if (fractal->transformCommon.multiplierInverse1) val = (fabs(val) > 1e-15f) ? (1.0f / val) : 1e15f;
 
 				int vmode = fractal->transformCommon.multiplierValueMode1;
-				REAL range = (REAL)(fractal->transformCommon.stopIterationsB - fractal->transformCommon.startIterationsB);
+				REAL range = (REAL)(fractal->transformCommon.multiplierStopIter1 - fractal->transformCommon.multiplierStartIter1);
 				REAL ph = fractal->transformCommon.multiplierPhase1;
 				if (range > 0 && vmode > 0)
 				{
-					REAL t = (REAL)(aux->i - fractal->transformCommon.startIterationsB) / range;
+					REAL t = (REAL)(aux->i - fractal->transformCommon.multiplierStartIter1) / range;
 					REAL freq = fractal->transformCommon.multiplierFrequency1;
 					if (vmode == 1) // Sine
 					{
@@ -124,15 +124,15 @@ REAL4 TransfScaleOffsetV2Iteration(REAL4 z, __constant sFractalCl *fractal, sExt
 						aux->DE *= fabs(val);
 						break;
 					}
-					case 1: z.x *= val; break;
-					case 2: z.y *= val; break;
-					case 3: z.z *= val; break;
+					case 1: z.x *= val; aux->DE *= fabs(val); break;
+					case 2: z.y *= val; aux->DE *= fabs(val); break;
+					case 3: z.z *= val; aux->DE *= fabs(val); break;
 					case 4: aux->DE *= val; break;
 					case 5: aux->color *= val; break;
-					case 6: z.w *= val; break;
-					case 7: z.x *= val; z.y *= val; break;
-					case 8: z.x *= val; z.z *= val; break;
-					case 9: z.y *= val; z.z *= val; break;
+					case 6: z.w *= val; aux->DE *= fabs(val); break;
+					case 7: z.x *= val; z.y *= val; aux->DE *= fabs(val); break;
+					case 8: z.x *= val; z.z *= val; aux->DE *= fabs(val); break;
+					case 9: z.y *= val; z.z *= val; aux->DE *= fabs(val); break;
 					case 10: aux->color += fabs(val - 1.0) * 100.0; break;
 				}
 				prevMultVal = val;
@@ -140,25 +140,25 @@ REAL4 TransfScaleOffsetV2Iteration(REAL4 z, __constant sFractalCl *fractal, sExt
 		}
 
 		// === General Purpose Multiplier 2 ===
-		if (fractal->transformCommon.functionEnabledByFalse
-				&& aux->i >= fractal->transformCommon.startIterationsC
-				&& aux->i < fractal->transformCommon.stopIterationsC)
+		if (fractal->transformCommon.multiplierEnabled2
+				&& aux->i >= fractal->transformCommon.multiplierStartIter2
+				&& aux->i < fractal->transformCommon.multiplierStopIter2)
 		{
 			int tmode = fractal->transformCommon.multiplierThresholdMode2;
 			REAL threshR = length(z);
 			if (tmode == 0 || (tmode == 1 && threshR > fractal->transformCommon.multiplierThreshold2)
 				|| (tmode == 2 && threshR < fractal->transformCommon.multiplierThreshold2))
 			{
-				REAL val = fractal->transformCommon.scale5;
+				REAL val = fractal->transformCommon.multiplierScale2;
 
 				if (fractal->transformCommon.multiplierInverse2) val = (fabs(val) > 1e-15f) ? (1.0f / val) : 1e15f;
 
 				int vmode = fractal->transformCommon.multiplierValueMode2;
-				REAL range = (REAL)(fractal->transformCommon.stopIterationsC - fractal->transformCommon.startIterationsC);
+				REAL range = (REAL)(fractal->transformCommon.multiplierStopIter2 - fractal->transformCommon.multiplierStartIter2);
 				REAL ph = fractal->transformCommon.multiplierPhase2;
 				if (range > 0 && vmode > 0)
 				{
-					REAL t = (REAL)(aux->i - fractal->transformCommon.startIterationsC) / range;
+					REAL t = (REAL)(aux->i - fractal->transformCommon.multiplierStartIter2) / range;
 					REAL freq = fractal->transformCommon.multiplierFrequency2;
 					if (vmode == 1) // Sine
 					{
@@ -230,15 +230,15 @@ REAL4 TransfScaleOffsetV2Iteration(REAL4 z, __constant sFractalCl *fractal, sExt
 						aux->DE *= fabs(val);
 						break;
 					}
-					case 1: z.x *= val; break;
-					case 2: z.y *= val; break;
-					case 3: z.z *= val; break;
+					case 1: z.x *= val; aux->DE *= fabs(val); break;
+					case 2: z.y *= val; aux->DE *= fabs(val); break;
+					case 3: z.z *= val; aux->DE *= fabs(val); break;
 					case 4: aux->DE *= val; break;
 					case 5: aux->color *= val; break;
-					case 6: z.w *= val; break;
-					case 7: z.x *= val; z.y *= val; break;
-					case 8: z.x *= val; z.z *= val; break;
-					case 9: z.y *= val; z.z *= val; break;
+					case 6: z.w *= val; aux->DE *= fabs(val); break;
+					case 7: z.x *= val; z.y *= val; aux->DE *= fabs(val); break;
+					case 8: z.x *= val; z.z *= val; aux->DE *= fabs(val); break;
+					case 9: z.y *= val; z.z *= val; aux->DE *= fabs(val); break;
 					case 10: aux->color += fabs(val - 1.0) * 100.0; break;
 				}
 				prevMultVal = val;
@@ -246,25 +246,25 @@ REAL4 TransfScaleOffsetV2Iteration(REAL4 z, __constant sFractalCl *fractal, sExt
 		}
 
 		// === General Purpose Multiplier 3 ===
-		if (fractal->transformCommon.functionEnabledBzFalse
-				&& aux->i >= fractal->transformCommon.startIterationsD
-				&& aux->i < fractal->transformCommon.stopIterationsD)
+		if (fractal->transformCommon.multiplierEnabled3
+				&& aux->i >= fractal->transformCommon.multiplierStartIter3
+				&& aux->i < fractal->transformCommon.multiplierStopIter3)
 		{
 			int tmode = fractal->transformCommon.multiplierThresholdMode3;
 			REAL threshR = length(z);
 			if (tmode == 0 || (tmode == 1 && threshR > fractal->transformCommon.multiplierThreshold3)
 				|| (tmode == 2 && threshR < fractal->transformCommon.multiplierThreshold3))
 			{
-				REAL val = fractal->transformCommon.scale6;
+				REAL val = fractal->transformCommon.multiplierScale3;
 
 				if (fractal->transformCommon.multiplierInverse3) val = (fabs(val) > 1e-15f) ? (1.0f / val) : 1e15f;
 
 				int vmode = fractal->transformCommon.multiplierValueMode3;
-				REAL range = (REAL)(fractal->transformCommon.stopIterationsD - fractal->transformCommon.startIterationsD);
+				REAL range = (REAL)(fractal->transformCommon.multiplierStopIter3 - fractal->transformCommon.multiplierStartIter3);
 				REAL ph = fractal->transformCommon.multiplierPhase3;
 				if (range > 0 && vmode > 0)
 				{
-					REAL t = (REAL)(aux->i - fractal->transformCommon.startIterationsD) / range;
+					REAL t = (REAL)(aux->i - fractal->transformCommon.multiplierStartIter3) / range;
 					REAL freq = fractal->transformCommon.multiplierFrequency3;
 					if (vmode == 1) // Sine
 					{
@@ -336,15 +336,15 @@ REAL4 TransfScaleOffsetV2Iteration(REAL4 z, __constant sFractalCl *fractal, sExt
 						aux->DE *= fabs(val);
 						break;
 					}
-					case 1: z.x *= val; break;
-					case 2: z.y *= val; break;
-					case 3: z.z *= val; break;
+					case 1: z.x *= val; aux->DE *= fabs(val); break;
+					case 2: z.y *= val; aux->DE *= fabs(val); break;
+					case 3: z.z *= val; aux->DE *= fabs(val); break;
 					case 4: aux->DE *= val; break;
 					case 5: aux->color *= val; break;
-					case 6: z.w *= val; break;
-					case 7: z.x *= val; z.y *= val; break;
-					case 8: z.x *= val; z.z *= val; break;
-					case 9: z.y *= val; z.z *= val; break;
+					case 6: z.w *= val; aux->DE *= fabs(val); break;
+					case 7: z.x *= val; z.y *= val; aux->DE *= fabs(val); break;
+					case 8: z.x *= val; z.z *= val; aux->DE *= fabs(val); break;
+					case 9: z.y *= val; z.z *= val; aux->DE *= fabs(val); break;
 					case 10: aux->color += fabs(val - 1.0) * 100.0; break;
 				}
 				prevMultVal = val;
@@ -352,25 +352,25 @@ REAL4 TransfScaleOffsetV2Iteration(REAL4 z, __constant sFractalCl *fractal, sExt
 		}
 
 		// === General Purpose Multiplier 4 ===
-		if (fractal->transformCommon.functionEnabledBwFalse
-				&& aux->i >= fractal->transformCommon.startIterationsE
-				&& aux->i < fractal->transformCommon.stopIterationsE)
+		if (fractal->transformCommon.multiplierEnabled4
+				&& aux->i >= fractal->transformCommon.multiplierStartIter4
+				&& aux->i < fractal->transformCommon.multiplierStopIter4)
 		{
 			int tmode = fractal->transformCommon.multiplierThresholdMode4;
 			REAL threshR = length(z);
 			if (tmode == 0 || (tmode == 1 && threshR > fractal->transformCommon.multiplierThreshold4)
 				|| (tmode == 2 && threshR < fractal->transformCommon.multiplierThreshold4))
 			{
-				REAL val = fractal->transformCommon.scale8;
+				REAL val = fractal->transformCommon.multiplierScale4;
 
 				if (fractal->transformCommon.multiplierInverse4) val = (fabs(val) > 1e-15f) ? (1.0f / val) : 1e15f;
 
 				int vmode = fractal->transformCommon.multiplierValueMode4;
-				REAL range = (REAL)(fractal->transformCommon.stopIterationsE - fractal->transformCommon.startIterationsE);
+				REAL range = (REAL)(fractal->transformCommon.multiplierStopIter4 - fractal->transformCommon.multiplierStartIter4);
 				REAL ph = fractal->transformCommon.multiplierPhase4;
 				if (range > 0 && vmode > 0)
 				{
-					REAL t = (REAL)(aux->i - fractal->transformCommon.startIterationsE) / range;
+					REAL t = (REAL)(aux->i - fractal->transformCommon.multiplierStartIter4) / range;
 					REAL freq = fractal->transformCommon.multiplierFrequency4;
 					if (vmode == 1) // Sine
 					{
@@ -442,15 +442,15 @@ REAL4 TransfScaleOffsetV2Iteration(REAL4 z, __constant sFractalCl *fractal, sExt
 						aux->DE *= fabs(val);
 						break;
 					}
-					case 1: z.x *= val; break;
-					case 2: z.y *= val; break;
-					case 3: z.z *= val; break;
+					case 1: z.x *= val; aux->DE *= fabs(val); break;
+					case 2: z.y *= val; aux->DE *= fabs(val); break;
+					case 3: z.z *= val; aux->DE *= fabs(val); break;
 					case 4: aux->DE *= val; break;
 					case 5: aux->color *= val; break;
-					case 6: z.w *= val; break;
-					case 7: z.x *= val; z.y *= val; break;
-					case 8: z.x *= val; z.z *= val; break;
-					case 9: z.y *= val; z.z *= val; break;
+					case 6: z.w *= val; aux->DE *= fabs(val); break;
+					case 7: z.x *= val; z.y *= val; aux->DE *= fabs(val); break;
+					case 8: z.x *= val; z.z *= val; aux->DE *= fabs(val); break;
+					case 9: z.y *= val; z.z *= val; aux->DE *= fabs(val); break;
 					case 10: aux->color += fabs(val - 1.0) * 100.0; break;
 				}
 				prevMultVal = val;
@@ -458,25 +458,25 @@ REAL4 TransfScaleOffsetV2Iteration(REAL4 z, __constant sFractalCl *fractal, sExt
 		}
 
 		// === General Purpose Multiplier 5 ===
-		if (fractal->transformCommon.functionEnabledCzFalse
-				&& aux->i >= fractal->transformCommon.startIterationsF
-				&& aux->i < fractal->transformCommon.stopIterationsF)
+		if (fractal->transformCommon.multiplierEnabled5
+				&& aux->i >= fractal->transformCommon.multiplierStartIter5
+				&& aux->i < fractal->transformCommon.multiplierStopIter5)
 		{
 			int tmode = fractal->transformCommon.multiplierThresholdMode5;
 			REAL threshR = length(z);
 			if (tmode == 0 || (tmode == 1 && threshR > fractal->transformCommon.multiplierThreshold5)
 				|| (tmode == 2 && threshR < fractal->transformCommon.multiplierThreshold5))
 			{
-				REAL val = fractal->transformCommon.scale16;
+				REAL val = fractal->transformCommon.multiplierScale5;
 
 				if (fractal->transformCommon.multiplierInverse5) val = (fabs(val) > 1e-15f) ? (1.0f / val) : 1e15f;
 
 				int vmode = fractal->transformCommon.multiplierValueMode5;
-				REAL range = (REAL)(fractal->transformCommon.stopIterationsF - fractal->transformCommon.startIterationsF);
+				REAL range = (REAL)(fractal->transformCommon.multiplierStopIter5 - fractal->transformCommon.multiplierStartIter5);
 				REAL ph = fractal->transformCommon.multiplierPhase5;
 				if (range > 0 && vmode > 0)
 				{
-					REAL t = (REAL)(aux->i - fractal->transformCommon.startIterationsF) / range;
+					REAL t = (REAL)(aux->i - fractal->transformCommon.multiplierStartIter5) / range;
 					REAL freq = fractal->transformCommon.multiplierFrequency5;
 					if (vmode == 1) // Sine
 					{
@@ -548,15 +548,15 @@ REAL4 TransfScaleOffsetV2Iteration(REAL4 z, __constant sFractalCl *fractal, sExt
 						aux->DE *= fabs(val);
 						break;
 					}
-					case 1: z.x *= val; break;
-					case 2: z.y *= val; break;
-					case 3: z.z *= val; break;
+					case 1: z.x *= val; aux->DE *= fabs(val); break;
+					case 2: z.y *= val; aux->DE *= fabs(val); break;
+					case 3: z.z *= val; aux->DE *= fabs(val); break;
 					case 4: aux->DE *= val; break;
 					case 5: aux->color *= val; break;
-					case 6: z.w *= val; break;
-					case 7: z.x *= val; z.y *= val; break;
-					case 8: z.x *= val; z.z *= val; break;
-					case 9: z.y *= val; z.z *= val; break;
+					case 6: z.w *= val; aux->DE *= fabs(val); break;
+					case 7: z.x *= val; z.y *= val; aux->DE *= fabs(val); break;
+					case 8: z.x *= val; z.z *= val; aux->DE *= fabs(val); break;
+					case 9: z.y *= val; z.z *= val; aux->DE *= fabs(val); break;
 					case 10: aux->color += fabs(val - 1.0) * 100.0; break;
 				}
 				prevMultVal = val;
