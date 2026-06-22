@@ -939,6 +939,23 @@ struct sFractalTransformCommon
 	double mgSphereFold;
 	double mgEdgeSoftness;
 
+	// Amazing Box specific parameters
+	double abBoxFoldOsc;
+	double abBoxFoldOscFreq;
+	double abScaleOsc;
+	double abScaleOscFreq;
+	double abMinROsc;
+	double abMinROscFreq;
+	double abPreRotAngle;
+	double abPostRotAngle;
+	double abTwistZ;
+	double abRadialDistort;
+	double abTurbulence;
+	double abGradientColor;
+	double abDETweak;
+	double abCpixelScale;
+	double abSphereSoftness;
+
 	CVector4 additionConstant0555;
 	CVector4 additionConstant0777;
 	CVector4 additionConstant000;

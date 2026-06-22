@@ -120,6 +120,142 @@ REAL4 AboxMod1Iteration(REAL4 z, __constant sFractalCl *fractal, sExtendedAuxCl 
 		z = Matrix33MulFloat4(fractal->transformCommon.rotationMatrix, z);
 	}
 
+		// --- Amazing Box Extensions (15 parameters) ---
+	{
+		REAL abBFOsc = fractal->transformCommon.abBoxFoldOsc;
+		REAL abBFFreq = fractal->transformCommon.abBoxFoldOscFreq;
+		REAL abScOsc = fractal->transformCommon.abScaleOsc;
+		REAL abScFreq = fractal->transformCommon.abScaleOscFreq;
+		REAL abMROsc = fractal->transformCommon.abMinROsc;
+		REAL abMRFreq = fractal->transformCommon.abMinROscFreq;
+		REAL abPreRot = fractal->transformCommon.abPreRotAngle;
+		REAL abPostRot = fractal->transformCommon.abPostRotAngle;
+		REAL abTwZ = fractal->transformCommon.abTwistZ;
+		REAL abRadDist = fractal->transformCommon.abRadialDistort;
+		REAL abTurb = fractal->transformCommon.abTurbulence;
+		REAL abGradCol = fractal->transformCommon.abGradientColor;
+		REAL abDETw = fractal->transformCommon.abDETweak;
+		REAL abCpix = fractal->transformCommon.abCpixelScale;
+		REAL abSphSoft = fractal->transformCommon.abSphereSoftness;
+
+		// 1-2. Box fold oscillation
+		if (abBFOsc != 0.0f)
+		{
+			REAL foldMod = abBFOsc * native_sin(aux->i * abBFFreq * 0.5f);
+			z.x += foldMod * sign(z.x);
+			z.y += foldMod * sign(z.y);
+			z.z += foldMod * sign(z.z);
+		}
+
+		// 3-4. Scale oscillation
+		if (abScOsc != 0.0f)
+		{
+			REAL sOsc = 1.0f + abScOsc * native_sin(aux->i * abScFreq * 0.5f);
+			z *= sOsc;
+			aux->DE *= fabs(sOsc);
+		}
+
+		// 5-6. MinR oscillation
+		if (abMROsc != 0.0f)
+		{
+			REAL r2 = dot(z, z);
+			REAL mrOsc = abMROsc * native_sin(aux->i * abMRFreq * 0.5f);
+			REAL minR2 = fmax(0.01f, 0.25f + mrOsc);
+			if (r2 < minR2)
+			{
+				REAL t = 1.0f / minR2;
+				z *= t;
+				aux->DE *= t;
+			}
+		}
+
+		// 7. Pre-rotation
+		if (abPreRot != 0.0f)
+		{
+			REAL a = abPreRot * M_PI_F / 180.0f * aux->i;
+			REAL ca = native_cos(a); REAL sa = native_sin(a);
+			REAL px = z.x * ca - z.z * sa;
+			REAL pz = z.x * sa + z.z * ca;
+			z.x = px; z.z = pz;
+		}
+
+		// 8. Post-rotation
+		if (abPostRot != 0.0f)
+		{
+			REAL a = abPostRot * M_PI_F / 180.0f;
+			REAL ca = native_cos(a); REAL sa = native_sin(a);
+			REAL py = z.y * ca - z.z * sa;
+			REAL pz = z.y * sa + z.z * ca;
+			z.y = py; z.z = pz;
+		}
+
+		// 9. Twist Z
+		if (abTwZ != 0.0f)
+		{
+			REAL tw = abTwZ * M_PI_F / 180.0f * z.z;
+			REAL ct = native_cos(tw); REAL st = native_sin(tw);
+			REAL tx = z.x * ct - z.y * st;
+			REAL ty = z.x * st + z.y * ct;
+			z.x = tx; z.y = ty;
+		}
+
+		// 10. Radial distortion
+		if (abRadDist != 0.0f)
+		{
+			REAL r = length(z);
+			if (r > 1e-15f)
+			{
+				REAL distort = 1.0f + abRadDist * native_sin(r * 4.0f);
+				z *= distort;
+				aux->DE *= fabs(distort);
+			}
+		}
+
+		// 11. Turbulence
+		if (abTurb != 0.0f)
+		{
+			REAL hx = native_sin(z.x * 12.9898f + z.y * 78.233f) * 43758.5453f;
+			hx = hx - floor(hx);
+			REAL hy = native_sin(z.y * 12.9898f + z.z * 78.233f) * 43758.5453f;
+			hy = hy - floor(hy);
+			REAL hz = native_sin(z.z * 12.9898f + z.x * 78.233f) * 43758.5453f;
+			hz = hz - floor(hz);
+			z.x += (hx - 0.5f) * abTurb;
+			z.y += (hy - 0.5f) * abTurb;
+			z.z += (hz - 0.5f) * abTurb;
+		}
+
+		// 12. Gradient color
+		if (abGradCol != 0.0f)
+		{
+			aux->color += abGradCol * length(z);
+		}
+
+		// 13. DE tweak
+		if (abDETw != 0.0f)
+		{
+			aux->DE += abDETw;
+		}
+
+		// 14. C-pixel scale
+		if (abCpix != 0.0f)
+		{
+			z += aux->const_c * abCpix;
+		}
+
+		// 15. Sphere softness
+		if (abSphSoft != 0.0f)
+		{
+			REAL r = length(z);
+			if (r > 1e-15f)
+			{
+				REAL soft = r / (r + abSphSoft);
+				z *= soft;
+				aux->DE *= soft;
+			}
+		}
+	}
+
 	// GPU bypass: skip if all multipliers disabled
 	if (fractal->transformCommon.functionEnabledBxFalse || fractal->transformCommon.functionEnabledByFalse || fractal->transformCommon.functionEnabledBzFalse || fractal->transformCommon.functionEnabledBwFalse || fractal->transformCommon.functionEnabledCzFalse)
 	{

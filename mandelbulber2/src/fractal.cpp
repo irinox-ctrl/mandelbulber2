@@ -612,6 +612,23 @@ sFractal::sFractal(const std::shared_ptr<cParameterContainer> container)
 	transformCommon.mgSphereFold = container->Get<double>("transf_mg_sphere_fold");
 	transformCommon.mgEdgeSoftness = container->Get<double>("transf_mg_edge_softness");
 
+	// Amazing Box specific parameters
+	transformCommon.abBoxFoldOsc = container->Get<double>("transf_ab_box_fold_osc");
+	transformCommon.abBoxFoldOscFreq = container->Get<double>("transf_ab_box_fold_osc_freq");
+	transformCommon.abScaleOsc = container->Get<double>("transf_ab_scale_osc");
+	transformCommon.abScaleOscFreq = container->Get<double>("transf_ab_scale_osc_freq");
+	transformCommon.abMinROsc = container->Get<double>("transf_ab_min_r_osc");
+	transformCommon.abMinROscFreq = container->Get<double>("transf_ab_min_r_osc_freq");
+	transformCommon.abPreRotAngle = container->Get<double>("transf_ab_pre_rot_angle");
+	transformCommon.abPostRotAngle = container->Get<double>("transf_ab_post_rot_angle");
+	transformCommon.abTwistZ = container->Get<double>("transf_ab_twist_z");
+	transformCommon.abRadialDistort = container->Get<double>("transf_ab_radial_distort");
+	transformCommon.abTurbulence = container->Get<double>("transf_ab_turbulence");
+	transformCommon.abGradientColor = container->Get<double>("transf_ab_gradient_color");
+	transformCommon.abDETweak = container->Get<double>("transf_ab_de_tweak");
+	transformCommon.abCpixelScale = container->Get<double>("transf_ab_cpixel_scale");
+	transformCommon.abSphereSoftness = container->Get<double>("transf_ab_sphere_softness");
+
 	transformCommon.startIterations = container->Get<int>("transf_start_iterations");
 	transformCommon.startIterations250 = container->Get<int>("transf_start_iterations_250");
 	transformCommon.stopIterations = container->Get<int>("transf_stop_iterations");

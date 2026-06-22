@@ -949,6 +949,23 @@ typedef struct
 	cl_float mgSphereFold;
 	cl_float mgEdgeSoftness;
 
+	// Amazing Box specific parameters
+	cl_float abBoxFoldOsc;
+	cl_float abBoxFoldOscFreq;
+	cl_float abScaleOsc;
+	cl_float abScaleOscFreq;
+	cl_float abMinROsc;
+	cl_float abMinROscFreq;
+	cl_float abPreRotAngle;
+	cl_float abPostRotAngle;
+	cl_float abTwistZ;
+	cl_float abRadialDistort;
+	cl_float abTurbulence;
+	cl_float abGradientColor;
+	cl_float abDETweak;
+	cl_float abCpixelScale;
+	cl_float abSphereSoftness;
+
 	cl_float4 additionConstant0555;
 	cl_float4 additionConstant0777;
 	cl_float4 additionConstant000;
@@ -2103,6 +2120,21 @@ inline sFractalTransformCommonCl clCopySFractalTransformCommonCl(
 	target.mgCpixelInject = source.mgCpixelInject;
 	target.mgSphereFold = source.mgSphereFold;
 	target.mgEdgeSoftness = source.mgEdgeSoftness;
+	target.abBoxFoldOsc = source.abBoxFoldOsc;
+	target.abBoxFoldOscFreq = source.abBoxFoldOscFreq;
+	target.abScaleOsc = source.abScaleOsc;
+	target.abScaleOscFreq = source.abScaleOscFreq;
+	target.abMinROsc = source.abMinROsc;
+	target.abMinROscFreq = source.abMinROscFreq;
+	target.abPreRotAngle = source.abPreRotAngle;
+	target.abPostRotAngle = source.abPostRotAngle;
+	target.abTwistZ = source.abTwistZ;
+	target.abRadialDistort = source.abRadialDistort;
+	target.abTurbulence = source.abTurbulence;
+	target.abGradientColor = source.abGradientColor;
+	target.abDETweak = source.abDETweak;
+	target.abCpixelScale = source.abCpixelScale;
+	target.abSphereSoftness = source.abSphereSoftness;
 	return target;
 }
 

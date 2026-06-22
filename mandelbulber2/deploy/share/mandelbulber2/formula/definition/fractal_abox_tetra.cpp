@@ -191,6 +191,142 @@ void cFractalAboxTetra::FormulaCode(CVector4 &z, const sFractal *fractal, sExten
 		colorAdd += fractal->mandelbox.color.factorSp2 * m;
 		aux.color += colorAdd;
 	}
+		// --- Amazing Box Extensions (15 parameters) ---
+	{
+		double abBFOsc = fractal->transformCommon.abBoxFoldOsc;
+		double abBFFreq = fractal->transformCommon.abBoxFoldOscFreq;
+		double abScOsc = fractal->transformCommon.abScaleOsc;
+		double abScFreq = fractal->transformCommon.abScaleOscFreq;
+		double abMROsc = fractal->transformCommon.abMinROsc;
+		double abMRFreq = fractal->transformCommon.abMinROscFreq;
+		double abPreRot = fractal->transformCommon.abPreRotAngle;
+		double abPostRot = fractal->transformCommon.abPostRotAngle;
+		double abTwZ = fractal->transformCommon.abTwistZ;
+		double abRadDist = fractal->transformCommon.abRadialDistort;
+		double abTurb = fractal->transformCommon.abTurbulence;
+		double abGradCol = fractal->transformCommon.abGradientColor;
+		double abDETw = fractal->transformCommon.abDETweak;
+		double abCpix = fractal->transformCommon.abCpixelScale;
+		double abSphSoft = fractal->transformCommon.abSphereSoftness;
+
+		// 1-2. Box fold oscillation
+		if (abBFOsc != 0.0)
+		{
+			double foldMod = abBFOsc * sin(aux.i * abBFFreq * 0.5);
+			z.x += foldMod * sign(z.x);
+			z.y += foldMod * sign(z.y);
+			z.z += foldMod * sign(z.z);
+		}
+
+		// 3-4. Scale oscillation
+		if (abScOsc != 0.0)
+		{
+			double sOsc = 1.0 + abScOsc * sin(aux.i * abScFreq * 0.5);
+			z *= sOsc;
+			aux.DE *= fabs(sOsc);
+		}
+
+		// 5-6. MinR oscillation
+		if (abMROsc != 0.0)
+		{
+			double r2 = z.Dot(z);
+			double mrOsc = abMROsc * sin(aux.i * abMRFreq * 0.5);
+			double minR2 = fmax(0.01, 0.25 + mrOsc);
+			if (r2 < minR2)
+			{
+				double t = 1.0 / minR2;
+				z *= t;
+				aux.DE *= t;
+			}
+		}
+
+		// 7. Pre-rotation
+		if (abPreRot != 0.0)
+		{
+			double a = abPreRot * M_PI / 180.0 * aux.i;
+			double ca = cos(a); double sa = sin(a);
+			double px = z.x * ca - z.z * sa;
+			double pz = z.x * sa + z.z * ca;
+			z.x = px; z.z = pz;
+		}
+
+		// 8. Post-rotation
+		if (abPostRot != 0.0)
+		{
+			double a = abPostRot * M_PI / 180.0;
+			double ca = cos(a); double sa = sin(a);
+			double py = z.y * ca - z.z * sa;
+			double pz = z.y * sa + z.z * ca;
+			z.y = py; z.z = pz;
+		}
+
+		// 9. Twist Z
+		if (abTwZ != 0.0)
+		{
+			double tw = abTwZ * M_PI / 180.0 * z.z;
+			double ct = cos(tw); double st = sin(tw);
+			double tx = z.x * ct - z.y * st;
+			double ty = z.x * st + z.y * ct;
+			z.x = tx; z.y = ty;
+		}
+
+		// 10. Radial distortion
+		if (abRadDist != 0.0)
+		{
+			double r = z.Length();
+			if (r > 1e-15)
+			{
+				double distort = 1.0 + abRadDist * sin(r * 4.0);
+				z *= distort;
+				aux.DE *= fabs(distort);
+			}
+		}
+
+		// 11. Turbulence
+		if (abTurb != 0.0)
+		{
+			double hx = sin(z.x * 12.9898 + z.y * 78.233) * 43758.5453;
+			hx = hx - floor(hx);
+			double hy = sin(z.y * 12.9898 + z.z * 78.233) * 43758.5453;
+			hy = hy - floor(hy);
+			double hz = sin(z.z * 12.9898 + z.x * 78.233) * 43758.5453;
+			hz = hz - floor(hz);
+			z.x += (hx - 0.5) * abTurb;
+			z.y += (hy - 0.5) * abTurb;
+			z.z += (hz - 0.5) * abTurb;
+		}
+
+		// 12. Gradient color
+		if (abGradCol != 0.0)
+		{
+			aux.color += abGradCol * z.Length();
+		}
+
+		// 13. DE tweak
+		if (abDETw != 0.0)
+		{
+			aux.DE += abDETw;
+		}
+
+		// 14. C-pixel scale
+		if (abCpix != 0.0)
+		{
+			z += aux.const_c * abCpix;
+		}
+
+		// 15. Sphere softness
+		if (abSphSoft != 0.0)
+		{
+			double r = z.Length();
+			if (r > 1e-15)
+			{
+				double soft = r / (r + abSphSoft);
+				z *= soft;
+				aux.DE *= soft;
+			}
+		}
+	}
+
 	// GPU bypass: skip if all multipliers disabled
 	if (fractal->transformCommon.functionEnabledBxFalse || fractal->transformCommon.functionEnabledByFalse || fractal->transformCommon.functionEnabledBzFalse || fractal->transformCommon.functionEnabledBwFalse || fractal->transformCommon.functionEnabledCzFalse)
 	{
