@@ -837,6 +837,23 @@ struct sFractalTransformCommon
 	double surfCpixelDecay;
 	double surfSphereSoftness;
 
+	// Pseudo Kleinian specific parameters
+	double pkCsizeOscAmp;
+	double pkCsizeOscFreq;
+	double pkMinROscAmp;
+	double pkMinROscFreq;
+	double pkKPower;
+	double pkPreTwist;
+	double pkPostTwist;
+	double pkZShift;
+	double pkRadialDistort;
+	double pkTurbulence;
+	double pkGradientColor;
+	double pkDETweak;
+	double pkCpixelInject;
+	double pkSphereSoftness;
+	double pkAnisotropicK;
+
 	CVector4 additionConstant0555;
 	CVector4 additionConstant0777;
 	CVector4 additionConstant000;

@@ -510,6 +510,23 @@ sFractal::sFractal(const std::shared_ptr<cParameterContainer> container)
 	transformCommon.surfCpixelDecay = container->Get<double>("transf_surf_cpixel_decay");
 	transformCommon.surfSphereSoftness = container->Get<double>("transf_surf_sphere_softness");
 
+	// Pseudo Kleinian specific parameters
+	transformCommon.pkCsizeOscAmp = container->Get<double>("transf_pk_csize_osc_amp");
+	transformCommon.pkCsizeOscFreq = container->Get<double>("transf_pk_csize_osc_freq");
+	transformCommon.pkMinROscAmp = container->Get<double>("transf_pk_min_r_osc_amp");
+	transformCommon.pkMinROscFreq = container->Get<double>("transf_pk_min_r_osc_freq");
+	transformCommon.pkKPower = container->Get<double>("transf_pk_k_power");
+	transformCommon.pkPreTwist = container->Get<double>("transf_pk_pre_twist");
+	transformCommon.pkPostTwist = container->Get<double>("transf_pk_post_twist");
+	transformCommon.pkZShift = container->Get<double>("transf_pk_z_shift");
+	transformCommon.pkRadialDistort = container->Get<double>("transf_pk_radial_distort");
+	transformCommon.pkTurbulence = container->Get<double>("transf_pk_turbulence");
+	transformCommon.pkGradientColor = container->Get<double>("transf_pk_gradient_color");
+	transformCommon.pkDETweak = container->Get<double>("transf_pk_de_tweak");
+	transformCommon.pkCpixelInject = container->Get<double>("transf_pk_cpixel_inject");
+	transformCommon.pkSphereSoftness = container->Get<double>("transf_pk_sphere_softness");
+	transformCommon.pkAnisotropicK = container->Get<double>("transf_pk_anisotropic_k");
+
 	transformCommon.startIterations = container->Get<int>("transf_start_iterations");
 	transformCommon.startIterations250 = container->Get<int>("transf_start_iterations_250");
 	transformCommon.stopIterations = container->Get<int>("transf_stop_iterations");

@@ -847,6 +847,23 @@ typedef struct
 	cl_float surfCpixelDecay;
 	cl_float surfSphereSoftness;
 
+	// Pseudo Kleinian specific parameters
+	cl_float pkCsizeOscAmp;
+	cl_float pkCsizeOscFreq;
+	cl_float pkMinROscAmp;
+	cl_float pkMinROscFreq;
+	cl_float pkKPower;
+	cl_float pkPreTwist;
+	cl_float pkPostTwist;
+	cl_float pkZShift;
+	cl_float pkRadialDistort;
+	cl_float pkTurbulence;
+	cl_float pkGradientColor;
+	cl_float pkDETweak;
+	cl_float pkCpixelInject;
+	cl_float pkSphereSoftness;
+	cl_float pkAnisotropicK;
+
 	cl_float4 additionConstant0555;
 	cl_float4 additionConstant0777;
 	cl_float4 additionConstant000;
@@ -1911,6 +1928,21 @@ inline sFractalTransformCommonCl clCopySFractalTransformCommonCl(
 	target.surfMinROsc = source.surfMinROsc;
 	target.surfCpixelDecay = source.surfCpixelDecay;
 	target.surfSphereSoftness = source.surfSphereSoftness;
+	target.pkCsizeOscAmp = source.pkCsizeOscAmp;
+	target.pkCsizeOscFreq = source.pkCsizeOscFreq;
+	target.pkMinROscAmp = source.pkMinROscAmp;
+	target.pkMinROscFreq = source.pkMinROscFreq;
+	target.pkKPower = source.pkKPower;
+	target.pkPreTwist = source.pkPreTwist;
+	target.pkPostTwist = source.pkPostTwist;
+	target.pkZShift = source.pkZShift;
+	target.pkRadialDistort = source.pkRadialDistort;
+	target.pkTurbulence = source.pkTurbulence;
+	target.pkGradientColor = source.pkGradientColor;
+	target.pkDETweak = source.pkDETweak;
+	target.pkCpixelInject = source.pkCpixelInject;
+	target.pkSphereSoftness = source.pkSphereSoftness;
+	target.pkAnisotropicK = source.pkAnisotropicK;
 	return target;
 }
 

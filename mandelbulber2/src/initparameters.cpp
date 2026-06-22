@@ -2176,6 +2176,23 @@ void InitFractalParams(std::shared_ptr<cParameterContainer> par)
 	par->addParam("transf_surf_cpixel_decay", 0.0, morphLinear, paramStandard);
 	par->addParam("transf_surf_sphere_softness", 0.0, morphLinear, paramStandard);
 
+	// Pseudo Kleinian specific parameters
+	par->addParam("transf_pk_csize_osc_amp", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_pk_csize_osc_freq", 1.0, morphLinear, paramStandard);
+	par->addParam("transf_pk_min_r_osc_amp", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_pk_min_r_osc_freq", 1.0, morphLinear, paramStandard);
+	par->addParam("transf_pk_k_power", 1.0, morphLinear, paramStandard);
+	par->addParam("transf_pk_pre_twist", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_pk_post_twist", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_pk_z_shift", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_pk_radial_distort", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_pk_turbulence", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_pk_gradient_color", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_pk_de_tweak", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_pk_cpixel_inject", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_pk_sphere_softness", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_pk_anisotropic_k", 0.0, morphLinear, paramStandard);
+
 	par->addParam("transf_start_iterations", 0, morphLinear, paramStandard);
 	par->addParam("transf_start_iterations_250", 250, morphLinear, paramStandard);
 	par->addParam("transf_stop_iterations", 250, morphLinear, paramStandard);
