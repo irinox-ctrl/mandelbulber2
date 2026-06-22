@@ -161,7 +161,7 @@ REAL4 TransfHybridColorIteration(REAL4 z, __constant sFractalCl *fractal, sExten
 			{
 				REAL val = fractal->transformCommon.scale4;
 
-				if (fractal->transformCommon.multiplierInverse1) val = 1.0 / val;
+				if (fractal->transformCommon.multiplierInverse1) val = (fabs(val) > 1e-15f) ? (1.0f / val) : 1e15f;
 
 				int vmode = fractal->transformCommon.multiplierValueMode1;
 				REAL range = (REAL)(fractal->transformCommon.stopIterationsB - fractal->transformCommon.startIterationsB);
@@ -265,7 +265,7 @@ REAL4 TransfHybridColorIteration(REAL4 z, __constant sFractalCl *fractal, sExten
 			{
 				REAL val = fractal->transformCommon.scale5;
 
-				if (fractal->transformCommon.multiplierInverse2) val = 1.0 / val;
+				if (fractal->transformCommon.multiplierInverse2) val = (fabs(val) > 1e-15f) ? (1.0f / val) : 1e15f;
 
 				int vmode = fractal->transformCommon.multiplierValueMode2;
 				REAL range = (REAL)(fractal->transformCommon.stopIterationsC - fractal->transformCommon.startIterationsC);
@@ -371,7 +371,7 @@ REAL4 TransfHybridColorIteration(REAL4 z, __constant sFractalCl *fractal, sExten
 			{
 				REAL val = fractal->transformCommon.scale6;
 
-				if (fractal->transformCommon.multiplierInverse3) val = 1.0 / val;
+				if (fractal->transformCommon.multiplierInverse3) val = (fabs(val) > 1e-15f) ? (1.0f / val) : 1e15f;
 
 				int vmode = fractal->transformCommon.multiplierValueMode3;
 				REAL range = (REAL)(fractal->transformCommon.stopIterationsD - fractal->transformCommon.startIterationsD);
@@ -477,7 +477,7 @@ REAL4 TransfHybridColorIteration(REAL4 z, __constant sFractalCl *fractal, sExten
 			{
 				REAL val = fractal->transformCommon.scale8;
 
-				if (fractal->transformCommon.multiplierInverse4) val = 1.0 / val;
+				if (fractal->transformCommon.multiplierInverse4) val = (fabs(val) > 1e-15f) ? (1.0f / val) : 1e15f;
 
 				int vmode = fractal->transformCommon.multiplierValueMode4;
 				REAL range = (REAL)(fractal->transformCommon.stopIterationsE - fractal->transformCommon.startIterationsE);
@@ -583,7 +583,7 @@ REAL4 TransfHybridColorIteration(REAL4 z, __constant sFractalCl *fractal, sExten
 			{
 				REAL val = fractal->transformCommon.scale16;
 
-				if (fractal->transformCommon.multiplierInverse5) val = 1.0 / val;
+				if (fractal->transformCommon.multiplierInverse5) val = (fabs(val) > 1e-15f) ? (1.0f / val) : 1e15f;
 
 				int vmode = fractal->transformCommon.multiplierValueMode5;
 				REAL range = (REAL)(fractal->transformCommon.stopIterationsF - fractal->transformCommon.startIterationsF);
