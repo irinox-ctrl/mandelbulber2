@@ -42,7 +42,7 @@ AUDITS = [
 ]
 
 
-
+def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--ci", action="store_true", help="Exit 1 if any audit fails")
     parser.add_argument("--markdown", metavar="PATH")
