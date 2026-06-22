@@ -853,6 +853,127 @@ typedef struct
 	cl_float multiplierOffset4;
 	cl_float multiplierOffset5;
 
+	cl_float multiplierPulseWidth1;
+	cl_float multiplierPulseWidth2;
+	cl_float multiplierPulseWidth3;
+	cl_float multiplierPulseWidth4;
+	cl_float multiplierPulseWidth5;
+
+	cl_float multiplierHarmonics1;
+	cl_float multiplierHarmonics2;
+	cl_float multiplierHarmonics3;
+	cl_float multiplierHarmonics4;
+	cl_float multiplierHarmonics5;
+
+	cl_float multiplierAttack1;
+	cl_float multiplierAttack2;
+	cl_float multiplierAttack3;
+	cl_float multiplierAttack4;
+	cl_float multiplierAttack5;
+
+	cl_float multiplierRelease1;
+	cl_float multiplierRelease2;
+	cl_float multiplierRelease3;
+	cl_float multiplierRelease4;
+	cl_float multiplierRelease5;
+
+	cl_float multiplierFeedback1;
+	cl_float multiplierFeedback2;
+	cl_float multiplierFeedback3;
+	cl_float multiplierFeedback4;
+	cl_float multiplierFeedback5;
+
+	cl_float multiplierRadialFalloff1;
+	cl_float multiplierRadialFalloff2;
+	cl_float multiplierRadialFalloff3;
+	cl_float multiplierRadialFalloff4;
+	cl_float multiplierRadialFalloff5;
+
+	cl_float multiplierAngularBias1;
+	cl_float multiplierAngularBias2;
+	cl_float multiplierAngularBias3;
+	cl_float multiplierAngularBias4;
+	cl_float multiplierAngularBias5;
+
+	cl_float multiplierCrossCoupling1;
+	cl_float multiplierCrossCoupling2;
+	cl_float multiplierCrossCoupling3;
+	cl_float multiplierCrossCoupling4;
+	cl_float multiplierCrossCoupling5;
+
+	cl_float multiplierClampMin1;
+	cl_float multiplierClampMin2;
+	cl_float multiplierClampMin3;
+	cl_float multiplierClampMin4;
+	cl_float multiplierClampMin5;
+
+	cl_float multiplierClampMax1;
+	cl_float multiplierClampMax2;
+	cl_float multiplierClampMax3;
+	cl_float multiplierClampMax4;
+	cl_float multiplierClampMax5;
+
+	cl_float multiplierSoftClip1;
+	cl_float multiplierSoftClip2;
+	cl_float multiplierSoftClip3;
+	cl_float multiplierSoftClip4;
+	cl_float multiplierSoftClip5;
+
+	cl_float multiplierSymmetryBreak1;
+	cl_float multiplierSymmetryBreak2;
+	cl_float multiplierSymmetryBreak3;
+	cl_float multiplierSymmetryBreak4;
+	cl_float multiplierSymmetryBreak5;
+
+	cl_int multiplierQuantize1;
+	cl_int multiplierQuantize2;
+	cl_int multiplierQuantize3;
+	cl_int multiplierQuantize4;
+	cl_int multiplierQuantize5;
+
+	cl_int multiplierIterModulo1;
+	cl_int multiplierIterModulo2;
+	cl_int multiplierIterModulo3;
+	cl_int multiplierIterModulo4;
+	cl_int multiplierIterModulo5;
+
+	cl_int multiplierDelay1;
+	cl_int multiplierDelay2;
+	cl_int multiplierDelay3;
+	cl_int multiplierDelay4;
+	cl_int multiplierDelay5;
+
+	cl_int multiplierBlendMode1;
+	cl_int multiplierBlendMode2;
+	cl_int multiplierBlendMode3;
+	cl_int multiplierBlendMode4;
+	cl_int multiplierBlendMode5;
+
+	cl_int multiplierNoiseSeed1;
+	cl_int multiplierNoiseSeed2;
+	cl_int multiplierNoiseSeed3;
+	cl_int multiplierNoiseSeed4;
+	cl_int multiplierNoiseSeed5;
+
+	cl_int multiplierNoiseOctaves1;
+	cl_int multiplierNoiseOctaves2;
+	cl_int multiplierNoiseOctaves3;
+	cl_int multiplierNoiseOctaves4;
+	cl_int multiplierNoiseOctaves5;
+
+	cl_int multiplierMirror1;
+	cl_int multiplierMirror2;
+	cl_int multiplierMirror3;
+	cl_int multiplierMirror4;
+	cl_int multiplierMirror5;
+
+	cl_int multiplierPolarMode1;
+	cl_int multiplierPolarMode2;
+	cl_int multiplierPolarMode3;
+	cl_int multiplierPolarMode4;
+	cl_int multiplierPolarMode5;
+
+
 
 	// Dedicated multiplier enable/value/iteration params (no conflicts with formula logic)
 	cl_int multiplierEnabled1;
@@ -1955,6 +2076,107 @@ inline sFractalTransformCommonCl clCopySFractalTransformCommonCl(
 	target.multiplierOffset3 = source.multiplierOffset3;
 	target.multiplierOffset4 = source.multiplierOffset4;
 	target.multiplierOffset5 = source.multiplierOffset5;
+
+	target.multiplierPulseWidth1 = source.multiplierPulseWidth1;
+	target.multiplierPulseWidth2 = source.multiplierPulseWidth2;
+	target.multiplierPulseWidth3 = source.multiplierPulseWidth3;
+	target.multiplierPulseWidth4 = source.multiplierPulseWidth4;
+	target.multiplierPulseWidth5 = source.multiplierPulseWidth5;
+	target.multiplierHarmonics1 = source.multiplierHarmonics1;
+	target.multiplierHarmonics2 = source.multiplierHarmonics2;
+	target.multiplierHarmonics3 = source.multiplierHarmonics3;
+	target.multiplierHarmonics4 = source.multiplierHarmonics4;
+	target.multiplierHarmonics5 = source.multiplierHarmonics5;
+	target.multiplierAttack1 = source.multiplierAttack1;
+	target.multiplierAttack2 = source.multiplierAttack2;
+	target.multiplierAttack3 = source.multiplierAttack3;
+	target.multiplierAttack4 = source.multiplierAttack4;
+	target.multiplierAttack5 = source.multiplierAttack5;
+	target.multiplierRelease1 = source.multiplierRelease1;
+	target.multiplierRelease2 = source.multiplierRelease2;
+	target.multiplierRelease3 = source.multiplierRelease3;
+	target.multiplierRelease4 = source.multiplierRelease4;
+	target.multiplierRelease5 = source.multiplierRelease5;
+	target.multiplierFeedback1 = source.multiplierFeedback1;
+	target.multiplierFeedback2 = source.multiplierFeedback2;
+	target.multiplierFeedback3 = source.multiplierFeedback3;
+	target.multiplierFeedback4 = source.multiplierFeedback4;
+	target.multiplierFeedback5 = source.multiplierFeedback5;
+	target.multiplierRadialFalloff1 = source.multiplierRadialFalloff1;
+	target.multiplierRadialFalloff2 = source.multiplierRadialFalloff2;
+	target.multiplierRadialFalloff3 = source.multiplierRadialFalloff3;
+	target.multiplierRadialFalloff4 = source.multiplierRadialFalloff4;
+	target.multiplierRadialFalloff5 = source.multiplierRadialFalloff5;
+	target.multiplierAngularBias1 = source.multiplierAngularBias1;
+	target.multiplierAngularBias2 = source.multiplierAngularBias2;
+	target.multiplierAngularBias3 = source.multiplierAngularBias3;
+	target.multiplierAngularBias4 = source.multiplierAngularBias4;
+	target.multiplierAngularBias5 = source.multiplierAngularBias5;
+	target.multiplierCrossCoupling1 = source.multiplierCrossCoupling1;
+	target.multiplierCrossCoupling2 = source.multiplierCrossCoupling2;
+	target.multiplierCrossCoupling3 = source.multiplierCrossCoupling3;
+	target.multiplierCrossCoupling4 = source.multiplierCrossCoupling4;
+	target.multiplierCrossCoupling5 = source.multiplierCrossCoupling5;
+	target.multiplierClampMin1 = source.multiplierClampMin1;
+	target.multiplierClampMin2 = source.multiplierClampMin2;
+	target.multiplierClampMin3 = source.multiplierClampMin3;
+	target.multiplierClampMin4 = source.multiplierClampMin4;
+	target.multiplierClampMin5 = source.multiplierClampMin5;
+	target.multiplierClampMax1 = source.multiplierClampMax1;
+	target.multiplierClampMax2 = source.multiplierClampMax2;
+	target.multiplierClampMax3 = source.multiplierClampMax3;
+	target.multiplierClampMax4 = source.multiplierClampMax4;
+	target.multiplierClampMax5 = source.multiplierClampMax5;
+	target.multiplierSoftClip1 = source.multiplierSoftClip1;
+	target.multiplierSoftClip2 = source.multiplierSoftClip2;
+	target.multiplierSoftClip3 = source.multiplierSoftClip3;
+	target.multiplierSoftClip4 = source.multiplierSoftClip4;
+	target.multiplierSoftClip5 = source.multiplierSoftClip5;
+	target.multiplierSymmetryBreak1 = source.multiplierSymmetryBreak1;
+	target.multiplierSymmetryBreak2 = source.multiplierSymmetryBreak2;
+	target.multiplierSymmetryBreak3 = source.multiplierSymmetryBreak3;
+	target.multiplierSymmetryBreak4 = source.multiplierSymmetryBreak4;
+	target.multiplierSymmetryBreak5 = source.multiplierSymmetryBreak5;
+	target.multiplierQuantize1 = source.multiplierQuantize1;
+	target.multiplierQuantize2 = source.multiplierQuantize2;
+	target.multiplierQuantize3 = source.multiplierQuantize3;
+	target.multiplierQuantize4 = source.multiplierQuantize4;
+	target.multiplierQuantize5 = source.multiplierQuantize5;
+	target.multiplierIterModulo1 = source.multiplierIterModulo1;
+	target.multiplierIterModulo2 = source.multiplierIterModulo2;
+	target.multiplierIterModulo3 = source.multiplierIterModulo3;
+	target.multiplierIterModulo4 = source.multiplierIterModulo4;
+	target.multiplierIterModulo5 = source.multiplierIterModulo5;
+	target.multiplierDelay1 = source.multiplierDelay1;
+	target.multiplierDelay2 = source.multiplierDelay2;
+	target.multiplierDelay3 = source.multiplierDelay3;
+	target.multiplierDelay4 = source.multiplierDelay4;
+	target.multiplierDelay5 = source.multiplierDelay5;
+	target.multiplierBlendMode1 = source.multiplierBlendMode1;
+	target.multiplierBlendMode2 = source.multiplierBlendMode2;
+	target.multiplierBlendMode3 = source.multiplierBlendMode3;
+	target.multiplierBlendMode4 = source.multiplierBlendMode4;
+	target.multiplierBlendMode5 = source.multiplierBlendMode5;
+	target.multiplierNoiseSeed1 = source.multiplierNoiseSeed1;
+	target.multiplierNoiseSeed2 = source.multiplierNoiseSeed2;
+	target.multiplierNoiseSeed3 = source.multiplierNoiseSeed3;
+	target.multiplierNoiseSeed4 = source.multiplierNoiseSeed4;
+	target.multiplierNoiseSeed5 = source.multiplierNoiseSeed5;
+	target.multiplierNoiseOctaves1 = source.multiplierNoiseOctaves1;
+	target.multiplierNoiseOctaves2 = source.multiplierNoiseOctaves2;
+	target.multiplierNoiseOctaves3 = source.multiplierNoiseOctaves3;
+	target.multiplierNoiseOctaves4 = source.multiplierNoiseOctaves4;
+	target.multiplierNoiseOctaves5 = source.multiplierNoiseOctaves5;
+	target.multiplierMirror1 = source.multiplierMirror1;
+	target.multiplierMirror2 = source.multiplierMirror2;
+	target.multiplierMirror3 = source.multiplierMirror3;
+	target.multiplierMirror4 = source.multiplierMirror4;
+	target.multiplierMirror5 = source.multiplierMirror5;
+	target.multiplierPolarMode1 = source.multiplierPolarMode1;
+	target.multiplierPolarMode2 = source.multiplierPolarMode2;
+	target.multiplierPolarMode3 = source.multiplierPolarMode3;
+	target.multiplierPolarMode4 = source.multiplierPolarMode4;
+	target.multiplierPolarMode5 = source.multiplierPolarMode5;
 
 	target.multiplierEnabled1 = source.multiplierEnabled1;
 	target.multiplierEnabled2 = source.multiplierEnabled2;

@@ -843,6 +843,127 @@ struct sFractalTransformCommon
 	double multiplierOffset4;
 	double multiplierOffset5;
 
+	double multiplierPulseWidth1;
+	double multiplierPulseWidth2;
+	double multiplierPulseWidth3;
+	double multiplierPulseWidth4;
+	double multiplierPulseWidth5;
+
+	double multiplierHarmonics1;
+	double multiplierHarmonics2;
+	double multiplierHarmonics3;
+	double multiplierHarmonics4;
+	double multiplierHarmonics5;
+
+	double multiplierAttack1;
+	double multiplierAttack2;
+	double multiplierAttack3;
+	double multiplierAttack4;
+	double multiplierAttack5;
+
+	double multiplierRelease1;
+	double multiplierRelease2;
+	double multiplierRelease3;
+	double multiplierRelease4;
+	double multiplierRelease5;
+
+	double multiplierFeedback1;
+	double multiplierFeedback2;
+	double multiplierFeedback3;
+	double multiplierFeedback4;
+	double multiplierFeedback5;
+
+	double multiplierRadialFalloff1;
+	double multiplierRadialFalloff2;
+	double multiplierRadialFalloff3;
+	double multiplierRadialFalloff4;
+	double multiplierRadialFalloff5;
+
+	double multiplierAngularBias1;
+	double multiplierAngularBias2;
+	double multiplierAngularBias3;
+	double multiplierAngularBias4;
+	double multiplierAngularBias5;
+
+	double multiplierCrossCoupling1;
+	double multiplierCrossCoupling2;
+	double multiplierCrossCoupling3;
+	double multiplierCrossCoupling4;
+	double multiplierCrossCoupling5;
+
+	double multiplierClampMin1;
+	double multiplierClampMin2;
+	double multiplierClampMin3;
+	double multiplierClampMin4;
+	double multiplierClampMin5;
+
+	double multiplierClampMax1;
+	double multiplierClampMax2;
+	double multiplierClampMax3;
+	double multiplierClampMax4;
+	double multiplierClampMax5;
+
+	double multiplierSoftClip1;
+	double multiplierSoftClip2;
+	double multiplierSoftClip3;
+	double multiplierSoftClip4;
+	double multiplierSoftClip5;
+
+	double multiplierSymmetryBreak1;
+	double multiplierSymmetryBreak2;
+	double multiplierSymmetryBreak3;
+	double multiplierSymmetryBreak4;
+	double multiplierSymmetryBreak5;
+
+	int multiplierQuantize1;
+	int multiplierQuantize2;
+	int multiplierQuantize3;
+	int multiplierQuantize4;
+	int multiplierQuantize5;
+
+	int multiplierIterModulo1;
+	int multiplierIterModulo2;
+	int multiplierIterModulo3;
+	int multiplierIterModulo4;
+	int multiplierIterModulo5;
+
+	int multiplierDelay1;
+	int multiplierDelay2;
+	int multiplierDelay3;
+	int multiplierDelay4;
+	int multiplierDelay5;
+
+	int multiplierBlendMode1;
+	int multiplierBlendMode2;
+	int multiplierBlendMode3;
+	int multiplierBlendMode4;
+	int multiplierBlendMode5;
+
+	int multiplierNoiseSeed1;
+	int multiplierNoiseSeed2;
+	int multiplierNoiseSeed3;
+	int multiplierNoiseSeed4;
+	int multiplierNoiseSeed5;
+
+	int multiplierNoiseOctaves1;
+	int multiplierNoiseOctaves2;
+	int multiplierNoiseOctaves3;
+	int multiplierNoiseOctaves4;
+	int multiplierNoiseOctaves5;
+
+	bool multiplierMirror1;
+	bool multiplierMirror2;
+	bool multiplierMirror3;
+	bool multiplierMirror4;
+	bool multiplierMirror5;
+
+	bool multiplierPolarMode1;
+	bool multiplierPolarMode2;
+	bool multiplierPolarMode3;
+	bool multiplierPolarMode4;
+	bool multiplierPolarMode5;
+
+
 
 	// Dedicated multiplier enable/value/iteration params (no conflicts with formula logic)
 	bool multiplierEnabled1;
