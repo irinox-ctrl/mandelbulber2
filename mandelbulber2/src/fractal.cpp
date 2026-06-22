@@ -498,6 +498,28 @@ sFractal::sFractal(const std::shared_ptr<cParameterContainer> container)
 	transformCommon.multiplierWeight4 = container->Get<double>("transf_multiplier_weight_4");
 	transformCommon.multiplierWeight5 = container->Get<double>("transf_multiplier_weight_5");
 
+	// Dedicated multiplier enable/value/iteration params
+	transformCommon.multiplierEnabled1 = container->Get<bool>("transf_multiplier_enabled_1_false");
+	transformCommon.multiplierEnabled2 = container->Get<bool>("transf_multiplier_enabled_2_false");
+	transformCommon.multiplierEnabled3 = container->Get<bool>("transf_multiplier_enabled_3_false");
+	transformCommon.multiplierEnabled4 = container->Get<bool>("transf_multiplier_enabled_4_false");
+	transformCommon.multiplierEnabled5 = container->Get<bool>("transf_multiplier_enabled_5_false");
+	transformCommon.multiplierScale1 = container->Get<double>("transf_multiplier_scale_1");
+	transformCommon.multiplierScale2 = container->Get<double>("transf_multiplier_scale_2");
+	transformCommon.multiplierScale3 = container->Get<double>("transf_multiplier_scale_3");
+	transformCommon.multiplierScale4 = container->Get<double>("transf_multiplier_scale_4");
+	transformCommon.multiplierScale5 = container->Get<double>("transf_multiplier_scale_5");
+	transformCommon.multiplierStartIter1 = container->Get<int>("transf_multiplier_start_iter_1");
+	transformCommon.multiplierStartIter2 = container->Get<int>("transf_multiplier_start_iter_2");
+	transformCommon.multiplierStartIter3 = container->Get<int>("transf_multiplier_start_iter_3");
+	transformCommon.multiplierStartIter4 = container->Get<int>("transf_multiplier_start_iter_4");
+	transformCommon.multiplierStartIter5 = container->Get<int>("transf_multiplier_start_iter_5");
+	transformCommon.multiplierStopIter1 = container->Get<int>("transf_multiplier_stop_iter_1");
+	transformCommon.multiplierStopIter2 = container->Get<int>("transf_multiplier_stop_iter_2");
+	transformCommon.multiplierStopIter3 = container->Get<int>("transf_multiplier_stop_iter_3");
+	transformCommon.multiplierStopIter4 = container->Get<int>("transf_multiplier_stop_iter_4");
+	transformCommon.multiplierStopIter5 = container->Get<int>("transf_multiplier_stop_iter_5");
+
 	// Amazing Surf specific parameters
 	transformCommon.surfFoldPower = container->Get<double>("transf_surf_fold_power");
 	transformCommon.surfScaleOscAmp = container->Get<double>("transf_surf_scale_osc_amp");

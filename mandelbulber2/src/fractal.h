@@ -825,6 +825,31 @@ struct sFractalTransformCommon
 	double multiplierWeight4;
 	double multiplierWeight5;
 
+	// Dedicated multiplier enable/value/iteration params (no conflicts with formula logic)
+	bool multiplierEnabled1;
+	bool multiplierEnabled2;
+	bool multiplierEnabled3;
+	bool multiplierEnabled4;
+	bool multiplierEnabled5;
+
+	double multiplierScale1;
+	double multiplierScale2;
+	double multiplierScale3;
+	double multiplierScale4;
+	double multiplierScale5;
+
+	int multiplierStartIter1;
+	int multiplierStartIter2;
+	int multiplierStartIter3;
+	int multiplierStartIter4;
+	int multiplierStartIter5;
+
+	int multiplierStopIter1;
+	int multiplierStopIter2;
+	int multiplierStopIter3;
+	int multiplierStopIter4;
+	int multiplierStopIter5;
+
 	// Amazing Surf specific parameters
 	double surfFoldPower;
 	double surfScaleOscAmp;

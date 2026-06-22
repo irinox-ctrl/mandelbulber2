@@ -835,6 +835,31 @@ typedef struct
 	cl_float multiplierWeight4;
 	cl_float multiplierWeight5;
 
+	// Dedicated multiplier enable/value/iteration params (no conflicts with formula logic)
+	cl_int multiplierEnabled1;
+	cl_int multiplierEnabled2;
+	cl_int multiplierEnabled3;
+	cl_int multiplierEnabled4;
+	cl_int multiplierEnabled5;
+
+	cl_float multiplierScale1;
+	cl_float multiplierScale2;
+	cl_float multiplierScale3;
+	cl_float multiplierScale4;
+	cl_float multiplierScale5;
+
+	cl_int multiplierStartIter1;
+	cl_int multiplierStartIter2;
+	cl_int multiplierStartIter3;
+	cl_int multiplierStartIter4;
+	cl_int multiplierStartIter5;
+
+	cl_int multiplierStopIter1;
+	cl_int multiplierStopIter2;
+	cl_int multiplierStopIter3;
+	cl_int multiplierStopIter4;
+	cl_int multiplierStopIter5;
+
 	// Amazing Surf specific parameters
 	cl_float surfFoldPower;
 	cl_float surfScaleOscAmp;
@@ -2122,6 +2147,26 @@ inline sFractalTransformCommonCl clCopySFractalTransformCommonCl(
 	target.multiplierWeight3 = source.multiplierWeight3;
 	target.multiplierWeight4 = source.multiplierWeight4;
 	target.multiplierWeight5 = source.multiplierWeight5;
+	target.multiplierEnabled1 = source.multiplierEnabled1;
+	target.multiplierEnabled2 = source.multiplierEnabled2;
+	target.multiplierEnabled3 = source.multiplierEnabled3;
+	target.multiplierEnabled4 = source.multiplierEnabled4;
+	target.multiplierEnabled5 = source.multiplierEnabled5;
+	target.multiplierScale1 = source.multiplierScale1;
+	target.multiplierScale2 = source.multiplierScale2;
+	target.multiplierScale3 = source.multiplierScale3;
+	target.multiplierScale4 = source.multiplierScale4;
+	target.multiplierScale5 = source.multiplierScale5;
+	target.multiplierStartIter1 = source.multiplierStartIter1;
+	target.multiplierStartIter2 = source.multiplierStartIter2;
+	target.multiplierStartIter3 = source.multiplierStartIter3;
+	target.multiplierStartIter4 = source.multiplierStartIter4;
+	target.multiplierStartIter5 = source.multiplierStartIter5;
+	target.multiplierStopIter1 = source.multiplierStopIter1;
+	target.multiplierStopIter2 = source.multiplierStopIter2;
+	target.multiplierStopIter3 = source.multiplierStopIter3;
+	target.multiplierStopIter4 = source.multiplierStopIter4;
+	target.multiplierStopIter5 = source.multiplierStopIter5;
 	target.surfFoldPower = source.surfFoldPower;
 	target.surfScaleOscAmp = source.surfScaleOscAmp;
 	target.surfScaleOscFreq = source.surfScaleOscFreq;
