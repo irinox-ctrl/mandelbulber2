@@ -915,6 +915,23 @@ typedef struct
 	cl_float kochSphereFold;
 	cl_float kochEdgeSoftness;
 
+	// IFS/DIFS specific parameters
+	cl_float ifsFoldOscAmp;
+	cl_float ifsFoldOscFreq;
+	cl_float ifsScaleOsc;
+	cl_float ifsScaleOscFreq;
+	cl_float ifsPreRotAngle;
+	cl_float ifsPostRotAngle;
+	cl_float ifsTwistZ;
+	cl_float ifsOffsetWarp;
+	cl_float ifsRadialDistort;
+	cl_float ifsTurbulence;
+	cl_float ifsGradientColor;
+	cl_float ifsDETweak;
+	cl_float ifsCpixelInject;
+	cl_float ifsSphereFold;
+	cl_float ifsEdgeSoftness;
+
 	cl_float4 additionConstant0555;
 	cl_float4 additionConstant0777;
 	cl_float4 additionConstant000;
@@ -2039,6 +2056,21 @@ inline sFractalTransformCommonCl clCopySFractalTransformCommonCl(
 	target.kochAnisotropic = source.kochAnisotropic;
 	target.kochSphereFold = source.kochSphereFold;
 	target.kochEdgeSoftness = source.kochEdgeSoftness;
+	target.ifsFoldOscAmp = source.ifsFoldOscAmp;
+	target.ifsFoldOscFreq = source.ifsFoldOscFreq;
+	target.ifsScaleOsc = source.ifsScaleOsc;
+	target.ifsScaleOscFreq = source.ifsScaleOscFreq;
+	target.ifsPreRotAngle = source.ifsPreRotAngle;
+	target.ifsPostRotAngle = source.ifsPostRotAngle;
+	target.ifsTwistZ = source.ifsTwistZ;
+	target.ifsOffsetWarp = source.ifsOffsetWarp;
+	target.ifsRadialDistort = source.ifsRadialDistort;
+	target.ifsTurbulence = source.ifsTurbulence;
+	target.ifsGradientColor = source.ifsGradientColor;
+	target.ifsDETweak = source.ifsDETweak;
+	target.ifsCpixelInject = source.ifsCpixelInject;
+	target.ifsSphereFold = source.ifsSphereFold;
+	target.ifsEdgeSoftness = source.ifsEdgeSoftness;
 	return target;
 }
 

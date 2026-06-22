@@ -2244,6 +2244,23 @@ void InitFractalParams(std::shared_ptr<cParameterContainer> par)
 	par->addParam("transf_koch_sphere_fold", 0.0, morphLinear, paramStandard);
 	par->addParam("transf_koch_edge_softness", 0.0, morphLinear, paramStandard);
 
+	// IFS/DIFS specific parameters
+	par->addParam("transf_ifs_fold_osc_amp", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_ifs_fold_osc_freq", 1.0, morphLinear, paramStandard);
+	par->addParam("transf_ifs_scale_osc", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_ifs_scale_osc_freq", 1.0, morphLinear, paramStandard);
+	par->addParam("transf_ifs_pre_rot_angle", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_ifs_post_rot_angle", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_ifs_twist_z", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_ifs_offset_warp", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_ifs_radial_distort", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_ifs_turbulence", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_ifs_gradient_color", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_ifs_de_tweak", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_ifs_cpixel_inject", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_ifs_sphere_fold", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_ifs_edge_softness", 0.0, morphLinear, paramStandard);
+
 	par->addParam("transf_start_iterations", 0, morphLinear, paramStandard);
 	par->addParam("transf_start_iterations_250", 250, morphLinear, paramStandard);
 	par->addParam("transf_stop_iterations", 250, morphLinear, paramStandard);

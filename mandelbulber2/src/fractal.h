@@ -905,6 +905,23 @@ struct sFractalTransformCommon
 	double kochSphereFold;
 	double kochEdgeSoftness;
 
+	// IFS/DIFS specific parameters
+	double ifsFoldOscAmp;
+	double ifsFoldOscFreq;
+	double ifsScaleOsc;
+	double ifsScaleOscFreq;
+	double ifsPreRotAngle;
+	double ifsPostRotAngle;
+	double ifsTwistZ;
+	double ifsOffsetWarp;
+	double ifsRadialDistort;
+	double ifsTurbulence;
+	double ifsGradientColor;
+	double ifsDETweak;
+	double ifsCpixelInject;
+	double ifsSphereFold;
+	double ifsEdgeSoftness;
+
 	CVector4 additionConstant0555;
 	CVector4 additionConstant0777;
 	CVector4 additionConstant000;

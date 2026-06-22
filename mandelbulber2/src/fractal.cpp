@@ -578,6 +578,23 @@ sFractal::sFractal(const std::shared_ptr<cParameterContainer> container)
 	transformCommon.kochSphereFold = container->Get<double>("transf_koch_sphere_fold");
 	transformCommon.kochEdgeSoftness = container->Get<double>("transf_koch_edge_softness");
 
+	// IFS/DIFS specific parameters
+	transformCommon.ifsFoldOscAmp = container->Get<double>("transf_ifs_fold_osc_amp");
+	transformCommon.ifsFoldOscFreq = container->Get<double>("transf_ifs_fold_osc_freq");
+	transformCommon.ifsScaleOsc = container->Get<double>("transf_ifs_scale_osc");
+	transformCommon.ifsScaleOscFreq = container->Get<double>("transf_ifs_scale_osc_freq");
+	transformCommon.ifsPreRotAngle = container->Get<double>("transf_ifs_pre_rot_angle");
+	transformCommon.ifsPostRotAngle = container->Get<double>("transf_ifs_post_rot_angle");
+	transformCommon.ifsTwistZ = container->Get<double>("transf_ifs_twist_z");
+	transformCommon.ifsOffsetWarp = container->Get<double>("transf_ifs_offset_warp");
+	transformCommon.ifsRadialDistort = container->Get<double>("transf_ifs_radial_distort");
+	transformCommon.ifsTurbulence = container->Get<double>("transf_ifs_turbulence");
+	transformCommon.ifsGradientColor = container->Get<double>("transf_ifs_gradient_color");
+	transformCommon.ifsDETweak = container->Get<double>("transf_ifs_de_tweak");
+	transformCommon.ifsCpixelInject = container->Get<double>("transf_ifs_cpixel_inject");
+	transformCommon.ifsSphereFold = container->Get<double>("transf_ifs_sphere_fold");
+	transformCommon.ifsEdgeSoftness = container->Get<double>("transf_ifs_edge_softness");
+
 	transformCommon.startIterations = container->Get<int>("transf_start_iterations");
 	transformCommon.startIterations250 = container->Get<int>("transf_start_iterations_250");
 	transformCommon.stopIterations = container->Get<int>("transf_stop_iterations");
