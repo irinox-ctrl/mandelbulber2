@@ -2122,6 +2122,36 @@ void InitFractalParams(std::shared_ptr<cParameterContainer> par)
 	par->addParam("transf_multiplier_frequency_4", 1.0, morphLinear, paramStandard);
 	par->addParam("transf_multiplier_frequency_5", 1.0, morphLinear, paramStandard);
 
+	par->addParam("transf_multiplier_phase_1", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_multiplier_phase_2", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_multiplier_phase_3", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_multiplier_phase_4", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_multiplier_phase_5", 0.0, morphLinear, paramStandard);
+
+	par->addParam("transf_multiplier_threshold_1", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_multiplier_threshold_2", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_multiplier_threshold_3", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_multiplier_threshold_4", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_multiplier_threshold_5", 0.0, morphLinear, paramStandard);
+
+	par->addParam("transf_multiplier_threshold_mode_1", 0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_threshold_mode_2", 0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_threshold_mode_3", 0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_threshold_mode_4", 0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_threshold_mode_5", 0, morphNone, paramStandard);
+
+	par->addParam("transf_multiplier_scale_y_1", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_multiplier_scale_y_2", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_multiplier_scale_y_3", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_multiplier_scale_y_4", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_multiplier_scale_y_5", 0.0, morphLinear, paramStandard);
+
+	par->addParam("transf_multiplier_scale_z_1", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_multiplier_scale_z_2", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_multiplier_scale_z_3", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_multiplier_scale_z_4", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_multiplier_scale_z_5", 0.0, morphLinear, paramStandard);
+
 	par->addParam("transf_start_iterations", 0, morphLinear, paramStandard);
 	par->addParam("transf_start_iterations_250", 250, morphLinear, paramStandard);
 	par->addParam("transf_stop_iterations", 250, morphLinear, paramStandard);

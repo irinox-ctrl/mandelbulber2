@@ -793,6 +793,36 @@ typedef struct
 	cl_float multiplierFrequency4;
 	cl_float multiplierFrequency5;
 
+	cl_float multiplierPhase1;
+	cl_float multiplierPhase2;
+	cl_float multiplierPhase3;
+	cl_float multiplierPhase4;
+	cl_float multiplierPhase5;
+
+	cl_float multiplierThreshold1;
+	cl_float multiplierThreshold2;
+	cl_float multiplierThreshold3;
+	cl_float multiplierThreshold4;
+	cl_float multiplierThreshold5;
+
+	cl_int multiplierThresholdMode1;
+	cl_int multiplierThresholdMode2;
+	cl_int multiplierThresholdMode3;
+	cl_int multiplierThresholdMode4;
+	cl_int multiplierThresholdMode5;
+
+	cl_float multiplierScaleY1;
+	cl_float multiplierScaleY2;
+	cl_float multiplierScaleY3;
+	cl_float multiplierScaleY4;
+	cl_float multiplierScaleY5;
+
+	cl_float multiplierScaleZ1;
+	cl_float multiplierScaleZ2;
+	cl_float multiplierScaleZ3;
+	cl_float multiplierScaleZ4;
+	cl_float multiplierScaleZ5;
+
 	cl_float4 additionConstant0555;
 	cl_float4 additionConstant0777;
 	cl_float4 additionConstant000;
@@ -1812,6 +1842,31 @@ inline sFractalTransformCommonCl clCopySFractalTransformCommonCl(
 	target.multiplierFrequency3 = source.multiplierFrequency3;
 	target.multiplierFrequency4 = source.multiplierFrequency4;
 	target.multiplierFrequency5 = source.multiplierFrequency5;
+	target.multiplierPhase1 = source.multiplierPhase1;
+	target.multiplierPhase2 = source.multiplierPhase2;
+	target.multiplierPhase3 = source.multiplierPhase3;
+	target.multiplierPhase4 = source.multiplierPhase4;
+	target.multiplierPhase5 = source.multiplierPhase5;
+	target.multiplierThreshold1 = source.multiplierThreshold1;
+	target.multiplierThreshold2 = source.multiplierThreshold2;
+	target.multiplierThreshold3 = source.multiplierThreshold3;
+	target.multiplierThreshold4 = source.multiplierThreshold4;
+	target.multiplierThreshold5 = source.multiplierThreshold5;
+	target.multiplierThresholdMode1 = source.multiplierThresholdMode1;
+	target.multiplierThresholdMode2 = source.multiplierThresholdMode2;
+	target.multiplierThresholdMode3 = source.multiplierThresholdMode3;
+	target.multiplierThresholdMode4 = source.multiplierThresholdMode4;
+	target.multiplierThresholdMode5 = source.multiplierThresholdMode5;
+	target.multiplierScaleY1 = source.multiplierScaleY1;
+	target.multiplierScaleY2 = source.multiplierScaleY2;
+	target.multiplierScaleY3 = source.multiplierScaleY3;
+	target.multiplierScaleY4 = source.multiplierScaleY4;
+	target.multiplierScaleY5 = source.multiplierScaleY5;
+	target.multiplierScaleZ1 = source.multiplierScaleZ1;
+	target.multiplierScaleZ2 = source.multiplierScaleZ2;
+	target.multiplierScaleZ3 = source.multiplierScaleZ3;
+	target.multiplierScaleZ4 = source.multiplierScaleZ4;
+	target.multiplierScaleZ5 = source.multiplierScaleZ5;
 	return target;
 }
 

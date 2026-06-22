@@ -456,6 +456,36 @@ sFractal::sFractal(const std::shared_ptr<cParameterContainer> container)
 	transformCommon.multiplierFrequency4 = container->Get<double>("transf_multiplier_frequency_4");
 	transformCommon.multiplierFrequency5 = container->Get<double>("transf_multiplier_frequency_5");
 
+	transformCommon.multiplierPhase1 = container->Get<double>("transf_multiplier_phase_1");
+	transformCommon.multiplierPhase2 = container->Get<double>("transf_multiplier_phase_2");
+	transformCommon.multiplierPhase3 = container->Get<double>("transf_multiplier_phase_3");
+	transformCommon.multiplierPhase4 = container->Get<double>("transf_multiplier_phase_4");
+	transformCommon.multiplierPhase5 = container->Get<double>("transf_multiplier_phase_5");
+
+	transformCommon.multiplierThreshold1 = container->Get<double>("transf_multiplier_threshold_1");
+	transformCommon.multiplierThreshold2 = container->Get<double>("transf_multiplier_threshold_2");
+	transformCommon.multiplierThreshold3 = container->Get<double>("transf_multiplier_threshold_3");
+	transformCommon.multiplierThreshold4 = container->Get<double>("transf_multiplier_threshold_4");
+	transformCommon.multiplierThreshold5 = container->Get<double>("transf_multiplier_threshold_5");
+
+	transformCommon.multiplierThresholdMode1 = container->Get<int>("transf_multiplier_threshold_mode_1");
+	transformCommon.multiplierThresholdMode2 = container->Get<int>("transf_multiplier_threshold_mode_2");
+	transformCommon.multiplierThresholdMode3 = container->Get<int>("transf_multiplier_threshold_mode_3");
+	transformCommon.multiplierThresholdMode4 = container->Get<int>("transf_multiplier_threshold_mode_4");
+	transformCommon.multiplierThresholdMode5 = container->Get<int>("transf_multiplier_threshold_mode_5");
+
+	transformCommon.multiplierScaleY1 = container->Get<double>("transf_multiplier_scale_y_1");
+	transformCommon.multiplierScaleY2 = container->Get<double>("transf_multiplier_scale_y_2");
+	transformCommon.multiplierScaleY3 = container->Get<double>("transf_multiplier_scale_y_3");
+	transformCommon.multiplierScaleY4 = container->Get<double>("transf_multiplier_scale_y_4");
+	transformCommon.multiplierScaleY5 = container->Get<double>("transf_multiplier_scale_y_5");
+
+	transformCommon.multiplierScaleZ1 = container->Get<double>("transf_multiplier_scale_z_1");
+	transformCommon.multiplierScaleZ2 = container->Get<double>("transf_multiplier_scale_z_2");
+	transformCommon.multiplierScaleZ3 = container->Get<double>("transf_multiplier_scale_z_3");
+	transformCommon.multiplierScaleZ4 = container->Get<double>("transf_multiplier_scale_z_4");
+	transformCommon.multiplierScaleZ5 = container->Get<double>("transf_multiplier_scale_z_5");
+
 	transformCommon.startIterations = container->Get<int>("transf_start_iterations");
 	transformCommon.startIterations250 = container->Get<int>("transf_start_iterations_250");
 	transformCommon.stopIterations = container->Get<int>("transf_stop_iterations");

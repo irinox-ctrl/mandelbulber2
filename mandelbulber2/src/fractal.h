@@ -783,6 +783,36 @@ struct sFractalTransformCommon
 	double multiplierFrequency4;
 	double multiplierFrequency5;
 
+	double multiplierPhase1;
+	double multiplierPhase2;
+	double multiplierPhase3;
+	double multiplierPhase4;
+	double multiplierPhase5;
+
+	double multiplierThreshold1;
+	double multiplierThreshold2;
+	double multiplierThreshold3;
+	double multiplierThreshold4;
+	double multiplierThreshold5;
+
+	int multiplierThresholdMode1;
+	int multiplierThresholdMode2;
+	int multiplierThresholdMode3;
+	int multiplierThresholdMode4;
+	int multiplierThresholdMode5;
+
+	double multiplierScaleY1;
+	double multiplierScaleY2;
+	double multiplierScaleY3;
+	double multiplierScaleY4;
+	double multiplierScaleY5;
+
+	double multiplierScaleZ1;
+	double multiplierScaleZ2;
+	double multiplierScaleZ3;
+	double multiplierScaleZ4;
+	double multiplierScaleZ5;
+
 	CVector4 additionConstant0555;
 	CVector4 additionConstant0777;
 	CVector4 additionConstant000;
