@@ -932,6 +932,23 @@ typedef struct
 	cl_float ifsSphereFold;
 	cl_float ifsEdgeSoftness;
 
+	// Menger specific parameters
+	cl_float mgScaleOsc;
+	cl_float mgScaleOscFreq;
+	cl_float mgFoldPower;
+	cl_float mgPreRotAngle;
+	cl_float mgPostRotAngle;
+	cl_float mgTwistZ;
+	cl_float mgOffsetOsc;
+	cl_float mgOffsetOscFreq;
+	cl_float mgRadialDistort;
+	cl_float mgTurbulence;
+	cl_float mgGradientColor;
+	cl_float mgDETweak;
+	cl_float mgCpixelInject;
+	cl_float mgSphereFold;
+	cl_float mgEdgeSoftness;
+
 	cl_float4 additionConstant0555;
 	cl_float4 additionConstant0777;
 	cl_float4 additionConstant000;
@@ -2071,6 +2088,21 @@ inline sFractalTransformCommonCl clCopySFractalTransformCommonCl(
 	target.ifsCpixelInject = source.ifsCpixelInject;
 	target.ifsSphereFold = source.ifsSphereFold;
 	target.ifsEdgeSoftness = source.ifsEdgeSoftness;
+	target.mgScaleOsc = source.mgScaleOsc;
+	target.mgScaleOscFreq = source.mgScaleOscFreq;
+	target.mgFoldPower = source.mgFoldPower;
+	target.mgPreRotAngle = source.mgPreRotAngle;
+	target.mgPostRotAngle = source.mgPostRotAngle;
+	target.mgTwistZ = source.mgTwistZ;
+	target.mgOffsetOsc = source.mgOffsetOsc;
+	target.mgOffsetOscFreq = source.mgOffsetOscFreq;
+	target.mgRadialDistort = source.mgRadialDistort;
+	target.mgTurbulence = source.mgTurbulence;
+	target.mgGradientColor = source.mgGradientColor;
+	target.mgDETweak = source.mgDETweak;
+	target.mgCpixelInject = source.mgCpixelInject;
+	target.mgSphereFold = source.mgSphereFold;
+	target.mgEdgeSoftness = source.mgEdgeSoftness;
 	return target;
 }
 

@@ -2261,6 +2261,23 @@ void InitFractalParams(std::shared_ptr<cParameterContainer> par)
 	par->addParam("transf_ifs_sphere_fold", 0.0, morphLinear, paramStandard);
 	par->addParam("transf_ifs_edge_softness", 0.0, morphLinear, paramStandard);
 
+	// Menger specific parameters
+	par->addParam("transf_mg_scale_osc", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_mg_scale_osc_freq", 1.0, morphLinear, paramStandard);
+	par->addParam("transf_mg_fold_power", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_mg_pre_rot_angle", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_mg_post_rot_angle", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_mg_twist_z", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_mg_offset_osc", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_mg_offset_osc_freq", 1.0, morphLinear, paramStandard);
+	par->addParam("transf_mg_radial_distort", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_mg_turbulence", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_mg_gradient_color", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_mg_de_tweak", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_mg_cpixel_inject", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_mg_sphere_fold", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_mg_edge_softness", 0.0, morphLinear, paramStandard);
+
 	par->addParam("transf_start_iterations", 0, morphLinear, paramStandard);
 	par->addParam("transf_start_iterations_250", 250, morphLinear, paramStandard);
 	par->addParam("transf_stop_iterations", 250, morphLinear, paramStandard);

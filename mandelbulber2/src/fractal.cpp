@@ -595,6 +595,23 @@ sFractal::sFractal(const std::shared_ptr<cParameterContainer> container)
 	transformCommon.ifsSphereFold = container->Get<double>("transf_ifs_sphere_fold");
 	transformCommon.ifsEdgeSoftness = container->Get<double>("transf_ifs_edge_softness");
 
+	// Menger specific parameters
+	transformCommon.mgScaleOsc = container->Get<double>("transf_mg_scale_osc");
+	transformCommon.mgScaleOscFreq = container->Get<double>("transf_mg_scale_osc_freq");
+	transformCommon.mgFoldPower = container->Get<double>("transf_mg_fold_power");
+	transformCommon.mgPreRotAngle = container->Get<double>("transf_mg_pre_rot_angle");
+	transformCommon.mgPostRotAngle = container->Get<double>("transf_mg_post_rot_angle");
+	transformCommon.mgTwistZ = container->Get<double>("transf_mg_twist_z");
+	transformCommon.mgOffsetOsc = container->Get<double>("transf_mg_offset_osc");
+	transformCommon.mgOffsetOscFreq = container->Get<double>("transf_mg_offset_osc_freq");
+	transformCommon.mgRadialDistort = container->Get<double>("transf_mg_radial_distort");
+	transformCommon.mgTurbulence = container->Get<double>("transf_mg_turbulence");
+	transformCommon.mgGradientColor = container->Get<double>("transf_mg_gradient_color");
+	transformCommon.mgDETweak = container->Get<double>("transf_mg_de_tweak");
+	transformCommon.mgCpixelInject = container->Get<double>("transf_mg_cpixel_inject");
+	transformCommon.mgSphereFold = container->Get<double>("transf_mg_sphere_fold");
+	transformCommon.mgEdgeSoftness = container->Get<double>("transf_mg_edge_softness");
+
 	transformCommon.startIterations = container->Get<int>("transf_start_iterations");
 	transformCommon.startIterations250 = container->Get<int>("transf_start_iterations_250");
 	transformCommon.stopIterations = container->Get<int>("transf_stop_iterations");

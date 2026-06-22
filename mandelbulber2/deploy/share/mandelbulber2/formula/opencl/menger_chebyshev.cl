@@ -127,6 +127,157 @@ REAL4 MengerChebyshevIteration(REAL4 z, __constant sFractalCl *fractal, sExtende
 	}
 
 
+		// --- Menger Extensions (15 parameters) ---
+	{
+		REAL mgScOsc = fractal->transformCommon.mgScaleOsc;
+		REAL mgScFreq = fractal->transformCommon.mgScaleOscFreq;
+		REAL mgFoldPow = fractal->transformCommon.mgFoldPower;
+		REAL mgPreRot = fractal->transformCommon.mgPreRotAngle;
+		REAL mgPostRot = fractal->transformCommon.mgPostRotAngle;
+		REAL mgTwZ = fractal->transformCommon.mgTwistZ;
+		REAL mgOffOsc = fractal->transformCommon.mgOffsetOsc;
+		REAL mgOffFreq = fractal->transformCommon.mgOffsetOscFreq;
+		REAL mgRadDist = fractal->transformCommon.mgRadialDistort;
+		REAL mgTurb = fractal->transformCommon.mgTurbulence;
+		REAL mgGradCol = fractal->transformCommon.mgGradientColor;
+		REAL mgDETw = fractal->transformCommon.mgDETweak;
+		REAL mgCpix = fractal->transformCommon.mgCpixelInject;
+		REAL mgSphere = fractal->transformCommon.mgSphereFold;
+		REAL mgEdgeSoft = fractal->transformCommon.mgEdgeSoftness;
+
+		// 1-2. Scale oscillation
+		if (mgScOsc != 0.0f)
+		{
+			REAL sOsc = 1.0f + mgScOsc * native_sin(aux->i * mgScFreq * 0.5f);
+			z *= sOsc;
+			aux->DE *= fabs(sOsc);
+		}
+
+		// 3. Fold power
+		if (mgFoldPow != 0.0f)
+		{
+			REAL p = 1.0f + mgFoldPow;
+			z.x = sign(z.x) * pow(fabs(z.x) + 1e-20f, p);
+			z.y = sign(z.y) * pow(fabs(z.y) + 1e-20f, p);
+			z.z = sign(z.z) * pow(fabs(z.z) + 1e-20f, p);
+		}
+
+		// 4. Pre-rotation
+		if (mgPreRot != 0.0f)
+		{
+			REAL a = mgPreRot * M_PI_F / 180.0f * aux->i;
+			REAL ca = native_cos(a); REAL sa = native_sin(a);
+			REAL px = z.x * ca - z.z * sa;
+			REAL pz = z.x * sa + z.z * ca;
+			z.x = px; z.z = pz;
+		}
+
+		// 5. Post-rotation
+		if (mgPostRot != 0.0f)
+		{
+			REAL a = mgPostRot * M_PI_F / 180.0f;
+			REAL ca = native_cos(a); REAL sa = native_sin(a);
+			REAL py = z.y * ca - z.z * sa;
+			REAL pz = z.y * sa + z.z * ca;
+			z.y = py; z.z = pz;
+		}
+
+		// 6. Twist Z
+		if (mgTwZ != 0.0f)
+		{
+			REAL tw = mgTwZ * M_PI_F / 180.0f * z.z;
+			REAL ct = native_cos(tw); REAL st = native_sin(tw);
+			REAL tx = z.x * ct - z.y * st;
+			REAL ty = z.x * st + z.y * ct;
+			z.x = tx; z.y = ty;
+		}
+
+		// 7-8. Offset oscillation
+		if (mgOffOsc != 0.0f)
+		{
+			REAL oOsc = mgOffOsc * native_sin(aux->i * mgOffFreq * 0.5f);
+			z.x += oOsc;
+			z.y += oOsc * 0.7f;
+			z.z += oOsc * 0.5f;
+		}
+
+		// 9. Radial distortion
+		if (mgRadDist != 0.0f)
+		{
+			REAL r = length(z);
+			if (r > 1e-15f)
+			{
+				REAL distort = 1.0f + mgRadDist * native_sin(r * 4.0f);
+				z *= distort;
+				aux->DE *= fabs(distort);
+			}
+		}
+
+		// 10. Turbulence
+		if (mgTurb != 0.0f)
+		{
+			REAL hx = native_sin(z.x * 12.9898f + z.y * 78.233f) * 43758.5453f;
+			hx = hx - floor(hx);
+			REAL hy = native_sin(z.y * 12.9898f + z.z * 78.233f) * 43758.5453f;
+			hy = hy - floor(hy);
+			REAL hz = native_sin(z.z * 12.9898f + z.x * 78.233f) * 43758.5453f;
+			hz = hz - floor(hz);
+			z.x += (hx - 0.5f) * mgTurb;
+			z.y += (hy - 0.5f) * mgTurb;
+			z.z += (hz - 0.5f) * mgTurb;
+		}
+
+		// 11. Gradient color
+		if (mgGradCol != 0.0f)
+		{
+			aux->color += mgGradCol * length(z);
+		}
+
+		// 12. DE tweak
+		if (mgDETw != 0.0f)
+		{
+			aux->DE += mgDETw;
+		}
+
+		// 13. C-pixel injection
+		if (mgCpix != 0.0f)
+		{
+			z += aux->const_c * mgCpix;
+		}
+
+		// 14. Sphere fold
+		if (mgSphere != 0.0f)
+		{
+			REAL r2 = dot(z, z);
+			REAL minR2 = 0.25f;
+			REAL fixedR2 = 1.0f;
+			if (r2 < minR2)
+			{
+				REAL t = fixedR2 / minR2;
+				z *= t * mgSphere;
+				aux->DE *= fabs(t * mgSphere);
+			}
+			else if (r2 < fixedR2)
+			{
+				REAL t = fixedR2 / r2;
+				z *= t * mgSphere;
+				aux->DE *= fabs(t * mgSphere);
+			}
+		}
+
+		// 15. Edge softness
+		if (mgEdgeSoft != 0.0f)
+		{
+			REAL r = length(z);
+			if (r > 1e-15f)
+			{
+				REAL soft = r / (r + mgEdgeSoft);
+				z *= soft;
+				aux->DE *= soft;
+			}
+		}
+	}
+
 	// GPU bypass: skip if all multipliers disabled
 	if (fractal->transformCommon.functionEnabledBxFalse || fractal->transformCommon.functionEnabledByFalse || fractal->transformCommon.functionEnabledBzFalse || fractal->transformCommon.functionEnabledBwFalse || fractal->transformCommon.functionEnabledCzFalse)
 	{

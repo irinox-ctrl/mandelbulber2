@@ -922,6 +922,23 @@ struct sFractalTransformCommon
 	double ifsSphereFold;
 	double ifsEdgeSoftness;
 
+	// Menger specific parameters
+	double mgScaleOsc;
+	double mgScaleOscFreq;
+	double mgFoldPower;
+	double mgPreRotAngle;
+	double mgPostRotAngle;
+	double mgTwistZ;
+	double mgOffsetOsc;
+	double mgOffsetOscFreq;
+	double mgRadialDistort;
+	double mgTurbulence;
+	double mgGradientColor;
+	double mgDETweak;
+	double mgCpixelInject;
+	double mgSphereFold;
+	double mgEdgeSoftness;
+
 	CVector4 additionConstant0555;
 	CVector4 additionConstant0777;
 	CVector4 additionConstant000;
