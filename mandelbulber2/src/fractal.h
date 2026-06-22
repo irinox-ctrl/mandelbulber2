@@ -825,6 +825,18 @@ struct sFractalTransformCommon
 	double multiplierWeight4;
 	double multiplierWeight5;
 
+	// Amazing Surf specific parameters
+	double surfFoldPower;
+	double surfScaleOscAmp;
+	double surfScaleOscFreq;
+	double surfFoldWarp;
+	double surfPostRotZ;
+	double surfGradientColor;
+	double surfTurbulence;
+	double surfMinROsc;
+	double surfCpixelDecay;
+	double surfSphereSoftness;
+
 	CVector4 additionConstant0555;
 	CVector4 additionConstant0777;
 	CVector4 additionConstant000;

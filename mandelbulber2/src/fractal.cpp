@@ -498,6 +498,18 @@ sFractal::sFractal(const std::shared_ptr<cParameterContainer> container)
 	transformCommon.multiplierWeight4 = container->Get<double>("transf_multiplier_weight_4");
 	transformCommon.multiplierWeight5 = container->Get<double>("transf_multiplier_weight_5");
 
+	// Amazing Surf specific parameters
+	transformCommon.surfFoldPower = container->Get<double>("transf_surf_fold_power");
+	transformCommon.surfScaleOscAmp = container->Get<double>("transf_surf_scale_osc_amp");
+	transformCommon.surfScaleOscFreq = container->Get<double>("transf_surf_scale_osc_freq");
+	transformCommon.surfFoldWarp = container->Get<double>("transf_surf_fold_warp");
+	transformCommon.surfPostRotZ = container->Get<double>("transf_surf_post_rot_z");
+	transformCommon.surfGradientColor = container->Get<double>("transf_surf_gradient_color");
+	transformCommon.surfTurbulence = container->Get<double>("transf_surf_turbulence");
+	transformCommon.surfMinROsc = container->Get<double>("transf_surf_min_r_osc");
+	transformCommon.surfCpixelDecay = container->Get<double>("transf_surf_cpixel_decay");
+	transformCommon.surfSphereSoftness = container->Get<double>("transf_surf_sphere_softness");
+
 	transformCommon.startIterations = container->Get<int>("transf_start_iterations");
 	transformCommon.startIterations250 = container->Get<int>("transf_start_iterations_250");
 	transformCommon.stopIterations = container->Get<int>("transf_stop_iterations");

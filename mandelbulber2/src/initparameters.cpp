@@ -2164,6 +2164,18 @@ void InitFractalParams(std::shared_ptr<cParameterContainer> par)
 	par->addParam("transf_multiplier_weight_4", 1.0, morphLinear, paramStandard);
 	par->addParam("transf_multiplier_weight_5", 1.0, morphLinear, paramStandard);
 
+	// Amazing Surf specific parameters
+	par->addParam("transf_surf_fold_power", 1.0, morphLinear, paramStandard);
+	par->addParam("transf_surf_scale_osc_amp", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_surf_scale_osc_freq", 1.0, morphLinear, paramStandard);
+	par->addParam("transf_surf_fold_warp", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_surf_post_rot_z", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_surf_gradient_color", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_surf_turbulence", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_surf_min_r_osc", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_surf_cpixel_decay", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_surf_sphere_softness", 0.0, morphLinear, paramStandard);
+
 	par->addParam("transf_start_iterations", 0, morphLinear, paramStandard);
 	par->addParam("transf_start_iterations_250", 250, morphLinear, paramStandard);
 	par->addParam("transf_stop_iterations", 250, morphLinear, paramStandard);

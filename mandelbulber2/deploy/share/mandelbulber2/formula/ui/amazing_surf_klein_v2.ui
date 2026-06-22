@@ -2371,7 +2371,105 @@ offset:</string>
     </widget>
    </item>
 
-   <item>
+      <item>
+    <widget class="MyGroupCheck" name="groupCheck_transf_surf_params_false">
+     <property name="title"><string>Amazing Surf Extensions</string></property>
+     <property name="checked"><bool>false</bool></property>
+     <layout class="QGridLayout">
+      <item row="0" column="0">
+       <widget class="QLabel"><property name="text"><string>Fold Power:</string></property></widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_surf_fold_power">
+        <property name="minimum"><double>0.01</double></property><property name="maximum"><double>10.0</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>1.0</double></property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QLabel"><property name="text"><string>Fold Warp:</string></property></widget>
+      </item>
+      <item row="0" column="3">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_surf_fold_warp">
+        <property name="minimum"><double>-5.0</double></property><property name="maximum"><double>5.0</double></property>
+        <property name="singleStep"><double>0.01</double></property><property name="value"><double>0.0</double></property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel"><property name="text"><string>Scale Osc Amp:</string></property></widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_surf_scale_osc_amp">
+        <property name="minimum"><double>-5.0</double></property><property name="maximum"><double>5.0</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>0.0</double></property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QLabel"><property name="text"><string>Scale Osc Freq:</string></property></widget>
+      </item>
+      <item row="1" column="3">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_surf_scale_osc_freq">
+        <property name="minimum"><double>0.01</double></property><property name="maximum"><double>50.0</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>1.0</double></property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel"><property name="text"><string>Post Rot Z (deg):</string></property></widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_surf_post_rot_z">
+        <property name="minimum"><double>-180.0</double></property><property name="maximum"><double>180.0</double></property>
+        <property name="singleStep"><double>1.0</double></property><property name="value"><double>0.0</double></property>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <widget class="QLabel"><property name="text"><string>Turbulence:</string></property></widget>
+      </item>
+      <item row="2" column="3">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_surf_turbulence">
+        <property name="minimum"><double>0.0</double></property><property name="maximum"><double>5.0</double></property>
+        <property name="singleStep"><double>0.001</double></property><property name="value"><double>0.0</double></property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel"><property name="text"><string>Gradient Color:</string></property></widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_surf_gradient_color">
+        <property name="minimum"><double>0.0</double></property><property name="maximum"><double>100.0</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>0.0</double></property>
+       </widget>
+      </item>
+      <item row="3" column="2">
+       <widget class="QLabel"><property name="text"><string>MinR Osc:</string></property></widget>
+      </item>
+      <item row="3" column="3">
+       <widget name="spinbox_transf_surf_min_r_osc" class="MyDoubleSpinBox">
+        <property name="minimum"><double>-1.0</double></property><property name="maximum"><double>1.0</double></property>
+        <property name="singleStep"><double>0.01</double></property><property name="value"><double>0.0</double></property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel"><property name="text"><string>C-Pix Decay:</string></property></widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_surf_cpixel_decay">
+        <property name="minimum"><double>0.0</double></property><property name="maximum"><double>5.0</double></property>
+        <property name="singleStep"><double>0.01</double></property><property name="value"><double>0.0</double></property>
+       </widget>
+      </item>
+      <item row="4" column="2">
+       <widget class="QLabel"><property name="text"><string>Sph Softness:</string></property></widget>
+      </item>
+      <item row="4" column="3">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_surf_sphere_softness">
+        <property name="minimum"><double>0.0</double></property><property name="maximum"><double>5.0</double></property>
+        <property name="singleStep"><double>0.01</double></property><property name="value"><double>0.0</double></property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+<item>
     <widget class="MyGroupBox" name="groupCheck_transf_function_enabledBx_false">
      <property name="title"><string>Multiplier 1</string></property>
      <property name="checkable"><bool>true</bool></property>

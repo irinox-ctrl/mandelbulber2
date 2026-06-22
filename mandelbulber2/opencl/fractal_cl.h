@@ -835,6 +835,18 @@ typedef struct
 	cl_float multiplierWeight4;
 	cl_float multiplierWeight5;
 
+	// Amazing Surf specific parameters
+	cl_float surfFoldPower;
+	cl_float surfScaleOscAmp;
+	cl_float surfScaleOscFreq;
+	cl_float surfFoldWarp;
+	cl_float surfPostRotZ;
+	cl_float surfGradientColor;
+	cl_float surfTurbulence;
+	cl_float surfMinROsc;
+	cl_float surfCpixelDecay;
+	cl_float surfSphereSoftness;
+
 	cl_float4 additionConstant0555;
 	cl_float4 additionConstant0777;
 	cl_float4 additionConstant000;
@@ -1889,6 +1901,16 @@ inline sFractalTransformCommonCl clCopySFractalTransformCommonCl(
 	target.multiplierWeight3 = source.multiplierWeight3;
 	target.multiplierWeight4 = source.multiplierWeight4;
 	target.multiplierWeight5 = source.multiplierWeight5;
+	target.surfFoldPower = source.surfFoldPower;
+	target.surfScaleOscAmp = source.surfScaleOscAmp;
+	target.surfScaleOscFreq = source.surfScaleOscFreq;
+	target.surfFoldWarp = source.surfFoldWarp;
+	target.surfPostRotZ = source.surfPostRotZ;
+	target.surfGradientColor = source.surfGradientColor;
+	target.surfTurbulence = source.surfTurbulence;
+	target.surfMinROsc = source.surfMinROsc;
+	target.surfCpixelDecay = source.surfCpixelDecay;
+	target.surfSphereSoftness = source.surfSphereSoftness;
 	return target;
 }
 
