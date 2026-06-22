@@ -765,6 +765,24 @@ struct sFractalTransformCommon
 	int multiplierMode4;
 	int multiplierMode5;
 
+	int multiplierValueMode1;
+	int multiplierValueMode2;
+	int multiplierValueMode3;
+	int multiplierValueMode4;
+	int multiplierValueMode5;
+
+	bool multiplierInverse1;
+	bool multiplierInverse2;
+	bool multiplierInverse3;
+	bool multiplierInverse4;
+	bool multiplierInverse5;
+
+	double multiplierFrequency1;
+	double multiplierFrequency2;
+	double multiplierFrequency3;
+	double multiplierFrequency4;
+	double multiplierFrequency5;
+
 	CVector4 additionConstant0555;
 	CVector4 additionConstant0777;
 	CVector4 additionConstant000;

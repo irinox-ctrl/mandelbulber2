@@ -438,6 +438,24 @@ sFractal::sFractal(const std::shared_ptr<cParameterContainer> container)
 	transformCommon.multiplierMode4 = container->Get<int>("transf_multiplier_mode_4");
 	transformCommon.multiplierMode5 = container->Get<int>("transf_multiplier_mode_5");
 
+	transformCommon.multiplierValueMode1 = container->Get<int>("transf_multiplier_value_mode_1");
+	transformCommon.multiplierValueMode2 = container->Get<int>("transf_multiplier_value_mode_2");
+	transformCommon.multiplierValueMode3 = container->Get<int>("transf_multiplier_value_mode_3");
+	transformCommon.multiplierValueMode4 = container->Get<int>("transf_multiplier_value_mode_4");
+	transformCommon.multiplierValueMode5 = container->Get<int>("transf_multiplier_value_mode_5");
+
+	transformCommon.multiplierInverse1 = container->Get<bool>("transf_multiplier_inverse_1");
+	transformCommon.multiplierInverse2 = container->Get<bool>("transf_multiplier_inverse_2");
+	transformCommon.multiplierInverse3 = container->Get<bool>("transf_multiplier_inverse_3");
+	transformCommon.multiplierInverse4 = container->Get<bool>("transf_multiplier_inverse_4");
+	transformCommon.multiplierInverse5 = container->Get<bool>("transf_multiplier_inverse_5");
+
+	transformCommon.multiplierFrequency1 = container->Get<double>("transf_multiplier_frequency_1");
+	transformCommon.multiplierFrequency2 = container->Get<double>("transf_multiplier_frequency_2");
+	transformCommon.multiplierFrequency3 = container->Get<double>("transf_multiplier_frequency_3");
+	transformCommon.multiplierFrequency4 = container->Get<double>("transf_multiplier_frequency_4");
+	transformCommon.multiplierFrequency5 = container->Get<double>("transf_multiplier_frequency_5");
+
 	transformCommon.startIterations = container->Get<int>("transf_start_iterations");
 	transformCommon.startIterations250 = container->Get<int>("transf_start_iterations_250");
 	transformCommon.stopIterations = container->Get<int>("transf_stop_iterations");

@@ -758,6 +758,30 @@ offset:</string>
           </property>
          </widget>
         </item>
+      <item row="1" column="0">
+       <widget class="QLabel"><property name="text"><string>Mode:</string></property></widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="MyComboBox" name="comboBox_transf_multiplier_value_mode_2">
+        <item><property name="text"><string notr="true">Constant</string></property></item>
+        <item><property name="text"><string notr="true">Sine</string></property></item>
+        <item><property name="text"><string notr="true">Ramp</string></property></item>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QLabel"><property name="text"><string>Freq:</string></property></widget>
+      </item>
+      <item row="1" column="3">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_frequency_2">
+        <property name="minimum"><double>0.01</double></property><property name="maximum"><double>100.0</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>1.0</double></property>
+       </widget>
+      </item>
+      <item row="1" column="4" colspan="2">
+       <widget class="MyCheckBox" name="checkBox_transf_multiplier_inverse_2">
+        <property name="text"><string>Inverse (1/val)</string></property>
+       </widget>
+      </item>
         <item row="0" column="2">
          <widget class="QLabel" name="label_262">
           <property name="font">
@@ -1657,6 +1681,30 @@ offset:</string>
           </property>
          </widget>
         </item>
+      <item row="1" column="0">
+       <widget class="QLabel"><property name="text"><string>Mode:</string></property></widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="MyComboBox" name="comboBox_transf_multiplier_value_mode_5">
+        <item><property name="text"><string notr="true">Constant</string></property></item>
+        <item><property name="text"><string notr="true">Sine</string></property></item>
+        <item><property name="text"><string notr="true">Ramp</string></property></item>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QLabel"><property name="text"><string>Freq:</string></property></widget>
+      </item>
+      <item row="1" column="3">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_frequency_5">
+        <property name="minimum"><double>0.01</double></property><property name="maximum"><double>100.0</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>1.0</double></property>
+       </widget>
+      </item>
+      <item row="1" column="4" colspan="2">
+       <widget class="MyCheckBox" name="checkBox_transf_multiplier_inverse_5">
+        <property name="text"><string>Inverse (1/val)</string></property>
+       </widget>
+      </item>
         <item row="0" column="2">
          <widget class="QLabel" name="label_252">
           <property name="font">
@@ -2716,6 +2764,10 @@ Multiplier:</string>
         <item><property name="text"><string notr="true">z.z</string></property></item>
         <item><property name="text"><string notr="true">DE</string></property></item>
         <item><property name="text"><string notr="true">color</string></property></item>
+        <item><property name="text"><string notr="true">z.w</string></property></item>
+        <item><property name="text"><string notr="true">z.xy</string></property></item>
+        <item><property name="text"><string notr="true">z.xz</string></property></item>
+        <item><property name="text"><string notr="true">z.yz</string></property></item>
        </widget>
       </item>
       <item row="0" column="2">
@@ -2745,6 +2797,30 @@ Multiplier:</string>
         <property name="value"><number>250</number></property>
        </widget>
       </item>
+      <item row="1" column="0">
+       <widget class="QLabel"><property name="text"><string>Mode:</string></property></widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="MyComboBox" name="comboBox_transf_multiplier_value_mode_1">
+        <item><property name="text"><string notr="true">Constant</string></property></item>
+        <item><property name="text"><string notr="true">Sine</string></property></item>
+        <item><property name="text"><string notr="true">Ramp</string></property></item>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QLabel"><property name="text"><string>Freq:</string></property></widget>
+      </item>
+      <item row="1" column="3">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_frequency_1">
+        <property name="minimum"><double>0.01</double></property><property name="maximum"><double>100.0</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>1.0</double></property>
+       </widget>
+      </item>
+      <item row="1" column="4" colspan="2">
+       <widget class="MyCheckBox" name="checkBox_transf_multiplier_inverse_1">
+        <property name="text"><string>Inverse (1/val)</string></property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -2767,6 +2843,10 @@ Multiplier:</string>
         <item><property name="text"><string notr="true">z.z</string></property></item>
         <item><property name="text"><string notr="true">DE</string></property></item>
         <item><property name="text"><string notr="true">color</string></property></item>
+        <item><property name="text"><string notr="true">z.w</string></property></item>
+        <item><property name="text"><string notr="true">z.xy</string></property></item>
+        <item><property name="text"><string notr="true">z.xz</string></property></item>
+        <item><property name="text"><string notr="true">z.yz</string></property></item>
        </widget>
       </item>
       <item row="0" column="2">
@@ -2818,6 +2898,10 @@ Multiplier:</string>
         <item><property name="text"><string notr="true">z.z</string></property></item>
         <item><property name="text"><string notr="true">DE</string></property></item>
         <item><property name="text"><string notr="true">color</string></property></item>
+        <item><property name="text"><string notr="true">z.w</string></property></item>
+        <item><property name="text"><string notr="true">z.xy</string></property></item>
+        <item><property name="text"><string notr="true">z.xz</string></property></item>
+        <item><property name="text"><string notr="true">z.yz</string></property></item>
        </widget>
       </item>
       <item row="0" column="2">
@@ -2847,6 +2931,30 @@ Multiplier:</string>
         <property name="value"><number>250</number></property>
        </widget>
       </item>
+      <item row="1" column="0">
+       <widget class="QLabel"><property name="text"><string>Mode:</string></property></widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="MyComboBox" name="comboBox_transf_multiplier_value_mode_3">
+        <item><property name="text"><string notr="true">Constant</string></property></item>
+        <item><property name="text"><string notr="true">Sine</string></property></item>
+        <item><property name="text"><string notr="true">Ramp</string></property></item>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QLabel"><property name="text"><string>Freq:</string></property></widget>
+      </item>
+      <item row="1" column="3">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_frequency_3">
+        <property name="minimum"><double>0.01</double></property><property name="maximum"><double>100.0</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>1.0</double></property>
+       </widget>
+      </item>
+      <item row="1" column="4" colspan="2">
+       <widget class="MyCheckBox" name="checkBox_transf_multiplier_inverse_3">
+        <property name="text"><string>Inverse (1/val)</string></property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -2869,6 +2977,10 @@ Multiplier:</string>
         <item><property name="text"><string notr="true">z.z</string></property></item>
         <item><property name="text"><string notr="true">DE</string></property></item>
         <item><property name="text"><string notr="true">color</string></property></item>
+        <item><property name="text"><string notr="true">z.w</string></property></item>
+        <item><property name="text"><string notr="true">z.xy</string></property></item>
+        <item><property name="text"><string notr="true">z.xz</string></property></item>
+        <item><property name="text"><string notr="true">z.yz</string></property></item>
        </widget>
       </item>
       <item row="0" column="2">
@@ -2898,6 +3010,30 @@ Multiplier:</string>
         <property name="value"><number>250</number></property>
        </widget>
       </item>
+      <item row="1" column="0">
+       <widget class="QLabel"><property name="text"><string>Mode:</string></property></widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="MyComboBox" name="comboBox_transf_multiplier_value_mode_4">
+        <item><property name="text"><string notr="true">Constant</string></property></item>
+        <item><property name="text"><string notr="true">Sine</string></property></item>
+        <item><property name="text"><string notr="true">Ramp</string></property></item>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QLabel"><property name="text"><string>Freq:</string></property></widget>
+      </item>
+      <item row="1" column="3">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_frequency_4">
+        <property name="minimum"><double>0.01</double></property><property name="maximum"><double>100.0</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>1.0</double></property>
+       </widget>
+      </item>
+      <item row="1" column="4" colspan="2">
+       <widget class="MyCheckBox" name="checkBox_transf_multiplier_inverse_4">
+        <property name="text"><string>Inverse (1/val)</string></property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -2920,6 +3056,10 @@ Multiplier:</string>
         <item><property name="text"><string notr="true">z.z</string></property></item>
         <item><property name="text"><string notr="true">DE</string></property></item>
         <item><property name="text"><string notr="true">color</string></property></item>
+        <item><property name="text"><string notr="true">z.w</string></property></item>
+        <item><property name="text"><string notr="true">z.xy</string></property></item>
+        <item><property name="text"><string notr="true">z.xz</string></property></item>
+        <item><property name="text"><string notr="true">z.yz</string></property></item>
        </widget>
       </item>
       <item row="0" column="2">

@@ -25,93 +25,237 @@ REAL4 Threex3ChebyshevFunctionFractalIteration(REAL4 z, __constant sFractalCl *f
 	z.y = cos(th) * sin(ph) * rp;
 	z.z = sin(th) * rp;
 
-	// === General Purpose Multiplier 1 ===
-	if (fractal->transformCommon.functionEnabledBxFalse
-		&& aux->i >= fractal->transformCommon.startIterationsB
-		&& aux->i < fractal->transformCommon.stopIterationsB)
+	// GPU bypass: skip if all multipliers disabled
+	if (fractal->transformCommon.functionEnabledBxFalse || fractal->transformCommon.functionEnabledByFalse || fractal->transformCommon.functionEnabledBzFalse || fractal->transformCommon.functionEnabledBwFalse || fractal->transformCommon.functionEnabledCzFalse)
 	{
-		REAL val = fractal->transformCommon.scale4;
-		switch (fractal->transformCommon.multiplierMode1)
+		// === General Purpose Multiplier 1 ===
+		if (fractal->transformCommon.functionEnabledBxFalse
+				&& aux.i >= fractal->transformCommon.startIterationsB
+				&& aux.i < fractal->transformCommon.stopIterationsB)
 		{
-			default:
-			case 0: z *= val; aux->DE *= fabs(val); break;
-			case 1: z.x *= val; break;
-			case 2: z.y *= val; break;
-			case 3: z.z *= val; break;
-			case 4: aux->DE *= val; break;
-			case 5: aux->color *= val; break;
-		}
-	}
+			REAL val = fractal->transformCommon.scale4;
 
-	// === General Purpose Multiplier 2 ===
-	if (fractal->transformCommon.functionEnabledByFalse
-		&& aux->i >= fractal->transformCommon.startIterationsC
-		&& aux->i < fractal->transformCommon.stopIterationsC)
-	{
-		REAL val = fractal->transformCommon.scale5;
-		switch (fractal->transformCommon.multiplierMode2)
-		{
-			default:
-			case 0: z *= val; aux->DE *= fabs(val); break;
-			case 1: z.x *= val; break;
-			case 2: z.y *= val; break;
-			case 3: z.z *= val; break;
-			case 4: aux->DE *= val; break;
-			case 5: aux->color *= val; break;
-		}
-	}
+			if (fractal->transformCommon.multiplierInverse1) val = 1.0 / val;
 
-	// === General Purpose Multiplier 3 ===
-	if (fractal->transformCommon.functionEnabledBzFalse
-		&& aux->i >= fractal->transformCommon.startIterationsD
-		&& aux->i < fractal->transformCommon.stopIterationsD)
-	{
-		REAL val = fractal->transformCommon.scale6;
-		switch (fractal->transformCommon.multiplierMode3)
-		{
-			default:
-			case 0: z *= val; aux->DE *= fabs(val); break;
-			case 1: z.x *= val; break;
-			case 2: z.y *= val; break;
-			case 3: z.z *= val; break;
-			case 4: aux->DE *= val; break;
-			case 5: aux->color *= val; break;
-		}
-	}
+			int vmode = fractal->transformCommon.multiplierValueMode1;
+			if (vmode == 1)
+			{
+				REAL range = (REAL)(fractal->transformCommon.stopIterationsB - fractal->transformCommon.startIterationsB);
+				if (range > 0)
+				{
+					REAL phase = (REAL)(aux.i - fractal->transformCommon.startIterationsB) / range;
+					val = 1.0 + (val - 1.0) * native_sin(phase * fractal->transformCommon.multiplierFrequency1 * 2.0 * M_PI_F);
+				}
+			}
+			else if (vmode == 2)
+			{
+				REAL range = (REAL)(fractal->transformCommon.stopIterationsB - fractal->transformCommon.startIterationsB);
+				if (range > 0)
+				{
+					REAL t = (REAL)(aux.i - fractal->transformCommon.startIterationsB) / range;
+					t = clamp(t, (REAL)0.0, (REAL)1.0);
+					val = 1.0 + t * (val - 1.0);
+				}
+			}
 
-	// === General Purpose Multiplier 4 ===
-	if (fractal->transformCommon.functionEnabledBwFalse
-		&& aux->i >= fractal->transformCommon.startIterationsE
-		&& aux->i < fractal->transformCommon.stopIterationsE)
-	{
-		REAL val = fractal->transformCommon.scale8;
-		switch (fractal->transformCommon.multiplierMode4)
-		{
-			default:
-			case 0: z *= val; aux->DE *= fabs(val); break;
-			case 1: z.x *= val; break;
-			case 2: z.y *= val; break;
-			case 3: z.z *= val; break;
-			case 4: aux->DE *= val; break;
-			case 5: aux->color *= val; break;
+			switch (fractal->transformCommon.multiplierMode1)
+			{
+				default:
+				case 0: z *= val; aux.DE *= fabs(val); break;
+				case 1: z.x *= val; break;
+				case 2: z.y *= val; break;
+				case 3: z.z *= val; break;
+				case 4: aux.DE *= val; break;
+				case 5: aux.color *= val; break;
+				case 6: z.w *= val; break;
+				case 7: z.x *= val; z.y *= val; break;
+				case 8: z.x *= val; z.z *= val; break;
+				case 9: z.y *= val; z.z *= val; break;
+			}
 		}
-	}
 
-	// === General Purpose Multiplier 5 ===
-	if (fractal->transformCommon.functionEnabledCzFalse
-		&& aux->i >= fractal->transformCommon.startIterationsF
-		&& aux->i < fractal->transformCommon.stopIterationsF)
-	{
-		REAL val = fractal->transformCommon.scale16;
-		switch (fractal->transformCommon.multiplierMode5)
+		// === General Purpose Multiplier 2 ===
+		if (fractal->transformCommon.functionEnabledByFalse
+				&& aux.i >= fractal->transformCommon.startIterationsC
+				&& aux.i < fractal->transformCommon.stopIterationsC)
 		{
-			default:
-			case 0: z *= val; aux->DE *= fabs(val); break;
-			case 1: z.x *= val; break;
-			case 2: z.y *= val; break;
-			case 3: z.z *= val; break;
-			case 4: aux->DE *= val; break;
-			case 5: aux->color *= val; break;
+			REAL val = fractal->transformCommon.scale5;
+
+			if (fractal->transformCommon.multiplierInverse2) val = 1.0 / val;
+
+			int vmode = fractal->transformCommon.multiplierValueMode2;
+			if (vmode == 1)
+			{
+				REAL range = (REAL)(fractal->transformCommon.stopIterationsC - fractal->transformCommon.startIterationsC);
+				if (range > 0)
+				{
+					REAL phase = (REAL)(aux.i - fractal->transformCommon.startIterationsC) / range;
+					val = 1.0 + (val - 1.0) * native_sin(phase * fractal->transformCommon.multiplierFrequency2 * 2.0 * M_PI_F);
+				}
+			}
+			else if (vmode == 2)
+			{
+				REAL range = (REAL)(fractal->transformCommon.stopIterationsC - fractal->transformCommon.startIterationsC);
+				if (range > 0)
+				{
+					REAL t = (REAL)(aux.i - fractal->transformCommon.startIterationsC) / range;
+					t = clamp(t, (REAL)0.0, (REAL)1.0);
+					val = 1.0 + t * (val - 1.0);
+				}
+			}
+
+			switch (fractal->transformCommon.multiplierMode2)
+			{
+				default:
+				case 0: z *= val; aux.DE *= fabs(val); break;
+				case 1: z.x *= val; break;
+				case 2: z.y *= val; break;
+				case 3: z.z *= val; break;
+				case 4: aux.DE *= val; break;
+				case 5: aux.color *= val; break;
+				case 6: z.w *= val; break;
+				case 7: z.x *= val; z.y *= val; break;
+				case 8: z.x *= val; z.z *= val; break;
+				case 9: z.y *= val; z.z *= val; break;
+			}
+		}
+
+		// === General Purpose Multiplier 3 ===
+		if (fractal->transformCommon.functionEnabledBzFalse
+				&& aux.i >= fractal->transformCommon.startIterationsD
+				&& aux.i < fractal->transformCommon.stopIterationsD)
+		{
+			REAL val = fractal->transformCommon.scale6;
+
+			if (fractal->transformCommon.multiplierInverse3) val = 1.0 / val;
+
+			int vmode = fractal->transformCommon.multiplierValueMode3;
+			if (vmode == 1)
+			{
+				REAL range = (REAL)(fractal->transformCommon.stopIterationsD - fractal->transformCommon.startIterationsD);
+				if (range > 0)
+				{
+					REAL phase = (REAL)(aux.i - fractal->transformCommon.startIterationsD) / range;
+					val = 1.0 + (val - 1.0) * native_sin(phase * fractal->transformCommon.multiplierFrequency3 * 2.0 * M_PI_F);
+				}
+			}
+			else if (vmode == 2)
+			{
+				REAL range = (REAL)(fractal->transformCommon.stopIterationsD - fractal->transformCommon.startIterationsD);
+				if (range > 0)
+				{
+					REAL t = (REAL)(aux.i - fractal->transformCommon.startIterationsD) / range;
+					t = clamp(t, (REAL)0.0, (REAL)1.0);
+					val = 1.0 + t * (val - 1.0);
+				}
+			}
+
+			switch (fractal->transformCommon.multiplierMode3)
+			{
+				default:
+				case 0: z *= val; aux.DE *= fabs(val); break;
+				case 1: z.x *= val; break;
+				case 2: z.y *= val; break;
+				case 3: z.z *= val; break;
+				case 4: aux.DE *= val; break;
+				case 5: aux.color *= val; break;
+				case 6: z.w *= val; break;
+				case 7: z.x *= val; z.y *= val; break;
+				case 8: z.x *= val; z.z *= val; break;
+				case 9: z.y *= val; z.z *= val; break;
+			}
+		}
+
+		// === General Purpose Multiplier 4 ===
+		if (fractal->transformCommon.functionEnabledBwFalse
+				&& aux.i >= fractal->transformCommon.startIterationsE
+				&& aux.i < fractal->transformCommon.stopIterationsE)
+		{
+			REAL val = fractal->transformCommon.scale8;
+
+			if (fractal->transformCommon.multiplierInverse4) val = 1.0 / val;
+
+			int vmode = fractal->transformCommon.multiplierValueMode4;
+			if (vmode == 1)
+			{
+				REAL range = (REAL)(fractal->transformCommon.stopIterationsE - fractal->transformCommon.startIterationsE);
+				if (range > 0)
+				{
+					REAL phase = (REAL)(aux.i - fractal->transformCommon.startIterationsE) / range;
+					val = 1.0 + (val - 1.0) * native_sin(phase * fractal->transformCommon.multiplierFrequency4 * 2.0 * M_PI_F);
+				}
+			}
+			else if (vmode == 2)
+			{
+				REAL range = (REAL)(fractal->transformCommon.stopIterationsE - fractal->transformCommon.startIterationsE);
+				if (range > 0)
+				{
+					REAL t = (REAL)(aux.i - fractal->transformCommon.startIterationsE) / range;
+					t = clamp(t, (REAL)0.0, (REAL)1.0);
+					val = 1.0 + t * (val - 1.0);
+				}
+			}
+
+			switch (fractal->transformCommon.multiplierMode4)
+			{
+				default:
+				case 0: z *= val; aux.DE *= fabs(val); break;
+				case 1: z.x *= val; break;
+				case 2: z.y *= val; break;
+				case 3: z.z *= val; break;
+				case 4: aux.DE *= val; break;
+				case 5: aux.color *= val; break;
+				case 6: z.w *= val; break;
+				case 7: z.x *= val; z.y *= val; break;
+				case 8: z.x *= val; z.z *= val; break;
+				case 9: z.y *= val; z.z *= val; break;
+			}
+		}
+
+		// === General Purpose Multiplier 5 ===
+		if (fractal->transformCommon.functionEnabledCzFalse
+				&& aux.i >= fractal->transformCommon.startIterationsF
+				&& aux.i < fractal->transformCommon.stopIterationsF)
+		{
+			REAL val = fractal->transformCommon.scale16;
+
+			if (fractal->transformCommon.multiplierInverse5) val = 1.0 / val;
+
+			int vmode = fractal->transformCommon.multiplierValueMode5;
+			if (vmode == 1)
+			{
+				REAL range = (REAL)(fractal->transformCommon.stopIterationsF - fractal->transformCommon.startIterationsF);
+				if (range > 0)
+				{
+					REAL phase = (REAL)(aux.i - fractal->transformCommon.startIterationsF) / range;
+					val = 1.0 + (val - 1.0) * native_sin(phase * fractal->transformCommon.multiplierFrequency5 * 2.0 * M_PI_F);
+				}
+			}
+			else if (vmode == 2)
+			{
+				REAL range = (REAL)(fractal->transformCommon.stopIterationsF - fractal->transformCommon.startIterationsF);
+				if (range > 0)
+				{
+					REAL t = (REAL)(aux.i - fractal->transformCommon.startIterationsF) / range;
+					t = clamp(t, (REAL)0.0, (REAL)1.0);
+					val = 1.0 + t * (val - 1.0);
+				}
+			}
+
+			switch (fractal->transformCommon.multiplierMode5)
+			{
+				default:
+				case 0: z *= val; aux.DE *= fabs(val); break;
+				case 1: z.x *= val; break;
+				case 2: z.y *= val; break;
+				case 3: z.z *= val; break;
+				case 4: aux.DE *= val; break;
+				case 5: aux.color *= val; break;
+				case 6: z.w *= val; break;
+				case 7: z.x *= val; z.y *= val; break;
+				case 8: z.x *= val; z.z *= val; break;
+				case 9: z.y *= val; z.z *= val; break;
+			}
 		}
 	}
 

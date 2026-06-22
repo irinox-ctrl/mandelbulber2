@@ -2104,6 +2104,24 @@ void InitFractalParams(std::shared_ptr<cParameterContainer> par)
 	par->addParam("transf_multiplier_mode_4", 0, morphNone, paramStandard);
 	par->addParam("transf_multiplier_mode_5", 0, morphNone, paramStandard);
 
+	par->addParam("transf_multiplier_value_mode_1", 0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_value_mode_2", 0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_value_mode_3", 0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_value_mode_4", 0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_value_mode_5", 0, morphNone, paramStandard);
+
+	par->addParam("transf_multiplier_inverse_1", false, morphNone, paramStandard);
+	par->addParam("transf_multiplier_inverse_2", false, morphNone, paramStandard);
+	par->addParam("transf_multiplier_inverse_3", false, morphNone, paramStandard);
+	par->addParam("transf_multiplier_inverse_4", false, morphNone, paramStandard);
+	par->addParam("transf_multiplier_inverse_5", false, morphNone, paramStandard);
+
+	par->addParam("transf_multiplier_frequency_1", 1.0, morphLinear, paramStandard);
+	par->addParam("transf_multiplier_frequency_2", 1.0, morphLinear, paramStandard);
+	par->addParam("transf_multiplier_frequency_3", 1.0, morphLinear, paramStandard);
+	par->addParam("transf_multiplier_frequency_4", 1.0, morphLinear, paramStandard);
+	par->addParam("transf_multiplier_frequency_5", 1.0, morphLinear, paramStandard);
+
 	par->addParam("transf_start_iterations", 0, morphLinear, paramStandard);
 	par->addParam("transf_start_iterations_250", 250, morphLinear, paramStandard);
 	par->addParam("transf_stop_iterations", 250, morphLinear, paramStandard);

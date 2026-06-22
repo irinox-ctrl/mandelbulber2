@@ -775,6 +775,24 @@ typedef struct
 	cl_int multiplierMode4;
 	cl_int multiplierMode5;
 
+	cl_int multiplierValueMode1;
+	cl_int multiplierValueMode2;
+	cl_int multiplierValueMode3;
+	cl_int multiplierValueMode4;
+	cl_int multiplierValueMode5;
+
+	cl_int multiplierInverse1;
+	cl_int multiplierInverse2;
+	cl_int multiplierInverse3;
+	cl_int multiplierInverse4;
+	cl_int multiplierInverse5;
+
+	cl_float multiplierFrequency1;
+	cl_float multiplierFrequency2;
+	cl_float multiplierFrequency3;
+	cl_float multiplierFrequency4;
+	cl_float multiplierFrequency5;
+
 	cl_float4 additionConstant0555;
 	cl_float4 additionConstant0777;
 	cl_float4 additionConstant000;
@@ -1779,6 +1797,21 @@ inline sFractalTransformCommonCl clCopySFractalTransformCommonCl(
 	target.multiplierMode3 = source.multiplierMode3;
 	target.multiplierMode4 = source.multiplierMode4;
 	target.multiplierMode5 = source.multiplierMode5;
+	target.multiplierValueMode1 = source.multiplierValueMode1;
+	target.multiplierValueMode2 = source.multiplierValueMode2;
+	target.multiplierValueMode3 = source.multiplierValueMode3;
+	target.multiplierValueMode4 = source.multiplierValueMode4;
+	target.multiplierValueMode5 = source.multiplierValueMode5;
+	target.multiplierInverse1 = source.multiplierInverse1;
+	target.multiplierInverse2 = source.multiplierInverse2;
+	target.multiplierInverse3 = source.multiplierInverse3;
+	target.multiplierInverse4 = source.multiplierInverse4;
+	target.multiplierInverse5 = source.multiplierInverse5;
+	target.multiplierFrequency1 = source.multiplierFrequency1;
+	target.multiplierFrequency2 = source.multiplierFrequency2;
+	target.multiplierFrequency3 = source.multiplierFrequency3;
+	target.multiplierFrequency4 = source.multiplierFrequency4;
+	target.multiplierFrequency5 = source.multiplierFrequency5;
 	return target;
 }
 
