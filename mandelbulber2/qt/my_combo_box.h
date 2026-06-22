@@ -36,6 +36,7 @@
 #define MANDELBULBER2_QT_MY_COMBO_BOX_H_
 
 #include <QComboBox>
+#include <QWheelEvent>
 
 #include "common_my_widget_wrapper.h"
 
@@ -51,6 +52,7 @@ public:
 protected:
 	void contextMenuEvent(QContextMenuEvent *event) override;
 	void paintEvent(QPaintEvent *event) override;
+	void wheelEvent(QWheelEvent *event) override;
 
 private:
 	// methods to define from CommonMyWidgetWrapper

@@ -53,6 +53,7 @@ MyDoubleSpinBox::MyDoubleSpinBox(QWidget *parent)
 	valueBeforeSliderDrag = 0.0;
 	precision = enumSliderPrecision::precisionNormal;
 	defaultSingleStep = 1.0;
+	setFocusPolicy(Qt::StrongFocus);
 };
 
 MyDoubleSpinBox::~MyDoubleSpinBox()
@@ -214,6 +215,16 @@ void MyDoubleSpinBox::focusOutEvent(QFocusEvent *event)
 		slider->deleteLater();
 		slider = nullptr;
 	}
+}
+
+void MyDoubleSpinBox::wheelEvent(QWheelEvent *event)
+{
+	if (!hasFocus())
+	{
+		event->ignore();
+		return;
+	}
+	QDoubleSpinBox::wheelEvent(event);
 }
 
 void MyDoubleSpinBox::slotSliderTimerUpdateValue()

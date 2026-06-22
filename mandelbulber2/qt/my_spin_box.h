@@ -36,6 +36,7 @@
 #define MANDELBULBER2_QT_MY_SPIN_BOX_H_
 
 #include <QSpinBox>
+#include <QWheelEvent>
 
 #include "common_my_widget_wrapper.h"
 
@@ -66,6 +67,7 @@ protected:
 	void paintEvent(QPaintEvent *event) override;
 	void focusInEvent(QFocusEvent *event) override;
 	void focusOutEvent(QFocusEvent *event) override;
+	void wheelEvent(QWheelEvent *event) override;
 
 private slots:
 	void slotResetToDefault();

@@ -39,6 +39,7 @@
 MyComboBox::MyComboBox(QWidget *parent) : QComboBox(parent), CommonMyWidgetWrapper(this)
 {
 	defaultValue = 0;
+	setFocusPolicy(Qt::StrongFocus);
 }
 
 MyComboBox::~MyComboBox() = default;
@@ -79,6 +80,16 @@ int MyComboBox::GetDefault()
 		setToolTipText();
 	}
 	return defaultValue;
+}
+
+void MyComboBox::wheelEvent(QWheelEvent *event)
+{
+	if (!hasFocus())
+	{
+		event->ignore();
+		return;
+	}
+	QComboBox::wheelEvent(event);
 }
 
 void MyComboBox::UpdateScriptAppearance(bool hasScript) {}

@@ -46,6 +46,7 @@ MySpinBox::MySpinBox(QWidget *parent) : QSpinBox(parent), CommonMyWidgetWrapper(
 {
 	defaultValue = 0;
 	slider = nullptr;
+	setFocusPolicy(Qt::StrongFocus);
 }
 
 MySpinBox::~MySpinBox()
@@ -148,6 +149,16 @@ void MySpinBox::focusOutEvent(QFocusEvent *event)
 		slider->deleteLater();
 		slider = nullptr;
 	}
+}
+
+void MySpinBox::wheelEvent(QWheelEvent *event)
+{
+	if (!hasFocus())
+	{
+		event->ignore();
+		return;
+	}
+	QSpinBox::wheelEvent(event);
 }
 
 void MySpinBox::slotResetToDefault()
