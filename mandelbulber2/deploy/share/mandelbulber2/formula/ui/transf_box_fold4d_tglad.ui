@@ -1145,6 +1145,33 @@ scale:</string>
         <property name="singleStep"><double>0.1</double></property><property name="value"><double>1.0</double></property>
        </widget>
       </item>
+      <item row="5" column="0">
+       <widget class="QLabel"><property name="text"><string>Decay:</string></property></widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_decay_5">
+        <property name="minimum"><double>0.0</double></property><property name="maximum"><double>5.0</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>0.0</double></property>
+       </widget>
+      </item>
+      <item row="5" column="2">
+       <widget class="QLabel"><property name="text"><string>Exp:</string></property></widget>
+      </item>
+      <item row="5" column="3">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_exponent_5">
+        <property name="minimum"><double>0.1</double></property><property name="maximum"><double>10.0</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>1.0</double></property>
+       </widget>
+      </item>
+      <item row="5" column="4">
+       <widget class="QLabel"><property name="text"><string>Offset:</string></property></widget>
+      </item>
+      <item row="5" column="5">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_offset_5">
+        <property name="minimum"><double>-5.0</double></property><property name="maximum"><double>5.0</double></property>
+        <property name="singleStep"><double>0.05</double></property><property name="value"><double>0.0</double></property>
+       </widget>
+      </item>
       <item row="4" column="0">
        <widget class="MyCheckBox" name="checkBox_transf_multiplier_chain_4">
         <property name="text"><string>Chain</string></property>
@@ -1157,6 +1184,33 @@ scale:</string>
        <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_weight_4">
         <property name="minimum"><double>0.0</double></property><property name="maximum"><double>10.0</double></property>
         <property name="singleStep"><double>0.1</double></property><property name="value"><double>1.0</double></property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QLabel"><property name="text"><string>Decay:</string></property></widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_decay_4">
+        <property name="minimum"><double>0.0</double></property><property name="maximum"><double>5.0</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>0.0</double></property>
+       </widget>
+      </item>
+      <item row="5" column="2">
+       <widget class="QLabel"><property name="text"><string>Exp:</string></property></widget>
+      </item>
+      <item row="5" column="3">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_exponent_4">
+        <property name="minimum"><double>0.1</double></property><property name="maximum"><double>10.0</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>1.0</double></property>
+       </widget>
+      </item>
+      <item row="5" column="4">
+       <widget class="QLabel"><property name="text"><string>Offset:</string></property></widget>
+      </item>
+      <item row="5" column="5">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_offset_4">
+        <property name="minimum"><double>-5.0</double></property><property name="maximum"><double>5.0</double></property>
+        <property name="singleStep"><double>0.05</double></property><property name="value"><double>0.0</double></property>
        </widget>
       </item>
       <item row="4" column="0">
@@ -1173,6 +1227,33 @@ scale:</string>
         <property name="singleStep"><double>0.1</double></property><property name="value"><double>1.0</double></property>
        </widget>
       </item>
+      <item row="5" column="0">
+       <widget class="QLabel"><property name="text"><string>Decay:</string></property></widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_decay_3">
+        <property name="minimum"><double>0.0</double></property><property name="maximum"><double>5.0</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>0.0</double></property>
+       </widget>
+      </item>
+      <item row="5" column="2">
+       <widget class="QLabel"><property name="text"><string>Exp:</string></property></widget>
+      </item>
+      <item row="5" column="3">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_exponent_3">
+        <property name="minimum"><double>0.1</double></property><property name="maximum"><double>10.0</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>1.0</double></property>
+       </widget>
+      </item>
+      <item row="5" column="4">
+       <widget class="QLabel"><property name="text"><string>Offset:</string></property></widget>
+      </item>
+      <item row="5" column="5">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_offset_3">
+        <property name="minimum"><double>-5.0</double></property><property name="maximum"><double>5.0</double></property>
+        <property name="singleStep"><double>0.05</double></property><property name="value"><double>0.0</double></property>
+       </widget>
+      </item>
       <item row="4" column="0">
        <widget class="MyCheckBox" name="checkBox_transf_multiplier_chain_2">
         <property name="text"><string>Chain</string></property>
@@ -1187,6 +1268,33 @@ scale:</string>
         <property name="singleStep"><double>0.1</double></property><property name="value"><double>1.0</double></property>
        </widget>
       </item>
+      <item row="5" column="0">
+       <widget class="QLabel"><property name="text"><string>Decay:</string></property></widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_decay_2">
+        <property name="minimum"><double>0.0</double></property><property name="maximum"><double>5.0</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>0.0</double></property>
+       </widget>
+      </item>
+      <item row="5" column="2">
+       <widget class="QLabel"><property name="text"><string>Exp:</string></property></widget>
+      </item>
+      <item row="5" column="3">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_exponent_2">
+        <property name="minimum"><double>0.1</double></property><property name="maximum"><double>10.0</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>1.0</double></property>
+       </widget>
+      </item>
+      <item row="5" column="4">
+       <widget class="QLabel"><property name="text"><string>Offset:</string></property></widget>
+      </item>
+      <item row="5" column="5">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_offset_2">
+        <property name="minimum"><double>-5.0</double></property><property name="maximum"><double>5.0</double></property>
+        <property name="singleStep"><double>0.05</double></property><property name="value"><double>0.0</double></property>
+       </widget>
+      </item>
       <item row="4" column="0">
        <widget class="MyCheckBox" name="checkBox_transf_multiplier_chain_1">
         <property name="text"><string>Chain</string></property>
@@ -1199,6 +1307,33 @@ scale:</string>
        <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_weight_1">
         <property name="minimum"><double>0.0</double></property><property name="maximum"><double>10.0</double></property>
         <property name="singleStep"><double>0.1</double></property><property name="value"><double>1.0</double></property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QLabel"><property name="text"><string>Decay:</string></property></widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_decay_1">
+        <property name="minimum"><double>0.0</double></property><property name="maximum"><double>5.0</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>0.0</double></property>
+       </widget>
+      </item>
+      <item row="5" column="2">
+       <widget class="QLabel"><property name="text"><string>Exp:</string></property></widget>
+      </item>
+      <item row="5" column="3">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_exponent_1">
+        <property name="minimum"><double>0.1</double></property><property name="maximum"><double>10.0</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>1.0</double></property>
+       </widget>
+      </item>
+      <item row="5" column="4">
+       <widget class="QLabel"><property name="text"><string>Offset:</string></property></widget>
+      </item>
+      <item row="5" column="5">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_offset_1">
+        <property name="minimum"><double>-5.0</double></property><property name="maximum"><double>5.0</double></property>
+        <property name="singleStep"><double>0.05</double></property><property name="value"><double>0.0</double></property>
        </widget>
       </item>
      </layout>

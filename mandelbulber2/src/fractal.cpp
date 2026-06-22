@@ -498,6 +498,25 @@ sFractal::sFractal(const std::shared_ptr<cParameterContainer> container)
 	transformCommon.multiplierWeight4 = container->Get<double>("transf_multiplier_weight_4");
 	transformCommon.multiplierWeight5 = container->Get<double>("transf_multiplier_weight_5");
 
+	transformCommon.multiplierDecay1 = container->Get<double>("transf_multiplier_decay_1");
+	transformCommon.multiplierDecay2 = container->Get<double>("transf_multiplier_decay_2");
+	transformCommon.multiplierDecay3 = container->Get<double>("transf_multiplier_decay_3");
+	transformCommon.multiplierDecay4 = container->Get<double>("transf_multiplier_decay_4");
+	transformCommon.multiplierDecay5 = container->Get<double>("transf_multiplier_decay_5");
+
+	transformCommon.multiplierExponent1 = container->Get<double>("transf_multiplier_exponent_1");
+	transformCommon.multiplierExponent2 = container->Get<double>("transf_multiplier_exponent_2");
+	transformCommon.multiplierExponent3 = container->Get<double>("transf_multiplier_exponent_3");
+	transformCommon.multiplierExponent4 = container->Get<double>("transf_multiplier_exponent_4");
+	transformCommon.multiplierExponent5 = container->Get<double>("transf_multiplier_exponent_5");
+
+	transformCommon.multiplierOffset1 = container->Get<double>("transf_multiplier_offset_1");
+	transformCommon.multiplierOffset2 = container->Get<double>("transf_multiplier_offset_2");
+	transformCommon.multiplierOffset3 = container->Get<double>("transf_multiplier_offset_3");
+	transformCommon.multiplierOffset4 = container->Get<double>("transf_multiplier_offset_4");
+	transformCommon.multiplierOffset5 = container->Get<double>("transf_multiplier_offset_5");
+
+
 	// Dedicated multiplier enable/value/iteration params
 	transformCommon.multiplierEnabled1 = container->Get<bool>("transf_multiplier_enabled_1_false");
 	transformCommon.multiplierEnabled2 = container->Get<bool>("transf_multiplier_enabled_2_false");

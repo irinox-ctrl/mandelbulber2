@@ -2164,6 +2164,25 @@ void InitFractalParams(std::shared_ptr<cParameterContainer> par)
 	par->addParam("transf_multiplier_weight_4", 1.0, morphLinear, paramStandard);
 	par->addParam("transf_multiplier_weight_5", 1.0, morphLinear, paramStandard);
 
+	par->addParam("transf_multiplier_decay_1", 0.0, 0.0, 5.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_decay_2", 0.0, 0.0, 5.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_decay_3", 0.0, 0.0, 5.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_decay_4", 0.0, 0.0, 5.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_decay_5", 0.0, 0.0, 5.0, morphNone, paramStandard);
+
+	par->addParam("transf_multiplier_exponent_1", 1.0, 0.1, 10.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_exponent_2", 1.0, 0.1, 10.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_exponent_3", 1.0, 0.1, 10.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_exponent_4", 1.0, 0.1, 10.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_exponent_5", 1.0, 0.1, 10.0, morphNone, paramStandard);
+
+	par->addParam("transf_multiplier_offset_1", 0.0, -5.0, 5.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_offset_2", 0.0, -5.0, 5.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_offset_3", 0.0, -5.0, 5.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_offset_4", 0.0, -5.0, 5.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_offset_5", 0.0, -5.0, 5.0, morphNone, paramStandard);
+
+
 	// Dedicated multiplier enable/value/iteration params
 	par->addParam("transf_multiplier_enabled_1_false", false, morphNone, paramStandard);
 	par->addParam("transf_multiplier_enabled_2_false", false, morphNone, paramStandard);

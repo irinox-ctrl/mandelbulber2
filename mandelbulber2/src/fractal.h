@@ -825,6 +825,25 @@ struct sFractalTransformCommon
 	double multiplierWeight4;
 	double multiplierWeight5;
 
+	double multiplierDecay1;
+	double multiplierDecay2;
+	double multiplierDecay3;
+	double multiplierDecay4;
+	double multiplierDecay5;
+
+	double multiplierExponent1;
+	double multiplierExponent2;
+	double multiplierExponent3;
+	double multiplierExponent4;
+	double multiplierExponent5;
+
+	double multiplierOffset1;
+	double multiplierOffset2;
+	double multiplierOffset3;
+	double multiplierOffset4;
+	double multiplierOffset5;
+
+
 	// Dedicated multiplier enable/value/iteration params (no conflicts with formula logic)
 	bool multiplierEnabled1;
 	bool multiplierEnabled2;

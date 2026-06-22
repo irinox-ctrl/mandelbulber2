@@ -835,6 +835,25 @@ typedef struct
 	cl_float multiplierWeight4;
 	cl_float multiplierWeight5;
 
+	cl_float multiplierDecay1;
+	cl_float multiplierDecay2;
+	cl_float multiplierDecay3;
+	cl_float multiplierDecay4;
+	cl_float multiplierDecay5;
+
+	cl_float multiplierExponent1;
+	cl_float multiplierExponent2;
+	cl_float multiplierExponent3;
+	cl_float multiplierExponent4;
+	cl_float multiplierExponent5;
+
+	cl_float multiplierOffset1;
+	cl_float multiplierOffset2;
+	cl_float multiplierOffset3;
+	cl_float multiplierOffset4;
+	cl_float multiplierOffset5;
+
+
 	// Dedicated multiplier enable/value/iteration params (no conflicts with formula logic)
 	cl_int multiplierEnabled1;
 	cl_int multiplierEnabled2;
@@ -1920,6 +1939,23 @@ inline sFractalTransformCommonCl clCopySFractalTransformCommonCl(
 	target.multiplierWeight3 = source.multiplierWeight3;
 	target.multiplierWeight4 = source.multiplierWeight4;
 	target.multiplierWeight5 = source.multiplierWeight5;
+
+	target.multiplierDecay1 = source.multiplierDecay1;
+	target.multiplierDecay2 = source.multiplierDecay2;
+	target.multiplierDecay3 = source.multiplierDecay3;
+	target.multiplierDecay4 = source.multiplierDecay4;
+	target.multiplierDecay5 = source.multiplierDecay5;
+	target.multiplierExponent1 = source.multiplierExponent1;
+	target.multiplierExponent2 = source.multiplierExponent2;
+	target.multiplierExponent3 = source.multiplierExponent3;
+	target.multiplierExponent4 = source.multiplierExponent4;
+	target.multiplierExponent5 = source.multiplierExponent5;
+	target.multiplierOffset1 = source.multiplierOffset1;
+	target.multiplierOffset2 = source.multiplierOffset2;
+	target.multiplierOffset3 = source.multiplierOffset3;
+	target.multiplierOffset4 = source.multiplierOffset4;
+	target.multiplierOffset5 = source.multiplierOffset5;
+
 	target.multiplierEnabled1 = source.multiplierEnabled1;
 	target.multiplierEnabled2 = source.multiplierEnabled2;
 	target.multiplierEnabled3 = source.multiplierEnabled3;

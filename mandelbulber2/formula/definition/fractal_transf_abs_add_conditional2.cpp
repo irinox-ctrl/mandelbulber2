@@ -126,6 +126,24 @@ void cFractalTransfAbsAddConditional2::FormulaCode(
 				double w = fractal->transformCommon.multiplierWeight1;
 				val = 1.0 + w * (val - 1.0);
 
+							// Decay
+							if (fractal->transformCommon.multiplierDecay1 > 0.0)
+							{
+								double dcy = fractal->transformCommon.multiplierDecay1;
+								double rng = (double)(fractal->transformCommon.multiplierStopIter1 - fractal->transformCommon.multiplierStartIter1);
+								double td = (rng > 0.0) ? (double)(aux.i - fractal->transformCommon.multiplierStartIter1) / rng : 0.0;
+								val = 1.0 + (val - 1.0) * exp(-dcy * td * 5.0);
+							}
+							// Exponent
+							if (fractal->transformCommon.multiplierExponent1 != 1.0)
+							{
+								double ep = fractal->transformCommon.multiplierExponent1;
+								double sgn = (val >= 1.0) ? 1.0 : -1.0;
+								val = 1.0 + sgn * pow(fabs(val - 1.0) + 1e-30, ep);
+							}
+							// Offset
+							val += fractal->transformCommon.multiplierOffset1;
+
 				switch (fractal->transformCommon.multiplierMode1)
 				{
 					default:
@@ -231,6 +249,24 @@ void cFractalTransfAbsAddConditional2::FormulaCode(
 
 				double w = fractal->transformCommon.multiplierWeight2;
 				val = 1.0 + w * (val - 1.0);
+
+							// Decay
+							if (fractal->transformCommon.multiplierDecay2 > 0.0)
+							{
+								double dcy = fractal->transformCommon.multiplierDecay2;
+								double rng = (double)(fractal->transformCommon.multiplierStopIter2 - fractal->transformCommon.multiplierStartIter2);
+								double td = (rng > 0.0) ? (double)(aux.i - fractal->transformCommon.multiplierStartIter2) / rng : 0.0;
+								val = 1.0 + (val - 1.0) * exp(-dcy * td * 5.0);
+							}
+							// Exponent
+							if (fractal->transformCommon.multiplierExponent2 != 1.0)
+							{
+								double ep = fractal->transformCommon.multiplierExponent2;
+								double sgn = (val >= 1.0) ? 1.0 : -1.0;
+								val = 1.0 + sgn * pow(fabs(val - 1.0) + 1e-30, ep);
+							}
+							// Offset
+							val += fractal->transformCommon.multiplierOffset2;
 
 				switch (fractal->transformCommon.multiplierMode2)
 				{
@@ -338,6 +374,24 @@ void cFractalTransfAbsAddConditional2::FormulaCode(
 				double w = fractal->transformCommon.multiplierWeight3;
 				val = 1.0 + w * (val - 1.0);
 
+							// Decay
+							if (fractal->transformCommon.multiplierDecay3 > 0.0)
+							{
+								double dcy = fractal->transformCommon.multiplierDecay3;
+								double rng = (double)(fractal->transformCommon.multiplierStopIter3 - fractal->transformCommon.multiplierStartIter3);
+								double td = (rng > 0.0) ? (double)(aux.i - fractal->transformCommon.multiplierStartIter3) / rng : 0.0;
+								val = 1.0 + (val - 1.0) * exp(-dcy * td * 5.0);
+							}
+							// Exponent
+							if (fractal->transformCommon.multiplierExponent3 != 1.0)
+							{
+								double ep = fractal->transformCommon.multiplierExponent3;
+								double sgn = (val >= 1.0) ? 1.0 : -1.0;
+								val = 1.0 + sgn * pow(fabs(val - 1.0) + 1e-30, ep);
+							}
+							// Offset
+							val += fractal->transformCommon.multiplierOffset3;
+
 				switch (fractal->transformCommon.multiplierMode3)
 				{
 					default:
@@ -444,6 +498,24 @@ void cFractalTransfAbsAddConditional2::FormulaCode(
 				double w = fractal->transformCommon.multiplierWeight4;
 				val = 1.0 + w * (val - 1.0);
 
+							// Decay
+							if (fractal->transformCommon.multiplierDecay4 > 0.0)
+							{
+								double dcy = fractal->transformCommon.multiplierDecay4;
+								double rng = (double)(fractal->transformCommon.multiplierStopIter4 - fractal->transformCommon.multiplierStartIter4);
+								double td = (rng > 0.0) ? (double)(aux.i - fractal->transformCommon.multiplierStartIter4) / rng : 0.0;
+								val = 1.0 + (val - 1.0) * exp(-dcy * td * 5.0);
+							}
+							// Exponent
+							if (fractal->transformCommon.multiplierExponent4 != 1.0)
+							{
+								double ep = fractal->transformCommon.multiplierExponent4;
+								double sgn = (val >= 1.0) ? 1.0 : -1.0;
+								val = 1.0 + sgn * pow(fabs(val - 1.0) + 1e-30, ep);
+							}
+							// Offset
+							val += fractal->transformCommon.multiplierOffset4;
+
 				switch (fractal->transformCommon.multiplierMode4)
 				{
 					default:
@@ -549,6 +621,24 @@ void cFractalTransfAbsAddConditional2::FormulaCode(
 
 				double w = fractal->transformCommon.multiplierWeight5;
 				val = 1.0 + w * (val - 1.0);
+
+							// Decay
+							if (fractal->transformCommon.multiplierDecay5 > 0.0)
+							{
+								double dcy = fractal->transformCommon.multiplierDecay5;
+								double rng = (double)(fractal->transformCommon.multiplierStopIter5 - fractal->transformCommon.multiplierStartIter5);
+								double td = (rng > 0.0) ? (double)(aux.i - fractal->transformCommon.multiplierStartIter5) / rng : 0.0;
+								val = 1.0 + (val - 1.0) * exp(-dcy * td * 5.0);
+							}
+							// Exponent
+							if (fractal->transformCommon.multiplierExponent5 != 1.0)
+							{
+								double ep = fractal->transformCommon.multiplierExponent5;
+								double sgn = (val >= 1.0) ? 1.0 : -1.0;
+								val = 1.0 + sgn * pow(fabs(val - 1.0) + 1e-30, ep);
+							}
+							// Offset
+							val += fractal->transformCommon.multiplierOffset5;
 
 				switch (fractal->transformCommon.multiplierMode5)
 				{

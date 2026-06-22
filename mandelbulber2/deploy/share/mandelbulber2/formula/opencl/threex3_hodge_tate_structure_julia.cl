@@ -107,6 +107,24 @@ REAL4 Threex3HodgeTateStructureJuliaIteration(REAL4 z, __constant sFractalCl *fr
 				REAL w = fractal->transformCommon.multiplierWeight1;
 				val = 1.0 + w * (val - 1.0);
 
+							// Decay
+							if (fractal->transformCommon.multiplierDecay1 > 0.0f)
+							{
+								REAL dcy = fractal->transformCommon.multiplierDecay1;
+								REAL rng = (REAL)(fractal->transformCommon.multiplierStopIter1 - fractal->transformCommon.multiplierStartIter1);
+								REAL td = (rng > 0.0f) ? (REAL)(aux->i - fractal->transformCommon.multiplierStartIter1) / rng : 0.0f;
+								val = 1.0f + (val - 1.0f) * native_exp(-dcy * td * 5.0f);
+							}
+							// Exponent
+							if (fractal->transformCommon.multiplierExponent1 != 1.0f)
+							{
+								REAL ep = fractal->transformCommon.multiplierExponent1;
+								REAL sgn = (val >= 1.0f) ? 1.0f : -1.0f;
+								val = 1.0f + sgn * native_powr(fabs(val - 1.0f) + 1e-30f, ep);
+							}
+							// Offset
+							val += fractal->transformCommon.multiplierOffset1;
+
 				switch (fractal->transformCommon.multiplierMode1)
 				{
 					default:
@@ -212,6 +230,24 @@ REAL4 Threex3HodgeTateStructureJuliaIteration(REAL4 z, __constant sFractalCl *fr
 
 				REAL w = fractal->transformCommon.multiplierWeight2;
 				val = 1.0 + w * (val - 1.0);
+
+							// Decay
+							if (fractal->transformCommon.multiplierDecay2 > 0.0f)
+							{
+								REAL dcy = fractal->transformCommon.multiplierDecay2;
+								REAL rng = (REAL)(fractal->transformCommon.multiplierStopIter2 - fractal->transformCommon.multiplierStartIter2);
+								REAL td = (rng > 0.0f) ? (REAL)(aux->i - fractal->transformCommon.multiplierStartIter2) / rng : 0.0f;
+								val = 1.0f + (val - 1.0f) * native_exp(-dcy * td * 5.0f);
+							}
+							// Exponent
+							if (fractal->transformCommon.multiplierExponent2 != 1.0f)
+							{
+								REAL ep = fractal->transformCommon.multiplierExponent2;
+								REAL sgn = (val >= 1.0f) ? 1.0f : -1.0f;
+								val = 1.0f + sgn * native_powr(fabs(val - 1.0f) + 1e-30f, ep);
+							}
+							// Offset
+							val += fractal->transformCommon.multiplierOffset2;
 
 				switch (fractal->transformCommon.multiplierMode2)
 				{
@@ -319,6 +355,24 @@ REAL4 Threex3HodgeTateStructureJuliaIteration(REAL4 z, __constant sFractalCl *fr
 				REAL w = fractal->transformCommon.multiplierWeight3;
 				val = 1.0 + w * (val - 1.0);
 
+							// Decay
+							if (fractal->transformCommon.multiplierDecay3 > 0.0f)
+							{
+								REAL dcy = fractal->transformCommon.multiplierDecay3;
+								REAL rng = (REAL)(fractal->transformCommon.multiplierStopIter3 - fractal->transformCommon.multiplierStartIter3);
+								REAL td = (rng > 0.0f) ? (REAL)(aux->i - fractal->transformCommon.multiplierStartIter3) / rng : 0.0f;
+								val = 1.0f + (val - 1.0f) * native_exp(-dcy * td * 5.0f);
+							}
+							// Exponent
+							if (fractal->transformCommon.multiplierExponent3 != 1.0f)
+							{
+								REAL ep = fractal->transformCommon.multiplierExponent3;
+								REAL sgn = (val >= 1.0f) ? 1.0f : -1.0f;
+								val = 1.0f + sgn * native_powr(fabs(val - 1.0f) + 1e-30f, ep);
+							}
+							// Offset
+							val += fractal->transformCommon.multiplierOffset3;
+
 				switch (fractal->transformCommon.multiplierMode3)
 				{
 					default:
@@ -425,6 +479,24 @@ REAL4 Threex3HodgeTateStructureJuliaIteration(REAL4 z, __constant sFractalCl *fr
 				REAL w = fractal->transformCommon.multiplierWeight4;
 				val = 1.0 + w * (val - 1.0);
 
+							// Decay
+							if (fractal->transformCommon.multiplierDecay4 > 0.0f)
+							{
+								REAL dcy = fractal->transformCommon.multiplierDecay4;
+								REAL rng = (REAL)(fractal->transformCommon.multiplierStopIter4 - fractal->transformCommon.multiplierStartIter4);
+								REAL td = (rng > 0.0f) ? (REAL)(aux->i - fractal->transformCommon.multiplierStartIter4) / rng : 0.0f;
+								val = 1.0f + (val - 1.0f) * native_exp(-dcy * td * 5.0f);
+							}
+							// Exponent
+							if (fractal->transformCommon.multiplierExponent4 != 1.0f)
+							{
+								REAL ep = fractal->transformCommon.multiplierExponent4;
+								REAL sgn = (val >= 1.0f) ? 1.0f : -1.0f;
+								val = 1.0f + sgn * native_powr(fabs(val - 1.0f) + 1e-30f, ep);
+							}
+							// Offset
+							val += fractal->transformCommon.multiplierOffset4;
+
 				switch (fractal->transformCommon.multiplierMode4)
 				{
 					default:
@@ -530,6 +602,24 @@ REAL4 Threex3HodgeTateStructureJuliaIteration(REAL4 z, __constant sFractalCl *fr
 
 				REAL w = fractal->transformCommon.multiplierWeight5;
 				val = 1.0 + w * (val - 1.0);
+
+							// Decay
+							if (fractal->transformCommon.multiplierDecay5 > 0.0f)
+							{
+								REAL dcy = fractal->transformCommon.multiplierDecay5;
+								REAL rng = (REAL)(fractal->transformCommon.multiplierStopIter5 - fractal->transformCommon.multiplierStartIter5);
+								REAL td = (rng > 0.0f) ? (REAL)(aux->i - fractal->transformCommon.multiplierStartIter5) / rng : 0.0f;
+								val = 1.0f + (val - 1.0f) * native_exp(-dcy * td * 5.0f);
+							}
+							// Exponent
+							if (fractal->transformCommon.multiplierExponent5 != 1.0f)
+							{
+								REAL ep = fractal->transformCommon.multiplierExponent5;
+								REAL sgn = (val >= 1.0f) ? 1.0f : -1.0f;
+								val = 1.0f + sgn * native_powr(fabs(val - 1.0f) + 1e-30f, ep);
+							}
+							// Offset
+							val += fractal->transformCommon.multiplierOffset5;
 
 				switch (fractal->transformCommon.multiplierMode5)
 				{
