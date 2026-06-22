@@ -295,6 +295,288 @@ REAL4 TransfDIFSClipCustomIteration(REAL4 z, __constant sFractalCl *fractal, sEx
 		}
 	}
 
+		// --- Custom Clip Power Transform Extensions (50 parameters) ---
+	{
+		REAL cpPwX = fractal->transformCommon.cpPowerX;
+		REAL cpPwY = fractal->transformCommon.cpPowerY;
+		REAL cpPwZ = fractal->transformCommon.cpPowerZ;
+		REAL cpPreXY = fractal->transformCommon.cpPreRotXY;
+		REAL cpPreXZ = fractal->transformCommon.cpPreRotXZ;
+		REAL cpPreYZ = fractal->transformCommon.cpPreRotYZ;
+		REAL cpPostXY = fractal->transformCommon.cpPostRotXY;
+		REAL cpPostXZ = fractal->transformCommon.cpPostRotXZ;
+		REAL cpPostYZ = fractal->transformCommon.cpPostRotYZ;
+		REAL cpScX = fractal->transformCommon.cpScaleX;
+		REAL cpScY = fractal->transformCommon.cpScaleY;
+		REAL cpScZ = fractal->transformCommon.cpScaleZ;
+		REAL cpOfX = fractal->transformCommon.cpOffsetX;
+		REAL cpOfY = fractal->transformCommon.cpOffsetY;
+		REAL cpOfZ = fractal->transformCommon.cpOffsetZ;
+		REAL cpTwX = fractal->transformCommon.cpTwistX;
+		REAL cpTwY = fractal->transformCommon.cpTwistY;
+		REAL cpTwZ = fractal->transformCommon.cpTwistZ;
+		REAL cpBnX = fractal->transformCommon.cpBendX;
+		REAL cpBnY = fractal->transformCommon.cpBendY;
+		REAL cpBnZ = fractal->transformCommon.cpBendZ;
+		REAL cpTpX = fractal->transformCommon.cpTaperX;
+		REAL cpTpY = fractal->transformCommon.cpTaperY;
+		REAL cpTpZ = fractal->transformCommon.cpTaperZ;
+		REAL cpSFR = fractal->transformCommon.cpSphereFoldR;
+		REAL cpSFMR = fractal->transformCommon.cpSphereFoldMinR;
+		REAL cpBFX = fractal->transformCommon.cpBoxFoldX;
+		REAL cpBFY = fractal->transformCommon.cpBoxFoldY;
+		REAL cpBFZ = fractal->transformCommon.cpBoxFoldZ;
+		REAL cpSwA = fractal->transformCommon.cpSinWarpAmp;
+		REAL cpSwFX = fractal->transformCommon.cpSinWarpFreqX;
+		REAL cpSwFY = fractal->transformCommon.cpSinWarpFreqY;
+		REAL cpSwFZ = fractal->transformCommon.cpSinWarpFreqZ;
+		REAL cpRdW = fractal->transformCommon.cpRadialWarp;
+		REAL cpRdF = fractal->transformCommon.cpRadialFreq;
+		REAL cpNsA = fractal->transformCommon.cpNoiseAmp;
+		REAL cpNsF = fractal->transformCommon.cpNoiseFreq;
+		REAL cpItS = fractal->transformCommon.cpIterScale;
+		REAL cpItF = fractal->transformCommon.cpIterScaleFreq;
+		REAL cpMrX = fractal->transformCommon.cpMirrorX;
+		REAL cpMrY = fractal->transformCommon.cpMirrorY;
+		REAL cpMrZ = fractal->transformCommon.cpMirrorZ;
+		REAL cpInvR = fractal->transformCommon.cpInversionR;
+		REAL cpCpW = fractal->transformCommon.cpCpixelWeight;
+		REAL cpClD = fractal->transformCommon.cpColorDist;
+		REAL cpClA = fractal->transformCommon.cpColorAngle;
+		REAL cpClR = fractal->transformCommon.cpColorRadius;
+		REAL cpDET = fractal->transformCommon.cpDETweak;
+		REAL cpDES = fractal->transformCommon.cpDEScale;
+		REAL cpSCD = fractal->transformCommon.cpSoftClipDist;
+		REAL cpSCS = fractal->transformCommon.cpSoftClipSmooth;
+
+		// 1-3. Power transform per axis
+		if (cpPwX != 1.0 || cpPwY != 1.0 || cpPwZ != 1.0)
+		{
+			z.x = sign(z.x) * pow(fabs(z.x) + 1e-15, cpPwX);
+			z.y = sign(z.y) * pow(fabs(z.y) + 1e-15, cpPwY);
+			z.z = sign(z.z) * pow(fabs(z.z) + 1e-15, cpPwZ);
+		}
+
+		// 4-6. Pre-rotations
+		if (cpPreXY != 0.0)
+		{
+			REAL a = cpPreXY * M_PI_F / 180.0 * aux->i;
+			REAL ca = native_cos(a); REAL sa = native_sin(a);
+			REAL px = z.x * ca - z.y * sa;
+			REAL py = z.x * sa + z.y * ca;
+			z.x = px; z.y = py;
+		}
+		if (cpPreXZ != 0.0)
+		{
+			REAL a = cpPreXZ * M_PI_F / 180.0 * aux->i;
+			REAL ca = native_cos(a); REAL sa = native_sin(a);
+			REAL px = z.x * ca - z.z * sa;
+			REAL pz = z.x * sa + z.z * ca;
+			z.x = px; z.z = pz;
+		}
+		if (cpPreYZ != 0.0)
+		{
+			REAL a = cpPreYZ * M_PI_F / 180.0 * aux->i;
+			REAL ca = native_cos(a); REAL sa = native_sin(a);
+			REAL py = z.y * ca - z.z * sa;
+			REAL pz = z.y * sa + z.z * ca;
+			z.y = py; z.z = pz;
+		}
+
+		// 7-9. Post-rotations
+		if (cpPostXY != 0.0)
+		{
+			REAL a = cpPostXY * M_PI_F / 180.0;
+			REAL ca = native_cos(a); REAL sa = native_sin(a);
+			REAL px = z.x * ca - z.y * sa;
+			REAL py = z.x * sa + z.y * ca;
+			z.x = px; z.y = py;
+		}
+		if (cpPostXZ != 0.0)
+		{
+			REAL a = cpPostXZ * M_PI_F / 180.0;
+			REAL ca = native_cos(a); REAL sa = native_sin(a);
+			REAL px = z.x * ca - z.z * sa;
+			REAL pz = z.x * sa + z.z * ca;
+			z.x = px; z.z = pz;
+		}
+		if (cpPostYZ != 0.0)
+		{
+			REAL a = cpPostYZ * M_PI_F / 180.0;
+			REAL ca = native_cos(a); REAL sa = native_sin(a);
+			REAL py = z.y * ca - z.z * sa;
+			REAL pz = z.y * sa + z.z * ca;
+			z.y = py; z.z = pz;
+		}
+
+		// 10-12. Per-axis scale
+		if (cpScX != 1.0 || cpScY != 1.0 || cpScZ != 1.0)
+		{
+			z.x *= cpScX; z.y *= cpScY; z.z *= cpScZ;
+			aux->DE *= fabs(max(cpScX, max(cpScY, cpScZ)));
+		}
+
+		// 13-15. Offset
+		if (cpOfX != 0.0 || cpOfY != 0.0 || cpOfZ != 0.0)
+		{
+			z.x += cpOfX; z.y += cpOfY; z.z += cpOfZ;
+		}
+
+		// 16-18. Twist per axis
+		if (cpTwX != 0.0)
+		{
+			REAL tw = cpTwX * M_PI_F / 180.0 * z.x;
+			REAL ct = native_cos(tw); REAL st = native_sin(tw);
+			REAL ty = z.y * ct - z.z * st;
+			REAL tz = z.y * st + z.z * ct;
+			z.y = ty; z.z = tz;
+		}
+		if (cpTwY != 0.0)
+		{
+			REAL tw = cpTwY * M_PI_F / 180.0 * z.y;
+			REAL ct = native_cos(tw); REAL st = native_sin(tw);
+			REAL tx = z.x * ct - z.z * st;
+			REAL tz = z.x * st + z.z * ct;
+			z.x = tx; z.z = tz;
+		}
+		if (cpTwZ != 0.0)
+		{
+			REAL tw = cpTwZ * M_PI_F / 180.0 * z.z;
+			REAL ct = native_cos(tw); REAL st = native_sin(tw);
+			REAL tx = z.x * ct - z.y * st;
+			REAL ty = z.x * st + z.y * ct;
+			z.x = tx; z.y = ty;
+		}
+
+		// 19-21. Bend per axis
+		if (cpBnX != 0.0) { z.y += cpBnX * z.x * z.x; }
+		if (cpBnY != 0.0) { z.z += cpBnY * z.y * z.y; }
+		if (cpBnZ != 0.0) { z.x += cpBnZ * z.z * z.z; }
+
+		// 22-24. Taper per axis
+		if (cpTpX != 0.0) { z.y *= 1.0 + cpTpX * z.x; z.z *= 1.0 + cpTpX * z.x; }
+		if (cpTpY != 0.0) { z.x *= 1.0 + cpTpY * z.y; z.z *= 1.0 + cpTpY * z.y; }
+		if (cpTpZ != 0.0) { z.x *= 1.0 + cpTpZ * z.z; z.y *= 1.0 + cpTpZ * z.z; }
+
+		// 25-26. Sphere fold
+		if (cpSFR != 0.0)
+		{
+			REAL r2 = dot(z, z);
+			REAL minR2 = cpSFMR * cpSFMR;
+			REAL fixedR2 = cpSFR * cpSFR;
+			if (r2 < minR2)
+			{
+				REAL t = fixedR2 / minR2;
+				z *= t; aux->DE *= t;
+			}
+			else if (r2 < fixedR2)
+			{
+				REAL t = fixedR2 / r2;
+				z *= t; aux->DE *= t;
+			}
+		}
+
+		// 27-29. Box fold per axis
+		if (cpBFX != 0.0)
+		{
+			if (z.x > cpBFX) z.x = 2.0 * cpBFX - z.x;
+			else if (z.x < -cpBFX) z.x = -2.0 * cpBFX - z.x;
+		}
+		if (cpBFY != 0.0)
+		{
+			if (z.y > cpBFY) z.y = 2.0 * cpBFY - z.y;
+			else if (z.y < -cpBFY) z.y = -2.0 * cpBFY - z.y;
+		}
+		if (cpBFZ != 0.0)
+		{
+			if (z.z > cpBFZ) z.z = 2.0 * cpBFZ - z.z;
+			else if (z.z < -cpBFZ) z.z = -2.0 * cpBFZ - z.z;
+		}
+
+		// 30-33. Sin warp
+		if (cpSwA != 0.0)
+		{
+			z.x += cpSwA * native_sin(z.y * cpSwFX);
+			z.y += cpSwA * native_sin(z.z * cpSwFY);
+			z.z += cpSwA * native_sin(z.x * cpSwFZ);
+		}
+
+		// 34-35. Radial warp
+		if (cpRdW != 0.0)
+		{
+			REAL r = length(z);
+			if (r > 1e-15)
+			{
+				REAL w = 1.0 + cpRdW * native_sin(r * cpRdF);
+				z *= w; aux->DE *= fabs(w);
+			}
+		}
+
+		// 36-37. Noise
+		if (cpNsA != 0.0)
+		{
+			REAL hx = native_sin(z.x * cpNsF * 12.9898 + z.y * 78.233) * 43758.5453;
+			hx = hx - floor(hx);
+			REAL hy = native_sin(z.y * cpNsF * 12.9898 + z.z * 78.233) * 43758.5453;
+			hy = hy - floor(hy);
+			REAL hz = native_sin(z.z * cpNsF * 12.9898 + z.x * 78.233) * 43758.5453;
+			hz = hz - floor(hz);
+			z.x += (hx - 0.5) * cpNsA;
+			z.y += (hy - 0.5) * cpNsA;
+			z.z += (hz - 0.5) * cpNsA;
+		}
+
+		// 38-39. Iteration-dependent scale
+		if (cpItS != 0.0)
+		{
+			REAL s = 1.0 + cpItS * native_sin(aux->i * cpItF * 0.5);
+			z *= s; aux->DE *= fabs(s);
+		}
+
+		// 40-42. Mirror planes
+		if (cpMrX != 0.0) { if (z.x < 0.0) z.x = -z.x + cpMrX; }
+		if (cpMrY != 0.0) { if (z.y < 0.0) z.y = -z.y + cpMrY; }
+		if (cpMrZ != 0.0) { if (z.z < 0.0) z.z = -z.z + cpMrZ; }
+
+		// 43. Spherical inversion
+		if (cpInvR != 0.0)
+		{
+			REAL r2 = dot(z, z);
+			if (r2 > 1e-15)
+			{
+				REAL invR2 = cpInvR * cpInvR / r2;
+				z *= invR2; aux->DE *= invR2;
+			}
+		}
+
+		// 44. C-pixel weight
+		if (cpCpW != 0.0)
+		{
+			z += aux->const_c * cpCpW;
+		}
+
+		// 45-47. Coloring
+		if (cpClD != 0.0) { aux->color += cpClD * length(z); }
+		if (cpClA != 0.0) { aux->color += cpClA * fabs(atan2(z.y, z.x)); }
+		if (cpClR != 0.0) { aux->color += cpClR * sqrt(z.x * z.x + z.y * z.y); }
+
+		// 48-49. DE adjustment
+		if (cpDET != 0.0) { aux->DE += cpDET; }
+		if (cpDES != 1.0) { aux->DE *= cpDES; }
+
+		// 50. Soft clip
+		if (cpSCD != 0.0)
+		{
+			REAL r = length(z);
+			if (r > cpSCD)
+			{
+				REAL smooth = (cpSCS > 0.0) ? cpSCS : 0.1;
+				REAL t = 1.0 - (r - cpSCD) / (r - cpSCD + smooth);
+				z *= t; aux->DE *= t;
+			}
+		}
+	}
+
 	// GPU bypass: skip if all multipliers disabled
 	if (fractal->transformCommon.functionEnabledBxFalse || fractal->transformCommon.functionEnabledByFalse || fractal->transformCommon.functionEnabledBzFalse || fractal->transformCommon.functionEnabledBwFalse || fractal->transformCommon.functionEnabledCzFalse)
 	{

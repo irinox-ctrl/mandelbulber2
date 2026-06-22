@@ -45,6 +45,186 @@ REAL4 TransfInvCylindricalIteration(REAL4 z, __constant sFractalCl *fractal, sEx
 	aux->DE = aux->DE * fabs(fractal->transformCommon.scaleA1) * fractal->transformCommon.scaleB1
 						+ fractal->transformCommon.offset1;
 
+		// --- Inverse Transform Extensions (25 parameters) ---
+	{
+		REAL ivPreXY = fractal->transformCommon.ivPreRotXY;
+		REAL ivPreXZ = fractal->transformCommon.ivPreRotXZ;
+		REAL ivPostYZ = fractal->transformCommon.ivPostRotYZ;
+		REAL ivScOsc = fractal->transformCommon.ivScaleOsc;
+		REAL ivScFreq = fractal->transformCommon.ivScaleOscFreq;
+		REAL ivPwWarp = fractal->transformCommon.ivPowerWarp;
+		REAL ivRadSc = fractal->transformCommon.ivRadiusScale;
+		REAL ivTwZ = fractal->transformCommon.ivTwistZ;
+		REAL ivBnX = fractal->transformCommon.ivBendX;
+		REAL ivBnY = fractal->transformCommon.ivBendY;
+		REAL ivOffOsc = fractal->transformCommon.ivOffsetOsc;
+		REAL ivOffFreq = fractal->transformCommon.ivOffsetOscFreq;
+		REAL ivSwA = fractal->transformCommon.ivSinWarpAmp;
+		REAL ivSwF = fractal->transformCommon.ivSinWarpFreq;
+		REAL ivRadDist = fractal->transformCommon.ivRadialDistort;
+		REAL ivTurb = fractal->transformCommon.ivTurbulence;
+		REAL ivSphere = fractal->transformCommon.ivSphereFold;
+		REAL ivBox = fractal->transformCommon.ivBoxFold;
+		REAL ivMrX = fractal->transformCommon.ivMirrorX;
+		REAL ivMrY = fractal->transformCommon.ivMirrorY;
+		REAL ivMrZ = fractal->transformCommon.ivMirrorZ;
+		REAL ivGradCol = fractal->transformCommon.ivGradientColor;
+		REAL ivDETw = fractal->transformCommon.ivDETweak;
+		REAL ivCpix = fractal->transformCommon.ivCpixelScale;
+		REAL ivEdgeSoft = fractal->transformCommon.ivEdgeSoftness;
+
+		// 1-2. Pre-rotations
+		if (ivPreXY != 0.0)
+		{
+			REAL a = ivPreXY * M_PI_F / 180.0 * aux->i;
+			REAL ca = native_cos(a); REAL sa = native_sin(a);
+			REAL px = z.x * ca - z.y * sa;
+			REAL py = z.x * sa + z.y * ca;
+			z.x = px; z.y = py;
+		}
+		if (ivPreXZ != 0.0)
+		{
+			REAL a = ivPreXZ * M_PI_F / 180.0 * aux->i;
+			REAL ca = native_cos(a); REAL sa = native_sin(a);
+			REAL px = z.x * ca - z.z * sa;
+			REAL pz = z.x * sa + z.z * ca;
+			z.x = px; z.z = pz;
+		}
+
+		// 3. Post-rotation YZ
+		if (ivPostYZ != 0.0)
+		{
+			REAL a = ivPostYZ * M_PI_F / 180.0;
+			REAL ca = native_cos(a); REAL sa = native_sin(a);
+			REAL py = z.y * ca - z.z * sa;
+			REAL pz = z.y * sa + z.z * ca;
+			z.y = py; z.z = pz;
+		}
+
+		// 4-5. Scale oscillation
+		if (ivScOsc != 0.0)
+		{
+			REAL s = 1.0 + ivScOsc * native_sin(aux->i * ivScFreq * 0.5);
+			z *= s; aux->DE *= fabs(s);
+		}
+
+		// 6. Power warp
+		if (ivPwWarp != 0.0)
+		{
+			REAL pw = 1.0 + ivPwWarp;
+			z.x = sign(z.x) * pow(fabs(z.x) + 1e-15, pw);
+			z.y = sign(z.y) * pow(fabs(z.y) + 1e-15, pw);
+			z.z = sign(z.z) * pow(fabs(z.z) + 1e-15, pw);
+		}
+
+		// 7. Radius scale
+		if (ivRadSc != 0.0)
+		{
+			REAL r = length(z);
+			if (r > 1e-15)
+			{
+				REAL s = 1.0 + ivRadSc * (r - 1.0);
+				z *= s; aux->DE *= fabs(s);
+			}
+		}
+
+		// 8. Twist Z
+		if (ivTwZ != 0.0)
+		{
+			REAL tw = ivTwZ * M_PI_F / 180.0 * z.z;
+			REAL ct = native_cos(tw); REAL st = native_sin(tw);
+			REAL tx = z.x * ct - z.y * st;
+			REAL ty = z.x * st + z.y * ct;
+			z.x = tx; z.y = ty;
+		}
+
+		// 9-10. Bend
+		if (ivBnX != 0.0) { z.y += ivBnX * z.x * z.x; }
+		if (ivBnY != 0.0) { z.z += ivBnY * z.y * z.y; }
+
+		// 11-12. Offset oscillation
+		if (ivOffOsc != 0.0)
+		{
+			REAL oOsc = ivOffOsc * native_sin(aux->i * ivOffFreq * 0.5);
+			z.x += oOsc; z.y += oOsc * 0.7; z.z += oOsc * 0.5;
+		}
+
+		// 13-14. Sin warp
+		if (ivSwA != 0.0)
+		{
+			z.x += ivSwA * native_sin(z.y * ivSwF);
+			z.y += ivSwA * native_sin(z.z * ivSwF);
+			z.z += ivSwA * native_sin(z.x * ivSwF);
+		}
+
+		// 15. Radial distortion
+		if (ivRadDist != 0.0)
+		{
+			REAL r = length(z);
+			if (r > 1e-15)
+			{
+				REAL d = 1.0 + ivRadDist * native_sin(r * 4.0);
+				z *= d; aux->DE *= fabs(d);
+			}
+		}
+
+		// 16. Turbulence
+		if (ivTurb != 0.0)
+		{
+			REAL hx = native_sin(z.x * 12.9898 + z.y * 78.233) * 43758.5453;
+			hx = hx - floor(hx);
+			REAL hy = native_sin(z.y * 12.9898 + z.z * 78.233) * 43758.5453;
+			hy = hy - floor(hy);
+			REAL hz = native_sin(z.z * 12.9898 + z.x * 78.233) * 43758.5453;
+			hz = hz - floor(hz);
+			z.x += (hx - 0.5) * ivTurb;
+			z.y += (hy - 0.5) * ivTurb;
+			z.z += (hz - 0.5) * ivTurb;
+		}
+
+		// 17. Sphere fold
+		if (ivSphere != 0.0)
+		{
+			REAL r2 = dot(z, z);
+			REAL minR2 = 0.25;
+			REAL fixedR2 = ivSphere * ivSphere;
+			if (r2 < minR2) { REAL t = fixedR2 / minR2; z *= t; aux->DE *= t; }
+			else if (r2 < fixedR2) { REAL t = fixedR2 / r2; z *= t; aux->DE *= t; }
+		}
+
+		// 18. Box fold
+		if (ivBox != 0.0)
+		{
+			if (z.x > ivBox) z.x = 2.0 * ivBox - z.x;
+			else if (z.x < -ivBox) z.x = -2.0 * ivBox - z.x;
+			if (z.y > ivBox) z.y = 2.0 * ivBox - z.y;
+			else if (z.y < -ivBox) z.y = -2.0 * ivBox - z.y;
+			if (z.z > ivBox) z.z = 2.0 * ivBox - z.z;
+			else if (z.z < -ivBox) z.z = -2.0 * ivBox - z.z;
+		}
+
+		// 19-21. Mirror planes
+		if (ivMrX != 0.0) { if (z.x < 0.0) z.x = -z.x + ivMrX; }
+		if (ivMrY != 0.0) { if (z.y < 0.0) z.y = -z.y + ivMrY; }
+		if (ivMrZ != 0.0) { if (z.z < 0.0) z.z = -z.z + ivMrZ; }
+
+		// 22. Gradient color
+		if (ivGradCol != 0.0) { aux->color += ivGradCol * length(z); }
+
+		// 23. DE tweak
+		if (ivDETw != 0.0) { aux->DE += ivDETw; }
+
+		// 24. C-pixel scale
+		if (ivCpix != 0.0) { z += aux->const_c * ivCpix; }
+
+		// 25. Edge softness
+		if (ivEdgeSoft != 0.0)
+		{
+			REAL r = length(z);
+			if (r > 1e-15) { REAL soft = r / (r + ivEdgeSoft); z *= soft; aux->DE *= soft; }
+		}
+	}
+
 	// GPU bypass: skip if all multipliers disabled
 	if (fractal->transformCommon.functionEnabledBxFalse || fractal->transformCommon.functionEnabledByFalse || fractal->transformCommon.functionEnabledBzFalse || fractal->transformCommon.functionEnabledBwFalse || fractal->transformCommon.functionEnabledCzFalse)
 	{

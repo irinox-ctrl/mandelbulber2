@@ -1816,6 +1816,288 @@ if ( z &gt; minRR) z *= 1/  rrMode</string>
     </spacer>
    </item>
   </layout>
+   <widget class="QGroupBox" name="groupCheck_inverse_extensions">
+    <property name="title"><string>Inverse Transform Extensions</string></property>
+    <property name="checkable"><bool>true</bool></property>
+    <property name="checked"><bool>false</bool></property>
+    <layout class="QGridLayout">
+     <item row="0" column="0">
+      <widget class="QLabel"><property name="text"><string>Pre-Rot XY:</string></property></widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="MyDoubleSpinBox" name="spinboxd_transf_iv_pre_rot_xy">
+       <property name="decimals"><number>6</number></property>
+       <property name="minimum"><double>-1000.000000</double></property>
+       <property name="maximum"><double>1000.000000</double></property>
+       <property name="singleStep"><double>0.1</double></property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel"><property name="text"><string>Pre-Rot XZ:</string></property></widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="MyDoubleSpinBox" name="spinboxd_transf_iv_pre_rot_xz">
+       <property name="decimals"><number>6</number></property>
+       <property name="minimum"><double>-1000.000000</double></property>
+       <property name="maximum"><double>1000.000000</double></property>
+       <property name="singleStep"><double>0.1</double></property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel"><property name="text"><string>Post-Rot YZ:</string></property></widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="MyDoubleSpinBox" name="spinboxd_transf_iv_post_rot_yz">
+       <property name="decimals"><number>6</number></property>
+       <property name="minimum"><double>-1000.000000</double></property>
+       <property name="maximum"><double>1000.000000</double></property>
+       <property name="singleStep"><double>0.1</double></property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel"><property name="text"><string>Scale Osc:</string></property></widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="MyDoubleSpinBox" name="spinboxd_transf_iv_scale_osc">
+       <property name="decimals"><number>6</number></property>
+       <property name="minimum"><double>-1000.000000</double></property>
+       <property name="maximum"><double>1000.000000</double></property>
+       <property name="singleStep"><double>0.1</double></property>
+      </widget>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel"><property name="text"><string>Scale Osc Freq:</string></property></widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="MyDoubleSpinBox" name="spinboxd_transf_iv_scale_osc_freq">
+       <property name="decimals"><number>6</number></property>
+       <property name="minimum"><double>-1000.000000</double></property>
+       <property name="maximum"><double>1000.000000</double></property>
+       <property name="singleStep"><double>0.1</double></property>
+      </widget>
+     </item>
+     <item row="5" column="0">
+      <widget class="QLabel"><property name="text"><string>Power Warp:</string></property></widget>
+     </item>
+     <item row="5" column="1">
+      <widget class="MyDoubleSpinBox" name="spinboxd_transf_iv_power_warp">
+       <property name="decimals"><number>6</number></property>
+       <property name="minimum"><double>-1000.000000</double></property>
+       <property name="maximum"><double>1000.000000</double></property>
+       <property name="singleStep"><double>0.1</double></property>
+      </widget>
+     </item>
+     <item row="6" column="0">
+      <widget class="QLabel"><property name="text"><string>Radius Scale:</string></property></widget>
+     </item>
+     <item row="6" column="1">
+      <widget class="MyDoubleSpinBox" name="spinboxd_transf_iv_radius_scale">
+       <property name="decimals"><number>6</number></property>
+       <property name="minimum"><double>-1000.000000</double></property>
+       <property name="maximum"><double>1000.000000</double></property>
+       <property name="singleStep"><double>0.1</double></property>
+      </widget>
+     </item>
+     <item row="7" column="0">
+      <widget class="QLabel"><property name="text"><string>Twist Z:</string></property></widget>
+     </item>
+     <item row="7" column="1">
+      <widget class="MyDoubleSpinBox" name="spinboxd_transf_iv_twist_z">
+       <property name="decimals"><number>6</number></property>
+       <property name="minimum"><double>-1000.000000</double></property>
+       <property name="maximum"><double>1000.000000</double></property>
+       <property name="singleStep"><double>0.1</double></property>
+      </widget>
+     </item>
+     <item row="8" column="0">
+      <widget class="QLabel"><property name="text"><string>Bend X:</string></property></widget>
+     </item>
+     <item row="8" column="1">
+      <widget class="MyDoubleSpinBox" name="spinboxd_transf_iv_bend_x">
+       <property name="decimals"><number>6</number></property>
+       <property name="minimum"><double>-1000.000000</double></property>
+       <property name="maximum"><double>1000.000000</double></property>
+       <property name="singleStep"><double>0.1</double></property>
+      </widget>
+     </item>
+     <item row="9" column="0">
+      <widget class="QLabel"><property name="text"><string>Bend Y:</string></property></widget>
+     </item>
+     <item row="9" column="1">
+      <widget class="MyDoubleSpinBox" name="spinboxd_transf_iv_bend_y">
+       <property name="decimals"><number>6</number></property>
+       <property name="minimum"><double>-1000.000000</double></property>
+       <property name="maximum"><double>1000.000000</double></property>
+       <property name="singleStep"><double>0.1</double></property>
+      </widget>
+     </item>
+     <item row="10" column="0">
+      <widget class="QLabel"><property name="text"><string>Offset Osc:</string></property></widget>
+     </item>
+     <item row="10" column="1">
+      <widget class="MyDoubleSpinBox" name="spinboxd_transf_iv_offset_osc">
+       <property name="decimals"><number>6</number></property>
+       <property name="minimum"><double>-1000.000000</double></property>
+       <property name="maximum"><double>1000.000000</double></property>
+       <property name="singleStep"><double>0.1</double></property>
+      </widget>
+     </item>
+     <item row="11" column="0">
+      <widget class="QLabel"><property name="text"><string>Offset Osc Freq:</string></property></widget>
+     </item>
+     <item row="11" column="1">
+      <widget class="MyDoubleSpinBox" name="spinboxd_transf_iv_offset_osc_freq">
+       <property name="decimals"><number>6</number></property>
+       <property name="minimum"><double>-1000.000000</double></property>
+       <property name="maximum"><double>1000.000000</double></property>
+       <property name="singleStep"><double>0.1</double></property>
+      </widget>
+     </item>
+     <item row="12" column="0">
+      <widget class="QLabel"><property name="text"><string>Sin Warp Amp:</string></property></widget>
+     </item>
+     <item row="12" column="1">
+      <widget class="MyDoubleSpinBox" name="spinboxd_transf_iv_sin_warp_amp">
+       <property name="decimals"><number>6</number></property>
+       <property name="minimum"><double>-1000.000000</double></property>
+       <property name="maximum"><double>1000.000000</double></property>
+       <property name="singleStep"><double>0.1</double></property>
+      </widget>
+     </item>
+     <item row="13" column="0">
+      <widget class="QLabel"><property name="text"><string>Sin Warp Freq:</string></property></widget>
+     </item>
+     <item row="13" column="1">
+      <widget class="MyDoubleSpinBox" name="spinboxd_transf_iv_sin_warp_freq">
+       <property name="decimals"><number>6</number></property>
+       <property name="minimum"><double>-1000.000000</double></property>
+       <property name="maximum"><double>1000.000000</double></property>
+       <property name="singleStep"><double>0.1</double></property>
+      </widget>
+     </item>
+     <item row="14" column="0">
+      <widget class="QLabel"><property name="text"><string>Radial Distort:</string></property></widget>
+     </item>
+     <item row="14" column="1">
+      <widget class="MyDoubleSpinBox" name="spinboxd_transf_iv_radial_distort">
+       <property name="decimals"><number>6</number></property>
+       <property name="minimum"><double>-1000.000000</double></property>
+       <property name="maximum"><double>1000.000000</double></property>
+       <property name="singleStep"><double>0.1</double></property>
+      </widget>
+     </item>
+     <item row="15" column="0">
+      <widget class="QLabel"><property name="text"><string>Turbulence:</string></property></widget>
+     </item>
+     <item row="15" column="1">
+      <widget class="MyDoubleSpinBox" name="spinboxd_transf_iv_turbulence">
+       <property name="decimals"><number>6</number></property>
+       <property name="minimum"><double>-1000.000000</double></property>
+       <property name="maximum"><double>1000.000000</double></property>
+       <property name="singleStep"><double>0.1</double></property>
+      </widget>
+     </item>
+     <item row="16" column="0">
+      <widget class="QLabel"><property name="text"><string>Sphere Fold:</string></property></widget>
+     </item>
+     <item row="16" column="1">
+      <widget class="MyDoubleSpinBox" name="spinboxd_transf_iv_sphere_fold">
+       <property name="decimals"><number>6</number></property>
+       <property name="minimum"><double>-1000.000000</double></property>
+       <property name="maximum"><double>1000.000000</double></property>
+       <property name="singleStep"><double>0.1</double></property>
+      </widget>
+     </item>
+     <item row="17" column="0">
+      <widget class="QLabel"><property name="text"><string>Box Fold:</string></property></widget>
+     </item>
+     <item row="17" column="1">
+      <widget class="MyDoubleSpinBox" name="spinboxd_transf_iv_box_fold">
+       <property name="decimals"><number>6</number></property>
+       <property name="minimum"><double>-1000.000000</double></property>
+       <property name="maximum"><double>1000.000000</double></property>
+       <property name="singleStep"><double>0.1</double></property>
+      </widget>
+     </item>
+     <item row="18" column="0">
+      <widget class="QLabel"><property name="text"><string>Mirror X:</string></property></widget>
+     </item>
+     <item row="18" column="1">
+      <widget class="MyDoubleSpinBox" name="spinboxd_transf_iv_mirror_x">
+       <property name="decimals"><number>6</number></property>
+       <property name="minimum"><double>-1000.000000</double></property>
+       <property name="maximum"><double>1000.000000</double></property>
+       <property name="singleStep"><double>0.1</double></property>
+      </widget>
+     </item>
+     <item row="19" column="0">
+      <widget class="QLabel"><property name="text"><string>Mirror Y:</string></property></widget>
+     </item>
+     <item row="19" column="1">
+      <widget class="MyDoubleSpinBox" name="spinboxd_transf_iv_mirror_y">
+       <property name="decimals"><number>6</number></property>
+       <property name="minimum"><double>-1000.000000</double></property>
+       <property name="maximum"><double>1000.000000</double></property>
+       <property name="singleStep"><double>0.1</double></property>
+      </widget>
+     </item>
+     <item row="20" column="0">
+      <widget class="QLabel"><property name="text"><string>Mirror Z:</string></property></widget>
+     </item>
+     <item row="20" column="1">
+      <widget class="MyDoubleSpinBox" name="spinboxd_transf_iv_mirror_z">
+       <property name="decimals"><number>6</number></property>
+       <property name="minimum"><double>-1000.000000</double></property>
+       <property name="maximum"><double>1000.000000</double></property>
+       <property name="singleStep"><double>0.1</double></property>
+      </widget>
+     </item>
+     <item row="21" column="0">
+      <widget class="QLabel"><property name="text"><string>Gradient Color:</string></property></widget>
+     </item>
+     <item row="21" column="1">
+      <widget class="MyDoubleSpinBox" name="spinboxd_transf_iv_gradient_color">
+       <property name="decimals"><number>6</number></property>
+       <property name="minimum"><double>-1000.000000</double></property>
+       <property name="maximum"><double>1000.000000</double></property>
+       <property name="singleStep"><double>0.1</double></property>
+      </widget>
+     </item>
+     <item row="22" column="0">
+      <widget class="QLabel"><property name="text"><string>DE Tweak:</string></property></widget>
+     </item>
+     <item row="22" column="1">
+      <widget class="MyDoubleSpinBox" name="spinboxd_transf_iv_de_tweak">
+       <property name="decimals"><number>6</number></property>
+       <property name="minimum"><double>-1000.000000</double></property>
+       <property name="maximum"><double>1000.000000</double></property>
+       <property name="singleStep"><double>0.1</double></property>
+      </widget>
+     </item>
+     <item row="23" column="0">
+      <widget class="QLabel"><property name="text"><string>C-Pixel Scale:</string></property></widget>
+     </item>
+     <item row="23" column="1">
+      <widget class="MyDoubleSpinBox" name="spinboxd_transf_iv_cpixel_scale">
+       <property name="decimals"><number>6</number></property>
+       <property name="minimum"><double>-1000.000000</double></property>
+       <property name="maximum"><double>1000.000000</double></property>
+       <property name="singleStep"><double>0.1</double></property>
+      </widget>
+     </item>
+     <item row="24" column="0">
+      <widget class="QLabel"><property name="text"><string>Edge Softness:</string></property></widget>
+     </item>
+     <item row="24" column="1">
+      <widget class="MyDoubleSpinBox" name="spinboxd_transf_iv_edge_softness">
+       <property name="decimals"><number>6</number></property>
+       <property name="minimum"><double>-1000.000000</double></property>
+       <property name="maximum"><double>1000.000000</double></property>
+       <property name="singleStep"><double>0.1</double></property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
  </widget>
  <customwidgets>
   <customwidget>
