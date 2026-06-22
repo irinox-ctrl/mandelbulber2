@@ -79,8 +79,8 @@ REAL4 TransfPolyFoldAtanIteration(REAL4 z, __constant sFractalCl *fractal, sExte
 	{
 		// === General Purpose Multiplier 1 ===
 		if (fractal->transformCommon.functionEnabledBxFalse
-				&& aux.i >= fractal->transformCommon.startIterationsB
-				&& aux.i < fractal->transformCommon.stopIterationsB)
+				&& aux->i >= fractal->transformCommon.startIterationsB
+				&& aux->i < fractal->transformCommon.stopIterationsB)
 		{
 			REAL val = fractal->transformCommon.scale4;
 
@@ -92,7 +92,7 @@ REAL4 TransfPolyFoldAtanIteration(REAL4 z, __constant sFractalCl *fractal, sExte
 				REAL range = (REAL)(fractal->transformCommon.stopIterationsB - fractal->transformCommon.startIterationsB);
 				if (range > 0)
 				{
-					REAL phase = (REAL)(aux.i - fractal->transformCommon.startIterationsB) / range;
+					REAL phase = (REAL)(aux->i - fractal->transformCommon.startIterationsB) / range;
 					val = 1.0 + (val - 1.0) * native_sin(phase * fractal->transformCommon.multiplierFrequency1 * 2.0 * M_PI_F);
 				}
 			}
@@ -101,7 +101,7 @@ REAL4 TransfPolyFoldAtanIteration(REAL4 z, __constant sFractalCl *fractal, sExte
 				REAL range = (REAL)(fractal->transformCommon.stopIterationsB - fractal->transformCommon.startIterationsB);
 				if (range > 0)
 				{
-					REAL t = (REAL)(aux.i - fractal->transformCommon.startIterationsB) / range;
+					REAL t = (REAL)(aux->i - fractal->transformCommon.startIterationsB) / range;
 					t = clamp(t, (REAL)0.0, (REAL)1.0);
 					val = 1.0 + t * (val - 1.0);
 				}
@@ -110,12 +110,12 @@ REAL4 TransfPolyFoldAtanIteration(REAL4 z, __constant sFractalCl *fractal, sExte
 			switch (fractal->transformCommon.multiplierMode1)
 			{
 				default:
-				case 0: z *= val; aux.DE *= fabs(val); break;
+				case 0: z *= val; aux->DE *= fabs(val); break;
 				case 1: z.x *= val; break;
 				case 2: z.y *= val; break;
 				case 3: z.z *= val; break;
-				case 4: aux.DE *= val; break;
-				case 5: aux.color *= val; break;
+				case 4: aux->DE *= val; break;
+				case 5: aux->color *= val; break;
 				case 6: z.w *= val; break;
 				case 7: z.x *= val; z.y *= val; break;
 				case 8: z.x *= val; z.z *= val; break;
@@ -125,8 +125,8 @@ REAL4 TransfPolyFoldAtanIteration(REAL4 z, __constant sFractalCl *fractal, sExte
 
 		// === General Purpose Multiplier 2 ===
 		if (fractal->transformCommon.functionEnabledByFalse
-				&& aux.i >= fractal->transformCommon.startIterationsC
-				&& aux.i < fractal->transformCommon.stopIterationsC)
+				&& aux->i >= fractal->transformCommon.startIterationsC
+				&& aux->i < fractal->transformCommon.stopIterationsC)
 		{
 			REAL val = fractal->transformCommon.scale5;
 
@@ -138,7 +138,7 @@ REAL4 TransfPolyFoldAtanIteration(REAL4 z, __constant sFractalCl *fractal, sExte
 				REAL range = (REAL)(fractal->transformCommon.stopIterationsC - fractal->transformCommon.startIterationsC);
 				if (range > 0)
 				{
-					REAL phase = (REAL)(aux.i - fractal->transformCommon.startIterationsC) / range;
+					REAL phase = (REAL)(aux->i - fractal->transformCommon.startIterationsC) / range;
 					val = 1.0 + (val - 1.0) * native_sin(phase * fractal->transformCommon.multiplierFrequency2 * 2.0 * M_PI_F);
 				}
 			}
@@ -147,7 +147,7 @@ REAL4 TransfPolyFoldAtanIteration(REAL4 z, __constant sFractalCl *fractal, sExte
 				REAL range = (REAL)(fractal->transformCommon.stopIterationsC - fractal->transformCommon.startIterationsC);
 				if (range > 0)
 				{
-					REAL t = (REAL)(aux.i - fractal->transformCommon.startIterationsC) / range;
+					REAL t = (REAL)(aux->i - fractal->transformCommon.startIterationsC) / range;
 					t = clamp(t, (REAL)0.0, (REAL)1.0);
 					val = 1.0 + t * (val - 1.0);
 				}
@@ -156,12 +156,12 @@ REAL4 TransfPolyFoldAtanIteration(REAL4 z, __constant sFractalCl *fractal, sExte
 			switch (fractal->transformCommon.multiplierMode2)
 			{
 				default:
-				case 0: z *= val; aux.DE *= fabs(val); break;
+				case 0: z *= val; aux->DE *= fabs(val); break;
 				case 1: z.x *= val; break;
 				case 2: z.y *= val; break;
 				case 3: z.z *= val; break;
-				case 4: aux.DE *= val; break;
-				case 5: aux.color *= val; break;
+				case 4: aux->DE *= val; break;
+				case 5: aux->color *= val; break;
 				case 6: z.w *= val; break;
 				case 7: z.x *= val; z.y *= val; break;
 				case 8: z.x *= val; z.z *= val; break;
@@ -171,8 +171,8 @@ REAL4 TransfPolyFoldAtanIteration(REAL4 z, __constant sFractalCl *fractal, sExte
 
 		// === General Purpose Multiplier 3 ===
 		if (fractal->transformCommon.functionEnabledBzFalse
-				&& aux.i >= fractal->transformCommon.startIterationsD
-				&& aux.i < fractal->transformCommon.stopIterationsD)
+				&& aux->i >= fractal->transformCommon.startIterationsD
+				&& aux->i < fractal->transformCommon.stopIterationsD)
 		{
 			REAL val = fractal->transformCommon.scale6;
 
@@ -184,7 +184,7 @@ REAL4 TransfPolyFoldAtanIteration(REAL4 z, __constant sFractalCl *fractal, sExte
 				REAL range = (REAL)(fractal->transformCommon.stopIterationsD - fractal->transformCommon.startIterationsD);
 				if (range > 0)
 				{
-					REAL phase = (REAL)(aux.i - fractal->transformCommon.startIterationsD) / range;
+					REAL phase = (REAL)(aux->i - fractal->transformCommon.startIterationsD) / range;
 					val = 1.0 + (val - 1.0) * native_sin(phase * fractal->transformCommon.multiplierFrequency3 * 2.0 * M_PI_F);
 				}
 			}
@@ -193,7 +193,7 @@ REAL4 TransfPolyFoldAtanIteration(REAL4 z, __constant sFractalCl *fractal, sExte
 				REAL range = (REAL)(fractal->transformCommon.stopIterationsD - fractal->transformCommon.startIterationsD);
 				if (range > 0)
 				{
-					REAL t = (REAL)(aux.i - fractal->transformCommon.startIterationsD) / range;
+					REAL t = (REAL)(aux->i - fractal->transformCommon.startIterationsD) / range;
 					t = clamp(t, (REAL)0.0, (REAL)1.0);
 					val = 1.0 + t * (val - 1.0);
 				}
@@ -202,12 +202,12 @@ REAL4 TransfPolyFoldAtanIteration(REAL4 z, __constant sFractalCl *fractal, sExte
 			switch (fractal->transformCommon.multiplierMode3)
 			{
 				default:
-				case 0: z *= val; aux.DE *= fabs(val); break;
+				case 0: z *= val; aux->DE *= fabs(val); break;
 				case 1: z.x *= val; break;
 				case 2: z.y *= val; break;
 				case 3: z.z *= val; break;
-				case 4: aux.DE *= val; break;
-				case 5: aux.color *= val; break;
+				case 4: aux->DE *= val; break;
+				case 5: aux->color *= val; break;
 				case 6: z.w *= val; break;
 				case 7: z.x *= val; z.y *= val; break;
 				case 8: z.x *= val; z.z *= val; break;
@@ -217,8 +217,8 @@ REAL4 TransfPolyFoldAtanIteration(REAL4 z, __constant sFractalCl *fractal, sExte
 
 		// === General Purpose Multiplier 4 ===
 		if (fractal->transformCommon.functionEnabledBwFalse
-				&& aux.i >= fractal->transformCommon.startIterationsE
-				&& aux.i < fractal->transformCommon.stopIterationsE)
+				&& aux->i >= fractal->transformCommon.startIterationsE
+				&& aux->i < fractal->transformCommon.stopIterationsE)
 		{
 			REAL val = fractal->transformCommon.scale8;
 
@@ -230,7 +230,7 @@ REAL4 TransfPolyFoldAtanIteration(REAL4 z, __constant sFractalCl *fractal, sExte
 				REAL range = (REAL)(fractal->transformCommon.stopIterationsE - fractal->transformCommon.startIterationsE);
 				if (range > 0)
 				{
-					REAL phase = (REAL)(aux.i - fractal->transformCommon.startIterationsE) / range;
+					REAL phase = (REAL)(aux->i - fractal->transformCommon.startIterationsE) / range;
 					val = 1.0 + (val - 1.0) * native_sin(phase * fractal->transformCommon.multiplierFrequency4 * 2.0 * M_PI_F);
 				}
 			}
@@ -239,7 +239,7 @@ REAL4 TransfPolyFoldAtanIteration(REAL4 z, __constant sFractalCl *fractal, sExte
 				REAL range = (REAL)(fractal->transformCommon.stopIterationsE - fractal->transformCommon.startIterationsE);
 				if (range > 0)
 				{
-					REAL t = (REAL)(aux.i - fractal->transformCommon.startIterationsE) / range;
+					REAL t = (REAL)(aux->i - fractal->transformCommon.startIterationsE) / range;
 					t = clamp(t, (REAL)0.0, (REAL)1.0);
 					val = 1.0 + t * (val - 1.0);
 				}
@@ -248,12 +248,12 @@ REAL4 TransfPolyFoldAtanIteration(REAL4 z, __constant sFractalCl *fractal, sExte
 			switch (fractal->transformCommon.multiplierMode4)
 			{
 				default:
-				case 0: z *= val; aux.DE *= fabs(val); break;
+				case 0: z *= val; aux->DE *= fabs(val); break;
 				case 1: z.x *= val; break;
 				case 2: z.y *= val; break;
 				case 3: z.z *= val; break;
-				case 4: aux.DE *= val; break;
-				case 5: aux.color *= val; break;
+				case 4: aux->DE *= val; break;
+				case 5: aux->color *= val; break;
 				case 6: z.w *= val; break;
 				case 7: z.x *= val; z.y *= val; break;
 				case 8: z.x *= val; z.z *= val; break;
@@ -263,8 +263,8 @@ REAL4 TransfPolyFoldAtanIteration(REAL4 z, __constant sFractalCl *fractal, sExte
 
 		// === General Purpose Multiplier 5 ===
 		if (fractal->transformCommon.functionEnabledCzFalse
-				&& aux.i >= fractal->transformCommon.startIterationsF
-				&& aux.i < fractal->transformCommon.stopIterationsF)
+				&& aux->i >= fractal->transformCommon.startIterationsF
+				&& aux->i < fractal->transformCommon.stopIterationsF)
 		{
 			REAL val = fractal->transformCommon.scale16;
 
@@ -276,7 +276,7 @@ REAL4 TransfPolyFoldAtanIteration(REAL4 z, __constant sFractalCl *fractal, sExte
 				REAL range = (REAL)(fractal->transformCommon.stopIterationsF - fractal->transformCommon.startIterationsF);
 				if (range > 0)
 				{
-					REAL phase = (REAL)(aux.i - fractal->transformCommon.startIterationsF) / range;
+					REAL phase = (REAL)(aux->i - fractal->transformCommon.startIterationsF) / range;
 					val = 1.0 + (val - 1.0) * native_sin(phase * fractal->transformCommon.multiplierFrequency5 * 2.0 * M_PI_F);
 				}
 			}
@@ -285,7 +285,7 @@ REAL4 TransfPolyFoldAtanIteration(REAL4 z, __constant sFractalCl *fractal, sExte
 				REAL range = (REAL)(fractal->transformCommon.stopIterationsF - fractal->transformCommon.startIterationsF);
 				if (range > 0)
 				{
-					REAL t = (REAL)(aux.i - fractal->transformCommon.startIterationsF) / range;
+					REAL t = (REAL)(aux->i - fractal->transformCommon.startIterationsF) / range;
 					t = clamp(t, (REAL)0.0, (REAL)1.0);
 					val = 1.0 + t * (val - 1.0);
 				}
@@ -294,12 +294,12 @@ REAL4 TransfPolyFoldAtanIteration(REAL4 z, __constant sFractalCl *fractal, sExte
 			switch (fractal->transformCommon.multiplierMode5)
 			{
 				default:
-				case 0: z *= val; aux.DE *= fabs(val); break;
+				case 0: z *= val; aux->DE *= fabs(val); break;
 				case 1: z.x *= val; break;
 				case 2: z.y *= val; break;
 				case 3: z.z *= val; break;
-				case 4: aux.DE *= val; break;
-				case 5: aux.color *= val; break;
+				case 4: aux->DE *= val; break;
+				case 5: aux->color *= val; break;
 				case 6: z.w *= val; break;
 				case 7: z.x *= val; z.y *= val; break;
 				case 8: z.x *= val; z.z *= val; break;
