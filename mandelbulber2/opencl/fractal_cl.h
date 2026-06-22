@@ -864,6 +864,23 @@ typedef struct
 	cl_float pkSphereSoftness;
 	cl_float pkAnisotropicK;
 
+	// Jos Kleinian specific parameters
+	cl_float jkSepLineWarp;
+	cl_float jkSepLineFreq;
+	cl_float jkInversionPower;
+	cl_float jkBoxOscAmp;
+	cl_float jkBoxOscFreq;
+	cl_float jkPreTwistXY;
+	cl_float jkPostTwistXZ;
+	cl_float jkZShift;
+	cl_float jkRadialWarp;
+	cl_float jkTurbulence;
+	cl_float jkGradientColor;
+	cl_float jkDETweak;
+	cl_float jkCpixelInject;
+	cl_float jkWrapSoftness;
+	cl_float jkAnisotropicInv;
+
 	cl_float4 additionConstant0555;
 	cl_float4 additionConstant0777;
 	cl_float4 additionConstant000;
@@ -1943,6 +1960,21 @@ inline sFractalTransformCommonCl clCopySFractalTransformCommonCl(
 	target.pkCpixelInject = source.pkCpixelInject;
 	target.pkSphereSoftness = source.pkSphereSoftness;
 	target.pkAnisotropicK = source.pkAnisotropicK;
+	target.jkSepLineWarp = source.jkSepLineWarp;
+	target.jkSepLineFreq = source.jkSepLineFreq;
+	target.jkInversionPower = source.jkInversionPower;
+	target.jkBoxOscAmp = source.jkBoxOscAmp;
+	target.jkBoxOscFreq = source.jkBoxOscFreq;
+	target.jkPreTwistXY = source.jkPreTwistXY;
+	target.jkPostTwistXZ = source.jkPostTwistXZ;
+	target.jkZShift = source.jkZShift;
+	target.jkRadialWarp = source.jkRadialWarp;
+	target.jkTurbulence = source.jkTurbulence;
+	target.jkGradientColor = source.jkGradientColor;
+	target.jkDETweak = source.jkDETweak;
+	target.jkCpixelInject = source.jkCpixelInject;
+	target.jkWrapSoftness = source.jkWrapSoftness;
+	target.jkAnisotropicInv = source.jkAnisotropicInv;
 	return target;
 }
 

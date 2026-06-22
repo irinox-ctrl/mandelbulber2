@@ -527,6 +527,23 @@ sFractal::sFractal(const std::shared_ptr<cParameterContainer> container)
 	transformCommon.pkSphereSoftness = container->Get<double>("transf_pk_sphere_softness");
 	transformCommon.pkAnisotropicK = container->Get<double>("transf_pk_anisotropic_k");
 
+	// Jos Kleinian specific parameters
+	transformCommon.jkSepLineWarp = container->Get<double>("transf_jk_sep_line_warp");
+	transformCommon.jkSepLineFreq = container->Get<double>("transf_jk_sep_line_freq");
+	transformCommon.jkInversionPower = container->Get<double>("transf_jk_inversion_power");
+	transformCommon.jkBoxOscAmp = container->Get<double>("transf_jk_box_osc_amp");
+	transformCommon.jkBoxOscFreq = container->Get<double>("transf_jk_box_osc_freq");
+	transformCommon.jkPreTwistXY = container->Get<double>("transf_jk_pre_twist_xy");
+	transformCommon.jkPostTwistXZ = container->Get<double>("transf_jk_post_twist_xz");
+	transformCommon.jkZShift = container->Get<double>("transf_jk_z_shift");
+	transformCommon.jkRadialWarp = container->Get<double>("transf_jk_radial_warp");
+	transformCommon.jkTurbulence = container->Get<double>("transf_jk_turbulence");
+	transformCommon.jkGradientColor = container->Get<double>("transf_jk_gradient_color");
+	transformCommon.jkDETweak = container->Get<double>("transf_jk_de_tweak");
+	transformCommon.jkCpixelInject = container->Get<double>("transf_jk_cpixel_inject");
+	transformCommon.jkWrapSoftness = container->Get<double>("transf_jk_wrap_softness");
+	transformCommon.jkAnisotropicInv = container->Get<double>("transf_jk_anisotropic_inv");
+
 	transformCommon.startIterations = container->Get<int>("transf_start_iterations");
 	transformCommon.startIterations250 = container->Get<int>("transf_start_iterations_250");
 	transformCommon.stopIterations = container->Get<int>("transf_stop_iterations");

@@ -2193,6 +2193,23 @@ void InitFractalParams(std::shared_ptr<cParameterContainer> par)
 	par->addParam("transf_pk_sphere_softness", 0.0, morphLinear, paramStandard);
 	par->addParam("transf_pk_anisotropic_k", 0.0, morphLinear, paramStandard);
 
+	// Jos Kleinian specific parameters
+	par->addParam("transf_jk_sep_line_warp", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_jk_sep_line_freq", 1.0, morphLinear, paramStandard);
+	par->addParam("transf_jk_inversion_power", 1.0, morphLinear, paramStandard);
+	par->addParam("transf_jk_box_osc_amp", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_jk_box_osc_freq", 1.0, morphLinear, paramStandard);
+	par->addParam("transf_jk_pre_twist_xy", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_jk_post_twist_xz", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_jk_z_shift", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_jk_radial_warp", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_jk_turbulence", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_jk_gradient_color", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_jk_de_tweak", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_jk_cpixel_inject", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_jk_wrap_softness", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_jk_anisotropic_inv", 0.0, morphLinear, paramStandard);
+
 	par->addParam("transf_start_iterations", 0, morphLinear, paramStandard);
 	par->addParam("transf_start_iterations_250", 250, morphLinear, paramStandard);
 	par->addParam("transf_stop_iterations", 250, morphLinear, paramStandard);

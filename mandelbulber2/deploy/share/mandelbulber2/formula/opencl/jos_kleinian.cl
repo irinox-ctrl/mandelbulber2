@@ -109,6 +109,140 @@ REAL4 JosKleinianIteration(REAL4 z, __constant sFractalCl *fractal, sExtendedAux
 		aux->color += colorAdd;
 	}
 
+	// =============================================
+	// === JOS KLEINIAN EXTENSIONS (#1-#15) ===
+	// =============================================
+
+	// === JK #1-2: Separation Line Warp ===
+	if (fractal->transformCommon.jkSepLineWarp != 0.0f)
+	{
+		REAL warpAmp = fractal->transformCommon.jkSepLineWarp;
+		REAL warpFreq = fractal->transformCommon.jkSepLineFreq;
+		z.x += warpAmp * native_sin(z.y * warpFreq);
+		z.y += warpAmp * native_sin(z.z * warpFreq * 0.7f);
+	}
+
+	// === JK #3: Inversion Power ===
+	if (fractal->transformCommon.jkInversionPower != 1.0f && fractal->transformCommon.jkInversionPower != 0.0f)
+	{
+		REAL rr = dot(z, z);
+		if (rr > 1e-21f)
+		{
+			REAL iRp = native_powr(1.0f / rr, fractal->transformCommon.jkInversionPower * 0.5f);
+			z *= iRp;
+			aux->DE *= fabs(iRp);
+		}
+	}
+
+	// === JK #4-5: Box Oscillation ===
+	if (fractal->transformCommon.jkBoxOscAmp != 0.0f)
+	{
+		REAL osc = fractal->transformCommon.jkBoxOscAmp * native_sin((REAL)aux->i * fractal->transformCommon.jkBoxOscFreq);
+		z.x += osc * z.x;
+		z.y += osc * z.y;
+		z.z += osc * z.z;
+	}
+
+	// === JK #6: Pre-Twist XY ===
+	if (fractal->transformCommon.jkPreTwistXY != 0.0f)
+	{
+		REAL angle = fractal->transformCommon.jkPreTwistXY * M_PI_F / 180.0f * (REAL)aux->i;
+		REAL cosA = native_cos(angle);
+		REAL sinA = native_sin(angle);
+		REAL xn = z.x * cosA - z.y * sinA;
+		REAL yn = z.x * sinA + z.y * cosA;
+		z.x = xn;
+		z.y = yn;
+	}
+
+	// === JK #7: Post-Twist XZ ===
+	if (fractal->transformCommon.jkPostTwistXZ != 0.0f)
+	{
+		REAL angle = fractal->transformCommon.jkPostTwistXZ * M_PI_F / 180.0f;
+		REAL cosA = native_cos(angle);
+		REAL sinA = native_sin(angle);
+		REAL xn = z.x * cosA - z.z * sinA;
+		REAL zn = z.x * sinA + z.z * cosA;
+		z.x = xn;
+		z.z = zn;
+	}
+
+	// === JK #8: Z-Shift ===
+	if (fractal->transformCommon.jkZShift != 0.0f)
+	{
+		z.x += fractal->transformCommon.jkZShift * z.z;
+		z.y += fractal->transformCommon.jkZShift * z.z * 0.5f;
+	}
+
+	// === JK #9: Radial Warp ===
+	if (fractal->transformCommon.jkRadialWarp != 0.0f)
+	{
+		REAL r = native_sqrt(z.x * z.x + z.y * z.y + 1e-21f);
+		REAL warp = 1.0f + fractal->transformCommon.jkRadialWarp * native_sin(r * 3.0f);
+		z.x *= warp;
+		z.y *= warp;
+		aux->DE *= fabs(warp);
+	}
+
+	// === JK #10: Turbulence ===
+	if (fractal->transformCommon.jkTurbulence != 0.0f)
+	{
+		REAL turb = fractal->transformCommon.jkTurbulence;
+		int hx = (int)(z.x * 1000.0f) * 73856093;
+		int hy = (int)(z.y * 1000.0f) * 19349663;
+		int hz = (int)(z.z * 1000.0f) * 83492791;
+		int h = hx ^ hy ^ hz;
+		h = (h ^ (h >> 13)) * 1274126177;
+		h = h ^ (h >> 16);
+		REAL noise = ((REAL)(h & 0xFFFF) / 32767.5f) - 1.0f;
+		z.x += turb * noise;
+		h = h * 1103515245 + 12345;
+		noise = ((REAL)(h & 0xFFFF) / 32767.5f) - 1.0f;
+		z.y += turb * noise;
+		h = h * 1103515245 + 12345;
+		noise = ((REAL)(h & 0xFFFF) / 32767.5f) - 1.0f;
+		z.z += turb * noise;
+	}
+
+	// === JK #11: Gradient Color ===
+	if (fractal->transformCommon.jkGradientColor != 0.0f)
+	{
+		REAL rr = dot(z, z);
+		REAL iRCol = 1.0f / (rr + 1e-21f);
+		aux->color += fabs(iRCol) * fractal->transformCommon.jkGradientColor;
+	}
+
+	// === JK #12: DE Tweak ===
+	if (fractal->transformCommon.jkDETweak != 0.0f)
+	{
+		aux->DE += fractal->transformCommon.jkDETweak;
+	}
+
+	// === JK #13: C-Pixel Inject ===
+	if (fractal->transformCommon.jkCpixelInject != 0.0f)
+	{
+		z += aux->const_c * fractal->transformCommon.jkCpixelInject;
+	}
+
+	// === JK #14: Wrap Softness ===
+	if (fractal->transformCommon.jkWrapSoftness > 0.0f)
+	{
+		REAL rr2 = dot(z, z);
+		REAL s = fractal->transformCommon.jkWrapSoftness;
+		REAL t = fmax(0.0f, fmin(1.0f, (rr2 - 0.25f) / (s + 1e-21f)));
+		t = t * t * (3.0f - 2.0f * t);
+		REAL softScale = 1.0f + (1.0f - t) * s * 0.1f;
+		z *= softScale;
+		aux->DE *= fabs(softScale);
+	}
+
+	// === JK #15: Anisotropic Inversion ===
+	if (fractal->transformCommon.jkAnisotropicInv != 0.0f)
+	{
+		z.z *= 1.0f + fractal->transformCommon.jkAnisotropicInv;
+		aux->DE *= fabs(1.0f + fractal->transformCommon.jkAnisotropicInv * 0.5f);
+	}
+
 	// GPU bypass: skip if all multipliers disabled
 	if (fractal->transformCommon.functionEnabledBxFalse || fractal->transformCommon.functionEnabledByFalse || fractal->transformCommon.functionEnabledBzFalse || fractal->transformCommon.functionEnabledBwFalse || fractal->transformCommon.functionEnabledCzFalse)
 	{

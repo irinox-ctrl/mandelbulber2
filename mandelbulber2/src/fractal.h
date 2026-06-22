@@ -854,6 +854,23 @@ struct sFractalTransformCommon
 	double pkSphereSoftness;
 	double pkAnisotropicK;
 
+	// Jos Kleinian specific parameters
+	double jkSepLineWarp;
+	double jkSepLineFreq;
+	double jkInversionPower;
+	double jkBoxOscAmp;
+	double jkBoxOscFreq;
+	double jkPreTwistXY;
+	double jkPostTwistXZ;
+	double jkZShift;
+	double jkRadialWarp;
+	double jkTurbulence;
+	double jkGradientColor;
+	double jkDETweak;
+	double jkCpixelInject;
+	double jkWrapSoftness;
+	double jkAnisotropicInv;
+
 	CVector4 additionConstant0555;
 	CVector4 additionConstant0777;
 	CVector4 additionConstant000;
