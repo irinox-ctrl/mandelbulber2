@@ -238,7 +238,29 @@ def main():
             sys.exit(1)
         success = True
         for system_dir in sorted(SYSTEMS_DIR.iterdir()):
-            if system_dir.is_dir():
+            if not system_dir.is_dir():
+                continue
+            if args.validate_only:
+                mutations = []
+                for mut_file in sorted(system_dir.glob("*.mut")):
+                    meta, body = parse_mut_file(mut_file)
+                    if meta.get("type_id") is not None:
+                        mutations.append((meta, body))
+                seen = set()
+                ok = True
+                for m, _ in mutations:
+                    tid = m.get("type_id", 0)
+                    if tid in seen:
+                        print(f"DUPLICATE TYPE_ID {tid} in {system_dir.name}")
+                        ok = False
+                    seen.add(tid)
+                if ok and mutations:
+                    print(f"Validation OK: {system_dir.name} ({len(mutations)} mutations)")
+                elif not mutations:
+                    print(f"Warning: no .mut files in {system_dir.name}")
+                if not ok:
+                    success = False
+            else:
                 if not generate_system(system_dir.name, args.target):
                     success = False
         sys.exit(0 if success else 1)

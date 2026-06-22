@@ -21,6 +21,7 @@ CODEGEN = Path(__file__).resolve().parent
 ROOT = CODEGEN.parent.parent
 
 AUDITS = [
+    # ── Phases 0–6 + 10–12 (existing) ──────────────────────────────────────────
     ("scanner smoke", [sys.executable, str(CODEGEN / "test_scanner_smoke.py")], {}),
     ("scanner --ci-smoke", [sys.executable, str(CODEGEN / "mutation_scanner.py"), "--ci-smoke"], {}),
     ("scanner --validate-ui", [sys.executable, str(CODEGEN / "mutation_scanner.py"), "--validate-ui"], {}),
@@ -31,10 +32,17 @@ AUDITS = [
     ("julia_audit --ci", [sys.executable, str(CODEGEN / "julia_audit.py"), "--ci"], {}),
     ("tri_engine_parity --ci", [sys.executable, str(CODEGEN / "tri_engine_parity.py"), "--ci"], {}),
     ("formula_audit --ci", [sys.executable, str(CODEGEN / "formula_audit.py"), "--ci"], {}),
+    # ── Phase 7: codegen pilot (.mut validation) ────────────────────────────────
+    ("codegen validate --all", [sys.executable, str(CODEGEN / "generate_switch.py"),
+                                "--all", "--validate-only"], {}),
+    # ── Phase 8: param_codegen registry validation ───────────────────────────────
+    ("param_codegen --ci", [sys.executable, str(CODEGEN / "param_codegen.py"), "--ci"], {}),
+    # ── Phase 9: safety budget ───────────────────────────────────────────────────
+    ("safety_budget --ci", [sys.executable, str(CODEGEN / "safety_budget.py"), "--ci"], {}),
 ]
 
 
-def main() -> int:
+
     parser = argparse.ArgumentParser()
     parser.add_argument("--ci", action="store_true", help="Exit 1 if any audit fails")
     parser.add_argument("--markdown", metavar="PATH")
