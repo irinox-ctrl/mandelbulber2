@@ -533,10 +533,14 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 
 		// -------------- Formula Mutation pre-processing (GPU) ---------------
 #ifdef USE_MUTATION
+		// BUG-004: bounds check on sequence index
+		if (sequence < 0 || sequence >= NUMBER_OF_FRACTALS) sequence = 0;
 		float4 preMutZ = z;
+		// BUG-003: clamp iteration stop to maxN
+		int mutIterStopGpu = min(consts->sequence.mutationParams[sequence].iterationStop, maxN);
 		bool mutationActive = consts->sequence.mutationParams[sequence].enabled
 			&& i >= consts->sequence.mutationParams[sequence].iterationStart
-			&& i < consts->sequence.mutationParams[sequence].iterationStop;
+			&& i < mutIterStopGpu;
 #else
 		bool mutationActive = false;
 #endif
@@ -1815,7 +1819,10 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 			__constant sClFormulaMutationParams *jm = &consts->sequence.mutationParams[sequence];
 			// BUG-002: fallback if aux.const_c is zero
 			if (length(aux.const_c) < 1e-21f) aux.const_c = z;
-			float4 juliaC = aux.const_c * jm->juliaCMul;
+			// BUG-005: NaN/Inf guard on julia params
+			float safeCMulGpu = jm->juliaCMul;
+			if (isnan(safeCMulGpu) || isinf(safeCMulGpu)) safeCMulGpu = 1.0f;
+			float4 juliaC = aux.const_c * safeCMulGpu;
 			// C-transform (with per-subsystem iter range + strength)
 			if (jm->juliaCTransform != 0
 				&& i >= jm->juliaCTransformIterStart && i < jm->juliaCTransformIterStop) {
@@ -2028,6 +2035,12 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 			}
 			// DE correction for sharper rendering with mutations
 			if (jm->juliaDEFactor != 1.0f) aux.DE *= jm->juliaDEFactor;
+			// BUG-005: final NaN/Inf guard after julia injection
+			if (isnan(z.x) || isinf(z.x) || isnan(z.y) || isinf(z.y)
+				|| isnan(z.z) || isinf(z.z))
+			{
+				z = preMutZ;
+			}
 		}
 #endif // USE_MUTATION (julia pre-fold)
 
@@ -2192,7 +2205,10 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 			if (doPost) {
 			// BUG-002: fallback if aux.const_c is zero
 			if (length(aux.const_c) < 1e-21f) aux.const_c = z;
-			float4 juliaC = aux.const_c * jm->juliaCMul;
+			// BUG-005: NaN/Inf guard on julia params
+			float safeCMulGpuMP = jm->juliaCMul;
+			if (isnan(safeCMulGpuMP) || isinf(safeCMulGpuMP)) safeCMulGpuMP = 1.0f;
+			float4 juliaC = aux.const_c * safeCMulGpuMP;
 			// C-transform (with per-subsystem iter range + strength)
 			if (jm->juliaCTransform != 0
 				&& i >= jm->juliaCTransformIterStart && i < jm->juliaCTransformIterStop) {

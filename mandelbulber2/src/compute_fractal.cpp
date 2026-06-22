@@ -622,6 +622,9 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 			}
 		}
 
+		// BUG-004: bounds check on sequence index
+		if (sequence < 0 || sequence >= NUMBER_OF_FRACTALS) sequence = 0;
+
 		// foldings
 		if (in.common->foldings.boxEnable)
 		{
@@ -723,11 +726,14 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 		const sFormulaMutationParams &mut = fractals.GetMutationParams(sequence);
 		CVector4 preMutZ;
 
+		// BUG-003: clamp iteration ranges to maxN
+		const int mutIterStop = std::min(mut.iterationStop, maxN);
+
 		if (!fractals.IsHybrid() || effectiveWeight > 0.0)
 		{
 			// -------------- Formula Mutation pre-processing ---------------
 			bool mutationActive = mut.enabled
-				&& i >= mut.iterationStart && i < mut.iterationStop;
+				&& i >= mut.iterationStart && i < mutIterStop;
 			if (mutationActive)
 			{
 				preMutZ = z;
@@ -1744,12 +1750,15 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 
 			// v7.5 — Julia pre-fold injection (per-section iteration range)
 			if (mut.enabled && mut.juliaInjection != mutJuliaInjectNone
-				&& i >= mut.iterationStart && i < mut.iterationStop
+				&& i >= mut.iterationStart && i < mutIterStop
 				&& i >= mut.juliaIterStart && i < mut.juliaIterStop)
 			{
 				// BUG-002: fallback if aux.const_c is zero (e.g. uninitialized path)
 				if (aux.const_c.Length() < 1e-21) aux.const_c = z;
-				CVector4 juliaC = aux.const_c * mut.juliaCMul;
+				// BUG-005: NaN/Inf guard on julia params
+				double safeCMul = mut.juliaCMul;
+				if (std::isnan(safeCMul) || std::isinf(safeCMul)) safeCMul = 1.0;
+				CVector4 juliaC = aux.const_c * safeCMul;
 
 				// C-transform (with per-subsystem iter range + strength)
 				if (mut.juliaCTransform != mutJuliaCNone
@@ -2064,6 +2073,12 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 				}
 				// DE correction for sharper rendering with mutations
 				if (mut.juliaDEFactor != 1.0) aux.DE *= mut.juliaDEFactor;
+				// BUG-005: final NaN/Inf guard after julia injection
+				if (std::isnan(z.x) || std::isinf(z.x) || std::isnan(z.y) || std::isinf(z.y)
+					|| std::isnan(z.z) || std::isinf(z.z))
+				{
+					z = preMutZ;
+				}
 			}
 
 			// -------------- call for fractal formulas by function pointers ---------------
@@ -2188,7 +2203,7 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 		}
 
 		// v7.5 — Julia mid/post injection (per-section iteration range)
-		if (mut.enabled && i >= mut.iterationStart && i < mut.iterationStop
+		if (mut.enabled && i >= mut.iterationStart && i < mutIterStop
 			&& i >= mut.juliaIterStart && i < mut.juliaIterStop
 			&& (mut.juliaInjection == mutJuliaInjectMidFold
 				|| mut.juliaInjection == mutJuliaInjectPostScale
@@ -2202,7 +2217,10 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 			{
 			// BUG-002: fallback if aux.const_c is zero
 			if (aux.const_c.Length() < 1e-21) aux.const_c = z;
-			CVector4 juliaC = aux.const_c * mut.juliaCMul;
+			// BUG-005: NaN/Inf guard on julia params
+			double safeCMulMP = mut.juliaCMul;
+			if (std::isnan(safeCMulMP) || std::isinf(safeCMulMP)) safeCMulMP = 1.0;
+			CVector4 juliaC = aux.const_c * safeCMulMP;
 			// C-transform (with per-subsystem iter range + strength)
 			if (mut.juliaCTransform != mutJuliaCNone
 				&& i >= mut.juliaCTransformIterStart && i < mut.juliaCTransformIterStop)
@@ -2387,7 +2405,7 @@ void Compute(const cNineFractals &fractals, const cHybridFractalSequences::sSequ
 		// -------------- Formula Mutation post-processing ---------------
 		{
 			bool mutationActive = mut.enabled
-				&& i >= mut.iterationStart && i < mut.iterationStop;
+				&& i >= mut.iterationStart && i < mutIterStop;
 			if (mutationActive)
 			{
 				// Fold injection (post-formula or both, per-section iteration range)
