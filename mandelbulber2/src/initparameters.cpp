@@ -2295,6 +2295,28 @@ void InitFractalParams(std::shared_ptr<cParameterContainer> par)
 	par->addParam("transf_ab_cpixel_scale", 0.0, morphLinear, paramStandard);
 	par->addParam("transf_ab_sphere_softness", 0.0, morphLinear, paramStandard);
 
+	// Julia specific parameters
+	par->addParam("transf_jl_power_osc", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_jl_power_osc_freq", 1.0, morphLinear, paramStandard);
+	par->addParam("transf_jl_theta_warp", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_jl_phi_warp", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_jl_radial_stretch", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_jl_pre_rot_xy", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_jl_pre_rot_xz", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_jl_post_rot_yz", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_jl_twist_z", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_jl_scale_osc", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_jl_scale_osc_freq", 1.0, morphLinear, paramStandard);
+	par->addParam("transf_jl_offset_osc", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_jl_offset_osc_freq", 1.0, morphLinear, paramStandard);
+	par->addParam("transf_jl_radial_distort", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_jl_turbulence", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_jl_gradient_color", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_jl_de_tweak", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_jl_cpixel_scale", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_jl_sphere_fold", 0.0, morphLinear, paramStandard);
+	par->addParam("transf_jl_edge_softness", 0.0, morphLinear, paramStandard);
+
 	par->addParam("transf_start_iterations", 0, morphLinear, paramStandard);
 	par->addParam("transf_start_iterations_250", 250, morphLinear, paramStandard);
 	par->addParam("transf_stop_iterations", 250, morphLinear, paramStandard);

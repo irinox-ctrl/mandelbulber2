@@ -956,6 +956,28 @@ struct sFractalTransformCommon
 	double abCpixelScale;
 	double abSphereSoftness;
 
+	// Julia specific parameters
+	double jlPowerOsc;
+	double jlPowerOscFreq;
+	double jlThetaWarp;
+	double jlPhiWarp;
+	double jlRadialStretch;
+	double jlPreRotXY;
+	double jlPreRotXZ;
+	double jlPostRotYZ;
+	double jlTwistZ;
+	double jlScaleOsc;
+	double jlScaleOscFreq;
+	double jlOffsetOsc;
+	double jlOffsetOscFreq;
+	double jlRadialDistort;
+	double jlTurbulence;
+	double jlGradientColor;
+	double jlDETweak;
+	double jlCpixelScale;
+	double jlSphereFold;
+	double jlEdgeSoftness;
+
 	CVector4 additionConstant0555;
 	CVector4 additionConstant0777;
 	CVector4 additionConstant000;

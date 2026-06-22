@@ -966,6 +966,28 @@ typedef struct
 	cl_float abCpixelScale;
 	cl_float abSphereSoftness;
 
+	// Julia specific parameters
+	cl_float jlPowerOsc;
+	cl_float jlPowerOscFreq;
+	cl_float jlThetaWarp;
+	cl_float jlPhiWarp;
+	cl_float jlRadialStretch;
+	cl_float jlPreRotXY;
+	cl_float jlPreRotXZ;
+	cl_float jlPostRotYZ;
+	cl_float jlTwistZ;
+	cl_float jlScaleOsc;
+	cl_float jlScaleOscFreq;
+	cl_float jlOffsetOsc;
+	cl_float jlOffsetOscFreq;
+	cl_float jlRadialDistort;
+	cl_float jlTurbulence;
+	cl_float jlGradientColor;
+	cl_float jlDETweak;
+	cl_float jlCpixelScale;
+	cl_float jlSphereFold;
+	cl_float jlEdgeSoftness;
+
 	cl_float4 additionConstant0555;
 	cl_float4 additionConstant0777;
 	cl_float4 additionConstant000;
@@ -2135,6 +2157,26 @@ inline sFractalTransformCommonCl clCopySFractalTransformCommonCl(
 	target.abDETweak = source.abDETweak;
 	target.abCpixelScale = source.abCpixelScale;
 	target.abSphereSoftness = source.abSphereSoftness;
+	target.jlPowerOsc = source.jlPowerOsc;
+	target.jlPowerOscFreq = source.jlPowerOscFreq;
+	target.jlThetaWarp = source.jlThetaWarp;
+	target.jlPhiWarp = source.jlPhiWarp;
+	target.jlRadialStretch = source.jlRadialStretch;
+	target.jlPreRotXY = source.jlPreRotXY;
+	target.jlPreRotXZ = source.jlPreRotXZ;
+	target.jlPostRotYZ = source.jlPostRotYZ;
+	target.jlTwistZ = source.jlTwistZ;
+	target.jlScaleOsc = source.jlScaleOsc;
+	target.jlScaleOscFreq = source.jlScaleOscFreq;
+	target.jlOffsetOsc = source.jlOffsetOsc;
+	target.jlOffsetOscFreq = source.jlOffsetOscFreq;
+	target.jlRadialDistort = source.jlRadialDistort;
+	target.jlTurbulence = source.jlTurbulence;
+	target.jlGradientColor = source.jlGradientColor;
+	target.jlDETweak = source.jlDETweak;
+	target.jlCpixelScale = source.jlCpixelScale;
+	target.jlSphereFold = source.jlSphereFold;
+	target.jlEdgeSoftness = source.jlEdgeSoftness;
 	return target;
 }
 

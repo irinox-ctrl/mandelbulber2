@@ -27,6 +27,213 @@ REAL4 Threex3DrinfeldModuleJuliaIteration(REAL4 z, __constant sFractalCl *fracta
 	z.y = cos(th) * sin(ph) * rp;
 	z.z = sin(th) * rp;
 
+		// --- Julia Extensions (20 parameters) ---
+	{
+		REAL jlPwOsc = fractal->transformCommon.jlPowerOsc;
+		REAL jlPwFreq = fractal->transformCommon.jlPowerOscFreq;
+		REAL jlThWarp = fractal->transformCommon.jlThetaWarp;
+		REAL jlPhWarp = fractal->transformCommon.jlPhiWarp;
+		REAL jlRadStr = fractal->transformCommon.jlRadialStretch;
+		REAL jlPreXY = fractal->transformCommon.jlPreRotXY;
+		REAL jlPreXZ = fractal->transformCommon.jlPreRotXZ;
+		REAL jlPostYZ = fractal->transformCommon.jlPostRotYZ;
+		REAL jlTwZ = fractal->transformCommon.jlTwistZ;
+		REAL jlScOsc = fractal->transformCommon.jlScaleOsc;
+		REAL jlScFreq = fractal->transformCommon.jlScaleOscFreq;
+		REAL jlOffOsc = fractal->transformCommon.jlOffsetOsc;
+		REAL jlOffFreq = fractal->transformCommon.jlOffsetOscFreq;
+		REAL jlRadDist = fractal->transformCommon.jlRadialDistort;
+		REAL jlTurb = fractal->transformCommon.jlTurbulence;
+		REAL jlGradCol = fractal->transformCommon.jlGradientColor;
+		REAL jlDETw = fractal->transformCommon.jlDETweak;
+		REAL jlCpix = fractal->transformCommon.jlCpixelScale;
+		REAL jlSphere = fractal->transformCommon.jlSphereFold;
+		REAL jlEdgeSoft = fractal->transformCommon.jlEdgeSoftness;
+
+		// 1-2. Power oscillation
+		if (jlPwOsc != 0.0f)
+		{
+			REAL pOsc = 1.0f + jlPwOsc * native_sin(aux->i * jlPwFreq * 0.5f);
+			z *= pOsc;
+			aux->DE *= fabs(pOsc);
+		}
+
+		// 3. Theta warp
+		if (jlThWarp != 0.0f)
+		{
+			REAL r = length(z);
+			if (r > 1e-15f)
+			{
+				REAL th = acos(z.z / r);
+				th += jlThWarp * native_sin(aux->i * 1.5f);
+				REAL ph = atan2(z.y, z.x);
+				z.x = r * native_sin(th) * native_cos(ph);
+				z.y = r * native_sin(th) * native_sin(ph);
+				z.z = r * native_cos(th);
+			}
+		}
+
+		// 4. Phi warp
+		if (jlPhWarp != 0.0f)
+		{
+			REAL r = length(z);
+			if (r > 1e-15f)
+			{
+				REAL th = acos(z.z / r);
+				REAL ph = atan2(z.y, z.x);
+				ph += jlPhWarp * native_sin(aux->i * 1.3f);
+				z.x = r * native_sin(th) * native_cos(ph);
+				z.y = r * native_sin(th) * native_sin(ph);
+				z.z = r * native_cos(th);
+			}
+		}
+
+		// 5. Radial stretch
+		if (jlRadStr != 0.0f)
+		{
+			REAL r = length(z);
+			if (r > 1e-15f)
+			{
+				REAL stretch = 1.0f + jlRadStr * (r - 1.0f);
+				z *= stretch / r * r;
+				aux->DE *= fabs(stretch);
+			}
+		}
+
+		// 6. Pre-rotation XY
+		if (jlPreXY != 0.0f)
+		{
+			REAL a = jlPreXY * M_PI_F / 180.0f * aux->i;
+			REAL ca = native_cos(a); REAL sa = native_sin(a);
+			REAL px = z.x * ca - z.y * sa;
+			REAL py = z.x * sa + z.y * ca;
+			z.x = px; z.y = py;
+		}
+
+		// 7. Pre-rotation XZ
+		if (jlPreXZ != 0.0f)
+		{
+			REAL a = jlPreXZ * M_PI_F / 180.0f * aux->i;
+			REAL ca = native_cos(a); REAL sa = native_sin(a);
+			REAL px = z.x * ca - z.z * sa;
+			REAL pz = z.x * sa + z.z * ca;
+			z.x = px; z.z = pz;
+		}
+
+		// 8. Post-rotation YZ
+		if (jlPostYZ != 0.0f)
+		{
+			REAL a = jlPostYZ * M_PI_F / 180.0f;
+			REAL ca = native_cos(a); REAL sa = native_sin(a);
+			REAL py = z.y * ca - z.z * sa;
+			REAL pz = z.y * sa + z.z * ca;
+			z.y = py; z.z = pz;
+		}
+
+		// 9. Twist Z
+		if (jlTwZ != 0.0f)
+		{
+			REAL tw = jlTwZ * M_PI_F / 180.0f * z.z;
+			REAL ct = native_cos(tw); REAL st = native_sin(tw);
+			REAL tx = z.x * ct - z.y * st;
+			REAL ty = z.x * st + z.y * ct;
+			z.x = tx; z.y = ty;
+		}
+
+		// 10-11. Scale oscillation
+		if (jlScOsc != 0.0f)
+		{
+			REAL sOsc = 1.0f + jlScOsc * native_sin(aux->i * jlScFreq * 0.5f);
+			z *= sOsc;
+			aux->DE *= fabs(sOsc);
+		}
+
+		// 12-13. Offset oscillation
+		if (jlOffOsc != 0.0f)
+		{
+			REAL oOsc = jlOffOsc * native_sin(aux->i * jlOffFreq * 0.5f);
+			z.x += oOsc;
+			z.y += oOsc * 0.7f;
+			z.z += oOsc * 0.5f;
+		}
+
+		// 14. Radial distortion
+		if (jlRadDist != 0.0f)
+		{
+			REAL r = length(z);
+			if (r > 1e-15f)
+			{
+				REAL distort = 1.0f + jlRadDist * native_sin(r * 4.0f);
+				z *= distort;
+				aux->DE *= fabs(distort);
+			}
+		}
+
+		// 15. Turbulence
+		if (jlTurb != 0.0f)
+		{
+			REAL hx = native_sin(z.x * 12.9898f + z.y * 78.233f) * 43758.5453f;
+			hx = hx - floor(hx);
+			REAL hy = native_sin(z.y * 12.9898f + z.z * 78.233f) * 43758.5453f;
+			hy = hy - floor(hy);
+			REAL hz = native_sin(z.z * 12.9898f + z.x * 78.233f) * 43758.5453f;
+			hz = hz - floor(hz);
+			z.x += (hx - 0.5f) * jlTurb;
+			z.y += (hy - 0.5f) * jlTurb;
+			z.z += (hz - 0.5f) * jlTurb;
+		}
+
+		// 16. Gradient color
+		if (jlGradCol != 0.0f)
+		{
+			aux->color += jlGradCol * length(z);
+		}
+
+		// 17. DE tweak
+		if (jlDETw != 0.0f)
+		{
+			aux->DE += jlDETw;
+		}
+
+		// 18. C-pixel scale
+		if (jlCpix != 0.0f)
+		{
+			z += aux->const_c * jlCpix;
+		}
+
+		// 19. Sphere fold
+		if (jlSphere != 0.0f)
+		{
+			REAL r2 = dot(z, z);
+			REAL minR2 = 0.25f;
+			REAL fixedR2 = 1.0f;
+			if (r2 < minR2)
+			{
+				REAL t = fixedR2 / minR2;
+				z *= t * jlSphere;
+				aux->DE *= fabs(t * jlSphere);
+			}
+			else if (r2 < fixedR2)
+			{
+				REAL t = fixedR2 / r2;
+				z *= t * jlSphere;
+				aux->DE *= fabs(t * jlSphere);
+			}
+		}
+
+		// 20. Edge softness
+		if (jlEdgeSoft != 0.0f)
+		{
+			REAL r = length(z);
+			if (r > 1e-15f)
+			{
+				REAL soft = r / (r + jlEdgeSoft);
+				z *= soft;
+				aux->DE *= soft;
+			}
+		}
+	}
+
 	// GPU bypass: skip if all multipliers disabled
 	if (fractal->transformCommon.functionEnabledBxFalse || fractal->transformCommon.functionEnabledByFalse || fractal->transformCommon.functionEnabledBzFalse || fractal->transformCommon.functionEnabledBwFalse || fractal->transformCommon.functionEnabledCzFalse)
 	{

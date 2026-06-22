@@ -629,6 +629,28 @@ sFractal::sFractal(const std::shared_ptr<cParameterContainer> container)
 	transformCommon.abCpixelScale = container->Get<double>("transf_ab_cpixel_scale");
 	transformCommon.abSphereSoftness = container->Get<double>("transf_ab_sphere_softness");
 
+	// Julia specific parameters
+	transformCommon.jlPowerOsc = container->Get<double>("transf_jl_power_osc");
+	transformCommon.jlPowerOscFreq = container->Get<double>("transf_jl_power_osc_freq");
+	transformCommon.jlThetaWarp = container->Get<double>("transf_jl_theta_warp");
+	transformCommon.jlPhiWarp = container->Get<double>("transf_jl_phi_warp");
+	transformCommon.jlRadialStretch = container->Get<double>("transf_jl_radial_stretch");
+	transformCommon.jlPreRotXY = container->Get<double>("transf_jl_pre_rot_xy");
+	transformCommon.jlPreRotXZ = container->Get<double>("transf_jl_pre_rot_xz");
+	transformCommon.jlPostRotYZ = container->Get<double>("transf_jl_post_rot_yz");
+	transformCommon.jlTwistZ = container->Get<double>("transf_jl_twist_z");
+	transformCommon.jlScaleOsc = container->Get<double>("transf_jl_scale_osc");
+	transformCommon.jlScaleOscFreq = container->Get<double>("transf_jl_scale_osc_freq");
+	transformCommon.jlOffsetOsc = container->Get<double>("transf_jl_offset_osc");
+	transformCommon.jlOffsetOscFreq = container->Get<double>("transf_jl_offset_osc_freq");
+	transformCommon.jlRadialDistort = container->Get<double>("transf_jl_radial_distort");
+	transformCommon.jlTurbulence = container->Get<double>("transf_jl_turbulence");
+	transformCommon.jlGradientColor = container->Get<double>("transf_jl_gradient_color");
+	transformCommon.jlDETweak = container->Get<double>("transf_jl_de_tweak");
+	transformCommon.jlCpixelScale = container->Get<double>("transf_jl_cpixel_scale");
+	transformCommon.jlSphereFold = container->Get<double>("transf_jl_sphere_fold");
+	transformCommon.jlEdgeSoftness = container->Get<double>("transf_jl_edge_softness");
+
 	transformCommon.startIterations = container->Get<int>("transf_start_iterations");
 	transformCommon.startIterations250 = container->Get<int>("transf_start_iterations_250");
 	transformCommon.stopIterations = container->Get<int>("transf_stop_iterations");
