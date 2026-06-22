@@ -236,6 +236,7 @@ REAL4 BenesiMagTransformsIteration(REAL4 z, __constant sFractalCl *fractal, sExt
 	// GPU bypass: skip if all multipliers disabled
 	if (fractal->transformCommon.functionEnabledBxFalse || fractal->transformCommon.functionEnabledByFalse || fractal->transformCommon.functionEnabledBzFalse || fractal->transformCommon.functionEnabledBwFalse || fractal->transformCommon.functionEnabledCzFalse)
 	{
+		REAL prevMultVal = 1.0;
 		// === General Purpose Multiplier 1 ===
 		if (fractal->transformCommon.functionEnabledBxFalse
 				&& aux->i >= fractal->transformCommon.startIterationsB
@@ -286,7 +287,31 @@ REAL4 BenesiMagTransformsIteration(REAL4 z, __constant sFractalCl *fractal, sExt
 						t = t * t * (3.0 - 2.0 * t);
 						val = 1.0 + t * (val - 1.0);
 					}
+					else if (vmode == 7) // Noise
+					{
+						int seed = aux->i * 73856093 + 1 * 19349663;
+						seed = (seed ^ (seed >> 13)) * 1274126177;
+						seed = seed ^ (seed >> 16);
+						REAL noise = (REAL)(seed & 0xFFFF) / 65535.0;
+						val = 1.0 + (val - 1.0) * noise;
+					}
+					else if (vmode == 8) // Ping-pong
+					{
+						REAL pp = fmod(t * freq + ph, 2.0);
+						if (pp > 1.0) pp = 2.0 - pp;
+						val = 1.0 + (val - 1.0) * pp;
+					}
+					else if (vmode == 9) // Stepped
+					{
+						REAL steps = freq;
+						if (steps < 1.0) steps = 1.0;
+						REAL st = floor(t * steps) / steps;
+						val = 1.0 + (val - 1.0) * st;
+					}
 				}
+
+				REAL w = fractal->transformCommon.multiplierWeight1;
+				val = 1.0 + w * (val - 1.0);
 
 				switch (fractal->transformCommon.multiplierMode1)
 				{
@@ -312,6 +337,7 @@ REAL4 BenesiMagTransformsIteration(REAL4 z, __constant sFractalCl *fractal, sExt
 					case 9: z.y *= val; z.z *= val; break;
 					case 10: aux->color += fabs(val - 1.0) * 100.0; break;
 				}
+				prevMultVal = val;
 			}
 		}
 
@@ -365,7 +391,33 @@ REAL4 BenesiMagTransformsIteration(REAL4 z, __constant sFractalCl *fractal, sExt
 						t = t * t * (3.0 - 2.0 * t);
 						val = 1.0 + t * (val - 1.0);
 					}
+					else if (vmode == 7) // Noise
+					{
+						int seed = aux->i * 73856093 + 2 * 19349663;
+						seed = (seed ^ (seed >> 13)) * 1274126177;
+						seed = seed ^ (seed >> 16);
+						REAL noise = (REAL)(seed & 0xFFFF) / 65535.0;
+						val = 1.0 + (val - 1.0) * noise;
+					}
+					else if (vmode == 8) // Ping-pong
+					{
+						REAL pp = fmod(t * freq + ph, 2.0);
+						if (pp > 1.0) pp = 2.0 - pp;
+						val = 1.0 + (val - 1.0) * pp;
+					}
+					else if (vmode == 9) // Stepped
+					{
+						REAL steps = freq;
+						if (steps < 1.0) steps = 1.0;
+						REAL st = floor(t * steps) / steps;
+						val = 1.0 + (val - 1.0) * st;
+					}
 				}
+
+				if (fractal->transformCommon.multiplierChain2) val *= prevMultVal;
+
+				REAL w = fractal->transformCommon.multiplierWeight2;
+				val = 1.0 + w * (val - 1.0);
 
 				switch (fractal->transformCommon.multiplierMode2)
 				{
@@ -391,6 +443,7 @@ REAL4 BenesiMagTransformsIteration(REAL4 z, __constant sFractalCl *fractal, sExt
 					case 9: z.y *= val; z.z *= val; break;
 					case 10: aux->color += fabs(val - 1.0) * 100.0; break;
 				}
+				prevMultVal = val;
 			}
 		}
 
@@ -444,7 +497,33 @@ REAL4 BenesiMagTransformsIteration(REAL4 z, __constant sFractalCl *fractal, sExt
 						t = t * t * (3.0 - 2.0 * t);
 						val = 1.0 + t * (val - 1.0);
 					}
+					else if (vmode == 7) // Noise
+					{
+						int seed = aux->i * 73856093 + 3 * 19349663;
+						seed = (seed ^ (seed >> 13)) * 1274126177;
+						seed = seed ^ (seed >> 16);
+						REAL noise = (REAL)(seed & 0xFFFF) / 65535.0;
+						val = 1.0 + (val - 1.0) * noise;
+					}
+					else if (vmode == 8) // Ping-pong
+					{
+						REAL pp = fmod(t * freq + ph, 2.0);
+						if (pp > 1.0) pp = 2.0 - pp;
+						val = 1.0 + (val - 1.0) * pp;
+					}
+					else if (vmode == 9) // Stepped
+					{
+						REAL steps = freq;
+						if (steps < 1.0) steps = 1.0;
+						REAL st = floor(t * steps) / steps;
+						val = 1.0 + (val - 1.0) * st;
+					}
 				}
+
+				if (fractal->transformCommon.multiplierChain3) val *= prevMultVal;
+
+				REAL w = fractal->transformCommon.multiplierWeight3;
+				val = 1.0 + w * (val - 1.0);
 
 				switch (fractal->transformCommon.multiplierMode3)
 				{
@@ -470,6 +549,7 @@ REAL4 BenesiMagTransformsIteration(REAL4 z, __constant sFractalCl *fractal, sExt
 					case 9: z.y *= val; z.z *= val; break;
 					case 10: aux->color += fabs(val - 1.0) * 100.0; break;
 				}
+				prevMultVal = val;
 			}
 		}
 
@@ -523,7 +603,33 @@ REAL4 BenesiMagTransformsIteration(REAL4 z, __constant sFractalCl *fractal, sExt
 						t = t * t * (3.0 - 2.0 * t);
 						val = 1.0 + t * (val - 1.0);
 					}
+					else if (vmode == 7) // Noise
+					{
+						int seed = aux->i * 73856093 + 4 * 19349663;
+						seed = (seed ^ (seed >> 13)) * 1274126177;
+						seed = seed ^ (seed >> 16);
+						REAL noise = (REAL)(seed & 0xFFFF) / 65535.0;
+						val = 1.0 + (val - 1.0) * noise;
+					}
+					else if (vmode == 8) // Ping-pong
+					{
+						REAL pp = fmod(t * freq + ph, 2.0);
+						if (pp > 1.0) pp = 2.0 - pp;
+						val = 1.0 + (val - 1.0) * pp;
+					}
+					else if (vmode == 9) // Stepped
+					{
+						REAL steps = freq;
+						if (steps < 1.0) steps = 1.0;
+						REAL st = floor(t * steps) / steps;
+						val = 1.0 + (val - 1.0) * st;
+					}
 				}
+
+				if (fractal->transformCommon.multiplierChain4) val *= prevMultVal;
+
+				REAL w = fractal->transformCommon.multiplierWeight4;
+				val = 1.0 + w * (val - 1.0);
 
 				switch (fractal->transformCommon.multiplierMode4)
 				{
@@ -549,6 +655,7 @@ REAL4 BenesiMagTransformsIteration(REAL4 z, __constant sFractalCl *fractal, sExt
 					case 9: z.y *= val; z.z *= val; break;
 					case 10: aux->color += fabs(val - 1.0) * 100.0; break;
 				}
+				prevMultVal = val;
 			}
 		}
 
@@ -602,7 +709,33 @@ REAL4 BenesiMagTransformsIteration(REAL4 z, __constant sFractalCl *fractal, sExt
 						t = t * t * (3.0 - 2.0 * t);
 						val = 1.0 + t * (val - 1.0);
 					}
+					else if (vmode == 7) // Noise
+					{
+						int seed = aux->i * 73856093 + 5 * 19349663;
+						seed = (seed ^ (seed >> 13)) * 1274126177;
+						seed = seed ^ (seed >> 16);
+						REAL noise = (REAL)(seed & 0xFFFF) / 65535.0;
+						val = 1.0 + (val - 1.0) * noise;
+					}
+					else if (vmode == 8) // Ping-pong
+					{
+						REAL pp = fmod(t * freq + ph, 2.0);
+						if (pp > 1.0) pp = 2.0 - pp;
+						val = 1.0 + (val - 1.0) * pp;
+					}
+					else if (vmode == 9) // Stepped
+					{
+						REAL steps = freq;
+						if (steps < 1.0) steps = 1.0;
+						REAL st = floor(t * steps) / steps;
+						val = 1.0 + (val - 1.0) * st;
+					}
 				}
+
+				if (fractal->transformCommon.multiplierChain5) val *= prevMultVal;
+
+				REAL w = fractal->transformCommon.multiplierWeight5;
+				val = 1.0 + w * (val - 1.0);
 
 				switch (fractal->transformCommon.multiplierMode5)
 				{
@@ -628,6 +761,7 @@ REAL4 BenesiMagTransformsIteration(REAL4 z, __constant sFractalCl *fractal, sExt
 					case 9: z.y *= val; z.z *= val; break;
 					case 10: aux->color += fabs(val - 1.0) * 100.0; break;
 				}
+				prevMultVal = val;
 			}
 		}
 	}

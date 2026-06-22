@@ -2152,6 +2152,18 @@ void InitFractalParams(std::shared_ptr<cParameterContainer> par)
 	par->addParam("transf_multiplier_scale_z_4", 0.0, morphLinear, paramStandard);
 	par->addParam("transf_multiplier_scale_z_5", 0.0, morphLinear, paramStandard);
 
+	par->addParam("transf_multiplier_chain_1", false, morphNone, paramStandard);
+	par->addParam("transf_multiplier_chain_2", false, morphNone, paramStandard);
+	par->addParam("transf_multiplier_chain_3", false, morphNone, paramStandard);
+	par->addParam("transf_multiplier_chain_4", false, morphNone, paramStandard);
+	par->addParam("transf_multiplier_chain_5", false, morphNone, paramStandard);
+
+	par->addParam("transf_multiplier_weight_1", 1.0, morphLinear, paramStandard);
+	par->addParam("transf_multiplier_weight_2", 1.0, morphLinear, paramStandard);
+	par->addParam("transf_multiplier_weight_3", 1.0, morphLinear, paramStandard);
+	par->addParam("transf_multiplier_weight_4", 1.0, morphLinear, paramStandard);
+	par->addParam("transf_multiplier_weight_5", 1.0, morphLinear, paramStandard);
+
 	par->addParam("transf_start_iterations", 0, morphLinear, paramStandard);
 	par->addParam("transf_start_iterations_250", 250, morphLinear, paramStandard);
 	par->addParam("transf_stop_iterations", 250, morphLinear, paramStandard);

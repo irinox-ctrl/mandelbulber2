@@ -539,6 +539,9 @@ reverse offset:</string>
         <item><property name="text"><string notr="true">Triangle</string></property></item>
         <item><property name="text"><string notr="true">Square</string></property></item>
         <item><property name="text"><string notr="true">Smoothstep</string></property></item>
+        <item><property name="text"><string notr="true">Noise</string></property></item>
+        <item><property name="text"><string notr="true">Ping-pong</string></property></item>
+        <item><property name="text"><string notr="true">Stepped</string></property></item>
        </widget>
       </item>
       <item row="1" column="2">
@@ -600,6 +603,76 @@ reverse offset:</string>
       </item>
       <item row="3" column="4" colspan="2">
        <widget class="QLabel"><property name="text"><string notr="true">(Y/Z: 0=use main val)</string></property></widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="MyCheckBox" name="checkBox_transf_multiplier_chain_5">
+        <property name="text"><string>Chain</string></property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QLabel"><property name="text"><string>Weight:</string></property></widget>
+      </item>
+      <item row="4" column="2" colspan="2">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_weight_5">
+        <property name="minimum"><double>0.0</double></property><property name="maximum"><double>10.0</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>1.0</double></property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="MyCheckBox" name="checkBox_transf_multiplier_chain_4">
+        <property name="text"><string>Chain</string></property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QLabel"><property name="text"><string>Weight:</string></property></widget>
+      </item>
+      <item row="4" column="2" colspan="2">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_weight_4">
+        <property name="minimum"><double>0.0</double></property><property name="maximum"><double>10.0</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>1.0</double></property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="MyCheckBox" name="checkBox_transf_multiplier_chain_3">
+        <property name="text"><string>Chain</string></property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QLabel"><property name="text"><string>Weight:</string></property></widget>
+      </item>
+      <item row="4" column="2" colspan="2">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_weight_3">
+        <property name="minimum"><double>0.0</double></property><property name="maximum"><double>10.0</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>1.0</double></property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="MyCheckBox" name="checkBox_transf_multiplier_chain_2">
+        <property name="text"><string>Chain</string></property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QLabel"><property name="text"><string>Weight:</string></property></widget>
+      </item>
+      <item row="4" column="2" colspan="2">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_weight_2">
+        <property name="minimum"><double>0.0</double></property><property name="maximum"><double>10.0</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>1.0</double></property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="MyCheckBox" name="checkBox_transf_multiplier_chain_1">
+        <property name="text"><string>Chain</string></property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QLabel"><property name="text"><string>Weight:</string></property></widget>
+      </item>
+      <item row="4" column="2" colspan="2">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_weight_1">
+        <property name="minimum"><double>0.0</double></property><property name="maximum"><double>10.0</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>1.0</double></property>
+       </widget>
       </item>
        </layout>
       </item>
@@ -1165,6 +1238,9 @@ reverse offset:</string>
         <item><property name="text"><string notr="true">Triangle</string></property></item>
         <item><property name="text"><string notr="true">Square</string></property></item>
         <item><property name="text"><string notr="true">Smoothstep</string></property></item>
+        <item><property name="text"><string notr="true">Noise</string></property></item>
+        <item><property name="text"><string notr="true">Ping-pong</string></property></item>
+        <item><property name="text"><string notr="true">Stepped</string></property></item>
        </widget>
       </item>
       <item row="1" column="2">
@@ -1295,6 +1371,9 @@ reverse offset:</string>
         <item><property name="text"><string notr="true">Triangle</string></property></item>
         <item><property name="text"><string notr="true">Square</string></property></item>
         <item><property name="text"><string notr="true">Smoothstep</string></property></item>
+        <item><property name="text"><string notr="true">Noise</string></property></item>
+        <item><property name="text"><string notr="true">Ping-pong</string></property></item>
+        <item><property name="text"><string notr="true">Stepped</string></property></item>
        </widget>
       </item>
       <item row="1" column="2">
@@ -1425,6 +1504,9 @@ reverse offset:</string>
         <item><property name="text"><string notr="true">Triangle</string></property></item>
         <item><property name="text"><string notr="true">Square</string></property></item>
         <item><property name="text"><string notr="true">Smoothstep</string></property></item>
+        <item><property name="text"><string notr="true">Noise</string></property></item>
+        <item><property name="text"><string notr="true">Ping-pong</string></property></item>
+        <item><property name="text"><string notr="true">Stepped</string></property></item>
        </widget>
       </item>
       <item row="1" column="2">
@@ -1555,6 +1637,9 @@ reverse offset:</string>
         <item><property name="text"><string notr="true">Triangle</string></property></item>
         <item><property name="text"><string notr="true">Square</string></property></item>
         <item><property name="text"><string notr="true">Smoothstep</string></property></item>
+        <item><property name="text"><string notr="true">Noise</string></property></item>
+        <item><property name="text"><string notr="true">Ping-pong</string></property></item>
+        <item><property name="text"><string notr="true">Stepped</string></property></item>
        </widget>
       </item>
       <item row="1" column="2">

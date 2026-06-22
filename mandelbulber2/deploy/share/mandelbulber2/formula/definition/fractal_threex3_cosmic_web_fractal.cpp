@@ -50,6 +50,7 @@ void cFractalThreex3CosmicWebFractal::FormulaCode(CVector4 &z, const sFractal *f
 	// GPU bypass: skip if all multipliers disabled
 	if (fractal->transformCommon.functionEnabledBxFalse || fractal->transformCommon.functionEnabledByFalse || fractal->transformCommon.functionEnabledBzFalse || fractal->transformCommon.functionEnabledBwFalse || fractal->transformCommon.functionEnabledCzFalse)
 	{
+		double prevMultVal = 1.0;
 		// === General Purpose Multiplier 1 ===
 		if (fractal->transformCommon.functionEnabledBxFalse
 				&& aux.i >= fractal->transformCommon.startIterationsB
@@ -100,7 +101,31 @@ void cFractalThreex3CosmicWebFractal::FormulaCode(CVector4 &z, const sFractal *f
 						t = t * t * (3.0 - 2.0 * t);
 						val = 1.0 + t * (val - 1.0);
 					}
+					else if (vmode == 7) // Noise
+					{
+						int seed = aux.i * 73856093 + 1 * 19349663;
+						seed = (seed ^ (seed >> 13)) * 1274126177;
+						seed = seed ^ (seed >> 16);
+						double noise = (double)(seed & 0xFFFF) / 65535.0;
+						val = 1.0 + (val - 1.0) * noise;
+					}
+					else if (vmode == 8) // Ping-pong
+					{
+						double pp = fmod(t * freq + ph, 2.0);
+						if (pp > 1.0) pp = 2.0 - pp;
+						val = 1.0 + (val - 1.0) * pp;
+					}
+					else if (vmode == 9) // Stepped
+					{
+						double steps = freq;
+						if (steps < 1.0) steps = 1.0;
+						double st = floor(t * steps) / steps;
+						val = 1.0 + (val - 1.0) * st;
+					}
 				}
+
+				double w = fractal->transformCommon.multiplierWeight1;
+				val = 1.0 + w * (val - 1.0);
 
 				switch (fractal->transformCommon.multiplierMode1)
 				{
@@ -126,6 +151,7 @@ void cFractalThreex3CosmicWebFractal::FormulaCode(CVector4 &z, const sFractal *f
 					case 9: z.y *= val; z.z *= val; break;
 					case 10: aux.color += fabs(val - 1.0) * 100.0; break;
 				}
+				prevMultVal = val;
 			}
 		}
 
@@ -179,7 +205,33 @@ void cFractalThreex3CosmicWebFractal::FormulaCode(CVector4 &z, const sFractal *f
 						t = t * t * (3.0 - 2.0 * t);
 						val = 1.0 + t * (val - 1.0);
 					}
+					else if (vmode == 7) // Noise
+					{
+						int seed = aux.i * 73856093 + 2 * 19349663;
+						seed = (seed ^ (seed >> 13)) * 1274126177;
+						seed = seed ^ (seed >> 16);
+						double noise = (double)(seed & 0xFFFF) / 65535.0;
+						val = 1.0 + (val - 1.0) * noise;
+					}
+					else if (vmode == 8) // Ping-pong
+					{
+						double pp = fmod(t * freq + ph, 2.0);
+						if (pp > 1.0) pp = 2.0 - pp;
+						val = 1.0 + (val - 1.0) * pp;
+					}
+					else if (vmode == 9) // Stepped
+					{
+						double steps = freq;
+						if (steps < 1.0) steps = 1.0;
+						double st = floor(t * steps) / steps;
+						val = 1.0 + (val - 1.0) * st;
+					}
 				}
+
+				if (fractal->transformCommon.multiplierChain2) val *= prevMultVal;
+
+				double w = fractal->transformCommon.multiplierWeight2;
+				val = 1.0 + w * (val - 1.0);
 
 				switch (fractal->transformCommon.multiplierMode2)
 				{
@@ -205,6 +257,7 @@ void cFractalThreex3CosmicWebFractal::FormulaCode(CVector4 &z, const sFractal *f
 					case 9: z.y *= val; z.z *= val; break;
 					case 10: aux.color += fabs(val - 1.0) * 100.0; break;
 				}
+				prevMultVal = val;
 			}
 		}
 
@@ -258,7 +311,33 @@ void cFractalThreex3CosmicWebFractal::FormulaCode(CVector4 &z, const sFractal *f
 						t = t * t * (3.0 - 2.0 * t);
 						val = 1.0 + t * (val - 1.0);
 					}
+					else if (vmode == 7) // Noise
+					{
+						int seed = aux.i * 73856093 + 3 * 19349663;
+						seed = (seed ^ (seed >> 13)) * 1274126177;
+						seed = seed ^ (seed >> 16);
+						double noise = (double)(seed & 0xFFFF) / 65535.0;
+						val = 1.0 + (val - 1.0) * noise;
+					}
+					else if (vmode == 8) // Ping-pong
+					{
+						double pp = fmod(t * freq + ph, 2.0);
+						if (pp > 1.0) pp = 2.0 - pp;
+						val = 1.0 + (val - 1.0) * pp;
+					}
+					else if (vmode == 9) // Stepped
+					{
+						double steps = freq;
+						if (steps < 1.0) steps = 1.0;
+						double st = floor(t * steps) / steps;
+						val = 1.0 + (val - 1.0) * st;
+					}
 				}
+
+				if (fractal->transformCommon.multiplierChain3) val *= prevMultVal;
+
+				double w = fractal->transformCommon.multiplierWeight3;
+				val = 1.0 + w * (val - 1.0);
 
 				switch (fractal->transformCommon.multiplierMode3)
 				{
@@ -284,6 +363,7 @@ void cFractalThreex3CosmicWebFractal::FormulaCode(CVector4 &z, const sFractal *f
 					case 9: z.y *= val; z.z *= val; break;
 					case 10: aux.color += fabs(val - 1.0) * 100.0; break;
 				}
+				prevMultVal = val;
 			}
 		}
 
@@ -337,7 +417,33 @@ void cFractalThreex3CosmicWebFractal::FormulaCode(CVector4 &z, const sFractal *f
 						t = t * t * (3.0 - 2.0 * t);
 						val = 1.0 + t * (val - 1.0);
 					}
+					else if (vmode == 7) // Noise
+					{
+						int seed = aux.i * 73856093 + 4 * 19349663;
+						seed = (seed ^ (seed >> 13)) * 1274126177;
+						seed = seed ^ (seed >> 16);
+						double noise = (double)(seed & 0xFFFF) / 65535.0;
+						val = 1.0 + (val - 1.0) * noise;
+					}
+					else if (vmode == 8) // Ping-pong
+					{
+						double pp = fmod(t * freq + ph, 2.0);
+						if (pp > 1.0) pp = 2.0 - pp;
+						val = 1.0 + (val - 1.0) * pp;
+					}
+					else if (vmode == 9) // Stepped
+					{
+						double steps = freq;
+						if (steps < 1.0) steps = 1.0;
+						double st = floor(t * steps) / steps;
+						val = 1.0 + (val - 1.0) * st;
+					}
 				}
+
+				if (fractal->transformCommon.multiplierChain4) val *= prevMultVal;
+
+				double w = fractal->transformCommon.multiplierWeight4;
+				val = 1.0 + w * (val - 1.0);
 
 				switch (fractal->transformCommon.multiplierMode4)
 				{
@@ -363,6 +469,7 @@ void cFractalThreex3CosmicWebFractal::FormulaCode(CVector4 &z, const sFractal *f
 					case 9: z.y *= val; z.z *= val; break;
 					case 10: aux.color += fabs(val - 1.0) * 100.0; break;
 				}
+				prevMultVal = val;
 			}
 		}
 
@@ -416,7 +523,33 @@ void cFractalThreex3CosmicWebFractal::FormulaCode(CVector4 &z, const sFractal *f
 						t = t * t * (3.0 - 2.0 * t);
 						val = 1.0 + t * (val - 1.0);
 					}
+					else if (vmode == 7) // Noise
+					{
+						int seed = aux.i * 73856093 + 5 * 19349663;
+						seed = (seed ^ (seed >> 13)) * 1274126177;
+						seed = seed ^ (seed >> 16);
+						double noise = (double)(seed & 0xFFFF) / 65535.0;
+						val = 1.0 + (val - 1.0) * noise;
+					}
+					else if (vmode == 8) // Ping-pong
+					{
+						double pp = fmod(t * freq + ph, 2.0);
+						if (pp > 1.0) pp = 2.0 - pp;
+						val = 1.0 + (val - 1.0) * pp;
+					}
+					else if (vmode == 9) // Stepped
+					{
+						double steps = freq;
+						if (steps < 1.0) steps = 1.0;
+						double st = floor(t * steps) / steps;
+						val = 1.0 + (val - 1.0) * st;
+					}
 				}
+
+				if (fractal->transformCommon.multiplierChain5) val *= prevMultVal;
+
+				double w = fractal->transformCommon.multiplierWeight5;
+				val = 1.0 + w * (val - 1.0);
 
 				switch (fractal->transformCommon.multiplierMode5)
 				{
@@ -442,6 +575,7 @@ void cFractalThreex3CosmicWebFractal::FormulaCode(CVector4 &z, const sFractal *f
 					case 9: z.y *= val; z.z *= val; break;
 					case 10: aux.color += fabs(val - 1.0) * 100.0; break;
 				}
+				prevMultVal = val;
 			}
 		}
 	}

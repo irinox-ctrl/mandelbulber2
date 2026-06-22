@@ -813,6 +813,18 @@ struct sFractalTransformCommon
 	double multiplierScaleZ4;
 	double multiplierScaleZ5;
 
+	bool multiplierChain1;
+	bool multiplierChain2;
+	bool multiplierChain3;
+	bool multiplierChain4;
+	bool multiplierChain5;
+
+	double multiplierWeight1;
+	double multiplierWeight2;
+	double multiplierWeight3;
+	double multiplierWeight4;
+	double multiplierWeight5;
+
 	CVector4 additionConstant0555;
 	CVector4 additionConstant0777;
 	CVector4 additionConstant000;

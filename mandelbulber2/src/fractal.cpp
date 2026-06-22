@@ -486,6 +486,18 @@ sFractal::sFractal(const std::shared_ptr<cParameterContainer> container)
 	transformCommon.multiplierScaleZ4 = container->Get<double>("transf_multiplier_scale_z_4");
 	transformCommon.multiplierScaleZ5 = container->Get<double>("transf_multiplier_scale_z_5");
 
+	transformCommon.multiplierChain1 = container->Get<bool>("transf_multiplier_chain_1");
+	transformCommon.multiplierChain2 = container->Get<bool>("transf_multiplier_chain_2");
+	transformCommon.multiplierChain3 = container->Get<bool>("transf_multiplier_chain_3");
+	transformCommon.multiplierChain4 = container->Get<bool>("transf_multiplier_chain_4");
+	transformCommon.multiplierChain5 = container->Get<bool>("transf_multiplier_chain_5");
+
+	transformCommon.multiplierWeight1 = container->Get<double>("transf_multiplier_weight_1");
+	transformCommon.multiplierWeight2 = container->Get<double>("transf_multiplier_weight_2");
+	transformCommon.multiplierWeight3 = container->Get<double>("transf_multiplier_weight_3");
+	transformCommon.multiplierWeight4 = container->Get<double>("transf_multiplier_weight_4");
+	transformCommon.multiplierWeight5 = container->Get<double>("transf_multiplier_weight_5");
+
 	transformCommon.startIterations = container->Get<int>("transf_start_iterations");
 	transformCommon.startIterations250 = container->Get<int>("transf_start_iterations_250");
 	transformCommon.stopIterations = container->Get<int>("transf_stop_iterations");

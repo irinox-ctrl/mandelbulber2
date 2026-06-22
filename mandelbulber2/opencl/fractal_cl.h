@@ -823,6 +823,18 @@ typedef struct
 	cl_float multiplierScaleZ4;
 	cl_float multiplierScaleZ5;
 
+	cl_int multiplierChain1;
+	cl_int multiplierChain2;
+	cl_int multiplierChain3;
+	cl_int multiplierChain4;
+	cl_int multiplierChain5;
+
+	cl_float multiplierWeight1;
+	cl_float multiplierWeight2;
+	cl_float multiplierWeight3;
+	cl_float multiplierWeight4;
+	cl_float multiplierWeight5;
+
 	cl_float4 additionConstant0555;
 	cl_float4 additionConstant0777;
 	cl_float4 additionConstant000;
@@ -1867,6 +1879,16 @@ inline sFractalTransformCommonCl clCopySFractalTransformCommonCl(
 	target.multiplierScaleZ3 = source.multiplierScaleZ3;
 	target.multiplierScaleZ4 = source.multiplierScaleZ4;
 	target.multiplierScaleZ5 = source.multiplierScaleZ5;
+	target.multiplierChain1 = source.multiplierChain1;
+	target.multiplierChain2 = source.multiplierChain2;
+	target.multiplierChain3 = source.multiplierChain3;
+	target.multiplierChain4 = source.multiplierChain4;
+	target.multiplierChain5 = source.multiplierChain5;
+	target.multiplierWeight1 = source.multiplierWeight1;
+	target.multiplierWeight2 = source.multiplierWeight2;
+	target.multiplierWeight3 = source.multiplierWeight3;
+	target.multiplierWeight4 = source.multiplierWeight4;
+	target.multiplierWeight5 = source.multiplierWeight5;
 	return target;
 }
 
