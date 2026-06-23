@@ -1023,6 +1023,67 @@ struct sFractalTransformCommon
 	bool multiplierClipFold4;
 	bool multiplierClipFold5;
 
+	double multiplierInvStrength1;
+	double multiplierInvStrength2;
+	double multiplierInvStrength3;
+	double multiplierInvStrength4;
+	double multiplierInvStrength5;
+
+	double multiplierInvThreshold1;
+	double multiplierInvThreshold2;
+	double multiplierInvThreshold3;
+	double multiplierInvThreshold4;
+	double multiplierInvThreshold5;
+
+	double multiplierInvDecay1;
+	double multiplierInvDecay2;
+	double multiplierInvDecay3;
+	double multiplierInvDecay4;
+	double multiplierInvDecay5;
+
+	double multiplierInvBias1;
+	double multiplierInvBias2;
+	double multiplierInvBias3;
+	double multiplierInvBias4;
+	double multiplierInvBias5;
+
+	double multiplierInvSmooth1;
+	double multiplierInvSmooth2;
+	double multiplierInvSmooth3;
+	double multiplierInvSmooth4;
+	double multiplierInvSmooth5;
+
+	double multiplierInvRangeMin1;
+	double multiplierInvRangeMin2;
+	double multiplierInvRangeMin3;
+	double multiplierInvRangeMin4;
+	double multiplierInvRangeMin5;
+
+	double multiplierInvRangeMax1;
+	double multiplierInvRangeMax2;
+	double multiplierInvRangeMax3;
+	double multiplierInvRangeMax4;
+	double multiplierInvRangeMax5;
+
+	int multiplierInvMode1;
+	int multiplierInvMode2;
+	int multiplierInvMode3;
+	int multiplierInvMode4;
+	int multiplierInvMode5;
+
+	int multiplierInvAxis1;
+	int multiplierInvAxis2;
+	int multiplierInvAxis3;
+	int multiplierInvAxis4;
+	int multiplierInvAxis5;
+
+	bool multiplierInvOscillate1;
+	bool multiplierInvOscillate2;
+	bool multiplierInvOscillate3;
+	bool multiplierInvOscillate4;
+	bool multiplierInvOscillate5;
+
+
 
 
 

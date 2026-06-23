@@ -1223,6 +1223,95 @@
         <property name="prefix"><string>Folds:</string></property>
        </widget>
       </item>
+      <item row="13" column="0">
+       <widget class="QLabel"><property name="text"><string>InvMode:</string></property></widget>
+      </item>
+      <item row="13" column="1">
+       <widget class="MyComboBox" name="comboBox_transf_multiplier_inv_mode_5">
+        <item><property name="text"><string notr="true">Reciprocal</string></property></item>
+        <item><property name="text"><string notr="true">Negate</string></property></item>
+        <item><property name="text"><string notr="true">Complement</string></property></item>
+        <item><property name="text"><string notr="true">Flip</string></property></item>
+       </widget>
+      </item>
+      <item row="13" column="2">
+       <widget class="QLabel"><property name="text"><string>InvStr:</string></property></widget>
+      </item>
+      <item row="13" column="3">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_inv_strength_5">
+        <property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property>
+        <property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property>
+       </widget>
+      </item>
+      <item row="13" column="4">
+       <widget class="QLabel"><property name="text"><string>InvThr:</string></property></widget>
+      </item>
+      <item row="13" column="5">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_inv_threshold_5">
+        <property name="minimum"><double>0.0</double></property><property name="maximum"><double>10.0</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>0.0</double></property>
+       </widget>
+      </item>
+      <item row="14" column="0">
+       <widget class="QLabel"><property name="text"><string>InvDcy:</string></property></widget>
+      </item>
+      <item row="14" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_inv_decay_5">
+        <property name="minimum"><double>0.0</double></property><property name="maximum"><double>5.0</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>0.0</double></property>
+       </widget>
+      </item>
+      <item row="14" column="2">
+       <widget class="QLabel"><property name="text"><string>InvBias:</string></property></widget>
+      </item>
+      <item row="14" column="3">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_inv_bias_5">
+        <property name="minimum"><double>-2.0</double></property><property name="maximum"><double>2.0</double></property>
+        <property name="singleStep"><double>0.05</double></property><property name="value"><double>0.0</double></property>
+       </widget>
+      </item>
+      <item row="14" column="4">
+       <widget class="QLabel"><property name="text"><string>InvSm:</string></property></widget>
+      </item>
+      <item row="14" column="5">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_inv_smooth_5">
+        <property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property>
+        <property name="singleStep"><double>0.05</double></property><property name="value"><double>0.0</double></property>
+       </widget>
+      </item>
+      <item row="15" column="0">
+       <widget class="QLabel"><property name="text"><string>InvRng:</string></property></widget>
+      </item>
+      <item row="15" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_inv_range_min_5">
+        <property name="minimum"><double>0.0</double></property><property name="maximum"><double>10.0</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>0.0</double></property>
+        <property name="prefix"><string>Min:</string></property>
+       </widget>
+      </item>
+      <item row="15" column="2">
+       <widget class="QLabel"><property name="text"><string>to</string></property></widget>
+      </item>
+      <item row="15" column="3">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_inv_range_max_5">
+        <property name="minimum"><double>0.0</double></property><property name="maximum"><double>10.0</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>10.0</double></property>
+        <property name="prefix"><string>Max:</string></property>
+       </widget>
+      </item>
+      <item row="15" column="4">
+       <widget class="MyComboBox" name="comboBox_transf_multiplier_inv_axis_5">
+        <item><property name="text"><string notr="true">All axes</string></property></item>
+        <item><property name="text"><string notr="true">X only</string></property></item>
+        <item><property name="text"><string notr="true">Y only</string></property></item>
+        <item><property name="text"><string notr="true">Z only</string></property></item>
+       </widget>
+      </item>
+      <item row="15" column="5">
+       <widget class="MyCheckBox" name="checkBox_transf_multiplier_inv_oscillate_5">
+        <property name="text"><string>Oscillate</string></property>
+       </widget>
+      </item>
       <item row="4" column="0">
        <widget class="MyCheckBox" name="checkBox_transf_multiplier_chain_4">
         <property name="text"><string>Chain</string></property>
@@ -1459,6 +1548,95 @@
         <property name="minimum"><number>0</number></property><property name="maximum"><number>8</number></property>
         <property name="value"><number>0</number></property>
         <property name="prefix"><string>Folds:</string></property>
+       </widget>
+      </item>
+      <item row="13" column="0">
+       <widget class="QLabel"><property name="text"><string>InvMode:</string></property></widget>
+      </item>
+      <item row="13" column="1">
+       <widget class="MyComboBox" name="comboBox_transf_multiplier_inv_mode_4">
+        <item><property name="text"><string notr="true">Reciprocal</string></property></item>
+        <item><property name="text"><string notr="true">Negate</string></property></item>
+        <item><property name="text"><string notr="true">Complement</string></property></item>
+        <item><property name="text"><string notr="true">Flip</string></property></item>
+       </widget>
+      </item>
+      <item row="13" column="2">
+       <widget class="QLabel"><property name="text"><string>InvStr:</string></property></widget>
+      </item>
+      <item row="13" column="3">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_inv_strength_4">
+        <property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property>
+        <property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property>
+       </widget>
+      </item>
+      <item row="13" column="4">
+       <widget class="QLabel"><property name="text"><string>InvThr:</string></property></widget>
+      </item>
+      <item row="13" column="5">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_inv_threshold_4">
+        <property name="minimum"><double>0.0</double></property><property name="maximum"><double>10.0</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>0.0</double></property>
+       </widget>
+      </item>
+      <item row="14" column="0">
+       <widget class="QLabel"><property name="text"><string>InvDcy:</string></property></widget>
+      </item>
+      <item row="14" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_inv_decay_4">
+        <property name="minimum"><double>0.0</double></property><property name="maximum"><double>5.0</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>0.0</double></property>
+       </widget>
+      </item>
+      <item row="14" column="2">
+       <widget class="QLabel"><property name="text"><string>InvBias:</string></property></widget>
+      </item>
+      <item row="14" column="3">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_inv_bias_4">
+        <property name="minimum"><double>-2.0</double></property><property name="maximum"><double>2.0</double></property>
+        <property name="singleStep"><double>0.05</double></property><property name="value"><double>0.0</double></property>
+       </widget>
+      </item>
+      <item row="14" column="4">
+       <widget class="QLabel"><property name="text"><string>InvSm:</string></property></widget>
+      </item>
+      <item row="14" column="5">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_inv_smooth_4">
+        <property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property>
+        <property name="singleStep"><double>0.05</double></property><property name="value"><double>0.0</double></property>
+       </widget>
+      </item>
+      <item row="15" column="0">
+       <widget class="QLabel"><property name="text"><string>InvRng:</string></property></widget>
+      </item>
+      <item row="15" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_inv_range_min_4">
+        <property name="minimum"><double>0.0</double></property><property name="maximum"><double>10.0</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>0.0</double></property>
+        <property name="prefix"><string>Min:</string></property>
+       </widget>
+      </item>
+      <item row="15" column="2">
+       <widget class="QLabel"><property name="text"><string>to</string></property></widget>
+      </item>
+      <item row="15" column="3">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_inv_range_max_4">
+        <property name="minimum"><double>0.0</double></property><property name="maximum"><double>10.0</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>10.0</double></property>
+        <property name="prefix"><string>Max:</string></property>
+       </widget>
+      </item>
+      <item row="15" column="4">
+       <widget class="MyComboBox" name="comboBox_transf_multiplier_inv_axis_4">
+        <item><property name="text"><string notr="true">All axes</string></property></item>
+        <item><property name="text"><string notr="true">X only</string></property></item>
+        <item><property name="text"><string notr="true">Y only</string></property></item>
+        <item><property name="text"><string notr="true">Z only</string></property></item>
+       </widget>
+      </item>
+      <item row="15" column="5">
+       <widget class="MyCheckBox" name="checkBox_transf_multiplier_inv_oscillate_4">
+        <property name="text"><string>Oscillate</string></property>
        </widget>
       </item>
       <item row="4" column="0">
@@ -1699,6 +1877,95 @@
         <property name="prefix"><string>Folds:</string></property>
        </widget>
       </item>
+      <item row="13" column="0">
+       <widget class="QLabel"><property name="text"><string>InvMode:</string></property></widget>
+      </item>
+      <item row="13" column="1">
+       <widget class="MyComboBox" name="comboBox_transf_multiplier_inv_mode_3">
+        <item><property name="text"><string notr="true">Reciprocal</string></property></item>
+        <item><property name="text"><string notr="true">Negate</string></property></item>
+        <item><property name="text"><string notr="true">Complement</string></property></item>
+        <item><property name="text"><string notr="true">Flip</string></property></item>
+       </widget>
+      </item>
+      <item row="13" column="2">
+       <widget class="QLabel"><property name="text"><string>InvStr:</string></property></widget>
+      </item>
+      <item row="13" column="3">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_inv_strength_3">
+        <property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property>
+        <property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property>
+       </widget>
+      </item>
+      <item row="13" column="4">
+       <widget class="QLabel"><property name="text"><string>InvThr:</string></property></widget>
+      </item>
+      <item row="13" column="5">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_inv_threshold_3">
+        <property name="minimum"><double>0.0</double></property><property name="maximum"><double>10.0</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>0.0</double></property>
+       </widget>
+      </item>
+      <item row="14" column="0">
+       <widget class="QLabel"><property name="text"><string>InvDcy:</string></property></widget>
+      </item>
+      <item row="14" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_inv_decay_3">
+        <property name="minimum"><double>0.0</double></property><property name="maximum"><double>5.0</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>0.0</double></property>
+       </widget>
+      </item>
+      <item row="14" column="2">
+       <widget class="QLabel"><property name="text"><string>InvBias:</string></property></widget>
+      </item>
+      <item row="14" column="3">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_inv_bias_3">
+        <property name="minimum"><double>-2.0</double></property><property name="maximum"><double>2.0</double></property>
+        <property name="singleStep"><double>0.05</double></property><property name="value"><double>0.0</double></property>
+       </widget>
+      </item>
+      <item row="14" column="4">
+       <widget class="QLabel"><property name="text"><string>InvSm:</string></property></widget>
+      </item>
+      <item row="14" column="5">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_inv_smooth_3">
+        <property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property>
+        <property name="singleStep"><double>0.05</double></property><property name="value"><double>0.0</double></property>
+       </widget>
+      </item>
+      <item row="15" column="0">
+       <widget class="QLabel"><property name="text"><string>InvRng:</string></property></widget>
+      </item>
+      <item row="15" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_inv_range_min_3">
+        <property name="minimum"><double>0.0</double></property><property name="maximum"><double>10.0</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>0.0</double></property>
+        <property name="prefix"><string>Min:</string></property>
+       </widget>
+      </item>
+      <item row="15" column="2">
+       <widget class="QLabel"><property name="text"><string>to</string></property></widget>
+      </item>
+      <item row="15" column="3">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_inv_range_max_3">
+        <property name="minimum"><double>0.0</double></property><property name="maximum"><double>10.0</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>10.0</double></property>
+        <property name="prefix"><string>Max:</string></property>
+       </widget>
+      </item>
+      <item row="15" column="4">
+       <widget class="MyComboBox" name="comboBox_transf_multiplier_inv_axis_3">
+        <item><property name="text"><string notr="true">All axes</string></property></item>
+        <item><property name="text"><string notr="true">X only</string></property></item>
+        <item><property name="text"><string notr="true">Y only</string></property></item>
+        <item><property name="text"><string notr="true">Z only</string></property></item>
+       </widget>
+      </item>
+      <item row="15" column="5">
+       <widget class="MyCheckBox" name="checkBox_transf_multiplier_inv_oscillate_3">
+        <property name="text"><string>Oscillate</string></property>
+       </widget>
+      </item>
       <item row="4" column="0">
        <widget class="MyCheckBox" name="checkBox_transf_multiplier_chain_2">
         <property name="text"><string>Chain</string></property>
@@ -1937,6 +2204,95 @@
         <property name="prefix"><string>Folds:</string></property>
        </widget>
       </item>
+      <item row="13" column="0">
+       <widget class="QLabel"><property name="text"><string>InvMode:</string></property></widget>
+      </item>
+      <item row="13" column="1">
+       <widget class="MyComboBox" name="comboBox_transf_multiplier_inv_mode_2">
+        <item><property name="text"><string notr="true">Reciprocal</string></property></item>
+        <item><property name="text"><string notr="true">Negate</string></property></item>
+        <item><property name="text"><string notr="true">Complement</string></property></item>
+        <item><property name="text"><string notr="true">Flip</string></property></item>
+       </widget>
+      </item>
+      <item row="13" column="2">
+       <widget class="QLabel"><property name="text"><string>InvStr:</string></property></widget>
+      </item>
+      <item row="13" column="3">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_inv_strength_2">
+        <property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property>
+        <property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property>
+       </widget>
+      </item>
+      <item row="13" column="4">
+       <widget class="QLabel"><property name="text"><string>InvThr:</string></property></widget>
+      </item>
+      <item row="13" column="5">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_inv_threshold_2">
+        <property name="minimum"><double>0.0</double></property><property name="maximum"><double>10.0</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>0.0</double></property>
+       </widget>
+      </item>
+      <item row="14" column="0">
+       <widget class="QLabel"><property name="text"><string>InvDcy:</string></property></widget>
+      </item>
+      <item row="14" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_inv_decay_2">
+        <property name="minimum"><double>0.0</double></property><property name="maximum"><double>5.0</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>0.0</double></property>
+       </widget>
+      </item>
+      <item row="14" column="2">
+       <widget class="QLabel"><property name="text"><string>InvBias:</string></property></widget>
+      </item>
+      <item row="14" column="3">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_inv_bias_2">
+        <property name="minimum"><double>-2.0</double></property><property name="maximum"><double>2.0</double></property>
+        <property name="singleStep"><double>0.05</double></property><property name="value"><double>0.0</double></property>
+       </widget>
+      </item>
+      <item row="14" column="4">
+       <widget class="QLabel"><property name="text"><string>InvSm:</string></property></widget>
+      </item>
+      <item row="14" column="5">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_inv_smooth_2">
+        <property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property>
+        <property name="singleStep"><double>0.05</double></property><property name="value"><double>0.0</double></property>
+       </widget>
+      </item>
+      <item row="15" column="0">
+       <widget class="QLabel"><property name="text"><string>InvRng:</string></property></widget>
+      </item>
+      <item row="15" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_inv_range_min_2">
+        <property name="minimum"><double>0.0</double></property><property name="maximum"><double>10.0</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>0.0</double></property>
+        <property name="prefix"><string>Min:</string></property>
+       </widget>
+      </item>
+      <item row="15" column="2">
+       <widget class="QLabel"><property name="text"><string>to</string></property></widget>
+      </item>
+      <item row="15" column="3">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_inv_range_max_2">
+        <property name="minimum"><double>0.0</double></property><property name="maximum"><double>10.0</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>10.0</double></property>
+        <property name="prefix"><string>Max:</string></property>
+       </widget>
+      </item>
+      <item row="15" column="4">
+       <widget class="MyComboBox" name="comboBox_transf_multiplier_inv_axis_2">
+        <item><property name="text"><string notr="true">All axes</string></property></item>
+        <item><property name="text"><string notr="true">X only</string></property></item>
+        <item><property name="text"><string notr="true">Y only</string></property></item>
+        <item><property name="text"><string notr="true">Z only</string></property></item>
+       </widget>
+      </item>
+      <item row="15" column="5">
+       <widget class="MyCheckBox" name="checkBox_transf_multiplier_inv_oscillate_2">
+        <property name="text"><string>Oscillate</string></property>
+       </widget>
+      </item>
       <item row="4" column="0">
        <widget class="MyCheckBox" name="checkBox_transf_multiplier_chain_1">
         <property name="text"><string>Chain</string></property>
@@ -2173,6 +2529,95 @@
         <property name="minimum"><number>0</number></property><property name="maximum"><number>8</number></property>
         <property name="value"><number>0</number></property>
         <property name="prefix"><string>Folds:</string></property>
+       </widget>
+      </item>
+      <item row="13" column="0">
+       <widget class="QLabel"><property name="text"><string>InvMode:</string></property></widget>
+      </item>
+      <item row="13" column="1">
+       <widget class="MyComboBox" name="comboBox_transf_multiplier_inv_mode_1">
+        <item><property name="text"><string notr="true">Reciprocal</string></property></item>
+        <item><property name="text"><string notr="true">Negate</string></property></item>
+        <item><property name="text"><string notr="true">Complement</string></property></item>
+        <item><property name="text"><string notr="true">Flip</string></property></item>
+       </widget>
+      </item>
+      <item row="13" column="2">
+       <widget class="QLabel"><property name="text"><string>InvStr:</string></property></widget>
+      </item>
+      <item row="13" column="3">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_inv_strength_1">
+        <property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property>
+        <property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property>
+       </widget>
+      </item>
+      <item row="13" column="4">
+       <widget class="QLabel"><property name="text"><string>InvThr:</string></property></widget>
+      </item>
+      <item row="13" column="5">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_inv_threshold_1">
+        <property name="minimum"><double>0.0</double></property><property name="maximum"><double>10.0</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>0.0</double></property>
+       </widget>
+      </item>
+      <item row="14" column="0">
+       <widget class="QLabel"><property name="text"><string>InvDcy:</string></property></widget>
+      </item>
+      <item row="14" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_inv_decay_1">
+        <property name="minimum"><double>0.0</double></property><property name="maximum"><double>5.0</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>0.0</double></property>
+       </widget>
+      </item>
+      <item row="14" column="2">
+       <widget class="QLabel"><property name="text"><string>InvBias:</string></property></widget>
+      </item>
+      <item row="14" column="3">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_inv_bias_1">
+        <property name="minimum"><double>-2.0</double></property><property name="maximum"><double>2.0</double></property>
+        <property name="singleStep"><double>0.05</double></property><property name="value"><double>0.0</double></property>
+       </widget>
+      </item>
+      <item row="14" column="4">
+       <widget class="QLabel"><property name="text"><string>InvSm:</string></property></widget>
+      </item>
+      <item row="14" column="5">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_inv_smooth_1">
+        <property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property>
+        <property name="singleStep"><double>0.05</double></property><property name="value"><double>0.0</double></property>
+       </widget>
+      </item>
+      <item row="15" column="0">
+       <widget class="QLabel"><property name="text"><string>InvRng:</string></property></widget>
+      </item>
+      <item row="15" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_inv_range_min_1">
+        <property name="minimum"><double>0.0</double></property><property name="maximum"><double>10.0</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>0.0</double></property>
+        <property name="prefix"><string>Min:</string></property>
+       </widget>
+      </item>
+      <item row="15" column="2">
+       <widget class="QLabel"><property name="text"><string>to</string></property></widget>
+      </item>
+      <item row="15" column="3">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_inv_range_max_1">
+        <property name="minimum"><double>0.0</double></property><property name="maximum"><double>10.0</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>10.0</double></property>
+        <property name="prefix"><string>Max:</string></property>
+       </widget>
+      </item>
+      <item row="15" column="4">
+       <widget class="MyComboBox" name="comboBox_transf_multiplier_inv_axis_1">
+        <item><property name="text"><string notr="true">All axes</string></property></item>
+        <item><property name="text"><string notr="true">X only</string></property></item>
+        <item><property name="text"><string notr="true">Y only</string></property></item>
+        <item><property name="text"><string notr="true">Z only</string></property></item>
+       </widget>
+      </item>
+      <item row="15" column="5">
+       <widget class="MyCheckBox" name="checkBox_transf_multiplier_inv_oscillate_1">
+        <property name="text"><string>Oscillate</string></property>
        </widget>
       </item>
      </layout>

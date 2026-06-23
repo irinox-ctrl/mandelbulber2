@@ -343,6 +343,64 @@ void cFractalThreex3GraphManifoldJulia::FormulaCode(CVector4 &z, const sFractal 
 								val = 1.0 + mx * (val - 1.0);
 							}
 
+							// === Inverse Processing ===
+							// Inv Oscillate: alternate normal/inverse per iteration
+							{
+								bool doInverse = fractal->transformCommon.multiplierInverse1;
+								if (fractal->transformCommon.multiplierInvOscillate1)
+									doInverse = (aux.i % 2 == 0) ? doInverse : !doInverse;
+								if (doInverse)
+								{
+									double origVal = val;
+									double diff = val - 1.0;
+									double absDiff = fabs(diff);
+									// Inv Range: only invert within range
+									double rMin = fractal->transformCommon.multiplierInvRangeMin1;
+									double rMax = fractal->transformCommon.multiplierInvRangeMax1;
+									if (absDiff >= rMin && absDiff <= rMax)
+									{
+										// Inv Threshold: only invert if above threshold
+										double thr = fractal->transformCommon.multiplierInvThreshold1;
+										if (absDiff >= thr)
+										{
+											double bias = fractal->transformCommon.multiplierInvBias1;
+											double center = 1.0 + bias;
+											int imode = fractal->transformCommon.multiplierInvMode1;
+											if (imode == 0) // Reciprocal
+												val = center + (fabs(val - center) > 1e-15 ? (1.0 / (val - center)) : 1e15);
+											else if (imode == 1) // Negate
+												val = center - (val - center);
+											else if (imode == 2) // Complement
+												val = center + (1.0 - fabs(val - center));
+											else if (imode == 3) // Flip sign
+												val = center - fabs(val - center) * ((val > center) ? 1.0 : -1.0);
+											// Inv Smooth
+											double sm = fractal->transformCommon.multiplierInvSmooth1;
+											if (sm > 0.0)
+											{
+												double blend = fmin(absDiff / (thr + sm + 1e-15), 1.0);
+												blend = blend * blend * (3.0 - 2.0 * blend);
+												val = origVal + blend * (val - origVal);
+											}
+											// Inv Decay
+											double idcy = fractal->transformCommon.multiplierInvDecay1;
+											if (idcy > 0.0)
+											{
+												double rng = (double)(fractal->transformCommon.multiplierStopIter1 - fractal->transformCommon.multiplierStartIter1);
+												double td = (rng > 0.0) ? (double)(aux.i - fractal->transformCommon.multiplierStartIter1) / rng : 0.0;
+												double fade = exp(-idcy * td * 5.0);
+												val = origVal + fade * (val - origVal);
+											}
+											// Inv Strength
+											double str = fractal->transformCommon.multiplierInvStrength1;
+											if (str < 1.0)
+												val = origVal + str * (val - origVal);
+										}
+									}
+									// Inv Axis: 0=all(done), 1/2/3=restore non-target axes later
+								}
+							}
+
 				switch (fractal->transformCommon.multiplierMode1)
 				{
 					default:
@@ -664,6 +722,64 @@ void cFractalThreex3GraphManifoldJulia::FormulaCode(CVector4 &z, const sFractal 
 								// val is already clipped; recover original from drive
 								// approximate: mix toward 1.0 (neutral)
 								val = 1.0 + mx * (val - 1.0);
+							}
+
+							// === Inverse Processing ===
+							// Inv Oscillate: alternate normal/inverse per iteration
+							{
+								bool doInverse = fractal->transformCommon.multiplierInverse2;
+								if (fractal->transformCommon.multiplierInvOscillate2)
+									doInverse = (aux.i % 2 == 0) ? doInverse : !doInverse;
+								if (doInverse)
+								{
+									double origVal = val;
+									double diff = val - 1.0;
+									double absDiff = fabs(diff);
+									// Inv Range: only invert within range
+									double rMin = fractal->transformCommon.multiplierInvRangeMin2;
+									double rMax = fractal->transformCommon.multiplierInvRangeMax2;
+									if (absDiff >= rMin && absDiff <= rMax)
+									{
+										// Inv Threshold: only invert if above threshold
+										double thr = fractal->transformCommon.multiplierInvThreshold2;
+										if (absDiff >= thr)
+										{
+											double bias = fractal->transformCommon.multiplierInvBias2;
+											double center = 1.0 + bias;
+											int imode = fractal->transformCommon.multiplierInvMode2;
+											if (imode == 0) // Reciprocal
+												val = center + (fabs(val - center) > 1e-15 ? (1.0 / (val - center)) : 1e15);
+											else if (imode == 1) // Negate
+												val = center - (val - center);
+											else if (imode == 2) // Complement
+												val = center + (1.0 - fabs(val - center));
+											else if (imode == 3) // Flip sign
+												val = center - fabs(val - center) * ((val > center) ? 1.0 : -1.0);
+											// Inv Smooth
+											double sm = fractal->transformCommon.multiplierInvSmooth2;
+											if (sm > 0.0)
+											{
+												double blend = fmin(absDiff / (thr + sm + 1e-15), 1.0);
+												blend = blend * blend * (3.0 - 2.0 * blend);
+												val = origVal + blend * (val - origVal);
+											}
+											// Inv Decay
+											double idcy = fractal->transformCommon.multiplierInvDecay2;
+											if (idcy > 0.0)
+											{
+												double rng = (double)(fractal->transformCommon.multiplierStopIter2 - fractal->transformCommon.multiplierStartIter2);
+												double td = (rng > 0.0) ? (double)(aux.i - fractal->transformCommon.multiplierStartIter2) / rng : 0.0;
+												double fade = exp(-idcy * td * 5.0);
+												val = origVal + fade * (val - origVal);
+											}
+											// Inv Strength
+											double str = fractal->transformCommon.multiplierInvStrength2;
+											if (str < 1.0)
+												val = origVal + str * (val - origVal);
+										}
+									}
+									// Inv Axis: 0=all(done), 1/2/3=restore non-target axes later
+								}
 							}
 
 				switch (fractal->transformCommon.multiplierMode2)
@@ -989,6 +1105,64 @@ void cFractalThreex3GraphManifoldJulia::FormulaCode(CVector4 &z, const sFractal 
 								val = 1.0 + mx * (val - 1.0);
 							}
 
+							// === Inverse Processing ===
+							// Inv Oscillate: alternate normal/inverse per iteration
+							{
+								bool doInverse = fractal->transformCommon.multiplierInverse3;
+								if (fractal->transformCommon.multiplierInvOscillate3)
+									doInverse = (aux.i % 2 == 0) ? doInverse : !doInverse;
+								if (doInverse)
+								{
+									double origVal = val;
+									double diff = val - 1.0;
+									double absDiff = fabs(diff);
+									// Inv Range: only invert within range
+									double rMin = fractal->transformCommon.multiplierInvRangeMin3;
+									double rMax = fractal->transformCommon.multiplierInvRangeMax3;
+									if (absDiff >= rMin && absDiff <= rMax)
+									{
+										// Inv Threshold: only invert if above threshold
+										double thr = fractal->transformCommon.multiplierInvThreshold3;
+										if (absDiff >= thr)
+										{
+											double bias = fractal->transformCommon.multiplierInvBias3;
+											double center = 1.0 + bias;
+											int imode = fractal->transformCommon.multiplierInvMode3;
+											if (imode == 0) // Reciprocal
+												val = center + (fabs(val - center) > 1e-15 ? (1.0 / (val - center)) : 1e15);
+											else if (imode == 1) // Negate
+												val = center - (val - center);
+											else if (imode == 2) // Complement
+												val = center + (1.0 - fabs(val - center));
+											else if (imode == 3) // Flip sign
+												val = center - fabs(val - center) * ((val > center) ? 1.0 : -1.0);
+											// Inv Smooth
+											double sm = fractal->transformCommon.multiplierInvSmooth3;
+											if (sm > 0.0)
+											{
+												double blend = fmin(absDiff / (thr + sm + 1e-15), 1.0);
+												blend = blend * blend * (3.0 - 2.0 * blend);
+												val = origVal + blend * (val - origVal);
+											}
+											// Inv Decay
+											double idcy = fractal->transformCommon.multiplierInvDecay3;
+											if (idcy > 0.0)
+											{
+												double rng = (double)(fractal->transformCommon.multiplierStopIter3 - fractal->transformCommon.multiplierStartIter3);
+												double td = (rng > 0.0) ? (double)(aux.i - fractal->transformCommon.multiplierStartIter3) / rng : 0.0;
+												double fade = exp(-idcy * td * 5.0);
+												val = origVal + fade * (val - origVal);
+											}
+											// Inv Strength
+											double str = fractal->transformCommon.multiplierInvStrength3;
+											if (str < 1.0)
+												val = origVal + str * (val - origVal);
+										}
+									}
+									// Inv Axis: 0=all(done), 1/2/3=restore non-target axes later
+								}
+							}
+
 				switch (fractal->transformCommon.multiplierMode3)
 				{
 					default:
@@ -1312,6 +1486,64 @@ void cFractalThreex3GraphManifoldJulia::FormulaCode(CVector4 &z, const sFractal 
 								val = 1.0 + mx * (val - 1.0);
 							}
 
+							// === Inverse Processing ===
+							// Inv Oscillate: alternate normal/inverse per iteration
+							{
+								bool doInverse = fractal->transformCommon.multiplierInverse4;
+								if (fractal->transformCommon.multiplierInvOscillate4)
+									doInverse = (aux.i % 2 == 0) ? doInverse : !doInverse;
+								if (doInverse)
+								{
+									double origVal = val;
+									double diff = val - 1.0;
+									double absDiff = fabs(diff);
+									// Inv Range: only invert within range
+									double rMin = fractal->transformCommon.multiplierInvRangeMin4;
+									double rMax = fractal->transformCommon.multiplierInvRangeMax4;
+									if (absDiff >= rMin && absDiff <= rMax)
+									{
+										// Inv Threshold: only invert if above threshold
+										double thr = fractal->transformCommon.multiplierInvThreshold4;
+										if (absDiff >= thr)
+										{
+											double bias = fractal->transformCommon.multiplierInvBias4;
+											double center = 1.0 + bias;
+											int imode = fractal->transformCommon.multiplierInvMode4;
+											if (imode == 0) // Reciprocal
+												val = center + (fabs(val - center) > 1e-15 ? (1.0 / (val - center)) : 1e15);
+											else if (imode == 1) // Negate
+												val = center - (val - center);
+											else if (imode == 2) // Complement
+												val = center + (1.0 - fabs(val - center));
+											else if (imode == 3) // Flip sign
+												val = center - fabs(val - center) * ((val > center) ? 1.0 : -1.0);
+											// Inv Smooth
+											double sm = fractal->transformCommon.multiplierInvSmooth4;
+											if (sm > 0.0)
+											{
+												double blend = fmin(absDiff / (thr + sm + 1e-15), 1.0);
+												blend = blend * blend * (3.0 - 2.0 * blend);
+												val = origVal + blend * (val - origVal);
+											}
+											// Inv Decay
+											double idcy = fractal->transformCommon.multiplierInvDecay4;
+											if (idcy > 0.0)
+											{
+												double rng = (double)(fractal->transformCommon.multiplierStopIter4 - fractal->transformCommon.multiplierStartIter4);
+												double td = (rng > 0.0) ? (double)(aux.i - fractal->transformCommon.multiplierStartIter4) / rng : 0.0;
+												double fade = exp(-idcy * td * 5.0);
+												val = origVal + fade * (val - origVal);
+											}
+											// Inv Strength
+											double str = fractal->transformCommon.multiplierInvStrength4;
+											if (str < 1.0)
+												val = origVal + str * (val - origVal);
+										}
+									}
+									// Inv Axis: 0=all(done), 1/2/3=restore non-target axes later
+								}
+							}
+
 				switch (fractal->transformCommon.multiplierMode4)
 				{
 					default:
@@ -1633,6 +1865,64 @@ void cFractalThreex3GraphManifoldJulia::FormulaCode(CVector4 &z, const sFractal 
 								// val is already clipped; recover original from drive
 								// approximate: mix toward 1.0 (neutral)
 								val = 1.0 + mx * (val - 1.0);
+							}
+
+							// === Inverse Processing ===
+							// Inv Oscillate: alternate normal/inverse per iteration
+							{
+								bool doInverse = fractal->transformCommon.multiplierInverse5;
+								if (fractal->transformCommon.multiplierInvOscillate5)
+									doInverse = (aux.i % 2 == 0) ? doInverse : !doInverse;
+								if (doInverse)
+								{
+									double origVal = val;
+									double diff = val - 1.0;
+									double absDiff = fabs(diff);
+									// Inv Range: only invert within range
+									double rMin = fractal->transformCommon.multiplierInvRangeMin5;
+									double rMax = fractal->transformCommon.multiplierInvRangeMax5;
+									if (absDiff >= rMin && absDiff <= rMax)
+									{
+										// Inv Threshold: only invert if above threshold
+										double thr = fractal->transformCommon.multiplierInvThreshold5;
+										if (absDiff >= thr)
+										{
+											double bias = fractal->transformCommon.multiplierInvBias5;
+											double center = 1.0 + bias;
+											int imode = fractal->transformCommon.multiplierInvMode5;
+											if (imode == 0) // Reciprocal
+												val = center + (fabs(val - center) > 1e-15 ? (1.0 / (val - center)) : 1e15);
+											else if (imode == 1) // Negate
+												val = center - (val - center);
+											else if (imode == 2) // Complement
+												val = center + (1.0 - fabs(val - center));
+											else if (imode == 3) // Flip sign
+												val = center - fabs(val - center) * ((val > center) ? 1.0 : -1.0);
+											// Inv Smooth
+											double sm = fractal->transformCommon.multiplierInvSmooth5;
+											if (sm > 0.0)
+											{
+												double blend = fmin(absDiff / (thr + sm + 1e-15), 1.0);
+												blend = blend * blend * (3.0 - 2.0 * blend);
+												val = origVal + blend * (val - origVal);
+											}
+											// Inv Decay
+											double idcy = fractal->transformCommon.multiplierInvDecay5;
+											if (idcy > 0.0)
+											{
+												double rng = (double)(fractal->transformCommon.multiplierStopIter5 - fractal->transformCommon.multiplierStartIter5);
+												double td = (rng > 0.0) ? (double)(aux.i - fractal->transformCommon.multiplierStartIter5) / rng : 0.0;
+												double fade = exp(-idcy * td * 5.0);
+												val = origVal + fade * (val - origVal);
+											}
+											// Inv Strength
+											double str = fractal->transformCommon.multiplierInvStrength5;
+											if (str < 1.0)
+												val = origVal + str * (val - origVal);
+										}
+									}
+									// Inv Axis: 0=all(done), 1/2/3=restore non-target axes later
+								}
 							}
 
 				switch (fractal->transformCommon.multiplierMode5)

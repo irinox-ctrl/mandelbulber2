@@ -1033,6 +1033,67 @@ typedef struct
 	cl_int multiplierClipFold4;
 	cl_int multiplierClipFold5;
 
+	cl_float multiplierInvStrength1;
+	cl_float multiplierInvStrength2;
+	cl_float multiplierInvStrength3;
+	cl_float multiplierInvStrength4;
+	cl_float multiplierInvStrength5;
+
+	cl_float multiplierInvThreshold1;
+	cl_float multiplierInvThreshold2;
+	cl_float multiplierInvThreshold3;
+	cl_float multiplierInvThreshold4;
+	cl_float multiplierInvThreshold5;
+
+	cl_float multiplierInvDecay1;
+	cl_float multiplierInvDecay2;
+	cl_float multiplierInvDecay3;
+	cl_float multiplierInvDecay4;
+	cl_float multiplierInvDecay5;
+
+	cl_float multiplierInvBias1;
+	cl_float multiplierInvBias2;
+	cl_float multiplierInvBias3;
+	cl_float multiplierInvBias4;
+	cl_float multiplierInvBias5;
+
+	cl_float multiplierInvSmooth1;
+	cl_float multiplierInvSmooth2;
+	cl_float multiplierInvSmooth3;
+	cl_float multiplierInvSmooth4;
+	cl_float multiplierInvSmooth5;
+
+	cl_float multiplierInvRangeMin1;
+	cl_float multiplierInvRangeMin2;
+	cl_float multiplierInvRangeMin3;
+	cl_float multiplierInvRangeMin4;
+	cl_float multiplierInvRangeMin5;
+
+	cl_float multiplierInvRangeMax1;
+	cl_float multiplierInvRangeMax2;
+	cl_float multiplierInvRangeMax3;
+	cl_float multiplierInvRangeMax4;
+	cl_float multiplierInvRangeMax5;
+
+	cl_int multiplierInvMode1;
+	cl_int multiplierInvMode2;
+	cl_int multiplierInvMode3;
+	cl_int multiplierInvMode4;
+	cl_int multiplierInvMode5;
+
+	cl_int multiplierInvAxis1;
+	cl_int multiplierInvAxis2;
+	cl_int multiplierInvAxis3;
+	cl_int multiplierInvAxis4;
+	cl_int multiplierInvAxis5;
+
+	cl_int multiplierInvOscillate1;
+	cl_int multiplierInvOscillate2;
+	cl_int multiplierInvOscillate3;
+	cl_int multiplierInvOscillate4;
+	cl_int multiplierInvOscillate5;
+
+
 
 
 
@@ -2289,6 +2350,57 @@ inline sFractalTransformCommonCl clCopySFractalTransformCommonCl(
 	target.multiplierClipFold3 = source.multiplierClipFold3;
 	target.multiplierClipFold4 = source.multiplierClipFold4;
 	target.multiplierClipFold5 = source.multiplierClipFold5;
+
+	target.multiplierInvStrength1 = source.multiplierInvStrength1;
+	target.multiplierInvStrength2 = source.multiplierInvStrength2;
+	target.multiplierInvStrength3 = source.multiplierInvStrength3;
+	target.multiplierInvStrength4 = source.multiplierInvStrength4;
+	target.multiplierInvStrength5 = source.multiplierInvStrength5;
+	target.multiplierInvThreshold1 = source.multiplierInvThreshold1;
+	target.multiplierInvThreshold2 = source.multiplierInvThreshold2;
+	target.multiplierInvThreshold3 = source.multiplierInvThreshold3;
+	target.multiplierInvThreshold4 = source.multiplierInvThreshold4;
+	target.multiplierInvThreshold5 = source.multiplierInvThreshold5;
+	target.multiplierInvDecay1 = source.multiplierInvDecay1;
+	target.multiplierInvDecay2 = source.multiplierInvDecay2;
+	target.multiplierInvDecay3 = source.multiplierInvDecay3;
+	target.multiplierInvDecay4 = source.multiplierInvDecay4;
+	target.multiplierInvDecay5 = source.multiplierInvDecay5;
+	target.multiplierInvBias1 = source.multiplierInvBias1;
+	target.multiplierInvBias2 = source.multiplierInvBias2;
+	target.multiplierInvBias3 = source.multiplierInvBias3;
+	target.multiplierInvBias4 = source.multiplierInvBias4;
+	target.multiplierInvBias5 = source.multiplierInvBias5;
+	target.multiplierInvSmooth1 = source.multiplierInvSmooth1;
+	target.multiplierInvSmooth2 = source.multiplierInvSmooth2;
+	target.multiplierInvSmooth3 = source.multiplierInvSmooth3;
+	target.multiplierInvSmooth4 = source.multiplierInvSmooth4;
+	target.multiplierInvSmooth5 = source.multiplierInvSmooth5;
+	target.multiplierInvRangeMin1 = source.multiplierInvRangeMin1;
+	target.multiplierInvRangeMin2 = source.multiplierInvRangeMin2;
+	target.multiplierInvRangeMin3 = source.multiplierInvRangeMin3;
+	target.multiplierInvRangeMin4 = source.multiplierInvRangeMin4;
+	target.multiplierInvRangeMin5 = source.multiplierInvRangeMin5;
+	target.multiplierInvRangeMax1 = source.multiplierInvRangeMax1;
+	target.multiplierInvRangeMax2 = source.multiplierInvRangeMax2;
+	target.multiplierInvRangeMax3 = source.multiplierInvRangeMax3;
+	target.multiplierInvRangeMax4 = source.multiplierInvRangeMax4;
+	target.multiplierInvRangeMax5 = source.multiplierInvRangeMax5;
+	target.multiplierInvMode1 = source.multiplierInvMode1;
+	target.multiplierInvMode2 = source.multiplierInvMode2;
+	target.multiplierInvMode3 = source.multiplierInvMode3;
+	target.multiplierInvMode4 = source.multiplierInvMode4;
+	target.multiplierInvMode5 = source.multiplierInvMode5;
+	target.multiplierInvAxis1 = source.multiplierInvAxis1;
+	target.multiplierInvAxis2 = source.multiplierInvAxis2;
+	target.multiplierInvAxis3 = source.multiplierInvAxis3;
+	target.multiplierInvAxis4 = source.multiplierInvAxis4;
+	target.multiplierInvAxis5 = source.multiplierInvAxis5;
+	target.multiplierInvOscillate1 = source.multiplierInvOscillate1;
+	target.multiplierInvOscillate2 = source.multiplierInvOscillate2;
+	target.multiplierInvOscillate3 = source.multiplierInvOscillate3;
+	target.multiplierInvOscillate4 = source.multiplierInvOscillate4;
+	target.multiplierInvOscillate5 = source.multiplierInvOscillate5;
 
 	target.multiplierEnabled1 = source.multiplierEnabled1;
 	target.multiplierEnabled2 = source.multiplierEnabled2;

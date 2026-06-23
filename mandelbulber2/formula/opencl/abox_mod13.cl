@@ -546,6 +546,57 @@ REAL4 AboxMod13Iteration(REAL4 z, __constant sFractalCl *fractal, sExtendedAuxCl
 								val = 1.0f + mx * (val - 1.0f);
 							}
 
+							// === Inverse Processing ===
+							{
+								int doInverse = fractal->transformCommon.multiplierInverse1;
+								if (fractal->transformCommon.multiplierInvOscillate1)
+									doInverse = (aux->i % 2 == 0) ? doInverse : !doInverse;
+								if (doInverse)
+								{
+									REAL origVal = val;
+									REAL diff = val - 1.0f;
+									REAL absDiff = fabs(diff);
+									REAL rMin = fractal->transformCommon.multiplierInvRangeMin1;
+									REAL rMax = fractal->transformCommon.multiplierInvRangeMax1;
+									if (absDiff >= rMin && absDiff <= rMax)
+									{
+										REAL thr = fractal->transformCommon.multiplierInvThreshold1;
+										if (absDiff >= thr)
+										{
+											REAL bias = fractal->transformCommon.multiplierInvBias1;
+											REAL center = 1.0f + bias;
+											int imode = fractal->transformCommon.multiplierInvMode1;
+											if (imode == 0)
+												val = center + (fabs(val - center) > 1e-15f ? (1.0f / (val - center)) : 1e15f);
+											else if (imode == 1)
+												val = center - (val - center);
+											else if (imode == 2)
+												val = center + (1.0f - fabs(val - center));
+											else if (imode == 3)
+												val = center - fabs(val - center) * ((val > center) ? 1.0f : -1.0f);
+											REAL sm = fractal->transformCommon.multiplierInvSmooth1;
+											if (sm > 0.0f)
+											{
+												REAL blend = fmin(absDiff / (thr + sm + 1e-15f), 1.0f);
+												blend = blend * blend * (3.0f - 2.0f * blend);
+												val = origVal + blend * (val - origVal);
+											}
+											REAL idcy = fractal->transformCommon.multiplierInvDecay1;
+											if (idcy > 0.0f)
+											{
+												REAL rng = (REAL)(fractal->transformCommon.multiplierStopIter1 - fractal->transformCommon.multiplierStartIter1);
+												REAL td = (rng > 0.0f) ? (REAL)(aux->i - fractal->transformCommon.multiplierStartIter1) / rng : 0.0f;
+												REAL fade = native_exp(-idcy * td * 5.0f);
+												val = origVal + fade * (val - origVal);
+											}
+											REAL str = fractal->transformCommon.multiplierInvStrength1;
+											if (str < 1.0f)
+												val = origVal + str * (val - origVal);
+										}
+									}
+								}
+							}
+
 				switch (fractal->transformCommon.multiplierMode1)
 				{
 					default:
@@ -864,6 +915,57 @@ REAL4 AboxMod13Iteration(REAL4 z, __constant sFractalCl *fractal, sExtendedAuxCl
 							{
 								REAL mx = fractal->transformCommon.multiplierClipMix2;
 								val = 1.0f + mx * (val - 1.0f);
+							}
+
+							// === Inverse Processing ===
+							{
+								int doInverse = fractal->transformCommon.multiplierInverse2;
+								if (fractal->transformCommon.multiplierInvOscillate2)
+									doInverse = (aux->i % 2 == 0) ? doInverse : !doInverse;
+								if (doInverse)
+								{
+									REAL origVal = val;
+									REAL diff = val - 1.0f;
+									REAL absDiff = fabs(diff);
+									REAL rMin = fractal->transformCommon.multiplierInvRangeMin2;
+									REAL rMax = fractal->transformCommon.multiplierInvRangeMax2;
+									if (absDiff >= rMin && absDiff <= rMax)
+									{
+										REAL thr = fractal->transformCommon.multiplierInvThreshold2;
+										if (absDiff >= thr)
+										{
+											REAL bias = fractal->transformCommon.multiplierInvBias2;
+											REAL center = 1.0f + bias;
+											int imode = fractal->transformCommon.multiplierInvMode2;
+											if (imode == 0)
+												val = center + (fabs(val - center) > 1e-15f ? (1.0f / (val - center)) : 1e15f);
+											else if (imode == 1)
+												val = center - (val - center);
+											else if (imode == 2)
+												val = center + (1.0f - fabs(val - center));
+											else if (imode == 3)
+												val = center - fabs(val - center) * ((val > center) ? 1.0f : -1.0f);
+											REAL sm = fractal->transformCommon.multiplierInvSmooth2;
+											if (sm > 0.0f)
+											{
+												REAL blend = fmin(absDiff / (thr + sm + 1e-15f), 1.0f);
+												blend = blend * blend * (3.0f - 2.0f * blend);
+												val = origVal + blend * (val - origVal);
+											}
+											REAL idcy = fractal->transformCommon.multiplierInvDecay2;
+											if (idcy > 0.0f)
+											{
+												REAL rng = (REAL)(fractal->transformCommon.multiplierStopIter2 - fractal->transformCommon.multiplierStartIter2);
+												REAL td = (rng > 0.0f) ? (REAL)(aux->i - fractal->transformCommon.multiplierStartIter2) / rng : 0.0f;
+												REAL fade = native_exp(-idcy * td * 5.0f);
+												val = origVal + fade * (val - origVal);
+											}
+											REAL str = fractal->transformCommon.multiplierInvStrength2;
+											if (str < 1.0f)
+												val = origVal + str * (val - origVal);
+										}
+									}
+								}
 							}
 
 				switch (fractal->transformCommon.multiplierMode2)
@@ -1186,6 +1288,57 @@ REAL4 AboxMod13Iteration(REAL4 z, __constant sFractalCl *fractal, sExtendedAuxCl
 								val = 1.0f + mx * (val - 1.0f);
 							}
 
+							// === Inverse Processing ===
+							{
+								int doInverse = fractal->transformCommon.multiplierInverse3;
+								if (fractal->transformCommon.multiplierInvOscillate3)
+									doInverse = (aux->i % 2 == 0) ? doInverse : !doInverse;
+								if (doInverse)
+								{
+									REAL origVal = val;
+									REAL diff = val - 1.0f;
+									REAL absDiff = fabs(diff);
+									REAL rMin = fractal->transformCommon.multiplierInvRangeMin3;
+									REAL rMax = fractal->transformCommon.multiplierInvRangeMax3;
+									if (absDiff >= rMin && absDiff <= rMax)
+									{
+										REAL thr = fractal->transformCommon.multiplierInvThreshold3;
+										if (absDiff >= thr)
+										{
+											REAL bias = fractal->transformCommon.multiplierInvBias3;
+											REAL center = 1.0f + bias;
+											int imode = fractal->transformCommon.multiplierInvMode3;
+											if (imode == 0)
+												val = center + (fabs(val - center) > 1e-15f ? (1.0f / (val - center)) : 1e15f);
+											else if (imode == 1)
+												val = center - (val - center);
+											else if (imode == 2)
+												val = center + (1.0f - fabs(val - center));
+											else if (imode == 3)
+												val = center - fabs(val - center) * ((val > center) ? 1.0f : -1.0f);
+											REAL sm = fractal->transformCommon.multiplierInvSmooth3;
+											if (sm > 0.0f)
+											{
+												REAL blend = fmin(absDiff / (thr + sm + 1e-15f), 1.0f);
+												blend = blend * blend * (3.0f - 2.0f * blend);
+												val = origVal + blend * (val - origVal);
+											}
+											REAL idcy = fractal->transformCommon.multiplierInvDecay3;
+											if (idcy > 0.0f)
+											{
+												REAL rng = (REAL)(fractal->transformCommon.multiplierStopIter3 - fractal->transformCommon.multiplierStartIter3);
+												REAL td = (rng > 0.0f) ? (REAL)(aux->i - fractal->transformCommon.multiplierStartIter3) / rng : 0.0f;
+												REAL fade = native_exp(-idcy * td * 5.0f);
+												val = origVal + fade * (val - origVal);
+											}
+											REAL str = fractal->transformCommon.multiplierInvStrength3;
+											if (str < 1.0f)
+												val = origVal + str * (val - origVal);
+										}
+									}
+								}
+							}
+
 				switch (fractal->transformCommon.multiplierMode3)
 				{
 					default:
@@ -1506,6 +1659,57 @@ REAL4 AboxMod13Iteration(REAL4 z, __constant sFractalCl *fractal, sExtendedAuxCl
 								val = 1.0f + mx * (val - 1.0f);
 							}
 
+							// === Inverse Processing ===
+							{
+								int doInverse = fractal->transformCommon.multiplierInverse4;
+								if (fractal->transformCommon.multiplierInvOscillate4)
+									doInverse = (aux->i % 2 == 0) ? doInverse : !doInverse;
+								if (doInverse)
+								{
+									REAL origVal = val;
+									REAL diff = val - 1.0f;
+									REAL absDiff = fabs(diff);
+									REAL rMin = fractal->transformCommon.multiplierInvRangeMin4;
+									REAL rMax = fractal->transformCommon.multiplierInvRangeMax4;
+									if (absDiff >= rMin && absDiff <= rMax)
+									{
+										REAL thr = fractal->transformCommon.multiplierInvThreshold4;
+										if (absDiff >= thr)
+										{
+											REAL bias = fractal->transformCommon.multiplierInvBias4;
+											REAL center = 1.0f + bias;
+											int imode = fractal->transformCommon.multiplierInvMode4;
+											if (imode == 0)
+												val = center + (fabs(val - center) > 1e-15f ? (1.0f / (val - center)) : 1e15f);
+											else if (imode == 1)
+												val = center - (val - center);
+											else if (imode == 2)
+												val = center + (1.0f - fabs(val - center));
+											else if (imode == 3)
+												val = center - fabs(val - center) * ((val > center) ? 1.0f : -1.0f);
+											REAL sm = fractal->transformCommon.multiplierInvSmooth4;
+											if (sm > 0.0f)
+											{
+												REAL blend = fmin(absDiff / (thr + sm + 1e-15f), 1.0f);
+												blend = blend * blend * (3.0f - 2.0f * blend);
+												val = origVal + blend * (val - origVal);
+											}
+											REAL idcy = fractal->transformCommon.multiplierInvDecay4;
+											if (idcy > 0.0f)
+											{
+												REAL rng = (REAL)(fractal->transformCommon.multiplierStopIter4 - fractal->transformCommon.multiplierStartIter4);
+												REAL td = (rng > 0.0f) ? (REAL)(aux->i - fractal->transformCommon.multiplierStartIter4) / rng : 0.0f;
+												REAL fade = native_exp(-idcy * td * 5.0f);
+												val = origVal + fade * (val - origVal);
+											}
+											REAL str = fractal->transformCommon.multiplierInvStrength4;
+											if (str < 1.0f)
+												val = origVal + str * (val - origVal);
+										}
+									}
+								}
+							}
+
 				switch (fractal->transformCommon.multiplierMode4)
 				{
 					default:
@@ -1824,6 +2028,57 @@ REAL4 AboxMod13Iteration(REAL4 z, __constant sFractalCl *fractal, sExtendedAuxCl
 							{
 								REAL mx = fractal->transformCommon.multiplierClipMix5;
 								val = 1.0f + mx * (val - 1.0f);
+							}
+
+							// === Inverse Processing ===
+							{
+								int doInverse = fractal->transformCommon.multiplierInverse5;
+								if (fractal->transformCommon.multiplierInvOscillate5)
+									doInverse = (aux->i % 2 == 0) ? doInverse : !doInverse;
+								if (doInverse)
+								{
+									REAL origVal = val;
+									REAL diff = val - 1.0f;
+									REAL absDiff = fabs(diff);
+									REAL rMin = fractal->transformCommon.multiplierInvRangeMin5;
+									REAL rMax = fractal->transformCommon.multiplierInvRangeMax5;
+									if (absDiff >= rMin && absDiff <= rMax)
+									{
+										REAL thr = fractal->transformCommon.multiplierInvThreshold5;
+										if (absDiff >= thr)
+										{
+											REAL bias = fractal->transformCommon.multiplierInvBias5;
+											REAL center = 1.0f + bias;
+											int imode = fractal->transformCommon.multiplierInvMode5;
+											if (imode == 0)
+												val = center + (fabs(val - center) > 1e-15f ? (1.0f / (val - center)) : 1e15f);
+											else if (imode == 1)
+												val = center - (val - center);
+											else if (imode == 2)
+												val = center + (1.0f - fabs(val - center));
+											else if (imode == 3)
+												val = center - fabs(val - center) * ((val > center) ? 1.0f : -1.0f);
+											REAL sm = fractal->transformCommon.multiplierInvSmooth5;
+											if (sm > 0.0f)
+											{
+												REAL blend = fmin(absDiff / (thr + sm + 1e-15f), 1.0f);
+												blend = blend * blend * (3.0f - 2.0f * blend);
+												val = origVal + blend * (val - origVal);
+											}
+											REAL idcy = fractal->transformCommon.multiplierInvDecay5;
+											if (idcy > 0.0f)
+											{
+												REAL rng = (REAL)(fractal->transformCommon.multiplierStopIter5 - fractal->transformCommon.multiplierStartIter5);
+												REAL td = (rng > 0.0f) ? (REAL)(aux->i - fractal->transformCommon.multiplierStartIter5) / rng : 0.0f;
+												REAL fade = native_exp(-idcy * td * 5.0f);
+												val = origVal + fade * (val - origVal);
+											}
+											REAL str = fractal->transformCommon.multiplierInvStrength5;
+											if (str < 1.0f)
+												val = origVal + str * (val - origVal);
+										}
+									}
+								}
 							}
 
 				switch (fractal->transformCommon.multiplierMode5)

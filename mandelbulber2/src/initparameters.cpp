@@ -2386,6 +2386,67 @@ void InitFractalParams(std::shared_ptr<cParameterContainer> par)
 	par->addParam("transf_multiplier_clip_fold_4", false, morphNone, paramStandard);
 	par->addParam("transf_multiplier_clip_fold_5", false, morphNone, paramStandard);
 
+	par->addParam("transf_multiplier_inv_strength_1", 1.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_inv_strength_2", 1.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_inv_strength_3", 1.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_inv_strength_4", 1.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_inv_strength_5", 1.0, 0.0, 1.0, morphNone, paramStandard);
+
+	par->addParam("transf_multiplier_inv_threshold_1", 0.0, 0.0, 10.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_inv_threshold_2", 0.0, 0.0, 10.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_inv_threshold_3", 0.0, 0.0, 10.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_inv_threshold_4", 0.0, 0.0, 10.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_inv_threshold_5", 0.0, 0.0, 10.0, morphNone, paramStandard);
+
+	par->addParam("transf_multiplier_inv_decay_1", 0.0, 0.0, 5.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_inv_decay_2", 0.0, 0.0, 5.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_inv_decay_3", 0.0, 0.0, 5.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_inv_decay_4", 0.0, 0.0, 5.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_inv_decay_5", 0.0, 0.0, 5.0, morphNone, paramStandard);
+
+	par->addParam("transf_multiplier_inv_bias_1", 0.0, -2.0, 2.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_inv_bias_2", 0.0, -2.0, 2.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_inv_bias_3", 0.0, -2.0, 2.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_inv_bias_4", 0.0, -2.0, 2.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_inv_bias_5", 0.0, -2.0, 2.0, morphNone, paramStandard);
+
+	par->addParam("transf_multiplier_inv_smooth_1", 0.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_inv_smooth_2", 0.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_inv_smooth_3", 0.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_inv_smooth_4", 0.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_inv_smooth_5", 0.0, 0.0, 1.0, morphNone, paramStandard);
+
+	par->addParam("transf_multiplier_inv_range_min_1", 0.0, 0.0, 10.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_inv_range_min_2", 0.0, 0.0, 10.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_inv_range_min_3", 0.0, 0.0, 10.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_inv_range_min_4", 0.0, 0.0, 10.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_inv_range_min_5", 0.0, 0.0, 10.0, morphNone, paramStandard);
+
+	par->addParam("transf_multiplier_inv_range_max_1", 10.0, 0.0, 10.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_inv_range_max_2", 10.0, 0.0, 10.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_inv_range_max_3", 10.0, 0.0, 10.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_inv_range_max_4", 10.0, 0.0, 10.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_inv_range_max_5", 10.0, 0.0, 10.0, morphNone, paramStandard);
+
+	par->addParam("transf_multiplier_inv_mode_1", 0, 0, 3, morphNone, paramStandard);
+	par->addParam("transf_multiplier_inv_mode_2", 0, 0, 3, morphNone, paramStandard);
+	par->addParam("transf_multiplier_inv_mode_3", 0, 0, 3, morphNone, paramStandard);
+	par->addParam("transf_multiplier_inv_mode_4", 0, 0, 3, morphNone, paramStandard);
+	par->addParam("transf_multiplier_inv_mode_5", 0, 0, 3, morphNone, paramStandard);
+
+	par->addParam("transf_multiplier_inv_axis_1", 0, 0, 3, morphNone, paramStandard);
+	par->addParam("transf_multiplier_inv_axis_2", 0, 0, 3, morphNone, paramStandard);
+	par->addParam("transf_multiplier_inv_axis_3", 0, 0, 3, morphNone, paramStandard);
+	par->addParam("transf_multiplier_inv_axis_4", 0, 0, 3, morphNone, paramStandard);
+	par->addParam("transf_multiplier_inv_axis_5", 0, 0, 3, morphNone, paramStandard);
+
+	par->addParam("transf_multiplier_inv_oscillate_1", false, morphNone, paramStandard);
+	par->addParam("transf_multiplier_inv_oscillate_2", false, morphNone, paramStandard);
+	par->addParam("transf_multiplier_inv_oscillate_3", false, morphNone, paramStandard);
+	par->addParam("transf_multiplier_inv_oscillate_4", false, morphNone, paramStandard);
+	par->addParam("transf_multiplier_inv_oscillate_5", false, morphNone, paramStandard);
+
+
 
 
 
