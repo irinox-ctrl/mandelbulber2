@@ -126,6 +126,44 @@ void cFractalCollatzMod::FormulaCode(CVector4 &z, const sFractal *fractal, sExte
 						double st = floor(t * steps) / steps;
 						val = 1.0 + (val - 1.0) * st;
 					}
+								else if (vmode == 10) // Logistic Sigmoid
+								{
+									double k1ls = fmax(fractal->transformCommon.multiplierExponent1, 0.1) * 10.0;
+									double sv1 = 1.0 / (1.0 + exp(-k1ls * (t - 0.5)));
+									val = 1.0 + (sv1 - 0.5) * 2.0 * (val - 1.0);
+								}
+								else if (vmode == 11) // Chirp Sweep
+								{
+									double chirpR1 = freq * 0.1;
+									val = 1.0 + sin(2.0 * M_PI * (freq + chirpR1 * t) * t + ph) * (val - 1.0);
+								}
+								else if (vmode == 12) // Reverse Sawtooth
+								{
+									double rt1v = fmod(t * freq + ph, 1.0);
+									if (rt1v < 0.0) rt1v += 1.0;
+									val = 1.0 + (1.0 - rt1v) * (val - 1.0);
+								}
+								else if (vmode == 13) // Lorenz Chaotic
+								{
+									double lx1v = 1.0, ly1v = 1.0, lz1v = 1.0;
+									lx1v += (double)((fractal->transformCommon.multiplierNoiseSeed1 + 1) % 100) * 0.01;
+									for (int li1 = 0; li1 < (int)(t * 100.0) + 1; li1++)
+									{
+										double dx1v = 10.0 * (ly1v - lx1v) * 0.01;
+										double dy1v = (lx1v * (28.0 - lz1v) - ly1v) * 0.01;
+										double dz1v = (lx1v * ly1v - 2.6667 * lz1v) * 0.01;
+										lx1v += dx1v; ly1v += dy1v; lz1v += dz1v;
+									}
+									val = 1.0 + fmod(fabs(lx1v), 1.0) * (val - 1.0);
+								}
+								else if (vmode == 14) // Parabolic Bounce
+								{
+									double bt1v = fmod(t * freq + ph, 1.0);
+									if (bt1v < 0.0) bt1v += 1.0;
+									double tri1v = fabs(2.0 * bt1v - 1.0);
+									val = 1.0 + (1.0 - tri1v * tri1v) * (val - 1.0);
+								}
+
 				}
 
 				double w = fractal->transformCommon.multiplierWeight1;
@@ -532,6 +570,146 @@ void cFractalCollatzMod::FormulaCode(CVector4 &z, const sFractal *fractal, sExte
 
 							} // end else distCull
 							} // end else slotDisable
+
+							
+							// Gradient Direction — directional cosine weight
+							double gradDir1 = fractal->transformCommon.multiplierGradientDir1;
+							if (gradDir1 != 0.0)
+							{
+								double r1g = sqrt(z.x * z.x + z.y * z.y + z.z * z.z);
+								if (r1g > 1e-12)
+								{
+									double cosW1 = (z.x * cos(gradDir1) + z.y * sin(gradDir1)) / r1g;
+									double blend1 = (cosW1 + 1.0) * 0.5;
+									val = 1.0 + (val - 1.0) * blend1;
+								}
+							}
+							// Voronoi Cell Modulation
+							double voroScale1 = fractal->transformCommon.multiplierVoronoiScale1;
+							if (voroScale1 > 0.0)
+							{
+								double vx1 = z.x * voroScale1;
+								double vy1 = z.y * voroScale1;
+								double vz1 = z.z * voroScale1;
+								double fx1 = vx1 - floor(vx1) - 0.5;
+								double fy1 = vy1 - floor(vy1) - 0.5;
+								double fz1 = vz1 - floor(vz1) - 0.5;
+								double vDist1 = sqrt(fx1 * fx1 + fy1 * fy1 + fz1 * fz1);
+								val = 1.0 + (val - 1.0) * fmin(vDist1 * 2.0, 1.0);
+							}
+							// Toroidal Distance
+							double torusR1 = fractal->transformCommon.multiplierToroidalR1;
+							if (torusR1 > 0.0)
+							{
+								double xyR1 = sqrt(z.x * z.x + z.y * z.y);
+								double tDist1 = sqrt((xyR1 - torusR1) * (xyR1 - torusR1) + z.z * z.z);
+								double tFade1 = exp(-tDist1);
+								val = 1.0 + (val - 1.0) * tFade1;
+							}
+							// Angular Band Stripe
+							int angStripes1 = fractal->transformCommon.multiplierAngularStripes1;
+							if (angStripes1 > 0)
+							{
+								double angle1 = atan2(z.y, z.x);
+								int sector1 = (int)floor((angle1 + M_PI) / (2.0 * M_PI) * angStripes1);
+								if (sector1 % 2 != 0) val = 1.0;
+							}
+							// Geometric Progression
+							double geoP1 = fractal->transformCommon.multiplierGeoProgression1;
+							if (geoP1 != 1.0)
+							{
+								int elapsed1g = aux.i - fractal->transformCommon.multiplierStartIter1;
+								if (elapsed1g > 0)
+									val = 1.0 + (val - 1.0) * pow(geoP1, (double)elapsed1g);
+							}
+							// Parity Gate
+							int parity1 = fractal->transformCommon.multiplierParityGate1;
+							if (parity1 == 1 && aux.i % 2 == 0) val = 1.0; // odd only
+							if (parity1 == 2 && aux.i % 2 != 0) val = 1.0; // even only
+							// Fibonacci Step
+							if (fractal->transformCommon.multiplierFibonacciStep1)
+							{
+								bool isFib1 = false;
+								int fa1 = 0, fb1 = 1;
+								while (fb1 <= aux.i) { int fc1 = fa1 + fb1; fa1 = fb1; fb1 = fc1; if (fb1 == aux.i) isFib1 = true; }
+								if (aux.i == 0 || aux.i == 1) isFib1 = true;
+								if (!isFib1) val = 1.0;
+							}
+
+							
+							// Batch 2: Slot interaction + Math + Artistic for slot 1
+							// Interpolation Curve
+							int icurve1 = fractal->transformCommon.multiplierInterpCurve1;
+							if (icurve1 > 0 && val != 1.0)
+							{
+								double dev1 = val - 1.0;
+								double tn1 = fabs(dev1);
+								if (tn1 > 1.0) tn1 = 1.0;
+								if (icurve1 == 1) tn1 = tn1 * tn1 * tn1; // cubic
+								else if (icurve1 == 2) tn1 = tn1 * tn1 * (3.0 - 2.0 * tn1); // smoothstep
+								else if (icurve1 == 3) tn1 = (1.0 - cos(tn1 * M_PI)) * 0.5; // cosine
+								val = 1.0 + (dev1 > 0 ? tn1 : -tn1);
+							}
+							// Dithered Quantize
+							double dq1 = fractal->transformCommon.multiplierDitherQuantize1;
+							if (dq1 > 0.0)
+							{
+								int dqseed1 = aux.i * 48271 + 1 * 16807;
+								dqseed1 = (dqseed1 ^ (dqseed1 >> 15)) * 1103515245;
+								double dither1 = ((double)(dqseed1 & 0xFFFF) / 65535.0 - 0.5) * dq1;
+								val = floor((val + dither1) / dq1 + 0.5) * dq1;
+							}
+							// Complex Magnitude Mode
+							if (fractal->transformCommon.multiplierComplexMag1)
+							{
+								double cmag1 = sqrt(z.x * z.x + z.y * z.y);
+								if (cmag1 > 1e-12) val = 1.0 + (val - 1.0) * cmag1;
+							}
+							// Palette Index Drive
+							double pidx1 = fractal->transformCommon.multiplierPaletteIdxDrive1;
+							if (pidx1 > 0.0)
+							{
+								aux.color += (val - 1.0) * pidx1 * 256.0;
+							}
+							// Turbulence Layers (fBm octaves for noise)
+							int tLayers1 = fractal->transformCommon.multiplierTurbulenceLayers1;
+							if (tLayers1 > 1 && val != 1.0)
+							{
+								double turbSum1 = val - 1.0;
+								double amp1 = 0.5;
+								for (int tl1 = 1; tl1 < tLayers1; tl1++)
+								{
+									int tseed1 = aux.i * 73856093 + tl1 * 19349663 + 1 * 83492791;
+									tseed1 = (tseed1 ^ (tseed1 >> 13)) * 1274126177;
+									tseed1 = tseed1 ^ (tseed1 >> 16);
+									double tnoise1 = (double)(tseed1 & 0xFFFF) / 65535.0 - 0.5;
+									turbSum1 += tnoise1 * amp1 * (val - 1.0);
+									amp1 *= 0.5;
+								}
+								val = 1.0 + turbSum1;
+							}
+							// Kaleidoscope Fold Bias
+							double kalAngle1 = fractal->transformCommon.multiplierKaleidoscopeBias1;
+							if (kalAngle1 > 0.0)
+							{
+								val = 1.0 + (val - 1.0) * cos(kalAngle1 * val);
+							}
+							// Phase Randomise
+							double phRand1 = fractal->transformCommon.multiplierPhaseRandomise1;
+							if (phRand1 > 0.0)
+							{
+								int phseed1 = (int)(z.x * 73856.0 + z.y * 19349.0 + z.z * 83492.0) + 1;
+								phseed1 = (phseed1 ^ (phseed1 >> 13)) * 1274126177;
+								phseed1 = phseed1 ^ (phseed1 >> 16);
+								double phJitter1 = ((double)(phseed1 & 0xFFFF) / 65535.0 - 0.5) * phRand1;
+								val = 1.0 + (val - 1.0) * cos(phJitter1 * 2.0 * M_PI);
+							}
+							// Phase Lock Offset
+							double plOff1 = fractal->transformCommon.multiplierPhaseLockOffset1;
+							if (plOff1 != 0.0)
+							{
+								val = 1.0 + (val - 1.0) * cos(plOff1 * M_PI);
+							}
 
 							switch (fractal->transformCommon.multiplierMode1)
 				{
@@ -1044,9 +1222,150 @@ void cFractalCollatzMod::FormulaCode(CVector4 &z, const sFractal *fractal, sExte
 							} // end else distCull
 							} // end else slotDisable
 
+							
+							// Gradient Direction — directional cosine weight
+							double gradDir2 = fractal->transformCommon.multiplierGradientDir2;
+							if (gradDir2 != 0.0)
+							{
+								double r2g = sqrt(z.x * z.x + z.y * z.y + z.z * z.z);
+								if (r2g > 1e-12)
+								{
+									double cosW2 = (z.x * cos(gradDir2) + z.y * sin(gradDir2)) / r2g;
+									double blend2 = (cosW2 + 1.0) * 0.5;
+									val = 1.0 + (val - 1.0) * blend2;
+								}
+							}
+							// Voronoi Cell Modulation
+							double voroScale2 = fractal->transformCommon.multiplierVoronoiScale2;
+							if (voroScale2 > 0.0)
+							{
+								double vx2 = z.x * voroScale2;
+								double vy2 = z.y * voroScale2;
+								double vz2 = z.z * voroScale2;
+								double fx2 = vx2 - floor(vx2) - 0.5;
+								double fy2 = vy2 - floor(vy2) - 0.5;
+								double fz2 = vz2 - floor(vz2) - 0.5;
+								double vDist2 = sqrt(fx2 * fx2 + fy2 * fy2 + fz2 * fz2);
+								val = 1.0 + (val - 1.0) * fmin(vDist2 * 2.0, 1.0);
+							}
+							// Toroidal Distance
+							double torusR2 = fractal->transformCommon.multiplierToroidalR2;
+							if (torusR2 > 0.0)
+							{
+								double xyR2 = sqrt(z.x * z.x + z.y * z.y);
+								double tDist2 = sqrt((xyR2 - torusR2) * (xyR2 - torusR2) + z.z * z.z);
+								double tFade2 = exp(-tDist2);
+								val = 1.0 + (val - 1.0) * tFade2;
+							}
+							// Angular Band Stripe
+							int angStripes2 = fractal->transformCommon.multiplierAngularStripes2;
+							if (angStripes2 > 0)
+							{
+								double angle2 = atan2(z.y, z.x);
+								int sector2 = (int)floor((angle2 + M_PI) / (2.0 * M_PI) * angStripes2);
+								if (sector2 % 2 != 0) val = 1.0;
+							}
+							// Geometric Progression
+							double geoP2 = fractal->transformCommon.multiplierGeoProgression2;
+							if (geoP2 != 1.0)
+							{
+								int elapsed2g = aux.i - fractal->transformCommon.multiplierStartIter2;
+								if (elapsed2g > 0)
+									val = 1.0 + (val - 1.0) * pow(geoP2, (double)elapsed2g);
+							}
+							// Parity Gate
+							int parity2 = fractal->transformCommon.multiplierParityGate2;
+							if (parity2 == 1 && aux.i % 2 == 0) val = 1.0; // odd only
+							if (parity2 == 2 && aux.i % 2 != 0) val = 1.0; // even only
+							// Fibonacci Step
+							if (fractal->transformCommon.multiplierFibonacciStep2)
+							{
+								bool isFib2 = false;
+								int fa2 = 0, fb2 = 1;
+								while (fb2 <= aux.i) { int fc2 = fa2 + fb2; fa2 = fb2; fb2 = fc2; if (fb2 == aux.i) isFib2 = true; }
+								if (aux.i == 0 || aux.i == 1) isFib2 = true;
+								if (!isFib2) val = 1.0;
+							}
+
+							
+							// Batch 2: Slot interaction + Math + Artistic for slot 2
+							// Interpolation Curve
+							int icurve2 = fractal->transformCommon.multiplierInterpCurve2;
+							if (icurve2 > 0 && val != 1.0)
+							{
+								double dev2 = val - 1.0;
+								double tn2 = fabs(dev2);
+								if (tn2 > 1.0) tn2 = 1.0;
+								if (icurve2 == 1) tn2 = tn2 * tn2 * tn2; // cubic
+								else if (icurve2 == 2) tn2 = tn2 * tn2 * (3.0 - 2.0 * tn2); // smoothstep
+								else if (icurve2 == 3) tn2 = (1.0 - cos(tn2 * M_PI)) * 0.5; // cosine
+								val = 1.0 + (dev2 > 0 ? tn2 : -tn2);
+							}
+							// Dithered Quantize
+							double dq2 = fractal->transformCommon.multiplierDitherQuantize2;
+							if (dq2 > 0.0)
+							{
+								int dqseed2 = aux.i * 48271 + 2 * 16807;
+								dqseed2 = (dqseed2 ^ (dqseed2 >> 15)) * 1103515245;
+								double dither2 = ((double)(dqseed2 & 0xFFFF) / 65535.0 - 0.5) * dq2;
+								val = floor((val + dither2) / dq2 + 0.5) * dq2;
+							}
+							// Complex Magnitude Mode
+							if (fractal->transformCommon.multiplierComplexMag2)
+							{
+								double cmag2 = sqrt(z.x * z.x + z.y * z.y);
+								if (cmag2 > 1e-12) val = 1.0 + (val - 1.0) * cmag2;
+							}
+							// Palette Index Drive
+							double pidx2 = fractal->transformCommon.multiplierPaletteIdxDrive2;
+							if (pidx2 > 0.0)
+							{
+								aux.color += (val - 1.0) * pidx2 * 256.0;
+							}
+							// Turbulence Layers (fBm octaves for noise)
+							int tLayers2 = fractal->transformCommon.multiplierTurbulenceLayers2;
+							if (tLayers2 > 1 && val != 1.0)
+							{
+								double turbSum2 = val - 1.0;
+								double amp2 = 0.5;
+								for (int tl2 = 1; tl2 < tLayers2; tl2++)
+								{
+									int tseed2 = aux.i * 73856093 + tl2 * 19349663 + 2 * 83492791;
+									tseed2 = (tseed2 ^ (tseed2 >> 13)) * 1274126177;
+									tseed2 = tseed2 ^ (tseed2 >> 16);
+									double tnoise2 = (double)(tseed2 & 0xFFFF) / 65535.0 - 0.5;
+									turbSum2 += tnoise2 * amp2 * (val - 1.0);
+									amp2 *= 0.5;
+								}
+								val = 1.0 + turbSum2;
+							}
+							// Kaleidoscope Fold Bias
+							double kalAngle2 = fractal->transformCommon.multiplierKaleidoscopeBias2;
+							if (kalAngle2 > 0.0)
+							{
+								val = 1.0 + (val - 1.0) * cos(kalAngle2 * val);
+							}
+							// Phase Randomise
+							double phRand2 = fractal->transformCommon.multiplierPhaseRandomise2;
+							if (phRand2 > 0.0)
+							{
+								int phseed2 = (int)(z.x * 73856.0 + z.y * 19349.0 + z.z * 83492.0) + 2;
+								phseed2 = (phseed2 ^ (phseed2 >> 13)) * 1274126177;
+								phseed2 = phseed2 ^ (phseed2 >> 16);
+								double phJitter2 = ((double)(phseed2 & 0xFFFF) / 65535.0 - 0.5) * phRand2;
+								val = 1.0 + (val - 1.0) * cos(phJitter2 * 2.0 * M_PI);
+							}
+							// Phase Lock Offset
+							double plOff2 = fractal->transformCommon.multiplierPhaseLockOffset2;
+							if (plOff2 != 0.0)
+							{
+								val = 1.0 + (val - 1.0) * cos(plOff2 * M_PI);
+							}
+
 							switch (fractal->transformCommon.multiplierMode2)
 				{
-					default:
+					
+								default:
 					case 0:
 					{
 						double valY = fractal->transformCommon.multiplierScaleY2;
@@ -1554,6 +1873,146 @@ void cFractalCollatzMod::FormulaCode(CVector4 &z, const sFractal *fractal, sExte
 
 							} // end else distCull
 							} // end else slotDisable
+
+							
+							// Gradient Direction — directional cosine weight
+							double gradDir3 = fractal->transformCommon.multiplierGradientDir3;
+							if (gradDir3 != 0.0)
+							{
+								double r3g = sqrt(z.x * z.x + z.y * z.y + z.z * z.z);
+								if (r3g > 1e-12)
+								{
+									double cosW3 = (z.x * cos(gradDir3) + z.y * sin(gradDir3)) / r3g;
+									double blend3 = (cosW3 + 1.0) * 0.5;
+									val = 1.0 + (val - 1.0) * blend3;
+								}
+							}
+							// Voronoi Cell Modulation
+							double voroScale3 = fractal->transformCommon.multiplierVoronoiScale3;
+							if (voroScale3 > 0.0)
+							{
+								double vx3 = z.x * voroScale3;
+								double vy3 = z.y * voroScale3;
+								double vz3 = z.z * voroScale3;
+								double fx3 = vx3 - floor(vx3) - 0.5;
+								double fy3 = vy3 - floor(vy3) - 0.5;
+								double fz3 = vz3 - floor(vz3) - 0.5;
+								double vDist3 = sqrt(fx3 * fx3 + fy3 * fy3 + fz3 * fz3);
+								val = 1.0 + (val - 1.0) * fmin(vDist3 * 2.0, 1.0);
+							}
+							// Toroidal Distance
+							double torusR3 = fractal->transformCommon.multiplierToroidalR3;
+							if (torusR3 > 0.0)
+							{
+								double xyR3 = sqrt(z.x * z.x + z.y * z.y);
+								double tDist3 = sqrt((xyR3 - torusR3) * (xyR3 - torusR3) + z.z * z.z);
+								double tFade3 = exp(-tDist3);
+								val = 1.0 + (val - 1.0) * tFade3;
+							}
+							// Angular Band Stripe
+							int angStripes3 = fractal->transformCommon.multiplierAngularStripes3;
+							if (angStripes3 > 0)
+							{
+								double angle3 = atan2(z.y, z.x);
+								int sector3 = (int)floor((angle3 + M_PI) / (2.0 * M_PI) * angStripes3);
+								if (sector3 % 2 != 0) val = 1.0;
+							}
+							// Geometric Progression
+							double geoP3 = fractal->transformCommon.multiplierGeoProgression3;
+							if (geoP3 != 1.0)
+							{
+								int elapsed3g = aux.i - fractal->transformCommon.multiplierStartIter3;
+								if (elapsed3g > 0)
+									val = 1.0 + (val - 1.0) * pow(geoP3, (double)elapsed3g);
+							}
+							// Parity Gate
+							int parity3 = fractal->transformCommon.multiplierParityGate3;
+							if (parity3 == 1 && aux.i % 2 == 0) val = 1.0; // odd only
+							if (parity3 == 2 && aux.i % 2 != 0) val = 1.0; // even only
+							// Fibonacci Step
+							if (fractal->transformCommon.multiplierFibonacciStep3)
+							{
+								bool isFib3 = false;
+								int fa3 = 0, fb3 = 1;
+								while (fb3 <= aux.i) { int fc3 = fa3 + fb3; fa3 = fb3; fb3 = fc3; if (fb3 == aux.i) isFib3 = true; }
+								if (aux.i == 0 || aux.i == 1) isFib3 = true;
+								if (!isFib3) val = 1.0;
+							}
+
+							
+							// Batch 2: Slot interaction + Math + Artistic for slot 3
+							// Interpolation Curve
+							int icurve3 = fractal->transformCommon.multiplierInterpCurve3;
+							if (icurve3 > 0 && val != 1.0)
+							{
+								double dev3 = val - 1.0;
+								double tn3 = fabs(dev3);
+								if (tn3 > 1.0) tn3 = 1.0;
+								if (icurve3 == 1) tn3 = tn3 * tn3 * tn3; // cubic
+								else if (icurve3 == 2) tn3 = tn3 * tn3 * (3.0 - 2.0 * tn3); // smoothstep
+								else if (icurve3 == 3) tn3 = (1.0 - cos(tn3 * M_PI)) * 0.5; // cosine
+								val = 1.0 + (dev3 > 0 ? tn3 : -tn3);
+							}
+							// Dithered Quantize
+							double dq3 = fractal->transformCommon.multiplierDitherQuantize3;
+							if (dq3 > 0.0)
+							{
+								int dqseed3 = aux.i * 48271 + 3 * 16807;
+								dqseed3 = (dqseed3 ^ (dqseed3 >> 15)) * 1103515245;
+								double dither3 = ((double)(dqseed3 & 0xFFFF) / 65535.0 - 0.5) * dq3;
+								val = floor((val + dither3) / dq3 + 0.5) * dq3;
+							}
+							// Complex Magnitude Mode
+							if (fractal->transformCommon.multiplierComplexMag3)
+							{
+								double cmag3 = sqrt(z.x * z.x + z.y * z.y);
+								if (cmag3 > 1e-12) val = 1.0 + (val - 1.0) * cmag3;
+							}
+							// Palette Index Drive
+							double pidx3 = fractal->transformCommon.multiplierPaletteIdxDrive3;
+							if (pidx3 > 0.0)
+							{
+								aux.color += (val - 1.0) * pidx3 * 256.0;
+							}
+							// Turbulence Layers (fBm octaves for noise)
+							int tLayers3 = fractal->transformCommon.multiplierTurbulenceLayers3;
+							if (tLayers3 > 1 && val != 1.0)
+							{
+								double turbSum3 = val - 1.0;
+								double amp3 = 0.5;
+								for (int tl3 = 1; tl3 < tLayers3; tl3++)
+								{
+									int tseed3 = aux.i * 73856093 + tl3 * 19349663 + 3 * 83492791;
+									tseed3 = (tseed3 ^ (tseed3 >> 13)) * 1274126177;
+									tseed3 = tseed3 ^ (tseed3 >> 16);
+									double tnoise3 = (double)(tseed3 & 0xFFFF) / 65535.0 - 0.5;
+									turbSum3 += tnoise3 * amp3 * (val - 1.0);
+									amp3 *= 0.5;
+								}
+								val = 1.0 + turbSum3;
+							}
+							// Kaleidoscope Fold Bias
+							double kalAngle3 = fractal->transformCommon.multiplierKaleidoscopeBias3;
+							if (kalAngle3 > 0.0)
+							{
+								val = 1.0 + (val - 1.0) * cos(kalAngle3 * val);
+							}
+							// Phase Randomise
+							double phRand3 = fractal->transformCommon.multiplierPhaseRandomise3;
+							if (phRand3 > 0.0)
+							{
+								int phseed3 = (int)(z.x * 73856.0 + z.y * 19349.0 + z.z * 83492.0) + 3;
+								phseed3 = (phseed3 ^ (phseed3 >> 13)) * 1274126177;
+								phseed3 = phseed3 ^ (phseed3 >> 16);
+								double phJitter3 = ((double)(phseed3 & 0xFFFF) / 65535.0 - 0.5) * phRand3;
+								val = 1.0 + (val - 1.0) * cos(phJitter3 * 2.0 * M_PI);
+							}
+							// Phase Lock Offset
+							double plOff3 = fractal->transformCommon.multiplierPhaseLockOffset3;
+							if (plOff3 != 0.0)
+							{
+								val = 1.0 + (val - 1.0) * cos(plOff3 * M_PI);
+							}
 
 							switch (fractal->transformCommon.multiplierMode3)
 				{
@@ -2066,6 +2525,146 @@ void cFractalCollatzMod::FormulaCode(CVector4 &z, const sFractal *fractal, sExte
 							} // end else distCull
 							} // end else slotDisable
 
+							
+							// Gradient Direction — directional cosine weight
+							double gradDir4 = fractal->transformCommon.multiplierGradientDir4;
+							if (gradDir4 != 0.0)
+							{
+								double r4g = sqrt(z.x * z.x + z.y * z.y + z.z * z.z);
+								if (r4g > 1e-12)
+								{
+									double cosW4 = (z.x * cos(gradDir4) + z.y * sin(gradDir4)) / r4g;
+									double blend4 = (cosW4 + 1.0) * 0.5;
+									val = 1.0 + (val - 1.0) * blend4;
+								}
+							}
+							// Voronoi Cell Modulation
+							double voroScale4 = fractal->transformCommon.multiplierVoronoiScale4;
+							if (voroScale4 > 0.0)
+							{
+								double vx4 = z.x * voroScale4;
+								double vy4 = z.y * voroScale4;
+								double vz4 = z.z * voroScale4;
+								double fx4 = vx4 - floor(vx4) - 0.5;
+								double fy4 = vy4 - floor(vy4) - 0.5;
+								double fz4 = vz4 - floor(vz4) - 0.5;
+								double vDist4 = sqrt(fx4 * fx4 + fy4 * fy4 + fz4 * fz4);
+								val = 1.0 + (val - 1.0) * fmin(vDist4 * 2.0, 1.0);
+							}
+							// Toroidal Distance
+							double torusR4 = fractal->transformCommon.multiplierToroidalR4;
+							if (torusR4 > 0.0)
+							{
+								double xyR4 = sqrt(z.x * z.x + z.y * z.y);
+								double tDist4 = sqrt((xyR4 - torusR4) * (xyR4 - torusR4) + z.z * z.z);
+								double tFade4 = exp(-tDist4);
+								val = 1.0 + (val - 1.0) * tFade4;
+							}
+							// Angular Band Stripe
+							int angStripes4 = fractal->transformCommon.multiplierAngularStripes4;
+							if (angStripes4 > 0)
+							{
+								double angle4 = atan2(z.y, z.x);
+								int sector4 = (int)floor((angle4 + M_PI) / (2.0 * M_PI) * angStripes4);
+								if (sector4 % 2 != 0) val = 1.0;
+							}
+							// Geometric Progression
+							double geoP4 = fractal->transformCommon.multiplierGeoProgression4;
+							if (geoP4 != 1.0)
+							{
+								int elapsed4g = aux.i - fractal->transformCommon.multiplierStartIter4;
+								if (elapsed4g > 0)
+									val = 1.0 + (val - 1.0) * pow(geoP4, (double)elapsed4g);
+							}
+							// Parity Gate
+							int parity4 = fractal->transformCommon.multiplierParityGate4;
+							if (parity4 == 1 && aux.i % 2 == 0) val = 1.0; // odd only
+							if (parity4 == 2 && aux.i % 2 != 0) val = 1.0; // even only
+							// Fibonacci Step
+							if (fractal->transformCommon.multiplierFibonacciStep4)
+							{
+								bool isFib4 = false;
+								int fa4 = 0, fb4 = 1;
+								while (fb4 <= aux.i) { int fc4 = fa4 + fb4; fa4 = fb4; fb4 = fc4; if (fb4 == aux.i) isFib4 = true; }
+								if (aux.i == 0 || aux.i == 1) isFib4 = true;
+								if (!isFib4) val = 1.0;
+							}
+
+							
+							// Batch 2: Slot interaction + Math + Artistic for slot 4
+							// Interpolation Curve
+							int icurve4 = fractal->transformCommon.multiplierInterpCurve4;
+							if (icurve4 > 0 && val != 1.0)
+							{
+								double dev4 = val - 1.0;
+								double tn4 = fabs(dev4);
+								if (tn4 > 1.0) tn4 = 1.0;
+								if (icurve4 == 1) tn4 = tn4 * tn4 * tn4; // cubic
+								else if (icurve4 == 2) tn4 = tn4 * tn4 * (3.0 - 2.0 * tn4); // smoothstep
+								else if (icurve4 == 3) tn4 = (1.0 - cos(tn4 * M_PI)) * 0.5; // cosine
+								val = 1.0 + (dev4 > 0 ? tn4 : -tn4);
+							}
+							// Dithered Quantize
+							double dq4 = fractal->transformCommon.multiplierDitherQuantize4;
+							if (dq4 > 0.0)
+							{
+								int dqseed4 = aux.i * 48271 + 4 * 16807;
+								dqseed4 = (dqseed4 ^ (dqseed4 >> 15)) * 1103515245;
+								double dither4 = ((double)(dqseed4 & 0xFFFF) / 65535.0 - 0.5) * dq4;
+								val = floor((val + dither4) / dq4 + 0.5) * dq4;
+							}
+							// Complex Magnitude Mode
+							if (fractal->transformCommon.multiplierComplexMag4)
+							{
+								double cmag4 = sqrt(z.x * z.x + z.y * z.y);
+								if (cmag4 > 1e-12) val = 1.0 + (val - 1.0) * cmag4;
+							}
+							// Palette Index Drive
+							double pidx4 = fractal->transformCommon.multiplierPaletteIdxDrive4;
+							if (pidx4 > 0.0)
+							{
+								aux.color += (val - 1.0) * pidx4 * 256.0;
+							}
+							// Turbulence Layers (fBm octaves for noise)
+							int tLayers4 = fractal->transformCommon.multiplierTurbulenceLayers4;
+							if (tLayers4 > 1 && val != 1.0)
+							{
+								double turbSum4 = val - 1.0;
+								double amp4 = 0.5;
+								for (int tl4 = 1; tl4 < tLayers4; tl4++)
+								{
+									int tseed4 = aux.i * 73856093 + tl4 * 19349663 + 4 * 83492791;
+									tseed4 = (tseed4 ^ (tseed4 >> 13)) * 1274126177;
+									tseed4 = tseed4 ^ (tseed4 >> 16);
+									double tnoise4 = (double)(tseed4 & 0xFFFF) / 65535.0 - 0.5;
+									turbSum4 += tnoise4 * amp4 * (val - 1.0);
+									amp4 *= 0.5;
+								}
+								val = 1.0 + turbSum4;
+							}
+							// Kaleidoscope Fold Bias
+							double kalAngle4 = fractal->transformCommon.multiplierKaleidoscopeBias4;
+							if (kalAngle4 > 0.0)
+							{
+								val = 1.0 + (val - 1.0) * cos(kalAngle4 * val);
+							}
+							// Phase Randomise
+							double phRand4 = fractal->transformCommon.multiplierPhaseRandomise4;
+							if (phRand4 > 0.0)
+							{
+								int phseed4 = (int)(z.x * 73856.0 + z.y * 19349.0 + z.z * 83492.0) + 4;
+								phseed4 = (phseed4 ^ (phseed4 >> 13)) * 1274126177;
+								phseed4 = phseed4 ^ (phseed4 >> 16);
+								double phJitter4 = ((double)(phseed4 & 0xFFFF) / 65535.0 - 0.5) * phRand4;
+								val = 1.0 + (val - 1.0) * cos(phJitter4 * 2.0 * M_PI);
+							}
+							// Phase Lock Offset
+							double plOff4 = fractal->transformCommon.multiplierPhaseLockOffset4;
+							if (plOff4 != 0.0)
+							{
+								val = 1.0 + (val - 1.0) * cos(plOff4 * M_PI);
+							}
+
 							switch (fractal->transformCommon.multiplierMode4)
 				{
 					default:
@@ -2576,6 +3175,146 @@ void cFractalCollatzMod::FormulaCode(CVector4 &z, const sFractal *fractal, sExte
 
 							} // end else distCull
 							} // end else slotDisable
+
+							
+							// Gradient Direction — directional cosine weight
+							double gradDir5 = fractal->transformCommon.multiplierGradientDir5;
+							if (gradDir5 != 0.0)
+							{
+								double r5g = sqrt(z.x * z.x + z.y * z.y + z.z * z.z);
+								if (r5g > 1e-12)
+								{
+									double cosW5 = (z.x * cos(gradDir5) + z.y * sin(gradDir5)) / r5g;
+									double blend5 = (cosW5 + 1.0) * 0.5;
+									val = 1.0 + (val - 1.0) * blend5;
+								}
+							}
+							// Voronoi Cell Modulation
+							double voroScale5 = fractal->transformCommon.multiplierVoronoiScale5;
+							if (voroScale5 > 0.0)
+							{
+								double vx5 = z.x * voroScale5;
+								double vy5 = z.y * voroScale5;
+								double vz5 = z.z * voroScale5;
+								double fx5 = vx5 - floor(vx5) - 0.5;
+								double fy5 = vy5 - floor(vy5) - 0.5;
+								double fz5 = vz5 - floor(vz5) - 0.5;
+								double vDist5 = sqrt(fx5 * fx5 + fy5 * fy5 + fz5 * fz5);
+								val = 1.0 + (val - 1.0) * fmin(vDist5 * 2.0, 1.0);
+							}
+							// Toroidal Distance
+							double torusR5 = fractal->transformCommon.multiplierToroidalR5;
+							if (torusR5 > 0.0)
+							{
+								double xyR5 = sqrt(z.x * z.x + z.y * z.y);
+								double tDist5 = sqrt((xyR5 - torusR5) * (xyR5 - torusR5) + z.z * z.z);
+								double tFade5 = exp(-tDist5);
+								val = 1.0 + (val - 1.0) * tFade5;
+							}
+							// Angular Band Stripe
+							int angStripes5 = fractal->transformCommon.multiplierAngularStripes5;
+							if (angStripes5 > 0)
+							{
+								double angle5 = atan2(z.y, z.x);
+								int sector5 = (int)floor((angle5 + M_PI) / (2.0 * M_PI) * angStripes5);
+								if (sector5 % 2 != 0) val = 1.0;
+							}
+							// Geometric Progression
+							double geoP5 = fractal->transformCommon.multiplierGeoProgression5;
+							if (geoP5 != 1.0)
+							{
+								int elapsed5g = aux.i - fractal->transformCommon.multiplierStartIter5;
+								if (elapsed5g > 0)
+									val = 1.0 + (val - 1.0) * pow(geoP5, (double)elapsed5g);
+							}
+							// Parity Gate
+							int parity5 = fractal->transformCommon.multiplierParityGate5;
+							if (parity5 == 1 && aux.i % 2 == 0) val = 1.0; // odd only
+							if (parity5 == 2 && aux.i % 2 != 0) val = 1.0; // even only
+							// Fibonacci Step
+							if (fractal->transformCommon.multiplierFibonacciStep5)
+							{
+								bool isFib5 = false;
+								int fa5 = 0, fb5 = 1;
+								while (fb5 <= aux.i) { int fc5 = fa5 + fb5; fa5 = fb5; fb5 = fc5; if (fb5 == aux.i) isFib5 = true; }
+								if (aux.i == 0 || aux.i == 1) isFib5 = true;
+								if (!isFib5) val = 1.0;
+							}
+
+							
+							// Batch 2: Slot interaction + Math + Artistic for slot 5
+							// Interpolation Curve
+							int icurve5 = fractal->transformCommon.multiplierInterpCurve5;
+							if (icurve5 > 0 && val != 1.0)
+							{
+								double dev5 = val - 1.0;
+								double tn5 = fabs(dev5);
+								if (tn5 > 1.0) tn5 = 1.0;
+								if (icurve5 == 1) tn5 = tn5 * tn5 * tn5; // cubic
+								else if (icurve5 == 2) tn5 = tn5 * tn5 * (3.0 - 2.0 * tn5); // smoothstep
+								else if (icurve5 == 3) tn5 = (1.0 - cos(tn5 * M_PI)) * 0.5; // cosine
+								val = 1.0 + (dev5 > 0 ? tn5 : -tn5);
+							}
+							// Dithered Quantize
+							double dq5 = fractal->transformCommon.multiplierDitherQuantize5;
+							if (dq5 > 0.0)
+							{
+								int dqseed5 = aux.i * 48271 + 5 * 16807;
+								dqseed5 = (dqseed5 ^ (dqseed5 >> 15)) * 1103515245;
+								double dither5 = ((double)(dqseed5 & 0xFFFF) / 65535.0 - 0.5) * dq5;
+								val = floor((val + dither5) / dq5 + 0.5) * dq5;
+							}
+							// Complex Magnitude Mode
+							if (fractal->transformCommon.multiplierComplexMag5)
+							{
+								double cmag5 = sqrt(z.x * z.x + z.y * z.y);
+								if (cmag5 > 1e-12) val = 1.0 + (val - 1.0) * cmag5;
+							}
+							// Palette Index Drive
+							double pidx5 = fractal->transformCommon.multiplierPaletteIdxDrive5;
+							if (pidx5 > 0.0)
+							{
+								aux.color += (val - 1.0) * pidx5 * 256.0;
+							}
+							// Turbulence Layers (fBm octaves for noise)
+							int tLayers5 = fractal->transformCommon.multiplierTurbulenceLayers5;
+							if (tLayers5 > 1 && val != 1.0)
+							{
+								double turbSum5 = val - 1.0;
+								double amp5 = 0.5;
+								for (int tl5 = 1; tl5 < tLayers5; tl5++)
+								{
+									int tseed5 = aux.i * 73856093 + tl5 * 19349663 + 5 * 83492791;
+									tseed5 = (tseed5 ^ (tseed5 >> 13)) * 1274126177;
+									tseed5 = tseed5 ^ (tseed5 >> 16);
+									double tnoise5 = (double)(tseed5 & 0xFFFF) / 65535.0 - 0.5;
+									turbSum5 += tnoise5 * amp5 * (val - 1.0);
+									amp5 *= 0.5;
+								}
+								val = 1.0 + turbSum5;
+							}
+							// Kaleidoscope Fold Bias
+							double kalAngle5 = fractal->transformCommon.multiplierKaleidoscopeBias5;
+							if (kalAngle5 > 0.0)
+							{
+								val = 1.0 + (val - 1.0) * cos(kalAngle5 * val);
+							}
+							// Phase Randomise
+							double phRand5 = fractal->transformCommon.multiplierPhaseRandomise5;
+							if (phRand5 > 0.0)
+							{
+								int phseed5 = (int)(z.x * 73856.0 + z.y * 19349.0 + z.z * 83492.0) + 5;
+								phseed5 = (phseed5 ^ (phseed5 >> 13)) * 1274126177;
+								phseed5 = phseed5 ^ (phseed5 >> 16);
+								double phJitter5 = ((double)(phseed5 & 0xFFFF) / 65535.0 - 0.5) * phRand5;
+								val = 1.0 + (val - 1.0) * cos(phJitter5 * 2.0 * M_PI);
+							}
+							// Phase Lock Offset
+							double plOff5 = fractal->transformCommon.multiplierPhaseLockOffset5;
+							if (plOff5 != 0.0)
+							{
+								val = 1.0 + (val - 1.0) * cos(plOff5 * M_PI);
+							}
 
 							switch (fractal->transformCommon.multiplierMode5)
 				{

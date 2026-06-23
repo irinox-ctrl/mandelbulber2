@@ -351,6 +351,44 @@ REAL4 SphereClusterV3Iteration(REAL4 z, __constant sFractalCl *fractal, sExtende
 						REAL st = floor(t * steps) / steps;
 						val = 1.0 + (val - 1.0) * st;
 					}
+								else if (vmode == 10)
+								{
+									REAL k1ls = fmax(fractal->transformCommon.multiplierExponent1, 0.1f) * 10.0f;
+									REAL sv1 = 1.0f / (1.0f + native_exp(-k1ls * (t - 0.5f)));
+									val = 1.0f + (sv1 - 0.5f) * 2.0f * (val - 1.0f);
+								}
+								else if (vmode == 11)
+								{
+									REAL chirpR1 = freq * 0.1f;
+									val = 1.0f + native_sin(2.0f * M_PI_F * (freq + chirpR1 * t) * t + ph) * (val - 1.0f);
+								}
+								else if (vmode == 12)
+								{
+									REAL rt1v = fmod(t * freq + ph, 1.0f);
+									if (rt1v < 0.0f) rt1v += 1.0f;
+									val = 1.0f + (1.0f - rt1v) * (val - 1.0f);
+								}
+								else if (vmode == 13)
+								{
+									REAL lx1v = 1.0f, ly1v = 1.0f, lz1v = 1.0f;
+									lx1v += (REAL)((fractal->transformCommon.multiplierNoiseSeed1 + 1) % 100) * 0.01f;
+									for (int li1 = 0; li1 < (int)(t * 100.0f) + 1; li1++)
+									{
+										REAL dx1v = 10.0f * (ly1v - lx1v) * 0.01f;
+										REAL dy1v = (lx1v * (28.0f - lz1v) - ly1v) * 0.01f;
+										REAL dz1v = (lx1v * ly1v - 2.6667f * lz1v) * 0.01f;
+										lx1v += dx1v; ly1v += dy1v; lz1v += dz1v;
+									}
+									val = 1.0f + fmod(fabs(lx1v), 1.0f) * (val - 1.0f);
+								}
+								else if (vmode == 14)
+								{
+									REAL bt1v = fmod(t * freq + ph, 1.0f);
+									if (bt1v < 0.0f) bt1v += 1.0f;
+									REAL tri1v = fabs(2.0f * bt1v - 1.0f);
+									val = 1.0f + (1.0f - tri1v * tri1v) * (val - 1.0f);
+								}
+
 				}
 
 				REAL w = fractal->transformCommon.multiplierWeight1;
@@ -737,6 +775,130 @@ REAL4 SphereClusterV3Iteration(REAL4 z, __constant sFractalCl *fractal, sExtende
 
 							} // end else distCull
 							} // end else slotDisable
+
+							
+							REAL gradDir1 = fractal->transformCommon.multiplierGradientDir1;
+							if (gradDir1 != 0.0f)
+							{
+								REAL r1g = native_sqrt(z.x * z.x + z.y * z.y + z.z * z.z);
+								if (r1g > 1e-12f)
+								{
+									REAL cosW1 = (z.x * native_cos(gradDir1) + z.y * native_sin(gradDir1)) / r1g;
+									REAL blend1 = (cosW1 + 1.0f) * 0.5f;
+									val = 1.0f + (val - 1.0f) * blend1;
+								}
+							}
+							REAL voroScale1 = fractal->transformCommon.multiplierVoronoiScale1;
+							if (voroScale1 > 0.0f)
+							{
+								REAL vx1 = z.x * voroScale1;
+								REAL vy1 = z.y * voroScale1;
+								REAL vz1 = z.z * voroScale1;
+								REAL fx1 = vx1 - floor(vx1) - 0.5f;
+								REAL fy1 = vy1 - floor(vy1) - 0.5f;
+								REAL fz1 = vz1 - floor(vz1) - 0.5f;
+								REAL vDist1 = native_sqrt(fx1 * fx1 + fy1 * fy1 + fz1 * fz1);
+								val = 1.0f + (val - 1.0f) * fmin(vDist1 * 2.0f, 1.0f);
+							}
+							REAL torusR1 = fractal->transformCommon.multiplierToroidalR1;
+							if (torusR1 > 0.0f)
+							{
+								REAL xyR1 = native_sqrt(z.x * z.x + z.y * z.y);
+								REAL tDist1 = native_sqrt((xyR1 - torusR1) * (xyR1 - torusR1) + z.z * z.z);
+								REAL tFade1 = native_exp(-tDist1);
+								val = 1.0f + (val - 1.0f) * tFade1;
+							}
+							int angStripes1 = fractal->transformCommon.multiplierAngularStripes1;
+							if (angStripes1 > 0)
+							{
+								REAL angle1 = atan2(z.y, z.x);
+								int sector1 = (int)floor((angle1 + M_PI_F) / (2.0f * M_PI_F) * (REAL)angStripes1);
+								if (sector1 % 2 != 0) val = 1.0f;
+							}
+							REAL geoP1 = fractal->transformCommon.multiplierGeoProgression1;
+							if (geoP1 != 1.0f)
+							{
+								int elapsed1g = aux->i - fractal->transformCommon.multiplierStartIter1;
+								if (elapsed1g > 0)
+									val = 1.0f + (val - 1.0f) * native_powr(geoP1, (REAL)elapsed1g);
+							}
+							int parity1 = fractal->transformCommon.multiplierParityGate1;
+							if (parity1 == 1 && aux->i % 2 == 0) val = 1.0f;
+							if (parity1 == 2 && aux->i % 2 != 0) val = 1.0f;
+							if (fractal->transformCommon.multiplierFibonacciStep1)
+							{
+								bool isFib1 = false;
+								int fa1 = 0, fb1 = 1;
+								while (fb1 <= aux->i) { int fc1 = fa1 + fb1; fa1 = fb1; fb1 = fc1; if (fb1 == aux->i) isFib1 = true; }
+								if (aux->i == 0 || aux->i == 1) isFib1 = true;
+								if (!isFib1) val = 1.0f;
+							}
+
+							
+							int icurve1 = fractal->transformCommon.multiplierInterpCurve1;
+							if (icurve1 > 0 && val != 1.0f)
+							{
+								REAL dev1 = val - 1.0f;
+								REAL tn1 = fabs(dev1);
+								if (tn1 > 1.0f) tn1 = 1.0f;
+								if (icurve1 == 1) tn1 = tn1 * tn1 * tn1;
+								else if (icurve1 == 2) tn1 = tn1 * tn1 * (3.0f - 2.0f * tn1);
+								else if (icurve1 == 3) tn1 = (1.0f - native_cos(tn1 * M_PI_F)) * 0.5f;
+								val = 1.0f + (dev1 > 0 ? tn1 : -tn1);
+							}
+							REAL dq1 = fractal->transformCommon.multiplierDitherQuantize1;
+							if (dq1 > 0.0f)
+							{
+								int dqseed1 = aux->i * 48271 + 1 * 16807;
+								dqseed1 = (dqseed1 ^ (dqseed1 >> 15)) * 1103515245;
+								REAL dither1 = ((REAL)(dqseed1 & 0xFFFF) / 65535.0f - 0.5f) * dq1;
+								val = floor((val + dither1) / dq1 + 0.5f) * dq1;
+							}
+							if (fractal->transformCommon.multiplierComplexMag1)
+							{
+								REAL cmag1 = native_sqrt(z.x * z.x + z.y * z.y);
+								if (cmag1 > 1e-12f) val = 1.0f + (val - 1.0f) * cmag1;
+							}
+							REAL pidx1 = fractal->transformCommon.multiplierPaletteIdxDrive1;
+							if (pidx1 > 0.0f)
+							{
+								aux->color += (val - 1.0f) * pidx1 * 256.0f;
+							}
+							int tLayers1 = fractal->transformCommon.multiplierTurbulenceLayers1;
+							if (tLayers1 > 1 && val != 1.0f)
+							{
+								REAL turbSum1 = val - 1.0f;
+								REAL amp1 = 0.5f;
+								for (int tl1 = 1; tl1 < tLayers1; tl1++)
+								{
+									int tseed1 = aux->i * 73856093 + tl1 * 19349663 + 1 * 83492791;
+									tseed1 = (tseed1 ^ (tseed1 >> 13)) * 1274126177;
+									tseed1 = tseed1 ^ (tseed1 >> 16);
+									REAL tnoise1 = (REAL)(tseed1 & 0xFFFF) / 65535.0f - 0.5f;
+									turbSum1 += tnoise1 * amp1 * (val - 1.0f);
+									amp1 *= 0.5f;
+								}
+								val = 1.0f + turbSum1;
+							}
+							REAL kalAngle1 = fractal->transformCommon.multiplierKaleidoscopeBias1;
+							if (kalAngle1 > 0.0f)
+							{
+								val = 1.0f + (val - 1.0f) * native_cos(kalAngle1 * val);
+							}
+							REAL phRand1 = fractal->transformCommon.multiplierPhaseRandomise1;
+							if (phRand1 > 0.0f)
+							{
+								int phseed1 = (int)(z.x * 73856.0f + z.y * 19349.0f + z.z * 83492.0f) + 1;
+								phseed1 = (phseed1 ^ (phseed1 >> 13)) * 1274126177;
+								phseed1 = phseed1 ^ (phseed1 >> 16);
+								REAL phJitter1 = ((REAL)(phseed1 & 0xFFFF) / 65535.0f - 0.5f) * phRand1;
+								val = 1.0f + (val - 1.0f) * native_cos(phJitter1 * 2.0f * M_PI_F);
+							}
+							REAL plOff1 = fractal->transformCommon.multiplierPhaseLockOffset1;
+							if (plOff1 != 0.0f)
+							{
+								val = 1.0f + (val - 1.0f) * native_cos(plOff1 * M_PI_F);
+							}
 
 							switch (fractal->transformCommon.multiplierMode1)
 				{
@@ -1229,9 +1391,158 @@ REAL4 SphereClusterV3Iteration(REAL4 z, __constant sFractalCl *fractal, sExtende
 							} // end else distCull
 							} // end else slotDisable
 
+							
+							REAL gradDir2 = fractal->transformCommon.multiplierGradientDir2;
+							if (gradDir2 != 0.0f)
+							{
+								REAL r2g = native_sqrt(z.x * z.x + z.y * z.y + z.z * z.z);
+								if (r2g > 1e-12f)
+								{
+									REAL cosW2 = (z.x * native_cos(gradDir2) + z.y * native_sin(gradDir2)) / r2g;
+									REAL blend2 = (cosW2 + 1.0f) * 0.5f;
+									val = 1.0f + (val - 1.0f) * blend2;
+								}
+							}
+							REAL voroScale2 = fractal->transformCommon.multiplierVoronoiScale2;
+							if (voroScale2 > 0.0f)
+							{
+								REAL vx2 = z.x * voroScale2;
+								REAL vy2 = z.y * voroScale2;
+								REAL vz2 = z.z * voroScale2;
+								REAL fx2 = vx2 - floor(vx2) - 0.5f;
+								REAL fy2 = vy2 - floor(vy2) - 0.5f;
+								REAL fz2 = vz2 - floor(vz2) - 0.5f;
+								REAL vDist2 = native_sqrt(fx2 * fx2 + fy2 * fy2 + fz2 * fz2);
+								val = 1.0f + (val - 1.0f) * fmin(vDist2 * 2.0f, 1.0f);
+							}
+							REAL torusR2 = fractal->transformCommon.multiplierToroidalR2;
+							if (torusR2 > 0.0f)
+							{
+								REAL xyR2 = native_sqrt(z.x * z.x + z.y * z.y);
+								REAL tDist2 = native_sqrt((xyR2 - torusR2) * (xyR2 - torusR2) + z.z * z.z);
+								REAL tFade2 = native_exp(-tDist2);
+								val = 1.0f + (val - 1.0f) * tFade2;
+							}
+							int angStripes2 = fractal->transformCommon.multiplierAngularStripes2;
+							if (angStripes2 > 0)
+							{
+								REAL angle2 = atan2(z.y, z.x);
+								int sector2 = (int)floor((angle2 + M_PI_F) / (2.0f * M_PI_F) * (REAL)angStripes2);
+								if (sector2 % 2 != 0) val = 1.0f;
+							}
+							REAL geoP2 = fractal->transformCommon.multiplierGeoProgression2;
+							if (geoP2 != 1.0f)
+							{
+								int elapsed2g = aux->i - fractal->transformCommon.multiplierStartIter2;
+								if (elapsed2g > 0)
+									val = 1.0f + (val - 1.0f) * native_powr(geoP2, (REAL)elapsed2g);
+							}
+							int parity2 = fractal->transformCommon.multiplierParityGate2;
+							if (parity2 == 1 && aux->i % 2 == 0) val = 1.0f;
+							if (parity2 == 2 && aux->i % 2 != 0) val = 1.0f;
+							if (fractal->transformCommon.multiplierFibonacciStep2)
+							{
+								bool isFib2 = false;
+								int fa2 = 0, fb2 = 1;
+								while (fb2 <= aux->i) { int fc2 = fa2 + fb2; fa2 = fb2; fb2 = fc2; if (fb2 == aux->i) isFib2 = true; }
+								if (aux->i == 0 || aux->i == 1) isFib2 = true;
+								if (!isFib2) val = 1.0f;
+							}
+
+							
+							int icurve2 = fractal->transformCommon.multiplierInterpCurve2;
+							if (icurve2 > 0 && val != 1.0f)
+							{
+								REAL dev2 = val - 1.0f;
+								REAL tn2 = fabs(dev2);
+								if (tn2 > 1.0f) tn2 = 1.0f;
+								if (icurve2 == 1) tn2 = tn2 * tn2 * tn2;
+								else if (icurve2 == 2) tn2 = tn2 * tn2 * (3.0f - 2.0f * tn2);
+								else if (icurve2 == 3) tn2 = (1.0f - native_cos(tn2 * M_PI_F)) * 0.5f;
+								val = 1.0f + (dev2 > 0 ? tn2 : -tn2);
+							}
+							REAL dq2 = fractal->transformCommon.multiplierDitherQuantize2;
+							if (dq2 > 0.0f)
+							{
+								int dqseed2 = aux->i * 48271 + 2 * 16807;
+								dqseed2 = (dqseed2 ^ (dqseed2 >> 15)) * 1103515245;
+								REAL dither2 = ((REAL)(dqseed2 & 0xFFFF) / 65535.0f - 0.5f) * dq2;
+								val = floor((val + dither2) / dq2 + 0.5f) * dq2;
+							}
+							if (fractal->transformCommon.multiplierComplexMag2)
+							{
+								REAL cmag2 = native_sqrt(z.x * z.x + z.y * z.y);
+								if (cmag2 > 1e-12f) val = 1.0f + (val - 1.0f) * cmag2;
+							}
+							REAL pidx2 = fractal->transformCommon.multiplierPaletteIdxDrive2;
+							if (pidx2 > 0.0f)
+							{
+								aux->color += (val - 1.0f) * pidx2 * 256.0f;
+							}
+							int tLayers2 = fractal->transformCommon.multiplierTurbulenceLayers2;
+							if (tLayers2 > 1 && val != 1.0f)
+							{
+								REAL turbSum2 = val - 1.0f;
+								REAL amp2 = 0.5f;
+								for (int tl2 = 1; tl2 < tLayers2; tl2++)
+								{
+									int tseed2 = aux->i * 73856093 + tl2 * 19349663 + 2 * 83492791;
+									tseed2 = (tseed2 ^ (tseed2 >> 13)) * 1274126177;
+									tseed2 = tseed2 ^ (tseed2 >> 16);
+									REAL tnoise2 = (REAL)(tseed2 & 0xFFFF) / 65535.0f - 0.5f;
+									turbSum2 += tnoise2 * amp2 * (val - 1.0f);
+									amp2 *= 0.5f;
+								}
+								val = 1.0f + turbSum2;
+							}
+							REAL kalAngle2 = fractal->transformCommon.multiplierKaleidoscopeBias2;
+							if (kalAngle2 > 0.0f)
+							{
+								val = 1.0f + (val - 1.0f) * native_cos(kalAngle2 * val);
+							}
+							REAL phRand2 = fractal->transformCommon.multiplierPhaseRandomise2;
+							if (phRand2 > 0.0f)
+							{
+								int phseed2 = (int)(z.x * 73856.0f + z.y * 19349.0f + z.z * 83492.0f) + 2;
+								phseed2 = (phseed2 ^ (phseed2 >> 13)) * 1274126177;
+								phseed2 = phseed2 ^ (phseed2 >> 16);
+								REAL phJitter2 = ((REAL)(phseed2 & 0xFFFF) / 65535.0f - 0.5f) * phRand2;
+								val = 1.0f + (val - 1.0f) * native_cos(phJitter2 * 2.0f * M_PI_F);
+							}
+							REAL plOff2 = fractal->transformCommon.multiplierPhaseLockOffset2;
+							if (plOff2 != 0.0f)
+							{
+								val = 1.0f + (val - 1.0f) * native_cos(plOff2 * M_PI_F);
+							}
+
 							switch (fractal->transformCommon.multiplierMode2)
 				{
-					default:
+					
+case 11:
+								{
+									REAL chirpRate1 = freq * 0.1f;
+									val = native_sin(2.0f * M_PI_F * (freq1 + chirpRate1 * t) * t + phase1);
+									val = 1.0f + val * (val - 1.0f);
+									break;
+								}
+case 13:
+								{
+									REAL sigma1 = 10.0f, rho1 = 28.0f, beta1 = 8.0f / 3.0f;
+									REAL dt1 = 0.01f;
+									REAL lx1 = 1.0f, ly1 = 1.0f, lz1 = 1.0f;
+									int seed1 = fractal->transformCommon.multiplierNoiseSeed1 + 1;
+									lx1 += (REAL)(seed1 % 100) * 0.01f;
+									for (int li = 0; li < (int)(t * 100.0f) + 1; li++)
+									{
+										REAL dx1 = sigma1 * (ly1 - lx1) * dt1;
+										REAL dy1 = (lx1 * (rho1 - lz1) - ly1) * dt1;
+										REAL dz1 = (lx1 * ly1 - beta1 * lz1) * dt1;
+										lx1 += dx1; ly1 += dy1; lz1 += dz1;
+									}
+									val = 1.0f + fmod(fabs(lx1), 1.0f) * (val - 1.0f);
+									break;
+								}
+default:
 					case 0:
 					{
 						REAL valY = fractal->transformCommon.multiplierScaleY2;
@@ -1719,6 +2030,130 @@ REAL4 SphereClusterV3Iteration(REAL4 z, __constant sFractalCl *fractal, sExtende
 
 							} // end else distCull
 							} // end else slotDisable
+
+							
+							REAL gradDir3 = fractal->transformCommon.multiplierGradientDir3;
+							if (gradDir3 != 0.0f)
+							{
+								REAL r3g = native_sqrt(z.x * z.x + z.y * z.y + z.z * z.z);
+								if (r3g > 1e-12f)
+								{
+									REAL cosW3 = (z.x * native_cos(gradDir3) + z.y * native_sin(gradDir3)) / r3g;
+									REAL blend3 = (cosW3 + 1.0f) * 0.5f;
+									val = 1.0f + (val - 1.0f) * blend3;
+								}
+							}
+							REAL voroScale3 = fractal->transformCommon.multiplierVoronoiScale3;
+							if (voroScale3 > 0.0f)
+							{
+								REAL vx3 = z.x * voroScale3;
+								REAL vy3 = z.y * voroScale3;
+								REAL vz3 = z.z * voroScale3;
+								REAL fx3 = vx3 - floor(vx3) - 0.5f;
+								REAL fy3 = vy3 - floor(vy3) - 0.5f;
+								REAL fz3 = vz3 - floor(vz3) - 0.5f;
+								REAL vDist3 = native_sqrt(fx3 * fx3 + fy3 * fy3 + fz3 * fz3);
+								val = 1.0f + (val - 1.0f) * fmin(vDist3 * 2.0f, 1.0f);
+							}
+							REAL torusR3 = fractal->transformCommon.multiplierToroidalR3;
+							if (torusR3 > 0.0f)
+							{
+								REAL xyR3 = native_sqrt(z.x * z.x + z.y * z.y);
+								REAL tDist3 = native_sqrt((xyR3 - torusR3) * (xyR3 - torusR3) + z.z * z.z);
+								REAL tFade3 = native_exp(-tDist3);
+								val = 1.0f + (val - 1.0f) * tFade3;
+							}
+							int angStripes3 = fractal->transformCommon.multiplierAngularStripes3;
+							if (angStripes3 > 0)
+							{
+								REAL angle3 = atan2(z.y, z.x);
+								int sector3 = (int)floor((angle3 + M_PI_F) / (2.0f * M_PI_F) * (REAL)angStripes3);
+								if (sector3 % 2 != 0) val = 1.0f;
+							}
+							REAL geoP3 = fractal->transformCommon.multiplierGeoProgression3;
+							if (geoP3 != 1.0f)
+							{
+								int elapsed3g = aux->i - fractal->transformCommon.multiplierStartIter3;
+								if (elapsed3g > 0)
+									val = 1.0f + (val - 1.0f) * native_powr(geoP3, (REAL)elapsed3g);
+							}
+							int parity3 = fractal->transformCommon.multiplierParityGate3;
+							if (parity3 == 1 && aux->i % 2 == 0) val = 1.0f;
+							if (parity3 == 2 && aux->i % 2 != 0) val = 1.0f;
+							if (fractal->transformCommon.multiplierFibonacciStep3)
+							{
+								bool isFib3 = false;
+								int fa3 = 0, fb3 = 1;
+								while (fb3 <= aux->i) { int fc3 = fa3 + fb3; fa3 = fb3; fb3 = fc3; if (fb3 == aux->i) isFib3 = true; }
+								if (aux->i == 0 || aux->i == 1) isFib3 = true;
+								if (!isFib3) val = 1.0f;
+							}
+
+							
+							int icurve3 = fractal->transformCommon.multiplierInterpCurve3;
+							if (icurve3 > 0 && val != 1.0f)
+							{
+								REAL dev3 = val - 1.0f;
+								REAL tn3 = fabs(dev3);
+								if (tn3 > 1.0f) tn3 = 1.0f;
+								if (icurve3 == 1) tn3 = tn3 * tn3 * tn3;
+								else if (icurve3 == 2) tn3 = tn3 * tn3 * (3.0f - 2.0f * tn3);
+								else if (icurve3 == 3) tn3 = (1.0f - native_cos(tn3 * M_PI_F)) * 0.5f;
+								val = 1.0f + (dev3 > 0 ? tn3 : -tn3);
+							}
+							REAL dq3 = fractal->transformCommon.multiplierDitherQuantize3;
+							if (dq3 > 0.0f)
+							{
+								int dqseed3 = aux->i * 48271 + 3 * 16807;
+								dqseed3 = (dqseed3 ^ (dqseed3 >> 15)) * 1103515245;
+								REAL dither3 = ((REAL)(dqseed3 & 0xFFFF) / 65535.0f - 0.5f) * dq3;
+								val = floor((val + dither3) / dq3 + 0.5f) * dq3;
+							}
+							if (fractal->transformCommon.multiplierComplexMag3)
+							{
+								REAL cmag3 = native_sqrt(z.x * z.x + z.y * z.y);
+								if (cmag3 > 1e-12f) val = 1.0f + (val - 1.0f) * cmag3;
+							}
+							REAL pidx3 = fractal->transformCommon.multiplierPaletteIdxDrive3;
+							if (pidx3 > 0.0f)
+							{
+								aux->color += (val - 1.0f) * pidx3 * 256.0f;
+							}
+							int tLayers3 = fractal->transformCommon.multiplierTurbulenceLayers3;
+							if (tLayers3 > 1 && val != 1.0f)
+							{
+								REAL turbSum3 = val - 1.0f;
+								REAL amp3 = 0.5f;
+								for (int tl3 = 1; tl3 < tLayers3; tl3++)
+								{
+									int tseed3 = aux->i * 73856093 + tl3 * 19349663 + 3 * 83492791;
+									tseed3 = (tseed3 ^ (tseed3 >> 13)) * 1274126177;
+									tseed3 = tseed3 ^ (tseed3 >> 16);
+									REAL tnoise3 = (REAL)(tseed3 & 0xFFFF) / 65535.0f - 0.5f;
+									turbSum3 += tnoise3 * amp3 * (val - 1.0f);
+									amp3 *= 0.5f;
+								}
+								val = 1.0f + turbSum3;
+							}
+							REAL kalAngle3 = fractal->transformCommon.multiplierKaleidoscopeBias3;
+							if (kalAngle3 > 0.0f)
+							{
+								val = 1.0f + (val - 1.0f) * native_cos(kalAngle3 * val);
+							}
+							REAL phRand3 = fractal->transformCommon.multiplierPhaseRandomise3;
+							if (phRand3 > 0.0f)
+							{
+								int phseed3 = (int)(z.x * 73856.0f + z.y * 19349.0f + z.z * 83492.0f) + 3;
+								phseed3 = (phseed3 ^ (phseed3 >> 13)) * 1274126177;
+								phseed3 = phseed3 ^ (phseed3 >> 16);
+								REAL phJitter3 = ((REAL)(phseed3 & 0xFFFF) / 65535.0f - 0.5f) * phRand3;
+								val = 1.0f + (val - 1.0f) * native_cos(phJitter3 * 2.0f * M_PI_F);
+							}
+							REAL plOff3 = fractal->transformCommon.multiplierPhaseLockOffset3;
+							if (plOff3 != 0.0f)
+							{
+								val = 1.0f + (val - 1.0f) * native_cos(plOff3 * M_PI_F);
+							}
 
 							switch (fractal->transformCommon.multiplierMode3)
 				{
@@ -2211,6 +2646,130 @@ REAL4 SphereClusterV3Iteration(REAL4 z, __constant sFractalCl *fractal, sExtende
 							} // end else distCull
 							} // end else slotDisable
 
+							
+							REAL gradDir4 = fractal->transformCommon.multiplierGradientDir4;
+							if (gradDir4 != 0.0f)
+							{
+								REAL r4g = native_sqrt(z.x * z.x + z.y * z.y + z.z * z.z);
+								if (r4g > 1e-12f)
+								{
+									REAL cosW4 = (z.x * native_cos(gradDir4) + z.y * native_sin(gradDir4)) / r4g;
+									REAL blend4 = (cosW4 + 1.0f) * 0.5f;
+									val = 1.0f + (val - 1.0f) * blend4;
+								}
+							}
+							REAL voroScale4 = fractal->transformCommon.multiplierVoronoiScale4;
+							if (voroScale4 > 0.0f)
+							{
+								REAL vx4 = z.x * voroScale4;
+								REAL vy4 = z.y * voroScale4;
+								REAL vz4 = z.z * voroScale4;
+								REAL fx4 = vx4 - floor(vx4) - 0.5f;
+								REAL fy4 = vy4 - floor(vy4) - 0.5f;
+								REAL fz4 = vz4 - floor(vz4) - 0.5f;
+								REAL vDist4 = native_sqrt(fx4 * fx4 + fy4 * fy4 + fz4 * fz4);
+								val = 1.0f + (val - 1.0f) * fmin(vDist4 * 2.0f, 1.0f);
+							}
+							REAL torusR4 = fractal->transformCommon.multiplierToroidalR4;
+							if (torusR4 > 0.0f)
+							{
+								REAL xyR4 = native_sqrt(z.x * z.x + z.y * z.y);
+								REAL tDist4 = native_sqrt((xyR4 - torusR4) * (xyR4 - torusR4) + z.z * z.z);
+								REAL tFade4 = native_exp(-tDist4);
+								val = 1.0f + (val - 1.0f) * tFade4;
+							}
+							int angStripes4 = fractal->transformCommon.multiplierAngularStripes4;
+							if (angStripes4 > 0)
+							{
+								REAL angle4 = atan2(z.y, z.x);
+								int sector4 = (int)floor((angle4 + M_PI_F) / (2.0f * M_PI_F) * (REAL)angStripes4);
+								if (sector4 % 2 != 0) val = 1.0f;
+							}
+							REAL geoP4 = fractal->transformCommon.multiplierGeoProgression4;
+							if (geoP4 != 1.0f)
+							{
+								int elapsed4g = aux->i - fractal->transformCommon.multiplierStartIter4;
+								if (elapsed4g > 0)
+									val = 1.0f + (val - 1.0f) * native_powr(geoP4, (REAL)elapsed4g);
+							}
+							int parity4 = fractal->transformCommon.multiplierParityGate4;
+							if (parity4 == 1 && aux->i % 2 == 0) val = 1.0f;
+							if (parity4 == 2 && aux->i % 2 != 0) val = 1.0f;
+							if (fractal->transformCommon.multiplierFibonacciStep4)
+							{
+								bool isFib4 = false;
+								int fa4 = 0, fb4 = 1;
+								while (fb4 <= aux->i) { int fc4 = fa4 + fb4; fa4 = fb4; fb4 = fc4; if (fb4 == aux->i) isFib4 = true; }
+								if (aux->i == 0 || aux->i == 1) isFib4 = true;
+								if (!isFib4) val = 1.0f;
+							}
+
+							
+							int icurve4 = fractal->transformCommon.multiplierInterpCurve4;
+							if (icurve4 > 0 && val != 1.0f)
+							{
+								REAL dev4 = val - 1.0f;
+								REAL tn4 = fabs(dev4);
+								if (tn4 > 1.0f) tn4 = 1.0f;
+								if (icurve4 == 1) tn4 = tn4 * tn4 * tn4;
+								else if (icurve4 == 2) tn4 = tn4 * tn4 * (3.0f - 2.0f * tn4);
+								else if (icurve4 == 3) tn4 = (1.0f - native_cos(tn4 * M_PI_F)) * 0.5f;
+								val = 1.0f + (dev4 > 0 ? tn4 : -tn4);
+							}
+							REAL dq4 = fractal->transformCommon.multiplierDitherQuantize4;
+							if (dq4 > 0.0f)
+							{
+								int dqseed4 = aux->i * 48271 + 4 * 16807;
+								dqseed4 = (dqseed4 ^ (dqseed4 >> 15)) * 1103515245;
+								REAL dither4 = ((REAL)(dqseed4 & 0xFFFF) / 65535.0f - 0.5f) * dq4;
+								val = floor((val + dither4) / dq4 + 0.5f) * dq4;
+							}
+							if (fractal->transformCommon.multiplierComplexMag4)
+							{
+								REAL cmag4 = native_sqrt(z.x * z.x + z.y * z.y);
+								if (cmag4 > 1e-12f) val = 1.0f + (val - 1.0f) * cmag4;
+							}
+							REAL pidx4 = fractal->transformCommon.multiplierPaletteIdxDrive4;
+							if (pidx4 > 0.0f)
+							{
+								aux->color += (val - 1.0f) * pidx4 * 256.0f;
+							}
+							int tLayers4 = fractal->transformCommon.multiplierTurbulenceLayers4;
+							if (tLayers4 > 1 && val != 1.0f)
+							{
+								REAL turbSum4 = val - 1.0f;
+								REAL amp4 = 0.5f;
+								for (int tl4 = 1; tl4 < tLayers4; tl4++)
+								{
+									int tseed4 = aux->i * 73856093 + tl4 * 19349663 + 4 * 83492791;
+									tseed4 = (tseed4 ^ (tseed4 >> 13)) * 1274126177;
+									tseed4 = tseed4 ^ (tseed4 >> 16);
+									REAL tnoise4 = (REAL)(tseed4 & 0xFFFF) / 65535.0f - 0.5f;
+									turbSum4 += tnoise4 * amp4 * (val - 1.0f);
+									amp4 *= 0.5f;
+								}
+								val = 1.0f + turbSum4;
+							}
+							REAL kalAngle4 = fractal->transformCommon.multiplierKaleidoscopeBias4;
+							if (kalAngle4 > 0.0f)
+							{
+								val = 1.0f + (val - 1.0f) * native_cos(kalAngle4 * val);
+							}
+							REAL phRand4 = fractal->transformCommon.multiplierPhaseRandomise4;
+							if (phRand4 > 0.0f)
+							{
+								int phseed4 = (int)(z.x * 73856.0f + z.y * 19349.0f + z.z * 83492.0f) + 4;
+								phseed4 = (phseed4 ^ (phseed4 >> 13)) * 1274126177;
+								phseed4 = phseed4 ^ (phseed4 >> 16);
+								REAL phJitter4 = ((REAL)(phseed4 & 0xFFFF) / 65535.0f - 0.5f) * phRand4;
+								val = 1.0f + (val - 1.0f) * native_cos(phJitter4 * 2.0f * M_PI_F);
+							}
+							REAL plOff4 = fractal->transformCommon.multiplierPhaseLockOffset4;
+							if (plOff4 != 0.0f)
+							{
+								val = 1.0f + (val - 1.0f) * native_cos(plOff4 * M_PI_F);
+							}
+
 							switch (fractal->transformCommon.multiplierMode4)
 				{
 					default:
@@ -2701,6 +3260,130 @@ REAL4 SphereClusterV3Iteration(REAL4 z, __constant sFractalCl *fractal, sExtende
 
 							} // end else distCull
 							} // end else slotDisable
+
+							
+							REAL gradDir5 = fractal->transformCommon.multiplierGradientDir5;
+							if (gradDir5 != 0.0f)
+							{
+								REAL r5g = native_sqrt(z.x * z.x + z.y * z.y + z.z * z.z);
+								if (r5g > 1e-12f)
+								{
+									REAL cosW5 = (z.x * native_cos(gradDir5) + z.y * native_sin(gradDir5)) / r5g;
+									REAL blend5 = (cosW5 + 1.0f) * 0.5f;
+									val = 1.0f + (val - 1.0f) * blend5;
+								}
+							}
+							REAL voroScale5 = fractal->transformCommon.multiplierVoronoiScale5;
+							if (voroScale5 > 0.0f)
+							{
+								REAL vx5 = z.x * voroScale5;
+								REAL vy5 = z.y * voroScale5;
+								REAL vz5 = z.z * voroScale5;
+								REAL fx5 = vx5 - floor(vx5) - 0.5f;
+								REAL fy5 = vy5 - floor(vy5) - 0.5f;
+								REAL fz5 = vz5 - floor(vz5) - 0.5f;
+								REAL vDist5 = native_sqrt(fx5 * fx5 + fy5 * fy5 + fz5 * fz5);
+								val = 1.0f + (val - 1.0f) * fmin(vDist5 * 2.0f, 1.0f);
+							}
+							REAL torusR5 = fractal->transformCommon.multiplierToroidalR5;
+							if (torusR5 > 0.0f)
+							{
+								REAL xyR5 = native_sqrt(z.x * z.x + z.y * z.y);
+								REAL tDist5 = native_sqrt((xyR5 - torusR5) * (xyR5 - torusR5) + z.z * z.z);
+								REAL tFade5 = native_exp(-tDist5);
+								val = 1.0f + (val - 1.0f) * tFade5;
+							}
+							int angStripes5 = fractal->transformCommon.multiplierAngularStripes5;
+							if (angStripes5 > 0)
+							{
+								REAL angle5 = atan2(z.y, z.x);
+								int sector5 = (int)floor((angle5 + M_PI_F) / (2.0f * M_PI_F) * (REAL)angStripes5);
+								if (sector5 % 2 != 0) val = 1.0f;
+							}
+							REAL geoP5 = fractal->transformCommon.multiplierGeoProgression5;
+							if (geoP5 != 1.0f)
+							{
+								int elapsed5g = aux->i - fractal->transformCommon.multiplierStartIter5;
+								if (elapsed5g > 0)
+									val = 1.0f + (val - 1.0f) * native_powr(geoP5, (REAL)elapsed5g);
+							}
+							int parity5 = fractal->transformCommon.multiplierParityGate5;
+							if (parity5 == 1 && aux->i % 2 == 0) val = 1.0f;
+							if (parity5 == 2 && aux->i % 2 != 0) val = 1.0f;
+							if (fractal->transformCommon.multiplierFibonacciStep5)
+							{
+								bool isFib5 = false;
+								int fa5 = 0, fb5 = 1;
+								while (fb5 <= aux->i) { int fc5 = fa5 + fb5; fa5 = fb5; fb5 = fc5; if (fb5 == aux->i) isFib5 = true; }
+								if (aux->i == 0 || aux->i == 1) isFib5 = true;
+								if (!isFib5) val = 1.0f;
+							}
+
+							
+							int icurve5 = fractal->transformCommon.multiplierInterpCurve5;
+							if (icurve5 > 0 && val != 1.0f)
+							{
+								REAL dev5 = val - 1.0f;
+								REAL tn5 = fabs(dev5);
+								if (tn5 > 1.0f) tn5 = 1.0f;
+								if (icurve5 == 1) tn5 = tn5 * tn5 * tn5;
+								else if (icurve5 == 2) tn5 = tn5 * tn5 * (3.0f - 2.0f * tn5);
+								else if (icurve5 == 3) tn5 = (1.0f - native_cos(tn5 * M_PI_F)) * 0.5f;
+								val = 1.0f + (dev5 > 0 ? tn5 : -tn5);
+							}
+							REAL dq5 = fractal->transformCommon.multiplierDitherQuantize5;
+							if (dq5 > 0.0f)
+							{
+								int dqseed5 = aux->i * 48271 + 5 * 16807;
+								dqseed5 = (dqseed5 ^ (dqseed5 >> 15)) * 1103515245;
+								REAL dither5 = ((REAL)(dqseed5 & 0xFFFF) / 65535.0f - 0.5f) * dq5;
+								val = floor((val + dither5) / dq5 + 0.5f) * dq5;
+							}
+							if (fractal->transformCommon.multiplierComplexMag5)
+							{
+								REAL cmag5 = native_sqrt(z.x * z.x + z.y * z.y);
+								if (cmag5 > 1e-12f) val = 1.0f + (val - 1.0f) * cmag5;
+							}
+							REAL pidx5 = fractal->transformCommon.multiplierPaletteIdxDrive5;
+							if (pidx5 > 0.0f)
+							{
+								aux->color += (val - 1.0f) * pidx5 * 256.0f;
+							}
+							int tLayers5 = fractal->transformCommon.multiplierTurbulenceLayers5;
+							if (tLayers5 > 1 && val != 1.0f)
+							{
+								REAL turbSum5 = val - 1.0f;
+								REAL amp5 = 0.5f;
+								for (int tl5 = 1; tl5 < tLayers5; tl5++)
+								{
+									int tseed5 = aux->i * 73856093 + tl5 * 19349663 + 5 * 83492791;
+									tseed5 = (tseed5 ^ (tseed5 >> 13)) * 1274126177;
+									tseed5 = tseed5 ^ (tseed5 >> 16);
+									REAL tnoise5 = (REAL)(tseed5 & 0xFFFF) / 65535.0f - 0.5f;
+									turbSum5 += tnoise5 * amp5 * (val - 1.0f);
+									amp5 *= 0.5f;
+								}
+								val = 1.0f + turbSum5;
+							}
+							REAL kalAngle5 = fractal->transformCommon.multiplierKaleidoscopeBias5;
+							if (kalAngle5 > 0.0f)
+							{
+								val = 1.0f + (val - 1.0f) * native_cos(kalAngle5 * val);
+							}
+							REAL phRand5 = fractal->transformCommon.multiplierPhaseRandomise5;
+							if (phRand5 > 0.0f)
+							{
+								int phseed5 = (int)(z.x * 73856.0f + z.y * 19349.0f + z.z * 83492.0f) + 5;
+								phseed5 = (phseed5 ^ (phseed5 >> 13)) * 1274126177;
+								phseed5 = phseed5 ^ (phseed5 >> 16);
+								REAL phJitter5 = ((REAL)(phseed5 & 0xFFFF) / 65535.0f - 0.5f) * phRand5;
+								val = 1.0f + (val - 1.0f) * native_cos(phJitter5 * 2.0f * M_PI_F);
+							}
+							REAL plOff5 = fractal->transformCommon.multiplierPhaseLockOffset5;
+							if (plOff5 != 0.0f)
+							{
+								val = 1.0f + (val - 1.0f) * native_cos(plOff5 * M_PI_F);
+							}
 
 							switch (fractal->transformCommon.multiplierMode5)
 				{

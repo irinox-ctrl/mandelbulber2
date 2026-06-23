@@ -2535,6 +2535,112 @@ void InitFractalParams(std::shared_ptr<cParameterContainer> par)
 	par->addParam("transf_multiplier_neutral_eps_4", 0.0, 0.0, 0.01, morphNone, paramStandard);
 	par->addParam("transf_multiplier_neutral_eps_5", 0.0, 0.0, 0.01, morphNone, paramStandard);
 
+	// Batch 1: Spatial + Temporal registrations
+	par->addParam("transf_multiplier_gradient_dir_1", 0.0, -3.14159, 3.14159, morphNone, paramStandard);
+	par->addParam("transf_multiplier_gradient_dir_2", 0.0, -3.14159, 3.14159, morphNone, paramStandard);
+	par->addParam("transf_multiplier_gradient_dir_3", 0.0, -3.14159, 3.14159, morphNone, paramStandard);
+	par->addParam("transf_multiplier_gradient_dir_4", 0.0, -3.14159, 3.14159, morphNone, paramStandard);
+	par->addParam("transf_multiplier_gradient_dir_5", 0.0, -3.14159, 3.14159, morphNone, paramStandard);
+	par->addParam("transf_multiplier_voronoi_scale_1", 0.0, 0.0, 10.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_voronoi_scale_2", 0.0, 0.0, 10.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_voronoi_scale_3", 0.0, 0.0, 10.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_voronoi_scale_4", 0.0, 0.0, 10.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_voronoi_scale_5", 0.0, 0.0, 10.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_toroidal_r_1", 0.0, 0.0, 10.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_toroidal_r_2", 0.0, 0.0, 10.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_toroidal_r_3", 0.0, 0.0, 10.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_toroidal_r_4", 0.0, 0.0, 10.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_toroidal_r_5", 0.0, 0.0, 10.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_angular_stripes_1", 0, 0, 32, morphNone, paramStandard);
+	par->addParam("transf_multiplier_angular_stripes_2", 0, 0, 32, morphNone, paramStandard);
+	par->addParam("transf_multiplier_angular_stripes_3", 0, 0, 32, morphNone, paramStandard);
+	par->addParam("transf_multiplier_angular_stripes_4", 0, 0, 32, morphNone, paramStandard);
+	par->addParam("transf_multiplier_angular_stripes_5", 0, 0, 32, morphNone, paramStandard);
+	par->addParam("transf_multiplier_geo_progression_1", 1.0, 0.5, 2.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_geo_progression_2", 1.0, 0.5, 2.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_geo_progression_3", 1.0, 0.5, 2.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_geo_progression_4", 1.0, 0.5, 2.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_geo_progression_5", 1.0, 0.5, 2.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_parity_gate_1", 0, 0, 2, morphNone, paramStandard);
+	par->addParam("transf_multiplier_parity_gate_2", 0, 0, 2, morphNone, paramStandard);
+	par->addParam("transf_multiplier_parity_gate_3", 0, 0, 2, morphNone, paramStandard);
+	par->addParam("transf_multiplier_parity_gate_4", 0, 0, 2, morphNone, paramStandard);
+	par->addParam("transf_multiplier_parity_gate_5", 0, 0, 2, morphNone, paramStandard);
+	par->addParam("transf_multiplier_fibonacci_step_1", false, morphNone, paramStandard);
+	par->addParam("transf_multiplier_fibonacci_step_2", false, morphNone, paramStandard);
+	par->addParam("transf_multiplier_fibonacci_step_3", false, morphNone, paramStandard);
+	par->addParam("transf_multiplier_fibonacci_step_4", false, morphNone, paramStandard);
+	par->addParam("transf_multiplier_fibonacci_step_5", false, morphNone, paramStandard);
+
+	// Batch 2: Slot interaction + Math + Artistic
+	par->addParam("transf_multiplier_am_source_slot_1", 0, 0, 5, morphNone, paramStandard);
+	par->addParam("transf_multiplier_am_source_slot_2", 0, 0, 5, morphNone, paramStandard);
+	par->addParam("transf_multiplier_am_source_slot_3", 0, 0, 5, morphNone, paramStandard);
+	par->addParam("transf_multiplier_am_source_slot_4", 0, 0, 5, morphNone, paramStandard);
+	par->addParam("transf_multiplier_am_source_slot_5", 0, 0, 5, morphNone, paramStandard);
+	par->addParam("transf_multiplier_gate_source_slot_1", 0, 0, 5, morphNone, paramStandard);
+	par->addParam("transf_multiplier_gate_source_slot_2", 0, 0, 5, morphNone, paramStandard);
+	par->addParam("transf_multiplier_gate_source_slot_3", 0, 0, 5, morphNone, paramStandard);
+	par->addParam("transf_multiplier_gate_source_slot_4", 0, 0, 5, morphNone, paramStandard);
+	par->addParam("transf_multiplier_gate_source_slot_5", 0, 0, 5, morphNone, paramStandard);
+	par->addParam("transf_multiplier_phase_lock_offset_1", 0.0, -1.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_phase_lock_offset_2", 0.0, -1.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_phase_lock_offset_3", 0.0, -1.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_phase_lock_offset_4", 0.0, -1.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_phase_lock_offset_5", 0.0, -1.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_ring_mod_slot_1", 0, 0, 5, morphNone, paramStandard);
+	par->addParam("transf_multiplier_ring_mod_slot_2", 0, 0, 5, morphNone, paramStandard);
+	par->addParam("transf_multiplier_ring_mod_slot_3", 0, 0, 5, morphNone, paramStandard);
+	par->addParam("transf_multiplier_ring_mod_slot_4", 0, 0, 5, morphNone, paramStandard);
+	par->addParam("transf_multiplier_ring_mod_slot_5", 0, 0, 5, morphNone, paramStandard);
+	par->addParam("transf_multiplier_combinator_1", 0, 0, 2, morphNone, paramStandard);
+	par->addParam("transf_multiplier_combinator_2", 0, 0, 2, morphNone, paramStandard);
+	par->addParam("transf_multiplier_combinator_3", 0, 0, 2, morphNone, paramStandard);
+	par->addParam("transf_multiplier_combinator_4", 0, 0, 2, morphNone, paramStandard);
+	par->addParam("transf_multiplier_combinator_5", 0, 0, 2, morphNone, paramStandard);
+	par->addParam("transf_multiplier_interp_curve_1", 0, 0, 3, morphNone, paramStandard);
+	par->addParam("transf_multiplier_interp_curve_2", 0, 0, 3, morphNone, paramStandard);
+	par->addParam("transf_multiplier_interp_curve_3", 0, 0, 3, morphNone, paramStandard);
+	par->addParam("transf_multiplier_interp_curve_4", 0, 0, 3, morphNone, paramStandard);
+	par->addParam("transf_multiplier_interp_curve_5", 0, 0, 3, morphNone, paramStandard);
+	par->addParam("transf_multiplier_dither_quantize_1", 0.0, 0.0, 2.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_dither_quantize_2", 0.0, 0.0, 2.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_dither_quantize_3", 0.0, 0.0, 2.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_dither_quantize_4", 0.0, 0.0, 2.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_dither_quantize_5", 0.0, 0.0, 2.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_complex_mag_1", false, morphNone, paramStandard);
+	par->addParam("transf_multiplier_complex_mag_2", false, morphNone, paramStandard);
+	par->addParam("transf_multiplier_complex_mag_3", false, morphNone, paramStandard);
+	par->addParam("transf_multiplier_complex_mag_4", false, morphNone, paramStandard);
+	par->addParam("transf_multiplier_complex_mag_5", false, morphNone, paramStandard);
+	par->addParam("transf_multiplier_palette_idx_drive_1", 0.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_palette_idx_drive_2", 0.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_palette_idx_drive_3", 0.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_palette_idx_drive_4", 0.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_palette_idx_drive_5", 0.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_orbit_trap_weight_1", 0.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_orbit_trap_weight_2", 0.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_orbit_trap_weight_3", 0.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_orbit_trap_weight_4", 0.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_orbit_trap_weight_5", 0.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_turbulence_layers_1", 1, 1, 6, morphNone, paramStandard);
+	par->addParam("transf_multiplier_turbulence_layers_2", 1, 1, 6, morphNone, paramStandard);
+	par->addParam("transf_multiplier_turbulence_layers_3", 1, 1, 6, morphNone, paramStandard);
+	par->addParam("transf_multiplier_turbulence_layers_4", 1, 1, 6, morphNone, paramStandard);
+	par->addParam("transf_multiplier_turbulence_layers_5", 1, 1, 6, morphNone, paramStandard);
+	par->addParam("transf_multiplier_kaleidoscope_bias_1", 0.0, 0.0, 3.14159, morphNone, paramStandard);
+	par->addParam("transf_multiplier_kaleidoscope_bias_2", 0.0, 0.0, 3.14159, morphNone, paramStandard);
+	par->addParam("transf_multiplier_kaleidoscope_bias_3", 0.0, 0.0, 3.14159, morphNone, paramStandard);
+	par->addParam("transf_multiplier_kaleidoscope_bias_4", 0.0, 0.0, 3.14159, morphNone, paramStandard);
+	par->addParam("transf_multiplier_kaleidoscope_bias_5", 0.0, 0.0, 3.14159, morphNone, paramStandard);
+	par->addParam("transf_multiplier_phase_randomise_1", 0.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_phase_randomise_2", 0.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_phase_randomise_3", 0.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_phase_randomise_4", 0.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_phase_randomise_5", 0.0, 0.0, 1.0, morphNone, paramStandard);
+
+
+
 
 
 

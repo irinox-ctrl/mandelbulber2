@@ -3,6 +3,6 @@
 *.d
 moc_*
 qrc_*
-Makefile
-mandelbulber2
+mandelbulber2/qmake/Makefile
+mandelbulber2/qmake/mandelbulber2
 mandelbulber2/deploy/share/mandelbulber2/formula/

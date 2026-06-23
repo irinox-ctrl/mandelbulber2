@@ -845,6 +845,112 @@ sFractal::sFractal(const std::shared_ptr<cParameterContainer> container)
 	transformCommon.multiplierNeutralEps4 = container->Get<double>("transf_multiplier_neutral_eps_4");
 	transformCommon.multiplierNeutralEps5 = container->Get<double>("transf_multiplier_neutral_eps_5");
 
+	// Batch 1 loading
+	transformCommon.multiplierGradientDir1 = container->Get<double>("transf_multiplier_gradient_dir_1");
+	transformCommon.multiplierGradientDir2 = container->Get<double>("transf_multiplier_gradient_dir_2");
+	transformCommon.multiplierGradientDir3 = container->Get<double>("transf_multiplier_gradient_dir_3");
+	transformCommon.multiplierGradientDir4 = container->Get<double>("transf_multiplier_gradient_dir_4");
+	transformCommon.multiplierGradientDir5 = container->Get<double>("transf_multiplier_gradient_dir_5");
+	transformCommon.multiplierVoronoiScale1 = container->Get<double>("transf_multiplier_voronoi_scale_1");
+	transformCommon.multiplierVoronoiScale2 = container->Get<double>("transf_multiplier_voronoi_scale_2");
+	transformCommon.multiplierVoronoiScale3 = container->Get<double>("transf_multiplier_voronoi_scale_3");
+	transformCommon.multiplierVoronoiScale4 = container->Get<double>("transf_multiplier_voronoi_scale_4");
+	transformCommon.multiplierVoronoiScale5 = container->Get<double>("transf_multiplier_voronoi_scale_5");
+	transformCommon.multiplierToroidalR1 = container->Get<double>("transf_multiplier_toroidal_r_1");
+	transformCommon.multiplierToroidalR2 = container->Get<double>("transf_multiplier_toroidal_r_2");
+	transformCommon.multiplierToroidalR3 = container->Get<double>("transf_multiplier_toroidal_r_3");
+	transformCommon.multiplierToroidalR4 = container->Get<double>("transf_multiplier_toroidal_r_4");
+	transformCommon.multiplierToroidalR5 = container->Get<double>("transf_multiplier_toroidal_r_5");
+	transformCommon.multiplierAngularStripes1 = container->Get<int>("transf_multiplier_angular_stripes_1");
+	transformCommon.multiplierAngularStripes2 = container->Get<int>("transf_multiplier_angular_stripes_2");
+	transformCommon.multiplierAngularStripes3 = container->Get<int>("transf_multiplier_angular_stripes_3");
+	transformCommon.multiplierAngularStripes4 = container->Get<int>("transf_multiplier_angular_stripes_4");
+	transformCommon.multiplierAngularStripes5 = container->Get<int>("transf_multiplier_angular_stripes_5");
+	transformCommon.multiplierGeoProgression1 = container->Get<double>("transf_multiplier_geo_progression_1");
+	transformCommon.multiplierGeoProgression2 = container->Get<double>("transf_multiplier_geo_progression_2");
+	transformCommon.multiplierGeoProgression3 = container->Get<double>("transf_multiplier_geo_progression_3");
+	transformCommon.multiplierGeoProgression4 = container->Get<double>("transf_multiplier_geo_progression_4");
+	transformCommon.multiplierGeoProgression5 = container->Get<double>("transf_multiplier_geo_progression_5");
+	transformCommon.multiplierParityGate1 = container->Get<int>("transf_multiplier_parity_gate_1");
+	transformCommon.multiplierParityGate2 = container->Get<int>("transf_multiplier_parity_gate_2");
+	transformCommon.multiplierParityGate3 = container->Get<int>("transf_multiplier_parity_gate_3");
+	transformCommon.multiplierParityGate4 = container->Get<int>("transf_multiplier_parity_gate_4");
+	transformCommon.multiplierParityGate5 = container->Get<int>("transf_multiplier_parity_gate_5");
+	transformCommon.multiplierFibonacciStep1 = container->Get<bool>("transf_multiplier_fibonacci_step_1");
+	transformCommon.multiplierFibonacciStep2 = container->Get<bool>("transf_multiplier_fibonacci_step_2");
+	transformCommon.multiplierFibonacciStep3 = container->Get<bool>("transf_multiplier_fibonacci_step_3");
+	transformCommon.multiplierFibonacciStep4 = container->Get<bool>("transf_multiplier_fibonacci_step_4");
+	transformCommon.multiplierFibonacciStep5 = container->Get<bool>("transf_multiplier_fibonacci_step_5");
+
+	// Batch 2 loading
+	transformCommon.multiplierAMSourceSlot1 = container->Get<int>("transf_multiplier_am_source_slot_1");
+	transformCommon.multiplierAMSourceSlot2 = container->Get<int>("transf_multiplier_am_source_slot_2");
+	transformCommon.multiplierAMSourceSlot3 = container->Get<int>("transf_multiplier_am_source_slot_3");
+	transformCommon.multiplierAMSourceSlot4 = container->Get<int>("transf_multiplier_am_source_slot_4");
+	transformCommon.multiplierAMSourceSlot5 = container->Get<int>("transf_multiplier_am_source_slot_5");
+	transformCommon.multiplierGateSourceSlot1 = container->Get<int>("transf_multiplier_gate_source_slot_1");
+	transformCommon.multiplierGateSourceSlot2 = container->Get<int>("transf_multiplier_gate_source_slot_2");
+	transformCommon.multiplierGateSourceSlot3 = container->Get<int>("transf_multiplier_gate_source_slot_3");
+	transformCommon.multiplierGateSourceSlot4 = container->Get<int>("transf_multiplier_gate_source_slot_4");
+	transformCommon.multiplierGateSourceSlot5 = container->Get<int>("transf_multiplier_gate_source_slot_5");
+	transformCommon.multiplierPhaseLockOffset1 = container->Get<double>("transf_multiplier_phase_lock_offset_1");
+	transformCommon.multiplierPhaseLockOffset2 = container->Get<double>("transf_multiplier_phase_lock_offset_2");
+	transformCommon.multiplierPhaseLockOffset3 = container->Get<double>("transf_multiplier_phase_lock_offset_3");
+	transformCommon.multiplierPhaseLockOffset4 = container->Get<double>("transf_multiplier_phase_lock_offset_4");
+	transformCommon.multiplierPhaseLockOffset5 = container->Get<double>("transf_multiplier_phase_lock_offset_5");
+	transformCommon.multiplierRingModSlot1 = container->Get<int>("transf_multiplier_ring_mod_slot_1");
+	transformCommon.multiplierRingModSlot2 = container->Get<int>("transf_multiplier_ring_mod_slot_2");
+	transformCommon.multiplierRingModSlot3 = container->Get<int>("transf_multiplier_ring_mod_slot_3");
+	transformCommon.multiplierRingModSlot4 = container->Get<int>("transf_multiplier_ring_mod_slot_4");
+	transformCommon.multiplierRingModSlot5 = container->Get<int>("transf_multiplier_ring_mod_slot_5");
+	transformCommon.multiplierCombinator1 = container->Get<int>("transf_multiplier_combinator_1");
+	transformCommon.multiplierCombinator2 = container->Get<int>("transf_multiplier_combinator_2");
+	transformCommon.multiplierCombinator3 = container->Get<int>("transf_multiplier_combinator_3");
+	transformCommon.multiplierCombinator4 = container->Get<int>("transf_multiplier_combinator_4");
+	transformCommon.multiplierCombinator5 = container->Get<int>("transf_multiplier_combinator_5");
+	transformCommon.multiplierInterpCurve1 = container->Get<int>("transf_multiplier_interp_curve_1");
+	transformCommon.multiplierInterpCurve2 = container->Get<int>("transf_multiplier_interp_curve_2");
+	transformCommon.multiplierInterpCurve3 = container->Get<int>("transf_multiplier_interp_curve_3");
+	transformCommon.multiplierInterpCurve4 = container->Get<int>("transf_multiplier_interp_curve_4");
+	transformCommon.multiplierInterpCurve5 = container->Get<int>("transf_multiplier_interp_curve_5");
+	transformCommon.multiplierDitherQuantize1 = container->Get<double>("transf_multiplier_dither_quantize_1");
+	transformCommon.multiplierDitherQuantize2 = container->Get<double>("transf_multiplier_dither_quantize_2");
+	transformCommon.multiplierDitherQuantize3 = container->Get<double>("transf_multiplier_dither_quantize_3");
+	transformCommon.multiplierDitherQuantize4 = container->Get<double>("transf_multiplier_dither_quantize_4");
+	transformCommon.multiplierDitherQuantize5 = container->Get<double>("transf_multiplier_dither_quantize_5");
+	transformCommon.multiplierComplexMag1 = container->Get<bool>("transf_multiplier_complex_mag_1");
+	transformCommon.multiplierComplexMag2 = container->Get<bool>("transf_multiplier_complex_mag_2");
+	transformCommon.multiplierComplexMag3 = container->Get<bool>("transf_multiplier_complex_mag_3");
+	transformCommon.multiplierComplexMag4 = container->Get<bool>("transf_multiplier_complex_mag_4");
+	transformCommon.multiplierComplexMag5 = container->Get<bool>("transf_multiplier_complex_mag_5");
+	transformCommon.multiplierPaletteIdxDrive1 = container->Get<double>("transf_multiplier_palette_idx_drive_1");
+	transformCommon.multiplierPaletteIdxDrive2 = container->Get<double>("transf_multiplier_palette_idx_drive_2");
+	transformCommon.multiplierPaletteIdxDrive3 = container->Get<double>("transf_multiplier_palette_idx_drive_3");
+	transformCommon.multiplierPaletteIdxDrive4 = container->Get<double>("transf_multiplier_palette_idx_drive_4");
+	transformCommon.multiplierPaletteIdxDrive5 = container->Get<double>("transf_multiplier_palette_idx_drive_5");
+	transformCommon.multiplierOrbitTrapWeight1 = container->Get<double>("transf_multiplier_orbit_trap_weight_1");
+	transformCommon.multiplierOrbitTrapWeight2 = container->Get<double>("transf_multiplier_orbit_trap_weight_2");
+	transformCommon.multiplierOrbitTrapWeight3 = container->Get<double>("transf_multiplier_orbit_trap_weight_3");
+	transformCommon.multiplierOrbitTrapWeight4 = container->Get<double>("transf_multiplier_orbit_trap_weight_4");
+	transformCommon.multiplierOrbitTrapWeight5 = container->Get<double>("transf_multiplier_orbit_trap_weight_5");
+	transformCommon.multiplierTurbulenceLayers1 = container->Get<int>("transf_multiplier_turbulence_layers_1");
+	transformCommon.multiplierTurbulenceLayers2 = container->Get<int>("transf_multiplier_turbulence_layers_2");
+	transformCommon.multiplierTurbulenceLayers3 = container->Get<int>("transf_multiplier_turbulence_layers_3");
+	transformCommon.multiplierTurbulenceLayers4 = container->Get<int>("transf_multiplier_turbulence_layers_4");
+	transformCommon.multiplierTurbulenceLayers5 = container->Get<int>("transf_multiplier_turbulence_layers_5");
+	transformCommon.multiplierKaleidoscopeBias1 = container->Get<double>("transf_multiplier_kaleidoscope_bias_1");
+	transformCommon.multiplierKaleidoscopeBias2 = container->Get<double>("transf_multiplier_kaleidoscope_bias_2");
+	transformCommon.multiplierKaleidoscopeBias3 = container->Get<double>("transf_multiplier_kaleidoscope_bias_3");
+	transformCommon.multiplierKaleidoscopeBias4 = container->Get<double>("transf_multiplier_kaleidoscope_bias_4");
+	transformCommon.multiplierKaleidoscopeBias5 = container->Get<double>("transf_multiplier_kaleidoscope_bias_5");
+	transformCommon.multiplierPhaseRandomise1 = container->Get<double>("transf_multiplier_phase_randomise_1");
+	transformCommon.multiplierPhaseRandomise2 = container->Get<double>("transf_multiplier_phase_randomise_2");
+	transformCommon.multiplierPhaseRandomise3 = container->Get<double>("transf_multiplier_phase_randomise_3");
+	transformCommon.multiplierPhaseRandomise4 = container->Get<double>("transf_multiplier_phase_randomise_4");
+	transformCommon.multiplierPhaseRandomise5 = container->Get<double>("transf_multiplier_phase_randomise_5");
+
+
+
 
 
 

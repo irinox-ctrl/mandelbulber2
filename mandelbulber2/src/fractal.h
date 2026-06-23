@@ -1168,6 +1168,112 @@ struct sFractalTransformCommon
 		double multiplierNeutralEps4;
 		double multiplierNeutralEps5;
 
+		// Batch 1: Spatial + Temporal params
+		double multiplierGradientDir1;
+		double multiplierGradientDir2;
+		double multiplierGradientDir3;
+		double multiplierGradientDir4;
+		double multiplierGradientDir5;
+		double multiplierVoronoiScale1;
+		double multiplierVoronoiScale2;
+		double multiplierVoronoiScale3;
+		double multiplierVoronoiScale4;
+		double multiplierVoronoiScale5;
+		double multiplierToroidalR1;
+		double multiplierToroidalR2;
+		double multiplierToroidalR3;
+		double multiplierToroidalR4;
+		double multiplierToroidalR5;
+		int multiplierAngularStripes1;
+		int multiplierAngularStripes2;
+		int multiplierAngularStripes3;
+		int multiplierAngularStripes4;
+		int multiplierAngularStripes5;
+		double multiplierGeoProgression1;
+		double multiplierGeoProgression2;
+		double multiplierGeoProgression3;
+		double multiplierGeoProgression4;
+		double multiplierGeoProgression5;
+		int multiplierParityGate1;
+		int multiplierParityGate2;
+		int multiplierParityGate3;
+		int multiplierParityGate4;
+		int multiplierParityGate5;
+		bool multiplierFibonacciStep1;
+		bool multiplierFibonacciStep2;
+		bool multiplierFibonacciStep3;
+		bool multiplierFibonacciStep4;
+		bool multiplierFibonacciStep5;
+
+		// Batch 2: Slot interaction + Math + Artistic
+		int multiplierAMSourceSlot1;
+		int multiplierAMSourceSlot2;
+		int multiplierAMSourceSlot3;
+		int multiplierAMSourceSlot4;
+		int multiplierAMSourceSlot5;
+		int multiplierGateSourceSlot1;
+		int multiplierGateSourceSlot2;
+		int multiplierGateSourceSlot3;
+		int multiplierGateSourceSlot4;
+		int multiplierGateSourceSlot5;
+		double multiplierPhaseLockOffset1;
+		double multiplierPhaseLockOffset2;
+		double multiplierPhaseLockOffset3;
+		double multiplierPhaseLockOffset4;
+		double multiplierPhaseLockOffset5;
+		int multiplierRingModSlot1;
+		int multiplierRingModSlot2;
+		int multiplierRingModSlot3;
+		int multiplierRingModSlot4;
+		int multiplierRingModSlot5;
+		int multiplierCombinator1;
+		int multiplierCombinator2;
+		int multiplierCombinator3;
+		int multiplierCombinator4;
+		int multiplierCombinator5;
+		int multiplierInterpCurve1;
+		int multiplierInterpCurve2;
+		int multiplierInterpCurve3;
+		int multiplierInterpCurve4;
+		int multiplierInterpCurve5;
+		double multiplierDitherQuantize1;
+		double multiplierDitherQuantize2;
+		double multiplierDitherQuantize3;
+		double multiplierDitherQuantize4;
+		double multiplierDitherQuantize5;
+		bool multiplierComplexMag1;
+		bool multiplierComplexMag2;
+		bool multiplierComplexMag3;
+		bool multiplierComplexMag4;
+		bool multiplierComplexMag5;
+		double multiplierPaletteIdxDrive1;
+		double multiplierPaletteIdxDrive2;
+		double multiplierPaletteIdxDrive3;
+		double multiplierPaletteIdxDrive4;
+		double multiplierPaletteIdxDrive5;
+		double multiplierOrbitTrapWeight1;
+		double multiplierOrbitTrapWeight2;
+		double multiplierOrbitTrapWeight3;
+		double multiplierOrbitTrapWeight4;
+		double multiplierOrbitTrapWeight5;
+		int multiplierTurbulenceLayers1;
+		int multiplierTurbulenceLayers2;
+		int multiplierTurbulenceLayers3;
+		int multiplierTurbulenceLayers4;
+		int multiplierTurbulenceLayers5;
+		double multiplierKaleidoscopeBias1;
+		double multiplierKaleidoscopeBias2;
+		double multiplierKaleidoscopeBias3;
+		double multiplierKaleidoscopeBias4;
+		double multiplierKaleidoscopeBias5;
+		double multiplierPhaseRandomise1;
+		double multiplierPhaseRandomise2;
+		double multiplierPhaseRandomise3;
+		double multiplierPhaseRandomise4;
+		double multiplierPhaseRandomise5;
+
+
+
 
 
 
