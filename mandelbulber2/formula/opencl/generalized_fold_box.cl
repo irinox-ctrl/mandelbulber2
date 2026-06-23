@@ -1054,6 +1054,7 @@ REAL4 GeneralizedFoldBoxIteration(REAL4 z, __constant sFractalCl *fractal, sExte
 						if (steps < 1.0) steps = 1.0;
 						REAL st = floor(t * steps) / steps;
 						val = 1.0 + (val - 1.0) * st;
+					}
 								else if (vmode == 10)
 								{
 									REAL kls = fmax(fractal->transformCommon.multiplierExponent2, 0.1f) * 10.0f;
@@ -1802,6 +1803,7 @@ default:
 						if (steps < 1.0) steps = 1.0;
 						REAL st = floor(t * steps) / steps;
 						val = 1.0 + (val - 1.0) * st;
+					}
 								else if (vmode == 10)
 								{
 									REAL kls = fmax(fractal->transformCommon.multiplierExponent3, 0.1f) * 10.0f;
@@ -2549,6 +2551,7 @@ default:
 						if (steps < 1.0) steps = 1.0;
 						REAL st = floor(t * steps) / steps;
 						val = 1.0 + (val - 1.0) * st;
+					}
 								else if (vmode == 10)
 								{
 									REAL kls = fmax(fractal->transformCommon.multiplierExponent4, 0.1f) * 10.0f;
@@ -3296,6 +3299,7 @@ default:
 						if (steps < 1.0) steps = 1.0;
 						REAL st = floor(t * steps) / steps;
 						val = 1.0 + (val - 1.0) * st;
+					}
 								else if (vmode == 10)
 								{
 									REAL kls = fmax(fractal->transformCommon.multiplierExponent5, 0.1f) * 10.0f;
