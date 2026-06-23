@@ -613,7 +613,7 @@ based on code by Inigo Quilez</string>
             <widget class="QLabel" name="label_mult_cl_asym_1"><property name="text"><string>Cl Asym</string></property></widget>
      </item>
      <item row="11" column="5">
-            <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_clip_asym_1"><property name="toolTip"><string>Different clipping for positive/negative (-1 to 1).</string></property><property name="decimals"><number>3</number></property><property name="minimum"><double>-1.000000</double></property><property name="maximum"><double>1.000000</double></property><property name="singleStep"><double>0.010000</double></property></widget>
+            <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_clip_asymmetry_1"><property name="toolTip"><string>Different clipping for positive/negative (-1 to 1).</string></property><property name="decimals"><number>3</number></property><property name="minimum"><double>-1.000000</double></property><property name="maximum"><double>1.000000</double></property><property name="singleStep"><double>0.010000</double></property></widget>
      </item>
      <item row="12" column="0">
             <widget class="QLabel" name="label_mult_cl_mix_1"><property name="text"><string>Cl Mix</string></property></widget>
@@ -1294,7 +1294,7 @@ based on code by Inigo Quilez</string>
             <widget class="QLabel" name="label_mult_cl_asym_2"><property name="text"><string>Cl Asym</string></property></widget>
      </item>
      <item row="11" column="5">
-            <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_clip_asym_2"><property name="toolTip"><string>Different clipping for positive/negative (-1 to 1).</string></property><property name="decimals"><number>3</number></property><property name="minimum"><double>-1.000000</double></property><property name="maximum"><double>1.000000</double></property><property name="singleStep"><double>0.010000</double></property></widget>
+            <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_clip_asymmetry_2"><property name="toolTip"><string>Different clipping for positive/negative (-1 to 1).</string></property><property name="decimals"><number>3</number></property><property name="minimum"><double>-1.000000</double></property><property name="maximum"><double>1.000000</double></property><property name="singleStep"><double>0.010000</double></property></widget>
      </item>
      <item row="12" column="0">
             <widget class="QLabel" name="label_mult_cl_mix_2"><property name="text"><string>Cl Mix</string></property></widget>
@@ -1905,7 +1905,7 @@ based on code by Inigo Quilez</string>
             <widget class="QLabel" name="label_mult_cl_asym_3"><property name="text"><string>Cl Asym</string></property></widget>
      </item>
      <item row="11" column="5">
-            <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_clip_asym_3"><property name="toolTip"><string>Different clipping for positive/negative (-1 to 1).</string></property><property name="decimals"><number>3</number></property><property name="minimum"><double>-1.000000</double></property><property name="maximum"><double>1.000000</double></property><property name="singleStep"><double>0.010000</double></property></widget>
+            <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_clip_asymmetry_3"><property name="toolTip"><string>Different clipping for positive/negative (-1 to 1).</string></property><property name="decimals"><number>3</number></property><property name="minimum"><double>-1.000000</double></property><property name="maximum"><double>1.000000</double></property><property name="singleStep"><double>0.010000</double></property></widget>
      </item>
      <item row="12" column="0">
             <widget class="QLabel" name="label_mult_cl_mix_3"><property name="text"><string>Cl Mix</string></property></widget>
@@ -2516,7 +2516,7 @@ based on code by Inigo Quilez</string>
             <widget class="QLabel" name="label_mult_cl_asym_4"><property name="text"><string>Cl Asym</string></property></widget>
      </item>
      <item row="11" column="5">
-            <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_clip_asym_4"><property name="toolTip"><string>Different clipping for positive/negative (-1 to 1).</string></property><property name="decimals"><number>3</number></property><property name="minimum"><double>-1.000000</double></property><property name="maximum"><double>1.000000</double></property><property name="singleStep"><double>0.010000</double></property></widget>
+            <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_clip_asymmetry_4"><property name="toolTip"><string>Different clipping for positive/negative (-1 to 1).</string></property><property name="decimals"><number>3</number></property><property name="minimum"><double>-1.000000</double></property><property name="maximum"><double>1.000000</double></property><property name="singleStep"><double>0.010000</double></property></widget>
      </item>
      <item row="12" column="0">
             <widget class="QLabel" name="label_mult_cl_mix_4"><property name="text"><string>Cl Mix</string></property></widget>
@@ -3127,7 +3127,7 @@ based on code by Inigo Quilez</string>
             <widget class="QLabel" name="label_mult_cl_asym_5"><property name="text"><string>Cl Asym</string></property></widget>
      </item>
      <item row="11" column="5">
-            <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_clip_asym_5"><property name="toolTip"><string>Different clipping for positive/negative (-1 to 1).</string></property><property name="decimals"><number>3</number></property><property name="minimum"><double>-1.000000</double></property><property name="maximum"><double>1.000000</double></property><property name="singleStep"><double>0.010000</double></property></widget>
+            <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_clip_asymmetry_5"><property name="toolTip"><string>Different clipping for positive/negative (-1 to 1).</string></property><property name="decimals"><number>3</number></property><property name="minimum"><double>-1.000000</double></property><property name="maximum"><double>1.000000</double></property><property name="singleStep"><double>0.010000</double></property></widget>
      </item>
      <item row="12" column="0">
             <widget class="QLabel" name="label_mult_cl_mix_5"><property name="text"><string>Cl Mix</string></property></widget>

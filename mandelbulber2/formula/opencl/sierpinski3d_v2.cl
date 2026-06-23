@@ -972,7 +972,6 @@ REAL4 Sierpinski3dV2Iteration(REAL4 z, __constant sFractalCl *fractal, sExtended
 									val = 1.0f + (1.0f - triv * triv) * (val - 1.0f);
 								}
 					}
-				}
 
 				if (fractal->transformCommon.multiplierChain2) val *= prevMultVal;
 
@@ -1721,7 +1720,6 @@ default:
 									val = 1.0f + (1.0f - triv * triv) * (val - 1.0f);
 								}
 					}
-				}
 
 				if (fractal->transformCommon.multiplierChain3) val *= prevMultVal;
 
@@ -2469,7 +2467,6 @@ default:
 									val = 1.0f + (1.0f - triv * triv) * (val - 1.0f);
 								}
 					}
-				}
 
 				if (fractal->transformCommon.multiplierChain4) val *= prevMultVal;
 
@@ -3217,7 +3214,6 @@ default:
 									val = 1.0f + (1.0f - triv * triv) * (val - 1.0f);
 								}
 					}
-				}
 
 				if (fractal->transformCommon.multiplierChain5) val *= prevMultVal;
 
