@@ -1117,6 +1117,57 @@ struct sFractalTransformCommon
 		double multiplierConditionalThreshold3;
 		double multiplierConditionalThreshold4;
 		double multiplierConditionalThreshold5;
+		int multiplierRampIn1;
+		int multiplierRampIn2;
+		int multiplierRampIn3;
+		int multiplierRampIn4;
+		int multiplierRampIn5;
+		int multiplierRampOut1;
+		int multiplierRampOut2;
+		int multiplierRampOut3;
+		int multiplierRampOut4;
+		int multiplierRampOut5;
+		double multiplierCylindricalBias1;
+		double multiplierCylindricalBias2;
+		double multiplierCylindricalBias3;
+		double multiplierCylindricalBias4;
+		double multiplierCylindricalBias5;
+		bool multiplierSlotDisable1;
+		bool multiplierSlotDisable2;
+		bool multiplierSlotDisable3;
+		bool multiplierSlotDisable4;
+		bool multiplierSlotDisable5;
+		double multiplierSlewRate1;
+		double multiplierSlewRate2;
+		double multiplierSlewRate3;
+		double multiplierSlewRate4;
+		double multiplierSlewRate5;
+		double multiplierHysteresis1;
+		double multiplierHysteresis2;
+		double multiplierHysteresis3;
+		double multiplierHysteresis4;
+		double multiplierHysteresis5;
+		double multiplierSoftExp1;
+		double multiplierSoftExp2;
+		double multiplierSoftExp3;
+		double multiplierSoftExp4;
+		double multiplierSoftExp5;
+		double multiplierAntiAlias1;
+		double multiplierAntiAlias2;
+		double multiplierAntiAlias3;
+		double multiplierAntiAlias4;
+		double multiplierAntiAlias5;
+		double multiplierDistCull1;
+		double multiplierDistCull2;
+		double multiplierDistCull3;
+		double multiplierDistCull4;
+		double multiplierDistCull5;
+		double multiplierNeutralEps1;
+		double multiplierNeutralEps2;
+		double multiplierNeutralEps3;
+		double multiplierNeutralEps4;
+		double multiplierNeutralEps5;
+
 
 
 

@@ -498,6 +498,95 @@ void cFractalHypercomplexV2::FormulaCode(CVector4 &z, const sFractal *fractal, s
 							if (fractal->transformCommon.multiplierAccumulate1 && prevMultVal != 1.0)
 								val = 1.0 + (val - 1.0) + (prevMultVal - 1.0);
 
+							
+							// === Top-10 params for slot 1 ===
+							// Slot Disable — skip everything
+							if (fractal->transformCommon.multiplierSlotDisable1) { val = 1.0; }
+							else {
+							// Lazy Eval Distance Cull — skip if far from origin
+							double cullDist1 = fractal->transformCommon.multiplierDistCull1;
+							if (cullDist1 > 0.0 && (z.x * z.x + z.y * z.y + z.z * z.z) > cullDist1 * cullDist1)
+								val = 1.0;
+							else {
+
+							// Ramp-In — soft fade-in after startIter
+							int rampIn1 = fractal->transformCommon.multiplierRampIn1;
+							if (rampIn1 > 0)
+							{
+								int elapsed1 = aux.i - fractal->transformCommon.multiplierStartIter1;
+								if (elapsed1 < rampIn1)
+								{
+									double t1 = (double)elapsed1 / (double)rampIn1;
+									t1 = t1 * t1 * (3.0 - 2.0 * t1); // smoothstep
+									val = 1.0 + (val - 1.0) * t1;
+								}
+							}
+							// Ramp-Out — soft fade-out before stopIter
+							int rampOut1 = fractal->transformCommon.multiplierRampOut1;
+							if (rampOut1 > 0)
+							{
+								int remaining1 = fractal->transformCommon.multiplierStopIter1 - aux.i;
+								if (remaining1 < rampOut1 && remaining1 >= 0)
+								{
+									double t1 = (double)remaining1 / (double)rampOut1;
+									t1 = t1 * t1 * (3.0 - 2.0 * t1); // smoothstep
+									val = 1.0 + (val - 1.0) * t1;
+								}
+							}
+							// Cylindrical Radius Bias — tube-shaped activation
+							double cylBias1 = fractal->transformCommon.multiplierCylindricalBias1;
+							if (cylBias1 > 0.0)
+							{
+								double cylDist1 = sqrt(z.x * z.x + z.y * z.y);
+								double cylFade1 = exp(-cylBias1 * cylDist1);
+								val = 1.0 + (val - 1.0) * cylFade1;
+							}
+							// Soft Exponential — smooth exp for negative inputs
+							double softExp1 = fractal->transformCommon.multiplierSoftExp1;
+							if (softExp1 > 0.0 && val < 1.0)
+							{
+								double v1 = val - 1.0;
+								val = 1.0 + softExp1 * (exp(v1 / fmax(softExp1, 1e-12)) - 1.0);
+							}
+							// Slew Rate Limiter — smooth abrupt transitions
+							double slewRate1 = fractal->transformCommon.multiplierSlewRate1;
+							if (slewRate1 > 0.0 && prevMultVal != 1.0)
+							{
+								double delta1 = val - prevMultVal;
+								if (fabs(delta1) > slewRate1)
+									val = prevMultVal + (delta1 > 0.0 ? slewRate1 : -slewRate1);
+							}
+							// Hysteresis Band — prevent threshold chattering
+							double hyst1 = fractal->transformCommon.multiplierHysteresis1;
+							if (hyst1 > 0.0)
+							{
+								double hystDist1 = sqrt(z.x * z.x + z.y * z.y + z.z * z.z);
+								double hystThresh1 = fractal->transformCommon.multiplierThreshold1;
+								if (hystDist1 > hystThresh1 - hyst1 * 0.5 && hystDist1 < hystThresh1 + hyst1 * 0.5)
+								{
+									double blend1 = (hystDist1 - (hystThresh1 - hyst1 * 0.5)) / hyst1;
+									val = 1.0 + (val - 1.0) * blend1;
+								}
+							}
+							// Anti-Aliased Step — smooth threshold boundary
+							double aaStep1 = fractal->transformCommon.multiplierAntiAlias1;
+							if (aaStep1 > 0.0)
+							{
+								double aaDist1 = sqrt(z.x * z.x + z.y * z.y + z.z * z.z);
+								double aaThresh1 = fractal->transformCommon.multiplierThreshold1;
+								double aaT1 = (aaDist1 - (aaThresh1 - aaStep1)) / (2.0 * aaStep1);
+								aaT1 = fmax(0.0, fmin(1.0, aaT1));
+								aaT1 = aaT1 * aaT1 * (3.0 - 2.0 * aaT1); // smoothstep
+								val = 1.0 + (val - 1.0) * aaT1;
+							}
+							// Early-Exit Neutral Threshold — skip near-1.0
+							double neutralEps1 = fractal->transformCommon.multiplierNeutralEps1;
+							if (neutralEps1 > 0.0 && fabs(val - 1.0) < neutralEps1)
+								val = 1.0;
+
+							} // end else distCull
+							} // end else slotDisable
+
 							switch (fractal->transformCommon.multiplierMode1)
 				{
 					default:
@@ -919,6 +1008,95 @@ void cFractalHypercomplexV2::FormulaCode(CVector4 &z, const sFractal *fractal, s
 														// Accumulate for slot 2
 							if (fractal->transformCommon.multiplierAccumulate2 && prevMultVal != 1.0)
 								val = 1.0 + (val - 1.0) + (prevMultVal - 1.0);
+
+							
+							// === Top-10 params for slot 2 ===
+							// Slot Disable — skip everything
+							if (fractal->transformCommon.multiplierSlotDisable2) { val = 1.0; }
+							else {
+							// Lazy Eval Distance Cull — skip if far from origin
+							double cullDist2 = fractal->transformCommon.multiplierDistCull2;
+							if (cullDist2 > 0.0 && (z.x * z.x + z.y * z.y + z.z * z.z) > cullDist2 * cullDist2)
+								val = 1.0;
+							else {
+
+							// Ramp-In — soft fade-in after startIter
+							int rampIn2 = fractal->transformCommon.multiplierRampIn2;
+							if (rampIn2 > 0)
+							{
+								int elapsed2 = aux.i - fractal->transformCommon.multiplierStartIter2;
+								if (elapsed2 < rampIn2)
+								{
+									double t2 = (double)elapsed2 / (double)rampIn2;
+									t2 = t2 * t2 * (3.0 - 2.0 * t2); // smoothstep
+									val = 1.0 + (val - 1.0) * t2;
+								}
+							}
+							// Ramp-Out — soft fade-out before stopIter
+							int rampOut2 = fractal->transformCommon.multiplierRampOut2;
+							if (rampOut2 > 0)
+							{
+								int remaining2 = fractal->transformCommon.multiplierStopIter2 - aux.i;
+								if (remaining2 < rampOut2 && remaining2 >= 0)
+								{
+									double t2 = (double)remaining2 / (double)rampOut2;
+									t2 = t2 * t2 * (3.0 - 2.0 * t2); // smoothstep
+									val = 1.0 + (val - 1.0) * t2;
+								}
+							}
+							// Cylindrical Radius Bias — tube-shaped activation
+							double cylBias2 = fractal->transformCommon.multiplierCylindricalBias2;
+							if (cylBias2 > 0.0)
+							{
+								double cylDist2 = sqrt(z.x * z.x + z.y * z.y);
+								double cylFade2 = exp(-cylBias2 * cylDist2);
+								val = 1.0 + (val - 1.0) * cylFade2;
+							}
+							// Soft Exponential — smooth exp for negative inputs
+							double softExp2 = fractal->transformCommon.multiplierSoftExp2;
+							if (softExp2 > 0.0 && val < 1.0)
+							{
+								double v2 = val - 1.0;
+								val = 1.0 + softExp2 * (exp(v2 / fmax(softExp2, 1e-12)) - 1.0);
+							}
+							// Slew Rate Limiter — smooth abrupt transitions
+							double slewRate2 = fractal->transformCommon.multiplierSlewRate2;
+							if (slewRate2 > 0.0 && prevMultVal != 1.0)
+							{
+								double delta2 = val - prevMultVal;
+								if (fabs(delta2) > slewRate2)
+									val = prevMultVal + (delta2 > 0.0 ? slewRate2 : -slewRate2);
+							}
+							// Hysteresis Band — prevent threshold chattering
+							double hyst2 = fractal->transformCommon.multiplierHysteresis2;
+							if (hyst2 > 0.0)
+							{
+								double hystDist2 = sqrt(z.x * z.x + z.y * z.y + z.z * z.z);
+								double hystThresh2 = fractal->transformCommon.multiplierThreshold2;
+								if (hystDist2 > hystThresh2 - hyst2 * 0.5 && hystDist2 < hystThresh2 + hyst2 * 0.5)
+								{
+									double blend2 = (hystDist2 - (hystThresh2 - hyst2 * 0.5)) / hyst2;
+									val = 1.0 + (val - 1.0) * blend2;
+								}
+							}
+							// Anti-Aliased Step — smooth threshold boundary
+							double aaStep2 = fractal->transformCommon.multiplierAntiAlias2;
+							if (aaStep2 > 0.0)
+							{
+								double aaDist2 = sqrt(z.x * z.x + z.y * z.y + z.z * z.z);
+								double aaThresh2 = fractal->transformCommon.multiplierThreshold2;
+								double aaT2 = (aaDist2 - (aaThresh2 - aaStep2)) / (2.0 * aaStep2);
+								aaT2 = fmax(0.0, fmin(1.0, aaT2));
+								aaT2 = aaT2 * aaT2 * (3.0 - 2.0 * aaT2); // smoothstep
+								val = 1.0 + (val - 1.0) * aaT2;
+							}
+							// Early-Exit Neutral Threshold — skip near-1.0
+							double neutralEps2 = fractal->transformCommon.multiplierNeutralEps2;
+							if (neutralEps2 > 0.0 && fabs(val - 1.0) < neutralEps2)
+								val = 1.0;
+
+							} // end else distCull
+							} // end else slotDisable
 
 							switch (fractal->transformCommon.multiplierMode2)
 				{
@@ -1342,6 +1520,95 @@ void cFractalHypercomplexV2::FormulaCode(CVector4 &z, const sFractal *fractal, s
 							if (fractal->transformCommon.multiplierAccumulate3 && prevMultVal != 1.0)
 								val = 1.0 + (val - 1.0) + (prevMultVal - 1.0);
 
+							
+							// === Top-10 params for slot 3 ===
+							// Slot Disable — skip everything
+							if (fractal->transformCommon.multiplierSlotDisable3) { val = 1.0; }
+							else {
+							// Lazy Eval Distance Cull — skip if far from origin
+							double cullDist3 = fractal->transformCommon.multiplierDistCull3;
+							if (cullDist3 > 0.0 && (z.x * z.x + z.y * z.y + z.z * z.z) > cullDist3 * cullDist3)
+								val = 1.0;
+							else {
+
+							// Ramp-In — soft fade-in after startIter
+							int rampIn3 = fractal->transformCommon.multiplierRampIn3;
+							if (rampIn3 > 0)
+							{
+								int elapsed3 = aux.i - fractal->transformCommon.multiplierStartIter3;
+								if (elapsed3 < rampIn3)
+								{
+									double t3 = (double)elapsed3 / (double)rampIn3;
+									t3 = t3 * t3 * (3.0 - 2.0 * t3); // smoothstep
+									val = 1.0 + (val - 1.0) * t3;
+								}
+							}
+							// Ramp-Out — soft fade-out before stopIter
+							int rampOut3 = fractal->transformCommon.multiplierRampOut3;
+							if (rampOut3 > 0)
+							{
+								int remaining3 = fractal->transformCommon.multiplierStopIter3 - aux.i;
+								if (remaining3 < rampOut3 && remaining3 >= 0)
+								{
+									double t3 = (double)remaining3 / (double)rampOut3;
+									t3 = t3 * t3 * (3.0 - 2.0 * t3); // smoothstep
+									val = 1.0 + (val - 1.0) * t3;
+								}
+							}
+							// Cylindrical Radius Bias — tube-shaped activation
+							double cylBias3 = fractal->transformCommon.multiplierCylindricalBias3;
+							if (cylBias3 > 0.0)
+							{
+								double cylDist3 = sqrt(z.x * z.x + z.y * z.y);
+								double cylFade3 = exp(-cylBias3 * cylDist3);
+								val = 1.0 + (val - 1.0) * cylFade3;
+							}
+							// Soft Exponential — smooth exp for negative inputs
+							double softExp3 = fractal->transformCommon.multiplierSoftExp3;
+							if (softExp3 > 0.0 && val < 1.0)
+							{
+								double v3 = val - 1.0;
+								val = 1.0 + softExp3 * (exp(v3 / fmax(softExp3, 1e-12)) - 1.0);
+							}
+							// Slew Rate Limiter — smooth abrupt transitions
+							double slewRate3 = fractal->transformCommon.multiplierSlewRate3;
+							if (slewRate3 > 0.0 && prevMultVal != 1.0)
+							{
+								double delta3 = val - prevMultVal;
+								if (fabs(delta3) > slewRate3)
+									val = prevMultVal + (delta3 > 0.0 ? slewRate3 : -slewRate3);
+							}
+							// Hysteresis Band — prevent threshold chattering
+							double hyst3 = fractal->transformCommon.multiplierHysteresis3;
+							if (hyst3 > 0.0)
+							{
+								double hystDist3 = sqrt(z.x * z.x + z.y * z.y + z.z * z.z);
+								double hystThresh3 = fractal->transformCommon.multiplierThreshold3;
+								if (hystDist3 > hystThresh3 - hyst3 * 0.5 && hystDist3 < hystThresh3 + hyst3 * 0.5)
+								{
+									double blend3 = (hystDist3 - (hystThresh3 - hyst3 * 0.5)) / hyst3;
+									val = 1.0 + (val - 1.0) * blend3;
+								}
+							}
+							// Anti-Aliased Step — smooth threshold boundary
+							double aaStep3 = fractal->transformCommon.multiplierAntiAlias3;
+							if (aaStep3 > 0.0)
+							{
+								double aaDist3 = sqrt(z.x * z.x + z.y * z.y + z.z * z.z);
+								double aaThresh3 = fractal->transformCommon.multiplierThreshold3;
+								double aaT3 = (aaDist3 - (aaThresh3 - aaStep3)) / (2.0 * aaStep3);
+								aaT3 = fmax(0.0, fmin(1.0, aaT3));
+								aaT3 = aaT3 * aaT3 * (3.0 - 2.0 * aaT3); // smoothstep
+								val = 1.0 + (val - 1.0) * aaT3;
+							}
+							// Early-Exit Neutral Threshold — skip near-1.0
+							double neutralEps3 = fractal->transformCommon.multiplierNeutralEps3;
+							if (neutralEps3 > 0.0 && fabs(val - 1.0) < neutralEps3)
+								val = 1.0;
+
+							} // end else distCull
+							} // end else slotDisable
+
 							switch (fractal->transformCommon.multiplierMode3)
 				{
 					default:
@@ -1764,6 +2031,95 @@ void cFractalHypercomplexV2::FormulaCode(CVector4 &z, const sFractal *fractal, s
 							if (fractal->transformCommon.multiplierAccumulate4 && prevMultVal != 1.0)
 								val = 1.0 + (val - 1.0) + (prevMultVal - 1.0);
 
+							
+							// === Top-10 params for slot 4 ===
+							// Slot Disable — skip everything
+							if (fractal->transformCommon.multiplierSlotDisable4) { val = 1.0; }
+							else {
+							// Lazy Eval Distance Cull — skip if far from origin
+							double cullDist4 = fractal->transformCommon.multiplierDistCull4;
+							if (cullDist4 > 0.0 && (z.x * z.x + z.y * z.y + z.z * z.z) > cullDist4 * cullDist4)
+								val = 1.0;
+							else {
+
+							// Ramp-In — soft fade-in after startIter
+							int rampIn4 = fractal->transformCommon.multiplierRampIn4;
+							if (rampIn4 > 0)
+							{
+								int elapsed4 = aux.i - fractal->transformCommon.multiplierStartIter4;
+								if (elapsed4 < rampIn4)
+								{
+									double t4 = (double)elapsed4 / (double)rampIn4;
+									t4 = t4 * t4 * (3.0 - 2.0 * t4); // smoothstep
+									val = 1.0 + (val - 1.0) * t4;
+								}
+							}
+							// Ramp-Out — soft fade-out before stopIter
+							int rampOut4 = fractal->transformCommon.multiplierRampOut4;
+							if (rampOut4 > 0)
+							{
+								int remaining4 = fractal->transformCommon.multiplierStopIter4 - aux.i;
+								if (remaining4 < rampOut4 && remaining4 >= 0)
+								{
+									double t4 = (double)remaining4 / (double)rampOut4;
+									t4 = t4 * t4 * (3.0 - 2.0 * t4); // smoothstep
+									val = 1.0 + (val - 1.0) * t4;
+								}
+							}
+							// Cylindrical Radius Bias — tube-shaped activation
+							double cylBias4 = fractal->transformCommon.multiplierCylindricalBias4;
+							if (cylBias4 > 0.0)
+							{
+								double cylDist4 = sqrt(z.x * z.x + z.y * z.y);
+								double cylFade4 = exp(-cylBias4 * cylDist4);
+								val = 1.0 + (val - 1.0) * cylFade4;
+							}
+							// Soft Exponential — smooth exp for negative inputs
+							double softExp4 = fractal->transformCommon.multiplierSoftExp4;
+							if (softExp4 > 0.0 && val < 1.0)
+							{
+								double v4 = val - 1.0;
+								val = 1.0 + softExp4 * (exp(v4 / fmax(softExp4, 1e-12)) - 1.0);
+							}
+							// Slew Rate Limiter — smooth abrupt transitions
+							double slewRate4 = fractal->transformCommon.multiplierSlewRate4;
+							if (slewRate4 > 0.0 && prevMultVal != 1.0)
+							{
+								double delta4 = val - prevMultVal;
+								if (fabs(delta4) > slewRate4)
+									val = prevMultVal + (delta4 > 0.0 ? slewRate4 : -slewRate4);
+							}
+							// Hysteresis Band — prevent threshold chattering
+							double hyst4 = fractal->transformCommon.multiplierHysteresis4;
+							if (hyst4 > 0.0)
+							{
+								double hystDist4 = sqrt(z.x * z.x + z.y * z.y + z.z * z.z);
+								double hystThresh4 = fractal->transformCommon.multiplierThreshold4;
+								if (hystDist4 > hystThresh4 - hyst4 * 0.5 && hystDist4 < hystThresh4 + hyst4 * 0.5)
+								{
+									double blend4 = (hystDist4 - (hystThresh4 - hyst4 * 0.5)) / hyst4;
+									val = 1.0 + (val - 1.0) * blend4;
+								}
+							}
+							// Anti-Aliased Step — smooth threshold boundary
+							double aaStep4 = fractal->transformCommon.multiplierAntiAlias4;
+							if (aaStep4 > 0.0)
+							{
+								double aaDist4 = sqrt(z.x * z.x + z.y * z.y + z.z * z.z);
+								double aaThresh4 = fractal->transformCommon.multiplierThreshold4;
+								double aaT4 = (aaDist4 - (aaThresh4 - aaStep4)) / (2.0 * aaStep4);
+								aaT4 = fmax(0.0, fmin(1.0, aaT4));
+								aaT4 = aaT4 * aaT4 * (3.0 - 2.0 * aaT4); // smoothstep
+								val = 1.0 + (val - 1.0) * aaT4;
+							}
+							// Early-Exit Neutral Threshold — skip near-1.0
+							double neutralEps4 = fractal->transformCommon.multiplierNeutralEps4;
+							if (neutralEps4 > 0.0 && fabs(val - 1.0) < neutralEps4)
+								val = 1.0;
+
+							} // end else distCull
+							} // end else slotDisable
+
 							switch (fractal->transformCommon.multiplierMode4)
 				{
 					default:
@@ -2185,6 +2541,95 @@ void cFractalHypercomplexV2::FormulaCode(CVector4 &z, const sFractal *fractal, s
 														// Accumulate for slot 5
 							if (fractal->transformCommon.multiplierAccumulate5 && prevMultVal != 1.0)
 								val = 1.0 + (val - 1.0) + (prevMultVal - 1.0);
+
+							
+							// === Top-10 params for slot 5 ===
+							// Slot Disable — skip everything
+							if (fractal->transformCommon.multiplierSlotDisable5) { val = 1.0; }
+							else {
+							// Lazy Eval Distance Cull — skip if far from origin
+							double cullDist5 = fractal->transformCommon.multiplierDistCull5;
+							if (cullDist5 > 0.0 && (z.x * z.x + z.y * z.y + z.z * z.z) > cullDist5 * cullDist5)
+								val = 1.0;
+							else {
+
+							// Ramp-In — soft fade-in after startIter
+							int rampIn5 = fractal->transformCommon.multiplierRampIn5;
+							if (rampIn5 > 0)
+							{
+								int elapsed5 = aux.i - fractal->transformCommon.multiplierStartIter5;
+								if (elapsed5 < rampIn5)
+								{
+									double t5 = (double)elapsed5 / (double)rampIn5;
+									t5 = t5 * t5 * (3.0 - 2.0 * t5); // smoothstep
+									val = 1.0 + (val - 1.0) * t5;
+								}
+							}
+							// Ramp-Out — soft fade-out before stopIter
+							int rampOut5 = fractal->transformCommon.multiplierRampOut5;
+							if (rampOut5 > 0)
+							{
+								int remaining5 = fractal->transformCommon.multiplierStopIter5 - aux.i;
+								if (remaining5 < rampOut5 && remaining5 >= 0)
+								{
+									double t5 = (double)remaining5 / (double)rampOut5;
+									t5 = t5 * t5 * (3.0 - 2.0 * t5); // smoothstep
+									val = 1.0 + (val - 1.0) * t5;
+								}
+							}
+							// Cylindrical Radius Bias — tube-shaped activation
+							double cylBias5 = fractal->transformCommon.multiplierCylindricalBias5;
+							if (cylBias5 > 0.0)
+							{
+								double cylDist5 = sqrt(z.x * z.x + z.y * z.y);
+								double cylFade5 = exp(-cylBias5 * cylDist5);
+								val = 1.0 + (val - 1.0) * cylFade5;
+							}
+							// Soft Exponential — smooth exp for negative inputs
+							double softExp5 = fractal->transformCommon.multiplierSoftExp5;
+							if (softExp5 > 0.0 && val < 1.0)
+							{
+								double v5 = val - 1.0;
+								val = 1.0 + softExp5 * (exp(v5 / fmax(softExp5, 1e-12)) - 1.0);
+							}
+							// Slew Rate Limiter — smooth abrupt transitions
+							double slewRate5 = fractal->transformCommon.multiplierSlewRate5;
+							if (slewRate5 > 0.0 && prevMultVal != 1.0)
+							{
+								double delta5 = val - prevMultVal;
+								if (fabs(delta5) > slewRate5)
+									val = prevMultVal + (delta5 > 0.0 ? slewRate5 : -slewRate5);
+							}
+							// Hysteresis Band — prevent threshold chattering
+							double hyst5 = fractal->transformCommon.multiplierHysteresis5;
+							if (hyst5 > 0.0)
+							{
+								double hystDist5 = sqrt(z.x * z.x + z.y * z.y + z.z * z.z);
+								double hystThresh5 = fractal->transformCommon.multiplierThreshold5;
+								if (hystDist5 > hystThresh5 - hyst5 * 0.5 && hystDist5 < hystThresh5 + hyst5 * 0.5)
+								{
+									double blend5 = (hystDist5 - (hystThresh5 - hyst5 * 0.5)) / hyst5;
+									val = 1.0 + (val - 1.0) * blend5;
+								}
+							}
+							// Anti-Aliased Step — smooth threshold boundary
+							double aaStep5 = fractal->transformCommon.multiplierAntiAlias5;
+							if (aaStep5 > 0.0)
+							{
+								double aaDist5 = sqrt(z.x * z.x + z.y * z.y + z.z * z.z);
+								double aaThresh5 = fractal->transformCommon.multiplierThreshold5;
+								double aaT5 = (aaDist5 - (aaThresh5 - aaStep5)) / (2.0 * aaStep5);
+								aaT5 = fmax(0.0, fmin(1.0, aaT5));
+								aaT5 = aaT5 * aaT5 * (3.0 - 2.0 * aaT5); // smoothstep
+								val = 1.0 + (val - 1.0) * aaT5;
+							}
+							// Early-Exit Neutral Threshold — skip near-1.0
+							double neutralEps5 = fractal->transformCommon.multiplierNeutralEps5;
+							if (neutralEps5 > 0.0 && fabs(val - 1.0) < neutralEps5)
+								val = 1.0;
+
+							} // end else distCull
+							} // end else slotDisable
 
 							switch (fractal->transformCommon.multiplierMode5)
 				{

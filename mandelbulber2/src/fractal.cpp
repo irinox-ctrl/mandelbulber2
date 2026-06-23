@@ -793,6 +793,59 @@ sFractal::sFractal(const std::shared_ptr<cParameterContainer> container)
 	transformCommon.multiplierConditionalThreshold4 = container->Get<double>("transf_multiplier_conditional_threshold_4");
 	transformCommon.multiplierConditionalThreshold5 = container->Get<double>("transf_multiplier_conditional_threshold_5");
 
+	// Top-10 CodeRabbit suggestions loading
+	transformCommon.multiplierRampIn1 = container->Get<int>("transf_multiplier_ramp_in_1");
+	transformCommon.multiplierRampIn2 = container->Get<int>("transf_multiplier_ramp_in_2");
+	transformCommon.multiplierRampIn3 = container->Get<int>("transf_multiplier_ramp_in_3");
+	transformCommon.multiplierRampIn4 = container->Get<int>("transf_multiplier_ramp_in_4");
+	transformCommon.multiplierRampIn5 = container->Get<int>("transf_multiplier_ramp_in_5");
+	transformCommon.multiplierRampOut1 = container->Get<int>("transf_multiplier_ramp_out_1");
+	transformCommon.multiplierRampOut2 = container->Get<int>("transf_multiplier_ramp_out_2");
+	transformCommon.multiplierRampOut3 = container->Get<int>("transf_multiplier_ramp_out_3");
+	transformCommon.multiplierRampOut4 = container->Get<int>("transf_multiplier_ramp_out_4");
+	transformCommon.multiplierRampOut5 = container->Get<int>("transf_multiplier_ramp_out_5");
+	transformCommon.multiplierCylindricalBias1 = container->Get<double>("transf_multiplier_cylindrical_bias_1");
+	transformCommon.multiplierCylindricalBias2 = container->Get<double>("transf_multiplier_cylindrical_bias_2");
+	transformCommon.multiplierCylindricalBias3 = container->Get<double>("transf_multiplier_cylindrical_bias_3");
+	transformCommon.multiplierCylindricalBias4 = container->Get<double>("transf_multiplier_cylindrical_bias_4");
+	transformCommon.multiplierCylindricalBias5 = container->Get<double>("transf_multiplier_cylindrical_bias_5");
+	transformCommon.multiplierSlotDisable1 = container->Get<bool>("transf_multiplier_slot_disable_1");
+	transformCommon.multiplierSlotDisable2 = container->Get<bool>("transf_multiplier_slot_disable_2");
+	transformCommon.multiplierSlotDisable3 = container->Get<bool>("transf_multiplier_slot_disable_3");
+	transformCommon.multiplierSlotDisable4 = container->Get<bool>("transf_multiplier_slot_disable_4");
+	transformCommon.multiplierSlotDisable5 = container->Get<bool>("transf_multiplier_slot_disable_5");
+	transformCommon.multiplierSlewRate1 = container->Get<double>("transf_multiplier_slew_rate_1");
+	transformCommon.multiplierSlewRate2 = container->Get<double>("transf_multiplier_slew_rate_2");
+	transformCommon.multiplierSlewRate3 = container->Get<double>("transf_multiplier_slew_rate_3");
+	transformCommon.multiplierSlewRate4 = container->Get<double>("transf_multiplier_slew_rate_4");
+	transformCommon.multiplierSlewRate5 = container->Get<double>("transf_multiplier_slew_rate_5");
+	transformCommon.multiplierHysteresis1 = container->Get<double>("transf_multiplier_hysteresis_1");
+	transformCommon.multiplierHysteresis2 = container->Get<double>("transf_multiplier_hysteresis_2");
+	transformCommon.multiplierHysteresis3 = container->Get<double>("transf_multiplier_hysteresis_3");
+	transformCommon.multiplierHysteresis4 = container->Get<double>("transf_multiplier_hysteresis_4");
+	transformCommon.multiplierHysteresis5 = container->Get<double>("transf_multiplier_hysteresis_5");
+	transformCommon.multiplierSoftExp1 = container->Get<double>("transf_multiplier_soft_exp_1");
+	transformCommon.multiplierSoftExp2 = container->Get<double>("transf_multiplier_soft_exp_2");
+	transformCommon.multiplierSoftExp3 = container->Get<double>("transf_multiplier_soft_exp_3");
+	transformCommon.multiplierSoftExp4 = container->Get<double>("transf_multiplier_soft_exp_4");
+	transformCommon.multiplierSoftExp5 = container->Get<double>("transf_multiplier_soft_exp_5");
+	transformCommon.multiplierAntiAlias1 = container->Get<double>("transf_multiplier_anti_alias_1");
+	transformCommon.multiplierAntiAlias2 = container->Get<double>("transf_multiplier_anti_alias_2");
+	transformCommon.multiplierAntiAlias3 = container->Get<double>("transf_multiplier_anti_alias_3");
+	transformCommon.multiplierAntiAlias4 = container->Get<double>("transf_multiplier_anti_alias_4");
+	transformCommon.multiplierAntiAlias5 = container->Get<double>("transf_multiplier_anti_alias_5");
+	transformCommon.multiplierDistCull1 = container->Get<double>("transf_multiplier_dist_cull_1");
+	transformCommon.multiplierDistCull2 = container->Get<double>("transf_multiplier_dist_cull_2");
+	transformCommon.multiplierDistCull3 = container->Get<double>("transf_multiplier_dist_cull_3");
+	transformCommon.multiplierDistCull4 = container->Get<double>("transf_multiplier_dist_cull_4");
+	transformCommon.multiplierDistCull5 = container->Get<double>("transf_multiplier_dist_cull_5");
+	transformCommon.multiplierNeutralEps1 = container->Get<double>("transf_multiplier_neutral_eps_1");
+	transformCommon.multiplierNeutralEps2 = container->Get<double>("transf_multiplier_neutral_eps_2");
+	transformCommon.multiplierNeutralEps3 = container->Get<double>("transf_multiplier_neutral_eps_3");
+	transformCommon.multiplierNeutralEps4 = container->Get<double>("transf_multiplier_neutral_eps_4");
+	transformCommon.multiplierNeutralEps5 = container->Get<double>("transf_multiplier_neutral_eps_5");
+
+
 
 
 

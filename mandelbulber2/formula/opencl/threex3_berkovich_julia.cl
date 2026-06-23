@@ -414,6 +414,85 @@ REAL4 Threex3BerkovichJuliaIteration(REAL4 z, __constant sFractalCl *fractal, sE
 							if (fractal->transformCommon.multiplierAccumulate1 && prevMultVal != 1.0f)
 								val = 1.0f + (val - 1.0f) + (prevMultVal - 1.0f);
 
+							
+							// === Top-10 params for slot 1 ===
+							if (fractal->transformCommon.multiplierSlotDisable1) { val = 1.0f; }
+							else {
+							REAL cullDist1 = fractal->transformCommon.multiplierDistCull1;
+							if (cullDist1 > 0.0f && (z.x * z.x + z.y * z.y + z.z * z.z) > cullDist1 * cullDist1)
+								val = 1.0f;
+							else {
+
+							int rampIn1 = fractal->transformCommon.multiplierRampIn1;
+							if (rampIn1 > 0)
+							{
+								int elapsed1 = aux->i - fractal->transformCommon.multiplierStartIter1;
+								if (elapsed1 < rampIn1)
+								{
+									REAL t1 = (REAL)elapsed1 / (REAL)rampIn1;
+									t1 = t1 * t1 * (3.0f - 2.0f * t1);
+									val = 1.0f + (val - 1.0f) * t1;
+								}
+							}
+							int rampOut1 = fractal->transformCommon.multiplierRampOut1;
+							if (rampOut1 > 0)
+							{
+								int remaining1 = fractal->transformCommon.multiplierStopIter1 - aux->i;
+								if (remaining1 < rampOut1 && remaining1 >= 0)
+								{
+									REAL t1 = (REAL)remaining1 / (REAL)rampOut1;
+									t1 = t1 * t1 * (3.0f - 2.0f * t1);
+									val = 1.0f + (val - 1.0f) * t1;
+								}
+							}
+							REAL cylBias1 = fractal->transformCommon.multiplierCylindricalBias1;
+							if (cylBias1 > 0.0f)
+							{
+								REAL cylDist1 = native_sqrt(z.x * z.x + z.y * z.y);
+								REAL cylFade1 = native_exp(-cylBias1 * cylDist1);
+								val = 1.0f + (val - 1.0f) * cylFade1;
+							}
+							REAL softExp1 = fractal->transformCommon.multiplierSoftExp1;
+							if (softExp1 > 0.0f && val < 1.0f)
+							{
+								REAL v1 = val - 1.0f;
+								val = 1.0f + softExp1 * (native_exp(v1 / fmax(softExp1, 1e-12f)) - 1.0f);
+							}
+							REAL slewRate1 = fractal->transformCommon.multiplierSlewRate1;
+							if (slewRate1 > 0.0f && prevMultVal != 1.0f)
+							{
+								REAL delta1 = val - prevMultVal;
+								if (fabs(delta1) > slewRate1)
+									val = prevMultVal + (delta1 > 0.0f ? slewRate1 : -slewRate1);
+							}
+							REAL hyst1 = fractal->transformCommon.multiplierHysteresis1;
+							if (hyst1 > 0.0f)
+							{
+								REAL hystDist1 = native_sqrt(z.x * z.x + z.y * z.y + z.z * z.z);
+								REAL hystThresh1 = fractal->transformCommon.multiplierThreshold1;
+								if (hystDist1 > hystThresh1 - hyst1 * 0.5f && hystDist1 < hystThresh1 + hyst1 * 0.5f)
+								{
+									REAL blend1 = (hystDist1 - (hystThresh1 - hyst1 * 0.5f)) / hyst1;
+									val = 1.0f + (val - 1.0f) * blend1;
+								}
+							}
+							REAL aaStep1 = fractal->transformCommon.multiplierAntiAlias1;
+							if (aaStep1 > 0.0f)
+							{
+								REAL aaDist1 = native_sqrt(z.x * z.x + z.y * z.y + z.z * z.z);
+								REAL aaThresh1 = fractal->transformCommon.multiplierThreshold1;
+								REAL aaT1 = (aaDist1 - (aaThresh1 - aaStep1)) / (2.0f * aaStep1);
+								aaT1 = fmax(0.0f, fmin(1.0f, aaT1));
+								aaT1 = aaT1 * aaT1 * (3.0f - 2.0f * aaT1);
+								val = 1.0f + (val - 1.0f) * aaT1;
+							}
+							REAL neutralEps1 = fractal->transformCommon.multiplierNeutralEps1;
+							if (neutralEps1 > 0.0f && fabs(val - 1.0f) < neutralEps1)
+								val = 1.0f;
+
+							} // end else distCull
+							} // end else slotDisable
+
 							switch (fractal->transformCommon.multiplierMode1)
 				{
 					default:
@@ -825,6 +904,85 @@ REAL4 Threex3BerkovichJuliaIteration(REAL4 z, __constant sFractalCl *fractal, sE
 														// Accumulate for slot 2
 							if (fractal->transformCommon.multiplierAccumulate2 && prevMultVal != 1.0f)
 								val = 1.0f + (val - 1.0f) + (prevMultVal - 1.0f);
+
+							
+							// === Top-10 params for slot 2 ===
+							if (fractal->transformCommon.multiplierSlotDisable2) { val = 1.0f; }
+							else {
+							REAL cullDist2 = fractal->transformCommon.multiplierDistCull2;
+							if (cullDist2 > 0.0f && (z.x * z.x + z.y * z.y + z.z * z.z) > cullDist2 * cullDist2)
+								val = 1.0f;
+							else {
+
+							int rampIn2 = fractal->transformCommon.multiplierRampIn2;
+							if (rampIn2 > 0)
+							{
+								int elapsed2 = aux->i - fractal->transformCommon.multiplierStartIter2;
+								if (elapsed2 < rampIn2)
+								{
+									REAL t2 = (REAL)elapsed2 / (REAL)rampIn2;
+									t2 = t2 * t2 * (3.0f - 2.0f * t2);
+									val = 1.0f + (val - 1.0f) * t2;
+								}
+							}
+							int rampOut2 = fractal->transformCommon.multiplierRampOut2;
+							if (rampOut2 > 0)
+							{
+								int remaining2 = fractal->transformCommon.multiplierStopIter2 - aux->i;
+								if (remaining2 < rampOut2 && remaining2 >= 0)
+								{
+									REAL t2 = (REAL)remaining2 / (REAL)rampOut2;
+									t2 = t2 * t2 * (3.0f - 2.0f * t2);
+									val = 1.0f + (val - 1.0f) * t2;
+								}
+							}
+							REAL cylBias2 = fractal->transformCommon.multiplierCylindricalBias2;
+							if (cylBias2 > 0.0f)
+							{
+								REAL cylDist2 = native_sqrt(z.x * z.x + z.y * z.y);
+								REAL cylFade2 = native_exp(-cylBias2 * cylDist2);
+								val = 1.0f + (val - 1.0f) * cylFade2;
+							}
+							REAL softExp2 = fractal->transformCommon.multiplierSoftExp2;
+							if (softExp2 > 0.0f && val < 1.0f)
+							{
+								REAL v2 = val - 1.0f;
+								val = 1.0f + softExp2 * (native_exp(v2 / fmax(softExp2, 1e-12f)) - 1.0f);
+							}
+							REAL slewRate2 = fractal->transformCommon.multiplierSlewRate2;
+							if (slewRate2 > 0.0f && prevMultVal != 1.0f)
+							{
+								REAL delta2 = val - prevMultVal;
+								if (fabs(delta2) > slewRate2)
+									val = prevMultVal + (delta2 > 0.0f ? slewRate2 : -slewRate2);
+							}
+							REAL hyst2 = fractal->transformCommon.multiplierHysteresis2;
+							if (hyst2 > 0.0f)
+							{
+								REAL hystDist2 = native_sqrt(z.x * z.x + z.y * z.y + z.z * z.z);
+								REAL hystThresh2 = fractal->transformCommon.multiplierThreshold2;
+								if (hystDist2 > hystThresh2 - hyst2 * 0.5f && hystDist2 < hystThresh2 + hyst2 * 0.5f)
+								{
+									REAL blend2 = (hystDist2 - (hystThresh2 - hyst2 * 0.5f)) / hyst2;
+									val = 1.0f + (val - 1.0f) * blend2;
+								}
+							}
+							REAL aaStep2 = fractal->transformCommon.multiplierAntiAlias2;
+							if (aaStep2 > 0.0f)
+							{
+								REAL aaDist2 = native_sqrt(z.x * z.x + z.y * z.y + z.z * z.z);
+								REAL aaThresh2 = fractal->transformCommon.multiplierThreshold2;
+								REAL aaT2 = (aaDist2 - (aaThresh2 - aaStep2)) / (2.0f * aaStep2);
+								aaT2 = fmax(0.0f, fmin(1.0f, aaT2));
+								aaT2 = aaT2 * aaT2 * (3.0f - 2.0f * aaT2);
+								val = 1.0f + (val - 1.0f) * aaT2;
+							}
+							REAL neutralEps2 = fractal->transformCommon.multiplierNeutralEps2;
+							if (neutralEps2 > 0.0f && fabs(val - 1.0f) < neutralEps2)
+								val = 1.0f;
+
+							} // end else distCull
+							} // end else slotDisable
 
 							switch (fractal->transformCommon.multiplierMode2)
 				{
@@ -1238,6 +1396,85 @@ REAL4 Threex3BerkovichJuliaIteration(REAL4 z, __constant sFractalCl *fractal, sE
 							if (fractal->transformCommon.multiplierAccumulate3 && prevMultVal != 1.0f)
 								val = 1.0f + (val - 1.0f) + (prevMultVal - 1.0f);
 
+							
+							// === Top-10 params for slot 3 ===
+							if (fractal->transformCommon.multiplierSlotDisable3) { val = 1.0f; }
+							else {
+							REAL cullDist3 = fractal->transformCommon.multiplierDistCull3;
+							if (cullDist3 > 0.0f && (z.x * z.x + z.y * z.y + z.z * z.z) > cullDist3 * cullDist3)
+								val = 1.0f;
+							else {
+
+							int rampIn3 = fractal->transformCommon.multiplierRampIn3;
+							if (rampIn3 > 0)
+							{
+								int elapsed3 = aux->i - fractal->transformCommon.multiplierStartIter3;
+								if (elapsed3 < rampIn3)
+								{
+									REAL t3 = (REAL)elapsed3 / (REAL)rampIn3;
+									t3 = t3 * t3 * (3.0f - 2.0f * t3);
+									val = 1.0f + (val - 1.0f) * t3;
+								}
+							}
+							int rampOut3 = fractal->transformCommon.multiplierRampOut3;
+							if (rampOut3 > 0)
+							{
+								int remaining3 = fractal->transformCommon.multiplierStopIter3 - aux->i;
+								if (remaining3 < rampOut3 && remaining3 >= 0)
+								{
+									REAL t3 = (REAL)remaining3 / (REAL)rampOut3;
+									t3 = t3 * t3 * (3.0f - 2.0f * t3);
+									val = 1.0f + (val - 1.0f) * t3;
+								}
+							}
+							REAL cylBias3 = fractal->transformCommon.multiplierCylindricalBias3;
+							if (cylBias3 > 0.0f)
+							{
+								REAL cylDist3 = native_sqrt(z.x * z.x + z.y * z.y);
+								REAL cylFade3 = native_exp(-cylBias3 * cylDist3);
+								val = 1.0f + (val - 1.0f) * cylFade3;
+							}
+							REAL softExp3 = fractal->transformCommon.multiplierSoftExp3;
+							if (softExp3 > 0.0f && val < 1.0f)
+							{
+								REAL v3 = val - 1.0f;
+								val = 1.0f + softExp3 * (native_exp(v3 / fmax(softExp3, 1e-12f)) - 1.0f);
+							}
+							REAL slewRate3 = fractal->transformCommon.multiplierSlewRate3;
+							if (slewRate3 > 0.0f && prevMultVal != 1.0f)
+							{
+								REAL delta3 = val - prevMultVal;
+								if (fabs(delta3) > slewRate3)
+									val = prevMultVal + (delta3 > 0.0f ? slewRate3 : -slewRate3);
+							}
+							REAL hyst3 = fractal->transformCommon.multiplierHysteresis3;
+							if (hyst3 > 0.0f)
+							{
+								REAL hystDist3 = native_sqrt(z.x * z.x + z.y * z.y + z.z * z.z);
+								REAL hystThresh3 = fractal->transformCommon.multiplierThreshold3;
+								if (hystDist3 > hystThresh3 - hyst3 * 0.5f && hystDist3 < hystThresh3 + hyst3 * 0.5f)
+								{
+									REAL blend3 = (hystDist3 - (hystThresh3 - hyst3 * 0.5f)) / hyst3;
+									val = 1.0f + (val - 1.0f) * blend3;
+								}
+							}
+							REAL aaStep3 = fractal->transformCommon.multiplierAntiAlias3;
+							if (aaStep3 > 0.0f)
+							{
+								REAL aaDist3 = native_sqrt(z.x * z.x + z.y * z.y + z.z * z.z);
+								REAL aaThresh3 = fractal->transformCommon.multiplierThreshold3;
+								REAL aaT3 = (aaDist3 - (aaThresh3 - aaStep3)) / (2.0f * aaStep3);
+								aaT3 = fmax(0.0f, fmin(1.0f, aaT3));
+								aaT3 = aaT3 * aaT3 * (3.0f - 2.0f * aaT3);
+								val = 1.0f + (val - 1.0f) * aaT3;
+							}
+							REAL neutralEps3 = fractal->transformCommon.multiplierNeutralEps3;
+							if (neutralEps3 > 0.0f && fabs(val - 1.0f) < neutralEps3)
+								val = 1.0f;
+
+							} // end else distCull
+							} // end else slotDisable
+
 							switch (fractal->transformCommon.multiplierMode3)
 				{
 					default:
@@ -1650,6 +1887,85 @@ REAL4 Threex3BerkovichJuliaIteration(REAL4 z, __constant sFractalCl *fractal, sE
 							if (fractal->transformCommon.multiplierAccumulate4 && prevMultVal != 1.0f)
 								val = 1.0f + (val - 1.0f) + (prevMultVal - 1.0f);
 
+							
+							// === Top-10 params for slot 4 ===
+							if (fractal->transformCommon.multiplierSlotDisable4) { val = 1.0f; }
+							else {
+							REAL cullDist4 = fractal->transformCommon.multiplierDistCull4;
+							if (cullDist4 > 0.0f && (z.x * z.x + z.y * z.y + z.z * z.z) > cullDist4 * cullDist4)
+								val = 1.0f;
+							else {
+
+							int rampIn4 = fractal->transformCommon.multiplierRampIn4;
+							if (rampIn4 > 0)
+							{
+								int elapsed4 = aux->i - fractal->transformCommon.multiplierStartIter4;
+								if (elapsed4 < rampIn4)
+								{
+									REAL t4 = (REAL)elapsed4 / (REAL)rampIn4;
+									t4 = t4 * t4 * (3.0f - 2.0f * t4);
+									val = 1.0f + (val - 1.0f) * t4;
+								}
+							}
+							int rampOut4 = fractal->transformCommon.multiplierRampOut4;
+							if (rampOut4 > 0)
+							{
+								int remaining4 = fractal->transformCommon.multiplierStopIter4 - aux->i;
+								if (remaining4 < rampOut4 && remaining4 >= 0)
+								{
+									REAL t4 = (REAL)remaining4 / (REAL)rampOut4;
+									t4 = t4 * t4 * (3.0f - 2.0f * t4);
+									val = 1.0f + (val - 1.0f) * t4;
+								}
+							}
+							REAL cylBias4 = fractal->transformCommon.multiplierCylindricalBias4;
+							if (cylBias4 > 0.0f)
+							{
+								REAL cylDist4 = native_sqrt(z.x * z.x + z.y * z.y);
+								REAL cylFade4 = native_exp(-cylBias4 * cylDist4);
+								val = 1.0f + (val - 1.0f) * cylFade4;
+							}
+							REAL softExp4 = fractal->transformCommon.multiplierSoftExp4;
+							if (softExp4 > 0.0f && val < 1.0f)
+							{
+								REAL v4 = val - 1.0f;
+								val = 1.0f + softExp4 * (native_exp(v4 / fmax(softExp4, 1e-12f)) - 1.0f);
+							}
+							REAL slewRate4 = fractal->transformCommon.multiplierSlewRate4;
+							if (slewRate4 > 0.0f && prevMultVal != 1.0f)
+							{
+								REAL delta4 = val - prevMultVal;
+								if (fabs(delta4) > slewRate4)
+									val = prevMultVal + (delta4 > 0.0f ? slewRate4 : -slewRate4);
+							}
+							REAL hyst4 = fractal->transformCommon.multiplierHysteresis4;
+							if (hyst4 > 0.0f)
+							{
+								REAL hystDist4 = native_sqrt(z.x * z.x + z.y * z.y + z.z * z.z);
+								REAL hystThresh4 = fractal->transformCommon.multiplierThreshold4;
+								if (hystDist4 > hystThresh4 - hyst4 * 0.5f && hystDist4 < hystThresh4 + hyst4 * 0.5f)
+								{
+									REAL blend4 = (hystDist4 - (hystThresh4 - hyst4 * 0.5f)) / hyst4;
+									val = 1.0f + (val - 1.0f) * blend4;
+								}
+							}
+							REAL aaStep4 = fractal->transformCommon.multiplierAntiAlias4;
+							if (aaStep4 > 0.0f)
+							{
+								REAL aaDist4 = native_sqrt(z.x * z.x + z.y * z.y + z.z * z.z);
+								REAL aaThresh4 = fractal->transformCommon.multiplierThreshold4;
+								REAL aaT4 = (aaDist4 - (aaThresh4 - aaStep4)) / (2.0f * aaStep4);
+								aaT4 = fmax(0.0f, fmin(1.0f, aaT4));
+								aaT4 = aaT4 * aaT4 * (3.0f - 2.0f * aaT4);
+								val = 1.0f + (val - 1.0f) * aaT4;
+							}
+							REAL neutralEps4 = fractal->transformCommon.multiplierNeutralEps4;
+							if (neutralEps4 > 0.0f && fabs(val - 1.0f) < neutralEps4)
+								val = 1.0f;
+
+							} // end else distCull
+							} // end else slotDisable
+
 							switch (fractal->transformCommon.multiplierMode4)
 				{
 					default:
@@ -2061,6 +2377,85 @@ REAL4 Threex3BerkovichJuliaIteration(REAL4 z, __constant sFractalCl *fractal, sE
 														// Accumulate for slot 5
 							if (fractal->transformCommon.multiplierAccumulate5 && prevMultVal != 1.0f)
 								val = 1.0f + (val - 1.0f) + (prevMultVal - 1.0f);
+
+							
+							// === Top-10 params for slot 5 ===
+							if (fractal->transformCommon.multiplierSlotDisable5) { val = 1.0f; }
+							else {
+							REAL cullDist5 = fractal->transformCommon.multiplierDistCull5;
+							if (cullDist5 > 0.0f && (z.x * z.x + z.y * z.y + z.z * z.z) > cullDist5 * cullDist5)
+								val = 1.0f;
+							else {
+
+							int rampIn5 = fractal->transformCommon.multiplierRampIn5;
+							if (rampIn5 > 0)
+							{
+								int elapsed5 = aux->i - fractal->transformCommon.multiplierStartIter5;
+								if (elapsed5 < rampIn5)
+								{
+									REAL t5 = (REAL)elapsed5 / (REAL)rampIn5;
+									t5 = t5 * t5 * (3.0f - 2.0f * t5);
+									val = 1.0f + (val - 1.0f) * t5;
+								}
+							}
+							int rampOut5 = fractal->transformCommon.multiplierRampOut5;
+							if (rampOut5 > 0)
+							{
+								int remaining5 = fractal->transformCommon.multiplierStopIter5 - aux->i;
+								if (remaining5 < rampOut5 && remaining5 >= 0)
+								{
+									REAL t5 = (REAL)remaining5 / (REAL)rampOut5;
+									t5 = t5 * t5 * (3.0f - 2.0f * t5);
+									val = 1.0f + (val - 1.0f) * t5;
+								}
+							}
+							REAL cylBias5 = fractal->transformCommon.multiplierCylindricalBias5;
+							if (cylBias5 > 0.0f)
+							{
+								REAL cylDist5 = native_sqrt(z.x * z.x + z.y * z.y);
+								REAL cylFade5 = native_exp(-cylBias5 * cylDist5);
+								val = 1.0f + (val - 1.0f) * cylFade5;
+							}
+							REAL softExp5 = fractal->transformCommon.multiplierSoftExp5;
+							if (softExp5 > 0.0f && val < 1.0f)
+							{
+								REAL v5 = val - 1.0f;
+								val = 1.0f + softExp5 * (native_exp(v5 / fmax(softExp5, 1e-12f)) - 1.0f);
+							}
+							REAL slewRate5 = fractal->transformCommon.multiplierSlewRate5;
+							if (slewRate5 > 0.0f && prevMultVal != 1.0f)
+							{
+								REAL delta5 = val - prevMultVal;
+								if (fabs(delta5) > slewRate5)
+									val = prevMultVal + (delta5 > 0.0f ? slewRate5 : -slewRate5);
+							}
+							REAL hyst5 = fractal->transformCommon.multiplierHysteresis5;
+							if (hyst5 > 0.0f)
+							{
+								REAL hystDist5 = native_sqrt(z.x * z.x + z.y * z.y + z.z * z.z);
+								REAL hystThresh5 = fractal->transformCommon.multiplierThreshold5;
+								if (hystDist5 > hystThresh5 - hyst5 * 0.5f && hystDist5 < hystThresh5 + hyst5 * 0.5f)
+								{
+									REAL blend5 = (hystDist5 - (hystThresh5 - hyst5 * 0.5f)) / hyst5;
+									val = 1.0f + (val - 1.0f) * blend5;
+								}
+							}
+							REAL aaStep5 = fractal->transformCommon.multiplierAntiAlias5;
+							if (aaStep5 > 0.0f)
+							{
+								REAL aaDist5 = native_sqrt(z.x * z.x + z.y * z.y + z.z * z.z);
+								REAL aaThresh5 = fractal->transformCommon.multiplierThreshold5;
+								REAL aaT5 = (aaDist5 - (aaThresh5 - aaStep5)) / (2.0f * aaStep5);
+								aaT5 = fmax(0.0f, fmin(1.0f, aaT5));
+								aaT5 = aaT5 * aaT5 * (3.0f - 2.0f * aaT5);
+								val = 1.0f + (val - 1.0f) * aaT5;
+							}
+							REAL neutralEps5 = fractal->transformCommon.multiplierNeutralEps5;
+							if (neutralEps5 > 0.0f && fabs(val - 1.0f) < neutralEps5)
+								val = 1.0f;
+
+							} // end else distCull
+							} // end else slotDisable
 
 							switch (fractal->transformCommon.multiplierMode5)
 				{

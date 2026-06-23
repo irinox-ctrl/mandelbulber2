@@ -594,6 +594,60 @@
       <widget class="MyComboBox" name="comboBox_transf_multiplier_conditional_mode_5"><item><property name="text"><string>Always</string></property></item>
      <item row="17" column="5">
       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_conditional_threshold_5"><property name="decimals"><number>2</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>100.000000</double></property><property name="value"><double>1.000000</double></property><property name="singleStep"><double>0.100000</double></property></widget>
+     </item>
+     <item row="18" column="0">
+      <widget class="QLabel" name="label_mult_rampin_5"><property name="text"><string>Ramp In</string></property></widget>
+     </item>
+     <item row="18" column="1">
+      <widget class="MySpinBoxInt" name="spinboxInt_transf_multiplier_ramp_in_5"><property name="minimum"><number>0</number></property><property name="maximum"><number>50</number></property></widget>
+     </item>
+     <item row="18" column="2">
+      <widget class="QLabel" name="label_mult_rampout_5"><property name="text"><string>Ramp Out</string></property></widget>
+     </item>
+     <item row="18" column="3">
+      <widget class="MySpinBoxInt" name="spinboxInt_transf_multiplier_ramp_out_5"><property name="minimum"><number>0</number></property><property name="maximum"><number>50</number></property></widget>
+     </item>
+     <item row="18" column="4">
+      <widget class="QLabel" name="label_mult_cylbias_5"><property name="text"><string>Cyl Bias</string></property></widget>
+     </item>
+     <item row="18" column="5">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_cylindrical_bias_5"><property name="decimals"><number>2</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>10.000000</double></property><property name="singleStep"><double>0.100000</double></property></widget>
+     </item>
+     <item row="19" column="0">
+      <widget class="MyCheckBox" name="checkBox_transf_multiplier_slot_disable_5"><property name="text"><string>Disable</string></property></widget>
+     </item>
+     <item row="19" column="1">
+      <widget class="QLabel" name="label_mult_slew_5"><property name="text"><string>Slew</string></property></widget>
+     </item>
+     <item row="19" column="2">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_slew_rate_5"><property name="decimals"><number>3</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>1.000000</double></property><property name="singleStep"><double>0.010000</double></property></widget>
+     </item>
+     <item row="19" column="3">
+      <widget class="QLabel" name="label_mult_hyst_5"><property name="text"><string>Hysteresis</string></property></widget>
+     </item>
+     <item row="19" column="4">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_hysteresis_5"><property name="decimals"><number>3</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>1.000000</double></property><property name="singleStep"><double>0.010000</double></property></widget>
+     </item>
+     <item row="19" column="5">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_soft_exp_5"><property name="decimals"><number>3</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>1.000000</double></property><property name="singleStep"><double>0.010000</double></property></widget>
+     </item>
+     <item row="20" column="0">
+      <widget class="QLabel" name="label_mult_aa_5"><property name="text"><string>AA Step</string></property></widget>
+     </item>
+     <item row="20" column="1">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_anti_alias_5"><property name="decimals"><number>3</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>0.500000</double></property><property name="singleStep"><double>0.010000</double></property></widget>
+     </item>
+     <item row="20" column="2">
+      <widget class="QLabel" name="label_mult_cull_5"><property name="text"><string>Dist Cull</string></property></widget>
+     </item>
+     <item row="20" column="3">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_dist_cull_5"><property name="decimals"><number>1</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>1000.000000</double></property><property name="singleStep"><double>1.000000</double></property></widget>
+     </item>
+     <item row="20" column="4">
+      <widget class="QLabel" name="label_mult_eps_5"><property name="text"><string>Neutral ε</string></property></widget>
+     </item>
+     <item row="20" column="5">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_neutral_eps_5"><property name="decimals"><number>4</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>0.010000</double></property><property name="singleStep"><double>0.001000</double></property></widget>
      </item><item><property name="text"><string>If Positive</string></property></item><item><property name="text"><string>If Negative</string></property></item><item><property name="text"><string>If Above Threshold</string></property></item></widget>
      </item>
       <item row="4" column="0">
@@ -957,6 +1011,60 @@
       <widget class="MyComboBox" name="comboBox_transf_multiplier_conditional_mode_4"><item><property name="text"><string>Always</string></property></item>
      <item row="17" column="5">
       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_conditional_threshold_4"><property name="decimals"><number>2</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>100.000000</double></property><property name="value"><double>1.000000</double></property><property name="singleStep"><double>0.100000</double></property></widget>
+     </item>
+     <item row="18" column="0">
+      <widget class="QLabel" name="label_mult_rampin_4"><property name="text"><string>Ramp In</string></property></widget>
+     </item>
+     <item row="18" column="1">
+      <widget class="MySpinBoxInt" name="spinboxInt_transf_multiplier_ramp_in_4"><property name="minimum"><number>0</number></property><property name="maximum"><number>50</number></property></widget>
+     </item>
+     <item row="18" column="2">
+      <widget class="QLabel" name="label_mult_rampout_4"><property name="text"><string>Ramp Out</string></property></widget>
+     </item>
+     <item row="18" column="3">
+      <widget class="MySpinBoxInt" name="spinboxInt_transf_multiplier_ramp_out_4"><property name="minimum"><number>0</number></property><property name="maximum"><number>50</number></property></widget>
+     </item>
+     <item row="18" column="4">
+      <widget class="QLabel" name="label_mult_cylbias_4"><property name="text"><string>Cyl Bias</string></property></widget>
+     </item>
+     <item row="18" column="5">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_cylindrical_bias_4"><property name="decimals"><number>2</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>10.000000</double></property><property name="singleStep"><double>0.100000</double></property></widget>
+     </item>
+     <item row="19" column="0">
+      <widget class="MyCheckBox" name="checkBox_transf_multiplier_slot_disable_4"><property name="text"><string>Disable</string></property></widget>
+     </item>
+     <item row="19" column="1">
+      <widget class="QLabel" name="label_mult_slew_4"><property name="text"><string>Slew</string></property></widget>
+     </item>
+     <item row="19" column="2">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_slew_rate_4"><property name="decimals"><number>3</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>1.000000</double></property><property name="singleStep"><double>0.010000</double></property></widget>
+     </item>
+     <item row="19" column="3">
+      <widget class="QLabel" name="label_mult_hyst_4"><property name="text"><string>Hysteresis</string></property></widget>
+     </item>
+     <item row="19" column="4">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_hysteresis_4"><property name="decimals"><number>3</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>1.000000</double></property><property name="singleStep"><double>0.010000</double></property></widget>
+     </item>
+     <item row="19" column="5">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_soft_exp_4"><property name="decimals"><number>3</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>1.000000</double></property><property name="singleStep"><double>0.010000</double></property></widget>
+     </item>
+     <item row="20" column="0">
+      <widget class="QLabel" name="label_mult_aa_4"><property name="text"><string>AA Step</string></property></widget>
+     </item>
+     <item row="20" column="1">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_anti_alias_4"><property name="decimals"><number>3</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>0.500000</double></property><property name="singleStep"><double>0.010000</double></property></widget>
+     </item>
+     <item row="20" column="2">
+      <widget class="QLabel" name="label_mult_cull_4"><property name="text"><string>Dist Cull</string></property></widget>
+     </item>
+     <item row="20" column="3">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_dist_cull_4"><property name="decimals"><number>1</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>1000.000000</double></property><property name="singleStep"><double>1.000000</double></property></widget>
+     </item>
+     <item row="20" column="4">
+      <widget class="QLabel" name="label_mult_eps_4"><property name="text"><string>Neutral ε</string></property></widget>
+     </item>
+     <item row="20" column="5">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_neutral_eps_4"><property name="decimals"><number>4</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>0.010000</double></property><property name="singleStep"><double>0.001000</double></property></widget>
      </item><item><property name="text"><string>If Positive</string></property></item><item><property name="text"><string>If Negative</string></property></item><item><property name="text"><string>If Above Threshold</string></property></item></widget>
      </item>
       <item row="4" column="0">
@@ -1320,6 +1428,60 @@
       <widget class="MyComboBox" name="comboBox_transf_multiplier_conditional_mode_3"><item><property name="text"><string>Always</string></property></item>
      <item row="17" column="5">
       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_conditional_threshold_3"><property name="decimals"><number>2</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>100.000000</double></property><property name="value"><double>1.000000</double></property><property name="singleStep"><double>0.100000</double></property></widget>
+     </item>
+     <item row="18" column="0">
+      <widget class="QLabel" name="label_mult_rampin_3"><property name="text"><string>Ramp In</string></property></widget>
+     </item>
+     <item row="18" column="1">
+      <widget class="MySpinBoxInt" name="spinboxInt_transf_multiplier_ramp_in_3"><property name="minimum"><number>0</number></property><property name="maximum"><number>50</number></property></widget>
+     </item>
+     <item row="18" column="2">
+      <widget class="QLabel" name="label_mult_rampout_3"><property name="text"><string>Ramp Out</string></property></widget>
+     </item>
+     <item row="18" column="3">
+      <widget class="MySpinBoxInt" name="spinboxInt_transf_multiplier_ramp_out_3"><property name="minimum"><number>0</number></property><property name="maximum"><number>50</number></property></widget>
+     </item>
+     <item row="18" column="4">
+      <widget class="QLabel" name="label_mult_cylbias_3"><property name="text"><string>Cyl Bias</string></property></widget>
+     </item>
+     <item row="18" column="5">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_cylindrical_bias_3"><property name="decimals"><number>2</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>10.000000</double></property><property name="singleStep"><double>0.100000</double></property></widget>
+     </item>
+     <item row="19" column="0">
+      <widget class="MyCheckBox" name="checkBox_transf_multiplier_slot_disable_3"><property name="text"><string>Disable</string></property></widget>
+     </item>
+     <item row="19" column="1">
+      <widget class="QLabel" name="label_mult_slew_3"><property name="text"><string>Slew</string></property></widget>
+     </item>
+     <item row="19" column="2">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_slew_rate_3"><property name="decimals"><number>3</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>1.000000</double></property><property name="singleStep"><double>0.010000</double></property></widget>
+     </item>
+     <item row="19" column="3">
+      <widget class="QLabel" name="label_mult_hyst_3"><property name="text"><string>Hysteresis</string></property></widget>
+     </item>
+     <item row="19" column="4">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_hysteresis_3"><property name="decimals"><number>3</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>1.000000</double></property><property name="singleStep"><double>0.010000</double></property></widget>
+     </item>
+     <item row="19" column="5">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_soft_exp_3"><property name="decimals"><number>3</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>1.000000</double></property><property name="singleStep"><double>0.010000</double></property></widget>
+     </item>
+     <item row="20" column="0">
+      <widget class="QLabel" name="label_mult_aa_3"><property name="text"><string>AA Step</string></property></widget>
+     </item>
+     <item row="20" column="1">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_anti_alias_3"><property name="decimals"><number>3</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>0.500000</double></property><property name="singleStep"><double>0.010000</double></property></widget>
+     </item>
+     <item row="20" column="2">
+      <widget class="QLabel" name="label_mult_cull_3"><property name="text"><string>Dist Cull</string></property></widget>
+     </item>
+     <item row="20" column="3">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_dist_cull_3"><property name="decimals"><number>1</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>1000.000000</double></property><property name="singleStep"><double>1.000000</double></property></widget>
+     </item>
+     <item row="20" column="4">
+      <widget class="QLabel" name="label_mult_eps_3"><property name="text"><string>Neutral ε</string></property></widget>
+     </item>
+     <item row="20" column="5">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_neutral_eps_3"><property name="decimals"><number>4</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>0.010000</double></property><property name="singleStep"><double>0.001000</double></property></widget>
      </item><item><property name="text"><string>If Positive</string></property></item><item><property name="text"><string>If Negative</string></property></item><item><property name="text"><string>If Above Threshold</string></property></item></widget>
      </item>
       <item row="4" column="0">
@@ -1683,6 +1845,60 @@
       <widget class="MyComboBox" name="comboBox_transf_multiplier_conditional_mode_2"><item><property name="text"><string>Always</string></property></item>
      <item row="17" column="5">
       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_conditional_threshold_2"><property name="decimals"><number>2</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>100.000000</double></property><property name="value"><double>1.000000</double></property><property name="singleStep"><double>0.100000</double></property></widget>
+     </item>
+     <item row="18" column="0">
+      <widget class="QLabel" name="label_mult_rampin_2"><property name="text"><string>Ramp In</string></property></widget>
+     </item>
+     <item row="18" column="1">
+      <widget class="MySpinBoxInt" name="spinboxInt_transf_multiplier_ramp_in_2"><property name="minimum"><number>0</number></property><property name="maximum"><number>50</number></property></widget>
+     </item>
+     <item row="18" column="2">
+      <widget class="QLabel" name="label_mult_rampout_2"><property name="text"><string>Ramp Out</string></property></widget>
+     </item>
+     <item row="18" column="3">
+      <widget class="MySpinBoxInt" name="spinboxInt_transf_multiplier_ramp_out_2"><property name="minimum"><number>0</number></property><property name="maximum"><number>50</number></property></widget>
+     </item>
+     <item row="18" column="4">
+      <widget class="QLabel" name="label_mult_cylbias_2"><property name="text"><string>Cyl Bias</string></property></widget>
+     </item>
+     <item row="18" column="5">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_cylindrical_bias_2"><property name="decimals"><number>2</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>10.000000</double></property><property name="singleStep"><double>0.100000</double></property></widget>
+     </item>
+     <item row="19" column="0">
+      <widget class="MyCheckBox" name="checkBox_transf_multiplier_slot_disable_2"><property name="text"><string>Disable</string></property></widget>
+     </item>
+     <item row="19" column="1">
+      <widget class="QLabel" name="label_mult_slew_2"><property name="text"><string>Slew</string></property></widget>
+     </item>
+     <item row="19" column="2">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_slew_rate_2"><property name="decimals"><number>3</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>1.000000</double></property><property name="singleStep"><double>0.010000</double></property></widget>
+     </item>
+     <item row="19" column="3">
+      <widget class="QLabel" name="label_mult_hyst_2"><property name="text"><string>Hysteresis</string></property></widget>
+     </item>
+     <item row="19" column="4">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_hysteresis_2"><property name="decimals"><number>3</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>1.000000</double></property><property name="singleStep"><double>0.010000</double></property></widget>
+     </item>
+     <item row="19" column="5">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_soft_exp_2"><property name="decimals"><number>3</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>1.000000</double></property><property name="singleStep"><double>0.010000</double></property></widget>
+     </item>
+     <item row="20" column="0">
+      <widget class="QLabel" name="label_mult_aa_2"><property name="text"><string>AA Step</string></property></widget>
+     </item>
+     <item row="20" column="1">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_anti_alias_2"><property name="decimals"><number>3</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>0.500000</double></property><property name="singleStep"><double>0.010000</double></property></widget>
+     </item>
+     <item row="20" column="2">
+      <widget class="QLabel" name="label_mult_cull_2"><property name="text"><string>Dist Cull</string></property></widget>
+     </item>
+     <item row="20" column="3">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_dist_cull_2"><property name="decimals"><number>1</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>1000.000000</double></property><property name="singleStep"><double>1.000000</double></property></widget>
+     </item>
+     <item row="20" column="4">
+      <widget class="QLabel" name="label_mult_eps_2"><property name="text"><string>Neutral ε</string></property></widget>
+     </item>
+     <item row="20" column="5">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_neutral_eps_2"><property name="decimals"><number>4</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>0.010000</double></property><property name="singleStep"><double>0.001000</double></property></widget>
      </item><item><property name="text"><string>If Positive</string></property></item><item><property name="text"><string>If Negative</string></property></item><item><property name="text"><string>If Above Threshold</string></property></item></widget>
      </item>
       <item row="4" column="0">
@@ -2046,6 +2262,60 @@
       <widget class="MyComboBox" name="comboBox_transf_multiplier_conditional_mode_1"><item><property name="text"><string>Always</string></property></item>
      <item row="17" column="5">
       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_conditional_threshold_1"><property name="decimals"><number>2</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>100.000000</double></property><property name="value"><double>1.000000</double></property><property name="singleStep"><double>0.100000</double></property></widget>
+     </item>
+     <item row="18" column="0">
+      <widget class="QLabel" name="label_mult_rampin_1"><property name="text"><string>Ramp In</string></property></widget>
+     </item>
+     <item row="18" column="1">
+      <widget class="MySpinBoxInt" name="spinboxInt_transf_multiplier_ramp_in_1"><property name="minimum"><number>0</number></property><property name="maximum"><number>50</number></property></widget>
+     </item>
+     <item row="18" column="2">
+      <widget class="QLabel" name="label_mult_rampout_1"><property name="text"><string>Ramp Out</string></property></widget>
+     </item>
+     <item row="18" column="3">
+      <widget class="MySpinBoxInt" name="spinboxInt_transf_multiplier_ramp_out_1"><property name="minimum"><number>0</number></property><property name="maximum"><number>50</number></property></widget>
+     </item>
+     <item row="18" column="4">
+      <widget class="QLabel" name="label_mult_cylbias_1"><property name="text"><string>Cyl Bias</string></property></widget>
+     </item>
+     <item row="18" column="5">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_cylindrical_bias_1"><property name="decimals"><number>2</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>10.000000</double></property><property name="singleStep"><double>0.100000</double></property></widget>
+     </item>
+     <item row="19" column="0">
+      <widget class="MyCheckBox" name="checkBox_transf_multiplier_slot_disable_1"><property name="text"><string>Disable</string></property></widget>
+     </item>
+     <item row="19" column="1">
+      <widget class="QLabel" name="label_mult_slew_1"><property name="text"><string>Slew</string></property></widget>
+     </item>
+     <item row="19" column="2">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_slew_rate_1"><property name="decimals"><number>3</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>1.000000</double></property><property name="singleStep"><double>0.010000</double></property></widget>
+     </item>
+     <item row="19" column="3">
+      <widget class="QLabel" name="label_mult_hyst_1"><property name="text"><string>Hysteresis</string></property></widget>
+     </item>
+     <item row="19" column="4">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_hysteresis_1"><property name="decimals"><number>3</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>1.000000</double></property><property name="singleStep"><double>0.010000</double></property></widget>
+     </item>
+     <item row="19" column="5">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_soft_exp_1"><property name="decimals"><number>3</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>1.000000</double></property><property name="singleStep"><double>0.010000</double></property></widget>
+     </item>
+     <item row="20" column="0">
+      <widget class="QLabel" name="label_mult_aa_1"><property name="text"><string>AA Step</string></property></widget>
+     </item>
+     <item row="20" column="1">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_anti_alias_1"><property name="decimals"><number>3</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>0.500000</double></property><property name="singleStep"><double>0.010000</double></property></widget>
+     </item>
+     <item row="20" column="2">
+      <widget class="QLabel" name="label_mult_cull_1"><property name="text"><string>Dist Cull</string></property></widget>
+     </item>
+     <item row="20" column="3">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_dist_cull_1"><property name="decimals"><number>1</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>1000.000000</double></property><property name="singleStep"><double>1.000000</double></property></widget>
+     </item>
+     <item row="20" column="4">
+      <widget class="QLabel" name="label_mult_eps_1"><property name="text"><string>Neutral ε</string></property></widget>
+     </item>
+     <item row="20" column="5">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_neutral_eps_1"><property name="decimals"><number>4</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>0.010000</double></property><property name="singleStep"><double>0.001000</double></property></widget>
      </item><item><property name="text"><string>If Positive</string></property></item><item><property name="text"><string>If Negative</string></property></item><item><property name="text"><string>If Above Threshold</string></property></item></widget>
      </item>
         <item row="2" column="3">
