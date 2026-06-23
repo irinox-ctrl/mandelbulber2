@@ -1349,3 +1349,4 @@ struct sFractal
 };
 
 #endif /* MANDELBULBER2_SRC_FRACTAL_H_ */
+// Multiplier system v4.1 — burst/falloff/wrap/conditional
