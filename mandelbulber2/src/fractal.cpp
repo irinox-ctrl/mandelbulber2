@@ -636,6 +636,67 @@ sFractal::sFractal(const std::shared_ptr<cParameterContainer> container)
 	transformCommon.multiplierPolarMode4 = container->Get<bool>("transf_multiplier_polar_mode_4");
 	transformCommon.multiplierPolarMode5 = container->Get<bool>("transf_multiplier_polar_mode_5");
 
+	transformCommon.multiplierClipCurve1 = container->Get<double>("transf_multiplier_clip_curve_1");
+	transformCommon.multiplierClipCurve2 = container->Get<double>("transf_multiplier_clip_curve_2");
+	transformCommon.multiplierClipCurve3 = container->Get<double>("transf_multiplier_clip_curve_3");
+	transformCommon.multiplierClipCurve4 = container->Get<double>("transf_multiplier_clip_curve_4");
+	transformCommon.multiplierClipCurve5 = container->Get<double>("transf_multiplier_clip_curve_5");
+
+	transformCommon.multiplierClipKnee1 = container->Get<double>("transf_multiplier_clip_knee_1");
+	transformCommon.multiplierClipKnee2 = container->Get<double>("transf_multiplier_clip_knee_2");
+	transformCommon.multiplierClipKnee3 = container->Get<double>("transf_multiplier_clip_knee_3");
+	transformCommon.multiplierClipKnee4 = container->Get<double>("transf_multiplier_clip_knee_4");
+	transformCommon.multiplierClipKnee5 = container->Get<double>("transf_multiplier_clip_knee_5");
+
+	transformCommon.multiplierClipDrive1 = container->Get<double>("transf_multiplier_clip_drive_1");
+	transformCommon.multiplierClipDrive2 = container->Get<double>("transf_multiplier_clip_drive_2");
+	transformCommon.multiplierClipDrive3 = container->Get<double>("transf_multiplier_clip_drive_3");
+	transformCommon.multiplierClipDrive4 = container->Get<double>("transf_multiplier_clip_drive_4");
+	transformCommon.multiplierClipDrive5 = container->Get<double>("transf_multiplier_clip_drive_5");
+
+	transformCommon.multiplierClipAsymmetry1 = container->Get<double>("transf_multiplier_clip_asymmetry_1");
+	transformCommon.multiplierClipAsymmetry2 = container->Get<double>("transf_multiplier_clip_asymmetry_2");
+	transformCommon.multiplierClipAsymmetry3 = container->Get<double>("transf_multiplier_clip_asymmetry_3");
+	transformCommon.multiplierClipAsymmetry4 = container->Get<double>("transf_multiplier_clip_asymmetry_4");
+	transformCommon.multiplierClipAsymmetry5 = container->Get<double>("transf_multiplier_clip_asymmetry_5");
+
+	transformCommon.multiplierClipCeiling1 = container->Get<double>("transf_multiplier_clip_ceiling_1");
+	transformCommon.multiplierClipCeiling2 = container->Get<double>("transf_multiplier_clip_ceiling_2");
+	transformCommon.multiplierClipCeiling3 = container->Get<double>("transf_multiplier_clip_ceiling_3");
+	transformCommon.multiplierClipCeiling4 = container->Get<double>("transf_multiplier_clip_ceiling_4");
+	transformCommon.multiplierClipCeiling5 = container->Get<double>("transf_multiplier_clip_ceiling_5");
+
+	transformCommon.multiplierClipFloor1 = container->Get<double>("transf_multiplier_clip_floor_1");
+	transformCommon.multiplierClipFloor2 = container->Get<double>("transf_multiplier_clip_floor_2");
+	transformCommon.multiplierClipFloor3 = container->Get<double>("transf_multiplier_clip_floor_3");
+	transformCommon.multiplierClipFloor4 = container->Get<double>("transf_multiplier_clip_floor_4");
+	transformCommon.multiplierClipFloor5 = container->Get<double>("transf_multiplier_clip_floor_5");
+
+	transformCommon.multiplierClipMix1 = container->Get<double>("transf_multiplier_clip_mix_1");
+	transformCommon.multiplierClipMix2 = container->Get<double>("transf_multiplier_clip_mix_2");
+	transformCommon.multiplierClipMix3 = container->Get<double>("transf_multiplier_clip_mix_3");
+	transformCommon.multiplierClipMix4 = container->Get<double>("transf_multiplier_clip_mix_4");
+	transformCommon.multiplierClipMix5 = container->Get<double>("transf_multiplier_clip_mix_5");
+
+	transformCommon.multiplierClipFoldCount1 = container->Get<int>("transf_multiplier_clip_fold_count_1");
+	transformCommon.multiplierClipFoldCount2 = container->Get<int>("transf_multiplier_clip_fold_count_2");
+	transformCommon.multiplierClipFoldCount3 = container->Get<int>("transf_multiplier_clip_fold_count_3");
+	transformCommon.multiplierClipFoldCount4 = container->Get<int>("transf_multiplier_clip_fold_count_4");
+	transformCommon.multiplierClipFoldCount5 = container->Get<int>("transf_multiplier_clip_fold_count_5");
+
+	transformCommon.multiplierClipRectify1 = container->Get<int>("transf_multiplier_clip_rectify_1");
+	transformCommon.multiplierClipRectify2 = container->Get<int>("transf_multiplier_clip_rectify_2");
+	transformCommon.multiplierClipRectify3 = container->Get<int>("transf_multiplier_clip_rectify_3");
+	transformCommon.multiplierClipRectify4 = container->Get<int>("transf_multiplier_clip_rectify_4");
+	transformCommon.multiplierClipRectify5 = container->Get<int>("transf_multiplier_clip_rectify_5");
+
+	transformCommon.multiplierClipFold1 = container->Get<bool>("transf_multiplier_clip_fold_1");
+	transformCommon.multiplierClipFold2 = container->Get<bool>("transf_multiplier_clip_fold_2");
+	transformCommon.multiplierClipFold3 = container->Get<bool>("transf_multiplier_clip_fold_3");
+	transformCommon.multiplierClipFold4 = container->Get<bool>("transf_multiplier_clip_fold_4");
+	transformCommon.multiplierClipFold5 = container->Get<bool>("transf_multiplier_clip_fold_5");
+
+
 
 
 	// Dedicated multiplier enable/value/iteration params

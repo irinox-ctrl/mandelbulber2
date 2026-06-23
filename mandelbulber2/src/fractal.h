@@ -963,6 +963,67 @@ struct sFractalTransformCommon
 	bool multiplierPolarMode4;
 	bool multiplierPolarMode5;
 
+	double multiplierClipCurve1;
+	double multiplierClipCurve2;
+	double multiplierClipCurve3;
+	double multiplierClipCurve4;
+	double multiplierClipCurve5;
+
+	double multiplierClipKnee1;
+	double multiplierClipKnee2;
+	double multiplierClipKnee3;
+	double multiplierClipKnee4;
+	double multiplierClipKnee5;
+
+	double multiplierClipDrive1;
+	double multiplierClipDrive2;
+	double multiplierClipDrive3;
+	double multiplierClipDrive4;
+	double multiplierClipDrive5;
+
+	double multiplierClipAsymmetry1;
+	double multiplierClipAsymmetry2;
+	double multiplierClipAsymmetry3;
+	double multiplierClipAsymmetry4;
+	double multiplierClipAsymmetry5;
+
+	double multiplierClipCeiling1;
+	double multiplierClipCeiling2;
+	double multiplierClipCeiling3;
+	double multiplierClipCeiling4;
+	double multiplierClipCeiling5;
+
+	double multiplierClipFloor1;
+	double multiplierClipFloor2;
+	double multiplierClipFloor3;
+	double multiplierClipFloor4;
+	double multiplierClipFloor5;
+
+	double multiplierClipMix1;
+	double multiplierClipMix2;
+	double multiplierClipMix3;
+	double multiplierClipMix4;
+	double multiplierClipMix5;
+
+	int multiplierClipFoldCount1;
+	int multiplierClipFoldCount2;
+	int multiplierClipFoldCount3;
+	int multiplierClipFoldCount4;
+	int multiplierClipFoldCount5;
+
+	int multiplierClipRectify1;
+	int multiplierClipRectify2;
+	int multiplierClipRectify3;
+	int multiplierClipRectify4;
+	int multiplierClipRectify5;
+
+	bool multiplierClipFold1;
+	bool multiplierClipFold2;
+	bool multiplierClipFold3;
+	bool multiplierClipFold4;
+	bool multiplierClipFold5;
+
+
 
 
 	// Dedicated multiplier enable/value/iteration params (no conflicts with formula logic)

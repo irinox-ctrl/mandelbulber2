@@ -2326,6 +2326,67 @@ void InitFractalParams(std::shared_ptr<cParameterContainer> par)
 	par->addParam("transf_multiplier_polar_mode_4", false, morphNone, paramStandard);
 	par->addParam("transf_multiplier_polar_mode_5", false, morphNone, paramStandard);
 
+	par->addParam("transf_multiplier_clip_curve_1", 0.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_clip_curve_2", 0.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_clip_curve_3", 0.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_clip_curve_4", 0.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_clip_curve_5", 0.0, 0.0, 1.0, morphNone, paramStandard);
+
+	par->addParam("transf_multiplier_clip_knee_1", 0.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_clip_knee_2", 0.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_clip_knee_3", 0.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_clip_knee_4", 0.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_clip_knee_5", 0.0, 0.0, 1.0, morphNone, paramStandard);
+
+	par->addParam("transf_multiplier_clip_drive_1", 1.0, 0.1, 10.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_clip_drive_2", 1.0, 0.1, 10.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_clip_drive_3", 1.0, 0.1, 10.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_clip_drive_4", 1.0, 0.1, 10.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_clip_drive_5", 1.0, 0.1, 10.0, morphNone, paramStandard);
+
+	par->addParam("transf_multiplier_clip_asymmetry_1", 0.0, -1.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_clip_asymmetry_2", 0.0, -1.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_clip_asymmetry_3", 0.0, -1.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_clip_asymmetry_4", 0.0, -1.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_clip_asymmetry_5", 0.0, -1.0, 1.0, morphNone, paramStandard);
+
+	par->addParam("transf_multiplier_clip_ceiling_1", 10.0, 0.1, 10.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_clip_ceiling_2", 10.0, 0.1, 10.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_clip_ceiling_3", 10.0, 0.1, 10.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_clip_ceiling_4", 10.0, 0.1, 10.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_clip_ceiling_5", 10.0, 0.1, 10.0, morphNone, paramStandard);
+
+	par->addParam("transf_multiplier_clip_floor_1", -10.0, -10.0, -0.1, morphNone, paramStandard);
+	par->addParam("transf_multiplier_clip_floor_2", -10.0, -10.0, -0.1, morphNone, paramStandard);
+	par->addParam("transf_multiplier_clip_floor_3", -10.0, -10.0, -0.1, morphNone, paramStandard);
+	par->addParam("transf_multiplier_clip_floor_4", -10.0, -10.0, -0.1, morphNone, paramStandard);
+	par->addParam("transf_multiplier_clip_floor_5", -10.0, -10.0, -0.1, morphNone, paramStandard);
+
+	par->addParam("transf_multiplier_clip_mix_1", 1.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_clip_mix_2", 1.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_clip_mix_3", 1.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_clip_mix_4", 1.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_clip_mix_5", 1.0, 0.0, 1.0, morphNone, paramStandard);
+
+	par->addParam("transf_multiplier_clip_fold_count_1", 0, 0, 8, morphNone, paramStandard);
+	par->addParam("transf_multiplier_clip_fold_count_2", 0, 0, 8, morphNone, paramStandard);
+	par->addParam("transf_multiplier_clip_fold_count_3", 0, 0, 8, morphNone, paramStandard);
+	par->addParam("transf_multiplier_clip_fold_count_4", 0, 0, 8, morphNone, paramStandard);
+	par->addParam("transf_multiplier_clip_fold_count_5", 0, 0, 8, morphNone, paramStandard);
+
+	par->addParam("transf_multiplier_clip_rectify_1", 0, 0, 2, morphNone, paramStandard);
+	par->addParam("transf_multiplier_clip_rectify_2", 0, 0, 2, morphNone, paramStandard);
+	par->addParam("transf_multiplier_clip_rectify_3", 0, 0, 2, morphNone, paramStandard);
+	par->addParam("transf_multiplier_clip_rectify_4", 0, 0, 2, morphNone, paramStandard);
+	par->addParam("transf_multiplier_clip_rectify_5", 0, 0, 2, morphNone, paramStandard);
+
+	par->addParam("transf_multiplier_clip_fold_1", false, morphNone, paramStandard);
+	par->addParam("transf_multiplier_clip_fold_2", false, morphNone, paramStandard);
+	par->addParam("transf_multiplier_clip_fold_3", false, morphNone, paramStandard);
+	par->addParam("transf_multiplier_clip_fold_4", false, morphNone, paramStandard);
+	par->addParam("transf_multiplier_clip_fold_5", false, morphNone, paramStandard);
+
+
 
 
 

@@ -363,6 +363,74 @@ REAL4 MengerCrossMod1Iteration(REAL4 z, __constant sFractalCl *fractal, sExtende
 								else if (bm == 4) { REAL sv = fmin(fmax((val - 0.5f), 0.0f), 1.0f); val = 0.5f + sv * sv * (3.0f - 2.0f * sv); }
 							}
 
+							// Clip Drive (pre-gain)
+							if (fractal->transformCommon.multiplierClipDrive1 != 1.0f)
+							{
+								REAL drv = fractal->transformCommon.multiplierClipDrive1;
+								val = 1.0f + (val - 1.0f) * drv;
+							}
+							// Clip Rectify: 0=off, 1=half(clamp neg to 0), 2=full(abs)
+							{
+								int cr = fractal->transformCommon.multiplierClipRectify1;
+								if (cr == 1 && val < 1.0f) val = 1.0f;
+								else if (cr == 2) val = 1.0f + fabs(val - 1.0f);
+							}
+							// Clip Fold (wavefolder)
+							if (fractal->transformCommon.multiplierClipFold1)
+							{
+								int folds = fractal->transformCommon.multiplierClipFoldCount1;
+								if (folds < 1) folds = 1;
+								REAL ceil = fractal->transformCommon.multiplierClipCeiling1;
+								REAL flr = fractal->transformCommon.multiplierClipFloor1;
+								for (int fi = 0; fi < folds; fi++)
+								{
+									if (val > ceil) val = 2.0f * ceil - val;
+									if (val < flr) val = 2.0f * flr - val;
+								}
+							}
+							// Clip Ceiling / Floor (hard clamp with asymmetry)
+							if (!fractal->transformCommon.multiplierClipFold1)
+							{
+								REAL ceil = fractal->transformCommon.multiplierClipCeiling1;
+								REAL flr = fractal->transformCommon.multiplierClipFloor1;
+								REAL asym = fractal->transformCommon.multiplierClipAsymmetry1;
+								ceil += asym;
+								flr -= asym;
+								REAL curve = fractal->transformCommon.multiplierClipCurve1;
+								REAL knee = fractal->transformCommon.multiplierClipKnee1;
+								if (curve > 0.0f || knee > 0.0f)
+								{
+									REAL k = fmax(knee, 0.001f);
+									if (val > ceil - k)
+									{
+										REAL x = (val - (ceil - k)) / (2.0f * k);
+										x = fmin(fmax(x, 0.0f), 1.0f);
+										REAL sm = x * x * (3.0f - 2.0f * x);
+										val = (ceil - k) + k * sm * (1.0f + curve);
+										if (val > ceil) val = ceil;
+									}
+									if (val < flr + k)
+									{
+										REAL x = ((flr + k) - val) / (2.0f * k);
+										x = fmin(fmax(x, 0.0f), 1.0f);
+										REAL sm = x * x * (3.0f - 2.0f * x);
+										val = (flr + k) - k * sm * (1.0f + curve);
+										if (val < flr) val = flr;
+									}
+								}
+								else
+								{
+									if (val > ceil) val = ceil;
+									if (val < flr) val = flr;
+								}
+							}
+							// Clip Mix (blend clipped/unclipped)
+							if (fractal->transformCommon.multiplierClipMix1 < 1.0f)
+							{
+								REAL mx = fractal->transformCommon.multiplierClipMix1;
+								val = 1.0f + mx * (val - 1.0f);
+							}
+
 				switch (fractal->transformCommon.multiplierMode1)
 				{
 					default:
@@ -613,6 +681,74 @@ REAL4 MengerCrossMod1Iteration(REAL4 z, __constant sFractalCl *fractal, sExtende
 								else if (bm == 2 && val < 1.0f) val = 1.0f;
 								else if (bm == 3) val = 1.0f + fabs(val - 1.0f);
 								else if (bm == 4) { REAL sv = fmin(fmax((val - 0.5f), 0.0f), 1.0f); val = 0.5f + sv * sv * (3.0f - 2.0f * sv); }
+							}
+
+							// Clip Drive (pre-gain)
+							if (fractal->transformCommon.multiplierClipDrive2 != 1.0f)
+							{
+								REAL drv = fractal->transformCommon.multiplierClipDrive2;
+								val = 1.0f + (val - 1.0f) * drv;
+							}
+							// Clip Rectify: 0=off, 1=half(clamp neg to 0), 2=full(abs)
+							{
+								int cr = fractal->transformCommon.multiplierClipRectify2;
+								if (cr == 1 && val < 1.0f) val = 1.0f;
+								else if (cr == 2) val = 1.0f + fabs(val - 1.0f);
+							}
+							// Clip Fold (wavefolder)
+							if (fractal->transformCommon.multiplierClipFold2)
+							{
+								int folds = fractal->transformCommon.multiplierClipFoldCount2;
+								if (folds < 1) folds = 1;
+								REAL ceil = fractal->transformCommon.multiplierClipCeiling2;
+								REAL flr = fractal->transformCommon.multiplierClipFloor2;
+								for (int fi = 0; fi < folds; fi++)
+								{
+									if (val > ceil) val = 2.0f * ceil - val;
+									if (val < flr) val = 2.0f * flr - val;
+								}
+							}
+							// Clip Ceiling / Floor (hard clamp with asymmetry)
+							if (!fractal->transformCommon.multiplierClipFold2)
+							{
+								REAL ceil = fractal->transformCommon.multiplierClipCeiling2;
+								REAL flr = fractal->transformCommon.multiplierClipFloor2;
+								REAL asym = fractal->transformCommon.multiplierClipAsymmetry2;
+								ceil += asym;
+								flr -= asym;
+								REAL curve = fractal->transformCommon.multiplierClipCurve2;
+								REAL knee = fractal->transformCommon.multiplierClipKnee2;
+								if (curve > 0.0f || knee > 0.0f)
+								{
+									REAL k = fmax(knee, 0.001f);
+									if (val > ceil - k)
+									{
+										REAL x = (val - (ceil - k)) / (2.0f * k);
+										x = fmin(fmax(x, 0.0f), 1.0f);
+										REAL sm = x * x * (3.0f - 2.0f * x);
+										val = (ceil - k) + k * sm * (1.0f + curve);
+										if (val > ceil) val = ceil;
+									}
+									if (val < flr + k)
+									{
+										REAL x = ((flr + k) - val) / (2.0f * k);
+										x = fmin(fmax(x, 0.0f), 1.0f);
+										REAL sm = x * x * (3.0f - 2.0f * x);
+										val = (flr + k) - k * sm * (1.0f + curve);
+										if (val < flr) val = flr;
+									}
+								}
+								else
+								{
+									if (val > ceil) val = ceil;
+									if (val < flr) val = flr;
+								}
+							}
+							// Clip Mix (blend clipped/unclipped)
+							if (fractal->transformCommon.multiplierClipMix2 < 1.0f)
+							{
+								REAL mx = fractal->transformCommon.multiplierClipMix2;
+								val = 1.0f + mx * (val - 1.0f);
 							}
 
 				switch (fractal->transformCommon.multiplierMode2)
@@ -867,6 +1003,74 @@ REAL4 MengerCrossMod1Iteration(REAL4 z, __constant sFractalCl *fractal, sExtende
 								else if (bm == 4) { REAL sv = fmin(fmax((val - 0.5f), 0.0f), 1.0f); val = 0.5f + sv * sv * (3.0f - 2.0f * sv); }
 							}
 
+							// Clip Drive (pre-gain)
+							if (fractal->transformCommon.multiplierClipDrive3 != 1.0f)
+							{
+								REAL drv = fractal->transformCommon.multiplierClipDrive3;
+								val = 1.0f + (val - 1.0f) * drv;
+							}
+							// Clip Rectify: 0=off, 1=half(clamp neg to 0), 2=full(abs)
+							{
+								int cr = fractal->transformCommon.multiplierClipRectify3;
+								if (cr == 1 && val < 1.0f) val = 1.0f;
+								else if (cr == 2) val = 1.0f + fabs(val - 1.0f);
+							}
+							// Clip Fold (wavefolder)
+							if (fractal->transformCommon.multiplierClipFold3)
+							{
+								int folds = fractal->transformCommon.multiplierClipFoldCount3;
+								if (folds < 1) folds = 1;
+								REAL ceil = fractal->transformCommon.multiplierClipCeiling3;
+								REAL flr = fractal->transformCommon.multiplierClipFloor3;
+								for (int fi = 0; fi < folds; fi++)
+								{
+									if (val > ceil) val = 2.0f * ceil - val;
+									if (val < flr) val = 2.0f * flr - val;
+								}
+							}
+							// Clip Ceiling / Floor (hard clamp with asymmetry)
+							if (!fractal->transformCommon.multiplierClipFold3)
+							{
+								REAL ceil = fractal->transformCommon.multiplierClipCeiling3;
+								REAL flr = fractal->transformCommon.multiplierClipFloor3;
+								REAL asym = fractal->transformCommon.multiplierClipAsymmetry3;
+								ceil += asym;
+								flr -= asym;
+								REAL curve = fractal->transformCommon.multiplierClipCurve3;
+								REAL knee = fractal->transformCommon.multiplierClipKnee3;
+								if (curve > 0.0f || knee > 0.0f)
+								{
+									REAL k = fmax(knee, 0.001f);
+									if (val > ceil - k)
+									{
+										REAL x = (val - (ceil - k)) / (2.0f * k);
+										x = fmin(fmax(x, 0.0f), 1.0f);
+										REAL sm = x * x * (3.0f - 2.0f * x);
+										val = (ceil - k) + k * sm * (1.0f + curve);
+										if (val > ceil) val = ceil;
+									}
+									if (val < flr + k)
+									{
+										REAL x = ((flr + k) - val) / (2.0f * k);
+										x = fmin(fmax(x, 0.0f), 1.0f);
+										REAL sm = x * x * (3.0f - 2.0f * x);
+										val = (flr + k) - k * sm * (1.0f + curve);
+										if (val < flr) val = flr;
+									}
+								}
+								else
+								{
+									if (val > ceil) val = ceil;
+									if (val < flr) val = flr;
+								}
+							}
+							// Clip Mix (blend clipped/unclipped)
+							if (fractal->transformCommon.multiplierClipMix3 < 1.0f)
+							{
+								REAL mx = fractal->transformCommon.multiplierClipMix3;
+								val = 1.0f + mx * (val - 1.0f);
+							}
+
 				switch (fractal->transformCommon.multiplierMode3)
 				{
 					default:
@@ -1119,6 +1323,74 @@ REAL4 MengerCrossMod1Iteration(REAL4 z, __constant sFractalCl *fractal, sExtende
 								else if (bm == 4) { REAL sv = fmin(fmax((val - 0.5f), 0.0f), 1.0f); val = 0.5f + sv * sv * (3.0f - 2.0f * sv); }
 							}
 
+							// Clip Drive (pre-gain)
+							if (fractal->transformCommon.multiplierClipDrive4 != 1.0f)
+							{
+								REAL drv = fractal->transformCommon.multiplierClipDrive4;
+								val = 1.0f + (val - 1.0f) * drv;
+							}
+							// Clip Rectify: 0=off, 1=half(clamp neg to 0), 2=full(abs)
+							{
+								int cr = fractal->transformCommon.multiplierClipRectify4;
+								if (cr == 1 && val < 1.0f) val = 1.0f;
+								else if (cr == 2) val = 1.0f + fabs(val - 1.0f);
+							}
+							// Clip Fold (wavefolder)
+							if (fractal->transformCommon.multiplierClipFold4)
+							{
+								int folds = fractal->transformCommon.multiplierClipFoldCount4;
+								if (folds < 1) folds = 1;
+								REAL ceil = fractal->transformCommon.multiplierClipCeiling4;
+								REAL flr = fractal->transformCommon.multiplierClipFloor4;
+								for (int fi = 0; fi < folds; fi++)
+								{
+									if (val > ceil) val = 2.0f * ceil - val;
+									if (val < flr) val = 2.0f * flr - val;
+								}
+							}
+							// Clip Ceiling / Floor (hard clamp with asymmetry)
+							if (!fractal->transformCommon.multiplierClipFold4)
+							{
+								REAL ceil = fractal->transformCommon.multiplierClipCeiling4;
+								REAL flr = fractal->transformCommon.multiplierClipFloor4;
+								REAL asym = fractal->transformCommon.multiplierClipAsymmetry4;
+								ceil += asym;
+								flr -= asym;
+								REAL curve = fractal->transformCommon.multiplierClipCurve4;
+								REAL knee = fractal->transformCommon.multiplierClipKnee4;
+								if (curve > 0.0f || knee > 0.0f)
+								{
+									REAL k = fmax(knee, 0.001f);
+									if (val > ceil - k)
+									{
+										REAL x = (val - (ceil - k)) / (2.0f * k);
+										x = fmin(fmax(x, 0.0f), 1.0f);
+										REAL sm = x * x * (3.0f - 2.0f * x);
+										val = (ceil - k) + k * sm * (1.0f + curve);
+										if (val > ceil) val = ceil;
+									}
+									if (val < flr + k)
+									{
+										REAL x = ((flr + k) - val) / (2.0f * k);
+										x = fmin(fmax(x, 0.0f), 1.0f);
+										REAL sm = x * x * (3.0f - 2.0f * x);
+										val = (flr + k) - k * sm * (1.0f + curve);
+										if (val < flr) val = flr;
+									}
+								}
+								else
+								{
+									if (val > ceil) val = ceil;
+									if (val < flr) val = flr;
+								}
+							}
+							// Clip Mix (blend clipped/unclipped)
+							if (fractal->transformCommon.multiplierClipMix4 < 1.0f)
+							{
+								REAL mx = fractal->transformCommon.multiplierClipMix4;
+								val = 1.0f + mx * (val - 1.0f);
+							}
+
 				switch (fractal->transformCommon.multiplierMode4)
 				{
 					default:
@@ -1369,6 +1641,74 @@ REAL4 MengerCrossMod1Iteration(REAL4 z, __constant sFractalCl *fractal, sExtende
 								else if (bm == 2 && val < 1.0f) val = 1.0f;
 								else if (bm == 3) val = 1.0f + fabs(val - 1.0f);
 								else if (bm == 4) { REAL sv = fmin(fmax((val - 0.5f), 0.0f), 1.0f); val = 0.5f + sv * sv * (3.0f - 2.0f * sv); }
+							}
+
+							// Clip Drive (pre-gain)
+							if (fractal->transformCommon.multiplierClipDrive5 != 1.0f)
+							{
+								REAL drv = fractal->transformCommon.multiplierClipDrive5;
+								val = 1.0f + (val - 1.0f) * drv;
+							}
+							// Clip Rectify: 0=off, 1=half(clamp neg to 0), 2=full(abs)
+							{
+								int cr = fractal->transformCommon.multiplierClipRectify5;
+								if (cr == 1 && val < 1.0f) val = 1.0f;
+								else if (cr == 2) val = 1.0f + fabs(val - 1.0f);
+							}
+							// Clip Fold (wavefolder)
+							if (fractal->transformCommon.multiplierClipFold5)
+							{
+								int folds = fractal->transformCommon.multiplierClipFoldCount5;
+								if (folds < 1) folds = 1;
+								REAL ceil = fractal->transformCommon.multiplierClipCeiling5;
+								REAL flr = fractal->transformCommon.multiplierClipFloor5;
+								for (int fi = 0; fi < folds; fi++)
+								{
+									if (val > ceil) val = 2.0f * ceil - val;
+									if (val < flr) val = 2.0f * flr - val;
+								}
+							}
+							// Clip Ceiling / Floor (hard clamp with asymmetry)
+							if (!fractal->transformCommon.multiplierClipFold5)
+							{
+								REAL ceil = fractal->transformCommon.multiplierClipCeiling5;
+								REAL flr = fractal->transformCommon.multiplierClipFloor5;
+								REAL asym = fractal->transformCommon.multiplierClipAsymmetry5;
+								ceil += asym;
+								flr -= asym;
+								REAL curve = fractal->transformCommon.multiplierClipCurve5;
+								REAL knee = fractal->transformCommon.multiplierClipKnee5;
+								if (curve > 0.0f || knee > 0.0f)
+								{
+									REAL k = fmax(knee, 0.001f);
+									if (val > ceil - k)
+									{
+										REAL x = (val - (ceil - k)) / (2.0f * k);
+										x = fmin(fmax(x, 0.0f), 1.0f);
+										REAL sm = x * x * (3.0f - 2.0f * x);
+										val = (ceil - k) + k * sm * (1.0f + curve);
+										if (val > ceil) val = ceil;
+									}
+									if (val < flr + k)
+									{
+										REAL x = ((flr + k) - val) / (2.0f * k);
+										x = fmin(fmax(x, 0.0f), 1.0f);
+										REAL sm = x * x * (3.0f - 2.0f * x);
+										val = (flr + k) - k * sm * (1.0f + curve);
+										if (val < flr) val = flr;
+									}
+								}
+								else
+								{
+									if (val > ceil) val = ceil;
+									if (val < flr) val = flr;
+								}
+							}
+							// Clip Mix (blend clipped/unclipped)
+							if (fractal->transformCommon.multiplierClipMix5 < 1.0f)
+							{
+								REAL mx = fractal->transformCommon.multiplierClipMix5;
+								val = 1.0f + mx * (val - 1.0f);
 							}
 
 				switch (fractal->transformCommon.multiplierMode5)

@@ -973,6 +973,67 @@ typedef struct
 	cl_int multiplierPolarMode4;
 	cl_int multiplierPolarMode5;
 
+	cl_float multiplierClipCurve1;
+	cl_float multiplierClipCurve2;
+	cl_float multiplierClipCurve3;
+	cl_float multiplierClipCurve4;
+	cl_float multiplierClipCurve5;
+
+	cl_float multiplierClipKnee1;
+	cl_float multiplierClipKnee2;
+	cl_float multiplierClipKnee3;
+	cl_float multiplierClipKnee4;
+	cl_float multiplierClipKnee5;
+
+	cl_float multiplierClipDrive1;
+	cl_float multiplierClipDrive2;
+	cl_float multiplierClipDrive3;
+	cl_float multiplierClipDrive4;
+	cl_float multiplierClipDrive5;
+
+	cl_float multiplierClipAsymmetry1;
+	cl_float multiplierClipAsymmetry2;
+	cl_float multiplierClipAsymmetry3;
+	cl_float multiplierClipAsymmetry4;
+	cl_float multiplierClipAsymmetry5;
+
+	cl_float multiplierClipCeiling1;
+	cl_float multiplierClipCeiling2;
+	cl_float multiplierClipCeiling3;
+	cl_float multiplierClipCeiling4;
+	cl_float multiplierClipCeiling5;
+
+	cl_float multiplierClipFloor1;
+	cl_float multiplierClipFloor2;
+	cl_float multiplierClipFloor3;
+	cl_float multiplierClipFloor4;
+	cl_float multiplierClipFloor5;
+
+	cl_float multiplierClipMix1;
+	cl_float multiplierClipMix2;
+	cl_float multiplierClipMix3;
+	cl_float multiplierClipMix4;
+	cl_float multiplierClipMix5;
+
+	cl_int multiplierClipFoldCount1;
+	cl_int multiplierClipFoldCount2;
+	cl_int multiplierClipFoldCount3;
+	cl_int multiplierClipFoldCount4;
+	cl_int multiplierClipFoldCount5;
+
+	cl_int multiplierClipRectify1;
+	cl_int multiplierClipRectify2;
+	cl_int multiplierClipRectify3;
+	cl_int multiplierClipRectify4;
+	cl_int multiplierClipRectify5;
+
+	cl_int multiplierClipFold1;
+	cl_int multiplierClipFold2;
+	cl_int multiplierClipFold3;
+	cl_int multiplierClipFold4;
+	cl_int multiplierClipFold5;
+
+
 
 
 	// Dedicated multiplier enable/value/iteration params (no conflicts with formula logic)
@@ -2177,6 +2238,57 @@ inline sFractalTransformCommonCl clCopySFractalTransformCommonCl(
 	target.multiplierPolarMode3 = source.multiplierPolarMode3;
 	target.multiplierPolarMode4 = source.multiplierPolarMode4;
 	target.multiplierPolarMode5 = source.multiplierPolarMode5;
+
+	target.multiplierClipCurve1 = source.multiplierClipCurve1;
+	target.multiplierClipCurve2 = source.multiplierClipCurve2;
+	target.multiplierClipCurve3 = source.multiplierClipCurve3;
+	target.multiplierClipCurve4 = source.multiplierClipCurve4;
+	target.multiplierClipCurve5 = source.multiplierClipCurve5;
+	target.multiplierClipKnee1 = source.multiplierClipKnee1;
+	target.multiplierClipKnee2 = source.multiplierClipKnee2;
+	target.multiplierClipKnee3 = source.multiplierClipKnee3;
+	target.multiplierClipKnee4 = source.multiplierClipKnee4;
+	target.multiplierClipKnee5 = source.multiplierClipKnee5;
+	target.multiplierClipDrive1 = source.multiplierClipDrive1;
+	target.multiplierClipDrive2 = source.multiplierClipDrive2;
+	target.multiplierClipDrive3 = source.multiplierClipDrive3;
+	target.multiplierClipDrive4 = source.multiplierClipDrive4;
+	target.multiplierClipDrive5 = source.multiplierClipDrive5;
+	target.multiplierClipAsymmetry1 = source.multiplierClipAsymmetry1;
+	target.multiplierClipAsymmetry2 = source.multiplierClipAsymmetry2;
+	target.multiplierClipAsymmetry3 = source.multiplierClipAsymmetry3;
+	target.multiplierClipAsymmetry4 = source.multiplierClipAsymmetry4;
+	target.multiplierClipAsymmetry5 = source.multiplierClipAsymmetry5;
+	target.multiplierClipCeiling1 = source.multiplierClipCeiling1;
+	target.multiplierClipCeiling2 = source.multiplierClipCeiling2;
+	target.multiplierClipCeiling3 = source.multiplierClipCeiling3;
+	target.multiplierClipCeiling4 = source.multiplierClipCeiling4;
+	target.multiplierClipCeiling5 = source.multiplierClipCeiling5;
+	target.multiplierClipFloor1 = source.multiplierClipFloor1;
+	target.multiplierClipFloor2 = source.multiplierClipFloor2;
+	target.multiplierClipFloor3 = source.multiplierClipFloor3;
+	target.multiplierClipFloor4 = source.multiplierClipFloor4;
+	target.multiplierClipFloor5 = source.multiplierClipFloor5;
+	target.multiplierClipMix1 = source.multiplierClipMix1;
+	target.multiplierClipMix2 = source.multiplierClipMix2;
+	target.multiplierClipMix3 = source.multiplierClipMix3;
+	target.multiplierClipMix4 = source.multiplierClipMix4;
+	target.multiplierClipMix5 = source.multiplierClipMix5;
+	target.multiplierClipFoldCount1 = source.multiplierClipFoldCount1;
+	target.multiplierClipFoldCount2 = source.multiplierClipFoldCount2;
+	target.multiplierClipFoldCount3 = source.multiplierClipFoldCount3;
+	target.multiplierClipFoldCount4 = source.multiplierClipFoldCount4;
+	target.multiplierClipFoldCount5 = source.multiplierClipFoldCount5;
+	target.multiplierClipRectify1 = source.multiplierClipRectify1;
+	target.multiplierClipRectify2 = source.multiplierClipRectify2;
+	target.multiplierClipRectify3 = source.multiplierClipRectify3;
+	target.multiplierClipRectify4 = source.multiplierClipRectify4;
+	target.multiplierClipRectify5 = source.multiplierClipRectify5;
+	target.multiplierClipFold1 = source.multiplierClipFold1;
+	target.multiplierClipFold2 = source.multiplierClipFold2;
+	target.multiplierClipFold3 = source.multiplierClipFold3;
+	target.multiplierClipFold4 = source.multiplierClipFold4;
+	target.multiplierClipFold5 = source.multiplierClipFold5;
 
 	target.multiplierEnabled1 = source.multiplierEnabled1;
 	target.multiplierEnabled2 = source.multiplierEnabled2;

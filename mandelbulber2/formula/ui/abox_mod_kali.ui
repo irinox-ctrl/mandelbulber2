@@ -1066,6 +1066,91 @@
         <property name="text"><string>Polar</string></property>
        </widget>
       </item>
+      <item row="10" column="0">
+       <widget class="QLabel"><property name="text"><string>Drive:</string></property></widget>
+      </item>
+      <item row="10" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_clip_drive_5">
+        <property name="minimum"><double>0.1</double></property><property name="maximum"><double>10.0</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>1.0</double></property>
+       </widget>
+      </item>
+      <item row="10" column="2">
+       <widget class="QLabel"><property name="text"><string>Curve:</string></property></widget>
+      </item>
+      <item row="10" column="3">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_clip_curve_5">
+        <property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property>
+        <property name="singleStep"><double>0.05</double></property><property name="value"><double>0.0</double></property>
+       </widget>
+      </item>
+      <item row="10" column="4">
+       <widget class="QLabel"><property name="text"><string>Knee:</string></property></widget>
+      </item>
+      <item row="10" column="5">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_clip_knee_5">
+        <property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property>
+        <property name="singleStep"><double>0.05</double></property><property name="value"><double>0.0</double></property>
+       </widget>
+      </item>
+      <item row="11" column="0">
+       <widget class="QLabel"><property name="text"><string>Ceil:</string></property></widget>
+      </item>
+      <item row="11" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_clip_ceiling_5">
+        <property name="minimum"><double>0.1</double></property><property name="maximum"><double>10.0</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>10.0</double></property>
+       </widget>
+      </item>
+      <item row="11" column="2">
+       <widget class="QLabel"><property name="text"><string>Floor:</string></property></widget>
+      </item>
+      <item row="11" column="3">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_clip_floor_5">
+        <property name="minimum"><double>-10.0</double></property><property name="maximum"><double>-0.1</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>-10.0</double></property>
+       </widget>
+      </item>
+      <item row="11" column="4">
+       <widget class="QLabel"><property name="text"><string>Asym:</string></property></widget>
+      </item>
+      <item row="11" column="5">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_clip_asymmetry_5">
+        <property name="minimum"><double>-1.0</double></property><property name="maximum"><double>1.0</double></property>
+        <property name="singleStep"><double>0.05</double></property><property name="value"><double>0.0</double></property>
+       </widget>
+      </item>
+      <item row="12" column="0">
+       <widget class="QLabel"><property name="text"><string>Mix:</string></property></widget>
+      </item>
+      <item row="12" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_clip_mix_5">
+        <property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property>
+        <property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property>
+       </widget>
+      </item>
+      <item row="12" column="2">
+       <widget class="QLabel"><property name="text"><string>Rect:</string></property></widget>
+      </item>
+      <item row="12" column="3">
+       <widget class="MyComboBox" name="comboBox_transf_multiplier_clip_rectify_5">
+        <item><property name="text"><string notr="true">Off</string></property></item>
+        <item><property name="text"><string notr="true">Half</string></property></item>
+        <item><property name="text"><string notr="true">Full</string></property></item>
+       </widget>
+      </item>
+      <item row="12" column="4">
+       <widget class="MyCheckBox" name="checkBox_transf_multiplier_clip_fold_5">
+        <property name="text"><string>Fold</string></property>
+       </widget>
+      </item>
+      <item row="12" column="5">
+       <widget class="MySpinBox" name="spinboxInt_transf_multiplier_clip_fold_count_5">
+        <property name="minimum"><number>0</number></property><property name="maximum"><number>8</number></property>
+        <property name="value"><number>0</number></property>
+        <property name="prefix"><string>Folds:</string></property>
+       </widget>
+      </item>
       <item row="4" column="0">
        <widget class="MyCheckBox" name="checkBox_transf_multiplier_chain_4">
         <property name="text"><string>Chain</string></property>
@@ -1217,6 +1302,91 @@
       <item row="9" column="5">
        <widget class="MyCheckBox" name="checkBox_transf_multiplier_polar_mode_4">
         <property name="text"><string>Polar</string></property>
+       </widget>
+      </item>
+      <item row="10" column="0">
+       <widget class="QLabel"><property name="text"><string>Drive:</string></property></widget>
+      </item>
+      <item row="10" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_clip_drive_4">
+        <property name="minimum"><double>0.1</double></property><property name="maximum"><double>10.0</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>1.0</double></property>
+       </widget>
+      </item>
+      <item row="10" column="2">
+       <widget class="QLabel"><property name="text"><string>Curve:</string></property></widget>
+      </item>
+      <item row="10" column="3">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_clip_curve_4">
+        <property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property>
+        <property name="singleStep"><double>0.05</double></property><property name="value"><double>0.0</double></property>
+       </widget>
+      </item>
+      <item row="10" column="4">
+       <widget class="QLabel"><property name="text"><string>Knee:</string></property></widget>
+      </item>
+      <item row="10" column="5">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_clip_knee_4">
+        <property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property>
+        <property name="singleStep"><double>0.05</double></property><property name="value"><double>0.0</double></property>
+       </widget>
+      </item>
+      <item row="11" column="0">
+       <widget class="QLabel"><property name="text"><string>Ceil:</string></property></widget>
+      </item>
+      <item row="11" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_clip_ceiling_4">
+        <property name="minimum"><double>0.1</double></property><property name="maximum"><double>10.0</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>10.0</double></property>
+       </widget>
+      </item>
+      <item row="11" column="2">
+       <widget class="QLabel"><property name="text"><string>Floor:</string></property></widget>
+      </item>
+      <item row="11" column="3">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_clip_floor_4">
+        <property name="minimum"><double>-10.0</double></property><property name="maximum"><double>-0.1</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>-10.0</double></property>
+       </widget>
+      </item>
+      <item row="11" column="4">
+       <widget class="QLabel"><property name="text"><string>Asym:</string></property></widget>
+      </item>
+      <item row="11" column="5">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_clip_asymmetry_4">
+        <property name="minimum"><double>-1.0</double></property><property name="maximum"><double>1.0</double></property>
+        <property name="singleStep"><double>0.05</double></property><property name="value"><double>0.0</double></property>
+       </widget>
+      </item>
+      <item row="12" column="0">
+       <widget class="QLabel"><property name="text"><string>Mix:</string></property></widget>
+      </item>
+      <item row="12" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_clip_mix_4">
+        <property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property>
+        <property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property>
+       </widget>
+      </item>
+      <item row="12" column="2">
+       <widget class="QLabel"><property name="text"><string>Rect:</string></property></widget>
+      </item>
+      <item row="12" column="3">
+       <widget class="MyComboBox" name="comboBox_transf_multiplier_clip_rectify_4">
+        <item><property name="text"><string notr="true">Off</string></property></item>
+        <item><property name="text"><string notr="true">Half</string></property></item>
+        <item><property name="text"><string notr="true">Full</string></property></item>
+       </widget>
+      </item>
+      <item row="12" column="4">
+       <widget class="MyCheckBox" name="checkBox_transf_multiplier_clip_fold_4">
+        <property name="text"><string>Fold</string></property>
+       </widget>
+      </item>
+      <item row="12" column="5">
+       <widget class="MySpinBox" name="spinboxInt_transf_multiplier_clip_fold_count_4">
+        <property name="minimum"><number>0</number></property><property name="maximum"><number>8</number></property>
+        <property name="value"><number>0</number></property>
+        <property name="prefix"><string>Folds:</string></property>
        </widget>
       </item>
       <item row="4" column="0">
@@ -1372,6 +1542,91 @@
         <property name="text"><string>Polar</string></property>
        </widget>
       </item>
+      <item row="10" column="0">
+       <widget class="QLabel"><property name="text"><string>Drive:</string></property></widget>
+      </item>
+      <item row="10" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_clip_drive_3">
+        <property name="minimum"><double>0.1</double></property><property name="maximum"><double>10.0</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>1.0</double></property>
+       </widget>
+      </item>
+      <item row="10" column="2">
+       <widget class="QLabel"><property name="text"><string>Curve:</string></property></widget>
+      </item>
+      <item row="10" column="3">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_clip_curve_3">
+        <property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property>
+        <property name="singleStep"><double>0.05</double></property><property name="value"><double>0.0</double></property>
+       </widget>
+      </item>
+      <item row="10" column="4">
+       <widget class="QLabel"><property name="text"><string>Knee:</string></property></widget>
+      </item>
+      <item row="10" column="5">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_clip_knee_3">
+        <property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property>
+        <property name="singleStep"><double>0.05</double></property><property name="value"><double>0.0</double></property>
+       </widget>
+      </item>
+      <item row="11" column="0">
+       <widget class="QLabel"><property name="text"><string>Ceil:</string></property></widget>
+      </item>
+      <item row="11" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_clip_ceiling_3">
+        <property name="minimum"><double>0.1</double></property><property name="maximum"><double>10.0</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>10.0</double></property>
+       </widget>
+      </item>
+      <item row="11" column="2">
+       <widget class="QLabel"><property name="text"><string>Floor:</string></property></widget>
+      </item>
+      <item row="11" column="3">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_clip_floor_3">
+        <property name="minimum"><double>-10.0</double></property><property name="maximum"><double>-0.1</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>-10.0</double></property>
+       </widget>
+      </item>
+      <item row="11" column="4">
+       <widget class="QLabel"><property name="text"><string>Asym:</string></property></widget>
+      </item>
+      <item row="11" column="5">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_clip_asymmetry_3">
+        <property name="minimum"><double>-1.0</double></property><property name="maximum"><double>1.0</double></property>
+        <property name="singleStep"><double>0.05</double></property><property name="value"><double>0.0</double></property>
+       </widget>
+      </item>
+      <item row="12" column="0">
+       <widget class="QLabel"><property name="text"><string>Mix:</string></property></widget>
+      </item>
+      <item row="12" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_clip_mix_3">
+        <property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property>
+        <property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property>
+       </widget>
+      </item>
+      <item row="12" column="2">
+       <widget class="QLabel"><property name="text"><string>Rect:</string></property></widget>
+      </item>
+      <item row="12" column="3">
+       <widget class="MyComboBox" name="comboBox_transf_multiplier_clip_rectify_3">
+        <item><property name="text"><string notr="true">Off</string></property></item>
+        <item><property name="text"><string notr="true">Half</string></property></item>
+        <item><property name="text"><string notr="true">Full</string></property></item>
+       </widget>
+      </item>
+      <item row="12" column="4">
+       <widget class="MyCheckBox" name="checkBox_transf_multiplier_clip_fold_3">
+        <property name="text"><string>Fold</string></property>
+       </widget>
+      </item>
+      <item row="12" column="5">
+       <widget class="MySpinBox" name="spinboxInt_transf_multiplier_clip_fold_count_3">
+        <property name="minimum"><number>0</number></property><property name="maximum"><number>8</number></property>
+        <property name="value"><number>0</number></property>
+        <property name="prefix"><string>Folds:</string></property>
+       </widget>
+      </item>
       <item row="4" column="0">
        <widget class="MyCheckBox" name="checkBox_transf_multiplier_chain_2">
         <property name="text"><string>Chain</string></property>
@@ -1525,6 +1780,91 @@
         <property name="text"><string>Polar</string></property>
        </widget>
       </item>
+      <item row="10" column="0">
+       <widget class="QLabel"><property name="text"><string>Drive:</string></property></widget>
+      </item>
+      <item row="10" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_clip_drive_2">
+        <property name="minimum"><double>0.1</double></property><property name="maximum"><double>10.0</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>1.0</double></property>
+       </widget>
+      </item>
+      <item row="10" column="2">
+       <widget class="QLabel"><property name="text"><string>Curve:</string></property></widget>
+      </item>
+      <item row="10" column="3">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_clip_curve_2">
+        <property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property>
+        <property name="singleStep"><double>0.05</double></property><property name="value"><double>0.0</double></property>
+       </widget>
+      </item>
+      <item row="10" column="4">
+       <widget class="QLabel"><property name="text"><string>Knee:</string></property></widget>
+      </item>
+      <item row="10" column="5">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_clip_knee_2">
+        <property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property>
+        <property name="singleStep"><double>0.05</double></property><property name="value"><double>0.0</double></property>
+       </widget>
+      </item>
+      <item row="11" column="0">
+       <widget class="QLabel"><property name="text"><string>Ceil:</string></property></widget>
+      </item>
+      <item row="11" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_clip_ceiling_2">
+        <property name="minimum"><double>0.1</double></property><property name="maximum"><double>10.0</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>10.0</double></property>
+       </widget>
+      </item>
+      <item row="11" column="2">
+       <widget class="QLabel"><property name="text"><string>Floor:</string></property></widget>
+      </item>
+      <item row="11" column="3">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_clip_floor_2">
+        <property name="minimum"><double>-10.0</double></property><property name="maximum"><double>-0.1</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>-10.0</double></property>
+       </widget>
+      </item>
+      <item row="11" column="4">
+       <widget class="QLabel"><property name="text"><string>Asym:</string></property></widget>
+      </item>
+      <item row="11" column="5">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_clip_asymmetry_2">
+        <property name="minimum"><double>-1.0</double></property><property name="maximum"><double>1.0</double></property>
+        <property name="singleStep"><double>0.05</double></property><property name="value"><double>0.0</double></property>
+       </widget>
+      </item>
+      <item row="12" column="0">
+       <widget class="QLabel"><property name="text"><string>Mix:</string></property></widget>
+      </item>
+      <item row="12" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_clip_mix_2">
+        <property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property>
+        <property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property>
+       </widget>
+      </item>
+      <item row="12" column="2">
+       <widget class="QLabel"><property name="text"><string>Rect:</string></property></widget>
+      </item>
+      <item row="12" column="3">
+       <widget class="MyComboBox" name="comboBox_transf_multiplier_clip_rectify_2">
+        <item><property name="text"><string notr="true">Off</string></property></item>
+        <item><property name="text"><string notr="true">Half</string></property></item>
+        <item><property name="text"><string notr="true">Full</string></property></item>
+       </widget>
+      </item>
+      <item row="12" column="4">
+       <widget class="MyCheckBox" name="checkBox_transf_multiplier_clip_fold_2">
+        <property name="text"><string>Fold</string></property>
+       </widget>
+      </item>
+      <item row="12" column="5">
+       <widget class="MySpinBox" name="spinboxInt_transf_multiplier_clip_fold_count_2">
+        <property name="minimum"><number>0</number></property><property name="maximum"><number>8</number></property>
+        <property name="value"><number>0</number></property>
+        <property name="prefix"><string>Folds:</string></property>
+       </widget>
+      </item>
       <item row="4" column="0">
        <widget class="MyCheckBox" name="checkBox_transf_multiplier_chain_1">
         <property name="text"><string>Chain</string></property>
@@ -1676,6 +2016,91 @@
       <item row="9" column="5">
        <widget class="MyCheckBox" name="checkBox_transf_multiplier_polar_mode_1">
         <property name="text"><string>Polar</string></property>
+       </widget>
+      </item>
+      <item row="10" column="0">
+       <widget class="QLabel"><property name="text"><string>Drive:</string></property></widget>
+      </item>
+      <item row="10" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_clip_drive_1">
+        <property name="minimum"><double>0.1</double></property><property name="maximum"><double>10.0</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>1.0</double></property>
+       </widget>
+      </item>
+      <item row="10" column="2">
+       <widget class="QLabel"><property name="text"><string>Curve:</string></property></widget>
+      </item>
+      <item row="10" column="3">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_clip_curve_1">
+        <property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property>
+        <property name="singleStep"><double>0.05</double></property><property name="value"><double>0.0</double></property>
+       </widget>
+      </item>
+      <item row="10" column="4">
+       <widget class="QLabel"><property name="text"><string>Knee:</string></property></widget>
+      </item>
+      <item row="10" column="5">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_clip_knee_1">
+        <property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property>
+        <property name="singleStep"><double>0.05</double></property><property name="value"><double>0.0</double></property>
+       </widget>
+      </item>
+      <item row="11" column="0">
+       <widget class="QLabel"><property name="text"><string>Ceil:</string></property></widget>
+      </item>
+      <item row="11" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_clip_ceiling_1">
+        <property name="minimum"><double>0.1</double></property><property name="maximum"><double>10.0</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>10.0</double></property>
+       </widget>
+      </item>
+      <item row="11" column="2">
+       <widget class="QLabel"><property name="text"><string>Floor:</string></property></widget>
+      </item>
+      <item row="11" column="3">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_clip_floor_1">
+        <property name="minimum"><double>-10.0</double></property><property name="maximum"><double>-0.1</double></property>
+        <property name="singleStep"><double>0.1</double></property><property name="value"><double>-10.0</double></property>
+       </widget>
+      </item>
+      <item row="11" column="4">
+       <widget class="QLabel"><property name="text"><string>Asym:</string></property></widget>
+      </item>
+      <item row="11" column="5">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_clip_asymmetry_1">
+        <property name="minimum"><double>-1.0</double></property><property name="maximum"><double>1.0</double></property>
+        <property name="singleStep"><double>0.05</double></property><property name="value"><double>0.0</double></property>
+       </widget>
+      </item>
+      <item row="12" column="0">
+       <widget class="QLabel"><property name="text"><string>Mix:</string></property></widget>
+      </item>
+      <item row="12" column="1">
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_clip_mix_1">
+        <property name="minimum"><double>0.0</double></property><property name="maximum"><double>1.0</double></property>
+        <property name="singleStep"><double>0.05</double></property><property name="value"><double>1.0</double></property>
+       </widget>
+      </item>
+      <item row="12" column="2">
+       <widget class="QLabel"><property name="text"><string>Rect:</string></property></widget>
+      </item>
+      <item row="12" column="3">
+       <widget class="MyComboBox" name="comboBox_transf_multiplier_clip_rectify_1">
+        <item><property name="text"><string notr="true">Off</string></property></item>
+        <item><property name="text"><string notr="true">Half</string></property></item>
+        <item><property name="text"><string notr="true">Full</string></property></item>
+       </widget>
+      </item>
+      <item row="12" column="4">
+       <widget class="MyCheckBox" name="checkBox_transf_multiplier_clip_fold_1">
+        <property name="text"><string>Fold</string></property>
+       </widget>
+      </item>
+      <item row="12" column="5">
+       <widget class="MySpinBox" name="spinboxInt_transf_multiplier_clip_fold_count_1">
+        <property name="minimum"><number>0</number></property><property name="maximum"><number>8</number></property>
+        <property name="value"><number>0</number></property>
+        <property name="prefix"><string>Folds:</string></property>
        </widget>
       </item>
      </layout>

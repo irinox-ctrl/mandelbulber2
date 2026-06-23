@@ -266,6 +266,77 @@ void cFractalThreex3XyModelFractal::FormulaCode(CVector4 &z, const sFractal *fra
 								else if (bm == 4) { double sv = fmin(fmax((val - 0.5) * 1.0, 0.0), 1.0); val = 0.5 + sv * sv * (3.0 - 2.0 * sv); }
 							}
 
+							// Clip Drive (pre-gain)
+							if (fractal->transformCommon.multiplierClipDrive1 != 1.0)
+							{
+								double drv = fractal->transformCommon.multiplierClipDrive1;
+								val = 1.0 + (val - 1.0) * drv;
+							}
+							// Clip Rectify: 0=off, 1=half(clamp neg to 0), 2=full(abs)
+							{
+								int cr = fractal->transformCommon.multiplierClipRectify1;
+								if (cr == 1 && val < 1.0) val = 1.0;
+								else if (cr == 2) val = 1.0 + fabs(val - 1.0);
+							}
+							// Clip Fold (wavefolder)
+							if (fractal->transformCommon.multiplierClipFold1)
+							{
+								int folds = fractal->transformCommon.multiplierClipFoldCount1;
+								if (folds < 1) folds = 1;
+								double ceil = fractal->transformCommon.multiplierClipCeiling1;
+								double flr = fractal->transformCommon.multiplierClipFloor1;
+								for (int fi = 0; fi < folds; fi++)
+								{
+									if (val > ceil) val = 2.0 * ceil - val;
+									if (val < flr) val = 2.0 * flr - val;
+								}
+							}
+							// Clip Ceiling / Floor (hard clamp with asymmetry)
+							if (!fractal->transformCommon.multiplierClipFold1)
+							{
+								double ceil = fractal->transformCommon.multiplierClipCeiling1;
+								double flr = fractal->transformCommon.multiplierClipFloor1;
+								double asym = fractal->transformCommon.multiplierClipAsymmetry1;
+								ceil += asym;
+								flr -= asym;
+								// Clip Curve (soft knee)
+								double curve = fractal->transformCommon.multiplierClipCurve1;
+								double knee = fractal->transformCommon.multiplierClipKnee1;
+								if (curve > 0.0 || knee > 0.0)
+								{
+									double k = fmax(knee, 0.001);
+									if (val > ceil - k)
+									{
+										double x = (val - (ceil - k)) / (2.0 * k);
+										x = fmin(fmax(x, 0.0), 1.0);
+										double sm = x * x * (3.0 - 2.0 * x);
+										val = (ceil - k) + k * sm * (1.0 + curve);
+										if (val > ceil) val = ceil;
+									}
+									if (val < flr + k)
+									{
+										double x = ((flr + k) - val) / (2.0 * k);
+										x = fmin(fmax(x, 0.0), 1.0);
+										double sm = x * x * (3.0 - 2.0 * x);
+										val = (flr + k) - k * sm * (1.0 + curve);
+										if (val < flr) val = flr;
+									}
+								}
+								else
+								{
+									if (val > ceil) val = ceil;
+									if (val < flr) val = flr;
+								}
+							}
+							// Clip Mix (blend clipped/unclipped)
+							if (fractal->transformCommon.multiplierClipMix1 < 1.0)
+							{
+								double mx = fractal->transformCommon.multiplierClipMix1;
+								// val is already clipped; recover original from drive
+								// approximate: mix toward 1.0 (neutral)
+								val = 1.0 + mx * (val - 1.0);
+							}
+
 				switch (fractal->transformCommon.multiplierMode1)
 				{
 					default:
@@ -516,6 +587,77 @@ void cFractalThreex3XyModelFractal::FormulaCode(CVector4 &z, const sFractal *fra
 								else if (bm == 2 && val < 1.0) val = 1.0;
 								else if (bm == 3) val = 1.0 + fabs(val - 1.0);
 								else if (bm == 4) { double sv = fmin(fmax((val - 0.5) * 1.0, 0.0), 1.0); val = 0.5 + sv * sv * (3.0 - 2.0 * sv); }
+							}
+
+							// Clip Drive (pre-gain)
+							if (fractal->transformCommon.multiplierClipDrive2 != 1.0)
+							{
+								double drv = fractal->transformCommon.multiplierClipDrive2;
+								val = 1.0 + (val - 1.0) * drv;
+							}
+							// Clip Rectify: 0=off, 1=half(clamp neg to 0), 2=full(abs)
+							{
+								int cr = fractal->transformCommon.multiplierClipRectify2;
+								if (cr == 1 && val < 1.0) val = 1.0;
+								else if (cr == 2) val = 1.0 + fabs(val - 1.0);
+							}
+							// Clip Fold (wavefolder)
+							if (fractal->transformCommon.multiplierClipFold2)
+							{
+								int folds = fractal->transformCommon.multiplierClipFoldCount2;
+								if (folds < 1) folds = 1;
+								double ceil = fractal->transformCommon.multiplierClipCeiling2;
+								double flr = fractal->transformCommon.multiplierClipFloor2;
+								for (int fi = 0; fi < folds; fi++)
+								{
+									if (val > ceil) val = 2.0 * ceil - val;
+									if (val < flr) val = 2.0 * flr - val;
+								}
+							}
+							// Clip Ceiling / Floor (hard clamp with asymmetry)
+							if (!fractal->transformCommon.multiplierClipFold2)
+							{
+								double ceil = fractal->transformCommon.multiplierClipCeiling2;
+								double flr = fractal->transformCommon.multiplierClipFloor2;
+								double asym = fractal->transformCommon.multiplierClipAsymmetry2;
+								ceil += asym;
+								flr -= asym;
+								// Clip Curve (soft knee)
+								double curve = fractal->transformCommon.multiplierClipCurve2;
+								double knee = fractal->transformCommon.multiplierClipKnee2;
+								if (curve > 0.0 || knee > 0.0)
+								{
+									double k = fmax(knee, 0.001);
+									if (val > ceil - k)
+									{
+										double x = (val - (ceil - k)) / (2.0 * k);
+										x = fmin(fmax(x, 0.0), 1.0);
+										double sm = x * x * (3.0 - 2.0 * x);
+										val = (ceil - k) + k * sm * (1.0 + curve);
+										if (val > ceil) val = ceil;
+									}
+									if (val < flr + k)
+									{
+										double x = ((flr + k) - val) / (2.0 * k);
+										x = fmin(fmax(x, 0.0), 1.0);
+										double sm = x * x * (3.0 - 2.0 * x);
+										val = (flr + k) - k * sm * (1.0 + curve);
+										if (val < flr) val = flr;
+									}
+								}
+								else
+								{
+									if (val > ceil) val = ceil;
+									if (val < flr) val = flr;
+								}
+							}
+							// Clip Mix (blend clipped/unclipped)
+							if (fractal->transformCommon.multiplierClipMix2 < 1.0)
+							{
+								double mx = fractal->transformCommon.multiplierClipMix2;
+								// val is already clipped; recover original from drive
+								// approximate: mix toward 1.0 (neutral)
+								val = 1.0 + mx * (val - 1.0);
 							}
 
 				switch (fractal->transformCommon.multiplierMode2)
@@ -770,6 +912,77 @@ void cFractalThreex3XyModelFractal::FormulaCode(CVector4 &z, const sFractal *fra
 								else if (bm == 4) { double sv = fmin(fmax((val - 0.5) * 1.0, 0.0), 1.0); val = 0.5 + sv * sv * (3.0 - 2.0 * sv); }
 							}
 
+							// Clip Drive (pre-gain)
+							if (fractal->transformCommon.multiplierClipDrive3 != 1.0)
+							{
+								double drv = fractal->transformCommon.multiplierClipDrive3;
+								val = 1.0 + (val - 1.0) * drv;
+							}
+							// Clip Rectify: 0=off, 1=half(clamp neg to 0), 2=full(abs)
+							{
+								int cr = fractal->transformCommon.multiplierClipRectify3;
+								if (cr == 1 && val < 1.0) val = 1.0;
+								else if (cr == 2) val = 1.0 + fabs(val - 1.0);
+							}
+							// Clip Fold (wavefolder)
+							if (fractal->transformCommon.multiplierClipFold3)
+							{
+								int folds = fractal->transformCommon.multiplierClipFoldCount3;
+								if (folds < 1) folds = 1;
+								double ceil = fractal->transformCommon.multiplierClipCeiling3;
+								double flr = fractal->transformCommon.multiplierClipFloor3;
+								for (int fi = 0; fi < folds; fi++)
+								{
+									if (val > ceil) val = 2.0 * ceil - val;
+									if (val < flr) val = 2.0 * flr - val;
+								}
+							}
+							// Clip Ceiling / Floor (hard clamp with asymmetry)
+							if (!fractal->transformCommon.multiplierClipFold3)
+							{
+								double ceil = fractal->transformCommon.multiplierClipCeiling3;
+								double flr = fractal->transformCommon.multiplierClipFloor3;
+								double asym = fractal->transformCommon.multiplierClipAsymmetry3;
+								ceil += asym;
+								flr -= asym;
+								// Clip Curve (soft knee)
+								double curve = fractal->transformCommon.multiplierClipCurve3;
+								double knee = fractal->transformCommon.multiplierClipKnee3;
+								if (curve > 0.0 || knee > 0.0)
+								{
+									double k = fmax(knee, 0.001);
+									if (val > ceil - k)
+									{
+										double x = (val - (ceil - k)) / (2.0 * k);
+										x = fmin(fmax(x, 0.0), 1.0);
+										double sm = x * x * (3.0 - 2.0 * x);
+										val = (ceil - k) + k * sm * (1.0 + curve);
+										if (val > ceil) val = ceil;
+									}
+									if (val < flr + k)
+									{
+										double x = ((flr + k) - val) / (2.0 * k);
+										x = fmin(fmax(x, 0.0), 1.0);
+										double sm = x * x * (3.0 - 2.0 * x);
+										val = (flr + k) - k * sm * (1.0 + curve);
+										if (val < flr) val = flr;
+									}
+								}
+								else
+								{
+									if (val > ceil) val = ceil;
+									if (val < flr) val = flr;
+								}
+							}
+							// Clip Mix (blend clipped/unclipped)
+							if (fractal->transformCommon.multiplierClipMix3 < 1.0)
+							{
+								double mx = fractal->transformCommon.multiplierClipMix3;
+								// val is already clipped; recover original from drive
+								// approximate: mix toward 1.0 (neutral)
+								val = 1.0 + mx * (val - 1.0);
+							}
+
 				switch (fractal->transformCommon.multiplierMode3)
 				{
 					default:
@@ -1022,6 +1235,77 @@ void cFractalThreex3XyModelFractal::FormulaCode(CVector4 &z, const sFractal *fra
 								else if (bm == 4) { double sv = fmin(fmax((val - 0.5) * 1.0, 0.0), 1.0); val = 0.5 + sv * sv * (3.0 - 2.0 * sv); }
 							}
 
+							// Clip Drive (pre-gain)
+							if (fractal->transformCommon.multiplierClipDrive4 != 1.0)
+							{
+								double drv = fractal->transformCommon.multiplierClipDrive4;
+								val = 1.0 + (val - 1.0) * drv;
+							}
+							// Clip Rectify: 0=off, 1=half(clamp neg to 0), 2=full(abs)
+							{
+								int cr = fractal->transformCommon.multiplierClipRectify4;
+								if (cr == 1 && val < 1.0) val = 1.0;
+								else if (cr == 2) val = 1.0 + fabs(val - 1.0);
+							}
+							// Clip Fold (wavefolder)
+							if (fractal->transformCommon.multiplierClipFold4)
+							{
+								int folds = fractal->transformCommon.multiplierClipFoldCount4;
+								if (folds < 1) folds = 1;
+								double ceil = fractal->transformCommon.multiplierClipCeiling4;
+								double flr = fractal->transformCommon.multiplierClipFloor4;
+								for (int fi = 0; fi < folds; fi++)
+								{
+									if (val > ceil) val = 2.0 * ceil - val;
+									if (val < flr) val = 2.0 * flr - val;
+								}
+							}
+							// Clip Ceiling / Floor (hard clamp with asymmetry)
+							if (!fractal->transformCommon.multiplierClipFold4)
+							{
+								double ceil = fractal->transformCommon.multiplierClipCeiling4;
+								double flr = fractal->transformCommon.multiplierClipFloor4;
+								double asym = fractal->transformCommon.multiplierClipAsymmetry4;
+								ceil += asym;
+								flr -= asym;
+								// Clip Curve (soft knee)
+								double curve = fractal->transformCommon.multiplierClipCurve4;
+								double knee = fractal->transformCommon.multiplierClipKnee4;
+								if (curve > 0.0 || knee > 0.0)
+								{
+									double k = fmax(knee, 0.001);
+									if (val > ceil - k)
+									{
+										double x = (val - (ceil - k)) / (2.0 * k);
+										x = fmin(fmax(x, 0.0), 1.0);
+										double sm = x * x * (3.0 - 2.0 * x);
+										val = (ceil - k) + k * sm * (1.0 + curve);
+										if (val > ceil) val = ceil;
+									}
+									if (val < flr + k)
+									{
+										double x = ((flr + k) - val) / (2.0 * k);
+										x = fmin(fmax(x, 0.0), 1.0);
+										double sm = x * x * (3.0 - 2.0 * x);
+										val = (flr + k) - k * sm * (1.0 + curve);
+										if (val < flr) val = flr;
+									}
+								}
+								else
+								{
+									if (val > ceil) val = ceil;
+									if (val < flr) val = flr;
+								}
+							}
+							// Clip Mix (blend clipped/unclipped)
+							if (fractal->transformCommon.multiplierClipMix4 < 1.0)
+							{
+								double mx = fractal->transformCommon.multiplierClipMix4;
+								// val is already clipped; recover original from drive
+								// approximate: mix toward 1.0 (neutral)
+								val = 1.0 + mx * (val - 1.0);
+							}
+
 				switch (fractal->transformCommon.multiplierMode4)
 				{
 					default:
@@ -1272,6 +1556,77 @@ void cFractalThreex3XyModelFractal::FormulaCode(CVector4 &z, const sFractal *fra
 								else if (bm == 2 && val < 1.0) val = 1.0;
 								else if (bm == 3) val = 1.0 + fabs(val - 1.0);
 								else if (bm == 4) { double sv = fmin(fmax((val - 0.5) * 1.0, 0.0), 1.0); val = 0.5 + sv * sv * (3.0 - 2.0 * sv); }
+							}
+
+							// Clip Drive (pre-gain)
+							if (fractal->transformCommon.multiplierClipDrive5 != 1.0)
+							{
+								double drv = fractal->transformCommon.multiplierClipDrive5;
+								val = 1.0 + (val - 1.0) * drv;
+							}
+							// Clip Rectify: 0=off, 1=half(clamp neg to 0), 2=full(abs)
+							{
+								int cr = fractal->transformCommon.multiplierClipRectify5;
+								if (cr == 1 && val < 1.0) val = 1.0;
+								else if (cr == 2) val = 1.0 + fabs(val - 1.0);
+							}
+							// Clip Fold (wavefolder)
+							if (fractal->transformCommon.multiplierClipFold5)
+							{
+								int folds = fractal->transformCommon.multiplierClipFoldCount5;
+								if (folds < 1) folds = 1;
+								double ceil = fractal->transformCommon.multiplierClipCeiling5;
+								double flr = fractal->transformCommon.multiplierClipFloor5;
+								for (int fi = 0; fi < folds; fi++)
+								{
+									if (val > ceil) val = 2.0 * ceil - val;
+									if (val < flr) val = 2.0 * flr - val;
+								}
+							}
+							// Clip Ceiling / Floor (hard clamp with asymmetry)
+							if (!fractal->transformCommon.multiplierClipFold5)
+							{
+								double ceil = fractal->transformCommon.multiplierClipCeiling5;
+								double flr = fractal->transformCommon.multiplierClipFloor5;
+								double asym = fractal->transformCommon.multiplierClipAsymmetry5;
+								ceil += asym;
+								flr -= asym;
+								// Clip Curve (soft knee)
+								double curve = fractal->transformCommon.multiplierClipCurve5;
+								double knee = fractal->transformCommon.multiplierClipKnee5;
+								if (curve > 0.0 || knee > 0.0)
+								{
+									double k = fmax(knee, 0.001);
+									if (val > ceil - k)
+									{
+										double x = (val - (ceil - k)) / (2.0 * k);
+										x = fmin(fmax(x, 0.0), 1.0);
+										double sm = x * x * (3.0 - 2.0 * x);
+										val = (ceil - k) + k * sm * (1.0 + curve);
+										if (val > ceil) val = ceil;
+									}
+									if (val < flr + k)
+									{
+										double x = ((flr + k) - val) / (2.0 * k);
+										x = fmin(fmax(x, 0.0), 1.0);
+										double sm = x * x * (3.0 - 2.0 * x);
+										val = (flr + k) - k * sm * (1.0 + curve);
+										if (val < flr) val = flr;
+									}
+								}
+								else
+								{
+									if (val > ceil) val = ceil;
+									if (val < flr) val = flr;
+								}
+							}
+							// Clip Mix (blend clipped/unclipped)
+							if (fractal->transformCommon.multiplierClipMix5 < 1.0)
+							{
+								double mx = fractal->transformCommon.multiplierClipMix5;
+								// val is already clipped; recover original from drive
+								// approximate: mix toward 1.0 (neutral)
+								val = 1.0 + mx * (val - 1.0);
 							}
 
 				switch (fractal->transformCommon.multiplierMode5)
