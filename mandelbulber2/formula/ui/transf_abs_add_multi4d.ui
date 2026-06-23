@@ -1133,7 +1133,7 @@ z = abs( z + const.A ) - abs( z - const.B ) - ( z * const.C )</string>
             <widget class="QLabel" name="label_mult_burst_l_1"><property name="text"><string>Burst L</string></property></widget>
      </item>
      <item row="16" column="1">
-            <widget class="MySpinBoxInt" name="spinboxInt_transf_multiplier_burst_len_1"><property name="toolTip"><string>Active burst duration in iterations (1-20).</string></property><property name="minimum"><number>1</number></property><property name="maximum"><number>20</number></property></widget>
+            <widget class="MySpinBoxInt" name="spinboxInt_transf_multiplier_burst_length_1"><property name="toolTip"><string>Active burst duration in iterations (1-20).</string></property><property name="minimum"><number>1</number></property><property name="maximum"><number>20</number></property></widget>
      </item>
      <item row="16" column="2">
             <widget class="QLabel" name="label_mult_burst_g_1"><property name="text"><string>Burst G</string></property></widget>
@@ -1814,7 +1814,7 @@ z = abs( z + const.A ) - abs( z - const.B ) - ( z * const.C )</string>
             <widget class="QLabel" name="label_mult_burst_l_2"><property name="text"><string>Burst L</string></property></widget>
      </item>
      <item row="16" column="1">
-            <widget class="MySpinBoxInt" name="spinboxInt_transf_multiplier_burst_len_2"><property name="toolTip"><string>Active burst duration in iterations (1-20).</string></property><property name="minimum"><number>1</number></property><property name="maximum"><number>20</number></property></widget>
+            <widget class="MySpinBoxInt" name="spinboxInt_transf_multiplier_burst_length_2"><property name="toolTip"><string>Active burst duration in iterations (1-20).</string></property><property name="minimum"><number>1</number></property><property name="maximum"><number>20</number></property></widget>
      </item>
      <item row="16" column="2">
             <widget class="QLabel" name="label_mult_burst_g_2"><property name="text"><string>Burst G</string></property></widget>
@@ -2425,7 +2425,7 @@ z = abs( z + const.A ) - abs( z - const.B ) - ( z * const.C )</string>
             <widget class="QLabel" name="label_mult_burst_l_3"><property name="text"><string>Burst L</string></property></widget>
      </item>
      <item row="16" column="1">
-            <widget class="MySpinBoxInt" name="spinboxInt_transf_multiplier_burst_len_3"><property name="toolTip"><string>Active burst duration in iterations (1-20).</string></property><property name="minimum"><number>1</number></property><property name="maximum"><number>20</number></property></widget>
+            <widget class="MySpinBoxInt" name="spinboxInt_transf_multiplier_burst_length_3"><property name="toolTip"><string>Active burst duration in iterations (1-20).</string></property><property name="minimum"><number>1</number></property><property name="maximum"><number>20</number></property></widget>
      </item>
      <item row="16" column="2">
             <widget class="QLabel" name="label_mult_burst_g_3"><property name="text"><string>Burst G</string></property></widget>
@@ -3036,7 +3036,7 @@ z = abs( z + const.A ) - abs( z - const.B ) - ( z * const.C )</string>
             <widget class="QLabel" name="label_mult_burst_l_4"><property name="text"><string>Burst L</string></property></widget>
      </item>
      <item row="16" column="1">
-            <widget class="MySpinBoxInt" name="spinboxInt_transf_multiplier_burst_len_4"><property name="toolTip"><string>Active burst duration in iterations (1-20).</string></property><property name="minimum"><number>1</number></property><property name="maximum"><number>20</number></property></widget>
+            <widget class="MySpinBoxInt" name="spinboxInt_transf_multiplier_burst_length_4"><property name="toolTip"><string>Active burst duration in iterations (1-20).</string></property><property name="minimum"><number>1</number></property><property name="maximum"><number>20</number></property></widget>
      </item>
      <item row="16" column="2">
             <widget class="QLabel" name="label_mult_burst_g_4"><property name="text"><string>Burst G</string></property></widget>
@@ -3647,7 +3647,7 @@ z = abs( z + const.A ) - abs( z - const.B ) - ( z * const.C )</string>
             <widget class="QLabel" name="label_mult_burst_l_5"><property name="text"><string>Burst L</string></property></widget>
      </item>
      <item row="16" column="1">
-            <widget class="MySpinBoxInt" name="spinboxInt_transf_multiplier_burst_len_5"><property name="toolTip"><string>Active burst duration in iterations (1-20).</string></property><property name="minimum"><number>1</number></property><property name="maximum"><number>20</number></property></widget>
+            <widget class="MySpinBoxInt" name="spinboxInt_transf_multiplier_burst_length_5"><property name="toolTip"><string>Active burst duration in iterations (1-20).</string></property><property name="minimum"><number>1</number></property><property name="maximum"><number>20</number></property></widget>
      </item>
      <item row="16" column="2">
             <widget class="QLabel" name="label_mult_burst_g_5"><property name="text"><string>Burst G</string></property></widget>

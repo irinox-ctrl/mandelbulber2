@@ -55,7 +55,7 @@ QWidget *MyUiLoader::createWidget(const QString &className, QWidget *parent, con
 		widget = new MyLineEdit(parent);
 		widget->setObjectName(name);
 	}
-	else if (className == QString("MySpinBox"))
+	else if (className == QString("MySpinBox") || className == QString("MySpinBoxInt"))
 	{
 		widget = new MySpinBox(parent);
 		widget->setObjectName(name);
