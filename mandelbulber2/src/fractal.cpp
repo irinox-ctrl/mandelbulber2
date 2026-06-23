@@ -756,6 +756,39 @@ sFractal::sFractal(const std::shared_ptr<cParameterContainer> container)
 	transformCommon.multiplierInvOscillate4 = container->Get<bool>("transf_multiplier_inv_oscillate_4");
 	transformCommon.multiplierInvOscillate5 = container->Get<bool>("transf_multiplier_inv_oscillate_5");
 
+	// Burst / Falloff / Accumulate / Wrap / Conditional loading
+	transformCommon.multiplierBurstLength1 = container->Get<int>("transf_multiplier_burst_length_1");
+	transformCommon.multiplierBurstLength2 = container->Get<int>("transf_multiplier_burst_length_2");
+	transformCommon.multiplierBurstLength3 = container->Get<int>("transf_multiplier_burst_length_3");
+	transformCommon.multiplierBurstLength4 = container->Get<int>("transf_multiplier_burst_length_4");
+	transformCommon.multiplierBurstLength5 = container->Get<int>("transf_multiplier_burst_length_5");
+	transformCommon.multiplierBurstGap1 = container->Get<int>("transf_multiplier_burst_gap_1");
+	transformCommon.multiplierBurstGap2 = container->Get<int>("transf_multiplier_burst_gap_2");
+	transformCommon.multiplierBurstGap3 = container->Get<int>("transf_multiplier_burst_gap_3");
+	transformCommon.multiplierBurstGap4 = container->Get<int>("transf_multiplier_burst_gap_4");
+	transformCommon.multiplierBurstGap5 = container->Get<int>("transf_multiplier_burst_gap_5");
+	transformCommon.multiplierSphericalFalloff1 = container->Get<double>("transf_multiplier_spherical_falloff_1");
+	transformCommon.multiplierSphericalFalloff2 = container->Get<double>("transf_multiplier_spherical_falloff_2");
+	transformCommon.multiplierSphericalFalloff3 = container->Get<double>("transf_multiplier_spherical_falloff_3");
+	transformCommon.multiplierSphericalFalloff4 = container->Get<double>("transf_multiplier_spherical_falloff_4");
+	transformCommon.multiplierSphericalFalloff5 = container->Get<double>("transf_multiplier_spherical_falloff_5");
+	transformCommon.multiplierAccumulate1 = container->Get<bool>("transf_multiplier_accumulate_1");
+	transformCommon.multiplierAccumulate2 = container->Get<bool>("transf_multiplier_accumulate_2");
+	transformCommon.multiplierAccumulate3 = container->Get<bool>("transf_multiplier_accumulate_3");
+	transformCommon.multiplierAccumulate4 = container->Get<bool>("transf_multiplier_accumulate_4");
+	transformCommon.multiplierAccumulate5 = container->Get<bool>("transf_multiplier_accumulate_5");
+	transformCommon.multiplierWrapRange1 = container->Get<double>("transf_multiplier_wrap_range_1");
+	transformCommon.multiplierWrapRange2 = container->Get<double>("transf_multiplier_wrap_range_2");
+	transformCommon.multiplierWrapRange3 = container->Get<double>("transf_multiplier_wrap_range_3");
+	transformCommon.multiplierWrapRange4 = container->Get<double>("transf_multiplier_wrap_range_4");
+	transformCommon.multiplierWrapRange5 = container->Get<double>("transf_multiplier_wrap_range_5");
+	transformCommon.multiplierConditionalMode1 = container->Get<int>("transf_multiplier_conditional_mode_1");
+	transformCommon.multiplierConditionalMode2 = container->Get<int>("transf_multiplier_conditional_mode_2");
+	transformCommon.multiplierConditionalMode3 = container->Get<int>("transf_multiplier_conditional_mode_3");
+	transformCommon.multiplierConditionalMode4 = container->Get<int>("transf_multiplier_conditional_mode_4");
+	transformCommon.multiplierConditionalMode5 = container->Get<int>("transf_multiplier_conditional_mode_5");
+
+
 
 
 

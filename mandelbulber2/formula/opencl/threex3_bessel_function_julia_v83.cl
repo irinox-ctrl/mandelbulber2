@@ -375,7 +375,41 @@ REAL4 Threex3BesselFunctionJuliaV83Iteration(REAL4 z, __constant sFractalCl *fra
 								}
 							}
 
-				switch (fractal->transformCommon.multiplierMode1)
+				
+							// Burst / Falloff / Wrap / Conditional for slot 1
+							int burstLen1 = fractal->transformCommon.multiplierBurstLength1;
+							int burstGap1 = fractal->transformCommon.multiplierBurstGap1;
+							if (burstLen1 > 0 && burstGap1 > 0)
+							{
+								int cycle1 = burstLen1 + burstGap1;
+								int phase1 = aux->i % cycle1;
+								if (phase1 >= burstLen1) val = 1.0f;
+							}
+							REAL sphFall1 = fractal->transformCommon.multiplierSphericalFalloff1;
+							if (sphFall1 > 0.0f)
+							{
+								REAL dist1 = native_sqrt(z.x * z.x + z.y * z.y + z.z * z.z);
+								REAL falloff1 = native_exp(-sphFall1 * dist1);
+								val = 1.0f + (val - 1.0f) * falloff1;
+							}
+							REAL wrapR1 = fractal->transformCommon.multiplierWrapRange1;
+							if (wrapR1 > 0.0f)
+							{
+								REAL shifted1 = val - 1.0f;
+								shifted1 = fmod(shifted1, wrapR1);
+								if (shifted1 < 0.0f) shifted1 += wrapR1;
+								val = 1.0f + shifted1;
+							}
+							int condMode1 = fractal->transformCommon.multiplierConditionalMode1;
+							if (condMode1 == 1 && z.x < 0.0f) val = 1.0f;
+							else if (condMode1 == 2 && z.x >= 0.0f) val = 1.0f;
+							else if (condMode1 == 3)
+							{
+								REAL condDist1 = native_sqrt(z.x * z.x + z.y * z.y + z.z * z.z);
+								if (condDist1 < fractal->transformCommon.multiplierThreshold1) val = 1.0f;
+							}
+
+							switch (fractal->transformCommon.multiplierMode1)
 				{
 					default:
 					case 0:
@@ -749,7 +783,41 @@ REAL4 Threex3BesselFunctionJuliaV83Iteration(REAL4 z, __constant sFractalCl *fra
 								}
 							}
 
-				switch (fractal->transformCommon.multiplierMode2)
+				
+							// Burst / Falloff / Wrap / Conditional for slot 2
+							int burstLen2 = fractal->transformCommon.multiplierBurstLength2;
+							int burstGap2 = fractal->transformCommon.multiplierBurstGap2;
+							if (burstLen2 > 0 && burstGap2 > 0)
+							{
+								int cycle2 = burstLen2 + burstGap2;
+								int phase2 = aux->i % cycle2;
+								if (phase2 >= burstLen2) val = 1.0f;
+							}
+							REAL sphFall2 = fractal->transformCommon.multiplierSphericalFalloff2;
+							if (sphFall2 > 0.0f)
+							{
+								REAL dist2 = native_sqrt(z.x * z.x + z.y * z.y + z.z * z.z);
+								REAL falloff2 = native_exp(-sphFall2 * dist2);
+								val = 1.0f + (val - 1.0f) * falloff2;
+							}
+							REAL wrapR2 = fractal->transformCommon.multiplierWrapRange2;
+							if (wrapR2 > 0.0f)
+							{
+								REAL shifted2 = val - 1.0f;
+								shifted2 = fmod(shifted2, wrapR2);
+								if (shifted2 < 0.0f) shifted2 += wrapR2;
+								val = 1.0f + shifted2;
+							}
+							int condMode2 = fractal->transformCommon.multiplierConditionalMode2;
+							if (condMode2 == 1 && z.x < 0.0f) val = 1.0f;
+							else if (condMode2 == 2 && z.x >= 0.0f) val = 1.0f;
+							else if (condMode2 == 3)
+							{
+								REAL condDist2 = native_sqrt(z.x * z.x + z.y * z.y + z.z * z.z);
+								if (condDist2 < fractal->transformCommon.multiplierThreshold2) val = 1.0f;
+							}
+
+							switch (fractal->transformCommon.multiplierMode2)
 				{
 					default:
 					case 0:
@@ -1123,7 +1191,41 @@ REAL4 Threex3BesselFunctionJuliaV83Iteration(REAL4 z, __constant sFractalCl *fra
 								}
 							}
 
-				switch (fractal->transformCommon.multiplierMode3)
+				
+							// Burst / Falloff / Wrap / Conditional for slot 3
+							int burstLen3 = fractal->transformCommon.multiplierBurstLength3;
+							int burstGap3 = fractal->transformCommon.multiplierBurstGap3;
+							if (burstLen3 > 0 && burstGap3 > 0)
+							{
+								int cycle3 = burstLen3 + burstGap3;
+								int phase3 = aux->i % cycle3;
+								if (phase3 >= burstLen3) val = 1.0f;
+							}
+							REAL sphFall3 = fractal->transformCommon.multiplierSphericalFalloff3;
+							if (sphFall3 > 0.0f)
+							{
+								REAL dist3 = native_sqrt(z.x * z.x + z.y * z.y + z.z * z.z);
+								REAL falloff3 = native_exp(-sphFall3 * dist3);
+								val = 1.0f + (val - 1.0f) * falloff3;
+							}
+							REAL wrapR3 = fractal->transformCommon.multiplierWrapRange3;
+							if (wrapR3 > 0.0f)
+							{
+								REAL shifted3 = val - 1.0f;
+								shifted3 = fmod(shifted3, wrapR3);
+								if (shifted3 < 0.0f) shifted3 += wrapR3;
+								val = 1.0f + shifted3;
+							}
+							int condMode3 = fractal->transformCommon.multiplierConditionalMode3;
+							if (condMode3 == 1 && z.x < 0.0f) val = 1.0f;
+							else if (condMode3 == 2 && z.x >= 0.0f) val = 1.0f;
+							else if (condMode3 == 3)
+							{
+								REAL condDist3 = native_sqrt(z.x * z.x + z.y * z.y + z.z * z.z);
+								if (condDist3 < fractal->transformCommon.multiplierThreshold3) val = 1.0f;
+							}
+
+							switch (fractal->transformCommon.multiplierMode3)
 				{
 					default:
 					case 0:
@@ -1497,7 +1599,41 @@ REAL4 Threex3BesselFunctionJuliaV83Iteration(REAL4 z, __constant sFractalCl *fra
 								}
 							}
 
-				switch (fractal->transformCommon.multiplierMode4)
+				
+							// Burst / Falloff / Wrap / Conditional for slot 4
+							int burstLen4 = fractal->transformCommon.multiplierBurstLength4;
+							int burstGap4 = fractal->transformCommon.multiplierBurstGap4;
+							if (burstLen4 > 0 && burstGap4 > 0)
+							{
+								int cycle4 = burstLen4 + burstGap4;
+								int phase4 = aux->i % cycle4;
+								if (phase4 >= burstLen4) val = 1.0f;
+							}
+							REAL sphFall4 = fractal->transformCommon.multiplierSphericalFalloff4;
+							if (sphFall4 > 0.0f)
+							{
+								REAL dist4 = native_sqrt(z.x * z.x + z.y * z.y + z.z * z.z);
+								REAL falloff4 = native_exp(-sphFall4 * dist4);
+								val = 1.0f + (val - 1.0f) * falloff4;
+							}
+							REAL wrapR4 = fractal->transformCommon.multiplierWrapRange4;
+							if (wrapR4 > 0.0f)
+							{
+								REAL shifted4 = val - 1.0f;
+								shifted4 = fmod(shifted4, wrapR4);
+								if (shifted4 < 0.0f) shifted4 += wrapR4;
+								val = 1.0f + shifted4;
+							}
+							int condMode4 = fractal->transformCommon.multiplierConditionalMode4;
+							if (condMode4 == 1 && z.x < 0.0f) val = 1.0f;
+							else if (condMode4 == 2 && z.x >= 0.0f) val = 1.0f;
+							else if (condMode4 == 3)
+							{
+								REAL condDist4 = native_sqrt(z.x * z.x + z.y * z.y + z.z * z.z);
+								if (condDist4 < fractal->transformCommon.multiplierThreshold4) val = 1.0f;
+							}
+
+							switch (fractal->transformCommon.multiplierMode4)
 				{
 					default:
 					case 0:
@@ -1871,7 +2007,41 @@ REAL4 Threex3BesselFunctionJuliaV83Iteration(REAL4 z, __constant sFractalCl *fra
 								}
 							}
 
-				switch (fractal->transformCommon.multiplierMode5)
+				
+							// Burst / Falloff / Wrap / Conditional for slot 5
+							int burstLen5 = fractal->transformCommon.multiplierBurstLength5;
+							int burstGap5 = fractal->transformCommon.multiplierBurstGap5;
+							if (burstLen5 > 0 && burstGap5 > 0)
+							{
+								int cycle5 = burstLen5 + burstGap5;
+								int phase5 = aux->i % cycle5;
+								if (phase5 >= burstLen5) val = 1.0f;
+							}
+							REAL sphFall5 = fractal->transformCommon.multiplierSphericalFalloff5;
+							if (sphFall5 > 0.0f)
+							{
+								REAL dist5 = native_sqrt(z.x * z.x + z.y * z.y + z.z * z.z);
+								REAL falloff5 = native_exp(-sphFall5 * dist5);
+								val = 1.0f + (val - 1.0f) * falloff5;
+							}
+							REAL wrapR5 = fractal->transformCommon.multiplierWrapRange5;
+							if (wrapR5 > 0.0f)
+							{
+								REAL shifted5 = val - 1.0f;
+								shifted5 = fmod(shifted5, wrapR5);
+								if (shifted5 < 0.0f) shifted5 += wrapR5;
+								val = 1.0f + shifted5;
+							}
+							int condMode5 = fractal->transformCommon.multiplierConditionalMode5;
+							if (condMode5 == 1 && z.x < 0.0f) val = 1.0f;
+							else if (condMode5 == 2 && z.x >= 0.0f) val = 1.0f;
+							else if (condMode5 == 3)
+							{
+								REAL condDist5 = native_sqrt(z.x * z.x + z.y * z.y + z.z * z.z);
+								if (condDist5 < fractal->transformCommon.multiplierThreshold5) val = 1.0f;
+							}
+
+							switch (fractal->transformCommon.multiplierMode5)
 				{
 					default:
 					case 0:

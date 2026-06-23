@@ -1082,6 +1082,37 @@ struct sFractalTransformCommon
 	bool multiplierInvOscillate3;
 	bool multiplierInvOscillate4;
 	bool multiplierInvOscillate5;
+		int multiplierBurstLength1;
+		int multiplierBurstLength2;
+		int multiplierBurstLength3;
+		int multiplierBurstLength4;
+		int multiplierBurstLength5;
+		int multiplierBurstGap1;
+		int multiplierBurstGap2;
+		int multiplierBurstGap3;
+		int multiplierBurstGap4;
+		int multiplierBurstGap5;
+		double multiplierSphericalFalloff1;
+		double multiplierSphericalFalloff2;
+		double multiplierSphericalFalloff3;
+		double multiplierSphericalFalloff4;
+		double multiplierSphericalFalloff5;
+		bool multiplierAccumulate1;
+		bool multiplierAccumulate2;
+		bool multiplierAccumulate3;
+		bool multiplierAccumulate4;
+		bool multiplierAccumulate5;
+		double multiplierWrapRange1;
+		double multiplierWrapRange2;
+		double multiplierWrapRange3;
+		double multiplierWrapRange4;
+		double multiplierWrapRange5;
+		int multiplierConditionalMode1;
+		int multiplierConditionalMode2;
+		int multiplierConditionalMode3;
+		int multiplierConditionalMode4;
+		int multiplierConditionalMode5;
+
 
 
 

@@ -1092,6 +1092,37 @@ typedef struct
 	cl_int multiplierInvOscillate3;
 	cl_int multiplierInvOscillate4;
 	cl_int multiplierInvOscillate5;
+	cl_int multiplierBurstLength1;
+	cl_int multiplierBurstLength2;
+	cl_int multiplierBurstLength3;
+	cl_int multiplierBurstLength4;
+	cl_int multiplierBurstLength5;
+	cl_int multiplierBurstGap1;
+	cl_int multiplierBurstGap2;
+	cl_int multiplierBurstGap3;
+	cl_int multiplierBurstGap4;
+	cl_int multiplierBurstGap5;
+	cl_float multiplierSphericalFalloff1;
+	cl_float multiplierSphericalFalloff2;
+	cl_float multiplierSphericalFalloff3;
+	cl_float multiplierSphericalFalloff4;
+	cl_float multiplierSphericalFalloff5;
+	cl_int multiplierAccumulate1;
+	cl_int multiplierAccumulate2;
+	cl_int multiplierAccumulate3;
+	cl_int multiplierAccumulate4;
+	cl_int multiplierAccumulate5;
+	cl_float multiplierWrapRange1;
+	cl_float multiplierWrapRange2;
+	cl_float multiplierWrapRange3;
+	cl_float multiplierWrapRange4;
+	cl_float multiplierWrapRange5;
+	cl_int multiplierConditionalMode1;
+	cl_int multiplierConditionalMode2;
+	cl_int multiplierConditionalMode3;
+	cl_int multiplierConditionalMode4;
+	cl_int multiplierConditionalMode5;
+
 
 
 
@@ -2401,6 +2432,37 @@ inline sFractalTransformCommonCl clCopySFractalTransformCommonCl(
 	target.multiplierInvOscillate3 = source.multiplierInvOscillate3;
 	target.multiplierInvOscillate4 = source.multiplierInvOscillate4;
 	target.multiplierInvOscillate5 = source.multiplierInvOscillate5;
+	target.multiplierBurstLength1 = source.multiplierBurstLength1;
+	target.multiplierBurstLength2 = source.multiplierBurstLength2;
+	target.multiplierBurstLength3 = source.multiplierBurstLength3;
+	target.multiplierBurstLength4 = source.multiplierBurstLength4;
+	target.multiplierBurstLength5 = source.multiplierBurstLength5;
+	target.multiplierBurstGap1 = source.multiplierBurstGap1;
+	target.multiplierBurstGap2 = source.multiplierBurstGap2;
+	target.multiplierBurstGap3 = source.multiplierBurstGap3;
+	target.multiplierBurstGap4 = source.multiplierBurstGap4;
+	target.multiplierBurstGap5 = source.multiplierBurstGap5;
+	target.multiplierSphericalFalloff1 = source.multiplierSphericalFalloff1;
+	target.multiplierSphericalFalloff2 = source.multiplierSphericalFalloff2;
+	target.multiplierSphericalFalloff3 = source.multiplierSphericalFalloff3;
+	target.multiplierSphericalFalloff4 = source.multiplierSphericalFalloff4;
+	target.multiplierSphericalFalloff5 = source.multiplierSphericalFalloff5;
+	target.multiplierAccumulate1 = source.multiplierAccumulate1;
+	target.multiplierAccumulate2 = source.multiplierAccumulate2;
+	target.multiplierAccumulate3 = source.multiplierAccumulate3;
+	target.multiplierAccumulate4 = source.multiplierAccumulate4;
+	target.multiplierAccumulate5 = source.multiplierAccumulate5;
+	target.multiplierWrapRange1 = source.multiplierWrapRange1;
+	target.multiplierWrapRange2 = source.multiplierWrapRange2;
+	target.multiplierWrapRange3 = source.multiplierWrapRange3;
+	target.multiplierWrapRange4 = source.multiplierWrapRange4;
+	target.multiplierWrapRange5 = source.multiplierWrapRange5;
+	target.multiplierConditionalMode1 = source.multiplierConditionalMode1;
+	target.multiplierConditionalMode2 = source.multiplierConditionalMode2;
+	target.multiplierConditionalMode3 = source.multiplierConditionalMode3;
+	target.multiplierConditionalMode4 = source.multiplierConditionalMode4;
+	target.multiplierConditionalMode5 = source.multiplierConditionalMode5;
+
 
 	target.multiplierEnabled1 = source.multiplierEnabled1;
 	target.multiplierEnabled2 = source.multiplierEnabled2;

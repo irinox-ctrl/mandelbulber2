@@ -1597,6 +1597,39 @@
         <property name="text"><string>Oscillate</string></property>
        </widget>
       </item>
+     <item row="16" column="0">
+      <widget class="QLabel" name="label_mult_burst_len_5"><property name="text"><string>Burst Len</string></property></widget>
+     </item>
+     <item row="16" column="1">
+      <widget class="MySpinBoxInt" name="spinboxInt_transf_multiplier_burst_length_5"><property name="minimum"><number>0</number></property><property name="maximum"><number>20</number></property></widget>
+     </item>
+     <item row="16" column="2">
+      <widget class="QLabel" name="label_mult_burst_gap_5"><property name="text"><string>Burst Gap</string></property></widget>
+     </item>
+     <item row="16" column="3">
+      <widget class="MySpinBoxInt" name="spinboxInt_transf_multiplier_burst_gap_5"><property name="minimum"><number>0</number></property><property name="maximum"><number>20</number></property></widget>
+     </item>
+     <item row="16" column="4">
+      <widget class="QLabel" name="label_mult_sph_falloff_5"><property name="text"><string>Sph Falloff</string></property></widget>
+     </item>
+     <item row="16" column="5">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_spherical_falloff_5"><property name="decimals"><number>2</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>10.000000</double></property><property name="singleStep"><double>0.100000</double></property></widget>
+     </item>
+     <item row="17" column="0">
+      <widget class="MyCheckBox" name="checkBox_transf_multiplier_accumulate_5"><property name="text"><string>Accum</string></property></widget>
+     </item>
+     <item row="17" column="1">
+      <widget class="QLabel" name="label_mult_wrap_5"><property name="text"><string>Wrap</string></property></widget>
+     </item>
+     <item row="17" column="2">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_wrap_range_5"><property name="decimals"><number>2</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>10.000000</double></property><property name="singleStep"><double>0.100000</double></property></widget>
+     </item>
+     <item row="17" column="3">
+      <widget class="QLabel" name="label_mult_cond_5"><property name="text"><string>Cond</string></property></widget>
+     </item>
+     <item row="17" column="4">
+      <widget class="MyComboBox" name="comboBox_transf_multiplier_conditional_mode_5"><item><property name="text"><string>Always</string></property></item><item><property name="text"><string>If Positive</string></property></item><item><property name="text"><string>If Negative</string></property></item><item><property name="text"><string>If Above Threshold</string></property></item></widget>
+     </item>
       <item row="4" column="0">
        <widget class="MyCheckBox" name="checkBox_transf_multiplier_chain_4">
         <property name="text"><string>Chain</string></property>
@@ -1924,6 +1957,39 @@
         <property name="text"><string>Oscillate</string></property>
        </widget>
       </item>
+     <item row="16" column="0">
+      <widget class="QLabel" name="label_mult_burst_len_4"><property name="text"><string>Burst Len</string></property></widget>
+     </item>
+     <item row="16" column="1">
+      <widget class="MySpinBoxInt" name="spinboxInt_transf_multiplier_burst_length_4"><property name="minimum"><number>0</number></property><property name="maximum"><number>20</number></property></widget>
+     </item>
+     <item row="16" column="2">
+      <widget class="QLabel" name="label_mult_burst_gap_4"><property name="text"><string>Burst Gap</string></property></widget>
+     </item>
+     <item row="16" column="3">
+      <widget class="MySpinBoxInt" name="spinboxInt_transf_multiplier_burst_gap_4"><property name="minimum"><number>0</number></property><property name="maximum"><number>20</number></property></widget>
+     </item>
+     <item row="16" column="4">
+      <widget class="QLabel" name="label_mult_sph_falloff_4"><property name="text"><string>Sph Falloff</string></property></widget>
+     </item>
+     <item row="16" column="5">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_spherical_falloff_4"><property name="decimals"><number>2</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>10.000000</double></property><property name="singleStep"><double>0.100000</double></property></widget>
+     </item>
+     <item row="17" column="0">
+      <widget class="MyCheckBox" name="checkBox_transf_multiplier_accumulate_4"><property name="text"><string>Accum</string></property></widget>
+     </item>
+     <item row="17" column="1">
+      <widget class="QLabel" name="label_mult_wrap_4"><property name="text"><string>Wrap</string></property></widget>
+     </item>
+     <item row="17" column="2">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_wrap_range_4"><property name="decimals"><number>2</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>10.000000</double></property><property name="singleStep"><double>0.100000</double></property></widget>
+     </item>
+     <item row="17" column="3">
+      <widget class="QLabel" name="label_mult_cond_4"><property name="text"><string>Cond</string></property></widget>
+     </item>
+     <item row="17" column="4">
+      <widget class="MyComboBox" name="comboBox_transf_multiplier_conditional_mode_4"><item><property name="text"><string>Always</string></property></item><item><property name="text"><string>If Positive</string></property></item><item><property name="text"><string>If Negative</string></property></item><item><property name="text"><string>If Above Threshold</string></property></item></widget>
+     </item>
       <item row="4" column="0">
        <widget class="MyCheckBox" name="checkBox_transf_multiplier_chain_3">
         <property name="text"><string>Chain</string></property>
@@ -2251,6 +2317,39 @@
         <property name="text"><string>Oscillate</string></property>
        </widget>
       </item>
+     <item row="16" column="0">
+      <widget class="QLabel" name="label_mult_burst_len_3"><property name="text"><string>Burst Len</string></property></widget>
+     </item>
+     <item row="16" column="1">
+      <widget class="MySpinBoxInt" name="spinboxInt_transf_multiplier_burst_length_3"><property name="minimum"><number>0</number></property><property name="maximum"><number>20</number></property></widget>
+     </item>
+     <item row="16" column="2">
+      <widget class="QLabel" name="label_mult_burst_gap_3"><property name="text"><string>Burst Gap</string></property></widget>
+     </item>
+     <item row="16" column="3">
+      <widget class="MySpinBoxInt" name="spinboxInt_transf_multiplier_burst_gap_3"><property name="minimum"><number>0</number></property><property name="maximum"><number>20</number></property></widget>
+     </item>
+     <item row="16" column="4">
+      <widget class="QLabel" name="label_mult_sph_falloff_3"><property name="text"><string>Sph Falloff</string></property></widget>
+     </item>
+     <item row="16" column="5">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_spherical_falloff_3"><property name="decimals"><number>2</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>10.000000</double></property><property name="singleStep"><double>0.100000</double></property></widget>
+     </item>
+     <item row="17" column="0">
+      <widget class="MyCheckBox" name="checkBox_transf_multiplier_accumulate_3"><property name="text"><string>Accum</string></property></widget>
+     </item>
+     <item row="17" column="1">
+      <widget class="QLabel" name="label_mult_wrap_3"><property name="text"><string>Wrap</string></property></widget>
+     </item>
+     <item row="17" column="2">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_wrap_range_3"><property name="decimals"><number>2</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>10.000000</double></property><property name="singleStep"><double>0.100000</double></property></widget>
+     </item>
+     <item row="17" column="3">
+      <widget class="QLabel" name="label_mult_cond_3"><property name="text"><string>Cond</string></property></widget>
+     </item>
+     <item row="17" column="4">
+      <widget class="MyComboBox" name="comboBox_transf_multiplier_conditional_mode_3"><item><property name="text"><string>Always</string></property></item><item><property name="text"><string>If Positive</string></property></item><item><property name="text"><string>If Negative</string></property></item><item><property name="text"><string>If Above Threshold</string></property></item></widget>
+     </item>
       <item row="4" column="0">
        <widget class="MyCheckBox" name="checkBox_transf_multiplier_chain_2">
         <property name="text"><string>Chain</string></property>
@@ -2578,6 +2677,39 @@
         <property name="text"><string>Oscillate</string></property>
        </widget>
       </item>
+     <item row="16" column="0">
+      <widget class="QLabel" name="label_mult_burst_len_2"><property name="text"><string>Burst Len</string></property></widget>
+     </item>
+     <item row="16" column="1">
+      <widget class="MySpinBoxInt" name="spinboxInt_transf_multiplier_burst_length_2"><property name="minimum"><number>0</number></property><property name="maximum"><number>20</number></property></widget>
+     </item>
+     <item row="16" column="2">
+      <widget class="QLabel" name="label_mult_burst_gap_2"><property name="text"><string>Burst Gap</string></property></widget>
+     </item>
+     <item row="16" column="3">
+      <widget class="MySpinBoxInt" name="spinboxInt_transf_multiplier_burst_gap_2"><property name="minimum"><number>0</number></property><property name="maximum"><number>20</number></property></widget>
+     </item>
+     <item row="16" column="4">
+      <widget class="QLabel" name="label_mult_sph_falloff_2"><property name="text"><string>Sph Falloff</string></property></widget>
+     </item>
+     <item row="16" column="5">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_spherical_falloff_2"><property name="decimals"><number>2</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>10.000000</double></property><property name="singleStep"><double>0.100000</double></property></widget>
+     </item>
+     <item row="17" column="0">
+      <widget class="MyCheckBox" name="checkBox_transf_multiplier_accumulate_2"><property name="text"><string>Accum</string></property></widget>
+     </item>
+     <item row="17" column="1">
+      <widget class="QLabel" name="label_mult_wrap_2"><property name="text"><string>Wrap</string></property></widget>
+     </item>
+     <item row="17" column="2">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_wrap_range_2"><property name="decimals"><number>2</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>10.000000</double></property><property name="singleStep"><double>0.100000</double></property></widget>
+     </item>
+     <item row="17" column="3">
+      <widget class="QLabel" name="label_mult_cond_2"><property name="text"><string>Cond</string></property></widget>
+     </item>
+     <item row="17" column="4">
+      <widget class="MyComboBox" name="comboBox_transf_multiplier_conditional_mode_2"><item><property name="text"><string>Always</string></property></item><item><property name="text"><string>If Positive</string></property></item><item><property name="text"><string>If Negative</string></property></item><item><property name="text"><string>If Above Threshold</string></property></item></widget>
+     </item>
       <item row="4" column="0">
        <widget class="MyCheckBox" name="checkBox_transf_multiplier_chain_1">
         <property name="text"><string>Chain</string></property>
@@ -2905,6 +3037,39 @@
         <property name="text"><string>Oscillate</string></property>
        </widget>
       </item>
+     <item row="16" column="0">
+      <widget class="QLabel" name="label_mult_burst_len_1"><property name="text"><string>Burst Len</string></property></widget>
+     </item>
+     <item row="16" column="1">
+      <widget class="MySpinBoxInt" name="spinboxInt_transf_multiplier_burst_length_1"><property name="minimum"><number>0</number></property><property name="maximum"><number>20</number></property></widget>
+     </item>
+     <item row="16" column="2">
+      <widget class="QLabel" name="label_mult_burst_gap_1"><property name="text"><string>Burst Gap</string></property></widget>
+     </item>
+     <item row="16" column="3">
+      <widget class="MySpinBoxInt" name="spinboxInt_transf_multiplier_burst_gap_1"><property name="minimum"><number>0</number></property><property name="maximum"><number>20</number></property></widget>
+     </item>
+     <item row="16" column="4">
+      <widget class="QLabel" name="label_mult_sph_falloff_1"><property name="text"><string>Sph Falloff</string></property></widget>
+     </item>
+     <item row="16" column="5">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_spherical_falloff_1"><property name="decimals"><number>2</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>10.000000</double></property><property name="singleStep"><double>0.100000</double></property></widget>
+     </item>
+     <item row="17" column="0">
+      <widget class="MyCheckBox" name="checkBox_transf_multiplier_accumulate_1"><property name="text"><string>Accum</string></property></widget>
+     </item>
+     <item row="17" column="1">
+      <widget class="QLabel" name="label_mult_wrap_1"><property name="text"><string>Wrap</string></property></widget>
+     </item>
+     <item row="17" column="2">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_wrap_range_1"><property name="decimals"><number>2</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>10.000000</double></property><property name="singleStep"><double>0.100000</double></property></widget>
+     </item>
+     <item row="17" column="3">
+      <widget class="QLabel" name="label_mult_cond_1"><property name="text"><string>Cond</string></property></widget>
+     </item>
+     <item row="17" column="4">
+      <widget class="MyComboBox" name="comboBox_transf_multiplier_conditional_mode_1"><item><property name="text"><string>Always</string></property></item><item><property name="text"><string>If Positive</string></property></item><item><property name="text"><string>If Negative</string></property></item><item><property name="text"><string>If Above Threshold</string></property></item></widget>
+     </item>
      </layout>
     </widget>
    </item>

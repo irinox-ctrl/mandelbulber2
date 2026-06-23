@@ -2446,6 +2446,39 @@ void InitFractalParams(std::shared_ptr<cParameterContainer> par)
 	par->addParam("transf_multiplier_inv_oscillate_4", false, morphNone, paramStandard);
 	par->addParam("transf_multiplier_inv_oscillate_5", false, morphNone, paramStandard);
 
+	// Burst / Falloff / Accumulate / Wrap / Conditional params
+	par->addParam("transf_multiplier_burst_length_1", 0, 0, 20, morphNone, paramStandard);
+	par->addParam("transf_multiplier_burst_length_2", 0, 0, 20, morphNone, paramStandard);
+	par->addParam("transf_multiplier_burst_length_3", 0, 0, 20, morphNone, paramStandard);
+	par->addParam("transf_multiplier_burst_length_4", 0, 0, 20, morphNone, paramStandard);
+	par->addParam("transf_multiplier_burst_length_5", 0, 0, 20, morphNone, paramStandard);
+	par->addParam("transf_multiplier_burst_gap_1", 0, 0, 20, morphNone, paramStandard);
+	par->addParam("transf_multiplier_burst_gap_2", 0, 0, 20, morphNone, paramStandard);
+	par->addParam("transf_multiplier_burst_gap_3", 0, 0, 20, morphNone, paramStandard);
+	par->addParam("transf_multiplier_burst_gap_4", 0, 0, 20, morphNone, paramStandard);
+	par->addParam("transf_multiplier_burst_gap_5", 0, 0, 20, morphNone, paramStandard);
+	par->addParam("transf_multiplier_spherical_falloff_1", 0.0, 0.0, 10.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_spherical_falloff_2", 0.0, 0.0, 10.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_spherical_falloff_3", 0.0, 0.0, 10.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_spherical_falloff_4", 0.0, 0.0, 10.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_spherical_falloff_5", 0.0, 0.0, 10.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_accumulate_1", false, morphNone, paramStandard);
+	par->addParam("transf_multiplier_accumulate_2", false, morphNone, paramStandard);
+	par->addParam("transf_multiplier_accumulate_3", false, morphNone, paramStandard);
+	par->addParam("transf_multiplier_accumulate_4", false, morphNone, paramStandard);
+	par->addParam("transf_multiplier_accumulate_5", false, morphNone, paramStandard);
+	par->addParam("transf_multiplier_wrap_range_1", 0.0, 0.0, 10.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_wrap_range_2", 0.0, 0.0, 10.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_wrap_range_3", 0.0, 0.0, 10.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_wrap_range_4", 0.0, 0.0, 10.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_wrap_range_5", 0.0, 0.0, 10.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_conditional_mode_1", 0, 0, 3, morphNone, paramStandard);
+	par->addParam("transf_multiplier_conditional_mode_2", 0, 0, 3, morphNone, paramStandard);
+	par->addParam("transf_multiplier_conditional_mode_3", 0, 0, 3, morphNone, paramStandard);
+	par->addParam("transf_multiplier_conditional_mode_4", 0, 0, 3, morphNone, paramStandard);
+	par->addParam("transf_multiplier_conditional_mode_5", 0, 0, 3, morphNone, paramStandard);
+
+
 
 
 
