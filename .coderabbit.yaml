@@ -5,7 +5,17 @@ reviews:
     base_branches:
       - ".*"
   review_status: true
-  path_filters: []
+  path_filters:
+    - "mandelbulber2/src/**"
+    - "mandelbulber2/opencl/**"
+    - "mandelbulber2/qt/**"
+    - "mandelbulber2/qmake/**"
+    - "mandelbulber2/formula/definition/fractal_amazing_surf.cpp"
+    - "mandelbulber2/formula/opencl/amazing_surf.cl"
+    - "mandelbulber2/formula/ui/amazing_surf.ui"
+    - "!mandelbulber2/formula/definition/**"
+    - "!mandelbulber2/formula/opencl/**"
+    - "!mandelbulber2/formula/ui/**"
   tools:
     shellcheck:
       enabled: true
