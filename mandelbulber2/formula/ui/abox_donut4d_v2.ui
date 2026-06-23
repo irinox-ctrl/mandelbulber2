@@ -3160,6 +3160,69 @@ scale:</string>
      </item>
      <item row="27" column="5">
       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_phase_randomise_5"><property name="decimals"><number>3</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>1.000000</double></property><property name="singleStep"><double>0.010000</double></property></widget>
+     </item>
+     <item row="28" column="0">
+      <widget class="QLabel" name="label_mult_compander_5"><property name="text"><string>Compander</string></property></widget>
+     </item>
+     <item row="28" column="1">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_compander_5"><property name="decimals"><number>2</number></property><property name="minimum"><double>0.100000</double></property><property name="maximum"><double>4.000000</double></property><property name="value"><double>1.000000</double></property><property name="singleStep"><double>0.100000</double></property></widget>
+     </item>
+     <item row="28" column="2">
+      <widget class="QLabel" name="label_mult_holdtime_5"><property name="text"><string>Hold</string></property></widget>
+     </item>
+     <item row="28" column="3">
+      <widget class="MySpinBoxInt" name="spinboxInt_transf_multiplier_hold_time_5"><property name="minimum"><number>0</number></property><property name="maximum"><number>20</number></property></widget>
+     </item>
+     <item row="28" column="4">
+      <widget class="QLabel" name="label_mult_wsdrive_5"><property name="text"><string>WS Drive</string></property></widget>
+     </item>
+     <item row="28" column="5">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_waveshaper_drive_5"><property name="decimals"><number>2</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>10.000000</double></property><property name="singleStep"><double>0.100000</double></property></widget>
+     </item>
+     <item row="29" column="0">
+      <widget class="QLabel" name="label_mult_degw_5"><property name="text"><string>DE Grad</string></property></widget>
+     </item>
+     <item row="29" column="1">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_de_grad_weight_5"><property name="decimals"><number>3</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>1.000000</double></property><property name="singleStep"><double>0.010000</double></property></widget>
+     </item>
+     <item row="29" column="2">
+      <widget class="QLabel" name="label_mult_iterd_5"><property name="text"><string>Iter Dens</string></property></widget>
+     </item>
+     <item row="29" column="3">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_iter_density_5"><property name="decimals"><number>3</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>1.000000</double></property><property name="singleStep"><double>0.010000</double></property></widget>
+     </item>
+     <item row="29" column="4">
+      <widget class="QLabel" name="label_mult_lyap_5"><property name="text"><string>Lyapunov</string></property></widget>
+     </item>
+     <item row="29" column="5">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_lyapunov_proxy_5"><property name="decimals"><number>3</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>1.000000</double></property><property name="singleStep"><double>0.010000</double></property></widget>
+     </item>
+     <item row="30" column="0">
+      <widget class="MyCheckBox" name="checkBox_transf_multiplier_time_palindrome_5"><property name="text"><string>Palindrome</string></property></widget>
+     </item>
+     <item row="30" column="1">
+      <widget class="QLabel" name="label_mult_attrmode_5"><property name="text"><string>Attractor</string></property></widget>
+     </item>
+     <item row="30" column="2">
+      <widget class="MySpinBoxInt" name="spinboxInt_transf_multiplier_attractor_mode_5"><property name="minimum"><number>0</number></property><property name="maximum"><number>2</number></property></widget>
+     </item>
+     <item row="30" column="3">
+      <widget class="QLabel" name="label_mult_dimbleed_5"><property name="text"><string>Dim Bleed</string></property></widget>
+     </item>
+     <item row="30" column="4">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_dimensional_bleed_5"><property name="decimals"><number>3</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>1.000000</double></property><property name="singleStep"><double>0.010000</double></property></widget>
+     </item>
+     <item row="31" column="0">
+      <widget class="QLabel" name="label_mult_selfref_5"><property name="text"><string>Self Ref</string></property></widget>
+     </item>
+     <item row="31" column="1">
+      <widget class="MySpinBoxInt" name="spinboxInt_transf_multiplier_self_ref_depth_5"><property name="minimum"><number>0</number></property><property name="maximum"><number>4</number></property></widget>
+     </item>
+     <item row="31" column="2">
+      <widget class="QLabel" name="label_mult_rescoup_5"><property name="text"><string>Resonance</string></property></widget>
+     </item>
+     <item row="31" column="3">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_resonance_coupling_5"><property name="decimals"><number>3</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>1.000000</double></property><property name="singleStep"><double>0.010000</double></property></widget>
      </item><item><property name="text"><string>If Positive</string></property></item><item><property name="text"><string>If Negative</string></property></item><item><property name="text"><string>If Above Threshold</string></property></item></widget>
      </item>
       <item row="4" column="0">
@@ -3685,6 +3748,69 @@ scale:</string>
      </item>
      <item row="27" column="5">
       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_phase_randomise_4"><property name="decimals"><number>3</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>1.000000</double></property><property name="singleStep"><double>0.010000</double></property></widget>
+     </item>
+     <item row="28" column="0">
+      <widget class="QLabel" name="label_mult_compander_4"><property name="text"><string>Compander</string></property></widget>
+     </item>
+     <item row="28" column="1">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_compander_4"><property name="decimals"><number>2</number></property><property name="minimum"><double>0.100000</double></property><property name="maximum"><double>4.000000</double></property><property name="value"><double>1.000000</double></property><property name="singleStep"><double>0.100000</double></property></widget>
+     </item>
+     <item row="28" column="2">
+      <widget class="QLabel" name="label_mult_holdtime_4"><property name="text"><string>Hold</string></property></widget>
+     </item>
+     <item row="28" column="3">
+      <widget class="MySpinBoxInt" name="spinboxInt_transf_multiplier_hold_time_4"><property name="minimum"><number>0</number></property><property name="maximum"><number>20</number></property></widget>
+     </item>
+     <item row="28" column="4">
+      <widget class="QLabel" name="label_mult_wsdrive_4"><property name="text"><string>WS Drive</string></property></widget>
+     </item>
+     <item row="28" column="5">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_waveshaper_drive_4"><property name="decimals"><number>2</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>10.000000</double></property><property name="singleStep"><double>0.100000</double></property></widget>
+     </item>
+     <item row="29" column="0">
+      <widget class="QLabel" name="label_mult_degw_4"><property name="text"><string>DE Grad</string></property></widget>
+     </item>
+     <item row="29" column="1">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_de_grad_weight_4"><property name="decimals"><number>3</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>1.000000</double></property><property name="singleStep"><double>0.010000</double></property></widget>
+     </item>
+     <item row="29" column="2">
+      <widget class="QLabel" name="label_mult_iterd_4"><property name="text"><string>Iter Dens</string></property></widget>
+     </item>
+     <item row="29" column="3">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_iter_density_4"><property name="decimals"><number>3</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>1.000000</double></property><property name="singleStep"><double>0.010000</double></property></widget>
+     </item>
+     <item row="29" column="4">
+      <widget class="QLabel" name="label_mult_lyap_4"><property name="text"><string>Lyapunov</string></property></widget>
+     </item>
+     <item row="29" column="5">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_lyapunov_proxy_4"><property name="decimals"><number>3</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>1.000000</double></property><property name="singleStep"><double>0.010000</double></property></widget>
+     </item>
+     <item row="30" column="0">
+      <widget class="MyCheckBox" name="checkBox_transf_multiplier_time_palindrome_4"><property name="text"><string>Palindrome</string></property></widget>
+     </item>
+     <item row="30" column="1">
+      <widget class="QLabel" name="label_mult_attrmode_4"><property name="text"><string>Attractor</string></property></widget>
+     </item>
+     <item row="30" column="2">
+      <widget class="MySpinBoxInt" name="spinboxInt_transf_multiplier_attractor_mode_4"><property name="minimum"><number>0</number></property><property name="maximum"><number>2</number></property></widget>
+     </item>
+     <item row="30" column="3">
+      <widget class="QLabel" name="label_mult_dimbleed_4"><property name="text"><string>Dim Bleed</string></property></widget>
+     </item>
+     <item row="30" column="4">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_dimensional_bleed_4"><property name="decimals"><number>3</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>1.000000</double></property><property name="singleStep"><double>0.010000</double></property></widget>
+     </item>
+     <item row="31" column="0">
+      <widget class="QLabel" name="label_mult_selfref_4"><property name="text"><string>Self Ref</string></property></widget>
+     </item>
+     <item row="31" column="1">
+      <widget class="MySpinBoxInt" name="spinboxInt_transf_multiplier_self_ref_depth_4"><property name="minimum"><number>0</number></property><property name="maximum"><number>4</number></property></widget>
+     </item>
+     <item row="31" column="2">
+      <widget class="QLabel" name="label_mult_rescoup_4"><property name="text"><string>Resonance</string></property></widget>
+     </item>
+     <item row="31" column="3">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_resonance_coupling_4"><property name="decimals"><number>3</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>1.000000</double></property><property name="singleStep"><double>0.010000</double></property></widget>
      </item><item><property name="text"><string>If Positive</string></property></item><item><property name="text"><string>If Negative</string></property></item><item><property name="text"><string>If Above Threshold</string></property></item></widget>
      </item>
       <item row="4" column="0">
@@ -4210,6 +4336,69 @@ scale:</string>
      </item>
      <item row="27" column="5">
       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_phase_randomise_3"><property name="decimals"><number>3</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>1.000000</double></property><property name="singleStep"><double>0.010000</double></property></widget>
+     </item>
+     <item row="28" column="0">
+      <widget class="QLabel" name="label_mult_compander_3"><property name="text"><string>Compander</string></property></widget>
+     </item>
+     <item row="28" column="1">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_compander_3"><property name="decimals"><number>2</number></property><property name="minimum"><double>0.100000</double></property><property name="maximum"><double>4.000000</double></property><property name="value"><double>1.000000</double></property><property name="singleStep"><double>0.100000</double></property></widget>
+     </item>
+     <item row="28" column="2">
+      <widget class="QLabel" name="label_mult_holdtime_3"><property name="text"><string>Hold</string></property></widget>
+     </item>
+     <item row="28" column="3">
+      <widget class="MySpinBoxInt" name="spinboxInt_transf_multiplier_hold_time_3"><property name="minimum"><number>0</number></property><property name="maximum"><number>20</number></property></widget>
+     </item>
+     <item row="28" column="4">
+      <widget class="QLabel" name="label_mult_wsdrive_3"><property name="text"><string>WS Drive</string></property></widget>
+     </item>
+     <item row="28" column="5">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_waveshaper_drive_3"><property name="decimals"><number>2</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>10.000000</double></property><property name="singleStep"><double>0.100000</double></property></widget>
+     </item>
+     <item row="29" column="0">
+      <widget class="QLabel" name="label_mult_degw_3"><property name="text"><string>DE Grad</string></property></widget>
+     </item>
+     <item row="29" column="1">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_de_grad_weight_3"><property name="decimals"><number>3</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>1.000000</double></property><property name="singleStep"><double>0.010000</double></property></widget>
+     </item>
+     <item row="29" column="2">
+      <widget class="QLabel" name="label_mult_iterd_3"><property name="text"><string>Iter Dens</string></property></widget>
+     </item>
+     <item row="29" column="3">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_iter_density_3"><property name="decimals"><number>3</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>1.000000</double></property><property name="singleStep"><double>0.010000</double></property></widget>
+     </item>
+     <item row="29" column="4">
+      <widget class="QLabel" name="label_mult_lyap_3"><property name="text"><string>Lyapunov</string></property></widget>
+     </item>
+     <item row="29" column="5">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_lyapunov_proxy_3"><property name="decimals"><number>3</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>1.000000</double></property><property name="singleStep"><double>0.010000</double></property></widget>
+     </item>
+     <item row="30" column="0">
+      <widget class="MyCheckBox" name="checkBox_transf_multiplier_time_palindrome_3"><property name="text"><string>Palindrome</string></property></widget>
+     </item>
+     <item row="30" column="1">
+      <widget class="QLabel" name="label_mult_attrmode_3"><property name="text"><string>Attractor</string></property></widget>
+     </item>
+     <item row="30" column="2">
+      <widget class="MySpinBoxInt" name="spinboxInt_transf_multiplier_attractor_mode_3"><property name="minimum"><number>0</number></property><property name="maximum"><number>2</number></property></widget>
+     </item>
+     <item row="30" column="3">
+      <widget class="QLabel" name="label_mult_dimbleed_3"><property name="text"><string>Dim Bleed</string></property></widget>
+     </item>
+     <item row="30" column="4">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_dimensional_bleed_3"><property name="decimals"><number>3</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>1.000000</double></property><property name="singleStep"><double>0.010000</double></property></widget>
+     </item>
+     <item row="31" column="0">
+      <widget class="QLabel" name="label_mult_selfref_3"><property name="text"><string>Self Ref</string></property></widget>
+     </item>
+     <item row="31" column="1">
+      <widget class="MySpinBoxInt" name="spinboxInt_transf_multiplier_self_ref_depth_3"><property name="minimum"><number>0</number></property><property name="maximum"><number>4</number></property></widget>
+     </item>
+     <item row="31" column="2">
+      <widget class="QLabel" name="label_mult_rescoup_3"><property name="text"><string>Resonance</string></property></widget>
+     </item>
+     <item row="31" column="3">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_resonance_coupling_3"><property name="decimals"><number>3</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>1.000000</double></property><property name="singleStep"><double>0.010000</double></property></widget>
      </item><item><property name="text"><string>If Positive</string></property></item><item><property name="text"><string>If Negative</string></property></item><item><property name="text"><string>If Above Threshold</string></property></item></widget>
      </item>
       <item row="4" column="0">
@@ -4735,6 +4924,69 @@ scale:</string>
      </item>
      <item row="27" column="5">
       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_phase_randomise_2"><property name="decimals"><number>3</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>1.000000</double></property><property name="singleStep"><double>0.010000</double></property></widget>
+     </item>
+     <item row="28" column="0">
+      <widget class="QLabel" name="label_mult_compander_2"><property name="text"><string>Compander</string></property></widget>
+     </item>
+     <item row="28" column="1">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_compander_2"><property name="decimals"><number>2</number></property><property name="minimum"><double>0.100000</double></property><property name="maximum"><double>4.000000</double></property><property name="value"><double>1.000000</double></property><property name="singleStep"><double>0.100000</double></property></widget>
+     </item>
+     <item row="28" column="2">
+      <widget class="QLabel" name="label_mult_holdtime_2"><property name="text"><string>Hold</string></property></widget>
+     </item>
+     <item row="28" column="3">
+      <widget class="MySpinBoxInt" name="spinboxInt_transf_multiplier_hold_time_2"><property name="minimum"><number>0</number></property><property name="maximum"><number>20</number></property></widget>
+     </item>
+     <item row="28" column="4">
+      <widget class="QLabel" name="label_mult_wsdrive_2"><property name="text"><string>WS Drive</string></property></widget>
+     </item>
+     <item row="28" column="5">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_waveshaper_drive_2"><property name="decimals"><number>2</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>10.000000</double></property><property name="singleStep"><double>0.100000</double></property></widget>
+     </item>
+     <item row="29" column="0">
+      <widget class="QLabel" name="label_mult_degw_2"><property name="text"><string>DE Grad</string></property></widget>
+     </item>
+     <item row="29" column="1">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_de_grad_weight_2"><property name="decimals"><number>3</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>1.000000</double></property><property name="singleStep"><double>0.010000</double></property></widget>
+     </item>
+     <item row="29" column="2">
+      <widget class="QLabel" name="label_mult_iterd_2"><property name="text"><string>Iter Dens</string></property></widget>
+     </item>
+     <item row="29" column="3">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_iter_density_2"><property name="decimals"><number>3</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>1.000000</double></property><property name="singleStep"><double>0.010000</double></property></widget>
+     </item>
+     <item row="29" column="4">
+      <widget class="QLabel" name="label_mult_lyap_2"><property name="text"><string>Lyapunov</string></property></widget>
+     </item>
+     <item row="29" column="5">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_lyapunov_proxy_2"><property name="decimals"><number>3</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>1.000000</double></property><property name="singleStep"><double>0.010000</double></property></widget>
+     </item>
+     <item row="30" column="0">
+      <widget class="MyCheckBox" name="checkBox_transf_multiplier_time_palindrome_2"><property name="text"><string>Palindrome</string></property></widget>
+     </item>
+     <item row="30" column="1">
+      <widget class="QLabel" name="label_mult_attrmode_2"><property name="text"><string>Attractor</string></property></widget>
+     </item>
+     <item row="30" column="2">
+      <widget class="MySpinBoxInt" name="spinboxInt_transf_multiplier_attractor_mode_2"><property name="minimum"><number>0</number></property><property name="maximum"><number>2</number></property></widget>
+     </item>
+     <item row="30" column="3">
+      <widget class="QLabel" name="label_mult_dimbleed_2"><property name="text"><string>Dim Bleed</string></property></widget>
+     </item>
+     <item row="30" column="4">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_dimensional_bleed_2"><property name="decimals"><number>3</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>1.000000</double></property><property name="singleStep"><double>0.010000</double></property></widget>
+     </item>
+     <item row="31" column="0">
+      <widget class="QLabel" name="label_mult_selfref_2"><property name="text"><string>Self Ref</string></property></widget>
+     </item>
+     <item row="31" column="1">
+      <widget class="MySpinBoxInt" name="spinboxInt_transf_multiplier_self_ref_depth_2"><property name="minimum"><number>0</number></property><property name="maximum"><number>4</number></property></widget>
+     </item>
+     <item row="31" column="2">
+      <widget class="QLabel" name="label_mult_rescoup_2"><property name="text"><string>Resonance</string></property></widget>
+     </item>
+     <item row="31" column="3">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_resonance_coupling_2"><property name="decimals"><number>3</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>1.000000</double></property><property name="singleStep"><double>0.010000</double></property></widget>
      </item><item><property name="text"><string>If Positive</string></property></item><item><property name="text"><string>If Negative</string></property></item><item><property name="text"><string>If Above Threshold</string></property></item></widget>
      </item>
       <item row="4" column="0">
@@ -5260,6 +5512,69 @@ scale:</string>
      </item>
      <item row="27" column="5">
       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_phase_randomise_1"><property name="decimals"><number>3</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>1.000000</double></property><property name="singleStep"><double>0.010000</double></property></widget>
+     </item>
+     <item row="28" column="0">
+      <widget class="QLabel" name="label_mult_compander_1"><property name="text"><string>Compander</string></property></widget>
+     </item>
+     <item row="28" column="1">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_compander_1"><property name="decimals"><number>2</number></property><property name="minimum"><double>0.100000</double></property><property name="maximum"><double>4.000000</double></property><property name="value"><double>1.000000</double></property><property name="singleStep"><double>0.100000</double></property></widget>
+     </item>
+     <item row="28" column="2">
+      <widget class="QLabel" name="label_mult_holdtime_1"><property name="text"><string>Hold</string></property></widget>
+     </item>
+     <item row="28" column="3">
+      <widget class="MySpinBoxInt" name="spinboxInt_transf_multiplier_hold_time_1"><property name="minimum"><number>0</number></property><property name="maximum"><number>20</number></property></widget>
+     </item>
+     <item row="28" column="4">
+      <widget class="QLabel" name="label_mult_wsdrive_1"><property name="text"><string>WS Drive</string></property></widget>
+     </item>
+     <item row="28" column="5">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_waveshaper_drive_1"><property name="decimals"><number>2</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>10.000000</double></property><property name="singleStep"><double>0.100000</double></property></widget>
+     </item>
+     <item row="29" column="0">
+      <widget class="QLabel" name="label_mult_degw_1"><property name="text"><string>DE Grad</string></property></widget>
+     </item>
+     <item row="29" column="1">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_de_grad_weight_1"><property name="decimals"><number>3</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>1.000000</double></property><property name="singleStep"><double>0.010000</double></property></widget>
+     </item>
+     <item row="29" column="2">
+      <widget class="QLabel" name="label_mult_iterd_1"><property name="text"><string>Iter Dens</string></property></widget>
+     </item>
+     <item row="29" column="3">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_iter_density_1"><property name="decimals"><number>3</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>1.000000</double></property><property name="singleStep"><double>0.010000</double></property></widget>
+     </item>
+     <item row="29" column="4">
+      <widget class="QLabel" name="label_mult_lyap_1"><property name="text"><string>Lyapunov</string></property></widget>
+     </item>
+     <item row="29" column="5">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_lyapunov_proxy_1"><property name="decimals"><number>3</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>1.000000</double></property><property name="singleStep"><double>0.010000</double></property></widget>
+     </item>
+     <item row="30" column="0">
+      <widget class="MyCheckBox" name="checkBox_transf_multiplier_time_palindrome_1"><property name="text"><string>Palindrome</string></property></widget>
+     </item>
+     <item row="30" column="1">
+      <widget class="QLabel" name="label_mult_attrmode_1"><property name="text"><string>Attractor</string></property></widget>
+     </item>
+     <item row="30" column="2">
+      <widget class="MySpinBoxInt" name="spinboxInt_transf_multiplier_attractor_mode_1"><property name="minimum"><number>0</number></property><property name="maximum"><number>2</number></property></widget>
+     </item>
+     <item row="30" column="3">
+      <widget class="QLabel" name="label_mult_dimbleed_1"><property name="text"><string>Dim Bleed</string></property></widget>
+     </item>
+     <item row="30" column="4">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_dimensional_bleed_1"><property name="decimals"><number>3</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>1.000000</double></property><property name="singleStep"><double>0.010000</double></property></widget>
+     </item>
+     <item row="31" column="0">
+      <widget class="QLabel" name="label_mult_selfref_1"><property name="text"><string>Self Ref</string></property></widget>
+     </item>
+     <item row="31" column="1">
+      <widget class="MySpinBoxInt" name="spinboxInt_transf_multiplier_self_ref_depth_1"><property name="minimum"><number>0</number></property><property name="maximum"><number>4</number></property></widget>
+     </item>
+     <item row="31" column="2">
+      <widget class="QLabel" name="label_mult_rescoup_1"><property name="text"><string>Resonance</string></property></widget>
+     </item>
+     <item row="31" column="3">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_resonance_coupling_1"><property name="decimals"><number>3</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>1.000000</double></property><property name="singleStep"><double>0.010000</double></property></widget>
      </item><item><property name="text"><string>If Positive</string></property></item><item><property name="text"><string>If Negative</string></property></item><item><property name="text"><string>If Above Threshold</string></property></item></widget>
      </item>
      </layout>

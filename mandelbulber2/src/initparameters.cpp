@@ -2639,6 +2639,87 @@ void InitFractalParams(std::shared_ptr<cParameterContainer> par)
 	par->addParam("transf_multiplier_phase_randomise_4", 0.0, 0.0, 1.0, morphNone, paramStandard);
 	par->addParam("transf_multiplier_phase_randomise_5", 0.0, 0.0, 1.0, morphNone, paramStandard);
 
+	// Batch 3
+	par->addParam("transf_multiplier_int_fast_path_1", false, morphNone, paramStandard);
+	par->addParam("transf_multiplier_int_fast_path_2", false, morphNone, paramStandard);
+	par->addParam("transf_multiplier_int_fast_path_3", false, morphNone, paramStandard);
+	par->addParam("transf_multiplier_int_fast_path_4", false, morphNone, paramStandard);
+	par->addParam("transf_multiplier_int_fast_path_5", false, morphNone, paramStandard);
+	par->addParam("transf_multiplier_precompute_size_1", 256, 64, 4096, morphNone, paramStandard);
+	par->addParam("transf_multiplier_precompute_size_2", 256, 64, 4096, morphNone, paramStandard);
+	par->addParam("transf_multiplier_precompute_size_3", 256, 64, 4096, morphNone, paramStandard);
+	par->addParam("transf_multiplier_precompute_size_4", 256, 64, 4096, morphNone, paramStandard);
+	par->addParam("transf_multiplier_precompute_size_5", 256, 64, 4096, morphNone, paramStandard);
+	par->addParam("transf_multiplier_normal_src_1", 0, 0, 3, morphNone, paramStandard);
+	par->addParam("transf_multiplier_normal_src_2", 0, 0, 3, morphNone, paramStandard);
+	par->addParam("transf_multiplier_normal_src_3", 0, 0, 3, morphNone, paramStandard);
+	par->addParam("transf_multiplier_normal_src_4", 0, 0, 3, morphNone, paramStandard);
+	par->addParam("transf_multiplier_normal_src_5", 0, 0, 3, morphNone, paramStandard);
+	par->addParam("transf_multiplier_de_grad_weight_1", 0.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_de_grad_weight_2", 0.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_de_grad_weight_3", 0.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_de_grad_weight_4", 0.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_de_grad_weight_5", 0.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_iter_density_1", 0.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_iter_density_2", 0.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_iter_density_3", 0.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_iter_density_4", 0.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_iter_density_5", 0.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_lyapunov_proxy_1", 0.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_lyapunov_proxy_2", 0.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_lyapunov_proxy_3", 0.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_lyapunov_proxy_4", 0.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_lyapunov_proxy_5", 0.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_prev_frame_delta_1", 0.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_prev_frame_delta_2", 0.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_prev_frame_delta_3", 0.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_prev_frame_delta_4", 0.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_prev_frame_delta_5", 0.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_compander_1", 1.0, 0.1, 4.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_compander_2", 1.0, 0.1, 4.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_compander_3", 1.0, 0.1, 4.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_compander_4", 1.0, 0.1, 4.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_compander_5", 1.0, 0.1, 4.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_hold_time_1", 0, 0, 20, morphNone, paramStandard);
+	par->addParam("transf_multiplier_hold_time_2", 0, 0, 20, morphNone, paramStandard);
+	par->addParam("transf_multiplier_hold_time_3", 0, 0, 20, morphNone, paramStandard);
+	par->addParam("transf_multiplier_hold_time_4", 0, 0, 20, morphNone, paramStandard);
+	par->addParam("transf_multiplier_hold_time_5", 0, 0, 20, morphNone, paramStandard);
+	par->addParam("transf_multiplier_waveshaper_drive_1", 0.0, 0.0, 10.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_waveshaper_drive_2", 0.0, 0.0, 10.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_waveshaper_drive_3", 0.0, 0.0, 10.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_waveshaper_drive_4", 0.0, 0.0, 10.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_waveshaper_drive_5", 0.0, 0.0, 10.0, morphNone, paramStandard);
+
+	// Batch 4
+	par->addParam("transf_multiplier_time_palindrome_1", false, morphNone, paramStandard);
+	par->addParam("transf_multiplier_time_palindrome_2", false, morphNone, paramStandard);
+	par->addParam("transf_multiplier_time_palindrome_3", false, morphNone, paramStandard);
+	par->addParam("transf_multiplier_time_palindrome_4", false, morphNone, paramStandard);
+	par->addParam("transf_multiplier_time_palindrome_5", false, morphNone, paramStandard);
+	par->addParam("transf_multiplier_resonance_coupling_1", 0.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_resonance_coupling_2", 0.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_resonance_coupling_3", 0.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_resonance_coupling_4", 0.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_resonance_coupling_5", 0.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_attractor_mode_1", 0, 0, 2, morphNone, paramStandard);
+	par->addParam("transf_multiplier_attractor_mode_2", 0, 0, 2, morphNone, paramStandard);
+	par->addParam("transf_multiplier_attractor_mode_3", 0, 0, 2, morphNone, paramStandard);
+	par->addParam("transf_multiplier_attractor_mode_4", 0, 0, 2, morphNone, paramStandard);
+	par->addParam("transf_multiplier_attractor_mode_5", 0, 0, 2, morphNone, paramStandard);
+	par->addParam("transf_multiplier_dimensional_bleed_1", 0.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_dimensional_bleed_2", 0.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_dimensional_bleed_3", 0.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_dimensional_bleed_4", 0.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_dimensional_bleed_5", 0.0, 0.0, 1.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_self_ref_depth_1", 0, 0, 4, morphNone, paramStandard);
+	par->addParam("transf_multiplier_self_ref_depth_2", 0, 0, 4, morphNone, paramStandard);
+	par->addParam("transf_multiplier_self_ref_depth_3", 0, 0, 4, morphNone, paramStandard);
+	par->addParam("transf_multiplier_self_ref_depth_4", 0, 0, 4, morphNone, paramStandard);
+	par->addParam("transf_multiplier_self_ref_depth_5", 0, 0, 4, morphNone, paramStandard);
+
+
+
 
 
 

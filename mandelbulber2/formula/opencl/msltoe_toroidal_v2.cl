@@ -730,6 +730,101 @@ REAL4 MsltoeToroidalV2Iteration(REAL4 z, __constant sFractalCl *fractal, sExtend
 								val = 1.0f + (val - 1.0f) * native_cos(plOff1 * M_PI_F);
 							}
 
+							
+							REAL compR1 = fractal->transformCommon.multiplierCompander1;
+							if (compR1 != 1.0f && val != 1.0f)
+							{
+								REAL dev1c = val - 1.0f;
+								REAL sign1c = dev1c > 0 ? 1.0f : -1.0f;
+								val = 1.0f + sign1c * native_powr(fabs(dev1c), 1.0f / fmax(compR1, 0.1f));
+							}
+							int holdT1 = fractal->transformCommon.multiplierHoldTime1;
+							if (holdT1 > 0 && val != 1.0f)
+							{
+								if (fabs(val - 1.0f) > fabs(prevMultVal - 1.0f))
+									val = val;
+								else
+									val = prevMultVal;
+							}
+							REAL wsDrive1 = fractal->transformCommon.multiplierWaveshaperDrive1;
+							if (wsDrive1 > 0.0f && val != 1.0f)
+							{
+								REAL input1 = (val - 1.0f) * wsDrive1;
+								val = 1.0f + (2.0f / M_PI_F) * atan(input1);
+							}
+							REAL degw1 = fractal->transformCommon.multiplierDEGradWeight1;
+							if (degw1 > 0.0f)
+							{
+								REAL deGrad1 = fabs(aux->DE - 1.0f);
+								val = 1.0f + (val - 1.0f) * (1.0f - degw1 + degw1 * fmin(deGrad1, 1.0f));
+							}
+							REAL iterD1 = fractal->transformCommon.multiplierIterDensity1;
+							if (iterD1 > 0.0f)
+							{
+								REAL iterNorm1 = (REAL)aux->i / fmax((REAL)fractal->transformCommon.multiplierStopIter1, 1.0f);
+								val = 1.0f + (val - 1.0f) * (1.0f - iterD1 + iterD1 * iterNorm1);
+							}
+							REAL lyap1 = fractal->transformCommon.multiplierLyapunovProxy1;
+							if (lyap1 > 0.0f)
+							{
+								REAL r21l = z.x * z.x + z.y * z.y + z.z * z.z;
+								REAL logR1 = (r21l > 1e-30f) ? native_log(r21l) * 0.5f : 0.0f;
+								REAL chaos1 = fmin(fabs(logR1) * 0.1f, 1.0f);
+								val = 1.0f + (val - 1.0f) * (1.0f - lyap1 + lyap1 * chaos1);
+							}
+
+							
+							if (fractal->transformCommon.multiplierTimePalindrome1 && val != 1.0f)
+							{
+								int range1tp = fractal->transformCommon.multiplierStopIter1 - fractal->transformCommon.multiplierStartIter1;
+								if (range1tp > 0)
+								{
+									int half1 = range1tp / 2;
+									int elapsed1tp = aux->i - fractal->transformCommon.multiplierStartIter1;
+									if (elapsed1tp > half1)
+										val = 1.0f + (val - 1.0f) * (REAL)(range1tp - elapsed1tp) / (REAL)half1;
+								}
+							}
+							int attrMode1 = fractal->transformCommon.multiplierAttractorMode1;
+							if (attrMode1 > 0)
+							{
+								REAL ax1 = 1.0f, ay1 = 1.0f, az1 = 1.0f;
+								REAL dta1 = 0.01f;
+								int steps1 = (int)(fmod((REAL)aux->i, 50.0f)) + 1;
+								for (int as1 = 0; as1 < steps1; as1++)
+								{
+									if (attrMode1 == 1)
+									{
+										REAL ndx1 = -(ay1 + az1) * dta1;
+										REAL ndy1 = (ax1 + 0.2f * ay1) * dta1;
+										REAL ndz1 = (0.2f + az1 * (ax1 - 5.7f)) * dta1;
+										ax1 += ndx1; ay1 += ndy1; az1 += ndz1;
+									}
+									else
+									{
+										REAL ndx1 = ay1 * dta1;
+										REAL ndy1 = (-0.3f * ay1 + ax1 - ax1 * ax1 * ax1 + 0.5f * native_cos(1.2f * (REAL)aux->i * dta1)) * dta1;
+										ax1 += ndx1; ay1 += ndy1;
+									}
+								}
+								val = 1.0f + (val - 1.0f) * fmod(fabs(ax1), 1.0f);
+							}
+							REAL dimBleed1 = fractal->transformCommon.multiplierDimensionalBleed1;
+							int selfRef1 = fractal->transformCommon.multiplierSelfRefDepth1;
+							if (selfRef1 > 0 && val != 1.0f)
+							{
+								for (int sr1 = 0; sr1 < selfRef1; sr1++)
+								{
+									REAL dev1sr = val - 1.0f;
+									val = 1.0f + dev1sr * native_sin(dev1sr * M_PI_F);
+								}
+							}
+							REAL resCoup1 = fractal->transformCommon.multiplierResonanceCoupling1;
+							if (resCoup1 > 0.0f && val != 1.0f)
+							{
+								val = 1.0f + (val - 1.0f) * (1.0f + resCoup1 * native_sin(val * M_PI_F));
+							}
+
 							switch (fractal->transformCommon.multiplierMode1)
 				{
 					default:
@@ -1343,6 +1438,101 @@ REAL4 MsltoeToroidalV2Iteration(REAL4 z, __constant sFractalCl *fractal, sExtend
 							if (plOff2 != 0.0f)
 							{
 								val = 1.0f + (val - 1.0f) * native_cos(plOff2 * M_PI_F);
+							}
+
+							
+							REAL compR2 = fractal->transformCommon.multiplierCompander2;
+							if (compR2 != 1.0f && val != 1.0f)
+							{
+								REAL dev2c = val - 1.0f;
+								REAL sign2c = dev2c > 0 ? 1.0f : -1.0f;
+								val = 1.0f + sign2c * native_powr(fabs(dev2c), 1.0f / fmax(compR2, 0.1f));
+							}
+							int holdT2 = fractal->transformCommon.multiplierHoldTime2;
+							if (holdT2 > 0 && val != 1.0f)
+							{
+								if (fabs(val - 1.0f) > fabs(prevMultVal - 1.0f))
+									val = val;
+								else
+									val = prevMultVal;
+							}
+							REAL wsDrive2 = fractal->transformCommon.multiplierWaveshaperDrive2;
+							if (wsDrive2 > 0.0f && val != 1.0f)
+							{
+								REAL input2 = (val - 1.0f) * wsDrive2;
+								val = 1.0f + (2.0f / M_PI_F) * atan(input2);
+							}
+							REAL degw2 = fractal->transformCommon.multiplierDEGradWeight2;
+							if (degw2 > 0.0f)
+							{
+								REAL deGrad2 = fabs(aux->DE - 1.0f);
+								val = 1.0f + (val - 1.0f) * (1.0f - degw2 + degw2 * fmin(deGrad2, 1.0f));
+							}
+							REAL iterD2 = fractal->transformCommon.multiplierIterDensity2;
+							if (iterD2 > 0.0f)
+							{
+								REAL iterNorm2 = (REAL)aux->i / fmax((REAL)fractal->transformCommon.multiplierStopIter2, 1.0f);
+								val = 1.0f + (val - 1.0f) * (1.0f - iterD2 + iterD2 * iterNorm2);
+							}
+							REAL lyap2 = fractal->transformCommon.multiplierLyapunovProxy2;
+							if (lyap2 > 0.0f)
+							{
+								REAL r22l = z.x * z.x + z.y * z.y + z.z * z.z;
+								REAL logR2 = (r22l > 1e-30f) ? native_log(r22l) * 0.5f : 0.0f;
+								REAL chaos2 = fmin(fabs(logR2) * 0.1f, 1.0f);
+								val = 1.0f + (val - 1.0f) * (1.0f - lyap2 + lyap2 * chaos2);
+							}
+
+							
+							if (fractal->transformCommon.multiplierTimePalindrome2 && val != 1.0f)
+							{
+								int range2tp = fractal->transformCommon.multiplierStopIter2 - fractal->transformCommon.multiplierStartIter2;
+								if (range2tp > 0)
+								{
+									int half2 = range2tp / 2;
+									int elapsed2tp = aux->i - fractal->transformCommon.multiplierStartIter2;
+									if (elapsed2tp > half2)
+										val = 1.0f + (val - 1.0f) * (REAL)(range2tp - elapsed2tp) / (REAL)half2;
+								}
+							}
+							int attrMode2 = fractal->transformCommon.multiplierAttractorMode2;
+							if (attrMode2 > 0)
+							{
+								REAL ax2 = 1.0f, ay2 = 1.0f, az2 = 1.0f;
+								REAL dta2 = 0.01f;
+								int steps2 = (int)(fmod((REAL)aux->i, 50.0f)) + 1;
+								for (int as2 = 0; as2 < steps2; as2++)
+								{
+									if (attrMode2 == 1)
+									{
+										REAL ndx2 = -(ay2 + az2) * dta2;
+										REAL ndy2 = (ax2 + 0.2f * ay2) * dta2;
+										REAL ndz2 = (0.2f + az2 * (ax2 - 5.7f)) * dta2;
+										ax2 += ndx2; ay2 += ndy2; az2 += ndz2;
+									}
+									else
+									{
+										REAL ndx2 = ay2 * dta2;
+										REAL ndy2 = (-0.3f * ay2 + ax2 - ax2 * ax2 * ax2 + 0.5f * native_cos(1.2f * (REAL)aux->i * dta2)) * dta2;
+										ax2 += ndx2; ay2 += ndy2;
+									}
+								}
+								val = 1.0f + (val - 1.0f) * fmod(fabs(ax2), 1.0f);
+							}
+							REAL dimBleed2 = fractal->transformCommon.multiplierDimensionalBleed2;
+							int selfRef2 = fractal->transformCommon.multiplierSelfRefDepth2;
+							if (selfRef2 > 0 && val != 1.0f)
+							{
+								for (int sr2 = 0; sr2 < selfRef2; sr2++)
+								{
+									REAL dev2sr = val - 1.0f;
+									val = 1.0f + dev2sr * native_sin(dev2sr * M_PI_F);
+								}
+							}
+							REAL resCoup2 = fractal->transformCommon.multiplierResonanceCoupling2;
+							if (resCoup2 > 0.0f && val != 1.0f)
+							{
+								val = 1.0f + (val - 1.0f) * (1.0f + resCoup2 * native_sin(val * M_PI_F));
 							}
 
 							switch (fractal->transformCommon.multiplierMode2)
@@ -1985,6 +2175,101 @@ default:
 								val = 1.0f + (val - 1.0f) * native_cos(plOff3 * M_PI_F);
 							}
 
+							
+							REAL compR3 = fractal->transformCommon.multiplierCompander3;
+							if (compR3 != 1.0f && val != 1.0f)
+							{
+								REAL dev3c = val - 1.0f;
+								REAL sign3c = dev3c > 0 ? 1.0f : -1.0f;
+								val = 1.0f + sign3c * native_powr(fabs(dev3c), 1.0f / fmax(compR3, 0.1f));
+							}
+							int holdT3 = fractal->transformCommon.multiplierHoldTime3;
+							if (holdT3 > 0 && val != 1.0f)
+							{
+								if (fabs(val - 1.0f) > fabs(prevMultVal - 1.0f))
+									val = val;
+								else
+									val = prevMultVal;
+							}
+							REAL wsDrive3 = fractal->transformCommon.multiplierWaveshaperDrive3;
+							if (wsDrive3 > 0.0f && val != 1.0f)
+							{
+								REAL input3 = (val - 1.0f) * wsDrive3;
+								val = 1.0f + (2.0f / M_PI_F) * atan(input3);
+							}
+							REAL degw3 = fractal->transformCommon.multiplierDEGradWeight3;
+							if (degw3 > 0.0f)
+							{
+								REAL deGrad3 = fabs(aux->DE - 1.0f);
+								val = 1.0f + (val - 1.0f) * (1.0f - degw3 + degw3 * fmin(deGrad3, 1.0f));
+							}
+							REAL iterD3 = fractal->transformCommon.multiplierIterDensity3;
+							if (iterD3 > 0.0f)
+							{
+								REAL iterNorm3 = (REAL)aux->i / fmax((REAL)fractal->transformCommon.multiplierStopIter3, 1.0f);
+								val = 1.0f + (val - 1.0f) * (1.0f - iterD3 + iterD3 * iterNorm3);
+							}
+							REAL lyap3 = fractal->transformCommon.multiplierLyapunovProxy3;
+							if (lyap3 > 0.0f)
+							{
+								REAL r23l = z.x * z.x + z.y * z.y + z.z * z.z;
+								REAL logR3 = (r23l > 1e-30f) ? native_log(r23l) * 0.5f : 0.0f;
+								REAL chaos3 = fmin(fabs(logR3) * 0.1f, 1.0f);
+								val = 1.0f + (val - 1.0f) * (1.0f - lyap3 + lyap3 * chaos3);
+							}
+
+							
+							if (fractal->transformCommon.multiplierTimePalindrome3 && val != 1.0f)
+							{
+								int range3tp = fractal->transformCommon.multiplierStopIter3 - fractal->transformCommon.multiplierStartIter3;
+								if (range3tp > 0)
+								{
+									int half3 = range3tp / 2;
+									int elapsed3tp = aux->i - fractal->transformCommon.multiplierStartIter3;
+									if (elapsed3tp > half3)
+										val = 1.0f + (val - 1.0f) * (REAL)(range3tp - elapsed3tp) / (REAL)half3;
+								}
+							}
+							int attrMode3 = fractal->transformCommon.multiplierAttractorMode3;
+							if (attrMode3 > 0)
+							{
+								REAL ax3 = 1.0f, ay3 = 1.0f, az3 = 1.0f;
+								REAL dta3 = 0.01f;
+								int steps3 = (int)(fmod((REAL)aux->i, 50.0f)) + 1;
+								for (int as3 = 0; as3 < steps3; as3++)
+								{
+									if (attrMode3 == 1)
+									{
+										REAL ndx3 = -(ay3 + az3) * dta3;
+										REAL ndy3 = (ax3 + 0.2f * ay3) * dta3;
+										REAL ndz3 = (0.2f + az3 * (ax3 - 5.7f)) * dta3;
+										ax3 += ndx3; ay3 += ndy3; az3 += ndz3;
+									}
+									else
+									{
+										REAL ndx3 = ay3 * dta3;
+										REAL ndy3 = (-0.3f * ay3 + ax3 - ax3 * ax3 * ax3 + 0.5f * native_cos(1.2f * (REAL)aux->i * dta3)) * dta3;
+										ax3 += ndx3; ay3 += ndy3;
+									}
+								}
+								val = 1.0f + (val - 1.0f) * fmod(fabs(ax3), 1.0f);
+							}
+							REAL dimBleed3 = fractal->transformCommon.multiplierDimensionalBleed3;
+							int selfRef3 = fractal->transformCommon.multiplierSelfRefDepth3;
+							if (selfRef3 > 0 && val != 1.0f)
+							{
+								for (int sr3 = 0; sr3 < selfRef3; sr3++)
+								{
+									REAL dev3sr = val - 1.0f;
+									val = 1.0f + dev3sr * native_sin(dev3sr * M_PI_F);
+								}
+							}
+							REAL resCoup3 = fractal->transformCommon.multiplierResonanceCoupling3;
+							if (resCoup3 > 0.0f && val != 1.0f)
+							{
+								val = 1.0f + (val - 1.0f) * (1.0f + resCoup3 * native_sin(val * M_PI_F));
+							}
+
 							switch (fractal->transformCommon.multiplierMode3)
 				{
 					default:
@@ -2600,6 +2885,101 @@ default:
 								val = 1.0f + (val - 1.0f) * native_cos(plOff4 * M_PI_F);
 							}
 
+							
+							REAL compR4 = fractal->transformCommon.multiplierCompander4;
+							if (compR4 != 1.0f && val != 1.0f)
+							{
+								REAL dev4c = val - 1.0f;
+								REAL sign4c = dev4c > 0 ? 1.0f : -1.0f;
+								val = 1.0f + sign4c * native_powr(fabs(dev4c), 1.0f / fmax(compR4, 0.1f));
+							}
+							int holdT4 = fractal->transformCommon.multiplierHoldTime4;
+							if (holdT4 > 0 && val != 1.0f)
+							{
+								if (fabs(val - 1.0f) > fabs(prevMultVal - 1.0f))
+									val = val;
+								else
+									val = prevMultVal;
+							}
+							REAL wsDrive4 = fractal->transformCommon.multiplierWaveshaperDrive4;
+							if (wsDrive4 > 0.0f && val != 1.0f)
+							{
+								REAL input4 = (val - 1.0f) * wsDrive4;
+								val = 1.0f + (2.0f / M_PI_F) * atan(input4);
+							}
+							REAL degw4 = fractal->transformCommon.multiplierDEGradWeight4;
+							if (degw4 > 0.0f)
+							{
+								REAL deGrad4 = fabs(aux->DE - 1.0f);
+								val = 1.0f + (val - 1.0f) * (1.0f - degw4 + degw4 * fmin(deGrad4, 1.0f));
+							}
+							REAL iterD4 = fractal->transformCommon.multiplierIterDensity4;
+							if (iterD4 > 0.0f)
+							{
+								REAL iterNorm4 = (REAL)aux->i / fmax((REAL)fractal->transformCommon.multiplierStopIter4, 1.0f);
+								val = 1.0f + (val - 1.0f) * (1.0f - iterD4 + iterD4 * iterNorm4);
+							}
+							REAL lyap4 = fractal->transformCommon.multiplierLyapunovProxy4;
+							if (lyap4 > 0.0f)
+							{
+								REAL r24l = z.x * z.x + z.y * z.y + z.z * z.z;
+								REAL logR4 = (r24l > 1e-30f) ? native_log(r24l) * 0.5f : 0.0f;
+								REAL chaos4 = fmin(fabs(logR4) * 0.1f, 1.0f);
+								val = 1.0f + (val - 1.0f) * (1.0f - lyap4 + lyap4 * chaos4);
+							}
+
+							
+							if (fractal->transformCommon.multiplierTimePalindrome4 && val != 1.0f)
+							{
+								int range4tp = fractal->transformCommon.multiplierStopIter4 - fractal->transformCommon.multiplierStartIter4;
+								if (range4tp > 0)
+								{
+									int half4 = range4tp / 2;
+									int elapsed4tp = aux->i - fractal->transformCommon.multiplierStartIter4;
+									if (elapsed4tp > half4)
+										val = 1.0f + (val - 1.0f) * (REAL)(range4tp - elapsed4tp) / (REAL)half4;
+								}
+							}
+							int attrMode4 = fractal->transformCommon.multiplierAttractorMode4;
+							if (attrMode4 > 0)
+							{
+								REAL ax4 = 1.0f, ay4 = 1.0f, az4 = 1.0f;
+								REAL dta4 = 0.01f;
+								int steps4 = (int)(fmod((REAL)aux->i, 50.0f)) + 1;
+								for (int as4 = 0; as4 < steps4; as4++)
+								{
+									if (attrMode4 == 1)
+									{
+										REAL ndx4 = -(ay4 + az4) * dta4;
+										REAL ndy4 = (ax4 + 0.2f * ay4) * dta4;
+										REAL ndz4 = (0.2f + az4 * (ax4 - 5.7f)) * dta4;
+										ax4 += ndx4; ay4 += ndy4; az4 += ndz4;
+									}
+									else
+									{
+										REAL ndx4 = ay4 * dta4;
+										REAL ndy4 = (-0.3f * ay4 + ax4 - ax4 * ax4 * ax4 + 0.5f * native_cos(1.2f * (REAL)aux->i * dta4)) * dta4;
+										ax4 += ndx4; ay4 += ndy4;
+									}
+								}
+								val = 1.0f + (val - 1.0f) * fmod(fabs(ax4), 1.0f);
+							}
+							REAL dimBleed4 = fractal->transformCommon.multiplierDimensionalBleed4;
+							int selfRef4 = fractal->transformCommon.multiplierSelfRefDepth4;
+							if (selfRef4 > 0 && val != 1.0f)
+							{
+								for (int sr4 = 0; sr4 < selfRef4; sr4++)
+								{
+									REAL dev4sr = val - 1.0f;
+									val = 1.0f + dev4sr * native_sin(dev4sr * M_PI_F);
+								}
+							}
+							REAL resCoup4 = fractal->transformCommon.multiplierResonanceCoupling4;
+							if (resCoup4 > 0.0f && val != 1.0f)
+							{
+								val = 1.0f + (val - 1.0f) * (1.0f + resCoup4 * native_sin(val * M_PI_F));
+							}
+
 							switch (fractal->transformCommon.multiplierMode4)
 				{
 					default:
@@ -3213,6 +3593,101 @@ default:
 							if (plOff5 != 0.0f)
 							{
 								val = 1.0f + (val - 1.0f) * native_cos(plOff5 * M_PI_F);
+							}
+
+							
+							REAL compR5 = fractal->transformCommon.multiplierCompander5;
+							if (compR5 != 1.0f && val != 1.0f)
+							{
+								REAL dev5c = val - 1.0f;
+								REAL sign5c = dev5c > 0 ? 1.0f : -1.0f;
+								val = 1.0f + sign5c * native_powr(fabs(dev5c), 1.0f / fmax(compR5, 0.1f));
+							}
+							int holdT5 = fractal->transformCommon.multiplierHoldTime5;
+							if (holdT5 > 0 && val != 1.0f)
+							{
+								if (fabs(val - 1.0f) > fabs(prevMultVal - 1.0f))
+									val = val;
+								else
+									val = prevMultVal;
+							}
+							REAL wsDrive5 = fractal->transformCommon.multiplierWaveshaperDrive5;
+							if (wsDrive5 > 0.0f && val != 1.0f)
+							{
+								REAL input5 = (val - 1.0f) * wsDrive5;
+								val = 1.0f + (2.0f / M_PI_F) * atan(input5);
+							}
+							REAL degw5 = fractal->transformCommon.multiplierDEGradWeight5;
+							if (degw5 > 0.0f)
+							{
+								REAL deGrad5 = fabs(aux->DE - 1.0f);
+								val = 1.0f + (val - 1.0f) * (1.0f - degw5 + degw5 * fmin(deGrad5, 1.0f));
+							}
+							REAL iterD5 = fractal->transformCommon.multiplierIterDensity5;
+							if (iterD5 > 0.0f)
+							{
+								REAL iterNorm5 = (REAL)aux->i / fmax((REAL)fractal->transformCommon.multiplierStopIter5, 1.0f);
+								val = 1.0f + (val - 1.0f) * (1.0f - iterD5 + iterD5 * iterNorm5);
+							}
+							REAL lyap5 = fractal->transformCommon.multiplierLyapunovProxy5;
+							if (lyap5 > 0.0f)
+							{
+								REAL r25l = z.x * z.x + z.y * z.y + z.z * z.z;
+								REAL logR5 = (r25l > 1e-30f) ? native_log(r25l) * 0.5f : 0.0f;
+								REAL chaos5 = fmin(fabs(logR5) * 0.1f, 1.0f);
+								val = 1.0f + (val - 1.0f) * (1.0f - lyap5 + lyap5 * chaos5);
+							}
+
+							
+							if (fractal->transformCommon.multiplierTimePalindrome5 && val != 1.0f)
+							{
+								int range5tp = fractal->transformCommon.multiplierStopIter5 - fractal->transformCommon.multiplierStartIter5;
+								if (range5tp > 0)
+								{
+									int half5 = range5tp / 2;
+									int elapsed5tp = aux->i - fractal->transformCommon.multiplierStartIter5;
+									if (elapsed5tp > half5)
+										val = 1.0f + (val - 1.0f) * (REAL)(range5tp - elapsed5tp) / (REAL)half5;
+								}
+							}
+							int attrMode5 = fractal->transformCommon.multiplierAttractorMode5;
+							if (attrMode5 > 0)
+							{
+								REAL ax5 = 1.0f, ay5 = 1.0f, az5 = 1.0f;
+								REAL dta5 = 0.01f;
+								int steps5 = (int)(fmod((REAL)aux->i, 50.0f)) + 1;
+								for (int as5 = 0; as5 < steps5; as5++)
+								{
+									if (attrMode5 == 1)
+									{
+										REAL ndx5 = -(ay5 + az5) * dta5;
+										REAL ndy5 = (ax5 + 0.2f * ay5) * dta5;
+										REAL ndz5 = (0.2f + az5 * (ax5 - 5.7f)) * dta5;
+										ax5 += ndx5; ay5 += ndy5; az5 += ndz5;
+									}
+									else
+									{
+										REAL ndx5 = ay5 * dta5;
+										REAL ndy5 = (-0.3f * ay5 + ax5 - ax5 * ax5 * ax5 + 0.5f * native_cos(1.2f * (REAL)aux->i * dta5)) * dta5;
+										ax5 += ndx5; ay5 += ndy5;
+									}
+								}
+								val = 1.0f + (val - 1.0f) * fmod(fabs(ax5), 1.0f);
+							}
+							REAL dimBleed5 = fractal->transformCommon.multiplierDimensionalBleed5;
+							int selfRef5 = fractal->transformCommon.multiplierSelfRefDepth5;
+							if (selfRef5 > 0 && val != 1.0f)
+							{
+								for (int sr5 = 0; sr5 < selfRef5; sr5++)
+								{
+									REAL dev5sr = val - 1.0f;
+									val = 1.0f + dev5sr * native_sin(dev5sr * M_PI_F);
+								}
+							}
+							REAL resCoup5 = fractal->transformCommon.multiplierResonanceCoupling5;
+							if (resCoup5 > 0.0f && val != 1.0f)
+							{
+								val = 1.0f + (val - 1.0f) * (1.0f + resCoup5 * native_sin(val * M_PI_F));
 							}
 
 							switch (fractal->transformCommon.multiplierMode5)

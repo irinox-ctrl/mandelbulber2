@@ -879,6 +879,115 @@ void cFractalDIFSBoxV1::FormulaCode(CVector4 &z, const sFractal *fractal, sExten
 								val = 1.0 + (val - 1.0) * cos(plOff1 * M_PI);
 							}
 
+							
+							// Batch 3: Performance + Modulation + Envelopes for slot 1
+							// Compander
+							double compR1 = fractal->transformCommon.multiplierCompander1;
+							if (compR1 != 1.0 && val != 1.0)
+							{
+								double dev1c = val - 1.0;
+								double sign1c = dev1c > 0 ? 1.0 : -1.0;
+								val = 1.0 + sign1c * pow(fabs(dev1c), 1.0 / fmax(compR1, 0.1));
+							}
+							// Hold Time
+							int holdT1 = fractal->transformCommon.multiplierHoldTime1;
+							if (holdT1 > 0 && val != 1.0)
+							{
+								if (fabs(val - 1.0) > fabs(prevMultVal - 1.0))
+									val = val; // new peak, keep
+								else if (holdT1 > 0)
+									val = prevMultVal; // hold previous peak
+							}
+							// Waveshaper Drive
+							double wsDrive1 = fractal->transformCommon.multiplierWaveshaperDrive1;
+							if (wsDrive1 > 0.0 && val != 1.0)
+							{
+								double input1 = (val - 1.0) * wsDrive1;
+								val = 1.0 + (2.0 / M_PI) * atan(input1); // soft saturation
+							}
+							// DE Gradient Weight
+							double degw1 = fractal->transformCommon.multiplierDEGradWeight1;
+							if (degw1 > 0.0)
+							{
+								double deGrad1 = fabs(aux.DE - 1.0);
+								val = 1.0 + (val - 1.0) * (1.0 - degw1 + degw1 * fmin(deGrad1, 1.0));
+							}
+							// Iteration Density
+							double iterD1 = fractal->transformCommon.multiplierIterDensity1;
+							if (iterD1 > 0.0)
+							{
+								double iterNorm1 = (double)aux.i / fmax((double)fractal->transformCommon.multiplierStopIter1, 1.0);
+								val = 1.0 + (val - 1.0) * (1.0 - iterD1 + iterD1 * iterNorm1);
+							}
+							// Lyapunov Proxy
+							double lyap1 = fractal->transformCommon.multiplierLyapunovProxy1;
+							if (lyap1 > 0.0)
+							{
+								double r21l = z.x * z.x + z.y * z.y + z.z * z.z;
+								double logR1 = (r21l > 1e-30) ? log(r21l) * 0.5 : 0.0;
+								double chaos1 = fmin(fabs(logR1) * 0.1, 1.0);
+								val = 1.0 + (val - 1.0) * (1.0 - lyap1 + lyap1 * chaos1);
+							}
+
+							
+							// Batch 4: Experimental for slot 1
+							// Time Palindrome
+							if (fractal->transformCommon.multiplierTimePalindrome1 && val != 1.0)
+							{
+								int range1tp = fractal->transformCommon.multiplierStopIter1 - fractal->transformCommon.multiplierStartIter1;
+								if (range1tp > 0)
+								{
+									int half1 = range1tp / 2;
+									int elapsed1tp = aux.i - fractal->transformCommon.multiplierStartIter1;
+									if (elapsed1tp > half1)
+										val = 1.0 + (val - 1.0) * (double)(range1tp - elapsed1tp) / (double)half1;
+								}
+							}
+							// Attractor Mode (Rossler/Duffing)
+							int attrMode1 = fractal->transformCommon.multiplierAttractorMode1;
+							if (attrMode1 > 0)
+							{
+								double ax1 = 1.0, ay1 = 1.0, az1 = 1.0;
+								double dta1 = 0.01;
+								int steps1 = (int)(fmod((double)aux.i, 50.0)) + 1;
+								for (int as1 = 0; as1 < steps1; as1++)
+								{
+									if (attrMode1 == 1) // Rossler
+									{
+										double ndx1 = -(ay1 + az1) * dta1;
+										double ndy1 = (ax1 + 0.2 * ay1) * dta1;
+										double ndz1 = (0.2 + az1 * (ax1 - 5.7)) * dta1;
+										ax1 += ndx1; ay1 += ndy1; az1 += ndz1;
+									}
+									else // Duffing
+									{
+										double ndx1 = ay1 * dta1;
+										double ndy1 = (-0.3 * ay1 + ax1 - ax1 * ax1 * ax1 + 0.5 * cos(1.2 * (double)aux.i * dta1)) * dta1;
+										ax1 += ndx1; ay1 += ndy1;
+									}
+								}
+								val = 1.0 + (val - 1.0) * fmod(fabs(ax1), 1.0);
+							}
+							// Dimensional Bleed
+							double dimBleed1 = fractal->transformCommon.multiplierDimensionalBleed1;
+							// (applied after mode switch in target application)
+							// Self-Referential Feedback Depth
+							int selfRef1 = fractal->transformCommon.multiplierSelfRefDepth1;
+							if (selfRef1 > 0 && val != 1.0)
+							{
+								for (int sr1 = 0; sr1 < selfRef1; sr1++)
+								{
+									double dev1sr = val - 1.0;
+									val = 1.0 + dev1sr * sin(dev1sr * M_PI);
+								}
+							}
+							// Resonance Coupling (uses slot's own phase)
+							double resCoup1 = fractal->transformCommon.multiplierResonanceCoupling1;
+							if (resCoup1 > 0.0 && val != 1.0)
+							{
+								val = 1.0 + (val - 1.0) * (1.0 + resCoup1 * sin(val * M_PI));
+							}
+
 							switch (fractal->transformCommon.multiplierMode1)
 				{
 					default:
@@ -1528,6 +1637,115 @@ void cFractalDIFSBoxV1::FormulaCode(CVector4 &z, const sFractal *fractal, sExten
 							if (plOff2 != 0.0)
 							{
 								val = 1.0 + (val - 1.0) * cos(plOff2 * M_PI);
+							}
+
+							
+							// Batch 3: Performance + Modulation + Envelopes for slot 2
+							// Compander
+							double compR2 = fractal->transformCommon.multiplierCompander2;
+							if (compR2 != 1.0 && val != 1.0)
+							{
+								double dev2c = val - 1.0;
+								double sign2c = dev2c > 0 ? 1.0 : -1.0;
+								val = 1.0 + sign2c * pow(fabs(dev2c), 1.0 / fmax(compR2, 0.1));
+							}
+							// Hold Time
+							int holdT2 = fractal->transformCommon.multiplierHoldTime2;
+							if (holdT2 > 0 && val != 1.0)
+							{
+								if (fabs(val - 1.0) > fabs(prevMultVal - 1.0))
+									val = val; // new peak, keep
+								else if (holdT2 > 0)
+									val = prevMultVal; // hold previous peak
+							}
+							// Waveshaper Drive
+							double wsDrive2 = fractal->transformCommon.multiplierWaveshaperDrive2;
+							if (wsDrive2 > 0.0 && val != 1.0)
+							{
+								double input2 = (val - 1.0) * wsDrive2;
+								val = 1.0 + (2.0 / M_PI) * atan(input2); // soft saturation
+							}
+							// DE Gradient Weight
+							double degw2 = fractal->transformCommon.multiplierDEGradWeight2;
+							if (degw2 > 0.0)
+							{
+								double deGrad2 = fabs(aux.DE - 1.0);
+								val = 1.0 + (val - 1.0) * (1.0 - degw2 + degw2 * fmin(deGrad2, 1.0));
+							}
+							// Iteration Density
+							double iterD2 = fractal->transformCommon.multiplierIterDensity2;
+							if (iterD2 > 0.0)
+							{
+								double iterNorm2 = (double)aux.i / fmax((double)fractal->transformCommon.multiplierStopIter2, 1.0);
+								val = 1.0 + (val - 1.0) * (1.0 - iterD2 + iterD2 * iterNorm2);
+							}
+							// Lyapunov Proxy
+							double lyap2 = fractal->transformCommon.multiplierLyapunovProxy2;
+							if (lyap2 > 0.0)
+							{
+								double r22l = z.x * z.x + z.y * z.y + z.z * z.z;
+								double logR2 = (r22l > 1e-30) ? log(r22l) * 0.5 : 0.0;
+								double chaos2 = fmin(fabs(logR2) * 0.1, 1.0);
+								val = 1.0 + (val - 1.0) * (1.0 - lyap2 + lyap2 * chaos2);
+							}
+
+							
+							// Batch 4: Experimental for slot 2
+							// Time Palindrome
+							if (fractal->transformCommon.multiplierTimePalindrome2 && val != 1.0)
+							{
+								int range2tp = fractal->transformCommon.multiplierStopIter2 - fractal->transformCommon.multiplierStartIter2;
+								if (range2tp > 0)
+								{
+									int half2 = range2tp / 2;
+									int elapsed2tp = aux.i - fractal->transformCommon.multiplierStartIter2;
+									if (elapsed2tp > half2)
+										val = 1.0 + (val - 1.0) * (double)(range2tp - elapsed2tp) / (double)half2;
+								}
+							}
+							// Attractor Mode (Rossler/Duffing)
+							int attrMode2 = fractal->transformCommon.multiplierAttractorMode2;
+							if (attrMode2 > 0)
+							{
+								double ax2 = 1.0, ay2 = 1.0, az2 = 1.0;
+								double dta2 = 0.01;
+								int steps2 = (int)(fmod((double)aux.i, 50.0)) + 1;
+								for (int as2 = 0; as2 < steps2; as2++)
+								{
+									if (attrMode2 == 1) // Rossler
+									{
+										double ndx2 = -(ay2 + az2) * dta2;
+										double ndy2 = (ax2 + 0.2 * ay2) * dta2;
+										double ndz2 = (0.2 + az2 * (ax2 - 5.7)) * dta2;
+										ax2 += ndx2; ay2 += ndy2; az2 += ndz2;
+									}
+									else // Duffing
+									{
+										double ndx2 = ay2 * dta2;
+										double ndy2 = (-0.3 * ay2 + ax2 - ax2 * ax2 * ax2 + 0.5 * cos(1.2 * (double)aux.i * dta2)) * dta2;
+										ax2 += ndx2; ay2 += ndy2;
+									}
+								}
+								val = 1.0 + (val - 1.0) * fmod(fabs(ax2), 1.0);
+							}
+							// Dimensional Bleed
+							double dimBleed2 = fractal->transformCommon.multiplierDimensionalBleed2;
+							// (applied after mode switch in target application)
+							// Self-Referential Feedback Depth
+							int selfRef2 = fractal->transformCommon.multiplierSelfRefDepth2;
+							if (selfRef2 > 0 && val != 1.0)
+							{
+								for (int sr2 = 0; sr2 < selfRef2; sr2++)
+								{
+									double dev2sr = val - 1.0;
+									val = 1.0 + dev2sr * sin(dev2sr * M_PI);
+								}
+							}
+							// Resonance Coupling (uses slot's own phase)
+							double resCoup2 = fractal->transformCommon.multiplierResonanceCoupling2;
+							if (resCoup2 > 0.0 && val != 1.0)
+							{
+								val = 1.0 + (val - 1.0) * (1.0 + resCoup2 * sin(val * M_PI));
 							}
 
 							switch (fractal->transformCommon.multiplierMode2)
@@ -2182,6 +2400,115 @@ void cFractalDIFSBoxV1::FormulaCode(CVector4 &z, const sFractal *fractal, sExten
 								val = 1.0 + (val - 1.0) * cos(plOff3 * M_PI);
 							}
 
+							
+							// Batch 3: Performance + Modulation + Envelopes for slot 3
+							// Compander
+							double compR3 = fractal->transformCommon.multiplierCompander3;
+							if (compR3 != 1.0 && val != 1.0)
+							{
+								double dev3c = val - 1.0;
+								double sign3c = dev3c > 0 ? 1.0 : -1.0;
+								val = 1.0 + sign3c * pow(fabs(dev3c), 1.0 / fmax(compR3, 0.1));
+							}
+							// Hold Time
+							int holdT3 = fractal->transformCommon.multiplierHoldTime3;
+							if (holdT3 > 0 && val != 1.0)
+							{
+								if (fabs(val - 1.0) > fabs(prevMultVal - 1.0))
+									val = val; // new peak, keep
+								else if (holdT3 > 0)
+									val = prevMultVal; // hold previous peak
+							}
+							// Waveshaper Drive
+							double wsDrive3 = fractal->transformCommon.multiplierWaveshaperDrive3;
+							if (wsDrive3 > 0.0 && val != 1.0)
+							{
+								double input3 = (val - 1.0) * wsDrive3;
+								val = 1.0 + (2.0 / M_PI) * atan(input3); // soft saturation
+							}
+							// DE Gradient Weight
+							double degw3 = fractal->transformCommon.multiplierDEGradWeight3;
+							if (degw3 > 0.0)
+							{
+								double deGrad3 = fabs(aux.DE - 1.0);
+								val = 1.0 + (val - 1.0) * (1.0 - degw3 + degw3 * fmin(deGrad3, 1.0));
+							}
+							// Iteration Density
+							double iterD3 = fractal->transformCommon.multiplierIterDensity3;
+							if (iterD3 > 0.0)
+							{
+								double iterNorm3 = (double)aux.i / fmax((double)fractal->transformCommon.multiplierStopIter3, 1.0);
+								val = 1.0 + (val - 1.0) * (1.0 - iterD3 + iterD3 * iterNorm3);
+							}
+							// Lyapunov Proxy
+							double lyap3 = fractal->transformCommon.multiplierLyapunovProxy3;
+							if (lyap3 > 0.0)
+							{
+								double r23l = z.x * z.x + z.y * z.y + z.z * z.z;
+								double logR3 = (r23l > 1e-30) ? log(r23l) * 0.5 : 0.0;
+								double chaos3 = fmin(fabs(logR3) * 0.1, 1.0);
+								val = 1.0 + (val - 1.0) * (1.0 - lyap3 + lyap3 * chaos3);
+							}
+
+							
+							// Batch 4: Experimental for slot 3
+							// Time Palindrome
+							if (fractal->transformCommon.multiplierTimePalindrome3 && val != 1.0)
+							{
+								int range3tp = fractal->transformCommon.multiplierStopIter3 - fractal->transformCommon.multiplierStartIter3;
+								if (range3tp > 0)
+								{
+									int half3 = range3tp / 2;
+									int elapsed3tp = aux.i - fractal->transformCommon.multiplierStartIter3;
+									if (elapsed3tp > half3)
+										val = 1.0 + (val - 1.0) * (double)(range3tp - elapsed3tp) / (double)half3;
+								}
+							}
+							// Attractor Mode (Rossler/Duffing)
+							int attrMode3 = fractal->transformCommon.multiplierAttractorMode3;
+							if (attrMode3 > 0)
+							{
+								double ax3 = 1.0, ay3 = 1.0, az3 = 1.0;
+								double dta3 = 0.01;
+								int steps3 = (int)(fmod((double)aux.i, 50.0)) + 1;
+								for (int as3 = 0; as3 < steps3; as3++)
+								{
+									if (attrMode3 == 1) // Rossler
+									{
+										double ndx3 = -(ay3 + az3) * dta3;
+										double ndy3 = (ax3 + 0.2 * ay3) * dta3;
+										double ndz3 = (0.2 + az3 * (ax3 - 5.7)) * dta3;
+										ax3 += ndx3; ay3 += ndy3; az3 += ndz3;
+									}
+									else // Duffing
+									{
+										double ndx3 = ay3 * dta3;
+										double ndy3 = (-0.3 * ay3 + ax3 - ax3 * ax3 * ax3 + 0.5 * cos(1.2 * (double)aux.i * dta3)) * dta3;
+										ax3 += ndx3; ay3 += ndy3;
+									}
+								}
+								val = 1.0 + (val - 1.0) * fmod(fabs(ax3), 1.0);
+							}
+							// Dimensional Bleed
+							double dimBleed3 = fractal->transformCommon.multiplierDimensionalBleed3;
+							// (applied after mode switch in target application)
+							// Self-Referential Feedback Depth
+							int selfRef3 = fractal->transformCommon.multiplierSelfRefDepth3;
+							if (selfRef3 > 0 && val != 1.0)
+							{
+								for (int sr3 = 0; sr3 < selfRef3; sr3++)
+								{
+									double dev3sr = val - 1.0;
+									val = 1.0 + dev3sr * sin(dev3sr * M_PI);
+								}
+							}
+							// Resonance Coupling (uses slot's own phase)
+							double resCoup3 = fractal->transformCommon.multiplierResonanceCoupling3;
+							if (resCoup3 > 0.0 && val != 1.0)
+							{
+								val = 1.0 + (val - 1.0) * (1.0 + resCoup3 * sin(val * M_PI));
+							}
+
 							switch (fractal->transformCommon.multiplierMode3)
 				{
 					default:
@@ -2833,6 +3160,115 @@ void cFractalDIFSBoxV1::FormulaCode(CVector4 &z, const sFractal *fractal, sExten
 								val = 1.0 + (val - 1.0) * cos(plOff4 * M_PI);
 							}
 
+							
+							// Batch 3: Performance + Modulation + Envelopes for slot 4
+							// Compander
+							double compR4 = fractal->transformCommon.multiplierCompander4;
+							if (compR4 != 1.0 && val != 1.0)
+							{
+								double dev4c = val - 1.0;
+								double sign4c = dev4c > 0 ? 1.0 : -1.0;
+								val = 1.0 + sign4c * pow(fabs(dev4c), 1.0 / fmax(compR4, 0.1));
+							}
+							// Hold Time
+							int holdT4 = fractal->transformCommon.multiplierHoldTime4;
+							if (holdT4 > 0 && val != 1.0)
+							{
+								if (fabs(val - 1.0) > fabs(prevMultVal - 1.0))
+									val = val; // new peak, keep
+								else if (holdT4 > 0)
+									val = prevMultVal; // hold previous peak
+							}
+							// Waveshaper Drive
+							double wsDrive4 = fractal->transformCommon.multiplierWaveshaperDrive4;
+							if (wsDrive4 > 0.0 && val != 1.0)
+							{
+								double input4 = (val - 1.0) * wsDrive4;
+								val = 1.0 + (2.0 / M_PI) * atan(input4); // soft saturation
+							}
+							// DE Gradient Weight
+							double degw4 = fractal->transformCommon.multiplierDEGradWeight4;
+							if (degw4 > 0.0)
+							{
+								double deGrad4 = fabs(aux.DE - 1.0);
+								val = 1.0 + (val - 1.0) * (1.0 - degw4 + degw4 * fmin(deGrad4, 1.0));
+							}
+							// Iteration Density
+							double iterD4 = fractal->transformCommon.multiplierIterDensity4;
+							if (iterD4 > 0.0)
+							{
+								double iterNorm4 = (double)aux.i / fmax((double)fractal->transformCommon.multiplierStopIter4, 1.0);
+								val = 1.0 + (val - 1.0) * (1.0 - iterD4 + iterD4 * iterNorm4);
+							}
+							// Lyapunov Proxy
+							double lyap4 = fractal->transformCommon.multiplierLyapunovProxy4;
+							if (lyap4 > 0.0)
+							{
+								double r24l = z.x * z.x + z.y * z.y + z.z * z.z;
+								double logR4 = (r24l > 1e-30) ? log(r24l) * 0.5 : 0.0;
+								double chaos4 = fmin(fabs(logR4) * 0.1, 1.0);
+								val = 1.0 + (val - 1.0) * (1.0 - lyap4 + lyap4 * chaos4);
+							}
+
+							
+							// Batch 4: Experimental for slot 4
+							// Time Palindrome
+							if (fractal->transformCommon.multiplierTimePalindrome4 && val != 1.0)
+							{
+								int range4tp = fractal->transformCommon.multiplierStopIter4 - fractal->transformCommon.multiplierStartIter4;
+								if (range4tp > 0)
+								{
+									int half4 = range4tp / 2;
+									int elapsed4tp = aux.i - fractal->transformCommon.multiplierStartIter4;
+									if (elapsed4tp > half4)
+										val = 1.0 + (val - 1.0) * (double)(range4tp - elapsed4tp) / (double)half4;
+								}
+							}
+							// Attractor Mode (Rossler/Duffing)
+							int attrMode4 = fractal->transformCommon.multiplierAttractorMode4;
+							if (attrMode4 > 0)
+							{
+								double ax4 = 1.0, ay4 = 1.0, az4 = 1.0;
+								double dta4 = 0.01;
+								int steps4 = (int)(fmod((double)aux.i, 50.0)) + 1;
+								for (int as4 = 0; as4 < steps4; as4++)
+								{
+									if (attrMode4 == 1) // Rossler
+									{
+										double ndx4 = -(ay4 + az4) * dta4;
+										double ndy4 = (ax4 + 0.2 * ay4) * dta4;
+										double ndz4 = (0.2 + az4 * (ax4 - 5.7)) * dta4;
+										ax4 += ndx4; ay4 += ndy4; az4 += ndz4;
+									}
+									else // Duffing
+									{
+										double ndx4 = ay4 * dta4;
+										double ndy4 = (-0.3 * ay4 + ax4 - ax4 * ax4 * ax4 + 0.5 * cos(1.2 * (double)aux.i * dta4)) * dta4;
+										ax4 += ndx4; ay4 += ndy4;
+									}
+								}
+								val = 1.0 + (val - 1.0) * fmod(fabs(ax4), 1.0);
+							}
+							// Dimensional Bleed
+							double dimBleed4 = fractal->transformCommon.multiplierDimensionalBleed4;
+							// (applied after mode switch in target application)
+							// Self-Referential Feedback Depth
+							int selfRef4 = fractal->transformCommon.multiplierSelfRefDepth4;
+							if (selfRef4 > 0 && val != 1.0)
+							{
+								for (int sr4 = 0; sr4 < selfRef4; sr4++)
+								{
+									double dev4sr = val - 1.0;
+									val = 1.0 + dev4sr * sin(dev4sr * M_PI);
+								}
+							}
+							// Resonance Coupling (uses slot's own phase)
+							double resCoup4 = fractal->transformCommon.multiplierResonanceCoupling4;
+							if (resCoup4 > 0.0 && val != 1.0)
+							{
+								val = 1.0 + (val - 1.0) * (1.0 + resCoup4 * sin(val * M_PI));
+							}
+
 							switch (fractal->transformCommon.multiplierMode4)
 				{
 					default:
@@ -3482,6 +3918,115 @@ void cFractalDIFSBoxV1::FormulaCode(CVector4 &z, const sFractal *fractal, sExten
 							if (plOff5 != 0.0)
 							{
 								val = 1.0 + (val - 1.0) * cos(plOff5 * M_PI);
+							}
+
+							
+							// Batch 3: Performance + Modulation + Envelopes for slot 5
+							// Compander
+							double compR5 = fractal->transformCommon.multiplierCompander5;
+							if (compR5 != 1.0 && val != 1.0)
+							{
+								double dev5c = val - 1.0;
+								double sign5c = dev5c > 0 ? 1.0 : -1.0;
+								val = 1.0 + sign5c * pow(fabs(dev5c), 1.0 / fmax(compR5, 0.1));
+							}
+							// Hold Time
+							int holdT5 = fractal->transformCommon.multiplierHoldTime5;
+							if (holdT5 > 0 && val != 1.0)
+							{
+								if (fabs(val - 1.0) > fabs(prevMultVal - 1.0))
+									val = val; // new peak, keep
+								else if (holdT5 > 0)
+									val = prevMultVal; // hold previous peak
+							}
+							// Waveshaper Drive
+							double wsDrive5 = fractal->transformCommon.multiplierWaveshaperDrive5;
+							if (wsDrive5 > 0.0 && val != 1.0)
+							{
+								double input5 = (val - 1.0) * wsDrive5;
+								val = 1.0 + (2.0 / M_PI) * atan(input5); // soft saturation
+							}
+							// DE Gradient Weight
+							double degw5 = fractal->transformCommon.multiplierDEGradWeight5;
+							if (degw5 > 0.0)
+							{
+								double deGrad5 = fabs(aux.DE - 1.0);
+								val = 1.0 + (val - 1.0) * (1.0 - degw5 + degw5 * fmin(deGrad5, 1.0));
+							}
+							// Iteration Density
+							double iterD5 = fractal->transformCommon.multiplierIterDensity5;
+							if (iterD5 > 0.0)
+							{
+								double iterNorm5 = (double)aux.i / fmax((double)fractal->transformCommon.multiplierStopIter5, 1.0);
+								val = 1.0 + (val - 1.0) * (1.0 - iterD5 + iterD5 * iterNorm5);
+							}
+							// Lyapunov Proxy
+							double lyap5 = fractal->transformCommon.multiplierLyapunovProxy5;
+							if (lyap5 > 0.0)
+							{
+								double r25l = z.x * z.x + z.y * z.y + z.z * z.z;
+								double logR5 = (r25l > 1e-30) ? log(r25l) * 0.5 : 0.0;
+								double chaos5 = fmin(fabs(logR5) * 0.1, 1.0);
+								val = 1.0 + (val - 1.0) * (1.0 - lyap5 + lyap5 * chaos5);
+							}
+
+							
+							// Batch 4: Experimental for slot 5
+							// Time Palindrome
+							if (fractal->transformCommon.multiplierTimePalindrome5 && val != 1.0)
+							{
+								int range5tp = fractal->transformCommon.multiplierStopIter5 - fractal->transformCommon.multiplierStartIter5;
+								if (range5tp > 0)
+								{
+									int half5 = range5tp / 2;
+									int elapsed5tp = aux.i - fractal->transformCommon.multiplierStartIter5;
+									if (elapsed5tp > half5)
+										val = 1.0 + (val - 1.0) * (double)(range5tp - elapsed5tp) / (double)half5;
+								}
+							}
+							// Attractor Mode (Rossler/Duffing)
+							int attrMode5 = fractal->transformCommon.multiplierAttractorMode5;
+							if (attrMode5 > 0)
+							{
+								double ax5 = 1.0, ay5 = 1.0, az5 = 1.0;
+								double dta5 = 0.01;
+								int steps5 = (int)(fmod((double)aux.i, 50.0)) + 1;
+								for (int as5 = 0; as5 < steps5; as5++)
+								{
+									if (attrMode5 == 1) // Rossler
+									{
+										double ndx5 = -(ay5 + az5) * dta5;
+										double ndy5 = (ax5 + 0.2 * ay5) * dta5;
+										double ndz5 = (0.2 + az5 * (ax5 - 5.7)) * dta5;
+										ax5 += ndx5; ay5 += ndy5; az5 += ndz5;
+									}
+									else // Duffing
+									{
+										double ndx5 = ay5 * dta5;
+										double ndy5 = (-0.3 * ay5 + ax5 - ax5 * ax5 * ax5 + 0.5 * cos(1.2 * (double)aux.i * dta5)) * dta5;
+										ax5 += ndx5; ay5 += ndy5;
+									}
+								}
+								val = 1.0 + (val - 1.0) * fmod(fabs(ax5), 1.0);
+							}
+							// Dimensional Bleed
+							double dimBleed5 = fractal->transformCommon.multiplierDimensionalBleed5;
+							// (applied after mode switch in target application)
+							// Self-Referential Feedback Depth
+							int selfRef5 = fractal->transformCommon.multiplierSelfRefDepth5;
+							if (selfRef5 > 0 && val != 1.0)
+							{
+								for (int sr5 = 0; sr5 < selfRef5; sr5++)
+								{
+									double dev5sr = val - 1.0;
+									val = 1.0 + dev5sr * sin(dev5sr * M_PI);
+								}
+							}
+							// Resonance Coupling (uses slot's own phase)
+							double resCoup5 = fractal->transformCommon.multiplierResonanceCoupling5;
+							if (resCoup5 > 0.0 && val != 1.0)
+							{
+								val = 1.0 + (val - 1.0) * (1.0 + resCoup5 * sin(val * M_PI));
 							}
 
 							switch (fractal->transformCommon.multiplierMode5)

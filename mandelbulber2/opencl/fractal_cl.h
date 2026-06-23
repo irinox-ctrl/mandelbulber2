@@ -1282,6 +1282,87 @@ typedef struct
 	cl_float multiplierPhaseRandomise4;
 	cl_float multiplierPhaseRandomise5;
 
+	// Batch 3
+	cl_int multiplierIntFastPath1;
+	cl_int multiplierIntFastPath2;
+	cl_int multiplierIntFastPath3;
+	cl_int multiplierIntFastPath4;
+	cl_int multiplierIntFastPath5;
+	cl_int multiplierPrecomputeSize1;
+	cl_int multiplierPrecomputeSize2;
+	cl_int multiplierPrecomputeSize3;
+	cl_int multiplierPrecomputeSize4;
+	cl_int multiplierPrecomputeSize5;
+	cl_int multiplierNormalSrc1;
+	cl_int multiplierNormalSrc2;
+	cl_int multiplierNormalSrc3;
+	cl_int multiplierNormalSrc4;
+	cl_int multiplierNormalSrc5;
+	cl_float multiplierDEGradWeight1;
+	cl_float multiplierDEGradWeight2;
+	cl_float multiplierDEGradWeight3;
+	cl_float multiplierDEGradWeight4;
+	cl_float multiplierDEGradWeight5;
+	cl_float multiplierIterDensity1;
+	cl_float multiplierIterDensity2;
+	cl_float multiplierIterDensity3;
+	cl_float multiplierIterDensity4;
+	cl_float multiplierIterDensity5;
+	cl_float multiplierLyapunovProxy1;
+	cl_float multiplierLyapunovProxy2;
+	cl_float multiplierLyapunovProxy3;
+	cl_float multiplierLyapunovProxy4;
+	cl_float multiplierLyapunovProxy5;
+	cl_float multiplierPrevFrameDelta1;
+	cl_float multiplierPrevFrameDelta2;
+	cl_float multiplierPrevFrameDelta3;
+	cl_float multiplierPrevFrameDelta4;
+	cl_float multiplierPrevFrameDelta5;
+	cl_float multiplierCompander1;
+	cl_float multiplierCompander2;
+	cl_float multiplierCompander3;
+	cl_float multiplierCompander4;
+	cl_float multiplierCompander5;
+	cl_int multiplierHoldTime1;
+	cl_int multiplierHoldTime2;
+	cl_int multiplierHoldTime3;
+	cl_int multiplierHoldTime4;
+	cl_int multiplierHoldTime5;
+	cl_float multiplierWaveshaperDrive1;
+	cl_float multiplierWaveshaperDrive2;
+	cl_float multiplierWaveshaperDrive3;
+	cl_float multiplierWaveshaperDrive4;
+	cl_float multiplierWaveshaperDrive5;
+
+	// Batch 4
+	cl_int multiplierTimePalindrome1;
+	cl_int multiplierTimePalindrome2;
+	cl_int multiplierTimePalindrome3;
+	cl_int multiplierTimePalindrome4;
+	cl_int multiplierTimePalindrome5;
+	cl_float multiplierResonanceCoupling1;
+	cl_float multiplierResonanceCoupling2;
+	cl_float multiplierResonanceCoupling3;
+	cl_float multiplierResonanceCoupling4;
+	cl_float multiplierResonanceCoupling5;
+	cl_int multiplierAttractorMode1;
+	cl_int multiplierAttractorMode2;
+	cl_int multiplierAttractorMode3;
+	cl_int multiplierAttractorMode4;
+	cl_int multiplierAttractorMode5;
+	cl_float multiplierDimensionalBleed1;
+	cl_float multiplierDimensionalBleed2;
+	cl_float multiplierDimensionalBleed3;
+	cl_float multiplierDimensionalBleed4;
+	cl_float multiplierDimensionalBleed5;
+	cl_int multiplierSelfRefDepth1;
+	cl_int multiplierSelfRefDepth2;
+	cl_int multiplierSelfRefDepth3;
+	cl_int multiplierSelfRefDepth4;
+	cl_int multiplierSelfRefDepth5;
+
+
+
 
 
 
@@ -2784,6 +2865,87 @@ inline sFractalTransformCommonCl clCopySFractalTransformCommonCl(
 	target.multiplierPhaseRandomise3 = source.multiplierPhaseRandomise3;
 	target.multiplierPhaseRandomise4 = source.multiplierPhaseRandomise4;
 	target.multiplierPhaseRandomise5 = source.multiplierPhaseRandomise5;
+
+	// Batch 3 copies
+	target.multiplierIntFastPath1 = source.multiplierIntFastPath1;
+	target.multiplierIntFastPath2 = source.multiplierIntFastPath2;
+	target.multiplierIntFastPath3 = source.multiplierIntFastPath3;
+	target.multiplierIntFastPath4 = source.multiplierIntFastPath4;
+	target.multiplierIntFastPath5 = source.multiplierIntFastPath5;
+	target.multiplierPrecomputeSize1 = source.multiplierPrecomputeSize1;
+	target.multiplierPrecomputeSize2 = source.multiplierPrecomputeSize2;
+	target.multiplierPrecomputeSize3 = source.multiplierPrecomputeSize3;
+	target.multiplierPrecomputeSize4 = source.multiplierPrecomputeSize4;
+	target.multiplierPrecomputeSize5 = source.multiplierPrecomputeSize5;
+	target.multiplierNormalSrc1 = source.multiplierNormalSrc1;
+	target.multiplierNormalSrc2 = source.multiplierNormalSrc2;
+	target.multiplierNormalSrc3 = source.multiplierNormalSrc3;
+	target.multiplierNormalSrc4 = source.multiplierNormalSrc4;
+	target.multiplierNormalSrc5 = source.multiplierNormalSrc5;
+	target.multiplierDEGradWeight1 = source.multiplierDEGradWeight1;
+	target.multiplierDEGradWeight2 = source.multiplierDEGradWeight2;
+	target.multiplierDEGradWeight3 = source.multiplierDEGradWeight3;
+	target.multiplierDEGradWeight4 = source.multiplierDEGradWeight4;
+	target.multiplierDEGradWeight5 = source.multiplierDEGradWeight5;
+	target.multiplierIterDensity1 = source.multiplierIterDensity1;
+	target.multiplierIterDensity2 = source.multiplierIterDensity2;
+	target.multiplierIterDensity3 = source.multiplierIterDensity3;
+	target.multiplierIterDensity4 = source.multiplierIterDensity4;
+	target.multiplierIterDensity5 = source.multiplierIterDensity5;
+	target.multiplierLyapunovProxy1 = source.multiplierLyapunovProxy1;
+	target.multiplierLyapunovProxy2 = source.multiplierLyapunovProxy2;
+	target.multiplierLyapunovProxy3 = source.multiplierLyapunovProxy3;
+	target.multiplierLyapunovProxy4 = source.multiplierLyapunovProxy4;
+	target.multiplierLyapunovProxy5 = source.multiplierLyapunovProxy5;
+	target.multiplierPrevFrameDelta1 = source.multiplierPrevFrameDelta1;
+	target.multiplierPrevFrameDelta2 = source.multiplierPrevFrameDelta2;
+	target.multiplierPrevFrameDelta3 = source.multiplierPrevFrameDelta3;
+	target.multiplierPrevFrameDelta4 = source.multiplierPrevFrameDelta4;
+	target.multiplierPrevFrameDelta5 = source.multiplierPrevFrameDelta5;
+	target.multiplierCompander1 = source.multiplierCompander1;
+	target.multiplierCompander2 = source.multiplierCompander2;
+	target.multiplierCompander3 = source.multiplierCompander3;
+	target.multiplierCompander4 = source.multiplierCompander4;
+	target.multiplierCompander5 = source.multiplierCompander5;
+	target.multiplierHoldTime1 = source.multiplierHoldTime1;
+	target.multiplierHoldTime2 = source.multiplierHoldTime2;
+	target.multiplierHoldTime3 = source.multiplierHoldTime3;
+	target.multiplierHoldTime4 = source.multiplierHoldTime4;
+	target.multiplierHoldTime5 = source.multiplierHoldTime5;
+	target.multiplierWaveshaperDrive1 = source.multiplierWaveshaperDrive1;
+	target.multiplierWaveshaperDrive2 = source.multiplierWaveshaperDrive2;
+	target.multiplierWaveshaperDrive3 = source.multiplierWaveshaperDrive3;
+	target.multiplierWaveshaperDrive4 = source.multiplierWaveshaperDrive4;
+	target.multiplierWaveshaperDrive5 = source.multiplierWaveshaperDrive5;
+
+	// Batch 4 copies
+	target.multiplierTimePalindrome1 = source.multiplierTimePalindrome1;
+	target.multiplierTimePalindrome2 = source.multiplierTimePalindrome2;
+	target.multiplierTimePalindrome3 = source.multiplierTimePalindrome3;
+	target.multiplierTimePalindrome4 = source.multiplierTimePalindrome4;
+	target.multiplierTimePalindrome5 = source.multiplierTimePalindrome5;
+	target.multiplierResonanceCoupling1 = source.multiplierResonanceCoupling1;
+	target.multiplierResonanceCoupling2 = source.multiplierResonanceCoupling2;
+	target.multiplierResonanceCoupling3 = source.multiplierResonanceCoupling3;
+	target.multiplierResonanceCoupling4 = source.multiplierResonanceCoupling4;
+	target.multiplierResonanceCoupling5 = source.multiplierResonanceCoupling5;
+	target.multiplierAttractorMode1 = source.multiplierAttractorMode1;
+	target.multiplierAttractorMode2 = source.multiplierAttractorMode2;
+	target.multiplierAttractorMode3 = source.multiplierAttractorMode3;
+	target.multiplierAttractorMode4 = source.multiplierAttractorMode4;
+	target.multiplierAttractorMode5 = source.multiplierAttractorMode5;
+	target.multiplierDimensionalBleed1 = source.multiplierDimensionalBleed1;
+	target.multiplierDimensionalBleed2 = source.multiplierDimensionalBleed2;
+	target.multiplierDimensionalBleed3 = source.multiplierDimensionalBleed3;
+	target.multiplierDimensionalBleed4 = source.multiplierDimensionalBleed4;
+	target.multiplierDimensionalBleed5 = source.multiplierDimensionalBleed5;
+	target.multiplierSelfRefDepth1 = source.multiplierSelfRefDepth1;
+	target.multiplierSelfRefDepth2 = source.multiplierSelfRefDepth2;
+	target.multiplierSelfRefDepth3 = source.multiplierSelfRefDepth3;
+	target.multiplierSelfRefDepth4 = source.multiplierSelfRefDepth4;
+	target.multiplierSelfRefDepth5 = source.multiplierSelfRefDepth5;
+
+
 
 
 

@@ -1272,6 +1272,87 @@ struct sFractalTransformCommon
 		double multiplierPhaseRandomise4;
 		double multiplierPhaseRandomise5;
 
+		// Batch 3: Performance + Modulation + Envelopes
+		bool multiplierIntFastPath1;
+		bool multiplierIntFastPath2;
+		bool multiplierIntFastPath3;
+		bool multiplierIntFastPath4;
+		bool multiplierIntFastPath5;
+		int multiplierPrecomputeSize1;
+		int multiplierPrecomputeSize2;
+		int multiplierPrecomputeSize3;
+		int multiplierPrecomputeSize4;
+		int multiplierPrecomputeSize5;
+		int multiplierNormalSrc1;
+		int multiplierNormalSrc2;
+		int multiplierNormalSrc3;
+		int multiplierNormalSrc4;
+		int multiplierNormalSrc5;
+		double multiplierDEGradWeight1;
+		double multiplierDEGradWeight2;
+		double multiplierDEGradWeight3;
+		double multiplierDEGradWeight4;
+		double multiplierDEGradWeight5;
+		double multiplierIterDensity1;
+		double multiplierIterDensity2;
+		double multiplierIterDensity3;
+		double multiplierIterDensity4;
+		double multiplierIterDensity5;
+		double multiplierLyapunovProxy1;
+		double multiplierLyapunovProxy2;
+		double multiplierLyapunovProxy3;
+		double multiplierLyapunovProxy4;
+		double multiplierLyapunovProxy5;
+		double multiplierPrevFrameDelta1;
+		double multiplierPrevFrameDelta2;
+		double multiplierPrevFrameDelta3;
+		double multiplierPrevFrameDelta4;
+		double multiplierPrevFrameDelta5;
+		double multiplierCompander1;
+		double multiplierCompander2;
+		double multiplierCompander3;
+		double multiplierCompander4;
+		double multiplierCompander5;
+		int multiplierHoldTime1;
+		int multiplierHoldTime2;
+		int multiplierHoldTime3;
+		int multiplierHoldTime4;
+		int multiplierHoldTime5;
+		double multiplierWaveshaperDrive1;
+		double multiplierWaveshaperDrive2;
+		double multiplierWaveshaperDrive3;
+		double multiplierWaveshaperDrive4;
+		double multiplierWaveshaperDrive5;
+
+		// Batch 4: Experimental
+		bool multiplierTimePalindrome1;
+		bool multiplierTimePalindrome2;
+		bool multiplierTimePalindrome3;
+		bool multiplierTimePalindrome4;
+		bool multiplierTimePalindrome5;
+		double multiplierResonanceCoupling1;
+		double multiplierResonanceCoupling2;
+		double multiplierResonanceCoupling3;
+		double multiplierResonanceCoupling4;
+		double multiplierResonanceCoupling5;
+		int multiplierAttractorMode1;
+		int multiplierAttractorMode2;
+		int multiplierAttractorMode3;
+		int multiplierAttractorMode4;
+		int multiplierAttractorMode5;
+		double multiplierDimensionalBleed1;
+		double multiplierDimensionalBleed2;
+		double multiplierDimensionalBleed3;
+		double multiplierDimensionalBleed4;
+		double multiplierDimensionalBleed5;
+		int multiplierSelfRefDepth1;
+		int multiplierSelfRefDepth2;
+		int multiplierSelfRefDepth3;
+		int multiplierSelfRefDepth4;
+		int multiplierSelfRefDepth5;
+
+
+
 
 
 
