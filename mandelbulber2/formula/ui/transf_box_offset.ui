@@ -272,7 +272,7 @@
        <widget class="QLabel"><property name="text"><string>Value:</string></property></widget>
       </item>
       <item row="0" column="3">
-       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_scale_1"><property name="toolTip"><string>Multiplier strength. 1.0 = no effect. Values > 1.0 amplify, < 1.0 attenuate.</string></property>
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_scale_1"><property name="toolTip"><string>Multiplier strength. 1.0 = no effect. Values &gt; 1.0 amplify, &lt; 1.0 attenuate.</string></property>
         <property name="minimum"><double>-100.0</double></property><property name="maximum"><double>100.0</double></property>
         <property name="singleStep"><double>0.01</double></property><property name="value"><double>1.0</double></property>
        </widget>
@@ -780,13 +780,13 @@
       <widget class="QLabel" name="label_mult_cull_5"><property name="text"><string>Dist Cull</string></property></widget>
      </item>
      <item row="20" column="3">
-      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_dist_cull_5"><property name="toolTip"><string>Skip all computation when point distance > this value. Performance optimization.</string></property><property name="decimals"><number>1</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>1000.000000</double></property><property name="singleStep"><double>1.000000</double></property></widget>
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_dist_cull_5"><property name="toolTip"><string>Skip all computation when point distance &gt; this value. Performance optimization.</string></property><property name="decimals"><number>1</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>1000.000000</double></property><property name="singleStep"><double>1.000000</double></property></widget>
      </item>
      <item row="20" column="4">
       <widget class="QLabel" name="label_mult_eps_5"><property name="text"><string>Neutral ε</string></property></widget>
      </item>
      <item row="20" column="5">
-      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_neutral_eps_5"><property name="toolTip"><string>Skip when |val-1.0| < epsilon. Skip near-neutral values.</string></property><property name="decimals"><number>4</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>0.010000</double></property><property name="singleStep"><double>0.001000</double></property></widget>
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_neutral_eps_5"><property name="toolTip"><string>Skip when |val-1.0| &lt; epsilon. Skip near-neutral values.</string></property><property name="decimals"><number>4</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>0.010000</double></property><property name="singleStep"><double>0.001000</double></property></widget>
      </item>
      <item row="21" column="0">
       <widget class="QLabel" name="label_mult_graddir_5"><property name="text"><string>Grad Dir</string></property></widget>
@@ -900,7 +900,7 @@
       <widget class="QLabel" name="label_mult_compander_5"><property name="text"><string>Compander</string></property></widget>
      </item>
      <item row="28" column="1">
-      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_compander_5"><property name="toolTip"><string>Compress/expand dynamic range (0.1-4). <1 compresses, >1 expands peaks.</string></property><property name="decimals"><number>2</number></property><property name="minimum"><double>0.100000</double></property><property name="maximum"><double>4.000000</double></property><property name="value"><double>1.000000</double></property><property name="singleStep"><double>0.100000</double></property></widget>
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_compander_5"><property name="toolTip"><string>Compress/expand dynamic range (0.1-4). &lt;1 compresses, &gt;1 expands peaks.</string></property><property name="decimals"><number>2</number></property><property name="minimum"><double>0.100000</double></property><property name="maximum"><double>4.000000</double></property><property name="value"><double>1.000000</double></property><property name="singleStep"><double>0.100000</double></property></widget>
      </item>
      <item row="28" column="2">
       <widget class="QLabel" name="label_mult_holdtime_5"><property name="text"><string>Hold</string></property></widget>
@@ -1368,13 +1368,13 @@
       <widget class="QLabel" name="label_mult_cull_4"><property name="text"><string>Dist Cull</string></property></widget>
      </item>
      <item row="20" column="3">
-      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_dist_cull_4"><property name="toolTip"><string>Skip all computation when point distance > this value. Performance optimization.</string></property><property name="decimals"><number>1</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>1000.000000</double></property><property name="singleStep"><double>1.000000</double></property></widget>
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_dist_cull_4"><property name="toolTip"><string>Skip all computation when point distance &gt; this value. Performance optimization.</string></property><property name="decimals"><number>1</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>1000.000000</double></property><property name="singleStep"><double>1.000000</double></property></widget>
      </item>
      <item row="20" column="4">
       <widget class="QLabel" name="label_mult_eps_4"><property name="text"><string>Neutral ε</string></property></widget>
      </item>
      <item row="20" column="5">
-      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_neutral_eps_4"><property name="toolTip"><string>Skip when |val-1.0| < epsilon. Skip near-neutral values.</string></property><property name="decimals"><number>4</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>0.010000</double></property><property name="singleStep"><double>0.001000</double></property></widget>
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_neutral_eps_4"><property name="toolTip"><string>Skip when |val-1.0| &lt; epsilon. Skip near-neutral values.</string></property><property name="decimals"><number>4</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>0.010000</double></property><property name="singleStep"><double>0.001000</double></property></widget>
      </item>
      <item row="21" column="0">
       <widget class="QLabel" name="label_mult_graddir_4"><property name="text"><string>Grad Dir</string></property></widget>
@@ -1488,7 +1488,7 @@
       <widget class="QLabel" name="label_mult_compander_4"><property name="text"><string>Compander</string></property></widget>
      </item>
      <item row="28" column="1">
-      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_compander_4"><property name="toolTip"><string>Compress/expand dynamic range (0.1-4). <1 compresses, >1 expands peaks.</string></property><property name="decimals"><number>2</number></property><property name="minimum"><double>0.100000</double></property><property name="maximum"><double>4.000000</double></property><property name="value"><double>1.000000</double></property><property name="singleStep"><double>0.100000</double></property></widget>
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_compander_4"><property name="toolTip"><string>Compress/expand dynamic range (0.1-4). &lt;1 compresses, &gt;1 expands peaks.</string></property><property name="decimals"><number>2</number></property><property name="minimum"><double>0.100000</double></property><property name="maximum"><double>4.000000</double></property><property name="value"><double>1.000000</double></property><property name="singleStep"><double>0.100000</double></property></widget>
      </item>
      <item row="28" column="2">
       <widget class="QLabel" name="label_mult_holdtime_4"><property name="text"><string>Hold</string></property></widget>
@@ -1956,13 +1956,13 @@
       <widget class="QLabel" name="label_mult_cull_3"><property name="text"><string>Dist Cull</string></property></widget>
      </item>
      <item row="20" column="3">
-      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_dist_cull_3"><property name="toolTip"><string>Skip all computation when point distance > this value. Performance optimization.</string></property><property name="decimals"><number>1</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>1000.000000</double></property><property name="singleStep"><double>1.000000</double></property></widget>
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_dist_cull_3"><property name="toolTip"><string>Skip all computation when point distance &gt; this value. Performance optimization.</string></property><property name="decimals"><number>1</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>1000.000000</double></property><property name="singleStep"><double>1.000000</double></property></widget>
      </item>
      <item row="20" column="4">
       <widget class="QLabel" name="label_mult_eps_3"><property name="text"><string>Neutral ε</string></property></widget>
      </item>
      <item row="20" column="5">
-      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_neutral_eps_3"><property name="toolTip"><string>Skip when |val-1.0| < epsilon. Skip near-neutral values.</string></property><property name="decimals"><number>4</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>0.010000</double></property><property name="singleStep"><double>0.001000</double></property></widget>
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_neutral_eps_3"><property name="toolTip"><string>Skip when |val-1.0| &lt; epsilon. Skip near-neutral values.</string></property><property name="decimals"><number>4</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>0.010000</double></property><property name="singleStep"><double>0.001000</double></property></widget>
      </item>
      <item row="21" column="0">
       <widget class="QLabel" name="label_mult_graddir_3"><property name="text"><string>Grad Dir</string></property></widget>
@@ -2076,7 +2076,7 @@
       <widget class="QLabel" name="label_mult_compander_3"><property name="text"><string>Compander</string></property></widget>
      </item>
      <item row="28" column="1">
-      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_compander_3"><property name="toolTip"><string>Compress/expand dynamic range (0.1-4). <1 compresses, >1 expands peaks.</string></property><property name="decimals"><number>2</number></property><property name="minimum"><double>0.100000</double></property><property name="maximum"><double>4.000000</double></property><property name="value"><double>1.000000</double></property><property name="singleStep"><double>0.100000</double></property></widget>
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_compander_3"><property name="toolTip"><string>Compress/expand dynamic range (0.1-4). &lt;1 compresses, &gt;1 expands peaks.</string></property><property name="decimals"><number>2</number></property><property name="minimum"><double>0.100000</double></property><property name="maximum"><double>4.000000</double></property><property name="value"><double>1.000000</double></property><property name="singleStep"><double>0.100000</double></property></widget>
      </item>
      <item row="28" column="2">
       <widget class="QLabel" name="label_mult_holdtime_3"><property name="text"><string>Hold</string></property></widget>
@@ -2544,13 +2544,13 @@
       <widget class="QLabel" name="label_mult_cull_2"><property name="text"><string>Dist Cull</string></property></widget>
      </item>
      <item row="20" column="3">
-      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_dist_cull_2"><property name="toolTip"><string>Skip all computation when point distance > this value. Performance optimization.</string></property><property name="decimals"><number>1</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>1000.000000</double></property><property name="singleStep"><double>1.000000</double></property></widget>
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_dist_cull_2"><property name="toolTip"><string>Skip all computation when point distance &gt; this value. Performance optimization.</string></property><property name="decimals"><number>1</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>1000.000000</double></property><property name="singleStep"><double>1.000000</double></property></widget>
      </item>
      <item row="20" column="4">
       <widget class="QLabel" name="label_mult_eps_2"><property name="text"><string>Neutral ε</string></property></widget>
      </item>
      <item row="20" column="5">
-      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_neutral_eps_2"><property name="toolTip"><string>Skip when |val-1.0| < epsilon. Skip near-neutral values.</string></property><property name="decimals"><number>4</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>0.010000</double></property><property name="singleStep"><double>0.001000</double></property></widget>
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_neutral_eps_2"><property name="toolTip"><string>Skip when |val-1.0| &lt; epsilon. Skip near-neutral values.</string></property><property name="decimals"><number>4</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>0.010000</double></property><property name="singleStep"><double>0.001000</double></property></widget>
      </item>
      <item row="21" column="0">
       <widget class="QLabel" name="label_mult_graddir_2"><property name="text"><string>Grad Dir</string></property></widget>
@@ -2664,7 +2664,7 @@
       <widget class="QLabel" name="label_mult_compander_2"><property name="text"><string>Compander</string></property></widget>
      </item>
      <item row="28" column="1">
-      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_compander_2"><property name="toolTip"><string>Compress/expand dynamic range (0.1-4). <1 compresses, >1 expands peaks.</string></property><property name="decimals"><number>2</number></property><property name="minimum"><double>0.100000</double></property><property name="maximum"><double>4.000000</double></property><property name="value"><double>1.000000</double></property><property name="singleStep"><double>0.100000</double></property></widget>
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_compander_2"><property name="toolTip"><string>Compress/expand dynamic range (0.1-4). &lt;1 compresses, &gt;1 expands peaks.</string></property><property name="decimals"><number>2</number></property><property name="minimum"><double>0.100000</double></property><property name="maximum"><double>4.000000</double></property><property name="value"><double>1.000000</double></property><property name="singleStep"><double>0.100000</double></property></widget>
      </item>
      <item row="28" column="2">
       <widget class="QLabel" name="label_mult_holdtime_2"><property name="text"><string>Hold</string></property></widget>
@@ -3132,13 +3132,13 @@
       <widget class="QLabel" name="label_mult_cull_1"><property name="text"><string>Dist Cull</string></property></widget>
      </item>
      <item row="20" column="3">
-      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_dist_cull_1"><property name="toolTip"><string>Skip all computation when point distance > this value. Performance optimization.</string></property><property name="decimals"><number>1</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>1000.000000</double></property><property name="singleStep"><double>1.000000</double></property></widget>
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_dist_cull_1"><property name="toolTip"><string>Skip all computation when point distance &gt; this value. Performance optimization.</string></property><property name="decimals"><number>1</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>1000.000000</double></property><property name="singleStep"><double>1.000000</double></property></widget>
      </item>
      <item row="20" column="4">
       <widget class="QLabel" name="label_mult_eps_1"><property name="text"><string>Neutral ε</string></property></widget>
      </item>
      <item row="20" column="5">
-      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_neutral_eps_1"><property name="toolTip"><string>Skip when |val-1.0| < epsilon. Skip near-neutral values.</string></property><property name="decimals"><number>4</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>0.010000</double></property><property name="singleStep"><double>0.001000</double></property></widget>
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_neutral_eps_1"><property name="toolTip"><string>Skip when |val-1.0| &lt; epsilon. Skip near-neutral values.</string></property><property name="decimals"><number>4</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>0.010000</double></property><property name="singleStep"><double>0.001000</double></property></widget>
      </item>
      <item row="21" column="0">
       <widget class="QLabel" name="label_mult_graddir_1"><property name="text"><string>Grad Dir</string></property></widget>
@@ -3252,7 +3252,7 @@
       <widget class="QLabel" name="label_mult_compander_1"><property name="text"><string>Compander</string></property></widget>
      </item>
      <item row="28" column="1">
-      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_compander_1"><property name="toolTip"><string>Compress/expand dynamic range (0.1-4). <1 compresses, >1 expands peaks.</string></property><property name="decimals"><number>2</number></property><property name="minimum"><double>0.100000</double></property><property name="maximum"><double>4.000000</double></property><property name="value"><double>1.000000</double></property><property name="singleStep"><double>0.100000</double></property></widget>
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_compander_1"><property name="toolTip"><string>Compress/expand dynamic range (0.1-4). &lt;1 compresses, &gt;1 expands peaks.</string></property><property name="decimals"><number>2</number></property><property name="minimum"><double>0.100000</double></property><property name="maximum"><double>4.000000</double></property><property name="value"><double>1.000000</double></property><property name="singleStep"><double>0.100000</double></property></widget>
      </item>
      <item row="28" column="2">
       <widget class="QLabel" name="label_mult_holdtime_1"><property name="text"><string>Hold</string></property></widget>
@@ -3345,7 +3345,7 @@
        <widget class="QLabel"><property name="text"><string>Value:</string></property></widget>
       </item>
       <item row="0" column="3">
-       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_scale_2"><property name="toolTip"><string>Multiplier strength. 1.0 = no effect. Values > 1.0 amplify, < 1.0 attenuate.</string></property>
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_scale_2"><property name="toolTip"><string>Multiplier strength. 1.0 = no effect. Values &gt; 1.0 amplify, &lt; 1.0 attenuate.</string></property>
         <property name="minimum"><double>-100.0</double></property><property name="maximum"><double>100.0</double></property>
         <property name="singleStep"><double>0.01</double></property><property name="value"><double>1.0</double></property>
        </widget>
@@ -3478,7 +3478,7 @@
        <widget class="QLabel"><property name="text"><string>Value:</string></property></widget>
       </item>
       <item row="0" column="3">
-       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_scale_3"><property name="toolTip"><string>Multiplier strength. 1.0 = no effect. Values > 1.0 amplify, < 1.0 attenuate.</string></property>
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_scale_3"><property name="toolTip"><string>Multiplier strength. 1.0 = no effect. Values &gt; 1.0 amplify, &lt; 1.0 attenuate.</string></property>
         <property name="minimum"><double>-100.0</double></property><property name="maximum"><double>100.0</double></property>
         <property name="singleStep"><double>0.01</double></property><property name="value"><double>1.0</double></property>
        </widget>
@@ -3611,7 +3611,7 @@
        <widget class="QLabel"><property name="text"><string>Value:</string></property></widget>
       </item>
       <item row="0" column="3">
-       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_scale_4"><property name="toolTip"><string>Multiplier strength. 1.0 = no effect. Values > 1.0 amplify, < 1.0 attenuate.</string></property>
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_scale_4"><property name="toolTip"><string>Multiplier strength. 1.0 = no effect. Values &gt; 1.0 amplify, &lt; 1.0 attenuate.</string></property>
         <property name="minimum"><double>-100.0</double></property><property name="maximum"><double>100.0</double></property>
         <property name="singleStep"><double>0.01</double></property><property name="value"><double>1.0</double></property>
        </widget>
@@ -3744,7 +3744,7 @@
        <widget class="QLabel"><property name="text"><string>Value:</string></property></widget>
       </item>
       <item row="0" column="3">
-       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_scale_5"><property name="toolTip"><string>Multiplier strength. 1.0 = no effect. Values > 1.0 amplify, < 1.0 attenuate.</string></property>
+       <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_scale_5"><property name="toolTip"><string>Multiplier strength. 1.0 = no effect. Values &gt; 1.0 amplify, &lt; 1.0 attenuate.</string></property>
         <property name="minimum"><double>-100.0</double></property><property name="maximum"><double>100.0</double></property>
         <property name="singleStep"><double>0.01</double></property><property name="value"><double>1.0</double></property>
        </widget>
