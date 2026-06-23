@@ -26,9 +26,11 @@ unix:!macx:isEmpty(SHARED_PATH) {
 	DEFINES += SHARED_DOC_DIR=\\\"$$SHARE_DOC_ABS\\\"
 }
 
-# Auto-sync formula files to deploy directory after build (symlink for dev builds)
+# Auto-sync formula files to deploy directory (symlink for dev builds)
+# Created at BOTH qmake time (immediate) and link time (rebuild safety)
 FORMULA_SRC = $$clean_path($$absolute_path($$ROOT/formula))
 FORMULA_DST = $$clean_path($$absolute_path($$ROOT/deploy/share/mandelbulber2/formula))
+unix:system(rm -rf $$FORMULA_DST && mkdir -p $$clean_path($$absolute_path($$ROOT/deploy/share/mandelbulber2)) && ln -sf $$FORMULA_SRC $$FORMULA_DST)
 unix:QMAKE_POST_LINK += rm -rf $$FORMULA_DST && \
 	mkdir -p $$clean_path($$absolute_path($$ROOT/deploy/share/mandelbulber2)) && \
 	ln -sf $$FORMULA_SRC $$FORMULA_DST
