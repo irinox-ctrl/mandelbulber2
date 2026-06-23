@@ -1112,6 +1112,12 @@ struct sFractalTransformCommon
 		int multiplierConditionalMode3;
 		int multiplierConditionalMode4;
 		int multiplierConditionalMode5;
+		double multiplierConditionalThreshold1;
+		double multiplierConditionalThreshold2;
+		double multiplierConditionalThreshold3;
+		double multiplierConditionalThreshold4;
+		double multiplierConditionalThreshold5;
+
 
 
 

@@ -787,6 +787,12 @@ sFractal::sFractal(const std::shared_ptr<cParameterContainer> container)
 	transformCommon.multiplierConditionalMode3 = container->Get<int>("transf_multiplier_conditional_mode_3");
 	transformCommon.multiplierConditionalMode4 = container->Get<int>("transf_multiplier_conditional_mode_4");
 	transformCommon.multiplierConditionalMode5 = container->Get<int>("transf_multiplier_conditional_mode_5");
+	transformCommon.multiplierConditionalThreshold1 = container->Get<double>("transf_multiplier_conditional_threshold_1");
+	transformCommon.multiplierConditionalThreshold2 = container->Get<double>("transf_multiplier_conditional_threshold_2");
+	transformCommon.multiplierConditionalThreshold3 = container->Get<double>("transf_multiplier_conditional_threshold_3");
+	transformCommon.multiplierConditionalThreshold4 = container->Get<double>("transf_multiplier_conditional_threshold_4");
+	transformCommon.multiplierConditionalThreshold5 = container->Get<double>("transf_multiplier_conditional_threshold_5");
+
 
 
 

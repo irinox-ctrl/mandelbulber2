@@ -2235,7 +2235,10 @@
       <widget class="QLabel" name="label_mult_cond_5"><property name="text"><string>Cond</string></property></widget>
      </item>
      <item row="17" column="4">
-      <widget class="MyComboBox" name="comboBox_transf_multiplier_conditional_mode_5"><item><property name="text"><string>Always</string></property></item><item><property name="text"><string>If Positive</string></property></item><item><property name="text"><string>If Negative</string></property></item><item><property name="text"><string>If Above Threshold</string></property></item></widget>
+      <widget class="MyComboBox" name="comboBox_transf_multiplier_conditional_mode_5"><item><property name="text"><string>Always</string></property></item>
+     <item row="17" column="5">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_conditional_threshold_5"><property name="decimals"><number>2</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>100.000000</double></property><property name="value"><double>1.000000</double></property><property name="singleStep"><double>0.100000</double></property></widget>
+     </item><item><property name="text"><string>If Positive</string></property></item><item><property name="text"><string>If Negative</string></property></item><item><property name="text"><string>If Above Threshold</string></property></item></widget>
      </item>
       <item row="4" column="0">
        <widget class="MyCheckBox" name="checkBox_transf_multiplier_chain_4">
@@ -2595,7 +2598,10 @@
       <widget class="QLabel" name="label_mult_cond_4"><property name="text"><string>Cond</string></property></widget>
      </item>
      <item row="17" column="4">
-      <widget class="MyComboBox" name="comboBox_transf_multiplier_conditional_mode_4"><item><property name="text"><string>Always</string></property></item><item><property name="text"><string>If Positive</string></property></item><item><property name="text"><string>If Negative</string></property></item><item><property name="text"><string>If Above Threshold</string></property></item></widget>
+      <widget class="MyComboBox" name="comboBox_transf_multiplier_conditional_mode_4"><item><property name="text"><string>Always</string></property></item>
+     <item row="17" column="5">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_conditional_threshold_4"><property name="decimals"><number>2</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>100.000000</double></property><property name="value"><double>1.000000</double></property><property name="singleStep"><double>0.100000</double></property></widget>
+     </item><item><property name="text"><string>If Positive</string></property></item><item><property name="text"><string>If Negative</string></property></item><item><property name="text"><string>If Above Threshold</string></property></item></widget>
      </item>
       <item row="4" column="0">
        <widget class="MyCheckBox" name="checkBox_transf_multiplier_chain_3">
@@ -2955,7 +2961,10 @@
       <widget class="QLabel" name="label_mult_cond_3"><property name="text"><string>Cond</string></property></widget>
      </item>
      <item row="17" column="4">
-      <widget class="MyComboBox" name="comboBox_transf_multiplier_conditional_mode_3"><item><property name="text"><string>Always</string></property></item><item><property name="text"><string>If Positive</string></property></item><item><property name="text"><string>If Negative</string></property></item><item><property name="text"><string>If Above Threshold</string></property></item></widget>
+      <widget class="MyComboBox" name="comboBox_transf_multiplier_conditional_mode_3"><item><property name="text"><string>Always</string></property></item>
+     <item row="17" column="5">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_conditional_threshold_3"><property name="decimals"><number>2</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>100.000000</double></property><property name="value"><double>1.000000</double></property><property name="singleStep"><double>0.100000</double></property></widget>
+     </item><item><property name="text"><string>If Positive</string></property></item><item><property name="text"><string>If Negative</string></property></item><item><property name="text"><string>If Above Threshold</string></property></item></widget>
      </item>
       <item row="4" column="0">
        <widget class="MyCheckBox" name="checkBox_transf_multiplier_chain_2">
@@ -3315,7 +3324,10 @@
       <widget class="QLabel" name="label_mult_cond_2"><property name="text"><string>Cond</string></property></widget>
      </item>
      <item row="17" column="4">
-      <widget class="MyComboBox" name="comboBox_transf_multiplier_conditional_mode_2"><item><property name="text"><string>Always</string></property></item><item><property name="text"><string>If Positive</string></property></item><item><property name="text"><string>If Negative</string></property></item><item><property name="text"><string>If Above Threshold</string></property></item></widget>
+      <widget class="MyComboBox" name="comboBox_transf_multiplier_conditional_mode_2"><item><property name="text"><string>Always</string></property></item>
+     <item row="17" column="5">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_conditional_threshold_2"><property name="decimals"><number>2</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>100.000000</double></property><property name="value"><double>1.000000</double></property><property name="singleStep"><double>0.100000</double></property></widget>
+     </item><item><property name="text"><string>If Positive</string></property></item><item><property name="text"><string>If Negative</string></property></item><item><property name="text"><string>If Above Threshold</string></property></item></widget>
      </item>
       <item row="4" column="0">
        <widget class="MyCheckBox" name="checkBox_transf_multiplier_chain_1">
@@ -3675,7 +3687,10 @@
       <widget class="QLabel" name="label_mult_cond_1"><property name="text"><string>Cond</string></property></widget>
      </item>
      <item row="17" column="4">
-      <widget class="MyComboBox" name="comboBox_transf_multiplier_conditional_mode_1"><item><property name="text"><string>Always</string></property></item><item><property name="text"><string>If Positive</string></property></item><item><property name="text"><string>If Negative</string></property></item><item><property name="text"><string>If Above Threshold</string></property></item></widget>
+      <widget class="MyComboBox" name="comboBox_transf_multiplier_conditional_mode_1"><item><property name="text"><string>Always</string></property></item>
+     <item row="17" column="5">
+      <widget class="MyDoubleSpinBox" name="spinbox_transf_multiplier_conditional_threshold_1"><property name="decimals"><number>2</number></property><property name="minimum"><double>0.000000</double></property><property name="maximum"><double>100.000000</double></property><property name="value"><double>1.000000</double></property><property name="singleStep"><double>0.100000</double></property></widget>
+     </item><item><property name="text"><string>If Positive</string></property></item><item><property name="text"><string>If Negative</string></property></item><item><property name="text"><string>If Above Threshold</string></property></item></widget>
      </item>
      </layout>
     </widget>

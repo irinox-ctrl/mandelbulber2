@@ -398,7 +398,11 @@ void cFractalThreex3QuantumHallFractal::FormulaCode(CVector4 &z, const sFractal 
 								}
 							}
 
-				switch (fractal->transformCommon.multiplierMode1)
+											// Accumulate for slot 1
+							if (fractal->transformCommon.multiplierAccumulate1 && prevMultVal != 1.0)
+								val = 1.0 + (val - 1.0) + (prevMultVal - 1.0);
+
+							switch (fractal->transformCommon.multiplierMode1)
 				{
 					default:
 					case 0:
@@ -782,7 +786,11 @@ void cFractalThreex3QuantumHallFractal::FormulaCode(CVector4 &z, const sFractal 
 								}
 							}
 
-				switch (fractal->transformCommon.multiplierMode2)
+											// Accumulate for slot 2
+							if (fractal->transformCommon.multiplierAccumulate2 && prevMultVal != 1.0)
+								val = 1.0 + (val - 1.0) + (prevMultVal - 1.0);
+
+							switch (fractal->transformCommon.multiplierMode2)
 				{
 					default:
 					case 0:
@@ -1166,7 +1174,11 @@ void cFractalThreex3QuantumHallFractal::FormulaCode(CVector4 &z, const sFractal 
 								}
 							}
 
-				switch (fractal->transformCommon.multiplierMode3)
+											// Accumulate for slot 3
+							if (fractal->transformCommon.multiplierAccumulate3 && prevMultVal != 1.0)
+								val = 1.0 + (val - 1.0) + (prevMultVal - 1.0);
+
+							switch (fractal->transformCommon.multiplierMode3)
 				{
 					default:
 					case 0:
@@ -1550,7 +1562,11 @@ void cFractalThreex3QuantumHallFractal::FormulaCode(CVector4 &z, const sFractal 
 								}
 							}
 
-				switch (fractal->transformCommon.multiplierMode4)
+											// Accumulate for slot 4
+							if (fractal->transformCommon.multiplierAccumulate4 && prevMultVal != 1.0)
+								val = 1.0 + (val - 1.0) + (prevMultVal - 1.0);
+
+							switch (fractal->transformCommon.multiplierMode4)
 				{
 					default:
 					case 0:
@@ -1934,7 +1950,11 @@ void cFractalThreex3QuantumHallFractal::FormulaCode(CVector4 &z, const sFractal 
 								}
 							}
 
-				switch (fractal->transformCommon.multiplierMode5)
+											// Accumulate for slot 5
+							if (fractal->transformCommon.multiplierAccumulate5 && prevMultVal != 1.0)
+								val = 1.0 + (val - 1.0) + (prevMultVal - 1.0);
+
+							switch (fractal->transformCommon.multiplierMode5)
 				{
 					default:
 					case 0:

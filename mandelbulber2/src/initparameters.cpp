@@ -2477,6 +2477,12 @@ void InitFractalParams(std::shared_ptr<cParameterContainer> par)
 	par->addParam("transf_multiplier_conditional_mode_3", 0, 0, 3, morphNone, paramStandard);
 	par->addParam("transf_multiplier_conditional_mode_4", 0, 0, 3, morphNone, paramStandard);
 	par->addParam("transf_multiplier_conditional_mode_5", 0, 0, 3, morphNone, paramStandard);
+	par->addParam("transf_multiplier_conditional_threshold_1", 1.0, 0.0, 100.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_conditional_threshold_2", 1.0, 0.0, 100.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_conditional_threshold_3", 1.0, 0.0, 100.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_conditional_threshold_4", 1.0, 0.0, 100.0, morphNone, paramStandard);
+	par->addParam("transf_multiplier_conditional_threshold_5", 1.0, 0.0, 100.0, morphNone, paramStandard);
+
 
 
 

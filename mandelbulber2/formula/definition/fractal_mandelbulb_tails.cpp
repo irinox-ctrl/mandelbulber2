@@ -460,7 +460,7 @@ void cFractalMandelbulbTails::FormulaCode(CVector4 &z, const sFractal *fractal, 
 							if (burstLen1 > 0 && burstGap1 > 0)
 							{
 								int cycle1 = burstLen1 + burstGap1;
-								int phase1 = aux.i % cycle1;
+								int phase1 = (aux.i - fractal->transformCommon.multiplierStartIter1) % cycle1;
 								if (phase1 >= burstLen1) val = 1.0;
 							}
 							double sphFall1 = fractal->transformCommon.multiplierSphericalFalloff1;
@@ -484,8 +484,12 @@ void cFractalMandelbulbTails::FormulaCode(CVector4 &z, const sFractal *fractal, 
 							else if (condMode1 == 3)
 							{
 								double condDist1 = sqrt(z.x * z.x + z.y * z.y + z.z * z.z);
-								if (condDist1 < fractal->transformCommon.multiplierThreshold1) val = 1.0;
+								if (condDist1 < fractal->transformCommon.multiplierConditionalThreshold1) val = 1.0;
 							}
+
+														// Accumulate for slot 1
+							if (fractal->transformCommon.multiplierAccumulate1 && prevMultVal != 1.0)
+								val = 1.0 + (val - 1.0) + (prevMultVal - 1.0);
 
 							switch (fractal->transformCommon.multiplierMode1)
 				{
@@ -878,7 +882,7 @@ void cFractalMandelbulbTails::FormulaCode(CVector4 &z, const sFractal *fractal, 
 							if (burstLen2 > 0 && burstGap2 > 0)
 							{
 								int cycle2 = burstLen2 + burstGap2;
-								int phase2 = aux.i % cycle2;
+								int phase2 = (aux.i - fractal->transformCommon.multiplierStartIter2) % cycle2;
 								if (phase2 >= burstLen2) val = 1.0;
 							}
 							double sphFall2 = fractal->transformCommon.multiplierSphericalFalloff2;
@@ -902,8 +906,12 @@ void cFractalMandelbulbTails::FormulaCode(CVector4 &z, const sFractal *fractal, 
 							else if (condMode2 == 3)
 							{
 								double condDist2 = sqrt(z.x * z.x + z.y * z.y + z.z * z.z);
-								if (condDist2 < fractal->transformCommon.multiplierThreshold2) val = 1.0;
+								if (condDist2 < fractal->transformCommon.multiplierConditionalThreshold2) val = 1.0;
 							}
+
+														// Accumulate for slot 2
+							if (fractal->transformCommon.multiplierAccumulate2 && prevMultVal != 1.0)
+								val = 1.0 + (val - 1.0) + (prevMultVal - 1.0);
 
 							switch (fractal->transformCommon.multiplierMode2)
 				{
@@ -1296,7 +1304,7 @@ void cFractalMandelbulbTails::FormulaCode(CVector4 &z, const sFractal *fractal, 
 							if (burstLen3 > 0 && burstGap3 > 0)
 							{
 								int cycle3 = burstLen3 + burstGap3;
-								int phase3 = aux.i % cycle3;
+								int phase3 = (aux.i - fractal->transformCommon.multiplierStartIter3) % cycle3;
 								if (phase3 >= burstLen3) val = 1.0;
 							}
 							double sphFall3 = fractal->transformCommon.multiplierSphericalFalloff3;
@@ -1320,8 +1328,12 @@ void cFractalMandelbulbTails::FormulaCode(CVector4 &z, const sFractal *fractal, 
 							else if (condMode3 == 3)
 							{
 								double condDist3 = sqrt(z.x * z.x + z.y * z.y + z.z * z.z);
-								if (condDist3 < fractal->transformCommon.multiplierThreshold3) val = 1.0;
+								if (condDist3 < fractal->transformCommon.multiplierConditionalThreshold3) val = 1.0;
 							}
+
+														// Accumulate for slot 3
+							if (fractal->transformCommon.multiplierAccumulate3 && prevMultVal != 1.0)
+								val = 1.0 + (val - 1.0) + (prevMultVal - 1.0);
 
 							switch (fractal->transformCommon.multiplierMode3)
 				{
@@ -1714,7 +1726,7 @@ void cFractalMandelbulbTails::FormulaCode(CVector4 &z, const sFractal *fractal, 
 							if (burstLen4 > 0 && burstGap4 > 0)
 							{
 								int cycle4 = burstLen4 + burstGap4;
-								int phase4 = aux.i % cycle4;
+								int phase4 = (aux.i - fractal->transformCommon.multiplierStartIter4) % cycle4;
 								if (phase4 >= burstLen4) val = 1.0;
 							}
 							double sphFall4 = fractal->transformCommon.multiplierSphericalFalloff4;
@@ -1738,8 +1750,12 @@ void cFractalMandelbulbTails::FormulaCode(CVector4 &z, const sFractal *fractal, 
 							else if (condMode4 == 3)
 							{
 								double condDist4 = sqrt(z.x * z.x + z.y * z.y + z.z * z.z);
-								if (condDist4 < fractal->transformCommon.multiplierThreshold4) val = 1.0;
+								if (condDist4 < fractal->transformCommon.multiplierConditionalThreshold4) val = 1.0;
 							}
+
+														// Accumulate for slot 4
+							if (fractal->transformCommon.multiplierAccumulate4 && prevMultVal != 1.0)
+								val = 1.0 + (val - 1.0) + (prevMultVal - 1.0);
 
 							switch (fractal->transformCommon.multiplierMode4)
 				{
@@ -2132,7 +2148,7 @@ void cFractalMandelbulbTails::FormulaCode(CVector4 &z, const sFractal *fractal, 
 							if (burstLen5 > 0 && burstGap5 > 0)
 							{
 								int cycle5 = burstLen5 + burstGap5;
-								int phase5 = aux.i % cycle5;
+								int phase5 = (aux.i - fractal->transformCommon.multiplierStartIter5) % cycle5;
 								if (phase5 >= burstLen5) val = 1.0;
 							}
 							double sphFall5 = fractal->transformCommon.multiplierSphericalFalloff5;
@@ -2156,8 +2172,12 @@ void cFractalMandelbulbTails::FormulaCode(CVector4 &z, const sFractal *fractal, 
 							else if (condMode5 == 3)
 							{
 								double condDist5 = sqrt(z.x * z.x + z.y * z.y + z.z * z.z);
-								if (condDist5 < fractal->transformCommon.multiplierThreshold5) val = 1.0;
+								if (condDist5 < fractal->transformCommon.multiplierConditionalThreshold5) val = 1.0;
 							}
+
+														// Accumulate for slot 5
+							if (fractal->transformCommon.multiplierAccumulate5 && prevMultVal != 1.0)
+								val = 1.0 + (val - 1.0) + (prevMultVal - 1.0);
 
 							switch (fractal->transformCommon.multiplierMode5)
 				{

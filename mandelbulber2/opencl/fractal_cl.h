@@ -1122,6 +1122,12 @@ typedef struct
 	cl_int multiplierConditionalMode3;
 	cl_int multiplierConditionalMode4;
 	cl_int multiplierConditionalMode5;
+	cl_float multiplierConditionalThreshold1;
+	cl_float multiplierConditionalThreshold2;
+	cl_float multiplierConditionalThreshold3;
+	cl_float multiplierConditionalThreshold4;
+	cl_float multiplierConditionalThreshold5;
+
 
 
 
@@ -2462,6 +2468,12 @@ inline sFractalTransformCommonCl clCopySFractalTransformCommonCl(
 	target.multiplierConditionalMode3 = source.multiplierConditionalMode3;
 	target.multiplierConditionalMode4 = source.multiplierConditionalMode4;
 	target.multiplierConditionalMode5 = source.multiplierConditionalMode5;
+	target.multiplierConditionalThreshold1 = source.multiplierConditionalThreshold1;
+	target.multiplierConditionalThreshold2 = source.multiplierConditionalThreshold2;
+	target.multiplierConditionalThreshold3 = source.multiplierConditionalThreshold3;
+	target.multiplierConditionalThreshold4 = source.multiplierConditionalThreshold4;
+	target.multiplierConditionalThreshold5 = source.multiplierConditionalThreshold5;
+
 
 
 	target.multiplierEnabled1 = source.multiplierEnabled1;

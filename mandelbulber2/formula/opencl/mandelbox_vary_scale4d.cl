@@ -458,7 +458,7 @@ REAL4 MandelboxVaryScale4dIteration(REAL4 z, __constant sFractalCl *fractal, sEx
 							if (burstLen1 > 0 && burstGap1 > 0)
 							{
 								int cycle1 = burstLen1 + burstGap1;
-								int phase1 = aux->i % cycle1;
+								int phase1 = (aux->i - fractal->transformCommon.multiplierStartIter1) % cycle1;
 								if (phase1 >= burstLen1) val = 1.0f;
 							}
 							REAL sphFall1 = fractal->transformCommon.multiplierSphericalFalloff1;
@@ -482,8 +482,12 @@ REAL4 MandelboxVaryScale4dIteration(REAL4 z, __constant sFractalCl *fractal, sEx
 							else if (condMode1 == 3)
 							{
 								REAL condDist1 = native_sqrt(z.x * z.x + z.y * z.y + z.z * z.z);
-								if (condDist1 < fractal->transformCommon.multiplierThreshold1) val = 1.0f;
+								if (condDist1 < fractal->transformCommon.multiplierConditionalThreshold1) val = 1.0f;
 							}
+
+														// Accumulate for slot 1
+							if (fractal->transformCommon.multiplierAccumulate1 && prevMultVal != 1.0f)
+								val = 1.0f + (val - 1.0f) + (prevMultVal - 1.0f);
 
 							switch (fractal->transformCommon.multiplierMode1)
 				{
@@ -866,7 +870,7 @@ REAL4 MandelboxVaryScale4dIteration(REAL4 z, __constant sFractalCl *fractal, sEx
 							if (burstLen2 > 0 && burstGap2 > 0)
 							{
 								int cycle2 = burstLen2 + burstGap2;
-								int phase2 = aux->i % cycle2;
+								int phase2 = (aux->i - fractal->transformCommon.multiplierStartIter2) % cycle2;
 								if (phase2 >= burstLen2) val = 1.0f;
 							}
 							REAL sphFall2 = fractal->transformCommon.multiplierSphericalFalloff2;
@@ -890,8 +894,12 @@ REAL4 MandelboxVaryScale4dIteration(REAL4 z, __constant sFractalCl *fractal, sEx
 							else if (condMode2 == 3)
 							{
 								REAL condDist2 = native_sqrt(z.x * z.x + z.y * z.y + z.z * z.z);
-								if (condDist2 < fractal->transformCommon.multiplierThreshold2) val = 1.0f;
+								if (condDist2 < fractal->transformCommon.multiplierConditionalThreshold2) val = 1.0f;
 							}
+
+														// Accumulate for slot 2
+							if (fractal->transformCommon.multiplierAccumulate2 && prevMultVal != 1.0f)
+								val = 1.0f + (val - 1.0f) + (prevMultVal - 1.0f);
 
 							switch (fractal->transformCommon.multiplierMode2)
 				{
@@ -1274,7 +1282,7 @@ REAL4 MandelboxVaryScale4dIteration(REAL4 z, __constant sFractalCl *fractal, sEx
 							if (burstLen3 > 0 && burstGap3 > 0)
 							{
 								int cycle3 = burstLen3 + burstGap3;
-								int phase3 = aux->i % cycle3;
+								int phase3 = (aux->i - fractal->transformCommon.multiplierStartIter3) % cycle3;
 								if (phase3 >= burstLen3) val = 1.0f;
 							}
 							REAL sphFall3 = fractal->transformCommon.multiplierSphericalFalloff3;
@@ -1298,8 +1306,12 @@ REAL4 MandelboxVaryScale4dIteration(REAL4 z, __constant sFractalCl *fractal, sEx
 							else if (condMode3 == 3)
 							{
 								REAL condDist3 = native_sqrt(z.x * z.x + z.y * z.y + z.z * z.z);
-								if (condDist3 < fractal->transformCommon.multiplierThreshold3) val = 1.0f;
+								if (condDist3 < fractal->transformCommon.multiplierConditionalThreshold3) val = 1.0f;
 							}
+
+														// Accumulate for slot 3
+							if (fractal->transformCommon.multiplierAccumulate3 && prevMultVal != 1.0f)
+								val = 1.0f + (val - 1.0f) + (prevMultVal - 1.0f);
 
 							switch (fractal->transformCommon.multiplierMode3)
 				{
@@ -1682,7 +1694,7 @@ REAL4 MandelboxVaryScale4dIteration(REAL4 z, __constant sFractalCl *fractal, sEx
 							if (burstLen4 > 0 && burstGap4 > 0)
 							{
 								int cycle4 = burstLen4 + burstGap4;
-								int phase4 = aux->i % cycle4;
+								int phase4 = (aux->i - fractal->transformCommon.multiplierStartIter4) % cycle4;
 								if (phase4 >= burstLen4) val = 1.0f;
 							}
 							REAL sphFall4 = fractal->transformCommon.multiplierSphericalFalloff4;
@@ -1706,8 +1718,12 @@ REAL4 MandelboxVaryScale4dIteration(REAL4 z, __constant sFractalCl *fractal, sEx
 							else if (condMode4 == 3)
 							{
 								REAL condDist4 = native_sqrt(z.x * z.x + z.y * z.y + z.z * z.z);
-								if (condDist4 < fractal->transformCommon.multiplierThreshold4) val = 1.0f;
+								if (condDist4 < fractal->transformCommon.multiplierConditionalThreshold4) val = 1.0f;
 							}
+
+														// Accumulate for slot 4
+							if (fractal->transformCommon.multiplierAccumulate4 && prevMultVal != 1.0f)
+								val = 1.0f + (val - 1.0f) + (prevMultVal - 1.0f);
 
 							switch (fractal->transformCommon.multiplierMode4)
 				{
@@ -2090,7 +2106,7 @@ REAL4 MandelboxVaryScale4dIteration(REAL4 z, __constant sFractalCl *fractal, sEx
 							if (burstLen5 > 0 && burstGap5 > 0)
 							{
 								int cycle5 = burstLen5 + burstGap5;
-								int phase5 = aux->i % cycle5;
+								int phase5 = (aux->i - fractal->transformCommon.multiplierStartIter5) % cycle5;
 								if (phase5 >= burstLen5) val = 1.0f;
 							}
 							REAL sphFall5 = fractal->transformCommon.multiplierSphericalFalloff5;
@@ -2114,8 +2130,12 @@ REAL4 MandelboxVaryScale4dIteration(REAL4 z, __constant sFractalCl *fractal, sEx
 							else if (condMode5 == 3)
 							{
 								REAL condDist5 = native_sqrt(z.x * z.x + z.y * z.y + z.z * z.z);
-								if (condDist5 < fractal->transformCommon.multiplierThreshold5) val = 1.0f;
+								if (condDist5 < fractal->transformCommon.multiplierConditionalThreshold5) val = 1.0f;
 							}
+
+														// Accumulate for slot 5
+							if (fractal->transformCommon.multiplierAccumulate5 && prevMultVal != 1.0f)
+								val = 1.0f + (val - 1.0f) + (prevMultVal - 1.0f);
 
 							switch (fractal->transformCommon.multiplierMode5)
 				{
