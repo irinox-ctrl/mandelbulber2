@@ -105,7 +105,10 @@ void cFractalMandalayFoldInverseMcf::FormulaCode(CVector4 &z, const sFractal *fr
 					else if (vmode == 3) // Exponential
 					{
 						t = qBound(0.0, t, 1.0);
-						val = 1.0 + (val - 1.0) * (exp(t * freq) - 1.0) / (exp(freq) - 1.0);
+						double denom = exp(freq) - 1.0;
+															val = 1.0 + (val - 1.0) * (fabs(denom) > 1e-12
+																? (exp(t * freq) - 1.0) / denom
+																: t);
 					}
 					else if (vmode == 4) // Triangle
 					{
@@ -124,7 +127,7 @@ void cFractalMandalayFoldInverseMcf::FormulaCode(CVector4 &z, const sFractal *fr
 					}
 					else if (vmode == 7) // Noise
 					{
-						int seed = aux.i * 73856093 + 1 * 19349663;
+						int seed = aux.i * 73856093 + (fractal->transformCommon.multiplierNoiseSeed1 > 0 ? fractal->transformCommon.multiplierNoiseSeed1 : 1) * 19349663;
 						seed = (seed ^ (seed >> 13)) * 1274126177;
 						seed = seed ^ (seed >> 16);
 						double noise = (double)(seed & 0xFFFF) / 65535.0;
@@ -484,7 +487,10 @@ void cFractalMandalayFoldInverseMcf::FormulaCode(CVector4 &z, const sFractal *fr
 					else if (vmode == 3) // Exponential
 					{
 						t = qBound(0.0, t, 1.0);
-						val = 1.0 + (val - 1.0) * (exp(t * freq) - 1.0) / (exp(freq) - 1.0);
+						double denom = exp(freq) - 1.0;
+															val = 1.0 + (val - 1.0) * (fabs(denom) > 1e-12
+																? (exp(t * freq) - 1.0) / denom
+																: t);
 					}
 					else if (vmode == 4) // Triangle
 					{
@@ -503,7 +509,7 @@ void cFractalMandalayFoldInverseMcf::FormulaCode(CVector4 &z, const sFractal *fr
 					}
 					else if (vmode == 7) // Noise
 					{
-						int seed = aux.i * 73856093 + 2 * 19349663;
+						int seed = aux.i * 73856093 + (fractal->transformCommon.multiplierNoiseSeed2 > 0 ? fractal->transformCommon.multiplierNoiseSeed2 : 2) * 19349663;
 						seed = (seed ^ (seed >> 13)) * 1274126177;
 						seed = seed ^ (seed >> 16);
 						double noise = (double)(seed & 0xFFFF) / 65535.0;
@@ -865,7 +871,10 @@ void cFractalMandalayFoldInverseMcf::FormulaCode(CVector4 &z, const sFractal *fr
 					else if (vmode == 3) // Exponential
 					{
 						t = qBound(0.0, t, 1.0);
-						val = 1.0 + (val - 1.0) * (exp(t * freq) - 1.0) / (exp(freq) - 1.0);
+						double denom = exp(freq) - 1.0;
+															val = 1.0 + (val - 1.0) * (fabs(denom) > 1e-12
+																? (exp(t * freq) - 1.0) / denom
+																: t);
 					}
 					else if (vmode == 4) // Triangle
 					{
@@ -884,7 +893,7 @@ void cFractalMandalayFoldInverseMcf::FormulaCode(CVector4 &z, const sFractal *fr
 					}
 					else if (vmode == 7) // Noise
 					{
-						int seed = aux.i * 73856093 + 3 * 19349663;
+						int seed = aux.i * 73856093 + (fractal->transformCommon.multiplierNoiseSeed3 > 0 ? fractal->transformCommon.multiplierNoiseSeed3 : 3) * 19349663;
 						seed = (seed ^ (seed >> 13)) * 1274126177;
 						seed = seed ^ (seed >> 16);
 						double noise = (double)(seed & 0xFFFF) / 65535.0;
@@ -1246,7 +1255,10 @@ void cFractalMandalayFoldInverseMcf::FormulaCode(CVector4 &z, const sFractal *fr
 					else if (vmode == 3) // Exponential
 					{
 						t = qBound(0.0, t, 1.0);
-						val = 1.0 + (val - 1.0) * (exp(t * freq) - 1.0) / (exp(freq) - 1.0);
+						double denom = exp(freq) - 1.0;
+															val = 1.0 + (val - 1.0) * (fabs(denom) > 1e-12
+																? (exp(t * freq) - 1.0) / denom
+																: t);
 					}
 					else if (vmode == 4) // Triangle
 					{
@@ -1265,7 +1277,7 @@ void cFractalMandalayFoldInverseMcf::FormulaCode(CVector4 &z, const sFractal *fr
 					}
 					else if (vmode == 7) // Noise
 					{
-						int seed = aux.i * 73856093 + 4 * 19349663;
+						int seed = aux.i * 73856093 + (fractal->transformCommon.multiplierNoiseSeed4 > 0 ? fractal->transformCommon.multiplierNoiseSeed4 : 4) * 19349663;
 						seed = (seed ^ (seed >> 13)) * 1274126177;
 						seed = seed ^ (seed >> 16);
 						double noise = (double)(seed & 0xFFFF) / 65535.0;
@@ -1627,7 +1639,10 @@ void cFractalMandalayFoldInverseMcf::FormulaCode(CVector4 &z, const sFractal *fr
 					else if (vmode == 3) // Exponential
 					{
 						t = qBound(0.0, t, 1.0);
-						val = 1.0 + (val - 1.0) * (exp(t * freq) - 1.0) / (exp(freq) - 1.0);
+						double denom = exp(freq) - 1.0;
+															val = 1.0 + (val - 1.0) * (fabs(denom) > 1e-12
+																? (exp(t * freq) - 1.0) / denom
+																: t);
 					}
 					else if (vmode == 4) // Triangle
 					{
@@ -1646,7 +1661,7 @@ void cFractalMandalayFoldInverseMcf::FormulaCode(CVector4 &z, const sFractal *fr
 					}
 					else if (vmode == 7) // Noise
 					{
-						int seed = aux.i * 73856093 + 5 * 19349663;
+						int seed = aux.i * 73856093 + (fractal->transformCommon.multiplierNoiseSeed5 > 0 ? fractal->transformCommon.multiplierNoiseSeed5 : 5) * 19349663;
 						seed = (seed ^ (seed >> 13)) * 1274126177;
 						seed = seed ^ (seed >> 16);
 						double noise = (double)(seed & 0xFFFF) / 65535.0;

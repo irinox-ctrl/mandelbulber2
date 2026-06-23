@@ -126,7 +126,10 @@ REAL4 KnotV2Iteration(REAL4 z, __constant sFractalCl *fractal, sExtendedAuxCl *a
 					else if (vmode == 3) // Exponential
 					{
 						t = clamp(t, (REAL)0.0, (REAL)1.0);
-						val = 1.0 + (val - 1.0) * (native_powr(2.718281828f, t * freq) - 1.0) / (native_powr(2.718281828f, freq) - 1.0);
+						REAL denom = native_powr(2.718281828f, freq) - 1.0f;
+															val = 1.0f + (val - 1.0f) * (fabs(denom) > 1e-12f
+																? (native_powr(2.718281828f, t * freq) - 1.0f) / denom
+																: t);
 					}
 					else if (vmode == 4) // Triangle
 					{
@@ -145,7 +148,7 @@ REAL4 KnotV2Iteration(REAL4 z, __constant sFractalCl *fractal, sExtendedAuxCl *a
 					}
 					else if (vmode == 7) // Noise
 					{
-						int seed = aux->i * 73856093 + 1 * 19349663;
+						int seed = aux->i * 73856093 + (fractal->transformCommon.multiplierNoiseSeed1 > 0 ? fractal->transformCommon.multiplierNoiseSeed1 : 1) * 19349663;
 						seed = (seed ^ (seed >> 13)) * 1274126177;
 						seed = seed ^ (seed >> 16);
 						REAL noise = (REAL)(seed & 0xFFFF) / 65535.0;
@@ -495,7 +498,10 @@ REAL4 KnotV2Iteration(REAL4 z, __constant sFractalCl *fractal, sExtendedAuxCl *a
 					else if (vmode == 3) // Exponential
 					{
 						t = clamp(t, (REAL)0.0, (REAL)1.0);
-						val = 1.0 + (val - 1.0) * (native_powr(2.718281828f, t * freq) - 1.0) / (native_powr(2.718281828f, freq) - 1.0);
+						REAL denom = native_powr(2.718281828f, freq) - 1.0f;
+															val = 1.0f + (val - 1.0f) * (fabs(denom) > 1e-12f
+																? (native_powr(2.718281828f, t * freq) - 1.0f) / denom
+																: t);
 					}
 					else if (vmode == 4) // Triangle
 					{
@@ -514,7 +520,7 @@ REAL4 KnotV2Iteration(REAL4 z, __constant sFractalCl *fractal, sExtendedAuxCl *a
 					}
 					else if (vmode == 7) // Noise
 					{
-						int seed = aux->i * 73856093 + 2 * 19349663;
+						int seed = aux->i * 73856093 + (fractal->transformCommon.multiplierNoiseSeed2 > 0 ? fractal->transformCommon.multiplierNoiseSeed2 : 2) * 19349663;
 						seed = (seed ^ (seed >> 13)) * 1274126177;
 						seed = seed ^ (seed >> 16);
 						REAL noise = (REAL)(seed & 0xFFFF) / 65535.0;
@@ -866,7 +872,10 @@ REAL4 KnotV2Iteration(REAL4 z, __constant sFractalCl *fractal, sExtendedAuxCl *a
 					else if (vmode == 3) // Exponential
 					{
 						t = clamp(t, (REAL)0.0, (REAL)1.0);
-						val = 1.0 + (val - 1.0) * (native_powr(2.718281828f, t * freq) - 1.0) / (native_powr(2.718281828f, freq) - 1.0);
+						REAL denom = native_powr(2.718281828f, freq) - 1.0f;
+															val = 1.0f + (val - 1.0f) * (fabs(denom) > 1e-12f
+																? (native_powr(2.718281828f, t * freq) - 1.0f) / denom
+																: t);
 					}
 					else if (vmode == 4) // Triangle
 					{
@@ -885,7 +894,7 @@ REAL4 KnotV2Iteration(REAL4 z, __constant sFractalCl *fractal, sExtendedAuxCl *a
 					}
 					else if (vmode == 7) // Noise
 					{
-						int seed = aux->i * 73856093 + 3 * 19349663;
+						int seed = aux->i * 73856093 + (fractal->transformCommon.multiplierNoiseSeed3 > 0 ? fractal->transformCommon.multiplierNoiseSeed3 : 3) * 19349663;
 						seed = (seed ^ (seed >> 13)) * 1274126177;
 						seed = seed ^ (seed >> 16);
 						REAL noise = (REAL)(seed & 0xFFFF) / 65535.0;
@@ -1237,7 +1246,10 @@ REAL4 KnotV2Iteration(REAL4 z, __constant sFractalCl *fractal, sExtendedAuxCl *a
 					else if (vmode == 3) // Exponential
 					{
 						t = clamp(t, (REAL)0.0, (REAL)1.0);
-						val = 1.0 + (val - 1.0) * (native_powr(2.718281828f, t * freq) - 1.0) / (native_powr(2.718281828f, freq) - 1.0);
+						REAL denom = native_powr(2.718281828f, freq) - 1.0f;
+															val = 1.0f + (val - 1.0f) * (fabs(denom) > 1e-12f
+																? (native_powr(2.718281828f, t * freq) - 1.0f) / denom
+																: t);
 					}
 					else if (vmode == 4) // Triangle
 					{
@@ -1256,7 +1268,7 @@ REAL4 KnotV2Iteration(REAL4 z, __constant sFractalCl *fractal, sExtendedAuxCl *a
 					}
 					else if (vmode == 7) // Noise
 					{
-						int seed = aux->i * 73856093 + 4 * 19349663;
+						int seed = aux->i * 73856093 + (fractal->transformCommon.multiplierNoiseSeed4 > 0 ? fractal->transformCommon.multiplierNoiseSeed4 : 4) * 19349663;
 						seed = (seed ^ (seed >> 13)) * 1274126177;
 						seed = seed ^ (seed >> 16);
 						REAL noise = (REAL)(seed & 0xFFFF) / 65535.0;
@@ -1608,7 +1620,10 @@ REAL4 KnotV2Iteration(REAL4 z, __constant sFractalCl *fractal, sExtendedAuxCl *a
 					else if (vmode == 3) // Exponential
 					{
 						t = clamp(t, (REAL)0.0, (REAL)1.0);
-						val = 1.0 + (val - 1.0) * (native_powr(2.718281828f, t * freq) - 1.0) / (native_powr(2.718281828f, freq) - 1.0);
+						REAL denom = native_powr(2.718281828f, freq) - 1.0f;
+															val = 1.0f + (val - 1.0f) * (fabs(denom) > 1e-12f
+																? (native_powr(2.718281828f, t * freq) - 1.0f) / denom
+																: t);
 					}
 					else if (vmode == 4) // Triangle
 					{
@@ -1627,7 +1642,7 @@ REAL4 KnotV2Iteration(REAL4 z, __constant sFractalCl *fractal, sExtendedAuxCl *a
 					}
 					else if (vmode == 7) // Noise
 					{
-						int seed = aux->i * 73856093 + 5 * 19349663;
+						int seed = aux->i * 73856093 + (fractal->transformCommon.multiplierNoiseSeed5 > 0 ? fractal->transformCommon.multiplierNoiseSeed5 : 5) * 19349663;
 						seed = (seed ^ (seed >> 13)) * 1274126177;
 						seed = seed ^ (seed >> 16);
 						REAL noise = (REAL)(seed & 0xFFFF) / 65535.0;

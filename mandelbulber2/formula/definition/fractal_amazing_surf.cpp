@@ -406,7 +406,7 @@ void cFractalAmazingSurf::FormulaCode(CVector4 &z, const sFractal *fractal, sExt
 					}
 					else if (vmode == 7) // Noise
 					{
-						int seed = aux.i * 73856093 + 1 * 19349663;
+						int seed = aux.i * 73856093 + (fractal->transformCommon.multiplierNoiseSeed1 > 0 ? fractal->transformCommon.multiplierNoiseSeed1 : 1) * 19349663;
 						seed = (seed ^ (seed >> 13)) * 1274126177;
 						seed = seed ^ (seed >> 16);
 						double noise = (double)(seed & 0xFFFF) / 65535.0;
@@ -785,7 +785,7 @@ void cFractalAmazingSurf::FormulaCode(CVector4 &z, const sFractal *fractal, sExt
 					}
 					else if (vmode == 7) // Noise
 					{
-						int seed = aux.i * 73856093 + 2 * 19349663;
+						int seed = aux.i * 73856093 + (fractal->transformCommon.multiplierNoiseSeed2 > 0 ? fractal->transformCommon.multiplierNoiseSeed2 : 2) * 19349663;
 						seed = (seed ^ (seed >> 13)) * 1274126177;
 						seed = seed ^ (seed >> 16);
 						double noise = (double)(seed & 0xFFFF) / 65535.0;
@@ -1166,7 +1166,7 @@ void cFractalAmazingSurf::FormulaCode(CVector4 &z, const sFractal *fractal, sExt
 					}
 					else if (vmode == 7) // Noise
 					{
-						int seed = aux.i * 73856093 + 3 * 19349663;
+						int seed = aux.i * 73856093 + (fractal->transformCommon.multiplierNoiseSeed3 > 0 ? fractal->transformCommon.multiplierNoiseSeed3 : 3) * 19349663;
 						seed = (seed ^ (seed >> 13)) * 1274126177;
 						seed = seed ^ (seed >> 16);
 						double noise = (double)(seed & 0xFFFF) / 65535.0;
@@ -1547,7 +1547,7 @@ void cFractalAmazingSurf::FormulaCode(CVector4 &z, const sFractal *fractal, sExt
 					}
 					else if (vmode == 7) // Noise
 					{
-						int seed = aux.i * 73856093 + 4 * 19349663;
+						int seed = aux.i * 73856093 + (fractal->transformCommon.multiplierNoiseSeed4 > 0 ? fractal->transformCommon.multiplierNoiseSeed4 : 4) * 19349663;
 						seed = (seed ^ (seed >> 13)) * 1274126177;
 						seed = seed ^ (seed >> 16);
 						double noise = (double)(seed & 0xFFFF) / 65535.0;
@@ -1928,7 +1928,7 @@ void cFractalAmazingSurf::FormulaCode(CVector4 &z, const sFractal *fractal, sExt
 					}
 					else if (vmode == 7) // Noise
 					{
-						int seed = aux.i * 73856093 + 5 * 19349663;
+						int seed = aux.i * 73856093 + (fractal->transformCommon.multiplierNoiseSeed5 > 0 ? fractal->transformCommon.multiplierNoiseSeed5 : 5) * 19349663;
 						seed = (seed ^ (seed >> 13)) * 1274126177;
 						seed = seed ^ (seed >> 16);
 						double noise = (double)(seed & 0xFFFF) / 65535.0;
