@@ -848,6 +848,43 @@ REAL4 Threex3GeometricStructureJuliaIteration(REAL4 z, __constant sFractalCl *fr
 						if (steps < 1.0) steps = 1.0;
 						REAL st = floor(t * steps) / steps;
 						val = 1.0 + (val - 1.0) * st;
+								else if (vmode == 10)
+								{
+									REAL kls = fmax(fractal->transformCommon.multiplierExponent2, 0.1f) * 10.0f;
+									REAL sv = 1.0f / (1.0f + native_exp(-kls * (t - 0.5f)));
+									val = 1.0f + (sv - 0.5f) * 2.0f * (val - 1.0f);
+								}
+								else if (vmode == 11)
+								{
+									REAL chirpR = freq * 0.1f;
+									val = 1.0f + native_sin(2.0f * M_PI_F * (freq + chirpR * t) * t + ph) * (val - 1.0f);
+								}
+								else if (vmode == 12)
+								{
+									REAL rtv = fmod(t * freq + ph, 1.0f);
+									if (rtv < 0.0f) rtv += 1.0f;
+									val = 1.0f + (1.0f - rtv) * (val - 1.0f);
+								}
+								else if (vmode == 13)
+								{
+									REAL lxv = 1.0f, lyv = 1.0f, lzv = 1.0f;
+									lxv += (REAL)((fractal->transformCommon.multiplierNoiseSeed2 + 1) % 100) * 0.01f;
+									for (int li = 0; li < (int)(t * 100.0f) + 1; li++)
+									{
+										REAL dxv = 10.0f * (lyv - lxv) * 0.01f;
+										REAL dyv = (lxv * (28.0f - lzv) - lyv) * 0.01f;
+										REAL dzv = (lxv * lyv - 2.6667f * lzv) * 0.01f;
+										lxv += dxv; lyv += dyv; lzv += dzv;
+									}
+									val = 1.0f + fmod(fabs(lxv), 1.0f) * (val - 1.0f);
+								}
+								else if (vmode == 14)
+								{
+									REAL btv = fmod(t * freq + ph, 1.0f);
+									if (btv < 0.0f) btv += 1.0f;
+									REAL triv = fabs(2.0f * btv - 1.0f);
+									val = 1.0f + (1.0f - triv * triv) * (val - 1.0f);
+								}
 					}
 				}
 
@@ -1460,30 +1497,6 @@ REAL4 Threex3GeometricStructureJuliaIteration(REAL4 z, __constant sFractalCl *fr
 							switch (fractal->transformCommon.multiplierMode2)
 				{
 					
-case 11:
-								{
-									REAL chirpRate1 = freq * 0.1f;
-									val = native_sin(2.0f * M_PI_F * (freq1 + chirpRate1 * t) * t + phase1);
-									val = 1.0f + val * (val - 1.0f);
-									break;
-								}
-case 13:
-								{
-									REAL sigma1 = 10.0f, rho1 = 28.0f, beta1 = 8.0f / 3.0f;
-									REAL dt1 = 0.01f;
-									REAL lx1 = 1.0f, ly1 = 1.0f, lz1 = 1.0f;
-									int seed1 = fractal->transformCommon.multiplierNoiseSeed1 + 1;
-									lx1 += (REAL)(seed1 % 100) * 0.01f;
-									for (int li = 0; li < (int)(t * 100.0f) + 1; li++)
-									{
-										REAL dx1 = sigma1 * (ly1 - lx1) * dt1;
-										REAL dy1 = (lx1 * (rho1 - lz1) - ly1) * dt1;
-										REAL dz1 = (lx1 * ly1 - beta1 * lz1) * dt1;
-										lx1 += dx1; ly1 += dy1; lz1 += dz1;
-									}
-									val = 1.0f + fmod(fabs(lx1), 1.0f) * (val - 1.0f);
-									break;
-								}
 default:
 					case 0:
 					{
@@ -1583,6 +1596,43 @@ default:
 						if (steps < 1.0) steps = 1.0;
 						REAL st = floor(t * steps) / steps;
 						val = 1.0 + (val - 1.0) * st;
+								else if (vmode == 10)
+								{
+									REAL kls = fmax(fractal->transformCommon.multiplierExponent3, 0.1f) * 10.0f;
+									REAL sv = 1.0f / (1.0f + native_exp(-kls * (t - 0.5f)));
+									val = 1.0f + (sv - 0.5f) * 2.0f * (val - 1.0f);
+								}
+								else if (vmode == 11)
+								{
+									REAL chirpR = freq * 0.1f;
+									val = 1.0f + native_sin(2.0f * M_PI_F * (freq + chirpR * t) * t + ph) * (val - 1.0f);
+								}
+								else if (vmode == 12)
+								{
+									REAL rtv = fmod(t * freq + ph, 1.0f);
+									if (rtv < 0.0f) rtv += 1.0f;
+									val = 1.0f + (1.0f - rtv) * (val - 1.0f);
+								}
+								else if (vmode == 13)
+								{
+									REAL lxv = 1.0f, lyv = 1.0f, lzv = 1.0f;
+									lxv += (REAL)((fractal->transformCommon.multiplierNoiseSeed3 + 1) % 100) * 0.01f;
+									for (int li = 0; li < (int)(t * 100.0f) + 1; li++)
+									{
+										REAL dxv = 10.0f * (lyv - lxv) * 0.01f;
+										REAL dyv = (lxv * (28.0f - lzv) - lyv) * 0.01f;
+										REAL dzv = (lxv * lyv - 2.6667f * lzv) * 0.01f;
+										lxv += dxv; lyv += dyv; lzv += dzv;
+									}
+									val = 1.0f + fmod(fabs(lxv), 1.0f) * (val - 1.0f);
+								}
+								else if (vmode == 14)
+								{
+									REAL btv = fmod(t * freq + ph, 1.0f);
+									if (btv < 0.0f) btv += 1.0f;
+									REAL triv = fabs(2.0f * btv - 1.0f);
+									val = 1.0f + (1.0f - triv * triv) * (val - 1.0f);
+								}
 					}
 				}
 
@@ -2293,6 +2343,43 @@ default:
 						if (steps < 1.0) steps = 1.0;
 						REAL st = floor(t * steps) / steps;
 						val = 1.0 + (val - 1.0) * st;
+								else if (vmode == 10)
+								{
+									REAL kls = fmax(fractal->transformCommon.multiplierExponent4, 0.1f) * 10.0f;
+									REAL sv = 1.0f / (1.0f + native_exp(-kls * (t - 0.5f)));
+									val = 1.0f + (sv - 0.5f) * 2.0f * (val - 1.0f);
+								}
+								else if (vmode == 11)
+								{
+									REAL chirpR = freq * 0.1f;
+									val = 1.0f + native_sin(2.0f * M_PI_F * (freq + chirpR * t) * t + ph) * (val - 1.0f);
+								}
+								else if (vmode == 12)
+								{
+									REAL rtv = fmod(t * freq + ph, 1.0f);
+									if (rtv < 0.0f) rtv += 1.0f;
+									val = 1.0f + (1.0f - rtv) * (val - 1.0f);
+								}
+								else if (vmode == 13)
+								{
+									REAL lxv = 1.0f, lyv = 1.0f, lzv = 1.0f;
+									lxv += (REAL)((fractal->transformCommon.multiplierNoiseSeed4 + 1) % 100) * 0.01f;
+									for (int li = 0; li < (int)(t * 100.0f) + 1; li++)
+									{
+										REAL dxv = 10.0f * (lyv - lxv) * 0.01f;
+										REAL dyv = (lxv * (28.0f - lzv) - lyv) * 0.01f;
+										REAL dzv = (lxv * lyv - 2.6667f * lzv) * 0.01f;
+										lxv += dxv; lyv += dyv; lzv += dzv;
+									}
+									val = 1.0f + fmod(fabs(lxv), 1.0f) * (val - 1.0f);
+								}
+								else if (vmode == 14)
+								{
+									REAL btv = fmod(t * freq + ph, 1.0f);
+									if (btv < 0.0f) btv += 1.0f;
+									REAL triv = fabs(2.0f * btv - 1.0f);
+									val = 1.0f + (1.0f - triv * triv) * (val - 1.0f);
+								}
 					}
 				}
 
@@ -3003,6 +3090,43 @@ default:
 						if (steps < 1.0) steps = 1.0;
 						REAL st = floor(t * steps) / steps;
 						val = 1.0 + (val - 1.0) * st;
+								else if (vmode == 10)
+								{
+									REAL kls = fmax(fractal->transformCommon.multiplierExponent5, 0.1f) * 10.0f;
+									REAL sv = 1.0f / (1.0f + native_exp(-kls * (t - 0.5f)));
+									val = 1.0f + (sv - 0.5f) * 2.0f * (val - 1.0f);
+								}
+								else if (vmode == 11)
+								{
+									REAL chirpR = freq * 0.1f;
+									val = 1.0f + native_sin(2.0f * M_PI_F * (freq + chirpR * t) * t + ph) * (val - 1.0f);
+								}
+								else if (vmode == 12)
+								{
+									REAL rtv = fmod(t * freq + ph, 1.0f);
+									if (rtv < 0.0f) rtv += 1.0f;
+									val = 1.0f + (1.0f - rtv) * (val - 1.0f);
+								}
+								else if (vmode == 13)
+								{
+									REAL lxv = 1.0f, lyv = 1.0f, lzv = 1.0f;
+									lxv += (REAL)((fractal->transformCommon.multiplierNoiseSeed5 + 1) % 100) * 0.01f;
+									for (int li = 0; li < (int)(t * 100.0f) + 1; li++)
+									{
+										REAL dxv = 10.0f * (lyv - lxv) * 0.01f;
+										REAL dyv = (lxv * (28.0f - lzv) - lyv) * 0.01f;
+										REAL dzv = (lxv * lyv - 2.6667f * lzv) * 0.01f;
+										lxv += dxv; lyv += dyv; lzv += dzv;
+									}
+									val = 1.0f + fmod(fabs(lxv), 1.0f) * (val - 1.0f);
+								}
+								else if (vmode == 14)
+								{
+									REAL btv = fmod(t * freq + ph, 1.0f);
+									if (btv < 0.0f) btv += 1.0f;
+									REAL triv = fabs(2.0f * btv - 1.0f);
+									val = 1.0f + (1.0f - triv * triv) * (val - 1.0f);
+								}
 					}
 				}
 

@@ -916,6 +916,43 @@ void cFractalThreex3StackJulia::FormulaCode(CVector4 &z, const sFractal *fractal
 						double st = floor(t * steps) / steps;
 						val = 1.0 + (val - 1.0) * st;
 					}
+					else if (vmode == 10) // Logistic Sigmoid
+					{
+						double kls = fmax(fractal->transformCommon.multiplierExponent2, 0.1) * 10.0;
+						double sv = 1.0 / (1.0 + exp(-kls * (t - 0.5)));
+						val = 1.0 + (sv - 0.5) * 2.0 * (val - 1.0);
+					}
+					else if (vmode == 11) // Chirp Sweep
+					{
+						double chirpR = freq * 0.1;
+						val = 1.0 + sin(2.0 * M_PI * (freq + chirpR * t) * t + ph) * (val - 1.0);
+					}
+					else if (vmode == 12) // Reverse Sawtooth
+					{
+						double rtv = fmod(t * freq + ph, 1.0);
+						if (rtv < 0.0) rtv += 1.0;
+						val = 1.0 + (1.0 - rtv) * (val - 1.0);
+					}
+					else if (vmode == 13) // Lorenz Chaotic
+					{
+						double lxv = 1.0, lyv = 1.0, lzv = 1.0;
+						lxv += (double)((fractal->transformCommon.multiplierNoiseSeed2 + 1) % 100) * 0.01;
+						for (int li = 0; li < (int)(t * 100.0) + 1; li++)
+						{
+							double dxv = 10.0 * (lyv - lxv) * 0.01;
+							double dyv = (lxv * (28.0 - lzv) - lyv) * 0.01;
+							double dzv = (lxv * lyv - 2.6667 * lzv) * 0.01;
+							lxv += dxv; lyv += dyv; lzv += dzv;
+						}
+						val = 1.0 + fmod(fabs(lxv), 1.0) * (val - 1.0);
+					}
+					else if (vmode == 14) // Parabolic Bounce
+					{
+						double btv = fmod(t * freq + ph, 1.0);
+						if (btv < 0.0) btv += 1.0;
+						double triv = fabs(2.0 * btv - 1.0);
+						val = 1.0 + (1.0 - triv * triv) * (val - 1.0);
+					}
 				}
 
 				if (fractal->transformCommon.multiplierChain2) val *= prevMultVal;
@@ -1677,6 +1714,43 @@ void cFractalThreex3StackJulia::FormulaCode(CVector4 &z, const sFractal *fractal
 						double st = floor(t * steps) / steps;
 						val = 1.0 + (val - 1.0) * st;
 					}
+					else if (vmode == 10) // Logistic Sigmoid
+					{
+						double kls = fmax(fractal->transformCommon.multiplierExponent3, 0.1) * 10.0;
+						double sv = 1.0 / (1.0 + exp(-kls * (t - 0.5)));
+						val = 1.0 + (sv - 0.5) * 2.0 * (val - 1.0);
+					}
+					else if (vmode == 11) // Chirp Sweep
+					{
+						double chirpR = freq * 0.1;
+						val = 1.0 + sin(2.0 * M_PI * (freq + chirpR * t) * t + ph) * (val - 1.0);
+					}
+					else if (vmode == 12) // Reverse Sawtooth
+					{
+						double rtv = fmod(t * freq + ph, 1.0);
+						if (rtv < 0.0) rtv += 1.0;
+						val = 1.0 + (1.0 - rtv) * (val - 1.0);
+					}
+					else if (vmode == 13) // Lorenz Chaotic
+					{
+						double lxv = 1.0, lyv = 1.0, lzv = 1.0;
+						lxv += (double)((fractal->transformCommon.multiplierNoiseSeed3 + 1) % 100) * 0.01;
+						for (int li = 0; li < (int)(t * 100.0) + 1; li++)
+						{
+							double dxv = 10.0 * (lyv - lxv) * 0.01;
+							double dyv = (lxv * (28.0 - lzv) - lyv) * 0.01;
+							double dzv = (lxv * lyv - 2.6667 * lzv) * 0.01;
+							lxv += dxv; lyv += dyv; lzv += dzv;
+						}
+						val = 1.0 + fmod(fabs(lxv), 1.0) * (val - 1.0);
+					}
+					else if (vmode == 14) // Parabolic Bounce
+					{
+						double btv = fmod(t * freq + ph, 1.0);
+						if (btv < 0.0) btv += 1.0;
+						double triv = fabs(2.0 * btv - 1.0);
+						val = 1.0 + (1.0 - triv * triv) * (val - 1.0);
+					}
 				}
 
 				if (fractal->transformCommon.multiplierChain3) val *= prevMultVal;
@@ -2437,6 +2511,43 @@ void cFractalThreex3StackJulia::FormulaCode(CVector4 &z, const sFractal *fractal
 						double st = floor(t * steps) / steps;
 						val = 1.0 + (val - 1.0) * st;
 					}
+					else if (vmode == 10) // Logistic Sigmoid
+					{
+						double kls = fmax(fractal->transformCommon.multiplierExponent4, 0.1) * 10.0;
+						double sv = 1.0 / (1.0 + exp(-kls * (t - 0.5)));
+						val = 1.0 + (sv - 0.5) * 2.0 * (val - 1.0);
+					}
+					else if (vmode == 11) // Chirp Sweep
+					{
+						double chirpR = freq * 0.1;
+						val = 1.0 + sin(2.0 * M_PI * (freq + chirpR * t) * t + ph) * (val - 1.0);
+					}
+					else if (vmode == 12) // Reverse Sawtooth
+					{
+						double rtv = fmod(t * freq + ph, 1.0);
+						if (rtv < 0.0) rtv += 1.0;
+						val = 1.0 + (1.0 - rtv) * (val - 1.0);
+					}
+					else if (vmode == 13) // Lorenz Chaotic
+					{
+						double lxv = 1.0, lyv = 1.0, lzv = 1.0;
+						lxv += (double)((fractal->transformCommon.multiplierNoiseSeed4 + 1) % 100) * 0.01;
+						for (int li = 0; li < (int)(t * 100.0) + 1; li++)
+						{
+							double dxv = 10.0 * (lyv - lxv) * 0.01;
+							double dyv = (lxv * (28.0 - lzv) - lyv) * 0.01;
+							double dzv = (lxv * lyv - 2.6667 * lzv) * 0.01;
+							lxv += dxv; lyv += dyv; lzv += dzv;
+						}
+						val = 1.0 + fmod(fabs(lxv), 1.0) * (val - 1.0);
+					}
+					else if (vmode == 14) // Parabolic Bounce
+					{
+						double btv = fmod(t * freq + ph, 1.0);
+						if (btv < 0.0) btv += 1.0;
+						double triv = fabs(2.0 * btv - 1.0);
+						val = 1.0 + (1.0 - triv * triv) * (val - 1.0);
+					}
 				}
 
 				if (fractal->transformCommon.multiplierChain4) val *= prevMultVal;
@@ -3196,6 +3307,43 @@ void cFractalThreex3StackJulia::FormulaCode(CVector4 &z, const sFractal *fractal
 						if (steps < 1.0) steps = 1.0;
 						double st = floor(t * steps) / steps;
 						val = 1.0 + (val - 1.0) * st;
+					}
+					else if (vmode == 10) // Logistic Sigmoid
+					{
+						double kls = fmax(fractal->transformCommon.multiplierExponent5, 0.1) * 10.0;
+						double sv = 1.0 / (1.0 + exp(-kls * (t - 0.5)));
+						val = 1.0 + (sv - 0.5) * 2.0 * (val - 1.0);
+					}
+					else if (vmode == 11) // Chirp Sweep
+					{
+						double chirpR = freq * 0.1;
+						val = 1.0 + sin(2.0 * M_PI * (freq + chirpR * t) * t + ph) * (val - 1.0);
+					}
+					else if (vmode == 12) // Reverse Sawtooth
+					{
+						double rtv = fmod(t * freq + ph, 1.0);
+						if (rtv < 0.0) rtv += 1.0;
+						val = 1.0 + (1.0 - rtv) * (val - 1.0);
+					}
+					else if (vmode == 13) // Lorenz Chaotic
+					{
+						double lxv = 1.0, lyv = 1.0, lzv = 1.0;
+						lxv += (double)((fractal->transformCommon.multiplierNoiseSeed5 + 1) % 100) * 0.01;
+						for (int li = 0; li < (int)(t * 100.0) + 1; li++)
+						{
+							double dxv = 10.0 * (lyv - lxv) * 0.01;
+							double dyv = (lxv * (28.0 - lzv) - lyv) * 0.01;
+							double dzv = (lxv * lyv - 2.6667 * lzv) * 0.01;
+							lxv += dxv; lyv += dyv; lzv += dzv;
+						}
+						val = 1.0 + fmod(fabs(lxv), 1.0) * (val - 1.0);
+					}
+					else if (vmode == 14) // Parabolic Bounce
+					{
+						double btv = fmod(t * freq + ph, 1.0);
+						if (btv < 0.0) btv += 1.0;
+						double triv = fabs(2.0 * btv - 1.0);
+						val = 1.0 + (1.0 - triv * triv) * (val - 1.0);
 					}
 				}
 
