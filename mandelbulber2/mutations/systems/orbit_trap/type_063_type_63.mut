@@ -1,0 +1,5 @@
+// TYPE_ID: 63
+// NAME: Type 63
+// PARAMS: locals
+// SYSTEM: orbit_trap
+double d=sin(z.x*oa*M_PI)*sin(z.y*ob*M_PI)*sin(z.z*oc*M_PI); aux.DE *= (1.0 + of*fabs(d));

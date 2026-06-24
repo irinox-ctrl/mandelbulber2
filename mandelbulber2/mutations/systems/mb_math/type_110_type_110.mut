@@ -1,0 +1,5 @@
+// TYPE_ID: 110
+// NAME: Type 110
+// PARAMS: locals
+// SYSTEM: mb_math
+double rxy=sqrt(zx*zx+zy*zy+1e-21); z.x=(rxy-ma)*cos(atan2(zy,zx)); z.y=(rxy-ma)*sin(atan2(zy,zx)); aux.DE*=fabs(mf)*rxy;

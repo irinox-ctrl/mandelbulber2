@@ -1,0 +1,5 @@
+// TYPE_ID: 39
+// NAME: Type 39
+// PARAMS: locals
+// SYSTEM: warp_dist
+{ double u=wf*wam*sin(wfq*zz2+wph); z.x+=u*(-zy/(sqrt(zx*zx+zy*zy)+1e-21)); z.y+=u*(zx/(sqrt(zx*zx+zy*zy)+1e-21)); aux.DE*=(1.0+fabs(wf*wam*wfq)); }

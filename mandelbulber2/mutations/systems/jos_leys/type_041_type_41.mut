@@ -1,0 +1,5 @@
+// TYPE_ID: 41
+// NAME: Type 41
+// PARAMS: locals
+// SYSTEM: jos_leys
+double ach=ja*sin(jfreq*zx)*sin(jfreq*zy)*cos(jfreq*zz2)/fmax(1e-10,r); aux.DE*=(1.0+jf*ach);

@@ -1,0 +1,5 @@
+// TYPE_ID: 76
+// NAME: Type 76
+// PARAMS: locals
+// SYSTEM: orbit_trap
+double d=sqrt(z.x*z.x+z.y*z.y+z.z*z.z); double decay=exp(-oa*d); double osc=sin(ob*d+oc*(double)i); aux.DE *= (1.0 + of*decay*osc);

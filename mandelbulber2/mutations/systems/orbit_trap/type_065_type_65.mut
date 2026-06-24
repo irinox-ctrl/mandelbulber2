@@ -1,0 +1,5 @@
+// TYPE_ID: 65
+// NAME: Type 65
+// PARAMS: locals
+// SYSTEM: orbit_trap
+double gx=fabs(z.x-oa*round(z.x/fmax(oa,1e-21))); double gy=fabs(z.y-ob*round(z.y/fmax(ob,1e-21))); double d=sqrt(gx*gx+gy*gy); aux.DE *= (1.0 + of*exp(-od*d));

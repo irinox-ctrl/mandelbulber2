@@ -1,0 +1,5 @@
+// TYPE_ID: 56
+// NAME: Type 56
+// PARAMS: locals
+// SYSTEM: orbit_trap
+double ph=atan2(z.y,z.x); int n=(int)fmax(3,fmin(oa,16)); double d=sqrt(z.x*z.x+z.y*z.y)*fabs(sin(n*ph*0.5)); aux.DE *= (1.0 + of*exp(-od*d));

@@ -1,0 +1,5 @@
+// TYPE_ID: 39
+// NAME: Type 39
+// PARAMS: locals
+// SYSTEM: torus
+double emission = sin(z.x*ta)*sin(z.y*ta)*sin(z.z*ta); emission = emission*emission; aux.DE /= (1.0 + tf*emission*tb);

@@ -1,0 +1,5 @@
+// TYPE_ID: 87
+// NAME: Type 87
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= (1.0 + af * aa * sin(ab*r+ac*atan2(zy,zx)+ad*i*0.1));

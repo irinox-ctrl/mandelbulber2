@@ -1,0 +1,5 @@
+// TYPE_ID: 263
+// NAME: Type 263
+// PARAMS: locals
+// SYSTEM: abox
+{ double psi2=sin(aa*r)*sin(aa*r); aux.DE*=(1.0+ab*psi2); }

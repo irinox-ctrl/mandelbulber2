@@ -1,0 +1,5 @@
+// TYPE_ID: 77
+// NAME: Type 77
+// PARAMS: locals
+// SYSTEM: noise
+double wx=z.x+nam*sin(nfq*z.y); double wy=z.y+nam*cos(nfq*z.x); double v1=sin(wx*na); double v2=cos(wy*nb); double v=v1*v2; z.x+=nf*v*nc*0.01; z.y+=nf*v*nd*0.01; aux.DE *= (1.0 + nf*fabs(v)*0.1);

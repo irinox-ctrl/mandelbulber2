@@ -1,0 +1,5 @@
+// TYPE_ID: 177
+// NAME: Type 177
+// PARAMS: locals
+// SYSTEM: abox
+{ if(fabs(zx)>aa||fabs(zy)>aa||fabs(zz2)>aa) aux.DE*=ab; }

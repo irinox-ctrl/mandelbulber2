@@ -1,0 +1,5 @@
+// TYPE_ID: 337
+// NAME: Type 337
+// PARAMS: locals
+// SYSTEM: abox
+double V_jj = aa*sin(ab*r); double josephson = cos(ac*V_jj); aux.DE *= (1.0 + af * (1.0 - josephson*josephson));

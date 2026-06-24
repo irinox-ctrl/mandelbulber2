@@ -1,0 +1,5 @@
+// TYPE_ID: 94
+// NAME: Type 94
+// PARAMS: locals
+// SYSTEM: warp_dist
+{ double nr=r+wf*wam*sin(wfq*atan2(zy,zx)*wa+wph); z*=(nr/r); aux.DE*=(nr/r); }

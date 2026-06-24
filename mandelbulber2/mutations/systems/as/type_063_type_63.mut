@@ -1,0 +1,5 @@
+// TYPE_ID: 63
+// NAME: Type 63
+// PARAMS: locals
+// SYSTEM: as
+double theta = atan2(z.y, z.x); aux.DE *= (1.0 + sf*ta*cos(2.0*theta));

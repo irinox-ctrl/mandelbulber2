@@ -1,0 +1,5 @@
+// TYPE_ID: 134
+// NAME: Type 134
+// PARAMS: locals
+// SYSTEM: mb_math
+double R=ma,rr2=mb; double rxy=sqrt(zx*zx+zy*zy+1e-21); double td=(rxy-R)*(rxy-R)+zz2*zz2-rr2*rr2; aux.color+=fmax(0.0,1.0-fabs(td))*mc;

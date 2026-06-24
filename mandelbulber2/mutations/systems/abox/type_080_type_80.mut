@@ -1,0 +1,5 @@
+// TYPE_ID: 80
+// NAME: Type 80
+// PARAMS: locals
+// SYSTEM: abox
+{ double ph=atan2(zy,zx); double n=fmax(1.0,aa); double s=2.0*M_PI/n; double sector=fmod(ph+10.0*M_PI,s)/s; aux.DE*=(1.0+af*ab*sin(M_PI*sector)); }

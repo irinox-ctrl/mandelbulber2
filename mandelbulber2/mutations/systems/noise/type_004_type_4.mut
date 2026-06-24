@@ -1,0 +1,5 @@
+// TYPE_ID: 4
+// NAME: Type 4
+// PARAMS: locals
+// SYSTEM: noise
+double fx = z.x*nfq; double fy = z.y*nfq; double fz = z.z*nfq; double ix = floor(fx); double iy = floor(fy); double iz = floor(fz); double tx = fx-ix; double ty = fy-iy; double tz = fz-iz; double h000 = sin(ix*127.1+iy*311.7+iz*74.7)*43758.5453; h000=h000-floor(h000); double h100 = sin((ix+1)*127.1+iy*311.7+iz*74.7)*43758.5453; h100=h100-floor(h100); double v = h000*(1.0-tx) + h100*tx; aux.DE *= (1.0 + nf*v);

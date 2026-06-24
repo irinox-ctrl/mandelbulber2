@@ -1,0 +1,5 @@
+// TYPE_ID: 353
+// NAME: Type 353
+// PARAMS: locals
+// SYSTEM: abox
+double V_ratio = fmax(fabs(aa), 0.1)/fmax(fabs(ab), 0.1); double T_ratio = fmax(fabs(ac), 0.1)/fmax(fabs(ad), 0.1); double eff = log(fmax(V_ratio,1e-21))/(log(fmax(T_ratio,1e-21))+1e-21); aux.DE *= (1.0 + af * fmin(fabs(eff), 5.0) * sin(r)*sin(r));

@@ -1,0 +1,5 @@
+// TYPE_ID: 76
+// NAME: Type 76
+// PARAMS: locals
+// SYSTEM: jos_leys
+double khov=ja*pow(fmax(1e-10,sin(jfreq*r)),2.0)*jb/fmax(1e-10,r); aux.DE*=(1.0+jf*khov);

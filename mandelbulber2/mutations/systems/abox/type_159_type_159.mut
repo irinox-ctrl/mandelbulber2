@@ -1,0 +1,5 @@
+// TYPE_ID: 159
+// NAME: Type 159
+// PARAMS: locals
+// SYSTEM: abox
+{ double lag=1.0-aa*r+aa*aa*r*r*0.5; aux.DE*=(1.0+af*ab*lag*exp(-ac*r)); }

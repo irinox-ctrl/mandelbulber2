@@ -1,0 +1,5 @@
+// TYPE_ID: 35
+// NAME: Type 35
+// PARAMS: locals
+// SYSTEM: as
+double parallax = fabs(ta)*z.z/fmax(fabs(tb),0.01); aux.DE *= (1.0 + sf*parallax*0.1);

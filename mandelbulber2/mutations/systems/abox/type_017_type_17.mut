@@ -1,0 +1,5 @@
+// TYPE_ID: 17
+// NAME: Type 17
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= (1.0 + af * aa * sin(ab*zx)*sin(ac*zy)*sin(ad*zz2));

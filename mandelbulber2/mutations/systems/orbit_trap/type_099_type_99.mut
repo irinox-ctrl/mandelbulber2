@@ -1,0 +1,5 @@
+// TYPE_ID: 99
+// NAME: Type 99
+// PARAMS: locals
+// SYSTEM: orbit_trap
+double r=sqrt(z.x*z.x+z.y*z.y+z.z*z.z); double d=fabs(r-oa); double v=exp(-ob*d)*cos(oc*d); z.x += of*v*z.x/fmax(r,1e-21)*0.01; z.y += of*v*z.y/fmax(r,1e-21)*0.01; z.z += of*v*z.z/fmax(r,1e-21)*0.01; aux.DE *= (1.0 + of*fabs(v)*0.1);

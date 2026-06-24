@@ -1,0 +1,5 @@
+// TYPE_ID: 14
+// NAME: Type 14
+// PARAMS: locals
+// SYSTEM: noise
+double v = sin(z.x*nfq)*cos(z.y*nfq*1.3)*sin(z.z*nfq*0.7); aux.DE *= (1.0 + nf*v*nam);

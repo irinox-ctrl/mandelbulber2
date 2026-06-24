@@ -1,0 +1,5 @@
+// TYPE_ID: 79
+// NAME: Type 79
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= (1.0 + af * aa * cos(ab*atan2(zy,zx)+ac*acos(zz2/r)));

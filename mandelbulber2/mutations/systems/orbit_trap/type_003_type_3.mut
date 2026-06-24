@@ -1,0 +1,5 @@
+// TYPE_ID: 3
+// NAME: Type 3
+// PARAMS: locals
+// SYSTEM: orbit_trap
+double d = fmax(fabs(z.x-oa),fmax(fabs(z.y-ob),fabs(z.z-oc))); aux.DE *= (1.0 + of*exp(-od*d));

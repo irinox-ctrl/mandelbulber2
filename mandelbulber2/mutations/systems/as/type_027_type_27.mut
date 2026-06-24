@@ -1,0 +1,5 @@
+// TYPE_ID: 27
+// NAME: Type 27
+// PARAMS: locals
+// SYSTEM: as
+double r = sqrt(z.x*z.x+z.y*z.y+z.z*z.z); double view_dot = z.z/fmax(r,1e-21); double fresnel = pow(fmax(1.0-fabs(view_dot),0.0), ta); aux.DE *= (1.0 + sf*fresnel*tb);

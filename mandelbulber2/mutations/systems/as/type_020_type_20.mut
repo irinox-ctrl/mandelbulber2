@@ -1,0 +1,5 @@
+// TYPE_ID: 20
+// NAME: Type 20
+// PARAMS: locals
+// SYSTEM: as
+double ao = 1.0/(1.0 + (double)i*ta*0.01); aux.DE *= (1.0 - sf*ao*fabs(tb));

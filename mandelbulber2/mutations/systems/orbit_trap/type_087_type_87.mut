@@ -1,0 +1,5 @@
+// TYPE_ID: 87
+// NAME: Type 87
+// PARAMS: locals
+// SYSTEM: orbit_trap
+double d1=sqrt(z.x*z.x+z.y*z.y+z.z*z.z)-oa; double d2=fmax(fabs(z.x),fmax(fabs(z.y),fabs(z.z)))-ob; double d=fmax(d1,-d2); aux.DE *= (1.0 + of*exp(-od*fabs(d)));

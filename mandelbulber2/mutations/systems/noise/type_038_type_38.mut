@@ -1,0 +1,5 @@
+// TYPE_ID: 38
+// NAME: Type 38
+// PARAMS: locals
+// SYSTEM: noise
+double md=1e10; for(int dx=-1;dx<=1;dx++) for(int dy=-1;dy<=1;dy++){ double cx=floor(z.x*nfq)+dx+0.5; double cy=floor(z.y*nfq)+dy+0.5; double h=sin(cx*127.1+cy*311.7)*43758.5453; h=h-floor(h); cx+=h*0.5; double d=fabs(z.x*nfq-cx)+fabs(z.y*nfq-cy); if(d<md)md=d; } aux.DE *= (1.0 + nf*md*nam);

@@ -1,0 +1,5 @@
+// TYPE_ID: 169
+// NAME: Type 169
+// PARAMS: locals
+// SYSTEM: abox
+{ double tmp=aa+ab*sin(ac*r)*cos(ad*i*0.1); aux.DE*=(1.0+af*tmp); }

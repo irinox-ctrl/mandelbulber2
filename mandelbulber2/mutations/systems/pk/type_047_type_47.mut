@@ -1,0 +1,5 @@
+// TYPE_ID: 47
+// NAME: Type 47
+// PARAMS: locals
+// SYSTEM: pk
+double chi=pa*tanh(pb*(r-pc)); aux.DE*=(1.0+pf*chi);

@@ -1,0 +1,5 @@
+// TYPE_ID: 52
+// NAME: Type 52
+// PARAMS: locals
+// SYSTEM: jos_leys
+double bm=ja*sqrt(fmax(0.0,rr-jb*jb))/fmax(1e-10,rr); aux.DE*=(1.0+jf*bm);

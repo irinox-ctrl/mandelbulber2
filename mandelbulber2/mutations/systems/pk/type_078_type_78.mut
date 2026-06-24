@@ -1,0 +1,5 @@
+// TYPE_ID: 78
+// NAME: Type 78
+// PARAMS: locals
+// SYSTEM: pk
+double hz=pa*M_PI*pb/(2.0*fmax(1e-10,r)); aux.DE*=(1.0+pf*tanh(hz));

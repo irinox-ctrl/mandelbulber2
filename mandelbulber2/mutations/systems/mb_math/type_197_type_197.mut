@@ -1,0 +1,5 @@
+// TYPE_ID: 197
+// NAME: Type 197
+// PARAMS: locals
+// SYSTEM: mb_math
+double th1=ma*M_PI/180.0+mb*sin(i*mc); double cs1=cos(th1),sn1=sin(th1); z.x=zx*cs1-zy*sn1; z.y=zx*sn1+zy*cs1; if(fabs(z.x)>md) z.x=copysign(md*2.0,z.x)-z.x; z*=me; aux.DE*=fabs(me);

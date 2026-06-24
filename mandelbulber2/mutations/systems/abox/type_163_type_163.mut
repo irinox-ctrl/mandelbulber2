@@ -1,0 +1,5 @@
+// TYPE_ID: 163
+// NAME: Type 163
+// PARAMS: locals
+// SYSTEM: abox
+{ double sg=1.0/(1.0+exp(-aa*(r-ab))); aux.DE*=(1.0+af*ac*sg*(1.0-sg)); }

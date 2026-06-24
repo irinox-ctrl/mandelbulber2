@@ -1,0 +1,5 @@
+// TYPE_ID: 142
+// NAME: Type 142
+// PARAMS: locals
+// SYSTEM: abox
+{ double orb=fabs(zx-floor(zx*aa)/aa)*fabs(zy-floor(zy*ab)/ab); aux.DE*=(1.0+af*ac*sin(ad*orb)); }

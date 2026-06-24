@@ -1,0 +1,5 @@
+// TYPE_ID: 133
+// NAME: Type 133
+// PARAMS: locals
+// SYSTEM: abox
+{ double ds=fmax(fabs(zx)-aa,fabs(zy)-ab); ds=fmax(ds,fabs(zz2)-ac); aux.DE*=(1.0+af*ad*exp(-ae*ds*ds)); }

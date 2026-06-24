@@ -1,0 +1,5 @@
+// TYPE_ID: 29
+// NAME: Type 29
+// PARAMS: locals
+// SYSTEM: noise
+double v=0, a=nam, f=nfq; double cs=cos(nd*M_PI/180.0), sn=sin(nd*M_PI/180.0); double px=z.x,py=z.y; for(int k=0;k<5;k++){ double h=sin(px*f*127.1+py*f*311.7+z.z*f*74.7)*43758.5453; h=h-floor(h); v+=a*h; double nx=px*cs-py*sn; py=px*sn+py*cs; px=nx; f*=2.0; a*=0.5; } aux.DE *= (1.0 + nf*v);

@@ -1,0 +1,5 @@
+// TYPE_ID: 24
+// NAME: Type 24
+// PARAMS: locals
+// SYSTEM: torus
+double ss_depth = exp(-fabs(ta)*sqrt(z.x*z.x+z.y*z.y+z.z*z.z)); aux.DE *= (1.0 + tf*ss_depth*tb);

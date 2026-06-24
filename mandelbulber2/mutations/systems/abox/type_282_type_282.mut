@@ -1,0 +1,5 @@
+// TYPE_ID: 282
+// NAME: Type 282
+// PARAMS: locals
+// SYSTEM: abox
+{ double bv=fabs(zx-aa*sin(ab*zy))/(double(i)+1.0); aux.DE*=(1.0+ac*bv); }

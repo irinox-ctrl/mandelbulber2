@@ -1,0 +1,5 @@
+// TYPE_ID: 363
+// NAME: Type 363
+// PARAMS: locals
+// SYSTEM: abox
+double T_ratio = fmax(fabs(aa),0.01)/fmax(fabs(ab),0.01); double eta = fabs(ac)+1.0; double eff = pow(T_ratio, 3.0)*eta; aux.DE *= (1.0 + af * fmin(fabs(eff),10.0) * sin(r)*sin(r));

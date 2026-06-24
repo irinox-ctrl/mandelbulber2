@@ -1,0 +1,5 @@
+// TYPE_ID: 62
+// NAME: Type 62
+// PARAMS: locals
+// SYSTEM: jos_leys
+double dw=ja/(fmax(1e-10,rr))*cos(jfreq*zz2); aux.DE*=(1.0+jf*dw);

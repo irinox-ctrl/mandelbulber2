@@ -26,35 +26,182 @@
         "NSTP": "NSteps"
       },
       "initparams": [
-        {"name": "mutation_inversion_enabled", "field": "inversionEnabled", "type": "bool", "default": true},
-        {"name": "mutation_inv_type", "field": "inversionType", "type": "int", "default": 0, "min": 0, "max": 50},
-        {"name": "mutation_inv_center_ax", "field": "invCenterX", "type": "double", "default": 0.0},
-        {"name": "mutation_inv_center_ay", "field": "invCenterY", "type": "double", "default": 0.0},
-        {"name": "mutation_inv_center_az", "field": "invCenterZ", "type": "double", "default": 0.0},
-        {"name": "mutation_inv_radius", "field": "invRadius", "type": "double", "default": 1.0},
-        {"name": "mutation_inv_param_a", "field": "invParamA", "type": "double", "default": 1.0},
-        {"name": "mutation_inv_param_b", "field": "invParamB", "type": "double", "default": 1.0},
-        {"name": "mutation_inv_param_c", "field": "invParamC", "type": "double", "default": 1.0},
-        {"name": "mutation_inv_scale", "field": "invScale", "type": "double", "default": 1.0},
-        {"name": "mutation_inv_angle", "field": "invAngle", "type": "double", "default": 0.0},
-        {"name": "mutation_inv_frequency", "field": "invFrequency", "type": "double", "default": 1.0},
-        {"name": "mutation_inv_amplitude", "field": "invAmplitude", "type": "double", "default": 0.5},
-        {"name": "mutation_inv_min_r", "field": "invMinR", "type": "double", "default": 0.5},
-        {"name": "mutation_inv_max_r", "field": "invMaxR", "type": "double", "default": 1.0},
-        {"name": "mutation_inv_pre_rot_ax", "field": "invPreRotX", "type": "double", "default": 0.0},
-        {"name": "mutation_inv_pre_rot_ay", "field": "invPreRotY", "type": "double", "default": 0.0},
-        {"name": "mutation_inv_pre_rot_az", "field": "invPreRotZ", "type": "double", "default": 0.0},
-        {"name": "mutation_inv_center2_ax", "field": "invCenter2X", "type": "double", "default": 1.0},
-        {"name": "mutation_inv_center2_ay", "field": "invCenter2Y", "type": "double", "default": 0.0},
-        {"name": "mutation_inv_center2_az", "field": "invCenter2Z", "type": "double", "default": 0.0},
-        {"name": "mutation_inv_radius2", "field": "invRadius2", "type": "double", "default": 1.0},
-        {"name": "mutation_inv_weight", "field": "invWeight", "type": "double", "default": 1.0},
-        {"name": "mutation_inv_n_steps", "field": "invNSteps", "type": "int", "default": 2},
-        {"name": "mutation_inv_threshold", "field": "invThreshold", "type": "double", "default": 0.1},
-        {"name": "mutation_inv_color_factor", "field": "invColorFactor", "type": "double", "default": 1.0},
-        {"name": "mutation_inv_iter_start", "field": "invIterStart", "type": "int", "default": 0},
-        {"name": "mutation_inv_iter_stop", "field": "invIterStop", "type": "int", "default": 10000},
-        {"name": "mutation_inversion_section_weight", "field": "inversionWeight", "type": "double", "default": 1.0}
+        {
+          "name": "mutation_inversion_enabled",
+          "field": "inversionEnabled",
+          "type": "bool",
+          "default": true
+        },
+        {
+          "name": "mutation_inv_type",
+          "field": "inversionType",
+          "type": "int",
+          "default": 0,
+          "min": 0,
+          "max": 50
+        },
+        {
+          "name": "mutation_inv_center_ax",
+          "field": "invCenterX",
+          "type": "double",
+          "default": 0.0
+        },
+        {
+          "name": "mutation_inv_center_ay",
+          "field": "invCenterY",
+          "type": "double",
+          "default": 0.0
+        },
+        {
+          "name": "mutation_inv_center_az",
+          "field": "invCenterZ",
+          "type": "double",
+          "default": 0.0
+        },
+        {
+          "name": "mutation_inv_radius",
+          "field": "invRadius",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_inv_param_a",
+          "field": "invParamA",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_inv_param_b",
+          "field": "invParamB",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_inv_param_c",
+          "field": "invParamC",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_inv_scale",
+          "field": "invScale",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_inv_angle",
+          "field": "invAngle",
+          "type": "double",
+          "default": 0.0
+        },
+        {
+          "name": "mutation_inv_frequency",
+          "field": "invFrequency",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_inv_amplitude",
+          "field": "invAmplitude",
+          "type": "double",
+          "default": 0.5
+        },
+        {
+          "name": "mutation_inv_min_r",
+          "field": "invMinR",
+          "type": "double",
+          "default": 0.5
+        },
+        {
+          "name": "mutation_inv_max_r",
+          "field": "invMaxR",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_inv_pre_rot_ax",
+          "field": "invPreRotX",
+          "type": "double",
+          "default": 0.0
+        },
+        {
+          "name": "mutation_inv_pre_rot_ay",
+          "field": "invPreRotY",
+          "type": "double",
+          "default": 0.0
+        },
+        {
+          "name": "mutation_inv_pre_rot_az",
+          "field": "invPreRotZ",
+          "type": "double",
+          "default": 0.0
+        },
+        {
+          "name": "mutation_inv_center2_ax",
+          "field": "invCenter2X",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_inv_center2_ay",
+          "field": "invCenter2Y",
+          "type": "double",
+          "default": 0.0
+        },
+        {
+          "name": "mutation_inv_center2_az",
+          "field": "invCenter2Z",
+          "type": "double",
+          "default": 0.0
+        },
+        {
+          "name": "mutation_inv_radius2",
+          "field": "invRadius2",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_inv_weight",
+          "field": "invWeight",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_inv_n_steps",
+          "field": "invNSteps",
+          "type": "int",
+          "default": 2
+        },
+        {
+          "name": "mutation_inv_threshold",
+          "field": "invThreshold",
+          "type": "double",
+          "default": 0.1
+        },
+        {
+          "name": "mutation_inv_color_factor",
+          "field": "invColorFactor",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_inv_iter_start",
+          "field": "invIterStart",
+          "type": "int",
+          "default": 0
+        },
+        {
+          "name": "mutation_inv_iter_stop",
+          "field": "invIterStop",
+          "type": "int",
+          "default": 10000
+        },
+        {
+          "name": "mutation_inversion_section_weight",
+          "field": "inversionWeight",
+          "type": "double",
+          "default": 1.0
+        }
       ]
     },
     "clip": {
@@ -80,32 +227,1031 @@
         "NPTS": "NPoints"
       },
       "initparams": [
-        {"name": "mutation_clip_enabled", "field": "clipEnabled", "type": "bool", "default": true},
-        {"name": "mutation_clip_type", "field": "clipType", "type": "int", "default": 1, "min": 0, "max": 100},
-        {"name": "mutation_clip_center_ax", "field": "clipCenterX", "type": "double", "default": 0.0},
-        {"name": "mutation_clip_center_ay", "field": "clipCenterY", "type": "double", "default": 0.0},
-        {"name": "mutation_clip_center_az", "field": "clipCenterZ", "type": "double", "default": 0.0},
-        {"name": "mutation_clip_size_ax", "field": "clipSizeX", "type": "double", "default": 5.0},
-        {"name": "mutation_clip_size_ay", "field": "clipSizeY", "type": "double", "default": 5.0},
-        {"name": "mutation_clip_size_az", "field": "clipSizeZ", "type": "double", "default": 5.0},
-        {"name": "mutation_clip_radius", "field": "clipRadius", "type": "double", "default": 1.0},
-        {"name": "mutation_clip_major_radius", "field": "clipMajorRadius", "type": "double", "default": 2.0},
-        {"name": "mutation_clip_angle", "field": "clipAngle", "type": "double", "default": 0.0},
-        {"name": "mutation_clip_amplitude", "field": "clipAmplitude", "type": "double", "default": 0.5},
-        {"name": "mutation_clip_frequency", "field": "clipFrequency", "type": "double", "default": 1.0},
-        {"name": "mutation_clip_smooth_k", "field": "clipSmoothK", "type": "double", "default": 0.1},
-        {"name": "mutation_clip_boolean_op", "field": "clipBooleanOp", "type": "int", "default": 0},
-        {"name": "mutation_clip_pre_rot_ax", "field": "clipPreRotX", "type": "double", "default": 0.0},
-        {"name": "mutation_clip_pre_rot_ay", "field": "clipPreRotY", "type": "double", "default": 0.0},
-        {"name": "mutation_clip_pre_rot_az", "field": "clipPreRotZ", "type": "double", "default": 0.0},
-        {"name": "mutation_clip_n_points", "field": "clipNPoints", "type": "int", "default": 5},
-        {"name": "mutation_clip_param_a", "field": "clipParamA", "type": "double", "default": 1.0},
-        {"name": "mutation_clip_param_b", "field": "clipParamB", "type": "double", "default": 1.0},
-        {"name": "mutation_clip_param_c", "field": "clipParamC", "type": "double", "default": 1.0},
-        {"name": "mutation_clip_threshold", "field": "clipThreshold", "type": "double", "default": 0.1},
-        {"name": "mutation_clip_iter_start", "field": "clipIterStart", "type": "int", "default": 0},
-        {"name": "mutation_clip_iter_stop", "field": "clipIterStop", "type": "int", "default": 10000},
-        {"name": "mutation_clip_section_weight", "field": "clipWeight", "type": "double", "default": 1.0}
+        {
+          "name": "mutation_clip_enabled",
+          "field": "clipEnabled",
+          "type": "bool",
+          "default": true
+        },
+        {
+          "name": "mutation_clip_type",
+          "field": "clipType",
+          "type": "int",
+          "default": 1,
+          "min": 0,
+          "max": 100
+        },
+        {
+          "name": "mutation_clip_center_ax",
+          "field": "clipCenterX",
+          "type": "double",
+          "default": 0.0
+        },
+        {
+          "name": "mutation_clip_center_ay",
+          "field": "clipCenterY",
+          "type": "double",
+          "default": 0.0
+        },
+        {
+          "name": "mutation_clip_center_az",
+          "field": "clipCenterZ",
+          "type": "double",
+          "default": 0.0
+        },
+        {
+          "name": "mutation_clip_size_ax",
+          "field": "clipSizeX",
+          "type": "double",
+          "default": 5.0
+        },
+        {
+          "name": "mutation_clip_size_ay",
+          "field": "clipSizeY",
+          "type": "double",
+          "default": 5.0
+        },
+        {
+          "name": "mutation_clip_size_az",
+          "field": "clipSizeZ",
+          "type": "double",
+          "default": 5.0
+        },
+        {
+          "name": "mutation_clip_radius",
+          "field": "clipRadius",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_clip_major_radius",
+          "field": "clipMajorRadius",
+          "type": "double",
+          "default": 2.0
+        },
+        {
+          "name": "mutation_clip_angle",
+          "field": "clipAngle",
+          "type": "double",
+          "default": 0.0
+        },
+        {
+          "name": "mutation_clip_amplitude",
+          "field": "clipAmplitude",
+          "type": "double",
+          "default": 0.5
+        },
+        {
+          "name": "mutation_clip_frequency",
+          "field": "clipFrequency",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_clip_smooth_k",
+          "field": "clipSmoothK",
+          "type": "double",
+          "default": 0.1
+        },
+        {
+          "name": "mutation_clip_boolean_op",
+          "field": "clipBooleanOp",
+          "type": "int",
+          "default": 0
+        },
+        {
+          "name": "mutation_clip_pre_rot_ax",
+          "field": "clipPreRotX",
+          "type": "double",
+          "default": 0.0
+        },
+        {
+          "name": "mutation_clip_pre_rot_ay",
+          "field": "clipPreRotY",
+          "type": "double",
+          "default": 0.0
+        },
+        {
+          "name": "mutation_clip_pre_rot_az",
+          "field": "clipPreRotZ",
+          "type": "double",
+          "default": 0.0
+        },
+        {
+          "name": "mutation_clip_n_points",
+          "field": "clipNPoints",
+          "type": "int",
+          "default": 5
+        },
+        {
+          "name": "mutation_clip_param_a",
+          "field": "clipParamA",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_clip_param_b",
+          "field": "clipParamB",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_clip_param_c",
+          "field": "clipParamC",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_clip_threshold",
+          "field": "clipThreshold",
+          "type": "double",
+          "default": 0.1
+        },
+        {
+          "name": "mutation_clip_iter_start",
+          "field": "clipIterStart",
+          "type": "int",
+          "default": 0
+        },
+        {
+          "name": "mutation_clip_iter_stop",
+          "field": "clipIterStop",
+          "type": "int",
+          "default": 10000
+        },
+        {
+          "name": "mutation_clip_section_weight",
+          "field": "clipWeight",
+          "type": "double",
+          "default": 1.0
+        }
+      ]
+    },
+    "jos_leys": {
+      "type_field": "josLeysDeType",
+      "enabled_field": "josLeysEnabled",
+      "iter_start": "josIterStart",
+      "iter_stop": "josIterStop",
+      "weight_field": "josLeysWeight",
+      "initparams": [
+        {
+          "name": "mutation_jos_amp",
+          "field": "josAmp",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_jos_de_type",
+          "field": "josLeysDeType",
+          "type": "int",
+          "default": 0
+        },
+        {
+          "name": "mutation_jos_factor",
+          "field": "josFactor",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_jos_freq",
+          "field": "josFreq",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_jos_iter_start",
+          "field": "josIterStart",
+          "type": "int",
+          "default": 0
+        },
+        {
+          "name": "mutation_jos_iter_stop",
+          "field": "josIterStop",
+          "type": "int",
+          "default": 0
+        },
+        {
+          "name": "mutation_jos_leys_enabled",
+          "field": "josLeysEnabled",
+          "type": "bool",
+          "default": true
+        },
+        {
+          "name": "mutation_jos_leys_section_weight",
+          "field": "josLeysWeight",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_jos_param_a",
+          "field": "josParamA",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_jos_param_b",
+          "field": "josParamB",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_jos_param_c",
+          "field": "josParamC",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_jos_param_d",
+          "field": "josParamD",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_jos_phase",
+          "field": "josPhase",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_jos_scale",
+          "field": "josScale",
+          "type": "double",
+          "default": 1.0
+        }
+      ]
+    },
+    "pk": {
+      "type_field": "pseudoKleinianDeType",
+      "enabled_field": "pkEnabled",
+      "iter_start": "pkIterStart",
+      "iter_stop": "pkIterStop",
+      "weight_field": "pkWeight",
+      "initparams": [
+        {
+          "name": "mutation_pk_amp",
+          "field": "pkAmp",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_pk_de_type",
+          "field": "pseudoKleinianDeType",
+          "type": "int",
+          "default": 0
+        },
+        {
+          "name": "mutation_pk_enabled",
+          "field": "pkEnabled",
+          "type": "bool",
+          "default": true
+        },
+        {
+          "name": "mutation_pk_factor",
+          "field": "pkFactor",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_pk_freq",
+          "field": "pkFreq",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_pk_iter_start",
+          "field": "pkIterStart",
+          "type": "int",
+          "default": 0
+        },
+        {
+          "name": "mutation_pk_iter_stop",
+          "field": "pkIterStop",
+          "type": "int",
+          "default": 0
+        },
+        {
+          "name": "mutation_pk_param_a",
+          "field": "pkParamA",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_pk_param_b",
+          "field": "pkParamB",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_pk_param_c",
+          "field": "pkParamC",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_pk_param_d",
+          "field": "pkParamD",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_pk_phase",
+          "field": "pkPhase",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_pk_scale",
+          "field": "pkScale",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_pk_section_weight",
+          "field": "pkWeight",
+          "type": "double",
+          "default": 1.0
+        }
+      ]
+    },
+    "mb_math": {
+      "type_field": "mbMathType",
+      "enabled_field": "mbMathEnabled",
+      "iter_start": "mbIterStart",
+      "iter_stop": "mbIterStop",
+      "weight_field": "mbMathWeight",
+      "initparams": [
+        {
+          "name": "mutation_mb_factor",
+          "field": "mbFactor",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_mb_iter_start",
+          "field": "mbIterStart",
+          "type": "int",
+          "default": 0
+        },
+        {
+          "name": "mutation_mb_iter_stop",
+          "field": "mbIterStop",
+          "type": "int",
+          "default": 0
+        },
+        {
+          "name": "mutation_mb_math_enabled",
+          "field": "mbMathEnabled",
+          "type": "bool",
+          "default": true
+        },
+        {
+          "name": "mutation_mb_math_section_weight",
+          "field": "mbMathWeight",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_mb_math_type",
+          "field": "mbMathType",
+          "type": "int",
+          "default": 0
+        },
+        {
+          "name": "mutation_mb_param_a",
+          "field": "mbParamA",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_mb_param_b",
+          "field": "mbParamB",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_mb_param_c",
+          "field": "mbParamC",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_mb_param_d",
+          "field": "mbParamD",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_mb_param_e",
+          "field": "mbParamE",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_mb_param_f",
+          "field": "mbParamF",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_mb_param_g",
+          "field": "mbParamG",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_mb_param_h",
+          "field": "mbParamH",
+          "type": "double",
+          "default": 1.0
+        }
+      ]
+    },
+    "warp_dist": {
+      "type_field": "warpDistType",
+      "enabled_field": "warpDistEnabled",
+      "iter_start": "warpIterStart",
+      "iter_stop": "warpIterStop",
+      "weight_field": "warpDistWeight",
+      "initparams": [
+        {
+          "name": "mutation_warp_amplitude",
+          "field": "warpAmplitude",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_warp_dist_enabled",
+          "field": "warpDistEnabled",
+          "type": "bool",
+          "default": true
+        },
+        {
+          "name": "mutation_warp_dist_section_weight",
+          "field": "warpDistWeight",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_warp_dist_type",
+          "field": "warpDistType",
+          "type": "int",
+          "default": 0
+        },
+        {
+          "name": "mutation_warp_frequency",
+          "field": "warpFrequency",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_warp_iter_start",
+          "field": "warpIterStart",
+          "type": "int",
+          "default": 0
+        },
+        {
+          "name": "mutation_warp_iter_stop",
+          "field": "warpIterStop",
+          "type": "int",
+          "default": 0
+        },
+        {
+          "name": "mutation_warp_type",
+          "field": "warpType",
+          "type": "int",
+          "default": 0
+        }
+      ]
+    },
+    "sym_kal": {
+      "type_field": "symKalType",
+      "enabled_field": "symmetryEnabled",
+      "iter_start": "skIterStart",
+      "iter_stop": "skIterStop",
+      "weight_field": "symmetryWeight",
+      "initparams": [
+        {
+          "name": "mutation_sk_amp",
+          "field": "skAmp",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_sk_angle",
+          "field": "skAngle",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_sk_factor",
+          "field": "skFactor",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_sk_freq",
+          "field": "skFreq",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_sk_iter_start",
+          "field": "skIterStart",
+          "type": "int",
+          "default": 0
+        },
+        {
+          "name": "mutation_sk_iter_stop",
+          "field": "skIterStop",
+          "type": "int",
+          "default": 0
+        },
+        {
+          "name": "mutation_sk_offset",
+          "field": "skOffset",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_sk_param_a",
+          "field": "skParamA",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_sk_param_b",
+          "field": "skParamB",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_sk_param_c",
+          "field": "skParamC",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_sk_param_d",
+          "field": "skParamD",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_sym_kal_type",
+          "field": "symKalType",
+          "type": "int",
+          "default": 0
+        }
+      ]
+    },
+    "abox": {
+      "type_field": "aboxType",
+      "enabled_field": "aboxEnabled",
+      "iter_start": "abIterStart",
+      "iter_stop": "abIterStop",
+      "weight_field": "aboxWeight",
+      "initparams": [
+        {
+          "name": "mutation_ab_factor",
+          "field": "abFactor",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_ab_iter_start",
+          "field": "abIterStart",
+          "type": "int",
+          "default": 0
+        },
+        {
+          "name": "mutation_ab_iter_stop",
+          "field": "abIterStop",
+          "type": "int",
+          "default": 0
+        },
+        {
+          "name": "mutation_ab_param_a",
+          "field": "abParamA",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_ab_param_b",
+          "field": "abParamB",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_ab_param_c",
+          "field": "abParamC",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_ab_param_d",
+          "field": "abParamD",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_ab_param_e",
+          "field": "abParamE",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_ab_param_f",
+          "field": "abParamF",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_ab_param_g",
+          "field": "abParamG",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_ab_param_h",
+          "field": "abParamH",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_abox_enabled",
+          "field": "aboxEnabled",
+          "type": "bool",
+          "default": true
+        },
+        {
+          "name": "mutation_abox_section_weight",
+          "field": "aboxWeight",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_abox_type",
+          "field": "aboxType",
+          "type": "int",
+          "default": 0
+        }
+      ]
+    },
+    "noise": {
+      "type_field": "noiseType",
+      "enabled_field": "noiseEnabled",
+      "iter_start": "noiseIterStart",
+      "iter_stop": "noiseIterStop",
+      "weight_field": "noiseWeight",
+      "initparams": [
+        {
+          "name": "mutation_noise_amp",
+          "field": "noiseAmp",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_noise_enabled",
+          "field": "noiseEnabled",
+          "type": "bool",
+          "default": true
+        },
+        {
+          "name": "mutation_noise_factor",
+          "field": "noiseFactor",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_noise_freq",
+          "field": "noiseFreq",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_noise_iter_start",
+          "field": "noiseIterStart",
+          "type": "int",
+          "default": 0
+        },
+        {
+          "name": "mutation_noise_iter_stop",
+          "field": "noiseIterStop",
+          "type": "int",
+          "default": 0
+        },
+        {
+          "name": "mutation_noise_param_a",
+          "field": "noiseParamA",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_noise_param_b",
+          "field": "noiseParamB",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_noise_param_c",
+          "field": "noiseParamC",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_noise_param_d",
+          "field": "noiseParamD",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_noise_section_weight",
+          "field": "noiseWeight",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_noise_type",
+          "field": "noiseType",
+          "type": "int",
+          "default": 0
+        }
+      ]
+    },
+    "orbit_trap": {
+      "type_field": "orbitTrapType",
+      "enabled_field": "orbitTrapEnabled",
+      "iter_start": "orbitIterStart",
+      "iter_stop": "orbitIterStop",
+      "weight_field": "orbitTrapWeight",
+      "initparams": [
+        {
+          "name": "mutation_orbit_factor",
+          "field": "orbitFactor",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_orbit_iter_start",
+          "field": "orbitIterStart",
+          "type": "int",
+          "default": 0
+        },
+        {
+          "name": "mutation_orbit_iter_stop",
+          "field": "orbitIterStop",
+          "type": "int",
+          "default": 0
+        },
+        {
+          "name": "mutation_orbit_param_a",
+          "field": "orbitParamA",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_orbit_param_b",
+          "field": "orbitParamB",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_orbit_param_c",
+          "field": "orbitParamC",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_orbit_param_d",
+          "field": "orbitParamD",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_orbit_trap_enabled",
+          "field": "orbitTrapEnabled",
+          "type": "bool",
+          "default": true
+        },
+        {
+          "name": "mutation_orbit_trap_section_weight",
+          "field": "orbitTrapWeight",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_orbit_trap_type",
+          "field": "orbitTrapType",
+          "type": "int",
+          "default": 0
+        }
+      ]
+    },
+    "torus": {
+      "type_field": "torusType",
+      "enabled_field": "torusEnabled",
+      "iter_start": "torusIterStart",
+      "iter_stop": "torusIterStop",
+      "weight_field": "torusWeight",
+      "initparams": [
+        {
+          "name": "mutation_torus_enabled",
+          "field": "torusEnabled",
+          "type": "bool",
+          "default": true
+        },
+        {
+          "name": "mutation_torus_factor",
+          "field": "torusFactor",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_torus_iter_start",
+          "field": "torusIterStart",
+          "type": "int",
+          "default": 0
+        },
+        {
+          "name": "mutation_torus_iter_stop",
+          "field": "torusIterStop",
+          "type": "int",
+          "default": 0
+        },
+        {
+          "name": "mutation_torus_param_a",
+          "field": "torusParamA",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_torus_param_b",
+          "field": "torusParamB",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_torus_param_c",
+          "field": "torusParamC",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_torus_param_d",
+          "field": "torusParamD",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_torus_section_weight",
+          "field": "torusWeight",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_torus_type",
+          "field": "torusType",
+          "type": "int",
+          "default": 0
+        }
+      ]
+    },
+    "as": {
+      "type_field": "asType",
+      "enabled_field": "asEnabled",
+      "iter_start": "asIterStart",
+      "iter_stop": "asIterStop",
+      "weight_field": "asWeight",
+      "initparams": [
+        {
+          "name": "mutation_as_enabled",
+          "field": "asEnabled",
+          "type": "bool",
+          "default": true
+        },
+        {
+          "name": "mutation_as_factor",
+          "field": "asFactor",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_as_iter_start",
+          "field": "asIterStart",
+          "type": "int",
+          "default": 0
+        },
+        {
+          "name": "mutation_as_iter_stop",
+          "field": "asIterStop",
+          "type": "int",
+          "default": 0
+        },
+        {
+          "name": "mutation_as_param_a",
+          "field": "asParamA",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_as_param_b",
+          "field": "asParamB",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_as_param_c",
+          "field": "asParamC",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_as_param_d",
+          "field": "asParamD",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_as_section_weight",
+          "field": "asWeight",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_as_type",
+          "field": "asType",
+          "type": "int",
+          "default": 0
+        }
+      ]
+    },
+    "sm": {
+      "type_field": "smType",
+      "enabled_field": "smEnabled",
+      "iter_start": "smIterStart",
+      "iter_stop": "smIterStop",
+      "weight_field": "smWeight",
+      "initparams": [
+        {
+          "name": "mutation_sm_enabled",
+          "field": "smEnabled",
+          "type": "bool",
+          "default": true
+        },
+        {
+          "name": "mutation_sm_factor",
+          "field": "smFactor",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_sm_iter_start",
+          "field": "smIterStart",
+          "type": "int",
+          "default": 0
+        },
+        {
+          "name": "mutation_sm_iter_stop",
+          "field": "smIterStop",
+          "type": "int",
+          "default": 0
+        },
+        {
+          "name": "mutation_sm_param_a",
+          "field": "smParamA",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_sm_param_b",
+          "field": "smParamB",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_sm_param_c",
+          "field": "smParamC",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_sm_param_d",
+          "field": "smParamD",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_sm_section_weight",
+          "field": "smWeight",
+          "type": "double",
+          "default": 1.0
+        },
+        {
+          "name": "mutation_sm_type",
+          "field": "smType",
+          "type": "int",
+          "default": 0
+        }
       ]
     }
   }

@@ -1,0 +1,5 @@
+// TYPE_ID: 89
+// NAME: Type 89
+// PARAMS: locals
+// SYSTEM: jos_leys
+double cy2=ja*exp(-jb*rr)*jc; aux.DE*=(1.0+jf*cy2);

@@ -1,0 +1,5 @@
+// TYPE_ID: 138
+// NAME: Type 138
+// PARAMS: locals
+// SYSTEM: abox
+{ double c=fabs(zx*zy+zy*zz2+zz2*zx)/(rr+1e-21); aux.DE*=(1.0+af*aa*c); }

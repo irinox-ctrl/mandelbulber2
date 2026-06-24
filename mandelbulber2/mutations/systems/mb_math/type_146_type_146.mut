@@ -1,0 +1,5 @@
+// TYPE_ID: 146
+// NAME: Type 146
+// PARAMS: locals
+// SYSTEM: mb_math
+double cl=in.point.Length(); aux.color+=cl*ma;

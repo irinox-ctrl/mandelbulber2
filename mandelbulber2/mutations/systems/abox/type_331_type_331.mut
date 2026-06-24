@@ -1,0 +1,5 @@
+// TYPE_ID: 331
+// NAME: Type 331
+// PARAMS: locals
+// SYSTEM: abox
+double T_eff = fabs(aa)*r + 0.01; double C = fabs(ab)+0.1; double dE = fabs(ac)+0.01; double res = T_eff*T_eff/(C*dE); aux.DE *= (1.0 + af * fmin(res, 10.0));

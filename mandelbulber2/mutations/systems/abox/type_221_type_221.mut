@@ -1,0 +1,5 @@
+// TYPE_ID: 221
+// NAME: Type 221
+// PARAMS: locals
+// SYSTEM: abox
+{ double dw=aa-ab; double bw=ac*0.5; double q=ad/fmax(sqrt(dw*dw+bw*bw),1e-21); aux.DE*=(1.0+af*q); }

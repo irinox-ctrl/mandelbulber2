@@ -430,11 +430,16 @@ def full_rebuild():
     print("=== Full Rebuild ===\n")
 
     export_script = Path(__file__).parent / "export_cpu_cases_to_mut.py"
+    registry_script = Path(__file__).parent / "build_de_registry.py"
+    if registry_script.exists():
+        print("Step 0a: Refresh DE registry from nine_fractals.cpp...")
+        import subprocess
+        subprocess.run([sys.executable, str(registry_script), "--merge"], check=False)
     if export_script.exists():
-        print("Step 0: Sync .mut files from CPU (clip + inversion)...")
+        print("Step 0b: Sync .mut files from CPU (clip + inversion + DE)...")
         import subprocess
         subprocess.run(
-            [sys.executable, str(export_script), "--all", "--force"],
+            [sys.executable, str(export_script), "--all", "--all-de", "--force"],
             check=False,
         )
 

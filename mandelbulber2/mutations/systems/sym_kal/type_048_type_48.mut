@@ -1,0 +1,5 @@
+// TYPE_ID: 48
+// NAME: Type 48
+// PARAMS: locals
+// SYSTEM: sym_kal
+{ z.x = fabs(z.x); z.y = fabs(z.y); z.z = fabs(z.z); if(z.x>sa) z.x=2.0*sa-z.x; if(z.y>sb) z.y=2.0*sb-z.y; if(z.z>sc) z.z=2.0*sc-z.z; }

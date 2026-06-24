@@ -1,0 +1,5 @@
+// TYPE_ID: 123
+// NAME: Type 123
+// PARAMS: locals
+// SYSTEM: mb_math
+double p=ma; z.x=fmod(zx+p*0.5,p)-p*0.5; z.y=fmod(zy+p*0.5,p)-p*0.5; z.z=fmod(zz2+p*0.5,p)-p*0.5; aux.DE*=fabs(mf)/fmax(0.01,p);

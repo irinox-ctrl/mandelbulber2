@@ -1,0 +1,5 @@
+// TYPE_ID: 122
+// NAME: Type 122
+// PARAMS: locals
+// SYSTEM: abox
+{ double ph4=atan2(zz2,sqrt(zx*zx+zy*zy+1e-21)); aux.DE*=(1.0+af*aa*sin(ab*ph4+ac*r)); }

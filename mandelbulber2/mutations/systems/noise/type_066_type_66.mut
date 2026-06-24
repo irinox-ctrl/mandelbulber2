@@ -1,0 +1,5 @@
+// TYPE_ID: 66
+// NAME: Type 66
+// PARAMS: locals
+// SYSTEM: noise
+double wx=z.x+nam*sin(z.y*nfq); double wy=z.y+nam*sin(z.z*nfq); double wz=z.z+nam*sin(z.x*nfq); double h=sin(wx*127.1+wy*311.7+wz*74.7)*43758.5453; h=h-floor(h); aux.DE *= (1.0 + nf*h);

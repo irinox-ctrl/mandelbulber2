@@ -1,0 +1,5 @@
+// TYPE_ID: 99
+// NAME: Type 99
+// PARAMS: locals
+// SYSTEM: torus
+double r2d = sqrt(z.x*z.x+z.y*z.y); double phi = atan2(z.y,z.x); double lawson_r = ta*cos(tb*phi)*cos(tc*z.z); double d = fabs(r2d-fabs(lawson_r)-td); aux.DE *= (1.0 + tf*exp(-d*5.0));

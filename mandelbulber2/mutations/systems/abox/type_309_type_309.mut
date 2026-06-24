@@ -1,0 +1,5 @@
+// TYPE_ID: 309
+// NAME: Type 309
+// PARAMS: locals
+// SYSTEM: abox
+double psi = sin(aa*r); double clone = sin(aa*r + ab*0.1); double fidelity = 1.0 - (psi-clone)*(psi-clone)*0.5; aux.DE *= (1.0 + af * fmax(fidelity, 0.0));

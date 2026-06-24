@@ -1,0 +1,5 @@
+// TYPE_ID: 57
+// NAME: Type 57
+// PARAMS: locals
+// SYSTEM: sm
+double sc=3.0; double qr=z.x,qi=z.y,qj=z.z,qk=z.w; z.x=qr*qi-qj*qk; z.y=qr*qj+qi*qk; z.z=qr*qk-qi*qj; z.w=qr*qr-qi*qi-qj*qj-qk*qk; z=fabs(z); if(z.x-z.y<0.0){double t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0){double t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0){double t=z.y;z.y=z.z;z.z=t;} z=z*sc-CVector4(1,1,1,1)*(sc-1.0)*ta; aux.DE=aux.DE*sc+1.0;

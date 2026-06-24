@@ -1,0 +1,5 @@
+// TYPE_ID: 214
+// NAME: Type 214
+// PARAMS: locals
+// SYSTEM: abox
+{ double curv=(sin(aa*zx+0.01)+sin(aa*zx-0.01)-2.0*sin(aa*zx))/0.0001; aux.DE*=(1.0+ab*fabs(curv)); }

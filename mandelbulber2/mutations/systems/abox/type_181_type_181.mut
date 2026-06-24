@@ -1,0 +1,5 @@
+// TYPE_ID: 181
+// NAME: Type 181
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= (1.0 - aa * ab * exp(-ac*r));

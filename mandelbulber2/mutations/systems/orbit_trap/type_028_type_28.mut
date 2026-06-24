@@ -1,0 +1,5 @@
+// TYPE_ID: 28
+// NAME: Type 28
+// PARAMS: locals
+// SYSTEM: orbit_trap
+double d1=fabs(z.x*sin(oa*M_PI/180.0)-z.y*cos(oa*M_PI/180.0)); double d2=fabs(z.x*sin(ob*M_PI/180.0)-z.y*cos(ob*M_PI/180.0)); aux.DE *= (1.0 + of*exp(-od*(d1+d2)));

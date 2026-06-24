@@ -1,0 +1,5 @@
+// TYPE_ID: 41
+// NAME: Type 41
+// PARAMS: locals
+// SYSTEM: as
+double grad = (sin(z.x*ta)-sin((z.x+0.01)*ta))/0.01; aux.DE /= (1.0 + sf*fabs(grad)*tb);

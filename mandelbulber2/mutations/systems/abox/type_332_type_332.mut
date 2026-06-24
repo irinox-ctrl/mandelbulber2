@@ -1,0 +1,5 @@
+// TYPE_ID: 332
+// NAME: Type 332
+// PARAMS: locals
+// SYSTEM: abox
+double pressure = aa*r*r + ab*z.x; double sensitivity = sin(ac*pressure); aux.DE *= (1.0 + af * sensitivity*sensitivity);

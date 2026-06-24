@@ -1,0 +1,5 @@
+// TYPE_ID: 88
+// NAME: Type 88
+// PARAMS: locals
+// SYSTEM: noise
+double v=0; double px=z.x*nfq,py=z.y*nfq,pz=z.z*nfq; for(int k=0;k<4;k++){ double s=(px+py+pz)/3.0; double h=sin(s*127.1+k*91.7)*43758.5453; h=h-floor(h); v+=h*nam/(1.0+k); px+=sin(py)*na; py+=sin(pz)*nb; pz+=sin(px)*nc; } aux.DE *= (1.0 + nf*v*0.25);

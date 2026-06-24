@@ -1,0 +1,5 @@
+// TYPE_ID: 327
+// NAME: Type 327
+// PARAMS: locals
+// SYSTEM: abox
+double g_eff = aa; double T = fabs(ab)+0.01; double phase = g_eff*T*T*ac; aux.DE *= (1.0 + af * cos(phase)*cos(phase));

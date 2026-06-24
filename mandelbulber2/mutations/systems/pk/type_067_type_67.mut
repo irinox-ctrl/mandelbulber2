@@ -1,0 +1,5 @@
+// TYPE_ID: 67
+// NAME: Type 67
+// PARAMS: locals
+// SYSTEM: pk
+double spc=pa*sin(pfreq*zx)*cos(pfreq*zy)*sin(pfreq*zz2)*pb; aux.DE*=(1.0+pf*spc/fmax(1e-10,r));

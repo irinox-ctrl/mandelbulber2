@@ -1,0 +1,5 @@
+// TYPE_ID: 394
+// NAME: Type 394
+// PARAMS: locals
+// SYSTEM: abox
+double J = fabs(aa)+0.01; double S = fmax(floor(fabs(ab)+1),1.0); double gap = J*exp(-M_PI*S); double string_order = sin(ac*r); aux.DE *= (1.0 + af * gap*string_order*string_order);

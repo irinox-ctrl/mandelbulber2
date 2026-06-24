@@ -1,0 +1,5 @@
+// TYPE_ID: 344
+// NAME: Type 344
+// PARAMS: locals
+// SYSTEM: abox
+double dE = fabs(aa)*r; double tau = fmax(fabs(ab),0.01); double uncertainty = dE*tau; aux.DE *= (1.0 + af * exp(-uncertainty));

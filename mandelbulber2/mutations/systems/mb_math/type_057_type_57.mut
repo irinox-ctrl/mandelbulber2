@@ -1,0 +1,5 @@
+// TYPE_ID: 57
+// NAME: Type 57
+// PARAMS: locals
+// SYSTEM: mb_math
+double ns=sin(i*12.9898+zx*78.233)*43758.5453; ns=ns-floor(ns); double sc=ma+ns*mb; z*=sc; aux.DE*=fabs(sc);

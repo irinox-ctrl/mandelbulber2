@@ -1,0 +1,5 @@
+// TYPE_ID: 160
+// NAME: Type 160
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= (1.0 + af * aa * sin(ab*r+ac) * sin(ad*r+ae) * sin(aff*r+ag));

@@ -1,0 +1,5 @@
+// TYPE_ID: 91
+// NAME: Type 91
+// PARAMS: locals
+// SYSTEM: sym_kal
+{ z.x=fabs(z.x)-sa; z.y=fabs(z.y)-sb; z.z=fabs(z.z)-sc; if(z.x<z.y){double t=z.x;z.x=z.y;z.y=t;} if(z.x<z.z){double t=z.x;z.x=z.z;z.z=t;} if(z.y<z.z){double t=z.y;z.y=z.z;z.z=t;} z*=sf; aux.DE*=fabs(sf); z.x += sa; z.y += sb; z.z += sc; }

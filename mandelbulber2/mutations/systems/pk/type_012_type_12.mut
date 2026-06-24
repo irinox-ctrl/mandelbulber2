@@ -1,0 +1,5 @@
+// TYPE_ID: 12
+// NAME: Type 12
+// PARAMS: locals
+// SYSTEM: pk
+double csc2=pa*tanh(pb*(r-pc)); aux.DE*=(1.0+pf*csc2);

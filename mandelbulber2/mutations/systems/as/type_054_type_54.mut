@@ -1,0 +1,5 @@
+// TYPE_ID: 54
+// NAME: Type 54
+// PARAMS: locals
+// SYSTEM: as
+double tube_r = fmax(fabs(sqrt(z.x*z.x+z.y*z.y) - ta), 0.01); aux.DE *= (1.0 + sf*cos(tb)/tube_r);

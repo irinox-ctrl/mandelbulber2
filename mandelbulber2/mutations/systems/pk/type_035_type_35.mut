@@ -1,0 +1,5 @@
+// TYPE_ID: 35
+// NAME: Type 35
+// PARAMS: locals
+// SYSTEM: pk
+double bm=pa*sin(pfreq*zx)*sin(pfreq*zy)*pb/fmax(1e-10,r); aux.DE*=(1.0+pf*bm);

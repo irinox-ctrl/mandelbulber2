@@ -1,0 +1,5 @@
+// TYPE_ID: 299
+// NAME: Type 299
+// PARAMS: locals
+// SYSTEM: abox
+{ double hus=exp(-aa*(zx*zx+zy*zy))*sin(ab*r); aux.DE*=(1.0+ac*fabs(hus)); }

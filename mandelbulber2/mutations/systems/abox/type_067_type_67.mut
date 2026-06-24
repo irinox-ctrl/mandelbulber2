@@ -1,0 +1,5 @@
+// TYPE_ID: 67
+// NAME: Type 67
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= fabs(aa + ab * fabs(sin(ac * r + ad * i)));

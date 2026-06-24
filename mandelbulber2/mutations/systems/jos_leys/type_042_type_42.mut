@@ -1,0 +1,5 @@
+// TYPE_ID: 42
+// NAME: Type 42
+// PARAMS: locals
+// SYSTEM: jos_leys
+double que=ja/(fmax(1e-10,rr)); aux.DE*=(1.0+jf*que);

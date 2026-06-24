@@ -1,0 +1,5 @@
+// TYPE_ID: 39
+// NAME: Type 39
+// PARAMS: locals
+// SYSTEM: jos_leys
+double barb=ja*sqrt(fmax(0.0,zx*zx+zy*zy))/fmax(1e-10,r); aux.DE*=(1.0+jf*barb);

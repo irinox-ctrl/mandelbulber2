@@ -1,0 +1,5 @@
+// TYPE_ID: 69
+// NAME: Type 69
+// PARAMS: locals
+// SYSTEM: mb_math
+double ns=sin(zx*ma+zy*mb+zz2*mc)*md; z.x+=ns; z.y+=ns; z.z+=ns; aux.DE*=fabs(mf);

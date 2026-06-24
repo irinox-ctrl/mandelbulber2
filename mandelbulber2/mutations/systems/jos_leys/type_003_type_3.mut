@@ -1,0 +1,5 @@
+// TYPE_ID: 3
+// NAME: Type 3
+// PARAMS: locals
+// SYSTEM: jos_leys
+double prod=1.0; for(int k=0;k<4;k++){double dk=r+ja*(double)(k+1); prod*=fmax(0.01,dk);} aux.DE*=(1.0+jf*jsc/fmax(1e-10,prod));

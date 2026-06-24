@@ -1,0 +1,5 @@
+// TYPE_ID: 29
+// NAME: Type 29
+// PARAMS: locals
+// SYSTEM: orbit_trap
+double d=fabs(z.z-oa*sin(ob*z.x)*cos(oc*z.y)); aux.DE *= (1.0 + of*exp(-od*d));

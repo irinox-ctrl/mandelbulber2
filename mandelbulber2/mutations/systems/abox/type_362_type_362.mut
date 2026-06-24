@@ -1,0 +1,5 @@
+// TYPE_ID: 362
+// NAME: Type 362
+// PARAMS: U0
+// SYSTEM: abox
+double U0 = aa; double delta = fabs(ab)+0.01; double pol_grad = sin(ac*z.x)*cos(ac*z.y); double eff = U0/(delta+1e-21)*pol_grad*pol_grad; aux.DE *= (1.0 + af * fmin(fabs(eff),10.0));

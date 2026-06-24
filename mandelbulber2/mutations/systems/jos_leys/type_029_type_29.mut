@@ -1,0 +1,5 @@
+// TYPE_ID: 29
+// NAME: Type 29
+// PARAMS: locals
+// SYSTEM: jos_leys
+double sab=ja*sin(jfreq*r)*zy/fmax(1e-10,rr); aux.DE*=(1.0+jf*sab);

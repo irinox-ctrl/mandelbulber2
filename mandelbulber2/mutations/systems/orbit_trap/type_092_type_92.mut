@@ -1,0 +1,5 @@
+// TYPE_ID: 92
+// NAME: Type 92
+// PARAMS: locals
+// SYSTEM: orbit_trap
+double d=fabs(z.x*z.y*z.z); d=pow(d,1.0/3.0); aux.DE *= (1.0 + of*exp(-od*d));

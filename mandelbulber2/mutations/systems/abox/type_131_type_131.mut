@@ -1,0 +1,5 @@
+// TYPE_ID: 131
+// NAME: Type 131
+// PARAMS: locals
+// SYSTEM: abox
+{ double orb=sqrt(zx*zx+zy*zy); aux.DE*=(1.0+af*aa*sin(ab*orb)); }

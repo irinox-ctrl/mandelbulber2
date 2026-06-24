@@ -1,0 +1,5 @@
+// TYPE_ID: 134
+// NAME: Type 134
+// PARAMS: locals
+// SYSTEM: abox
+{ double dp=fabs(zx*cos(aa)+zy*sin(aa)-ab); aux.DE*=(1.0+af*ac*exp(-ad*dp*dp)); }

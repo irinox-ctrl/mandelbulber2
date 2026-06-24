@@ -1,0 +1,5 @@
+// TYPE_ID: 68
+// NAME: Type 68
+// PARAMS: locals
+// SYSTEM: as
+double neg_idx = fabs(ta); aux.DE *= (1.0 + sf*neg_idx*fabs(tb));

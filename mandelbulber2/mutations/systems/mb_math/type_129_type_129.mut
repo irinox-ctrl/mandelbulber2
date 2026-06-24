@@ -1,0 +1,5 @@
+// TYPE_ID: 129
+// NAME: Type 129
+// PARAMS: locals
+// SYSTEM: mb_math
+double th=atan2(zy,zx); aux.color+=fabs(th)*ma;

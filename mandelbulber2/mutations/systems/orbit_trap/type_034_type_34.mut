@@ -1,0 +1,5 @@
+// TYPE_ID: 34
+// NAME: Type 34
+// PARAMS: locals
+// SYSTEM: orbit_trap
+double r=sqrt(z.x*z.x+z.y*z.y); double th=atan2(z.y,z.x); double sf2=pow(fabs(cos(oa*th/4.0)),ob)+pow(fabs(sin(oa*th/4.0)),ob); double sr=oc*pow(sf2,-1.0/fmax(ob,1e-21)); double d=fabs(r-sr); aux.DE *= (1.0 + of*exp(-od*d));

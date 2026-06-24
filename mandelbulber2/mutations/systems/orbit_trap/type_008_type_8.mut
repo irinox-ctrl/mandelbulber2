@@ -1,0 +1,5 @@
+// TYPE_ID: 8
+// NAME: Type 8
+// PARAMS: locals
+// SYSTEM: orbit_trap
+double ph=atan2(z.y,z.x); double r=sqrt(z.x*z.x+z.y*z.y); double spiral_r=oa+ob*ph/(2.0*M_PI); double d=fabs(r-spiral_r); aux.DE *= (1.0 + of*exp(-od*d));

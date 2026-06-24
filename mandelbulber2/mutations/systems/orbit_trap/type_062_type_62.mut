@@ -1,0 +1,5 @@
+// TYPE_ID: 62
+// NAME: Type 62
+// PARAMS: locals
+// SYSTEM: orbit_trap
+double hx=z.x*2.0/3.0+z.y/3.0; double hy=z.y*2.0/sqrt(3.0); double d=fmin(fabs(hx-round(hx)),fabs(hy-round(hy)))*oa; aux.DE *= (1.0 + of*exp(-od*d));

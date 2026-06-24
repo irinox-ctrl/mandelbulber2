@@ -1,0 +1,5 @@
+// TYPE_ID: 64
+// NAME: Type 64
+// PARAMS: locals
+// SYSTEM: warp_dist
+{ double gx=floor(zx*wa+0.5)/wa; double gy=floor(zy*wa+0.5)/wa; z.x+=wf*wam*sin(wfq*gy+wph); z.y+=wf*wam*cos(wfq*gx+wph); aux.DE*=(1.0+2.0*fabs(wf*wam*wfq)); }

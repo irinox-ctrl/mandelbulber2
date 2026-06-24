@@ -1,0 +1,5 @@
+// TYPE_ID: 177
+// NAME: Type 177
+// PARAMS: locals
+// SYSTEM: mb_math
+if(fabs(zx)>ma) z.x=copysign(ma*2.0,zx)-zx; if(fabs(zy)>ma) z.y=copysign(ma*2.0,zy)-zy; if(fabs(zz2)>ma) z.z=copysign(ma*2.0,zz2)-zz2; double rr2=z.x*z.x+z.y*z.y+z.z*z.z; double fR2=mb; if(rr2<mc) z*=fR2/mc; else if(rr2<fR2) z*=fR2/rr2; z*=md; z.x+=me; z.y+=mff; z.z+=mg; aux.DE*=fabs(md);

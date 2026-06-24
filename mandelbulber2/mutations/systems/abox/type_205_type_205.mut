@@ -1,0 +1,5 @@
+// TYPE_ID: 205
+// NAME: Type 205
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= exp(-aa * fabs(r - ab));

@@ -1,0 +1,5 @@
+// TYPE_ID: 256
+// NAME: Type 256
+// PARAMS: locals
+// SYSTEM: abox
+{ double d=fabs(r-aa); aux.DE*=fmax(0.01,pow(d+1e-21,-ab)); }

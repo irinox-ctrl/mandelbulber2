@@ -1,0 +1,5 @@
+// TYPE_ID: 95
+// NAME: Type 95
+// PARAMS: locals
+// SYSTEM: as
+double d_crit = sqrt((z.x-ta)*(z.x-ta)+(z.y-tb)*(z.y-tb)+(z.z-tc)*(z.z-tc)); double expo = fmax(fabs(td), 0.1); aux.DE *= pow(fmax(d_crit, 0.01), -expo);

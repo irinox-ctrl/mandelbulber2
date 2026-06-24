@@ -1,0 +1,5 @@
+// TYPE_ID: 79
+// NAME: Type 79
+// PARAMS: locals
+// SYSTEM: as
+double jet_d = z.y*z.y+z.z*z.z; double jet_w = fmax(fabs(tb), 0.01); aux.DE *= (1.0 + sf*ta*exp(-jet_d/(jet_w*jet_w)));

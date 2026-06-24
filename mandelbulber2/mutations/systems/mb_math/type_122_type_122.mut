@@ -1,0 +1,5 @@
+// TYPE_ID: 122
+// NAME: Type 122
+// PARAMS: locals
+// SYSTEM: mb_math
+double h=((sin(i*12.9898+zx*78.233)*43758.5453) - floor(sin(i*12.9898+zx*78.233)*43758.5453)); double sc=ma+h*mb*0.1; z*=sc; aux.DE*=fabs(sc);

@@ -1,0 +1,5 @@
+// TYPE_ID: 91
+// NAME: Type 91
+// PARAMS: locals
+// SYSTEM: as
+double ent_max = fabs(ta); double heat_time = fmax(fabs(tb), 0.01); aux.DE *= (1.0 + sf*ent_max*(1.0-exp(-(double)i*0.01/heat_time)));

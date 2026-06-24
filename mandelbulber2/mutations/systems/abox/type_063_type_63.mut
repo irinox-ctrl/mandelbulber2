@@ -1,0 +1,5 @@
+// TYPE_ID: 63
+// NAME: Type 63
+// PARAMS: locals
+// SYSTEM: abox
+{ double ph=atan2(zy,zx); aux.DE*=fabs(aa+ab*sin(ac*ph)); }

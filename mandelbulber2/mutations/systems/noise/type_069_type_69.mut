@@ -1,0 +1,5 @@
+// TYPE_ID: 69
+// NAME: Type 69
+// PARAMS: locals
+// SYSTEM: noise
+double h1=sin(z.x*nfq*127.1+z.y*nfq*311.7)*43758.5453; h1=h1-floor(h1); double h2=sin(z.y*nfq*269.5+z.z*nfq*183.3)*43758.5453; h2=h2-floor(h2); double wx=z.x+(h1*2.0-1.0)*nam; double wy=z.y+(h2*2.0-1.0)*nam; double v=sin(wx*nfq*na+wy*nfq*nb); aux.DE *= (1.0 + nf*v);

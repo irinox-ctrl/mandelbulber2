@@ -1,0 +1,5 @@
+// TYPE_ID: 32
+// NAME: Type 32
+// PARAMS: locals
+// SYSTEM: abox
+{ double s = aa * sin(ab*r+ac*atan2(zy,zx)) * exp(-ad*r); aux.DE *= (1.0 + af*s); }

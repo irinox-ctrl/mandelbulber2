@@ -1,0 +1,5 @@
+// TYPE_ID: 27
+// NAME: Type 27
+// PARAMS: locals
+// SYSTEM: orbit_trap
+double ph=atan2(z.y,z.x); int n=(int)fmax(3,fmin(oa,12)); double seg=2.0*M_PI/n; double sph=fmod(ph+M_PI,seg)-seg*0.5; double r=sqrt(z.x*z.x+z.y*z.y); double d=fabs(r*sin(sph)); aux.DE *= (1.0 + of*exp(-od*d));

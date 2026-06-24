@@ -1,0 +1,5 @@
+// TYPE_ID: 80
+// NAME: Type 80
+// PARAMS: locals
+// SYSTEM: warp_dist
+{ double sg=1.0/(1.0+exp(-wfq*(r-wa))); z*=(1.0+wf*wam*(2.0*sg-1.0)); aux.DE*=(1.0+fabs(wf*wam*(2.0*sg-1.0))); }

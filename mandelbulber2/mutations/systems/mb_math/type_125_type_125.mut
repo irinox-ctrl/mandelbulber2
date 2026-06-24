@@ -1,0 +1,5 @@
+// TYPE_ID: 125
+// NAME: Type 125
+// PARAMS: locals
+// SYSTEM: mb_math
+if(fabs(zx)>ma) z.x=copysign(ma,zx); if(fabs(zy)>ma) z.y=copysign(ma,zy); if(fabs(zz2)>ma) z.z=copysign(ma,zz2); aux.DE*=fabs(mf);

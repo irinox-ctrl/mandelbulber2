@@ -1,0 +1,5 @@
+// TYPE_ID: 8
+// NAME: Type 8
+// PARAMS: locals
+// SYSTEM: sym_kal
+if(z.x + z.y < 0) { double t = z.x; z.x = -z.y; z.y = -t; }

@@ -1,0 +1,5 @@
+// TYPE_ID: 179
+// NAME: Type 179
+// PARAMS: locals
+// SYSTEM: mb_math
+double rxy=sqrt(zx*zx+zy*zy); if(rxy>ma){ double th=atan2(zy,zx); z.x=(ma*2.0-rxy)*cos(th); z.y=(ma*2.0-rxy)*sin(th); } double rr2=z.x*z.x+z.y*z.y+z.z*z.z; if(rr2<mb) z*=mc/rr2; aux.DE*=fabs(mf);

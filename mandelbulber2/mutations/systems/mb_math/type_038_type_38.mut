@@ -1,0 +1,5 @@
+// TYPE_ID: 38
+// NAME: Type 38
+// PARAMS: locals
+// SYSTEM: mb_math
+double k=mc,fR2=mb; double sg=1.0/(1.0+exp(k*(rr-fR2))); z*=sg; aux.DE*=sg;

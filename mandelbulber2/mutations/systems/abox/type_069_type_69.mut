@@ -1,0 +1,5 @@
+// TYPE_ID: 69
+// NAME: Type 69
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= fabs(aa + ab * (sin(ac*zx)+sin(ad*zy)+sin(ae*zz2))/3.0);

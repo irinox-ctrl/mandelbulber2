@@ -1,0 +1,5 @@
+// TYPE_ID: 83
+// NAME: Type 83
+// PARAMS: locals
+// SYSTEM: pk
+double fib=pa*sin(pfreq*r)*cos(1.618033988749*pfreq*r+pph)/fmax(1e-10,r); aux.DE*=(1.0+pf*fib);

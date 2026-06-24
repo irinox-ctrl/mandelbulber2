@@ -1,0 +1,5 @@
+// TYPE_ID: 73
+// NAME: Type 73
+// PARAMS: locals
+// SYSTEM: as
+double S = fabs(ta)*sqrt(z.x*z.x+z.y*z.y+z.z*z.z); aux.DE *= (1.0 + sf*tb*exp(-fmin(S,20.0)));

@@ -1,0 +1,5 @@
+// TYPE_ID: 159
+// NAME: Type 159
+// PARAMS: locals
+// SYSTEM: mb_math
+aux.DE=log(fmax(1e-21,aux.DE))*ma+mb;

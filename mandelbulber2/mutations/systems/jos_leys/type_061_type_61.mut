@@ -1,0 +1,5 @@
+// TYPE_ID: 61
+// NAME: Type 61
+// PARAMS: locals
+// SYSTEM: jos_leys
+double cy=ja*pow(fmax(1e-10,r),jb-3.0); aux.DE*=(1.0+jf*cy);

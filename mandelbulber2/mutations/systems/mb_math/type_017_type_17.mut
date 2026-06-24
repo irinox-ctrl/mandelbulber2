@@ -1,0 +1,5 @@
+// TYPE_ID: 17
+// NAME: Type 17
+// PARAMS: locals
+// SYSTEM: mb_math
+double lt=ma*(1.0+0.1*r); if(fabs(zx)>lt) z.x=copysign(lt*2.0,zx)-zx; if(fabs(zy)>lt) z.y=copysign(lt*2.0,zy)-zy; if(fabs(zz2)>lt) z.z=copysign(lt*2.0,zz2)-zz2; aux.DE*=fabs(mf);

@@ -1,0 +1,5 @@
+// TYPE_ID: 18
+// NAME: Type 18
+// PARAMS: locals
+// SYSTEM: orbit_trap
+double d=sqrt(z.x*z.x+z.y*z.y); aux.DE *= (1.0 + of*exp(-od*d));

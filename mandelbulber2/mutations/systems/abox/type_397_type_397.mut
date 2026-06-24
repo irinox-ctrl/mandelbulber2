@@ -1,0 +1,5 @@
+// TYPE_ID: 397
+// NAME: Type 397
+// PARAMS: F1, F2, F3, F4
+// SYSTEM: abox
+double F1 = sin(aa*z.x); double F2 = sin(ab*z.y); double F3 = cos(ac*z.x); double F4 = cos(ad*z.y); double wen = F1*F2*F3*F4; aux.DE *= (1.0 + af * fabs(wen));

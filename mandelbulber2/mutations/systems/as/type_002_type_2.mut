@@ -1,0 +1,5 @@
+// TYPE_ID: 2
+// NAME: Type 2
+// PARAMS: DE0
+// SYSTEM: as
+double DE0 = ta; double sigma = fmax(fabs(tb), 0.01); aux.DE *= exp(-(aux.DE-DE0)*(aux.DE-DE0)/(sigma*sigma));

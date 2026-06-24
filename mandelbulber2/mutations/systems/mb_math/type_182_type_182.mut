@@ -1,0 +1,5 @@
+// TYPE_ID: 182
+// NAME: Type 182
+// PARAMS: locals
+// SYSTEM: mb_math
+double rr2=rr; double mR2=ma*ma; double fR2=mb*mb; if(rr2<mR2){ z*=fR2/mR2; aux.DE*=fR2/mR2; } else if(rr2<fR2){ z*=fR2/rr2; aux.DE*=fR2/rr2; } aux.color+=mc*log(fmax(1e-21,rr2/(mR2+1e-21)));

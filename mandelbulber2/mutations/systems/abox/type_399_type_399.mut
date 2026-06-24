@@ -1,0 +1,5 @@
+// TYPE_ID: 399
+// NAME: Type 399
+// PARAMS: locals
+// SYSTEM: abox
+double psi = sin(aa*z.x + ab*(double)i*0.1); double coin = cos(ac*z.y); double walker = psi*psi*coin*coin; aux.DE *= (1.0 + af * walker);

@@ -1,0 +1,5 @@
+// TYPE_ID: 9
+// NAME: Type 9
+// PARAMS: locals
+// SYSTEM: noise
+double h1 = sin(z.x*nfq*12.9898)*43758.5453; h1=h1-floor(h1); double h2 = sin(z.y*nfq*78.233)*43758.5453; h2=h2-floor(h2); double h3 = sin(z.z*nfq*45.164)*43758.5453; h3=h3-floor(h3); aux.DE *= (1.0 + nf*(h1*h2*h3));

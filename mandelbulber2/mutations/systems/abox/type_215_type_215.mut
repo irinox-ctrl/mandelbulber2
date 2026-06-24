@@ -1,0 +1,5 @@
+// TYPE_ID: 215
+// NAME: Type 215
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= (1.0 + aa * cos(ab) / fmax(ac, 0.01));

@@ -1,0 +1,5 @@
+// TYPE_ID: 37
+// NAME: Type 37
+// PARAMS: locals
+// SYSTEM: jos_leys
+double gp=ja*sqrt(fmax(0.0,r/jb)); aux.DE*=(1.0+jf*tanh(gp));

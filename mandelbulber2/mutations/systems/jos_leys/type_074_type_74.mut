@@ -1,0 +1,5 @@
+// TYPE_ID: 74
+// NAME: Type 74
+// PARAMS: locals
+// SYSTEM: jos_leys
+double biq=ja*sin(jfreq*(zx+zy))*cos(jfreq*(zx-zy))/fmax(1e-10,r); aux.DE*=(1.0+jf*biq);

@@ -1,0 +1,5 @@
+// TYPE_ID: 167
+// NAME: Type 167
+// PARAMS: locals
+// SYSTEM: mb_math
+double jv=fabs(sin(zx*ma)*sin(zy*mb)); aux.DE*=(1.0+0.1*jv);

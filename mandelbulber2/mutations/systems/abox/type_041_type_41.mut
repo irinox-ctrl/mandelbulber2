@@ -1,0 +1,5 @@
+// TYPE_ID: 41
+// NAME: Type 41
+// PARAMS: locals
+// SYSTEM: abox
+{ double n=sin(aa*zx)*sin(ab*zy)*sin(ac*zz2); aux.DE*=(1.0+af*ad*n); }

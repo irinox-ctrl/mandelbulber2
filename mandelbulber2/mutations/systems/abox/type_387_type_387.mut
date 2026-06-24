@@ -1,0 +1,5 @@
+// TYPE_ID: 387
+// NAME: Type 387
+// PARAMS: locals
+// SYSTEM: abox
+double W = aa; double X = ab; double Y = ac; double sigma = sin(ad*z.x)*sin(ad*z.y); double tau = cos(ad*z.x)*cos(ad*z.y); double v = W*sigma + X*tau + Y*sigma*tau; aux.DE *= (1.0 + af * fabs(v));

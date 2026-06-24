@@ -1,0 +1,5 @@
+// TYPE_ID: 52
+// NAME: Type 52
+// PARAMS: locals
+// SYSTEM: sm
+double sc=3.0; double v[5]={fabs(z.x),fabs(z.y),fabs(z.z),fabs(z.w),fabs(sin(z.x+z.y))}; for(int a=0;a<5;a++)for(int b=a+1;b<5;b++){if(v[a]<v[b]){double t=v[a];v[a]=v[b];v[b]=t;}} z=CVector4(v[0],v[1],v[2],v[3])*sc-CVector4(1,1,1,1)*(sc-1.0); aux.DE=aux.DE*sc+1.0;

@@ -1,0 +1,5 @@
+// TYPE_ID: 43
+// NAME: Type 43
+// PARAMS: locals
+// SYSTEM: sym_kal
+{ z.x = fabs(z.x); z.y = fabs(z.y); if(z.x - z.y < 0) { double t=z.x; z.x=z.y; z.y=t; } z.x -= sa; z *= sf; z.x += sa; aux.DE = aux.DE * fabs(sf) + 1.0; }

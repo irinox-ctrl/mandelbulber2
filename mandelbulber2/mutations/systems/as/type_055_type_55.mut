@@ -1,0 +1,5 @@
+// TYPE_ID: 55
+// NAME: Type 55
+// PARAMS: locals
+// SYSTEM: as
+double conc_grad = fabs(sin(z.x*ta) - sin(z.y*ta)); aux.DE *= (1.0 + sf*tb*conc_grad);

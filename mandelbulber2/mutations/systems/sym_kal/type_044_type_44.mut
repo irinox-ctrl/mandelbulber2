@@ -1,0 +1,5 @@
+// TYPE_ID: 44
+// NAME: Type 44
+// PARAMS: locals
+// SYSTEM: sym_kal
+{ z.x = fabs(z.x); z.y = fabs(z.y); z.z = fabs(z.z); if(z.x - z.y < 0) { double t=z.x; z.x=z.y; z.y=t; } if(z.x - z.z < 0) { double t=z.x; z.x=z.z; z.z=t; } if(z.y - z.z < 0) { double t=z.y; z.y=z.z; z.z=t; } z.z -= 0.5*sc*(sf-1.0)/sf; z.z = fabs(z.z); z.z += 0.5*sc*(sf-1.0)/sf; z *= sf; { double _cF=(sf-1.0); z.x -= sa*_cF; z.y -= sb*_cF; z.z -= sc*_cF; }; aux.DE = aux.DE*fabs(sf)+1.0; }

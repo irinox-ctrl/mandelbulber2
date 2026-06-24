@@ -1,0 +1,5 @@
+// TYPE_ID: 30
+// NAME: Type 30
+// PARAMS: locals
+// SYSTEM: as
+double subdiv = fmax(1.0, fabs(ta)); aux.DE /= (1.0 + sf*subdiv*tb);

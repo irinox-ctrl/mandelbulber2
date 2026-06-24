@@ -1,0 +1,5 @@
+// TYPE_ID: 40
+// NAME: Type 40
+// PARAMS: locals
+// SYSTEM: pk
+double nek=pa*exp(-1.0/fmax(1e-10,pow(fmax(1e-10,pb),pc))); aux.DE*=(1.0+pf*nek);

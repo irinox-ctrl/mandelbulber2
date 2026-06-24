@@ -1,0 +1,5 @@
+// TYPE_ID: 254
+// NAME: Type 254
+// PARAMS: locals
+// SYSTEM: abox
+{ double fv=aa*exp(-ab*rr); aux.DE*=(1.0+fv); }

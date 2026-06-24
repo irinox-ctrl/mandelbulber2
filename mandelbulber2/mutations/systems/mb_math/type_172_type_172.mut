@@ -1,0 +1,5 @@
+// TYPE_ID: 172
+// NAME: Type 172
+// PARAMS: locals
+// SYSTEM: mb_math
+double spd=r*0.01; aux.DE/=(1.0+spd);

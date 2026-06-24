@@ -1,0 +1,5 @@
+// TYPE_ID: 78
+// NAME: Type 78
+// PARAMS: locals
+// SYSTEM: noise
+double r2=z.x*z.x+z.y*z.y+z.z*z.z; double h=sin(r2*nfq)*43758.5453; h=h-floor(h); double wx=z.x*(1.0+h*nam); double wy=z.y*(1.0+h*nam); double v=sin(wx*na+wy*nb)*0.5+0.5; aux.DE *= (1.0 + nf*v);

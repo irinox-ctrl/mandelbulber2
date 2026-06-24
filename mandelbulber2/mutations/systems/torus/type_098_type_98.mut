@@ -1,0 +1,5 @@
+// TYPE_ID: 98
+// NAME: Type 98
+// PARAMS: locals
+// SYSTEM: torus
+double r2d = sqrt(z.x*z.x+z.y*z.y); double phi = atan2(z.y,z.x); double theta = atan2(z.z,r2d-ta); double clifford_r = ta*(cos(tb*phi)*cos(tc*theta)); double clifford_d = fabs(sqrt(z.x*z.x+z.y*z.y+z.z*z.z)-fabs(clifford_r)); aux.DE *= (1.0 + tf*exp(-clifford_d*td));

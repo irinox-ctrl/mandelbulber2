@@ -1,0 +1,5 @@
+// TYPE_ID: 95
+// NAME: Type 95
+// PARAMS: locals
+// SYSTEM: sym_kal
+{ double n=fmax(2.0,sa); for(int k=0;k<int(n);k++){ double a=k*M_PI/n; double d=z.x*cos(a)+z.y*sin(a); if(d<0){z.x-=2.0*d*cos(a);z.y-=2.0*d*sin(a);} } z.z=fabs(z.z); }

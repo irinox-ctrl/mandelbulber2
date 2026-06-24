@@ -1,0 +1,5 @@
+// TYPE_ID: 345
+// NAME: Type 345
+// PARAMS: locals
+// SYSTEM: abox
+double W = aa*r*r; double T_eff = fmax(fabs(ab), 0.01); double jarzynski = exp(-W/T_eff); aux.DE *= (1.0 + af * jarzynski);

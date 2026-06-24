@@ -1,0 +1,5 @@
+// TYPE_ID: 200
+// NAME: Type 200
+// PARAMS: locals
+// SYSTEM: mb_math
+if(fabs(zx)>ma) z.x=copysign(ma*2.0,zx)-zx; if(fabs(zy)>ma) z.y=copysign(ma*2.0,zy)-zy; if(fabs(zz2)>ma) z.z=copysign(ma*2.0,zz2)-zz2; double rr2=z.x*z.x+z.y*z.y+z.z*z.z; double fR2=mb*mb; double mR2=mc*mc; if(rr2<mR2) z*=fR2/mR2; else if(rr2<fR2) z*=fR2/rr2; z*=md; z.x+=me; z.y+=mff; z.z+=mg; double th=mh*M_PI/180.0; double cs=cos(th),sn=sin(th); double nx=z.x*cs-z.y*sn; z.y=z.x*sn+z.y*cs; z.x=nx; aux.DE*=fabs(md);

@@ -1,0 +1,5 @@
+// TYPE_ID: 128
+// NAME: Type 128
+// PARAMS: locals
+// SYSTEM: mb_math
+aux.color+=log(fabs(mf)+1e-21)*ma;

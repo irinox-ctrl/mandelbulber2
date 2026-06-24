@@ -1,0 +1,5 @@
+// TYPE_ID: 104
+// NAME: Type 104
+// PARAMS: locals
+// SYSTEM: mb_math
+double th4=ma*M_PI/180.0; double cs=cos(th4),sn=sin(th4); double nw=zz2*sn; z.z=zz2*cs; z.x+=nw*0.1; aux.DE*=fabs(mf);

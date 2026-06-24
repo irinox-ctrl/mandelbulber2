@@ -1,0 +1,5 @@
+// TYPE_ID: 63
+// NAME: Type 63
+// PARAMS: locals
+// SYSTEM: pk
+double gib=pa*exp(-pb*rr)*pc; aux.DE*=(1.0+pf*gib);

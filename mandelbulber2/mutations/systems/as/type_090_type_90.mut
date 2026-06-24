@@ -1,0 +1,5 @@
+// TYPE_ID: 90
+// NAME: Type 90
+// PARAMS: locals
+// SYSTEM: as
+double r = sqrt(z.x*z.x+z.y*z.y+z.z*z.z); double scale_a = fmax(r*ta, 0.01); aux.DE /= fmax(scale_a*tb, 0.01);

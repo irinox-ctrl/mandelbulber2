@@ -1,0 +1,5 @@
+// TYPE_ID: 27
+// NAME: Type 27
+// PARAMS: locals
+// SYSTEM: abox
+{ double rr2=rr; double mR2=aa*aa; double fR2=ab*ab; if(rr2<mR2) aux.DE*=fR2/mR2; else if(rr2<fR2) aux.DE*=fR2/rr2; }

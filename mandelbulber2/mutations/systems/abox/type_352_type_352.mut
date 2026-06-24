@@ -1,0 +1,5 @@
+// TYPE_ID: 352
+// NAME: Type 352
+// PARAMS: locals
+// SYSTEM: abox
+double w_cold = fabs(aa)+0.1; double w_hot = fabs(ab)+0.2; double eff = 1.0 - w_cold/w_hot; double adiabatic = cos(ac*r)*cos(ac*r); aux.DE *= (1.0 + af * fabs(eff) * adiabatic);

@@ -1,0 +1,5 @@
+// TYPE_ID: 131
+// NAME: Type 131
+// PARAMS: locals
+// SYSTEM: mb_math
+double ax1=ma,ay1=mb,bx1=mc,by1=md; double dx=bx1-ax1,dy=by1-ay1; double t=((zx-ax1)*dx+(zy-ay1)*dy)/(dx*dx+dy*dy+1e-21); t=fmax(0.0,fmin(1.0,t)); double px=ax1+t*dx,py=ay1+t*dy; double dd=sqrt((zx-px)*(zx-px)+(zy-py)*(zy-py)); aux.color+=fmax(0.0,1.0-dd)*me;

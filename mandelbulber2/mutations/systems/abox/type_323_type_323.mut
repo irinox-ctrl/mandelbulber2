@@ -1,0 +1,5 @@
+// TYPE_ID: 323
+// NAME: Type 323
+// PARAMS: locals
+// SYSTEM: abox
+double N = fmax(fabs(aa)*5, 1.0); double pattern = sin(N*ab*z.x)*sin(N*ab*z.y); aux.DE *= (1.0 + af * pattern*pattern);

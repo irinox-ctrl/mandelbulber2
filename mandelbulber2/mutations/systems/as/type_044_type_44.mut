@@ -1,0 +1,5 @@
+// TYPE_ID: 44
+// NAME: Type 44
+// PARAMS: locals
+// SYSTEM: as
+double barrier = fabs(z.x - ta); aux.DE *= exp(-sf*fabs(tb)*barrier);

@@ -1,0 +1,5 @@
+// TYPE_ID: 82
+// NAME: Type 82
+// PARAMS: locals
+// SYSTEM: warp_dist
+{ double rxy=sqrt(zx*zx+zy*zy+1e-21); double d=wf*wam*sin(wfq*zz2+wph); z.x+=d*zx/rxy; z.y+=d*zy/rxy; aux.DE*=(1.0+fabs(wf*wam*wfq)); }

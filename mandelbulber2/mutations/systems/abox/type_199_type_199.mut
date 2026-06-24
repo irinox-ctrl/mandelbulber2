@@ -1,0 +1,5 @@
+// TYPE_ID: 199
+// NAME: Type 199
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= (1.0 + aa * ab * (1.0 + ac*cos(ad*atan2(zy,zx))));

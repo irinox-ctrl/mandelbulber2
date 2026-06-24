@@ -1,0 +1,5 @@
+// TYPE_ID: 9
+// NAME: Type 9
+// PARAMS: locals
+// SYSTEM: as
+double h1=sin(ta*z.x+tb*z.y+tc*z.z); double h2=sin(td*h1+ta*aux.DE); aux.DE *= (1.0 + sf*h2);

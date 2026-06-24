@@ -1,0 +1,5 @@
+// TYPE_ID: 49
+// NAME: Type 49
+// PARAMS: locals
+// SYSTEM: sym_kal
+{ double p=sa; z.x = z.x - p*floor(z.x/p+0.5); z.y = z.y - p*floor(z.y/p+0.5); z.z = z.z - p*floor(z.z/p+0.5); }

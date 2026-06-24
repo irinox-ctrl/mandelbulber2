@@ -1,0 +1,5 @@
+// TYPE_ID: 66
+// NAME: Type 66
+// PARAMS: locals
+// SYSTEM: sym_kal
+{ double px=fmax(sa,0.01), py=fmax(sb,0.01), pz=fmax(sc,0.01); z.x=z.x-px*floor(z.x/px); z.y=z.y-py*floor(z.y/py); z.z=z.z-pz*floor(z.z/pz); }

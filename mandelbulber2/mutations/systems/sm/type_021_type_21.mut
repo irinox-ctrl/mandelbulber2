@@ -1,0 +1,5 @@
+// TYPE_ID: 21
+// NAME: Type 21
+// PARAMS: locals
+// SYSTEM: sm
+double theta = (double)i * 2.39996322972865332; double r = sqrt((double)i+0.5)*ta; z.x += r*cos(theta)*sf*0.1; z.y += r*sin(theta)*sf*0.1;

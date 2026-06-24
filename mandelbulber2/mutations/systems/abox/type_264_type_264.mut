@@ -1,0 +1,5 @@
+// TYPE_ID: 264
+// NAME: Type 264
+// PARAMS: locals
+// SYSTEM: abox
+{ double phi=sin(aa*r); aux.DE*=(1.0+ab*phi*phi+ac*phi*phi*phi*phi); }

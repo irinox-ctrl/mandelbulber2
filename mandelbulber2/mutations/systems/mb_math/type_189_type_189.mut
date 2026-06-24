@@ -1,0 +1,5 @@
+// TYPE_ID: 189
+// NAME: Type 189
+// PARAMS: locals
+// SYSTEM: mb_math
+double rxy=sqrt(zx*zx+zy*zy); double th=atan2(zy,zx)+ma*sin(mb*zz2); z.x=rxy*cos(th); z.y=rxy*sin(th); if(fabs(z.x)>mc) z.x=copysign(mc*2.0,z.x)-z.x; aux.DE*=fabs(mf)*(1.0+fabs(ma*mb));

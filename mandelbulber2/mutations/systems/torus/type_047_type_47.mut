@@ -1,0 +1,5 @@
+// TYPE_ID: 47
+// NAME: Type 47
+// PARAMS: locals
+// SYSTEM: torus
+double phi = atan2(z.y,z.x); double R = ta; double r_k = tb*(1.0+0.5*cos(phi)); double r2d = sqrt(z.x*z.x+z.y*z.y); double d = fabs(r2d-R) + fabs(z.z)*r_k; aux.DE *= (1.0 + tf*exp(-tc*d));

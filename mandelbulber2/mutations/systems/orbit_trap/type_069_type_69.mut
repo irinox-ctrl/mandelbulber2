@@ -1,0 +1,5 @@
+// TYPE_ID: 69
+// NAME: Type 69
+// PARAMS: locals
+// SYSTEM: orbit_trap
+double d=sqrt(z.x*z.x+z.y*z.y+z.z*z.z); double trap_r=oa+ob*(double)i; double ring=fabs(d-trap_r); aux.DE *= (1.0 + of*exp(-od*ring));

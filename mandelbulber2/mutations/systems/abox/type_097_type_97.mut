@@ -1,0 +1,5 @@
+// TYPE_ID: 97
+// NAME: Type 97
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= (1.0 + af * aa * fabs(sin(ab*zx))*fabs(sin(ac*zy))*fabs(sin(ad*zz2)));

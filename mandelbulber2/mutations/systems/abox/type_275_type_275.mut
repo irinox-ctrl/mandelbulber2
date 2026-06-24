@@ -1,0 +1,5 @@
+// TYPE_ID: 275
+// NAME: Type 275
+// PARAMS: locals
+// SYSTEM: abox
+{ double av=r>1e-21?(fabs(zx)+fabs(zy)+fabs(zz2))/(r):1.0; aux.DE*=(1.0+aa*ab*av); }

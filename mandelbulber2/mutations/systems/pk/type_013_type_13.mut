@@ -1,0 +1,5 @@
+// TYPE_ID: 13
+// NAME: Type 13
+// PARAMS: locals
+// SYSTEM: pk
+double duy=pa*pb*exp(-pc*rr); aux.DE*=(1.0+pf*duy);

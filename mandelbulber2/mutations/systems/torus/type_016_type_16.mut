@@ -1,0 +1,5 @@
+// TYPE_ID: 16
+// NAME: Type 16
+// PARAMS: locals
+// SYSTEM: torus
+double box = fmax(fabs(z.x),fmax(fabs(z.y),fabs(z.z))); if(box > fabs(ta)) aux.DE *= (1.0 + tf*tb);

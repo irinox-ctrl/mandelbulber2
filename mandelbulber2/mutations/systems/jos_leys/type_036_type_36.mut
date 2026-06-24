@@ -1,0 +1,5 @@
+// TYPE_ID: 36
+// NAME: Type 36
+// PARAMS: locals
+// SYSTEM: jos_leys
+double pw=ja*exp(-jb*rr); aux.DE*=(1.0+jf*pw);

@@ -1,0 +1,5 @@
+// TYPE_ID: 117
+// NAME: Type 117
+// PARAMS: locals
+// SYSTEM: mb_math
+z.x+=0.1*zx*ma; z.y+=0.1*zy*ma; z.z+=0.1*zz2*ma; aux.DE*=fabs(mf)*1.1;

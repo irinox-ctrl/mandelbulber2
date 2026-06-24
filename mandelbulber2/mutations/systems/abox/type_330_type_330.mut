@@ -1,0 +1,5 @@
+// TYPE_ID: 330
+// NAME: Type 330
+// PARAMS: locals
+// SYSTEM: abox
+double k_eff = aa; double T = fabs(ab)+0.01; double accel = k_eff*T*T*ac*r; aux.DE *= (1.0 + af * sin(accel)*sin(accel));

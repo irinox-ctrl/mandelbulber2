@@ -1,0 +1,5 @@
+// TYPE_ID: 2
+// NAME: Type 2
+// PARAMS: locals
+// SYSTEM: pk
+double bers=pa*log(fmax(1e-10,r))*pb; aux.DE*=(1.0+pf*tanh(bers));

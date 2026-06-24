@@ -1,0 +1,5 @@
+// TYPE_ID: 7
+// NAME: Type 7
+// PARAMS: locals
+// SYSTEM: sym_kal
+if(z.y < 0) z.y = -z.y - soff; else z.y = z.y + soff;

@@ -1,0 +1,5 @@
+// TYPE_ID: 257
+// NAME: Type 257
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= (1.0 + aa * log(fmax(ab, 0.01) / fmax(r, 1e-21)));

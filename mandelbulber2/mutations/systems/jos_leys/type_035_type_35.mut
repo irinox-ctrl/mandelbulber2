@@ -1,0 +1,5 @@
+// TYPE_ID: 35
+// NAME: Type 35
+// PARAMS: locals
+// SYSTEM: jos_leys
+double sw=ja*jb/(fmax(1e-10,r)*jc); aux.DE*=(1.0+jf*tanh(sw));

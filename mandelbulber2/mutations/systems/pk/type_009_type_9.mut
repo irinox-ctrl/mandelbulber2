@@ -1,0 +1,5 @@
+// TYPE_ID: 9
+// NAME: Type 9
+// PARAMS: locals
+// SYSTEM: pk
+double car=pa*fabs(sin(pfreq*r))/fmax(1e-10,r); aux.DE*=(1.0+pf*car);

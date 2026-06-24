@@ -1,0 +1,5 @@
+// TYPE_ID: 291
+// NAME: Type 291
+// PARAMS: locals
+// SYSTEM: abox
+{ double sw2=floor(zx*aa+0.5)*floor(zy*ab+0.5); aux.DE*=(1.0+ac*sin(ad*sw2)); }

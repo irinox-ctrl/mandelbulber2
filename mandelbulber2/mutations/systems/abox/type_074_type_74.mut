@@ -1,0 +1,5 @@
+// TYPE_ID: 74
+// NAME: Type 74
+// PARAMS: locals
+// SYSTEM: abox
+{ double mix=0.5+0.5*sin(ac*i); double s=aa*(1.0-mix)+ab*mix; aux.DE*=fabs(s); }

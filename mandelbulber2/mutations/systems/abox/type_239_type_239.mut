@@ -1,0 +1,5 @@
+// TYPE_ID: 239
+// NAME: Type 239
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE /= fmax(0.01, 1.0 - aa / fmax(r, aa + 1e-21));

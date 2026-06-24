@@ -1,0 +1,5 @@
+// TYPE_ID: 158
+// NAME: Type 158
+// PARAMS: locals
+// SYSTEM: mb_math
+double h=ma*sin(zx)*sin(zy)*sin(zz2); aux.DE*=(1.0+h*0.5);

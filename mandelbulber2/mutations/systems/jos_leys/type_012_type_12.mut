@@ -1,0 +1,5 @@
+// TYPE_ID: 12
+// NAME: Type 12
+// PARAMS: locals
+// SYSTEM: jos_leys
+double q2=fmax(1.0,ja); double fr2=1.0/(2.0*q2*q2); aux.DE*=(1.0+jf*fr2/fmax(1e-10,r));

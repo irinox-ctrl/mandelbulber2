@@ -1,0 +1,5 @@
+// TYPE_ID: 46
+// NAME: Type 46
+// PARAMS: locals
+// SYSTEM: warp_dist
+{ double ph2=atan2(zy,zx)+wf*wam*sin(wfq*zz2+wph); double rxy=sqrt(zx*zx+zy*zy); z.x=rxy*cos(ph2); z.y=rxy*sin(ph2); aux.DE*=(1.0+fabs(wf*wam*wfq)); }

@@ -1,0 +1,5 @@
+// TYPE_ID: 48
+// NAME: Type 48
+// PARAMS: locals
+// SYSTEM: as
+double corr = sin(z.x*ta)*sin((-z.x)*ta) + sin(z.y*tb)*sin((-z.y)*tb); aux.DE *= (1.0 + sf*fabs(corr)*tc);

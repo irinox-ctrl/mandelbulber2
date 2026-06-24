@@ -1,0 +1,5 @@
+// TYPE_ID: 389
+// NAME: Type 389
+// PARAMS: locals
+// SYSTEM: abox
+double t = fabs(aa)+0.01; double J = ab; double hop = t*sin(ac*z.x)*cos(ac*z.y); double exchange = J*sin(ad*z.x)*sin(ad*z.y); aux.DE *= (1.0 + af * fabs(hop + exchange));

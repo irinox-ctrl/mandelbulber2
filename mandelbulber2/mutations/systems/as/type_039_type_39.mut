@@ -1,0 +1,5 @@
+// TYPE_ID: 39
+// NAME: Type 39
+// PARAMS: locals
+// SYSTEM: as
+double emission = sin(z.x*ta)*sin(z.y*ta)*0.5+0.5; aux.DE /= (1.0 + sf*emission*fabs(tb));

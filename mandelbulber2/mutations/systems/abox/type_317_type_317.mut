@@ -1,0 +1,5 @@
+// TYPE_ID: 317
+// NAME: Type 317
+// PARAMS: locals
+// SYSTEM: abox
+double rho = sin(aa*z.x)*sin(aa*z.x) + cos(ab*z.y)*cos(ab*z.y); double witness = rho - ac; aux.DE *= (1.0 + af * fmax(-witness, 0.0));

@@ -1,0 +1,5 @@
+// TYPE_ID: 133
+// NAME: Type 133
+// PARAMS: locals
+// SYSTEM: mb_math
+double nx=ma,ny=mb,nz2=mc; double nm=sqrt(nx*nx+ny*ny+nz2*nz2+1e-21); double dd=fabs(zx*nx/nm+zy*ny/nm+zz2*nz2/nm-md); aux.color+=fmax(0.0,1.0-dd)*me;

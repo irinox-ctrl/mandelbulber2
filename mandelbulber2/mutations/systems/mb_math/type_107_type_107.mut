@@ -1,0 +1,5 @@
+// TYPE_ID: 107
+// NAME: Type 107
+// PARAMS: locals
+// SYSTEM: mb_math
+double q1w=ma,q2w=mb; double nm1=sqrt(zx*zx+zy*zy+q1w*q1w+1e-21); double nm2=sqrt(zz2*zz2+q2w*q2w+1e-21); z.x*=nm2/(nm1+1e-21); z.y*=nm2/(nm1+1e-21); aux.DE*=fabs(mf)*nm2/(nm1+1e-21);

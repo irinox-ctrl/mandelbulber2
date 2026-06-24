@@ -1,0 +1,5 @@
+// TYPE_ID: 383
+// NAME: Type 383
+// PARAMS: locals
+// SYSTEM: abox
+double J = aa; double Sx = sin(ab*z.x)*cos(ac*z.y); double Sy = cos(ab*z.x)*sin(ac*z.y); double coupling = J*(Sx+Sy); aux.DE *= (1.0 + af * fabs(coupling));

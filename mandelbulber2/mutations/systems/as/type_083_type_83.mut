@@ -1,0 +1,5 @@
+// TYPE_ID: 83
+// NAME: Type 83
+// PARAMS: locals
+// SYSTEM: as
+double d_wall = fabs(z.x - ta); double thickness = fmax(fabs(tb), 0.01); aux.DE *= (1.0 + sf*tc*tanh(d_wall/thickness));

@@ -1,0 +1,5 @@
+// TYPE_ID: 22
+// NAME: Type 22
+// PARAMS: locals
+// SYSTEM: sym_kal
+{ double cs = cos(sang), sn = sin(sang); z.x = fabs(zx); double nx = zx*cs - zy*sn; z.y = zx*sn + zy*cs; z.x = nx; z.x = fabs(z.x); }

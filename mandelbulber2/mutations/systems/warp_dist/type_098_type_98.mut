@@ -1,0 +1,5 @@
+// TYPE_ID: 98
+// NAME: Type 98
+// PARAMS: locals
+// SYSTEM: warp_dist
+{ double lx=wf*wam*sin(wfq*zy+wph)*(1.0-exp(-wa*r)); double ly=wf*wb*sin(wfq*zz2+wph)*(1.0-exp(-wa*r)); double lz=wf*wc*sin(wfq*zx+wph)*(1.0-exp(-wa*r)); z.x+=lx; z.y+=ly; z.z+=lz; aux.DE*=(1.0+fabs(wf*(wam+wb+wc)*wfq/3.0)); }

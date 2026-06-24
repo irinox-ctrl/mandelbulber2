@@ -1,0 +1,5 @@
+// TYPE_ID: 170
+// NAME: Type 170
+// PARAMS: locals
+// SYSTEM: abox
+{ double fb=0; double prev=aa; double curr=ab; for(int k=0;k<6;k++){double nxt=prev+curr; fb+=sin(nxt*r)/(nxt+1.0); prev=curr; curr=nxt;} aux.DE*=(1.0+af*ac*fb); }

@@ -1,0 +1,5 @@
+// TYPE_ID: 78
+// NAME: Type 78
+// PARAMS: locals
+// SYSTEM: warp_dist
+{ double d=wf*wam*log(1.0+wfq*r)*sin(wa*r+wph)/(r+1e-21); z.x+=d*zx; z.y+=d*zy; z.z+=d*zz2; aux.DE*=(1.0+fabs(d*r)); }

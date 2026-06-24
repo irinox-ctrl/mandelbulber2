@@ -1,0 +1,5 @@
+// TYPE_ID: 382
+// NAME: Type 382
+// PARAMS: locals
+// SYSTEM: abox
+double J = aa; double Si = sin(ab*z.x); double Sj = sin(ab*z.y); double coupling = J*Si*Sj; aux.DE *= (1.0 + af * fabs(coupling));

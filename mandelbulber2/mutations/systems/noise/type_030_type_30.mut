@@ -1,0 +1,5 @@
+// TYPE_ID: 30
+// NAME: Type 30
+// PARAMS: locals
+// SYSTEM: noise
+double v=0, a=nam, f=nfq; for(int k=0;k<6;k++){ double h=sin(z.x*f*127.1+z.y*f*311.7+z.z*f*74.7)*43758.5453; h=h-floor(h); v+=a*sin(h*M_PI); f*=2.0; a*=0.5; } aux.DE *= (1.0 + nf*v);

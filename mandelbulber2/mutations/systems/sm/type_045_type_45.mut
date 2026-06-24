@@ -1,0 +1,5 @@
+// TYPE_ID: 45
+// NAME: Type 45
+// PARAMS: locals
+// SYSTEM: sm
+double sc=3.0; z=fabs(z); if(z.x-z.y<0.0){double t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0){double t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0){double t=z.y;z.y=z.z;z.z=t;} z=z*sc-CVector4(1,1,1,0)*(sc-1.0); aux.DE=aux.DE*fabs(sc)+1.0; double surfScale=fabs(ta)+0.5; z.x=fabs(z.x+surfScale)-fabs(z.x-surfScale)-z.x; z.y=fabs(z.y+surfScale)-fabs(z.y-surfScale)-z.y;

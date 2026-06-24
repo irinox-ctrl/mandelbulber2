@@ -1,0 +1,5 @@
+// TYPE_ID: 19
+// NAME: Type 19
+// PARAMS: locals
+// SYSTEM: pk
+double wil=pa*(zx*zx+zy*zy)/(fmax(1e-10,rr*r))*pb; aux.DE*=(1.0+pf*wil);

@@ -1,0 +1,5 @@
+// TYPE_ID: 85
+// NAME: Type 85
+// PARAMS: locals
+// SYSTEM: pk
+double cmk=pa*cos(pfreq*r)*exp(-pb*r)*pc; aux.DE*=(1.0+pf*cmk);

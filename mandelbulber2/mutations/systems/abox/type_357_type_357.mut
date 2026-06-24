@@ -1,0 +1,5 @@
+// TYPE_ID: 357
+// NAME: Type 357
+// PARAMS: locals
+// SYSTEM: abox
+double expansion = fmax(fabs(aa), 0.1); double T_ratio = fmax(fabs(ab)+0.1, 0.01)/fmax(fabs(ac)+0.1, 0.01); double eff = (1.0 - 1.0/T_ratio)*expansion/(expansion+1.0); aux.DE *= (1.0 + af * fabs(eff) * sin(ad*r)*sin(ad*r));

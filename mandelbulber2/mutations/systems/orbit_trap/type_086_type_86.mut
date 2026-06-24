@@ -1,0 +1,5 @@
+// TYPE_ID: 86
+// NAME: Type 86
+// PARAMS: locals
+// SYSTEM: orbit_trap
+double d=fabs(sin(z.x*oa)*sin(z.y*ob)*sin(z.z*oc)); aux.DE *= (1.0 + of*d);

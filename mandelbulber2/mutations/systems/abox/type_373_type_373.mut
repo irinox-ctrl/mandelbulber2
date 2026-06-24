@@ -1,0 +1,5 @@
+// TYPE_ID: 373
+// NAME: Type 373
+// PARAMS: locals
+// SYSTEM: abox
+double edge = exp(-aa*fabs(z.x)); double helical = sin(ab*z.y); aux.DE *= (1.0 + af * edge * helical*helical);

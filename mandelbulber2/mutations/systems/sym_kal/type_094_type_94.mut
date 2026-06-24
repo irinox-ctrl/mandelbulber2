@@ -1,0 +1,5 @@
+// TYPE_ID: 94
+// NAME: Type 94
+// PARAMS: locals
+// SYSTEM: sym_kal
+{ for(int k=0;k<int(fmax(1,sa));k++){ z.x=fabs(z.x); z.y=fabs(z.y); z.z=fabs(z.z); if(z.x-z.y<0){double t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0){double t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0){double t=z.y;z.y=z.z;z.z=t;} z.x-=sb; z.y-=sc; z.z-=sd; double cs=cos(sang+k*sfq),sn=sin(sang+k*sfq); double nx=z.x*cs-z.y*sn; z.y=z.x*sn+z.y*cs; z.x=nx; z.x+=sb; z.y+=sc; z.z+=sd; } }

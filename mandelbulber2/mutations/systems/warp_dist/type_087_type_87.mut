@@ -1,0 +1,5 @@
+// TYPE_ID: 87
+// NAME: Type 87
+// PARAMS: locals
+// SYSTEM: warp_dist
+{ double rxy=sqrt(zx*zx+zy*zy+1e-21); double ph2=atan2(zy,zx)+wf*wam*sin(wfq*zz2+wph)/rxy; z.x=rxy*cos(ph2); z.y=rxy*sin(ph2); aux.DE*=(1.0+fabs(wf*wam*wfq/rxy)); }

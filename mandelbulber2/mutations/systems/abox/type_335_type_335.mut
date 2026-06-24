@@ -1,0 +1,5 @@
+// TYPE_ID: 335
+// NAME: Type 335
+// PARAMS: locals
+// SYSTEM: abox
+double torque = aa*z.x*z.y - ab*z.y*z.z; double thermal = fabs(ac)+0.01; aux.DE *= (1.0 + af * fabs(torque)/(thermal+fabs(torque)));

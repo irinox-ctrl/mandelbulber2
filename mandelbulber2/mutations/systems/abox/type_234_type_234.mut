@@ -1,0 +1,5 @@
+// TYPE_ID: 234
+// NAME: Type 234
+// PARAMS: locals
+// SYSTEM: abox
+{ double inst=exp(-aa*(rr+1e-21)); aux.DE*=(1.0+ab*inst); }

@@ -1,0 +1,5 @@
+// TYPE_ID: 198
+// NAME: Type 198
+// PARAMS: locals
+// SYSTEM: mb_math
+double rr2=rr; double fR2=ma*ma; if(rr2<fR2){ double m2=fR2/fmax(1e-21,rr2); z*=m2; aux.DE*=m2; } double th=mb*M_PI/180.0; double cs=cos(th),sn=sin(th); double nx=z.x*cs-z.y*sn; z.y=z.x*sn+z.y*cs; z.x=nx; z*=mc; z.x+=md; aux.DE*=fabs(mc);

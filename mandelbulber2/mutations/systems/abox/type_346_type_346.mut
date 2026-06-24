@@ -1,0 +1,5 @@
+// TYPE_ID: 346
+// NAME: Type 346
+// PARAMS: locals
+// SYSTEM: abox
+double Q_heat = aa*r; double T_eff = fmax(fabs(ab), 0.01); double C = fmax(fabs(ac), 0.01); double fluct = Q_heat/(T_eff*T_eff*C+1e-21); aux.DE *= (1.0 + af * exp(-fabs(fluct)));

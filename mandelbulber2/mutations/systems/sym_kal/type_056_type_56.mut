@@ -1,0 +1,5 @@
+// TYPE_ID: 56
+// NAME: Type 56
+// PARAMS: locals
+// SYSTEM: sym_kal
+{ if(r<sa) z*=sa*sa/(r*r); else if(r<sb) z*=sa*sa/(r*r); }

@@ -1,0 +1,5 @@
+// TYPE_ID: 273
+// NAME: Type 273
+// PARAMS: locals
+// SYSTEM: abox
+{ double kk=sin(aa*r/fmax(ab,0.01))*sin(ac*r/fmax(ab,0.01)); aux.DE*=(1.0+ad*kk); }

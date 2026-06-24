@@ -1,0 +1,5 @@
+// TYPE_ID: 8
+// NAME: Type 8
+// PARAMS: locals
+// SYSTEM: sm
+double ax=fmax(fabs(ta),0.01),ay=fmax(fabs(tb),0.01),az=fmax(fabs(tc),0.01); double ell = sqrt((z.x/ax)*(z.x/ax)+(z.y/ay)*(z.y/ay)+(z.z/az)*(z.z/az))-1.0; aux.DE *= (1.0 + sf*exp(-ell*ell*td));

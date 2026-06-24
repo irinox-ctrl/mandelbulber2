@@ -1,0 +1,5 @@
+// TYPE_ID: 81
+// NAME: Type 81
+// PARAMS: locals
+// SYSTEM: noise
+double s=(z.x+z.y+z.z)/3.0; double ix=floor(z.x+s); double iy=floor(z.y+s); double iz=floor(z.z+s); double t=(ix+iy+iz)/6.0; double x0=z.x-ix+t; double y0=z.y-iy+t; double z0=z.z-iz+t; double h=sin(ix*127.1+iy*311.7+iz*74.7)*43758.5453; h=h-floor(h); double v=fmax(0.0,0.6-x0*x0-y0*y0-z0*z0); v=v*v*v*v*h; aux.DE *= (1.0 + nf*v*nam*32.0);

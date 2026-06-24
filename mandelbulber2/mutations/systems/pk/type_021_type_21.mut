@@ -1,0 +1,5 @@
+// TYPE_ID: 21
+// NAME: Type 21
+// PARAMS: locals
+// SYSTEM: pk
+double lax=pa*sin(pfreq*zx)*cos(pfreq*zy)*sin(pfreq*zz2)/fmax(1e-10,r); aux.DE*=(1.0+pf*lax);

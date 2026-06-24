@@ -1,0 +1,5 @@
+// TYPE_ID: 369
+// NAME: Type 369
+// PARAMS: ZT
+// SYSTEM: abox
+double S = aa; double sigma = fabs(ab)+0.01; double T_eff = fabs(ac)*r+0.01; double kappa = fabs(ad)+0.01; double ZT = S*S*sigma*T_eff/kappa; aux.DE *= (1.0 + af * fmin(ZT,10.0));

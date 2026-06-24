@@ -1,0 +1,5 @@
+// TYPE_ID: 184
+// NAME: Type 184
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE /= fmax(0.01, 1.0 + aa * ab * sin(ac*r));

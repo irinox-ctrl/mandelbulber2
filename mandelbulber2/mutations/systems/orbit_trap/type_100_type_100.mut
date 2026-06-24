@@ -1,0 +1,5 @@
+// TYPE_ID: 100
+// NAME: Type 100
+// PARAMS: locals
+// SYSTEM: orbit_trap
+double d1=sqrt(z.x*z.x+z.y*z.y+z.z*z.z)-oa; double d2=sqrt((z.x-ob)*(z.x-ob)+z.y*z.y+z.z*z.z)-oc; double d=fmin(fabs(d1),fabs(d2)); double blend=sin(z.x*od+z.y*od)*0.5+0.5; aux.DE *= (1.0 + of*(d1*(1.0-blend)+d2*blend)*exp(-d));

@@ -1,0 +1,5 @@
+// TYPE_ID: 186
+// NAME: Type 186
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= (1.0 + aa * fabs(ab - 550.0) * 0.001);

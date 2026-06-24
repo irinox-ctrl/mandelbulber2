@@ -1,0 +1,5 @@
+// TYPE_ID: 178
+// NAME: Type 178
+// PARAMS: locals
+// SYSTEM: mb_math
+double th=i*2.39996322973; double cs=cos(th),sn=sin(th); z.x=zx*cs-zy*sn; z.y=zx*sn+zy*cs; if(fabs(z.x)>ma) z.x=copysign(ma*2.0,z.x)-z.x; z*=mb; aux.DE*=fabs(mb);

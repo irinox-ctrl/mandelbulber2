@@ -1,0 +1,5 @@
+// TYPE_ID: 79
+// NAME: Type 79
+// PARAMS: locals
+// SYSTEM: pk
+double ekh=pa*sin(pfreq*r+pph)*pb/fmax(1e-10,r); aux.DE*=(1.0+pf*ekh);

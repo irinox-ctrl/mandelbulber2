@@ -1,0 +1,5 @@
+// TYPE_ID: 87
+// NAME: Type 87
+// PARAMS: locals
+// SYSTEM: as
+double baryon = sin(z.x*ta)*sin(z.y*tb); double rate = exp(-fabs(tc)*(double)i*0.01); aux.DE *= (1.0 + sf*baryon*baryon*rate*td);

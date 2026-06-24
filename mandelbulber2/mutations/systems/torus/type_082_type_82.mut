@@ -1,0 +1,5 @@
+// TYPE_ID: 82
+// NAME: Type 82
+// PARAMS: R1, R2
+// SYSTEM: torus
+double r2d = sqrt(z.x*z.x+z.y*z.y); double phi = atan2(z.y,z.x); double R1 = ta; double r1 = tb; double R2 = tc; double r2 = td; double d1 = sqrt((r2d-R1)*(r2d-R1)+z.z*z.z)-r1; double d2 = sqrt((r2d-R2)*(r2d-R2)+z.z*z.z)-r2; double smooth = -log(fmax(exp(-d1*5.0)+exp(-d2*5.0),1e-21))/5.0; aux.DE *= (1.0 + tf*exp(-smooth*smooth));

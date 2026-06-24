@@ -1,0 +1,5 @@
+// TYPE_ID: 16
+// NAME: Type 16
+// PARAMS: locals
+// SYSTEM: noise
+double px = z.x*nfq; double h = sin(px*12.9898+z.y*nfq*78.233)*43758.5453; h=h-floor(h); double g = (h*2.0-1.0)*(px-floor(px)); aux.DE *= (1.0 + nf*g);

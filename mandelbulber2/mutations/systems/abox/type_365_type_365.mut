@@ -1,0 +1,5 @@
+// TYPE_ID: 365
+// NAME: Type 365
+// PARAMS: locals
+// SYSTEM: abox
+double eta = fabs(aa)*0.1; double Omega = fabs(ab)+0.1; double nu_m = fabs(ac)+0.1; double eff = eta*Omega*Omega/((fabs(ad)+0.01)*nu_m); aux.DE *= (1.0 + af * fmin(eff,10.0));

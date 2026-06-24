@@ -1,0 +1,5 @@
+// TYPE_ID: 324
+// NAME: Type 324
+// PARAMS: locals
+// SYSTEM: abox
+double snr_q = exp(-aa*r*r); double snr_c = exp(-ab*r*r); double advantage = snr_q/(snr_c+1e-21); aux.DE *= (1.0 + af * fmin(advantage, 10.0));

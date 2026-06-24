@@ -1,0 +1,5 @@
+// TYPE_ID: 307
+// NAME: Type 307
+// PARAMS: locals
+// SYSTEM: abox
+double visibility = cos(aa*r)*cos(aa*r); double erased = sin(ab*z.x + ac*z.y); aux.DE *= (1.0 + af * visibility * erased*erased);

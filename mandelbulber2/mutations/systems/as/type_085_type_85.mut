@@ -1,0 +1,5 @@
+// TYPE_ID: 85
+// NAME: Type 85
+// PARAMS: locals
+// SYSTEM: as
+double r = sqrt(z.x*z.x+z.y*z.y+z.z*z.z); double efold = r*fabs(ta); aux.DE *= exp(sf*fmin(efold*tb, 10.0));

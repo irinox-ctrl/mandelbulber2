@@ -1,0 +1,5 @@
+// TYPE_ID: 3
+// NAME: Type 3
+// PARAMS: locals
+// SYSTEM: sym_kal
+z.z = fabs(z.z);

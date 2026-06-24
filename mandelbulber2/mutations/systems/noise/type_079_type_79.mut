@@ -1,0 +1,5 @@
+// TYPE_ID: 79
+// NAME: Type 79
+// PARAMS: locals
+// SYSTEM: noise
+double v=0,f=nfq; for(int k=0;k<4;k++){ double h=sin(z.x*f+sin(z.y*f*na)*nam); v+=h/(1.0+k); f*=2.0; } aux.DE *= (1.0 + nf*v*0.25);

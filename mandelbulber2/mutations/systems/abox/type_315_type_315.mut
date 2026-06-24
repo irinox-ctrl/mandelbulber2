@@ -1,0 +1,5 @@
+// TYPE_ID: 315
+// NAME: Type 315
+// PARAMS: locals
+// SYSTEM: abox
+double bound = 2.0*sqrt(2.0); double corr = bound * cos(aa*r) * sin(ab*z.x); aux.DE *= (1.0 + af * fabs(corr) / bound);

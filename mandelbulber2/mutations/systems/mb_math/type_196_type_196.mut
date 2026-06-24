@@ -1,0 +1,5 @@
+// TYPE_ID: 196
+// NAME: Type 196
+// PARAMS: locals
+// SYSTEM: mb_math
+z.x+=ma*sin(mb*zx)*cos(mc*zy); z.y+=md*cos(me*zy)*sin(mff*zz2); z.z+=mg*sin(mh*zz2)*cos(ma*zx); aux.DE*=fabs(mf);

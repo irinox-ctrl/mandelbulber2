@@ -1,0 +1,5 @@
+// TYPE_ID: 320
+// NAME: Type 320
+// PARAMS: locals
+// SYSTEM: abox
+double N = fmax(fabs(aa)*10.0, 1.0); double dphi = 1.0/(N*sqrt(fmax(fabs(ab), 1e-21))); double sql = 1.0/sqrt(N); double gain = (sql*sql)/(dphi*dphi+1e-21); aux.DE *= (1.0 + af * fmin(gain, 10.0) * sin(ac*r)*sin(ac*r));

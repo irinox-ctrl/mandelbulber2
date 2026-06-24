@@ -1,0 +1,5 @@
+// TYPE_ID: 259
+// NAME: Type 259
+// PARAMS: locals
+// SYSTEM: abox
+{ double vev=aa*r*r; aux.DE*=(1.0+ab*vev); }

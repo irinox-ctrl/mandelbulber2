@@ -1,0 +1,5 @@
+// TYPE_ID: 260
+// NAME: Type 260
+// PARAMS: locals
+// SYSTEM: abox
+{ double grd=(sin(aa*(r+0.01))-sin(aa*r))/0.01; aux.DE*=(1.0+ab*fabs(grd)); }

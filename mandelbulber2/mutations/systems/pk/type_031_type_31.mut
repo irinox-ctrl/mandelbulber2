@@ -1,0 +1,5 @@
+// TYPE_ID: 31
+// NAME: Type 31
+// PARAMS: locals
+// SYSTEM: pk
+double toda=pa*exp(pb*(zx-zy))-pa*exp(pb*(zy-zz2)); aux.DE*=(1.0+pf*tanh(toda)/fmax(1e-10,r));

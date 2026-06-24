@@ -1,0 +1,5 @@
+// TYPE_ID: 26
+// NAME: Type 26
+// PARAMS: locals
+// SYSTEM: torus
+double caustic = sin(z.x*ta*10.0)*sin(z.y*tb*10.0); aux.DE *= (1.0 + tf*caustic*caustic*tc);

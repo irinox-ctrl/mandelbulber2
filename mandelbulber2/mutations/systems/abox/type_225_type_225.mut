@@ -1,0 +1,5 @@
+// TYPE_ID: 225
+// NAME: Type 225
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= (1.0 + aa * fabs(sin(2.0 * ab * atan2(zz2, sqrt(zx*zx+zy*zy+1e-21)))));

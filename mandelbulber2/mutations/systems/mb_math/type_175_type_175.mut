@@ -1,0 +1,5 @@
+// TYPE_ID: 175
+// NAME: Type 175
+// PARAMS: locals
+// SYSTEM: mb_math
+double sc=ma+mb*sin(i*mc); z*=sc; if(fabs(z.x)>md) z.x=copysign(md*2.0,z.x)-z.x; aux.DE*=fabs(sc);

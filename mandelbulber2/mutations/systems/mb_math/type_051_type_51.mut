@@ -1,0 +1,5 @@
+// TYPE_ID: 51
+// NAME: Type 51
+// PARAMS: locals
+// SYSTEM: mb_math
+z.x*=ma; z.y*=mb; z.z*=mc; aux.DE*=fmax(fabs(ma),fmax(fabs(mb),fabs(mc)));

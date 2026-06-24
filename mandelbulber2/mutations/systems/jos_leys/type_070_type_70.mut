@@ -1,0 +1,5 @@
+// TYPE_ID: 70
+// NAME: Type 70
+// PARAMS: locals
+// SYSTEM: jos_leys
+double dd=ja*jb*(1.0/(fmax(1e-10,rr))+zx*zy/(fmax(1e-10,rr*r))); aux.DE*=(1.0+jf*tanh(dd));

@@ -1,0 +1,5 @@
+// TYPE_ID: 54
+// NAME: Type 54
+// PARAMS: locals
+// SYSTEM: pk
+double ano=pa*fabs(fmod(pb*zx+pc*zy,1.0)-0.5)*4.0; aux.DE*=(1.0+pf*ano/fmax(1e-10,r));

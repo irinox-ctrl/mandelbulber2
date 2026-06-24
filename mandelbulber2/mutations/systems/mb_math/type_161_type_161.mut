@@ -1,0 +1,5 @@
+// TYPE_ID: 161
+// NAME: Type 161
+// PARAMS: locals
+// SYSTEM: mb_math
+double p=ma; aux.DE=pow(fmax(1e-21,aux.DE),p);

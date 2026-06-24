@@ -1,0 +1,5 @@
+// TYPE_ID: 96
+// NAME: Type 96
+// PARAMS: locals
+// SYSTEM: pk
+double gs=pa*exp(-pb*fabs(zz2))*cos(pfreq*sqrt(fmax(0.0,zx*zx+zy*zy))+pph); aux.DE*=(1.0+pf*gs);

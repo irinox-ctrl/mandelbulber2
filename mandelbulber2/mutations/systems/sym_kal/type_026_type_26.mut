@@ -1,0 +1,5 @@
+// TYPE_ID: 26
+// NAME: Type 26
+// PARAMS: locals
+// SYSTEM: sym_kal
+{ for(int k=0; k<int(sa); k++) { z.x = fabs(z.x); z.y = fabs(z.y); double cs = cos(sang), sn = sin(sang); double nx = z.x*cs - z.y*sn; z.y = z.x*sn + z.y*cs; z.x = nx; } }

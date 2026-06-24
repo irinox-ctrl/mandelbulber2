@@ -1,0 +1,5 @@
+// TYPE_ID: 7
+// NAME: Type 7
+// PARAMS: locals
+// SYSTEM: as
+aux.DE *= (1.0 + sf*0.1*sin(ta*(double)i*0.1));

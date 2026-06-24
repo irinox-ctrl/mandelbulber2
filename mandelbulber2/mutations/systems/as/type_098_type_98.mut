@@ -1,0 +1,5 @@
+// TYPE_ID: 98
+// NAME: Type 98
+// PARAMS: locals
+// SYSTEM: as
+double vev = sqrt(z.x*z.x+z.y*z.y+z.z*z.z)*ta; aux.DE *= (1.0 + sf*vev*vev*tb);

@@ -1,0 +1,5 @@
+// TYPE_ID: 90
+// NAME: Type 90
+// PARAMS: locals
+// SYSTEM: torus
+double r2d = sqrt(z.x*z.x+z.y*z.y); double phi = atan2(z.y,z.x); double pulse = exp(-ta*((double)i*0.1-tb)*((double)i*0.1-tb)); double torus_d = sqrt((r2d-tc)*(r2d-tc)+z.z*z.z)-td*(1.0+pulse); aux.DE *= (1.0 + tf*exp(-torus_d*torus_d*5.0));

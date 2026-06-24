@@ -1,0 +1,5 @@
+// TYPE_ID: 349
+// NAME: Type 349
+// PARAMS: locals
+// SYSTEM: abox
+double info = fabs(sin(aa*z.x)*cos(ab*z.y)); double work = ac*info*log(2.0); aux.DE *= (1.0 + af * fabs(work)/(1.0+fabs(work)));

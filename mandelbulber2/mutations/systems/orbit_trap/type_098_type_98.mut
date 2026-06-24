@@ -1,0 +1,5 @@
+// TYPE_ID: 98
+// NAME: Type 98
+// PARAMS: locals
+// SYSTEM: orbit_trap
+double d=0; for(int k=1;k<=(int)fmax(1,fmin(oa*4,6));k++){ double rk=ob*(double)k; double dk=fabs(sqrt(z.x*z.x+z.y*z.y+z.z*z.z)-rk); d+=exp(-oc*dk); } aux.DE *= (1.0 + of*d/(oa*4+1e-21));

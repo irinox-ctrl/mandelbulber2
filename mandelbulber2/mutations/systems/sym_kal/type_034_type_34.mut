@@ -1,0 +1,5 @@
+// TYPE_ID: 34
+// NAME: Type 34
+// PARAMS: locals
+// SYSTEM: sym_kal
+{ z.x = fabs(z.x); z.y = fabs(z.y); double d = z.x*cos(sang) + z.y*sin(sang); if(d < 0) { z.x -= 2.0*d*cos(sang); z.y -= 2.0*d*sin(sang); } z.x -= sa; z.y -= sb; z.z -= 0; }

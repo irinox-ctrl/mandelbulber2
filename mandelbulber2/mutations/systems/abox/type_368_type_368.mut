@@ -1,0 +1,5 @@
+// TYPE_ID: 368
+// NAME: Type 368
+// PARAMS: locals
+// SYSTEM: abox
+double Cg = fabs(aa)+0.01; double Vg = ab; double C = fabs(ac)+0.01; double coupling = Cg*Vg/C; aux.DE *= (1.0 + af * sin(coupling*r)*sin(coupling*r));

@@ -1,0 +1,5 @@
+// TYPE_ID: 255
+// NAME: Type 255
+// PARAMS: locals
+// SYSTEM: abox
+{ double op=sin(aa*r)*sin(aa*r); aux.DE*=(1.0+ab*op); }

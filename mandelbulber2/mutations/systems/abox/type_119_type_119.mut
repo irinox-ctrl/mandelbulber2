@@ -1,0 +1,5 @@
+// TYPE_ID: 119
+// NAME: Type 119
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= (1.0 + af * aa * exp(-ab*fabs(zx*zy*zz2)/(r*r*r+1e-21)));

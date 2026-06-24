@@ -1,0 +1,5 @@
+// TYPE_ID: 51
+// NAME: Type 51
+// PARAMS: locals
+// SYSTEM: orbit_trap
+double d1=fabs(z.x); double d2=fabs(z.y); double d=fmin(d1,d2); aux.DE *= (1.0 + of*exp(-od*d));

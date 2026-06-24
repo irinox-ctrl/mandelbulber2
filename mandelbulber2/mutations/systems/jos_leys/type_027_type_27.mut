@@ -1,0 +1,5 @@
+// TYPE_ID: 27
+// NAME: Type 27
+// PARAMS: locals
+// SYSTEM: jos_leys
+double ab_ph=ja*atan2(zy,zx)/fmax(1e-10,r); aux.DE*=(1.0+jf*ab_ph);

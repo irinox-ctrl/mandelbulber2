@@ -1,0 +1,5 @@
+// TYPE_ID: 75
+// NAME: Type 75
+// PARAMS: locals
+// SYSTEM: warp_dist
+{ z *= (1.0 + wf*wam*pow(fabs(sin(wfq*r+wph)), wa)); aux.DE *= (1.0 + fabs(wf*wam)); }

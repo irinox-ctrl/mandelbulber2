@@ -1,0 +1,5 @@
+// TYPE_ID: 76
+// NAME: Type 76
+// PARAMS: locals
+// SYSTEM: warp_dist
+{ double p=wf*wam*pow(r+1e-21, wa-1.0)*sin(wfq*r+wph); z.x+=p*zx; z.y+=p*zy; z.z+=p*zz2; aux.DE*=(1.0+fabs(p*r)); }

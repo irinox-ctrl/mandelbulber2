@@ -1,0 +1,5 @@
+// TYPE_ID: 358
+// NAME: Type 358
+// PARAMS: locals
+// SYSTEM: abox
+double T_ratio = fmax(fabs(aa)+0.1,0.01)/fmax(fabs(ab)+0.1,0.01); double loss = 1.0-fmin(fabs(ac),0.99); double eff = (1.0-1.0/T_ratio)*loss; aux.DE *= (1.0 + af * fabs(eff) * cos(ad*r)*cos(ad*r));

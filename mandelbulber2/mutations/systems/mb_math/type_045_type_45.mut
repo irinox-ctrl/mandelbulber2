@@ -1,0 +1,5 @@
+// TYPE_ID: 45
+// NAME: Type 45
+// PARAMS: locals
+// SYSTEM: mb_math
+double dm=fmax(1e-10,acosh(fmax(1.0,r))); double dmax=ma; if(dm<dmax){ double sc=dmax/dm; z*=sc; aux.DE*=sc*dmax/(dm*sinh(dm)+1e-21); }

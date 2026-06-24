@@ -1,0 +1,5 @@
+// TYPE_ID: 252
+// NAME: Type 252
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= (1.0 + aa * (1.0 - exp(-double(i) * 0.01 / fmax(ab, 0.01))));

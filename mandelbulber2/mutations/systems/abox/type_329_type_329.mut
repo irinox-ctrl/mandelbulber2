@@ -1,0 +1,5 @@
+// TYPE_ID: 329
+// NAME: Type 329
+// PARAMS: locals
+// SYSTEM: abox
+double B = aa*z.x + ab*z.y + ac*z.z; double sensitivity = sin(ad*B); aux.DE *= (1.0 + af * sensitivity*sensitivity);

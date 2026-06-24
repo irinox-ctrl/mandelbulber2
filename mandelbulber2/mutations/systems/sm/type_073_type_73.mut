@@ -1,0 +1,5 @@
+// TYPE_ID: 73
+// NAME: Type 73
+// PARAMS: locals
+// SYSTEM: sm
+double sc=3.0; double a36=M_PI/5.0; for(int k=0;k<10;k++){double a=k*a36; double d=z.x*cos(a)+z.y*sin(a); if(d<0.0){z.x-=2.0*d*cos(a);z.y-=2.0*d*sin(a);}} z=z*sc-CVector4(1,1,1,0)*(sc-1.0)*ta; aux.DE=aux.DE*sc+1.0;

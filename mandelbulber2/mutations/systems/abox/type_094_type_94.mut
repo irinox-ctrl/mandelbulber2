@@ -1,0 +1,5 @@
+// TYPE_ID: 94
+// NAME: Type 94
+// PARAMS: locals
+// SYSTEM: abox
+{ double det=zx*zy-zy*zz2+zz2*zx; aux.DE*=(1.0+af*aa*sin(ab*det/(rr+1e-21))); }

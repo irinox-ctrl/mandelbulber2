@@ -1,0 +1,5 @@
+// TYPE_ID: 88
+// NAME: Type 88
+// PARAMS: locals
+// SYSTEM: sym_kal
+{ if(z.x+z.y<0){double t=-z.y;z.y=-z.x;z.x=t;} if(z.x+z.z<0){double t=-z.z;z.z=-z.x;z.x=t;} z *= sf; { double _cF=(sf-1.0); z.x -= sa*_cF; z.y -= sb*_cF; z.z -= sc*_cF; }; aux.DE=aux.DE*fabs(sf)+1.0; if(z.y-z.z<0){double t=z.y;z.y=z.z;z.z=t;} }

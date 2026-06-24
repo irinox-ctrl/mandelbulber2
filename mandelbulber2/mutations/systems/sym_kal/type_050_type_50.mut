@@ -1,0 +1,5 @@
+// TYPE_ID: 50
+// NAME: Type 50
+// PARAMS: locals
+// SYSTEM: sym_kal
+{ double px=sa, py=sb; z.x = z.x - px*floor(z.x/px+0.5); z.y = z.y - py*floor(z.y/py+0.5); }

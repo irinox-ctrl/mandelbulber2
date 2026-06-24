@@ -1,0 +1,5 @@
+// TYPE_ID: 67
+// NAME: Type 67
+// PARAMS: locals
+// SYSTEM: orbit_trap
+double d=sqrt(z.x*z.x+z.y*z.y+z.z*z.z); double phase=sin(ob*(double)i*M_PI/180.0)*0.5+0.5; aux.DE *= (1.0 + of*exp(-od*d)*phase);

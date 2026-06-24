@@ -1,0 +1,5 @@
+// TYPE_ID: 116
+// NAME: Type 116
+// PARAMS: locals
+// SYSTEM: abox
+{ double w=aa*sin(ab*(zx+zy+zz2))+ac*cos(ad*(zx-zy+zz2)); aux.DE*=(1.0+af*w*0.5); }

@@ -1,0 +1,5 @@
+// TYPE_ID: 379
+// NAME: Type 379
+// PARAMS: locals
+// SYSTEM: abox
+double xi = fmax(fabs(aa),0.01); double L = fabs(ab)*r; double overlap = exp(-L/xi); double gap = fabs(ac); aux.DE *= (1.0 + af * overlap*gap);

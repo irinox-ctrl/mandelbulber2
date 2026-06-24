@@ -1,0 +1,5 @@
+// TYPE_ID: 23
+// NAME: Type 23
+// PARAMS: locals
+// SYSTEM: warp_dist
+{ double v=0; for(int o=0;o<4;o++){double f=wfq*pow(2.0,o); v+=sin(f*zz2+wph)*cos(f*zx)/pow(2.0,o);} z.z+=wf*wam*v; aux.DE*=(1.0+fabs(wf*wam*wfq*4.0)); }

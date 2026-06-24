@@ -1,0 +1,5 @@
+// TYPE_ID: 87
+// NAME: Type 87
+// PARAMS: locals
+// SYSTEM: mb_math
+double th=ma+mf; double cs=cos(th),sn=sin(th); double nx=zx*cs-zy*sn; double ny=zx*sn+zy*cs; z.x=nx;z.y=ny; aux.DE*=fabs(mf);

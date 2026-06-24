@@ -1,0 +1,5 @@
+// TYPE_ID: 53
+// NAME: Type 53
+// PARAMS: locals
+// SYSTEM: pk
+double sml=pa*tanh(pb*zx)*tanh(pb*zy); aux.DE*=(1.0+pf*sml);

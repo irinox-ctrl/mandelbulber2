@@ -1,0 +1,5 @@
+// TYPE_ID: 253
+// NAME: Type 253
+// PARAMS: locals
+// SYSTEM: abox
+{ double bn=exp(-aa*rr)*ab; aux.DE*=(1.0+bn); }

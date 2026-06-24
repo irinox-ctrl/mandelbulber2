@@ -1,0 +1,5 @@
+// TYPE_ID: 74
+// NAME: Type 74
+// PARAMS: locals
+// SYSTEM: sym_kal
+if(fmod(double(i), sa) < sb) { z.x = fabs(z.x); z.y = fabs(z.y); z.z = fabs(z.z); }

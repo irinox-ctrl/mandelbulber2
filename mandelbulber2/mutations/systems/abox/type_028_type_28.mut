@@ -1,0 +1,5 @@
+// TYPE_ID: 28
+// NAME: Type 28
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= (1.0 + af * aa * exp(-ab*(r-ac)*(r-ac)));

@@ -1,0 +1,5 @@
+// TYPE_ID: 292
+// NAME: Type 292
+// PARAMS: locals
+// SYSTEM: abox
+{ double cc=floor(r*aa)*3.0; aux.DE*=(1.0+ab*sin(ac*cc)); }

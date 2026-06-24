@@ -1,0 +1,5 @@
+// TYPE_ID: 227
+// NAME: Type 227
+// PARAMS: locals
+// SYSTEM: abox
+{ double lp=fmod(r*aa, ab); aux.DE*=(1.0+ac*sin(M_PI*lp/fmax(ab,0.01))); }

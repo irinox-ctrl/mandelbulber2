@@ -1,0 +1,5 @@
+// TYPE_ID: 101
+// NAME: Type 101
+// PARAMS: locals
+// SYSTEM: mb_math
+double w=ma; double rr4=rr+w*w; if(rr4<1e-21) rr4=1e-21; double sc=mf; z.x=zx*sc+w*0.1; z.y=zy*sc; z.z=zz2*sc; aux.DE*=fabs(sc);

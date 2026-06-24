@@ -1,0 +1,5 @@
+// TYPE_ID: 81
+// NAME: Type 81
+// PARAMS: locals
+// SYSTEM: torus
+double r2d = sqrt(z.x*z.x+z.y*z.y); double d1 = sqrt((r2d-ta)*(r2d-ta)+z.z*z.z)-tb; double d2 = sqrt((r2d-ta)*(r2d-ta)+(z.z-tc)*(z.z-tc))-tb; aux.DE *= (1.0 + tf*exp(-fmin(fabs(d1),fabs(d2))*td));

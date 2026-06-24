@@ -1,0 +1,5 @@
+// TYPE_ID: 97
+// NAME: Type 97
+// PARAMS: locals
+// SYSTEM: torus
+double r2d = sqrt(z.x*z.x+z.y*z.y); double phi = atan2(z.y,z.x); double dupin = ta*(1.0+tb*cos(phi))*(1.0+tc*cos(atan2(z.z,r2d-ta))); double d = fabs(sqrt((r2d-ta)*(r2d-ta)+z.z*z.z)-dupin*0.3); aux.DE *= (1.0 + tf*exp(-d*td));

@@ -1,0 +1,5 @@
+// TYPE_ID: 92
+// NAME: Type 92
+// PARAMS: locals
+// SYSTEM: mb_math
+double nx=fabs(zx); double ny=fabs(zy); double nz2=fabs(zz2); if(ma>0) z.x=nx; if(mb>0) z.y=ny; if(mc>0) z.z=nz2; aux.DE*=fabs(mf);

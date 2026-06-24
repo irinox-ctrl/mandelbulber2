@@ -1,0 +1,5 @@
+// TYPE_ID: 149
+// NAME: Type 149
+// PARAMS: locals
+// SYSTEM: abox
+{ double pat=sin(aa*zx)*cos(ab*zy)*sin(ac*zz2)*cos(ad*r); aux.DE*=(1.0+af*ae*pat); }

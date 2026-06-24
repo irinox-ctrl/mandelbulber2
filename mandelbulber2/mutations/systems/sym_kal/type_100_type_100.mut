@@ -1,0 +1,5 @@
+// TYPE_ID: 100
+// NAME: Type 100
+// PARAMS: locals
+// SYSTEM: sym_kal
+{ z.x=fabs(z.x)-sa; z.y=fabs(z.y)-sb; z.z=fabs(z.z)-sc; if(z.x<z.y){double t=z.x;z.x=z.y;z.y=t;} if(z.x<z.z){double t=z.x;z.x=z.z;z.z=t;} if(z.y<z.z){double t=z.y;z.y=z.z;z.z=t;} double rr=z.x*z.x+z.y*z.y+z.z*z.z; if(rr<sd*sd){double m=sf*sf/fmax(rr,1e-21);z*=m;aux.DE*=m;} z*=sf; aux.DE=aux.DE*fabs(sf)+1.0; { double _cF=(1.0-sf); z.x += sa*_cF; z.y += sb*_cF; z.z += sc*_cF; }; }

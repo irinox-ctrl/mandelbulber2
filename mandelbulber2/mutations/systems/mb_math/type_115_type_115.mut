@@ -1,0 +1,5 @@
+// TYPE_ID: 115
+// NAME: Type 115
+// PARAMS: locals
+// SYSTEM: mb_math
+double h=((sin(i*12.9898+78.233)*43758.5453) - floor(sin(i*12.9898+78.233)*43758.5453)); if(h<ma){ z.x=-z.x; z.y=-z.y; } aux.DE*=fabs(mf);

@@ -1,0 +1,5 @@
+// TYPE_ID: 194
+// NAME: Type 194
+// PARAMS: locals
+// SYSTEM: mb_math
+double ex=exp(-ma*rr); z*=(1.0+mb*ex); aux.DE*=(1.0+mb*ex);

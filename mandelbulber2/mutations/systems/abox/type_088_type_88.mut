@@ -1,0 +1,5 @@
+// TYPE_ID: 88
+// NAME: Type 88
+// PARAMS: locals
+// SYSTEM: abox
+{ double sw=fabs(zx)>fabs(zy)?zx:zy; aux.DE*=(1.0+af*aa*sin(ab*sw)); }

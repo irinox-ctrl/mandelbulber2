@@ -1,0 +1,5 @@
+// TYPE_ID: 140
+// NAME: Type 140
+// PARAMS: locals
+// SYSTEM: mb_math
+double th=atan2(zy,zx); aux.color+=th*ma;

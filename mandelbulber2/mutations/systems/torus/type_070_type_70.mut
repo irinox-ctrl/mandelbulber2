@@ -1,0 +1,5 @@
+// TYPE_ID: 70
+// NAME: Type 70
+// PARAMS: locals
+// SYSTEM: torus
+double r2d = sqrt(z.x*z.x+z.y*z.y); double R = ta; double charge = tb/fmax(sqrt((r2d-R)*(r2d-R)+z.z*z.z),0.01); double screen = exp(-tc*sqrt((r2d-R)*(r2d-R)+z.z*z.z)); aux.DE *= (1.0 + tf*charge*screen*td);

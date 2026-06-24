@@ -1,0 +1,5 @@
+// TYPE_ID: 118
+// NAME: Type 118
+// PARAMS: locals
+// SYSTEM: mb_math
+double ns=sin(zx*ma+i*mb)*cos(zy*mc); z.x+=ns*0.1*md; z.y+=ns*0.1*md; aux.DE*=fabs(mf);

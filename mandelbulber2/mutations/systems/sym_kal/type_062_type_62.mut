@@ -1,0 +1,5 @@
+// TYPE_ID: 62
+// NAME: Type 62
+// PARAMS: locals
+// SYSTEM: sym_kal
+{ double px=fmax(sa,0.01), py=fmax(sb,0.01); z.x=z.x-px*floor(z.x/px); z.y=z.y-py*floor(z.y/py); }

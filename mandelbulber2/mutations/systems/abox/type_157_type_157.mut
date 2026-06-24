@@ -1,0 +1,5 @@
+// TYPE_ID: 157
+// NAME: Type 157
+// PARAMS: locals
+// SYSTEM: abox
+{ double leg=(3.0*(zz2/r)*(zz2/r)-1.0)*0.5; aux.DE*=(1.0+af*aa*leg); }

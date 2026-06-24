@@ -1,0 +1,5 @@
+// TYPE_ID: 354
+// NAME: Type 354
+// PARAMS: locals
+// SYSTEM: abox
+double gamma_g = 1.4; double ratio = fmax(fabs(aa), 0.1); double eff = 1.0 - (pow(ratio, gamma_g)-1.0)/(gamma_g*(ratio-1.0)+1e-21); aux.DE *= (1.0 + af * fabs(eff) * sin(ab*r)*sin(ab*r));

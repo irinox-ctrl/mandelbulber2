@@ -1,0 +1,5 @@
+// TYPE_ID: 112
+// NAME: Type 112
+// PARAMS: locals
+// SYSTEM: mb_math
+double th=ma*M_PI/180.0; double ph=mb*M_PI/180.0; double cs1=cos(th),sn1=sin(th),cs2=cos(ph); double nx=zx*cs1-zy*sn1; double ny=zx*sn1+zy*cs1; double nz2=zz2*cs2; z.x=nx;z.y=ny;z.z=nz2; aux.DE*=fabs(mf);

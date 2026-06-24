@@ -1,0 +1,5 @@
+// TYPE_ID: 48
+// NAME: Type 48
+// PARAMS: locals
+// SYSTEM: orbit_trap
+double r=sqrt(z.x*z.x+z.y*z.y); double ph=atan2(z.y,z.x); double cyl_r=oa+ob*sin(oc*z.z)*cos(od*ph); double d=fabs(r-cyl_r); aux.DE *= (1.0 + of*exp(-d));

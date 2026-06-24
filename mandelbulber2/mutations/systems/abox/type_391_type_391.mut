@@ -1,0 +1,5 @@
+// TYPE_ID: 391
+// NAME: Type 391
+// PARAMS: locals
+// SYSTEM: abox
+double U = fabs(aa)+0.01; double U_c = fabs(ab)+0.01; double n = sin(ac*r)*0.5+0.5; double gap = (U/U_c)*(n-0.5)*(n-0.5); aux.DE *= (1.0 + af * fmin(gap*4.0,10.0));

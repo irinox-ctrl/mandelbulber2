@@ -1,0 +1,5 @@
+// TYPE_ID: 100
+// NAME: Type 100
+// PARAMS: locals
+// SYSTEM: jos_leys
+double gh=ja*jb*jc/fmax(1e-10,r)*sin(jfreq*zz2+jph); aux.DE*=(1.0+jf*gh);

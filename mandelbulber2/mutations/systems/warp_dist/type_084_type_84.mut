@@ -1,0 +1,5 @@
+// TYPE_ID: 84
+// NAME: Type 84
+// PARAMS: locals
+// SYSTEM: warp_dist
+{ double ph2=atan2(zy,zx); double d=wf*wam*sin(wfq*ph2*wa+wph); z.z+=d; aux.DE*=(1.0+fabs(wf*wam*wfq)); }

@@ -1,0 +1,5 @@
+// TYPE_ID: 18
+// NAME: Type 18
+// PARAMS: locals
+// SYSTEM: sm
+double h=sin(z.x*ta*12.9898+z.y*tb*78.233+z.z*tc*45.164)*43758.5453; h=h-floor(h); z.x+=h*td*0.1; z.y+=(1.0-h)*td*0.1;

@@ -1,0 +1,5 @@
+// TYPE_ID: 65
+// NAME: Type 65
+// PARAMS: locals
+// SYSTEM: mb_math
+double off=ma+0.1*sin(i*mb); z.x+=off; z.y+=off; z.z+=off; aux.DE*=fabs(mf);

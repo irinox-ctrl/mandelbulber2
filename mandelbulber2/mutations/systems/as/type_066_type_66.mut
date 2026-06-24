@@ -1,0 +1,5 @@
+// TYPE_ID: 66
+// NAME: Type 66
+// PARAMS: locals
+// SYSTEM: as
+double lat_pt = fmod(fabs(z.x*ta), 1.0); double bandgap = (lat_pt < 0.5) ? 1.0 : tb; aux.DE *= bandgap;

@@ -1,0 +1,5 @@
+// TYPE_ID: 8
+// NAME: Type 8
+// PARAMS: locals
+// SYSTEM: pk
+double kob=pa*tanh(pb*r)/fmax(1e-10,r); aux.DE*=(1.0+pf*kob);

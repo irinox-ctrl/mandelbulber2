@@ -1,0 +1,5 @@
+// TYPE_ID: 265
+// NAME: Type 265
+// PARAMS: locals
+// SYSTEM: abox
+{ double tmn=(zx*zx+zy*zy+zz2*zz2)/(rr+1e-21); aux.DE*=(1.0+aa*ab*tmn); }

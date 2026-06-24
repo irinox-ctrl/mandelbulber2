@@ -1,0 +1,5 @@
+// TYPE_ID: 176
+// NAME: Type 176
+// PARAMS: locals
+// SYSTEM: mb_math
+double th=ma*M_PI/180.0; double cs=cos(th),sn=sin(th); z.x=zx*cs-zy*sn; z.y=zx*sn+zy*cs; if(fabs(z.x)>mb) z.x=copysign(mb*2.0,z.x)-z.x; aux.DE*=fabs(mf);

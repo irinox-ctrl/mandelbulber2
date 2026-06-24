@@ -1,0 +1,5 @@
+// TYPE_ID: 76
+// NAME: Type 76
+// PARAMS: locals
+// SYSTEM: noise
+double h1=sin(z.x*nfq+z.y*nfq*0.5)*0.5+0.5; double h2=sin(z.y*nfq*1.3+z.z*nfq*0.7)*0.5+0.5; double v=sin((z.x+h1*nam)*na)*cos((z.y+h2*nam)*nb); aux.DE *= (1.0 + nf*v);

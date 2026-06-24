@@ -1,0 +1,5 @@
+// TYPE_ID: 55
+// NAME: Type 55
+// PARAMS: locals
+// SYSTEM: orbit_trap
+double cs=cos(oa*M_PI/180.0),sn=sin(oa*M_PI/180.0); double rx=z.x*cs-z.y*sn; double ry=z.x*sn+z.y*cs; double d=fmin(fabs(rx),fabs(ry)); aux.DE *= (1.0 + of*exp(-od*d));

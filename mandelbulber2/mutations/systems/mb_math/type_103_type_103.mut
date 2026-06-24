@@ -1,0 +1,5 @@
+// TYPE_ID: 103
+// NAME: Type 103
+// PARAMS: locals
+// SYSTEM: mb_math
+double w=ma*sin(mb*i); z.x+=w*0.1; aux.DE*=fabs(mf);

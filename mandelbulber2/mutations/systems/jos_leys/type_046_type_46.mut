@@ -1,0 +1,5 @@
+// TYPE_ID: 46
+// NAME: Type 46
+// PARAMS: locals
+// SYSTEM: jos_leys
+double pc=ja*(tanh(jb*(r-jc))+1.0)*0.5; aux.DE*=(1.0+jf*pc);

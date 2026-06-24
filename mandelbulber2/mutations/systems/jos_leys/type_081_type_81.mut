@@ -1,0 +1,5 @@
+// TYPE_ID: 81
+// NAME: Type 81
+// PARAMS: locals
+// SYSTEM: jos_leys
+double lag=ja*(zx*zy+zy*zz2)/(fmax(1e-10,rr))*jb; aux.DE*=(1.0+jf*lag);

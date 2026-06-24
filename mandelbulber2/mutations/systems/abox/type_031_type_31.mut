@@ -1,0 +1,5 @@
+// TYPE_ID: 31
+// NAME: Type 31
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= (1.0 + af * aa * fabs(sin(ab*r+ac))*exp(-ad*r));

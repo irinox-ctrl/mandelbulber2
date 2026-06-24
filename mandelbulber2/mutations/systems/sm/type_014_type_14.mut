@@ -1,0 +1,5 @@
+// TYPE_ID: 14
+// NAME: Type 14
+// PARAMS: locals
+// SYSTEM: sm
+double a1=ta*M_PI/180.0; double a2=tb*M_PI/180.0; double ca1=cos(a1),sa1=sin(a1); double newx=z.x+z.x*ca1-z.y*sa1; double newy=z.y+z.x*sa1+z.y*ca1; z.x=newx*0.5; z.y=newy*0.5; z.z*=tc; aux.DE *= fabs(tc);

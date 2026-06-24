@@ -1,0 +1,5 @@
+// TYPE_ID: 76
+// NAME: Type 76
+// PARAMS: locals
+// SYSTEM: sym_kal
+{ double d1 = z.x*cos(sang)+z.y*sin(sang); if(d1<0){z.x-=2.0*d1*cos(sang);z.y-=2.0*d1*sin(sang);} double a2=sang+M_PI/fmax(1.0,sa); double d2=z.x*cos(a2)+z.y*sin(a2); if(d2<0){z.x-=2.0*d2*cos(a2);z.y-=2.0*d2*sin(a2);} }

@@ -1,0 +1,5 @@
+// TYPE_ID: 62
+// NAME: Type 62
+// PARAMS: locals
+// SYSTEM: as
+double v_source = ta * 0.1; double angle = atan2(z.y, z.x); aux.DE *= (1.0 + sf*v_source*cos(angle)*tb);

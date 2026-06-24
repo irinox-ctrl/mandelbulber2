@@ -1,0 +1,5 @@
+// TYPE_ID: 66
+// NAME: Type 66
+// PARAMS: locals
+// SYSTEM: pk
+double brf=pa*exp(-pb*r)*cos(pfreq*atan2(zy,zx)+pph); aux.DE*=(1.0+pf*brf);

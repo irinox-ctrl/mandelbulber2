@@ -1,0 +1,5 @@
+// TYPE_ID: 27
+// NAME: Type 27
+// PARAMS: locals
+// SYSTEM: pk
+double kp=pa*(sin(pfreq*zx)*cos(pfreq*zy)+sin(pfreq*zy)*cos(pfreq*zz2))/fmax(1e-10,r); aux.DE*=(1.0+pf*kp);

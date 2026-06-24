@@ -1,0 +1,5 @@
+// TYPE_ID: 82
+// NAME: Type 82
+// PARAMS: locals
+// SYSTEM: as
+double d_string = sqrt(z.y*z.y+z.z*z.z); double horizon = fmax(fabs(tb), 0.01); aux.DE *= (1.0 + sf*ta*log(fmax(d_string/horizon,0.01)));

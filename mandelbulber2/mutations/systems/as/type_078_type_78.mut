@@ -1,0 +1,5 @@
+// TYPE_ID: 78
+// NAME: Type 78
+// PARAMS: locals
+// SYSTEM: as
+double r = sqrt(z.x*z.x+z.y*z.y+z.z*z.z); double rs = fmax(fabs(ta), 0.01); aux.DE /= fmax(1.0 - rs/fmax(r,rs+0.01), 0.01);

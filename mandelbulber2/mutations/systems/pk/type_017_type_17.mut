@@ -1,0 +1,5 @@
+// TYPE_ID: 17
+// NAME: Type 17
+// PARAMS: locals
+// SYSTEM: pk
+double ms=pa*(1.0-zz2/fmax(1e-10,r)); aux.DE*=(1.0+pf*ms*pb);

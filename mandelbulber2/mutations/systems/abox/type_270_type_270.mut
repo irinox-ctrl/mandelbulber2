@@ -1,0 +1,5 @@
+// TYPE_ID: 270
+// NAME: Type 270
+// PARAMS: locals
+// SYSTEM: abox
+{ double xs=fabs(sin(aa*r)-zx); aux.DE*=(1.0+ab*xs*xs); }

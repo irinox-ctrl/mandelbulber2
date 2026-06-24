@@ -1,0 +1,5 @@
+// TYPE_ID: 229
+// NAME: Type 229
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= (1.0 + aa * fabs(ab));

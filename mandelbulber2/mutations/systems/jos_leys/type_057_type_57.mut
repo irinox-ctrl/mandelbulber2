@@ -1,0 +1,5 @@
+// TYPE_ID: 57
+// NAME: Type 57
+// PARAMS: locals
+// SYSTEM: jos_leys
+double kau=ja*tanh(jb*sin(jfreq*r)*cos(jfreq*atan2(zy,zx))); aux.DE*=(1.0+jf*kau);

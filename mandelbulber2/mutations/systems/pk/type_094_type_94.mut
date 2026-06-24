@@ -1,0 +1,5 @@
+// TYPE_ID: 94
+// NAME: Type 94
+// PARAMS: locals
+// SYSTEM: pk
+double gpo=pa*pb*sin(pfreq*r)/(fmax(1e-10,r*r)); aux.DE*=(1.0+pf*gpo);

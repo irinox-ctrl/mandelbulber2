@@ -1,0 +1,5 @@
+// TYPE_ID: 5
+// NAME: Type 5
+// PARAMS: locals
+// SYSTEM: noise
+double fx = z.x*nfq; double fy = z.y*nfq; double h00 = sin(floor(fx)*127.1+floor(fy)*311.7)*43758.5453; h00=h00-floor(h00); double h10 = sin((floor(fx)+1)*127.1+floor(fy)*311.7)*43758.5453; h10=h10-floor(h10); double h01 = sin(floor(fx)*127.1+(floor(fy)+1)*311.7)*43758.5453; h01=h01-floor(h01); double h11 = sin((floor(fx)+1)*127.1+(floor(fy)+1)*311.7)*43758.5453; h11=h11-floor(h11); double tx=fx-floor(fx); double ty=fy-floor(fy); double v = h00*(1-tx)*(1-ty)+h10*tx*(1-ty)+h01*(1-tx)*ty+h11*tx*ty; aux.DE *= (1.0 + nf*v);

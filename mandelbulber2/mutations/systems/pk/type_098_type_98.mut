@@ -1,0 +1,5 @@
+// TYPE_ID: 98
+// NAME: Type 98
+// PARAMS: locals
+// SYSTEM: pk
+double thf2=pa*sin(pfreq*zx+pph)*cos(pfreq*zy)*pb; aux.DE*=(1.0+pf*thf2/fmax(1e-10,r));

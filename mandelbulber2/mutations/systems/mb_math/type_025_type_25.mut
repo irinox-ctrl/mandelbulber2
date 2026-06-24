@@ -1,0 +1,5 @@
+// TYPE_ID: 25
+// NAME: Type 25
+// PARAMS: locals
+// SYSTEM: mb_math
+double lt=ma+mb*sin(mc*zx); if(fabs(zx)>lt) z.x=copysign(lt*2.0,zx)-zx; double lty=ma+mb*sin(mc*zy); if(fabs(zy)>lty) z.y=copysign(lty*2.0,zy)-zy; double ltz=ma+mb*sin(mc*zz2); if(fabs(zz2)>ltz) z.z=copysign(ltz*2.0,zz2)-zz2; aux.DE*=fabs(mf)*(1.0+fabs(mb*mc));

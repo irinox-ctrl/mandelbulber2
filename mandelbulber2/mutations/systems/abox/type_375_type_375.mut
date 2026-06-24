@@ -1,0 +1,5 @@
+// TYPE_ID: 375
+// NAME: Type 375
+// PARAMS: locals
+// SYSTEM: abox
+double valley = sin(aa*z.x)*cos(ab*z.y) - cos(aa*z.x)*sin(ab*z.y); double broken_inv = sin(ac*r); aux.DE *= (1.0 + af * fabs(valley*broken_inv));

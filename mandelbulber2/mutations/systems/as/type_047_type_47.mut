@@ -1,0 +1,5 @@
+// TYPE_ID: 47
+// NAME: Type 47
+// PARAMS: locals
+// SYSTEM: as
+double spin_dot = z.x*sin(ta)+z.y*cos(ta)+z.z*sin(tb); aux.DE *= (1.0 + sf*tc*spin_dot);

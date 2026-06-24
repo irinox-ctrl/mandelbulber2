@@ -1,0 +1,5 @@
+// TYPE_ID: 35
+// NAME: Type 35
+// PARAMS: locals
+// SYSTEM: orbit_trap
+double ph=atan2(z.y,z.x); double r=sqrt(z.x*z.x+z.y*z.y); int n=(int)fmax(3,fmin(oa,12)); double star_r=ob*(1.0+oc*cos(n*ph)); double d=fabs(r-star_r); aux.DE *= (1.0 + of*exp(-od*d));

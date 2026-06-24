@@ -1,0 +1,5 @@
+// TYPE_ID: 367
+// NAME: Type 367
+// PARAMS: locals
+// SYSTEM: abox
+double g = fabs(aa)+0.01; double kappa = fabs(ab)+0.01; double delta = fabs(ac)+0.01; double cooling = g*g/(kappa*kappa+delta*delta); double n_ph = sin(ad*r)*sin(ad*r)*10.0; aux.DE *= (1.0 + af * cooling*fmin(n_ph,10.0));

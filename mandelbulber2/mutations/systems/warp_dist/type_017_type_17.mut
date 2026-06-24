@@ -1,0 +1,5 @@
+// TYPE_ID: 17
+// NAME: Type 17
+// PARAMS: locals
+// SYSTEM: warp_dist
+double n1 = cos(wfq*zx)*sin(wa*zy); double n2 = cos(wa*zy)*sin(wb*zz2); double n3 = cos(wb*zz2)*sin(wfq*zx); z.x += wf*wam*n1; z.y += wf*wam*n2; z.z += wf*wam*n3; aux.DE *= (1.0 + 3.0*fabs(wf*wam));

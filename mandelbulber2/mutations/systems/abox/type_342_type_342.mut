@@ -1,0 +1,5 @@
+// TYPE_ID: 342
+// NAME: Type 342
+// PARAMS: locals
+// SYSTEM: abox
+double L_q = fabs(aa)+0.01; double C_q = fabs(ab)+0.01; double Z = sqrt(L_q/C_q); double match = 1.0/(1.0 + (Z-ac)*(Z-ac)); aux.DE *= (1.0 + af * match);

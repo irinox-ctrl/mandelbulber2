@@ -1,0 +1,5 @@
+// TYPE_ID: 35
+// NAME: Type 35
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= (1.0 + af * aa * cos(ab*log(r+1e-21)+ac));

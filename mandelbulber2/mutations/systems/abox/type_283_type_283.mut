@@ -1,0 +1,5 @@
+// TYPE_ID: 283
+// NAME: Type 283
+// PARAMS: locals
+// SYSTEM: abox
+{ double scr=log(fmax(aa,1.0))*ab*sin(ac*r); aux.DE*=(1.0+fabs(scr)*0.01); }

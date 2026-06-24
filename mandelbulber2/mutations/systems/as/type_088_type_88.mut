@@ -1,0 +1,5 @@
+// TYPE_ID: 88
+// NAME: Type 88
+// PARAMS: locals
+// SYSTEM: as
+double ion_frac = exp(-fabs(ta)/fmax(fabs(tb)*(double)i*0.01+0.01, 0.01)); aux.DE *= (1.0 + sf*ion_frac*tc);

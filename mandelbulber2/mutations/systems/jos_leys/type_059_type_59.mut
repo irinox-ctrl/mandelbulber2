@@ -1,0 +1,5 @@
+// TYPE_ID: 59
+// NAME: Type 59
+// PARAMS: locals
+// SYSTEM: jos_leys
+double wrt=ja*jb*cos(jfreq*r+jph)/fmax(1e-10,rr); aux.DE*=(1.0+jf*wrt);

@@ -1,0 +1,5 @@
+// TYPE_ID: 64
+// NAME: Type 64
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= fabs(aa + ab * (zx*zx - zy*zy) / (rr + 1e-21));

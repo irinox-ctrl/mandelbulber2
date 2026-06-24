@@ -1,0 +1,5 @@
+// TYPE_ID: 109
+// NAME: Type 109
+// PARAMS: locals
+// SYSTEM: abox
+{ double hd=sin(aa*zx)*cos(ab*zy)+sin(ac*zy)*cos(ad*zz2)+sin(ae*zz2)*cos(aff*zx); aux.DE*=(1.0+af*ag*hd/3.0); }

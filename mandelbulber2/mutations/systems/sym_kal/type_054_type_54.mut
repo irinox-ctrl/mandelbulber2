@@ -1,0 +1,5 @@
+// TYPE_ID: 54
+// NAME: Type 54
+// PARAMS: locals
+// SYSTEM: sym_kal
+{ double rxy=sqrt(zx*zx+zy*zy); if(rxy>sa) { double f=sa/rxy; z.x*=f; z.y*=f; } }

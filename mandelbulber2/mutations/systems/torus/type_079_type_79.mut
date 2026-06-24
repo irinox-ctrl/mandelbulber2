@@ -1,0 +1,5 @@
+// TYPE_ID: 79
+// NAME: Type 79
+// PARAMS: locals
+// SYSTEM: torus
+double phi = atan2(z.y,z.x); double r2d = sqrt(z.x*z.x+z.y*z.y); int n = (int)fmax(2,fmin(ta*4,8)); double md = 1e10; for(int k=0;k<n;k++){ double ang = k*2.0*M_PI/n; double cx = tb*cos(ang); double cy = tb*sin(ang); double d = sqrt((z.x-cx)*(z.x-cx)+(z.y-cy)*(z.y-cy)+z.z*z.z)-tc; if(fabs(d)<md) md=fabs(d); } aux.DE *= (1.0 + tf*exp(-md*td));

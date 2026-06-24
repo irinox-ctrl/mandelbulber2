@@ -1,0 +1,5 @@
+// TYPE_ID: 245
+// NAME: Type 245
+// PARAMS: locals
+// SYSTEM: abox
+{ double ylm=sin(aa*acos(zz2/r))*cos(ab*atan2(zy,zx)); aux.DE*=(1.0+ac*fabs(ylm)); }

@@ -1,0 +1,5 @@
+// TYPE_ID: 82
+// NAME: Type 82
+// PARAMS: locals
+// SYSTEM: abox
+{ double q1=zx*cos(aa)-zy*sin(aa); double q2=zx*sin(aa)+zy*cos(aa); aux.DE*=(1.0+af*ab*sin(ac*q1)*cos(ad*q2)); }

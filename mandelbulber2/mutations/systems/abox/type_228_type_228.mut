@@ -1,0 +1,5 @@
+// TYPE_ID: 228
+// NAME: Type 228
+// PARAMS: locals
+// SYSTEM: abox
+{ double skin=exp(-fabs(zz2)*aa/fmax(ab,0.01)); aux.DE*=(1.0+ac*skin); }

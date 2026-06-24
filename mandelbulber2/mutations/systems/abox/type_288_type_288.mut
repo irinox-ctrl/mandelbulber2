@@ -1,0 +1,5 @@
+// TYPE_ID: 288
+// NAME: Type 288
+// PARAMS: locals
+// SYSTEM: abox
+{ double ml=floor(log(r+1e-21)/log(fmax(aa,1.01))); aux.DE*=(1.0+ab*sin(ac*ml)); }

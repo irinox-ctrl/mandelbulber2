@@ -1,0 +1,5 @@
+// TYPE_ID: 171
+// NAME: Type 171
+// PARAMS: locals
+// SYSTEM: abox
+{ double orb=r; double v=aa*sin(ab*orb)+ac*cos(ad*orb*orb/(r+1e-21)); aux.DE*=(1.0+af*v); }

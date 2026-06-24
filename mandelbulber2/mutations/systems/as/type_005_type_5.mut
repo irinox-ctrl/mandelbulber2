@@ -1,0 +1,5 @@
+// TYPE_ID: 5
+// NAME: Type 5
+// PARAMS: locals
+// SYSTEM: as
+double h = sin(z.x*127.1+z.y*311.7+z.z*74.7)*43758.5453; h=h-floor(h); aux.DE += sf*(h*2.0-1.0)*ta;

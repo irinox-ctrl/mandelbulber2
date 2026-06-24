@@ -1,0 +1,5 @@
+// TYPE_ID: 10
+// NAME: Type 10
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= (1.0 + af * aa * sin(ab * zz2) * cos(ac * zx));

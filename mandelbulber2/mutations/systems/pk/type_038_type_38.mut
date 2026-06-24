@@ -1,0 +1,5 @@
+// TYPE_ID: 38
+// NAME: Type 38
+// PARAMS: locals
+// SYSTEM: pk
+double aa=pa*cos(pfreq*r)*pfreq/fmax(1e-10,r); aux.DE*=(1.0+pf*aa);

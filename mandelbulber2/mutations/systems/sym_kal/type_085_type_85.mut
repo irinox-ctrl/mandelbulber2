@@ -1,0 +1,5 @@
+// TYPE_ID: 85
+// NAME: Type 85
+// PARAMS: locals
+// SYSTEM: sym_kal
+{ z.x=fabs(z.x); z.y=fabs(z.y); z.z=fabs(z.z); z *= sf + sam*sin(sfq*i); aux.DE *= fabs(sf + sam*sin(sfq*i)); { double _cF=(sf-1.0); z.x -= sa*_cF; z.y -= sb*_cF; z.z -= sc*_cF; }; }

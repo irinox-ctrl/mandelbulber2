@@ -1,0 +1,5 @@
+// TYPE_ID: 168
+// NAME: Type 168
+// PARAMS: locals
+// SYSTEM: abox
+{ double jc=aa*sin(ab*r)+ac*sin(ad*atan2(zy,zx)); aux.DE*=(1.0+af*jc*0.5); }

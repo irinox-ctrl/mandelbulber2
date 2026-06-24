@@ -1,0 +1,5 @@
+// TYPE_ID: 174
+// NAME: Type 174
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= (1.0 + fabs(aa*M_PI/180.0) * ab);

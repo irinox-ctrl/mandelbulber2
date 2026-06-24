@@ -1,0 +1,5 @@
+// TYPE_ID: 378
+// NAME: Type 378
+// PARAMS: locals
+// SYSTEM: abox
+double E_D = aa; double v_F = fabs(ab)+0.01; double k = ac*r; double cone = fabs(E_D)/(v_F*fmax(fabs(k),0.01)); aux.DE *= (1.0 + af * fmin(cone,10.0) * sin(r)*sin(r));

@@ -1,0 +1,5 @@
+// TYPE_ID: 1
+// NAME: Type 1
+// PARAMS: locals
+// SYSTEM: jos_leys
+double k1=ja,k2=jb,k3=jc,k4=jd; double curv=(k1+k2+k3+k4)/fmax(1.0,r); aux.DE*=(1.0+jf*curv);

@@ -1,0 +1,5 @@
+// TYPE_ID: 75
+// NAME: Type 75
+// PARAMS: locals
+// SYSTEM: sm
+double sc=3.0; int n=(int)fmax(ta,3.0); double amp=fabs(tb); double theta=atan2(z.y,z.x); double r2d=sqrt(z.x*z.x+z.y*z.y); double star_r=r2d*(1.0+amp*cos(n*theta)); z.x=star_r*cos(theta); z.y=star_r*sin(theta); z=fabs(z); if(z.x-z.y<0.0){double t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0){double t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0){double t=z.y;z.y=z.z;z.z=t;} z=z*sc-CVector4(1,1,1,0)*(sc-1.0); aux.DE=aux.DE*sc+1.0;

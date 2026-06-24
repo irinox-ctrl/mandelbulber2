@@ -1,0 +1,5 @@
+// TYPE_ID: 39
+// NAME: Type 39
+// PARAMS: locals
+// SYSTEM: orbit_trap
+double r=sqrt(z.x*z.x+z.y*z.y); double ph=atan2(z.y,z.x); double heart_r=oa*(1.0-sin(ph)); double d=fabs(r-heart_r); aux.DE *= (1.0 + of*exp(-od*d));

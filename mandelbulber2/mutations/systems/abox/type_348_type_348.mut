@@ -1,0 +1,5 @@
+// TYPE_ID: 348
+// NAME: Type 348
+// PARAMS: locals
+// SYSTEM: abox
+double W = aa*(z.x*z.x + z.y*z.y); double T_eff = fmax(fabs(ab), 0.01); double ratio = exp(-W/T_eff); aux.DE *= (1.0 + af * fmin(ratio, 10.0));

@@ -1,0 +1,5 @@
+// TYPE_ID: 53
+// NAME: Type 53
+// PARAMS: locals
+// SYSTEM: sym_kal
+{ double ph2=atan2(zy,zx)+sang; double rxy=sqrt(zx*zx+zy*zy); z.x=rxy*cos(ph2); z.y=rxy*sin(ph2); z.z=fabs(zz2); }

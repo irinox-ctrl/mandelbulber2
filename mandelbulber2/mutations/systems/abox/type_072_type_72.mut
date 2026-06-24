@@ -1,0 +1,5 @@
+// TYPE_ID: 72
+// NAME: Type 72
+// PARAMS: locals
+// SYSTEM: abox
+{ double s=aa+ab*pow(fabs(sin(ac*r)),ad); aux.DE*=fabs(s); }

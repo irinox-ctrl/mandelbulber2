@@ -1,0 +1,5 @@
+// TYPE_ID: 43
+// NAME: Type 43
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= (1.0 + af * aa * cos(ab*zx+ac*zy+ad*zz2));

@@ -1,0 +1,5 @@
+// TYPE_ID: 64
+// NAME: Type 64
+// PARAMS: locals
+// SYSTEM: as
+double phi2 = atan2(z.z, sqrt(z.x*z.x+z.y*z.y)); aux.DE *= (1.0 + sf*ta*fabs(sin(2.0*phi2)));

@@ -1,0 +1,5 @@
+// TYPE_ID: 43
+// NAME: Type 43
+// PARAMS: locals
+// SYSTEM: torus
+double phi = atan2(z.y,z.x); double revolutions = ta*phi/(2.0*M_PI); aux.DE *= (1.0 + tf*sin(revolutions*2.0*M_PI)*tb);

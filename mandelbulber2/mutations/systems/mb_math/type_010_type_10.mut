@@ -1,0 +1,5 @@
+// TYPE_ID: 10
+// NAME: Type 10
+// PARAMS: locals
+// SYSTEM: mb_math
+double th=atan2(zy,zx); double rxy=sqrt(zx*zx+zy*zy); double rlim=ma*(1.0+mb*cos(mc*th)); if(rxy>rlim){ double nr=rlim*2.0-rxy; z.x=nr*cos(th); z.y=nr*sin(th); } aux.DE*=fabs(mf);

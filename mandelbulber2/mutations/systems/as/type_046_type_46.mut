@@ -1,0 +1,5 @@
+// TYPE_ID: 46
+// NAME: Type 46
+// PARAMS: locals
+// SYSTEM: as
+double momentum = sqrt(z.x*z.x+z.y*z.y+z.z*z.z)*ta; double pos = fmax(fabs(z.x), 0.01); aux.DE *= (1.0 + sf*tb/(2.0*momentum*pos+0.01));

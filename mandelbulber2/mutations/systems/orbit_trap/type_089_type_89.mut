@@ -1,0 +1,5 @@
+// TYPE_ID: 89
+// NAME: Type 89
+// PARAMS: locals
+// SYSTEM: orbit_trap
+double d=pow(fabs(z.x),oa)+pow(fabs(z.y),oa)+pow(fabs(z.z),oa); d=pow(d,1.0/fmax(oa,1e-21))-ob; aux.DE *= (1.0 + of*exp(-od*fabs(d)));

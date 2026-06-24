@@ -1,0 +1,5 @@
+// TYPE_ID: 59
+// NAME: Type 59
+// PARAMS: locals
+// SYSTEM: warp_dist
+{ double nr=r+wf*wam*sin(wfq*r+wph); z*=(nr/r); aux.DE*=(nr/r); }

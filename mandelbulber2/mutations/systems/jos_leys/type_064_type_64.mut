@@ -1,0 +1,5 @@
+// TYPE_ID: 64
+// NAME: Type 64
+// PARAMS: locals
+// SYSTEM: jos_leys
+double mtc=ja*sin(jfreq*zx+jph)*cos(jfreq*zy)*sin(jfreq*zz2)/fmax(1e-10,r); aux.DE*=(1.0+jf*mtc);

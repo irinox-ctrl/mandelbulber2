@@ -1,0 +1,5 @@
+// TYPE_ID: 83
+// NAME: Type 83
+// PARAMS: locals
+// SYSTEM: noise
+double skew=(z.x+z.y)*nfq*(sqrt(3.0)-1.0)/2.0; double ix=floor(z.x*nfq+skew); double iy=floor(z.y*nfq+skew); double unskew=(ix+iy)*(3.0-sqrt(3.0))/6.0; double x0=z.x*nfq-ix+unskew; double y0=z.y*nfq-iy+unskew; double h=sin(ix*127.1+iy*311.7)*43758.5453; h=h-floor(h); double t0=0.5-x0*x0-y0*y0; double v=t0>0?t0*t0*t0*t0*h:0; aux.DE *= (1.0 + nf*v*nam*70.0);

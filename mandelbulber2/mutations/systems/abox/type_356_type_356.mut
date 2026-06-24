@@ -1,0 +1,5 @@
+// TYPE_ID: 356
+// NAME: Type 356
+// PARAMS: locals
+// SYSTEM: abox
+double T_ratio = fmax(fabs(aa)+0.1, 0.01) / fmax(fabs(ab)+0.1, 0.01); double regen = fmin(fabs(ac), 1.0); double eff = (1.0 - 1.0/T_ratio) * regen; aux.DE *= (1.0 + af * fabs(eff));

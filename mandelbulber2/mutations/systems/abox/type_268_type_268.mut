@@ -1,0 +1,5 @@
+// TYPE_ID: 268
+// NAME: Type 268
+// PARAMS: locals
+// SYSTEM: abox
+{ double kr=sin(aa*zx)*sin(ab*zy)-cos(aa*zx)*cos(ab*zy); aux.DE*=(1.0+ac*kr*kr); }

@@ -1,0 +1,5 @@
+// TYPE_ID: 8
+// NAME: Type 8
+// PARAMS: locals
+// SYSTEM: noise
+double p = na*z.x*nfq + nb*z.y*nfq + nc*z.z*nfq; double h = sin(p)*0.5+0.5; aux.DE *= (1.0 + nf*h*h);

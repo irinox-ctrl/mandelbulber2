@@ -1,0 +1,5 @@
+// TYPE_ID: 86
+// NAME: Type 86
+// PARAMS: locals
+// SYSTEM: abox
+{ double gld=aa*0.618033988749895; aux.DE*=(1.0+af*ab*sin(ac*gld*i)); }

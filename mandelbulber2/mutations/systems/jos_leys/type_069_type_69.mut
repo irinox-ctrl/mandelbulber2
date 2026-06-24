@@ -1,0 +1,5 @@
+// TYPE_ID: 69
+// NAME: Type 69
+// PARAMS: locals
+// SYSTEM: jos_leys
+double qg=ja*pow(fmax(1e-10,r),-jb)*sin(jfreq*r+jph); aux.DE*=(1.0+jf*qg);

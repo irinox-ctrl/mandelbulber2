@@ -1,0 +1,5 @@
+// TYPE_ID: 72
+// NAME: Type 72
+// PARAMS: locals
+// SYSTEM: pk
+double gfl=-pa*pb*(zx+zy+zz2)/fmax(1e-10,r*r); aux.DE*=(1.0+pf*tanh(gfl));

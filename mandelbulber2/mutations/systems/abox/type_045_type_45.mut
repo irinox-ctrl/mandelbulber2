@@ -1,0 +1,5 @@
+// TYPE_ID: 45
+// NAME: Type 45
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= fmax(0.01, 1.0 + af * aa * pow(fabs(sin(ab*r)), ac));

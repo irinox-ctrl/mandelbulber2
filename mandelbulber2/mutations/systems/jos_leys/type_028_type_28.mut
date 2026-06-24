@@ -1,0 +1,5 @@
+// TYPE_ID: 28
+// NAME: Type 28
+// PARAMS: locals
+// SYSTEM: jos_leys
+double ac_ph=ja*jb*zz2/fmax(1e-10,rr); aux.DE*=(1.0+jf*ac_ph);

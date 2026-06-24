@@ -1,0 +1,5 @@
+// TYPE_ID: 155
+// NAME: Type 155
+// PARAMS: locals
+// SYSTEM: abox
+{ double bess=sin(aa*r)/(aa*r+1e-21); aux.DE*=(1.0+af*ab*bess); }

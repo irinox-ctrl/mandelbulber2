@@ -1,0 +1,5 @@
+// TYPE_ID: 65
+// NAME: Type 65
+// PARAMS: locals
+// SYSTEM: sm
+double h=sin(z.x*12.9898+z.y*78.233+z.z*45.164+(double)i*ta)*43758.5453; h=h-floor(h); double sc=3.0; z=fabs(z); double vals[3]={z.x,z.y,z.z}; if(h>0.5){if(vals[0]<vals[1]){double t=vals[0];vals[0]=vals[1];vals[1]=t;}} if(h>0.25){if(vals[0]<vals[2]){double t=vals[0];vals[0]=vals[2];vals[2]=t;}} if(h>0.75){if(vals[1]<vals[2]){double t=vals[1];vals[1]=vals[2];vals[2]=t;}} z=CVector4(vals[0],vals[1],vals[2],z.w)*sc-CVector4(1,1,1,0)*(sc-1.0); aux.DE=aux.DE*sc+1.0;

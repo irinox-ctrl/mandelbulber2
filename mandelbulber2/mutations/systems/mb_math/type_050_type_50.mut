@@ -1,0 +1,5 @@
+// TYPE_ID: 50
+// NAME: Type 50
+// PARAMS: locals
+// SYSTEM: mb_math
+aux.color+=log(fmax(1e-21,aux.DE))*ma;

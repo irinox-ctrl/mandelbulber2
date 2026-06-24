@@ -1,0 +1,5 @@
+// TYPE_ID: 86
+// NAME: Type 86
+// PARAMS: locals
+// SYSTEM: jos_leys
+double slag=ja*cos(jfreq*zx+jph)*jb; aux.DE*=(1.0+jf*slag/fmax(1e-10,r));

@@ -1,0 +1,5 @@
+// TYPE_ID: 114
+// NAME: Type 114
+// PARAMS: locals
+// SYSTEM: mb_math
+double D=ma; double sc=pow(2.0,D); z*=sc/fmax(1e-10,r); aux.DE*=sc/fmax(1e-10,r);

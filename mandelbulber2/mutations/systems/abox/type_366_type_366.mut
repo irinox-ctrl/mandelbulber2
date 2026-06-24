@@ -1,0 +1,5 @@
+// TYPE_ID: 366
+// NAME: Type 366
+// PARAMS: locals
+// SYSTEM: abox
+double Sxy = sin(aa*z.x)*cos(ab*z.y); double Sxx = sin(aa*z.x)*sin(aa*z.x)+0.01; double Syy = cos(ab*z.y)*cos(ab*z.y)+0.01; double gain = Sxy*Sxy/(Sxx*Syy); aux.DE *= (1.0 + af * fabs(gain));

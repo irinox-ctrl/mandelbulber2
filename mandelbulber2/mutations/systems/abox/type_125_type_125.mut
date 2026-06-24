@@ -1,0 +1,5 @@
+// TYPE_ID: 125
+// NAME: Type 125
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= (1.0 + af * aa * (sin(ab*r)+sin(ac*r)+sin(ad*r)+sin(ae*r))/4.0);

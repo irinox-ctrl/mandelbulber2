@@ -1,0 +1,5 @@
+// TYPE_ID: 6
+// NAME: Type 6
+// PARAMS: locals
+// SYSTEM: sm
+double r = sqrt(z.x*z.x+z.y*z.y+z.z*z.z); double d1 = r - ta; double d2 = r - tb; aux.DE *= (1.0 + sf*exp(-fmin(d1*d1,d2*d2)*tc));

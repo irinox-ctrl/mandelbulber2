@@ -1,0 +1,5 @@
+// TYPE_ID: 248
+// NAME: Type 248
+// PARAMS: locals
+// SYSTEM: abox
+{ double ns=aa*ab*sin(ac*r)/(1.0+ad*r); aux.DE*=(1.0+ns); }

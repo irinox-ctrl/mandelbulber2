@@ -1,0 +1,5 @@
+// TYPE_ID: 156
+// NAME: Type 156
+// PARAMS: locals
+// SYSTEM: abox
+{ double cheb=cos(aa*acos(fmin(1.0,fmax(-1.0,zz2/r)))); aux.DE*=(1.0+af*ab*cheb); }

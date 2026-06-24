@@ -1,0 +1,5 @@
+// TYPE_ID: 67
+// NAME: Type 67
+// PARAMS: locals
+// SYSTEM: jos_leys
+double rib=ja*sin(jfreq*r)*cos(jb*atan2(zy,zx)+jph); aux.DE*=(1.0+jf*rib/fmax(1e-10,r));

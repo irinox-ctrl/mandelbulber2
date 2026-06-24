@@ -1,0 +1,5 @@
+// TYPE_ID: 45
+// NAME: Type 45
+// PARAMS: locals
+// SYSTEM: pk
+double fk=pa*sin(pfreq*zx+pph)*cos(pb*zy); aux.DE*=(1.0+pf*fk/fmax(1e-10,r));

@@ -1,0 +1,5 @@
+// TYPE_ID: 310
+// NAME: Type 310
+// PARAMS: locals
+// SYSTEM: abox
+double Iz = sin(aa*z.x)*sin(ab*z.y); double classical = sin(aa*z.x)*0.5; double discord = fabs(Iz - classical); aux.DE *= (1.0 + af * discord);

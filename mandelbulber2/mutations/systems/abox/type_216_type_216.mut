@@ -1,0 +1,5 @@
+// TYPE_ID: 216
+// NAME: Type 216
+// PARAMS: locals
+// SYSTEM: abox
+{ double cg=(sin(aa*(zx+0.01))-sin(aa*zx))/0.01; aux.DE*=(1.0+ab*fabs(cg)); }

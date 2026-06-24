@@ -1,0 +1,5 @@
+// TYPE_ID: 195
+// NAME: Type 195
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= (1.0 + aa * ab * sin(ac*zx+ad*zy+ae*zz2));

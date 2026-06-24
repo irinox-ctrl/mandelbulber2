@@ -1,0 +1,5 @@
+// TYPE_ID: 65
+// NAME: Type 65
+// PARAMS: locals
+// SYSTEM: torus
+double r2d = sqrt(z.x*z.x+z.y*z.y); double phi = atan2(z.y,z.x); double theta = atan2(z.z,r2d-ta); double superformula = pow(fabs(cos(tb*theta/4.0)),tc)+pow(fabs(sin(tb*theta/4.0)),tc); double sf_r = td*pow(superformula,-1.0/fmax(tc,0.01)); double d = sqrt((r2d-ta)*(r2d-ta)+z.z*z.z)-sf_r; aux.DE *= (1.0 + tf*exp(-fabs(d)*5.0));

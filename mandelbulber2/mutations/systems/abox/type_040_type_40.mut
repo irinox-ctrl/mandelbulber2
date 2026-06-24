@@ -1,0 +1,5 @@
+// TYPE_ID: 40
+// NAME: Type 40
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= (1.0 + af * aa * sin(ab*r) / (r+1e-21));

@@ -1,0 +1,5 @@
+// TYPE_ID: 42
+// NAME: Type 42
+// PARAMS: locals
+// SYSTEM: mb_math
+double fR2=mb; if(rr<fR2){ double m2=1.0/fmax(1e-21,rr); z.x=ma+fR2*(zx-ma)*m2; z.y=ma+fR2*(zy-ma)*m2; z.z=ma+fR2*(zz2-ma)*m2; aux.DE*=fR2*m2; }

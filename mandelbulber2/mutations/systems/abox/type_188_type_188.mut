@@ -1,0 +1,5 @@
+// TYPE_ID: 188
+// NAME: Type 188
+// PARAMS: locals
+// SYSTEM: abox
+{ double fr=pow(fabs(1.0-fabs(zz2)/r),5.0); aux.DE*=(1.0+aa*fr); }

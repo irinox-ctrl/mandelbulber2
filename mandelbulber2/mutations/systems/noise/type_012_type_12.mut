@@ -1,0 +1,5 @@
+// TYPE_ID: 12
+// NAME: Type 12
+// PARAMS: locals
+// SYSTEM: noise
+double px = z.x*nfq; double py = z.y*nfq; double g1 = sin(floor(px)*127.1+floor(py)*311.7)*2.0-1.0; double g2 = sin((floor(px)+1)*127.1+floor(py)*311.7)*2.0-1.0; double t = px-floor(px); t = t*t*(3.0-2.0*t); double v = g1*(1.0-t)+g2*t; aux.DE *= (1.0 + nf*v);

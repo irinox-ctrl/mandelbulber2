@@ -1,0 +1,5 @@
+// TYPE_ID: 167
+// NAME: Type 167
+// PARAMS: locals
+// SYSTEM: abox
+{ double v=0; for(int o=0;o<4;o++){v+=sin(aa*pow(2.0,o)*r+ab*o)/(pow(2.0,o));} aux.DE*=(1.0+af*ac*v); }

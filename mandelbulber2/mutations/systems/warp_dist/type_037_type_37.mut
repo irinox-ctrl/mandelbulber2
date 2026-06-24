@@ -1,0 +1,5 @@
+// TYPE_ID: 37
+// NAME: Type 37
+// PARAMS: locals
+// SYSTEM: warp_dist
+{ double psi=wf*wam*sin(wfq*zx+wph)*cos(wa*zy)*sin(wb*zz2); z.x+=wf*wam*wa*sin(wfq*zx)*cos(wa*zy); z.y+=-wf*wam*wfq*cos(wfq*zx)*sin(wa*zy); aux.DE*=(1.0+2.0*fabs(wf*wam*wfq)); }

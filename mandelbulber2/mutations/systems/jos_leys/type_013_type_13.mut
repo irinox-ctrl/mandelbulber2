@@ -1,0 +1,5 @@
+// TYPE_ID: 13
+// NAME: Type 13
+// PARAMS: locals
+// SYSTEM: jos_leys
+double med=(zx+zy)/(fmax(1e-10,2.0*r)); aux.DE*=(1.0+jf*ja*med);

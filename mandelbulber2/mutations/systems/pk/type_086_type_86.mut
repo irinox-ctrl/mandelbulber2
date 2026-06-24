@@ -1,0 +1,5 @@
+// TYPE_ID: 86
+// NAME: Type 86
+// PARAMS: locals
+// SYSTEM: pk
+double vfc=pa*pb*sin(pfreq*r+pph)/(fmax(1e-10,r*r)); aux.DE*=(1.0+pf*vfc);

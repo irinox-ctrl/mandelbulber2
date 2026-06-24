@@ -1,0 +1,5 @@
+// TYPE_ID: 204
+// NAME: Type 204
+// PARAMS: locals
+// SYSTEM: abox
+{ double v2=aa*aa; double c2=ab*ab; aux.DE*=sqrt(fmax(0.01,1.0-v2/fmax(c2,1e-21))); }

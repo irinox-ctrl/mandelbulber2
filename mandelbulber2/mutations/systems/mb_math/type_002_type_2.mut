@@ -1,0 +1,5 @@
+// TYPE_ID: 2
+// NAME: Type 2
+// PARAMS: locals
+// SYSTEM: mb_math
+double lim=ma*(1.0+0.1*sin(i*mc)); if(fabs(zx)>lim) z.x=copysign(mb*2.0,zx)-zx; if(fabs(zy)>lim) z.y=copysign(mb*2.0,zy)-zy; if(fabs(zz2)>lim) z.z=copysign(mb*2.0,zz2)-zz2; aux.DE*=fabs(mf);

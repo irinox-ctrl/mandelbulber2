@@ -1,0 +1,5 @@
+// TYPE_ID: 16
+// NAME: Type 16
+// PARAMS: locals
+// SYSTEM: pk
+double hm=pa*exp(-pb*rr)*cos(pfreq*r+pph); aux.DE*=(1.0+pf*hm);

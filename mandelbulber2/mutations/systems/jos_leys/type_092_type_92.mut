@@ -1,0 +1,5 @@
+// TYPE_ID: 92
+// NAME: Type 92
+// PARAMS: locals
+// SYSTEM: jos_leys
+double sas=ja*sqrt(fmax(0.0,r-jb))/fmax(1e-10,r); aux.DE*=(1.0+jf*sas);

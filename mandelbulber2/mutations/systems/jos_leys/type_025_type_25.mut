@@ -1,0 +1,5 @@
+// TYPE_ID: 25
+// NAME: Type 25
+// PARAMS: locals
+// SYSTEM: jos_leys
+double berry=ja*zy*zz2/fmax(1e-10,rr*r); aux.DE*=(1.0+jf*berry);

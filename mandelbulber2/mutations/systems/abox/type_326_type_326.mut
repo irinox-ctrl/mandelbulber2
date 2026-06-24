@@ -1,0 +1,5 @@
+// TYPE_ID: 326
+// NAME: Type 326
+// PARAMS: locals
+// SYSTEM: abox
+double omega_rot = aa*z.x + ab*z.y; double phase = ac*omega_rot; aux.DE *= (1.0 + af * sin(phase)*sin(phase));

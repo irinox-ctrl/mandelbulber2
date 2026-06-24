@@ -1,0 +1,5 @@
+// TYPE_ID: 111
+// NAME: Type 111
+// PARAMS: locals
+// SYSTEM: mb_math
+double R=ma,rr2=mb; double th=atan2(zy,zx); z.x=(R+rr2*cos(th))*cos(mc*i); z.y=(R+rr2*cos(th))*sin(mc*i); z.z=rr2*sin(th); aux.DE*=fabs(mf)*R;

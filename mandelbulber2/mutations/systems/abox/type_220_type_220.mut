@@ -1,0 +1,5 @@
+// TYPE_ID: 220
+// NAME: Type 220
+// PARAMS: locals
+// SYSTEM: abox
+{ double sh=(r>aa)?ab:0.0; aux.DE*=(1.0+ac*sh); }

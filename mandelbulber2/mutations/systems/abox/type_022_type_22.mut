@@ -1,0 +1,5 @@
+// TYPE_ID: 22
+// NAME: Type 22
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= (1.0 + af * aa * (zx*zy+zy*zz2+zz2*zx)/(rr+1e-21));

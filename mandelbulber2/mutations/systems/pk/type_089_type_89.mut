@@ -1,0 +1,5 @@
+// TYPE_ID: 89
+// NAME: Type 89
+// PARAMS: locals
+// SYSTEM: pk
+double gwi=pa*pb*sin(pfreq*zx)*sin(pfreq*zy)*sin(pfreq*zz2)/(fmax(1e-10,rr)); aux.DE*=(1.0+pf*gwi);

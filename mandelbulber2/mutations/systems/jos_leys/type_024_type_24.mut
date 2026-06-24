@@ -1,0 +1,5 @@
+// TYPE_ID: 24
+// NAME: Type 24
+// PARAMS: locals
+// SYSTEM: jos_leys
+double gut=0.0; for(int p=1;p<=5;p++){gut+=ja*cos(jfreq*p*r+jph)/fmax(1.0,(double)p);} aux.DE*=(1.0+jf*gut/fmax(1e-10,r));

@@ -1,0 +1,5 @@
+// TYPE_ID: 45
+// NAME: Type 45
+// PARAMS: locals
+// SYSTEM: as
+double psi2 = sin(ta*z.x)*sin(tb*z.y)*sin(tc*z.z); aux.DE *= (1.0 + sf*psi2*psi2);

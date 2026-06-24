@@ -1,0 +1,5 @@
+// TYPE_ID: 95
+// NAME: Type 95
+// PARAMS: locals
+// SYSTEM: pk
+double syzf=pa*sin(pfreq*r)*sin(pfreq*atan2(zy,zx)+pph)*pb; aux.DE*=(1.0+pf*syzf/fmax(1e-10,r));

@@ -1,0 +1,5 @@
+// TYPE_ID: 191
+// NAME: Type 191
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE /= fmax(0.01, 1.0 + aa * ab);

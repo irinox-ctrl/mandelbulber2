@@ -1,0 +1,5 @@
+// TYPE_ID: 174
+// NAME: Type 174
+// PARAMS: locals
+// SYSTEM: mb_math
+if(fabs(zx)>ma) z.x=copysign(ma*2.0,zx)-zx; double rr2=z.x*z.x+z.y*z.y+z.z*z.z; if(rr2<mb*mb) z*=mc*mc/(rr2+1e-21); aux.DE*=fabs(mf);

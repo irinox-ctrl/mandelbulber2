@@ -1,0 +1,5 @@
+// TYPE_ID: 79
+// NAME: Type 79
+// PARAMS: locals
+// SYSTEM: jos_leys
+double ech2=ja*sin(jfreq*zx)*exp(-jb*zy)*cos(jfreq*zz2)/fmax(1e-10,r); aux.DE*=(1.0+jf*ech2);

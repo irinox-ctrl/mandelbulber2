@@ -1,0 +1,5 @@
+// TYPE_ID: 243
+// NAME: Type 243
+// PARAMS: locals
+// SYSTEM: abox
+{ double cs2=log(fmax(fabs(sqrt(zx*zx+zy*zy)),1e-21)/fmax(aa,0.01)); aux.DE*=(1.0+ab*ac*cs2); }

@@ -1,0 +1,5 @@
+// TYPE_ID: 72
+// NAME: Type 72
+// PARAMS: locals
+// SYSTEM: jos_leys
+double rack=ja*(zx*zx-zy*zy)/(fmax(1e-10,rr))*jb; aux.DE*=(1.0+jf*rack);

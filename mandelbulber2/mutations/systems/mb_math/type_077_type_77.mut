@@ -1,0 +1,5 @@
+// TYPE_ID: 77
+// NAME: Type 77
+// PARAMS: locals
+// SYSTEM: mb_math
+double hth=ma*M_PI/360.0; double ax=mb,ay=mc,az=md; double nm=sqrt(ax*ax+ay*ay+az*az+1e-21); ax/=nm;ay/=nm;az/=nm; double cq=cos(hth),sq=sin(hth); double qw=cq,qx=sq*ax,qy=sq*ay,qz=sq*az; double nx=zx*(1-2*(qy*qy+qz*qz))+zy*2*(qx*qy-qw*qz)+zz2*2*(qx*qz+qw*qy); double ny=zx*2*(qx*qy+qw*qz)+zy*(1-2*(qx*qx+qz*qz))+zz2*2*(qy*qz-qw*qx); double nz=zx*2*(qx*qz-qw*qy)+zy*2*(qy*qz+qw*qx)+zz2*(1-2*(qx*qx+qy*qy)); z.x=nx;z.y=ny;z.z=nz; aux.DE*=fabs(mf);

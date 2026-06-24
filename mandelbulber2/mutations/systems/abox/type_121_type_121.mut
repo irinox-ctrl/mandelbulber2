@@ -1,0 +1,5 @@
+// TYPE_ID: 121
+// NAME: Type 121
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= (1.0 + af * aa * sin(ab*(r - floor(r*ac)/ac)));

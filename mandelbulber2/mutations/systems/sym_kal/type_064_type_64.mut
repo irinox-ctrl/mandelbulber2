@@ -1,0 +1,5 @@
+// TYPE_ID: 64
+// NAME: Type 64
+// PARAMS: locals
+// SYSTEM: sym_kal
+{ double px=fmax(sa,0.01), py=fmax(sb,0.01); double ix=floor(z.x/px); z.x=z.x-px*ix; z.y=z.y-py*floor(z.y/py); if(fmod(ix,2.0)>0.5) z.x=px-z.x; }

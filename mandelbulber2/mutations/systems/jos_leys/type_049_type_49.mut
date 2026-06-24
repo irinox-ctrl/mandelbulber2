@@ -1,0 +1,5 @@
+// TYPE_ID: 49
+// NAME: Type 49
+// PARAMS: locals
+// SYSTEM: jos_leys
+double sle=ja*zy/(fmax(1e-10,rr))*exp(-jb*fabs(zx)); aux.DE*=(1.0+jf*sle);

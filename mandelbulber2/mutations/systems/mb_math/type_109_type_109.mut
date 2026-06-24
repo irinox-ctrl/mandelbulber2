@@ -1,0 +1,5 @@
+// TYPE_ID: 109
+// NAME: Type 109
+// PARAMS: locals
+// SYSTEM: mb_math
+double rr4=rr+ma*ma; double nm4=sqrt(rr4+1e-21); z*=1.0/nm4; aux.DE*=fabs(mf)/nm4;

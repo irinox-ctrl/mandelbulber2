@@ -1,0 +1,5 @@
+// TYPE_ID: 96
+// NAME: Type 96
+// PARAMS: locals
+// SYSTEM: noise
+double v=0,f=nfq; for(int k=0;k<5;k++){ double h=sin(z.x*f*127.1+z.y*f*311.7+z.z*f*74.7)*43758.5453; h=h-floor(h); double terrace=floor(h*na+0.5)/fmax(na,1e-21); v+=terrace/(1.0+k); f*=2.0; } aux.DE *= (1.0 + nf*v*nam*0.2);

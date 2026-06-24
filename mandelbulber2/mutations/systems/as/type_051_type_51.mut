@@ -1,0 +1,5 @@
+// TYPE_ID: 51
+// NAME: Type 51
+// PARAMS: locals
+// SYSTEM: as
+double kT = fmax(fabs(ta)*fabs(tb), 0.01); aux.DE *= (1.0 + sf*tc/kT);

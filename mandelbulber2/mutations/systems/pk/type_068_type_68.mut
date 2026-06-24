@@ -1,0 +1,5 @@
+// TYPE_ID: 68
+// NAME: Type 68
+// PARAMS: locals
+// SYSTEM: pk
+double sha=pa*exp(-pb*fabs(r-pc)); aux.DE*=(1.0+pf*sha);

@@ -1,0 +1,5 @@
+// TYPE_ID: 40
+// NAME: Type 40
+// PARAMS: locals
+// SYSTEM: sym_kal
+{ z.x = fabs(z.x); z.y = fabs(z.y); z.z = fabs(z.z); z.x = z.x - sa*round(z.x/fmax(sa,1e-21)); z.y = z.y - sb*round(z.y/fmax(sb,1e-21)); z.z = z.z - sc*round(z.z/fmax(sc,1e-21)); }

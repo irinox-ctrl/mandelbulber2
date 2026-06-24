@@ -1,0 +1,5 @@
+// TYPE_ID: 27
+// NAME: Type 27
+// PARAMS: locals
+// SYSTEM: mb_math
+double rrc=zx*zx+zy*zy; if(rrc<1e-21) rrc=1e-21; double m2=ma*ma/rrc; z.x*=m2; z.y*=m2; z.z*=m2; aux.DE*=m2;

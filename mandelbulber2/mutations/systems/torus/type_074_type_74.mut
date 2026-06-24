@@ -1,0 +1,5 @@
+// TYPE_ID: 74
+// NAME: Type 74
+// PARAMS: locals
+// SYSTEM: torus
+double r2d = sqrt(z.x*z.x+z.y*z.y); double R = ta; double diffusion = 1.0/(1.0 + tb*(double)i*0.01); double concentration = exp(-tc*fabs(r2d-R))*diffusion; aux.DE *= (1.0 + tf*concentration*td);

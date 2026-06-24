@@ -1,0 +1,5 @@
+// TYPE_ID: 90
+// NAME: Type 90
+// PARAMS: locals
+// SYSTEM: mb_math
+double ph=atan2(zy,zx); double th=ma+mb*cos(mc*ph); double cs=cos(th),sn=sin(th); double nx=zx*cs-zy*sn; double ny=zx*sn+zy*cs; z.x=nx;z.y=ny; aux.DE*=fabs(mf);

@@ -1,0 +1,5 @@
+// TYPE_ID: 42
+// NAME: Type 42
+// PARAMS: locals
+// SYSTEM: sm
+double taper=ta*0.01; z.x*=(1.0-taper*z.z); z.y*=(1.0-taper*z.z); double sc=3.0; z=fabs(z); if(z.x-z.y<0.0){double t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0){double t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0){double t=z.y;z.y=z.z;z.z=t;} z=z*sc-CVector4(1,1,1,0)*(sc-1.0); aux.DE=aux.DE*sc+1.0;

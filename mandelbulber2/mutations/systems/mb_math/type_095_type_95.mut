@@ -1,0 +1,5 @@
+// TYPE_ID: 95
+// NAME: Type 95
+// PARAMS: locals
+// SYSTEM: mb_math
+double cv=ma; double rxy=sqrt(zx*zx+zy*zy); double th=atan2(zy,zx)+cv*rxy; z.x=rxy*cos(th); z.y=rxy*sin(th); aux.DE*=fabs(mf)*(1.0+cv*rxy);

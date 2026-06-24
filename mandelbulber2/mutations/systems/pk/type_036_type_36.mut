@@ -1,0 +1,5 @@
+// TYPE_ID: 36
+// NAME: Type 36
+// PARAMS: locals
+// SYSTEM: pk
+double aci=pa*sin(pfreq*r+pph)*cos(pfreq*atan2(zy,zx))/fmax(1e-10,r); aux.DE*=(1.0+pf*aci);

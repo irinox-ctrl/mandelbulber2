@@ -1,0 +1,5 @@
+// TYPE_ID: 29
+// NAME: Type 29
+// PARAMS: locals
+// SYSTEM: mb_math
+double rrh=zx*zx+zy*zy-zz2*zz2; double ar=fabs(rrh); if(ar<1e-21) ar=1e-21; double m2=ma*ma/ar; z*=m2; aux.DE*=m2*fmax(1.0,fabs(zz2));

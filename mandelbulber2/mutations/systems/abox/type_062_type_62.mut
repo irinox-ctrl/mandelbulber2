@@ -1,0 +1,5 @@
+// TYPE_ID: 62
+// NAME: Type 62
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= fabs(aa + ab / (1.0 + ac * i));

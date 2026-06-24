@@ -1,0 +1,5 @@
+// TYPE_ID: 50
+// NAME: Type 50
+// PARAMS: locals
+// SYSTEM: as
+double entropy = sin(z.x*ta*3.0)*sin(z.y*tb*5.0)*sin(z.z*tc*7.0); double temp = fabs(td)+0.01; aux.DE *= (1.0 + sf*temp*entropy*entropy);

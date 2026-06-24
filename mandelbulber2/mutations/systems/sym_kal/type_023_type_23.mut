@@ -1,0 +1,5 @@
+// TYPE_ID: 23
+// NAME: Type 23
+// PARAMS: locals
+// SYSTEM: sym_kal
+{ if(z.x + z.y < soff) { double t = z.x; z.x = -z.y; z.y = -t; } double cs = cos(sang), sn = sin(sang); double nx = zx*cs - zy*sn; z.y = zx*sn + zy*cs; z.x = nx; }

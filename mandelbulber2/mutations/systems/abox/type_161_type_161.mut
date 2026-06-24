@@ -1,0 +1,5 @@
+// TYPE_ID: 161
+// NAME: Type 161
+// PARAMS: locals
+// SYSTEM: abox
+{ double gr=aa*r*exp(-ab*r*r)*sin(ac*r); aux.DE*=(1.0+af*gr); }

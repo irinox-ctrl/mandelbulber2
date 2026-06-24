@@ -1,0 +1,5 @@
+// TYPE_ID: 40
+// NAME: Type 40
+// PARAMS: locals
+// SYSTEM: jos_leys
+double con=ja*exp(-jb*fabs(zz2))*sin(jfreq*r); aux.DE*=(1.0+jf*con);

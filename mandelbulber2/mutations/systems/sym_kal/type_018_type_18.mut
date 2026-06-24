@@ -1,0 +1,5 @@
+// TYPE_ID: 18
+// NAME: Type 18
+// PARAMS: locals
+// SYSTEM: sym_kal
+{ double ang2 = atan2(zz2, zx); double n = fmax(1.0, sa); double sector = 2.0*M_PI/n; ang2 = fmod(ang2 + 10.0*M_PI, sector) - sector*0.5; double rxz = sqrt(zx*zx+zz2*zz2); z.x = rxz*cos(ang2); z.z = rxz*sin(ang2); }

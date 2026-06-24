@@ -1,0 +1,5 @@
+// TYPE_ID: 96
+// NAME: Type 96
+// PARAMS: locals
+// SYSTEM: mb_math
+double tf=ma; z.x*=(1.0-tf*zz2); z.y*=(1.0-tf*zz2); aux.DE*=fabs(mf)*(1.0-tf*zz2);

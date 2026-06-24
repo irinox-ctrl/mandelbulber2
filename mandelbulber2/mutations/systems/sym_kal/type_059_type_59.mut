@@ -1,0 +1,5 @@
+// TYPE_ID: 59
+// NAME: Type 59
+// PARAMS: locals
+// SYSTEM: sym_kal
+{ double p=sa; z.x=z.x-p*round(z.x/p); z.y=z.y-p*round(z.y/p); z.z=z.z-p*round(z.z/p); }

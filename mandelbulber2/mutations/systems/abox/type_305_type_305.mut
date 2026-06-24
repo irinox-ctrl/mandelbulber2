@@ -1,0 +1,5 @@
+// TYPE_ID: 305
+// NAME: Type 305
+// PARAMS: locals
+// SYSTEM: abox
+double path1 = sin(aa*z.x + ab*z.y); double path2 = sin(ac*z.x - ab*z.y); aux.DE *= (1.0 + af * fabs(path1 - path2));

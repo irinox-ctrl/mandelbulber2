@@ -1,0 +1,5 @@
+// TYPE_ID: 190
+// NAME: Type 190
+// PARAMS: locals
+// SYSTEM: abox
+{ double an=fabs(zx*aa+zy*ab+zz2*ac)/(r+1e-21); aux.DE*=(1.0+ad*an); }

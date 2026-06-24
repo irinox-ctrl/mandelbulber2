@@ -1,0 +1,5 @@
+// TYPE_ID: 210
+// NAME: Type 210
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= exp(-aa * ab * double(i) * 0.01);

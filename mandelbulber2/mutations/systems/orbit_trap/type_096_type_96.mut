@@ -1,0 +1,5 @@
+// TYPE_ID: 96
+// NAME: Type 96
+// PARAMS: locals
+// SYSTEM: orbit_trap
+double r=sqrt(z.x*z.x+z.y*z.y+z.z*z.z); double d=sin(r*oa)*sin(z.x*ob)*sin(z.y*oc); aux.DE *= (1.0 + of*fabs(d));

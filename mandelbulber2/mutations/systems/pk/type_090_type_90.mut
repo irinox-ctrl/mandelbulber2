@@ -1,0 +1,5 @@
+// TYPE_ID: 90
+// NAME: Type 90
+// PARAMS: locals
+// SYSTEM: pk
+double qco=pa*cos(pfreq*(zx+zy+zz2)+pph)*pb/fmax(1e-10,r); aux.DE*=(1.0+pf*qco);

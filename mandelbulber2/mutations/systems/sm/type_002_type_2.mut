@@ -1,0 +1,5 @@
+// TYPE_ID: 2
+// NAME: Type 2
+// PARAMS: locals
+// SYSTEM: sm
+double bx=fmax(ta,1.0),by=fmax(tb,1.0),bz=fmax(tc,1.0); aux.DE *= fmax(fmax(bx,by),bz)*sf;

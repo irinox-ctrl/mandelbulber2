@@ -1,0 +1,5 @@
+// TYPE_ID: 71
+// NAME: Type 71
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= fmax(0.01, fabs(aa * exp(-ab * fabs(sin(ac * r)))));

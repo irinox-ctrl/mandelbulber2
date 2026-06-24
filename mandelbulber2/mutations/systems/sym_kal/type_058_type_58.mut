@@ -1,0 +1,5 @@
+// TYPE_ID: 58
+// NAME: Type 58
+// PARAMS: locals
+// SYSTEM: sym_kal
+{ double th=acos(zz2/r); double n=fmax(1.0,sa); double st=M_PI/n; th=fmod(th+10.0*M_PI,st); z.x=r*sin(th)*cos(atan2(zy,zx)); z.y=r*sin(th)*sin(atan2(zy,zx)); z.z=r*cos(th); }

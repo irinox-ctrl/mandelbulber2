@@ -1,0 +1,5 @@
+// TYPE_ID: 140
+// NAME: Type 140
+// PARAMS: locals
+// SYSTEM: abox
+{ double s=r/(r+aa); aux.DE*=(1.0+af*ab*s); }

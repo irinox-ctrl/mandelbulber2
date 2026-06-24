@@ -1,0 +1,5 @@
+// TYPE_ID: 271
+// NAME: Type 271
+// PARAMS: locals
+// SYSTEM: abox
+{ double m5=sin(aa*r)*sin(ab*r)*sin(ac*r); aux.DE*=(1.0+ad*m5*m5); }

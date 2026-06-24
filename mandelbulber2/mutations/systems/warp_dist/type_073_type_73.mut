@@ -1,0 +1,5 @@
+// TYPE_ID: 73
+// NAME: Type 73
+// PARAMS: locals
+// SYSTEM: warp_dist
+{ double d=wf*wam*exp(-wfq*fabs(zz2))*sin(wa*sqrt(zx*zx+zy*zy)+wph); z.z+=d; aux.DE*=(1.0+fabs(d)); }

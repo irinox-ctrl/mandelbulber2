@@ -1,0 +1,5 @@
+// TYPE_ID: 65
+// NAME: Type 65
+// PARAMS: locals
+// SYSTEM: jos_leys
+double fus=ja*(sin(jb*zx)*sin(jc*zy)+sin(jd*zz2))/fmax(1e-10,r); aux.DE*=(1.0+jf*fus);

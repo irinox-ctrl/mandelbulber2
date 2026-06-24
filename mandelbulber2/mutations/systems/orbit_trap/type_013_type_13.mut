@@ -1,0 +1,5 @@
+// TYPE_ID: 13
+// NAME: Type 13
+// PARAMS: locals
+// SYSTEM: orbit_trap
+double r2=z.x*z.x+z.y*z.y+z.z*z.z; double inv_r=oa*oa/fmax(r2,1e-21); double d=fabs(inv_r-1.0)*sqrt(r2); aux.DE *= (1.0 + of*exp(-od*d));

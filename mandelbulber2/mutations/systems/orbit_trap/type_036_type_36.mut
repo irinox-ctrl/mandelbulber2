@@ -1,0 +1,5 @@
+// TYPE_ID: 36
+// NAME: Type 36
+// PARAMS: locals
+// SYSTEM: orbit_trap
+double r=sqrt(z.x*z.x+z.y*z.y); double ph=atan2(z.y,z.x); double lemnR=oa*oa*cos(2.0*ph); double d=fabs(r*r-lemnR); aux.DE *= (1.0 + of*exp(-od*d*0.5));

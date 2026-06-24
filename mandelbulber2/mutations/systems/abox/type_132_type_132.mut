@@ -1,0 +1,5 @@
+// TYPE_ID: 132
+// NAME: Type 132
+// PARAMS: locals
+// SYSTEM: abox
+{ double dt=fabs(sqrt(zx*zx+zy*zy)-aa); aux.DE*=(1.0+af*ab*exp(-ac*dt*dt)); }

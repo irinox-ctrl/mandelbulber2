@@ -1,0 +1,5 @@
+// TYPE_ID: 40
+// NAME: Type 40
+// PARAMS: locals
+// SYSTEM: noise
+double md=1e10; for(int dx=-1;dx<=1;dx++) for(int dy=-1;dy<=1;dy++) for(int dz=-1;dz<=1;dz++){ double cx=floor(z.x*nfq)+dx; double cy=floor(z.y*nfq)+dy; double cz=floor(z.z*nfq)+dz; double h1=sin(cx*127.1+cy*311.7+cz*74.7)*43758.5453; h1=h1-floor(h1); double h2=sin(cx*269.5+cy*183.3+cz*346.9)*43758.5453; h2=h2-floor(h2); double h3=sin(cx*419.2+cy*371.9+cz*529.7)*43758.5453; h3=h3-floor(h3); double d=(z.x*nfq-cx-h1)*(z.x*nfq-cx-h1)+(z.y*nfq-cy-h2)*(z.y*nfq-cy-h2)+(z.z*nfq-cz-h3)*(z.z*nfq-cz-h3); if(d<md)md=d; } aux.DE *= (1.0 + nf*sqrt(md)*nam);

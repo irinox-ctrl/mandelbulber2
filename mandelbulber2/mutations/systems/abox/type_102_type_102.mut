@@ -1,0 +1,5 @@
+// TYPE_ID: 102
+// NAME: Type 102
+// PARAMS: locals
+// SYSTEM: abox
+{ double r4=sqrt(rr+aa*aa*sin(ab*r)*sin(ab*r)); aux.DE*=(1.0+af*ac*(r4-r)/(r+1e-21)); }

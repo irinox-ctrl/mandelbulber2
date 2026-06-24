@@ -1,0 +1,5 @@
+// TYPE_ID: 94
+// NAME: Type 94
+// PARAMS: locals
+// SYSTEM: noise
+double v1=0,v2=0,f=nfq,a=nam; for(int k=0;k<4;k++){ double h=sin(z.x*f*127.1+z.y*f*311.7+z.z*f*74.7)*43758.5453; h=h-floor(h); v1+=a*h; v2+=a*fabs(h*2.0-1.0); f*=2.0; a*=0.5; } double blend=sin(z.x*na+z.y*nb)*0.5+0.5; aux.DE *= (1.0 + nf*(v1*blend+v2*(1.0-blend)));

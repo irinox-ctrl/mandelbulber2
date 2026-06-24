@@ -1,0 +1,5 @@
+// TYPE_ID: 12
+// NAME: Type 12
+// PARAMS: locals
+// SYSTEM: mb_math
+double limy=ma+mb*sin(mc*zy); if(fabs(zx)>limy) z.x=copysign(limy*2.0,zx)-zx; if(fabs(zy)>ma) z.y=copysign(ma*2.0,zy)-zy; if(fabs(zz2)>ma) z.z=copysign(ma*2.0,zz2)-zz2; aux.DE*=fabs(mf)*(1.0+fabs(mb*mc));

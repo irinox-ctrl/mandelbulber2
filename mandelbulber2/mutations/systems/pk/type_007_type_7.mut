@@ -1,0 +1,5 @@
+// TYPE_ID: 7
+// NAME: Type 7
+// PARAMS: locals
+// SYSTEM: pk
+double tm=pa*fabs(zx-zy)/fmax(1e-10,r); aux.DE*=(1.0+pf*tanh(tm));

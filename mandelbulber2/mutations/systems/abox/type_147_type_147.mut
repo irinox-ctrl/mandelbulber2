@@ -1,0 +1,5 @@
+// TYPE_ID: 147
+// NAME: Type 147
+// PARAMS: locals
+// SYSTEM: abox
+{ double it=double(i)/fmax(double(aa),1.0); aux.DE*=(1.0+af*ab*sin(ac*it*M_PI)); }

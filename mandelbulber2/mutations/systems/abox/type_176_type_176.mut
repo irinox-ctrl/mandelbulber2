@@ -1,0 +1,5 @@
+// TYPE_ID: 176
+// NAME: Type 176
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= fmax(0.01, aa * double(i) / fmax(double(ab), 1.0));

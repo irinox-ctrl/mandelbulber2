@@ -1,0 +1,5 @@
+// TYPE_ID: 293
+// NAME: Type 293
+// PARAMS: locals
+// SYSTEM: abox
+{ double pc=fmod(floor(r*aa),ab); aux.DE*=(1.0+ac*sin(ad*pc)); }

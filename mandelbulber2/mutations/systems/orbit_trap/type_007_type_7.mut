@@ -1,0 +1,5 @@
+// TYPE_ID: 7
+// NAME: Type 7
+// PARAMS: locals
+// SYSTEM: orbit_trap
+double d=sqrt(z.x*z.x+z.y*z.y+z.z*z.z); double shell=fabs(d-oa); double shell2=fabs(d-ob); aux.DE *= (1.0 + of*exp(-od*fmin(shell,shell2)));

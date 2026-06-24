@@ -1,0 +1,5 @@
+// TYPE_ID: 223
+// NAME: Type 223
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= (1.0 + aa / fmax(ab, 1e-21) * cos(ac));

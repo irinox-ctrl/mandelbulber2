@@ -1,0 +1,5 @@
+// TYPE_ID: 370
+// NAME: Type 370
+// PARAMS: locals
+// SYSTEM: abox
+double Ss = aa; double gradT = ab*z.x+ac*z.y; double spin_pol = sin(ad*r); aux.DE *= (1.0 + af * fabs(Ss*gradT*spin_pol));

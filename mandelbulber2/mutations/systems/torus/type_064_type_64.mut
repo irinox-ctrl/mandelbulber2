@@ -1,0 +1,5 @@
+// TYPE_ID: 64
+// NAME: Type 64
+// PARAMS: locals
+// SYSTEM: torus
+double r2d = sqrt(z.x*z.x+z.y*z.y); double R = ta; double r = tb; double torus_d = sqrt((r2d-R)*(r2d-R)+z.z*z.z)-r; double erosion = sin(z.x*tc*5.0)*sin(z.y*tc*5.0)*sin(z.z*tc*5.0); aux.DE *= (1.0 + tf*exp(-fabs(torus_d)*5.0)*fabs(erosion)*td);

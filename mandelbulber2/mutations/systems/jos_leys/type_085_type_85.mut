@@ -1,0 +1,5 @@
+// TYPE_ID: 85
+// NAME: Type 85
+// PARAMS: locals
+// SYSTEM: jos_leys
+double syz=ja*sin(jfreq*r)*sin(jfreq*atan2(zy,zx))*cos(jfreq*zz2/fmax(0.01,jb)); aux.DE*=(1.0+jf*syz);

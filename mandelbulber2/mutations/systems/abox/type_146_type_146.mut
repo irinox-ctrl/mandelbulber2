@@ -1,0 +1,5 @@
+// TYPE_ID: 146
+// NAME: Type 146
+// PARAMS: locals
+// SYSTEM: abox
+{ double cl=sin(aa*in.point.Length()+ab*r); aux.DE*=(1.0+af*ac*cl); }

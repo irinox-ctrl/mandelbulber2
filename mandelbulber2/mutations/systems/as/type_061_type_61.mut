@@ -1,0 +1,5 @@
+// TYPE_ID: 61
+// NAME: Type 61
+// PARAMS: locals
+// SYSTEM: as
+double phase_diff = ta*z.x - tb*z.y; aux.DE *= (1.0 + sf*cos(phase_diff)*tc);

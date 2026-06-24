@@ -1,0 +1,5 @@
+// TYPE_ID: 50
+// NAME: Type 50
+// PARAMS: locals
+// SYSTEM: warp_dist
+{ double t=wf*wfq*log(r+1e-21)+wph; double cs=cos(t),sn=sin(t); double nx=zx*cs-zy*sn; z.y=zx*sn+zy*cs; z.x=nx; aux.DE*=(1.0+fabs(wf*wfq/(r+1e-21))); }

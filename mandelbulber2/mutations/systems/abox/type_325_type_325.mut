@@ -1,0 +1,5 @@
+// TYPE_ID: 325
+// NAME: Type 325
+// PARAMS: locals
+// SYSTEM: abox
+double tau = fabs(aa)*r; double N_s = fmax(fabs(ab), 0.1); double N_i = fmax(fabs(ac), 0.1); double range_res = tau/(2.0*sqrt(N_s*N_i)+1e-21); aux.DE *= (1.0 + af * sin(range_res)*sin(range_res));

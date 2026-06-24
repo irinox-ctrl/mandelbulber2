@@ -1,0 +1,5 @@
+// TYPE_ID: 308
+// NAME: Type 308
+// PARAMS: locals
+// SYSTEM: abox
+double source = sin(aa*z.x + ab*z.y + ac*z.z); double target = sin(aa*(z.x+ad) + ab*(z.y+ae) + ac*(z.z+aff)); double fidelity = source*target; aux.DE *= (1.0 + af * fabs(fidelity));

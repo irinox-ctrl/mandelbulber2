@@ -1,0 +1,5 @@
+// TYPE_ID: 99
+// NAME: Type 99
+// PARAMS: locals
+// SYSTEM: jos_leys
+double ah=ja*jb/(fmax(1e-10,rr))*cos(jfreq*atan2(zy,zx)+jph); aux.DE*=(1.0+jf*ah);

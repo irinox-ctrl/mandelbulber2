@@ -1,0 +1,5 @@
+// TYPE_ID: 141
+// NAME: Type 141
+// PARAMS: locals
+// SYSTEM: abox
+{ double v=sin(aa*zx)*sin(ab*zy)+sin(ac*zy)*sin(ad*zz2); aux.DE*=(1.0+af*ae*v*0.5); }

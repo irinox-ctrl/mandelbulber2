@@ -1,0 +1,5 @@
+// TYPE_ID: 321
+// NAME: Type 321
+// PARAMS: T2
+// SYSTEM: abox
+double T2 = fabs(aa) + 0.01; double sensitivity = 1.0/(ab*sqrt(T2)+1e-21); aux.DE *= (1.0 + af * sin(ac*r)*sin(ac*r) * fmin(sensitivity, 10.0));

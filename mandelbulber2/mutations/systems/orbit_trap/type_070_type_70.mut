@@ -1,0 +1,5 @@
+// TYPE_ID: 70
+// NAME: Type 70
+// PARAMS: locals
+// SYSTEM: orbit_trap
+double d=sqrt(z.x*z.x+z.y*z.y+z.z*z.z); if(d < oa) { aux.DE *= (1.0 + of*exp(-od*(oa-d))); }

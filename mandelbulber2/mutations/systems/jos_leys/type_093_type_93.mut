@@ -1,0 +1,5 @@
+// TYPE_ID: 93
+// NAME: Type 93
+// PARAMS: locals
+// SYSTEM: jos_leys
+double s3s=ja*(sin(jfreq*zx)+sin(jfreq*zy)+sin(jfreq*zz2))/(3.0*fmax(1e-10,r)); aux.DE*=(1.0+jf*s3s);

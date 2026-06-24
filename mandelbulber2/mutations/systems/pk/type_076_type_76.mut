@@ -1,0 +1,5 @@
+// TYPE_ID: 76
+// NAME: Type 76
+// PARAMS: locals
+// SYSTEM: pk
+double sca=pa*pb*r*r/(fmax(1e-10,r*r+pc*pc)); aux.DE*=(1.0+pf*sca);

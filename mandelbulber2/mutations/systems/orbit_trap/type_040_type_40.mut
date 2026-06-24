@@ -1,0 +1,5 @@
+// TYPE_ID: 40
+// NAME: Type 40
+// PARAMS: locals
+// SYSTEM: orbit_trap
+double d1=sqrt(z.x*z.x+z.y*z.y)-oa; double d2=sqrt(z.y*z.y+z.z*z.z)-oa; double d3=sqrt(z.x*z.x+z.z*z.z)-oa; double d=fmin(fabs(d1),fmin(fabs(d2),fabs(d3))); aux.DE *= (1.0 + of*exp(-od*d));

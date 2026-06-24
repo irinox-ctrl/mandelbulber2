@@ -1,0 +1,5 @@
+// TYPE_ID: 41
+// NAME: Type 41
+// PARAMS: locals
+// SYSTEM: torus
+double R = fabs(ta)+0.1; double r_min = fabs(tb)+0.01; double ratio = R/r_min; aux.DE *= (1.0 + tf*ratio*0.1);

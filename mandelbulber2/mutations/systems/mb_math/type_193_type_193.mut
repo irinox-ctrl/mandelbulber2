@@ -1,0 +1,5 @@
+// TYPE_ID: 193
+// NAME: Type 193
+// PARAMS: locals
+// SYSTEM: mb_math
+double p=fmax(0.01,ma); z.x=fmod(zx+p*0.5,p)-p*0.5; z.y=fmod(zy+p*0.5,p)-p*0.5; z.z=fmod(zz2+p*0.5,p)-p*0.5; if(fabs(z.x)>mb) z.x=copysign(mb*2.0,z.x)-z.x; aux.DE*=fabs(mf)/fmax(0.01,p);

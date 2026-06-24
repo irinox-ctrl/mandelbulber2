@@ -1,0 +1,5 @@
+// TYPE_ID: 148
+// NAME: Type 148
+// PARAMS: locals
+// SYSTEM: mb_math
+double fc=fabs(z.x-zx)*0.3+r*0.3+fabs(atan2(zy,zx))*0.4; aux.color+=fc*ma;

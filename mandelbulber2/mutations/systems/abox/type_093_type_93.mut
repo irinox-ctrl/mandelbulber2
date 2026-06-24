@@ -1,0 +1,5 @@
+// TYPE_ID: 93
+// NAME: Type 93
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= (1.0 + af * aa * tanh(ab*sin(ac*atan2(zy,zx))));

@@ -1,0 +1,5 @@
+// TYPE_ID: 89
+// NAME: Type 89
+// PARAMS: locals
+// SYSTEM: as
+double r = sqrt(z.x*z.x+z.y*z.y+z.z*z.z); double scale_a = fmax(r*ta, 0.01); double energy = 1.0/(scale_a*scale_a); aux.DE *= (1.0 + sf*sqrt(energy)*tb);

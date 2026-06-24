@@ -1,0 +1,5 @@
+// TYPE_ID: 81
+// NAME: Type 81
+// PARAMS: locals
+// SYSTEM: sym_kal
+{ double n=fmax(2.0,sa+sb*sin(sfq*i)); double ang2=atan2(zy,zx); double s=2.0*M_PI/n; ang2=fmod(ang2+10.0*M_PI,s)-s*0.5; double rxy=sqrt(zx*zx+zy*zy); z.x=rxy*cos(ang2); z.y=rxy*sin(ang2); }

@@ -1,0 +1,5 @@
+// TYPE_ID: 50
+// NAME: Type 50
+// PARAMS: locals
+// SYSTEM: pk
+double fg=pa*4.669201609*sin(pfreq*r+pph)/(fmax(1e-10,r)); aux.DE*=(1.0+pf*fg);

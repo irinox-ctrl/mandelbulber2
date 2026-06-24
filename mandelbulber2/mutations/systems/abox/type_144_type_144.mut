@@ -1,0 +1,5 @@
+// TYPE_ID: 144
+// NAME: Type 144
+// PARAMS: locals
+// SYSTEM: abox
+{ double d2=fabs(zx*zx/fmax(aa*aa,0.01)+zy*zy/fmax(ab*ab,0.01)-1.0); aux.DE*=(1.0+af*ac*exp(-ad*d2)); }

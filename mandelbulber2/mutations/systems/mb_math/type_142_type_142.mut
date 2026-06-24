@@ -1,0 +1,5 @@
+// TYPE_ID: 142
+// NAME: Type 142
+// PARAMS: locals
+// SYSTEM: mb_math
+double p=fmax(0.01,ma); double cx2=floor(zx/p),cy2=floor(zy/p),cz2=floor(zz2/p); double h=((sin(cx2*12.9898+cy2*78.233+cz2*37.719)*43758.5453) - floor(sin(cx2*12.9898+cy2*78.233+cz2*37.719)*43758.5453)); aux.color+=h*mb;

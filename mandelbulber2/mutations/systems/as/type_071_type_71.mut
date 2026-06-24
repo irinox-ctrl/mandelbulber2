@@ -1,0 +1,5 @@
+// TYPE_ID: 71
+// NAME: Type 71
+// PARAMS: locals
+// SYSTEM: as
+double curl_mag = fabs(sin(z.y*ta)-sin(z.z*ta)) + fabs(sin(z.z*tb)-sin(z.x*tb)); aux.DE *= (1.0 + sf*curl_mag*tc);

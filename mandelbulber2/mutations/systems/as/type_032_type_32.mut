@@ -1,0 +1,5 @@
+// TYPE_ID: 32
+// NAME: Type 32
+// PARAMS: locals
+// SYSTEM: as
+double edge_len = fabs(z.x-z.y) + fabs(z.y-z.z) + fabs(z.z-z.x); aux.DE *= (1.0 + sf*ta*edge_len*tb);

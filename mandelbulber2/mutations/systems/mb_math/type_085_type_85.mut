@@ -1,0 +1,5 @@
+// TYPE_ID: 85
+// NAME: Type 85
+// PARAMS: locals
+// SYSTEM: mb_math
+double ns=sin(i*12.9898+78.233)*43758.5453; ns=ns-floor(ns); double th=ns*2.0*M_PI*ma; double cs=cos(th),sn=sin(th); double nx=zx*cs-zy*sn; double ny=zx*sn+zy*cs; z.x=nx;z.y=ny; aux.DE*=fabs(mf);

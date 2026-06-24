@@ -1,0 +1,5 @@
+// TYPE_ID: 28
+// NAME: Type 28
+// PARAMS: locals
+// SYSTEM: pk
+double kdv=pa*sin(pfreq*zx+pph)*exp(-pb*zy*zy)/fmax(1e-10,r); aux.DE*=(1.0+pf*kdv);

@@ -1,0 +1,5 @@
+// TYPE_ID: 272
+// NAME: Type 272
+// PARAMS: locals
+// SYSTEM: abox
+{ double wf2=exp(-aa*fabs(zz2)); aux.DE*=(1.0+ab*ac*wf2); }

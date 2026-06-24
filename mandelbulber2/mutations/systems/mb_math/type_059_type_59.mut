@@ -1,0 +1,5 @@
+// TYPE_ID: 59
+// NAME: Type 59
+// PARAMS: locals
+// SYSTEM: mb_math
+double sc=ma*(1.0+0.1*r); z*=sc; aux.DE*=fabs(sc)*(1.0+0.1*r);

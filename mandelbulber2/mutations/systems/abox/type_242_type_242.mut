@@ -1,0 +1,5 @@
+// TYPE_ID: 242
+// NAME: Type 242
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= exp(fmin(aa * ab * r, 20.0));

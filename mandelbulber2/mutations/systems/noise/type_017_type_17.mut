@@ -1,0 +1,5 @@
+// TYPE_ID: 17
+// NAME: Type 17
+// PARAMS: locals
+// SYSTEM: noise
+double r = sqrt(z.x*z.x+z.y*z.y+z.z*z.z); double th = atan2(z.y,z.x); double v = sin(r*nfq+th*na)*nam; aux.DE *= (1.0 + nf*v);

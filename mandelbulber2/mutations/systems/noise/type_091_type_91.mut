@@ -1,0 +1,5 @@
+// TYPE_ID: 91
+// NAME: Type 91
+// PARAMS: locals
+// SYSTEM: noise
+double vn=sin(z.x*nfq*127.1+z.y*nfq*311.7+z.z*nfq*74.7)*43758.5453; vn=vn-floor(vn); double md=1e10; for(int dx=-1;dx<=1;dx++) for(int dy=-1;dy<=1;dy++){ double cx=floor(z.x*nfq)+dx; double cy=floor(z.y*nfq)+dy; double h=sin(cx*127.1+cy*311.7)*43758.5453; h=h-floor(h); cx+=h; double d=(z.x*nfq-cx)*(z.x*nfq-cx)+(z.y*nfq-cy)*(z.y*nfq-cy); if(d<md)md=d; } aux.DE *= (1.0 + nf*(vn*na+sqrt(md)*nb)*nam);

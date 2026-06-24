@@ -1,0 +1,5 @@
+// TYPE_ID: 106
+// NAME: Type 106
+// PARAMS: locals
+// SYSTEM: mb_math
+double qw=ma,qx=zx,qy=zy,qz=zz2; double nm=sqrt(qw*qw+qx*qx+qy*qy+qz*qz+1e-21); z.x=qx/nm*mf; z.y=qy/nm*mf; z.z=qz/nm*mf; aux.DE*=fabs(mf)/nm;

@@ -1,0 +1,5 @@
+// TYPE_ID: 393
+// NAME: Type 393
+// PARAMS: locals
+// SYSTEM: abox
+double J = fabs(aa)+0.01; double g = fabs(ab)+0.01; double gap = J*exp(-M_PI*J/(g*g)); double singlet = cos(ac*z.x)*cos(ac*z.y); aux.DE *= (1.0 + af * gap*singlet*singlet);

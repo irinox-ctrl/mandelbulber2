@@ -1,0 +1,5 @@
+// TYPE_ID: 55
+// NAME: Type 55
+// PARAMS: locals
+// SYSTEM: mb_math
+double p=fmax(0.01,mb); double sc=ma/fmax(1e-10,pow(fmax(1.0,(double)i),p)); z*=sc; aux.DE*=fabs(sc);

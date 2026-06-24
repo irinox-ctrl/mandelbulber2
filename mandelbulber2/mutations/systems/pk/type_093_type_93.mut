@@ -1,0 +1,5 @@
+// TYPE_ID: 93
+// NAME: Type 93
+// PARAMS: locals
+// SYSTEM: pk
+double bat=pa*cos(pfreq*zx+pph)*cos(pfreq*zy)*cos(pfreq*zz2)/fmax(1e-10,r); aux.DE*=(1.0+pf*bat);

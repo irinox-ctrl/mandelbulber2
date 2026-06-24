@@ -1,0 +1,5 @@
+// TYPE_ID: 31
+// NAME: Type 31
+// PARAMS: locals
+// SYSTEM: sym_kal
+{ z.x = fabs(z.x); z.y = fabs(z.y); if(z.y > z.x) { double t=z.x; z.x=z.y; z.y=t; } z.x -= sa; z.y -= sb; }

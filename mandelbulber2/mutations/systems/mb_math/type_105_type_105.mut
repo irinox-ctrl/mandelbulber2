@@ -1,0 +1,5 @@
+// TYPE_ID: 105
+// NAME: Type 105
+// PARAMS: locals
+// SYSTEM: mb_math
+double cx=ma,cy=mb,cz=mc; (void)md; z.x+=cx*mf; z.y+=cy*mf; z.z+=cz*mf; aux.DE*=fabs(mf);

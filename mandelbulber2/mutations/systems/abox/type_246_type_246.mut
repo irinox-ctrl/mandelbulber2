@@ -1,0 +1,5 @@
+// TYPE_ID: 246
+// NAME: Type 246
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= exp(aa * ab);

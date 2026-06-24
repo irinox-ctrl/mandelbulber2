@@ -1,0 +1,5 @@
+// TYPE_ID: 33
+// NAME: Type 33
+// PARAMS: locals
+// SYSTEM: torus
+double h = sin(z.x*ta*10.0)*sin(z.y*tb*10.0)*sin(z.z*tc*10.0); aux.DE += tf*h*td;

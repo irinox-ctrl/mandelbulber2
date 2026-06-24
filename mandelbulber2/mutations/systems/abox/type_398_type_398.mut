@@ -1,0 +1,5 @@
+// TYPE_ID: 398
+// NAME: Type 398
+// PARAMS: locals
+// SYSTEM: abox
+double sn = sin(aa*z.x+ab*z.y); double fusion = sn*sn; double F_sym = cos(ac*r)*cos(ac*r); double lw = fusion*F_sym; aux.DE *= (1.0 + af * lw);

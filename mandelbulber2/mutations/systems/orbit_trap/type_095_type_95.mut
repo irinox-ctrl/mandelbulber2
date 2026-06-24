@@ -1,0 +1,5 @@
+// TYPE_ID: 95
+// NAME: Type 95
+// PARAMS: locals
+// SYSTEM: orbit_trap
+double md=1e10; for(int k=0;k<(int)fmax(2,fmin(oa*4,8));k++){ double ang=k*2.0*M_PI/fmax(oa*4,2); double cx=ob*cos(ang); double cy=ob*sin(ang); for(int j=0;j<(int)fmax(2,fmin(oc*4,8));j++){ double az=j*2.0*M_PI/fmax(oc*4,2); double cz=od*sin(az); double d=(z.x-cx)*(z.x-cx)+(z.y-cy)*(z.y-cy)+(z.z-cz)*(z.z-cz); if(d<md)md=d; }} aux.DE *= (1.0 + of*exp(-sqrt(md)));

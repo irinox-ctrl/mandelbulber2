@@ -1,0 +1,5 @@
+// TYPE_ID: 166
+// NAME: Type 166
+// PARAMS: locals
+// SYSTEM: mb_math
+double ns=sin(zx*ma+zy*mb+zz2*mc)*md; aux.DE+=ns; aux.DE=fmax(1e-21,aux.DE);

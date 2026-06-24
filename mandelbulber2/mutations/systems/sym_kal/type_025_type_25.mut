@@ -1,0 +1,5 @@
+// TYPE_ID: 25
+// NAME: Type 25
+// PARAMS: locals
+// SYSTEM: sym_kal
+{ z.x = fabs(z.x) + soff; z.y = fabs(z.y) + soff; double cs = cos(sang), sn = sin(sang); double nx = z.x*cs - z.y*sn; z.y = z.x*sn + z.y*cs; z.x = nx; }

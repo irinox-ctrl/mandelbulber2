@@ -1,0 +1,5 @@
+// TYPE_ID: 68
+// NAME: Type 68
+// PARAMS: locals
+// SYSTEM: orbit_trap
+double d=sqrt((z.x-oa*sin(ob*i))*(z.x-oa*sin(ob*i))+(z.y-oa*cos(ob*i))*(z.y-oa*cos(ob*i))+z.z*z.z); aux.DE *= (1.0 + of*exp(-od*d));

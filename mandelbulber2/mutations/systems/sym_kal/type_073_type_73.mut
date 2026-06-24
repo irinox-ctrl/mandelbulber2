@@ -1,0 +1,5 @@
+// TYPE_ID: 73
+// NAME: Type 73
+// PARAMS: locals
+// SYSTEM: sym_kal
+if(r < sa) { z *= sf; aux.DE *= fabs(sf); } else { z.x = fabs(z.x); z.y = fabs(z.y); }

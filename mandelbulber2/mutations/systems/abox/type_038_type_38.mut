@@ -1,0 +1,5 @@
+// TYPE_ID: 38
+// NAME: Type 38
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= fmax(0.01, 1.0 + af * aa * sin(ab*r) * cos(ac*r));

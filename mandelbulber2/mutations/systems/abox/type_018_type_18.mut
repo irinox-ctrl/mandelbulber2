@@ -1,0 +1,5 @@
+// TYPE_ID: 18
+// NAME: Type 18
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= (1.0 + af * aa * cos(ab*zx)*cos(ac*zy)*cos(ad*zz2));

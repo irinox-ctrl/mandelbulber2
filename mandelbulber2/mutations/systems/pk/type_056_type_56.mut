@@ -1,0 +1,5 @@
+// TYPE_ID: 56
+// NAME: Type 56
+// PARAMS: locals
+// SYSTEM: pk
+double srb=pa*pb*exp(-pc*rr)/fmax(1e-10,r); aux.DE*=(1.0+pf*srb);

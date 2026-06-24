@@ -1,0 +1,5 @@
+// TYPE_ID: 359
+// NAME: Type 359
+// PARAMS: locals
+// SYSTEM: abox
+double T_cold = fmax(fabs(aa),0.01); double T_hot = fmax(fabs(ab),0.02); double cop = T_cold/(T_hot-T_cold+1e-21); double qcop = cop*sin(ac*r)*sin(ac*r); aux.DE *= (1.0 + af * fmin(fabs(qcop),10.0));

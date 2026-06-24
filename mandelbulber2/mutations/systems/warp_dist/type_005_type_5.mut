@@ -1,0 +1,5 @@
+// TYPE_ID: 5
+// NAME: Type 5
+// PARAMS: locals
+// SYSTEM: warp_dist
+z.x += wf*wam*cos(wfq*zy + wph)*sin(wfq*zz2); aux.DE *= (1.0 + fabs(wf*wam*wfq));

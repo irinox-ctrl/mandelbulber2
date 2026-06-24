@@ -1,0 +1,5 @@
+// TYPE_ID: 19
+// NAME: Type 19
+// PARAMS: locals
+// SYSTEM: warp_dist
+double t = wfq*r+wph; z.x += wf*wam*sin(t)*cos(wa*zy); z.y += wf*wam*cos(t)*sin(wa*zz2); z.z += wf*wam*sin(t)*cos(wa*zx); aux.DE *= (1.0 + 3.0*fabs(wf*wam));

@@ -1,0 +1,5 @@
+// TYPE_ID: 148
+// NAME: Type 148
+// PARAMS: locals
+// SYSTEM: abox
+{ double gr=sin(aa*zx*zy/(r+1e-21))+cos(ab*zy*zz2/(r+1e-21)); aux.DE*=(1.0+af*ac*gr*0.5); }

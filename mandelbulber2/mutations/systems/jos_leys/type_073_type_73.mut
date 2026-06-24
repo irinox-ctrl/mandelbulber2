@@ -1,0 +1,5 @@
+// TYPE_ID: 73
+// NAME: Type 73
+// PARAMS: locals
+// SYSTEM: jos_leys
+double quan=ja*(zx*zx*zx-3.0*zx*zy*zy)/(fmax(1e-10,rr*r))*jb; aux.DE*=(1.0+jf*quan);

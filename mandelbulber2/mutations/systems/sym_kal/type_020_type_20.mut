@@ -1,0 +1,5 @@
+// TYPE_ID: 20
+// NAME: Type 20
+// PARAMS: locals
+// SYSTEM: sym_kal
+{ double ang2 = atan2(zy, zx); double n = fmax(1.0, sa); double sector = 2.0*M_PI/n; ang2 = fmod(ang2 + 10.0*M_PI, sector); if(fmod(floor(ang2/sector), 2.0) > 0.5) ang2 = sector - fmod(ang2, sector); else ang2 = fmod(ang2, sector); ang2 -= sector*0.5; double rxy = sqrt(zx*zx+zy*zy); z.x = rxy*cos(ang2); z.y = rxy*sin(ang2); }

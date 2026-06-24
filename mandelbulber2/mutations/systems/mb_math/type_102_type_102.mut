@@ -1,0 +1,5 @@
+// TYPE_ID: 102
+// NAME: Type 102
+// PARAMS: locals
+// SYSTEM: mb_math
+double w=ma,v=mb; double rr5=rr+w*w+v*v; if(rr5<1e-21) rr5=1e-21; double sc=mf; z*=sc; z.x+=w*0.05; z.y+=v*0.05; aux.DE*=fabs(sc);

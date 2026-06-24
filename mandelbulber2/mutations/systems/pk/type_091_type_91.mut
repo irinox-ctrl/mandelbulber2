@@ -1,0 +1,5 @@
+// TYPE_ID: 91
+// NAME: Type 91
+// PARAMS: locals
+// SYSTEM: pk
+double msy=pa*(sin(pfreq*zx)*sin(pfreq*zy)-cos(pfreq*zz2))/fmax(1e-10,r); aux.DE*=(1.0+pf*msy);

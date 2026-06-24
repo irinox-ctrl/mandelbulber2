@@ -1,0 +1,5 @@
+// TYPE_ID: 75
+// NAME: Type 75
+// PARAMS: locals
+// SYSTEM: pk
+double flo=pa*sin(pfreq*zx)*cos(pfreq*zy)*pb; aux.DE*=(1.0+pf*flo/fmax(1e-10,r));

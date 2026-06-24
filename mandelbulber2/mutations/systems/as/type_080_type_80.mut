@@ -1,0 +1,5 @@
+// TYPE_ID: 80
+// NAME: Type 80
+// PARAMS: locals
+// SYSTEM: as
+double r = sqrt(z.x*z.x+z.y*z.y+z.z*z.z); double halo = 1.0/(1.0 + r*r/(fmax(ta*ta,0.01))); aux.DE *= (1.0 + sf*tb*halo);

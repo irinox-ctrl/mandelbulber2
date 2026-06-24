@@ -1,0 +1,5 @@
+// TYPE_ID: 196
+// NAME: Type 196
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= fmax(0.01, aa * ab / fmax(ac, 0.01));

@@ -1,0 +1,5 @@
+// TYPE_ID: 3
+// NAME: Type 3
+// PARAMS: locals
+// SYSTEM: mb_math
+double sx=ma,sy=mb,sz=mc; double fx=1.0/(1.0+exp(-sx*(fabs(zx)-md))); double fy=1.0/(1.0+exp(-sy*(fabs(zy)-md))); double fz=1.0/(1.0+exp(-sz*(fabs(zz2)-md))); z.x=zx*(1.0-fx)+copysign(me*2.0-fabs(zx),zx)*fx; z.y=zy*(1.0-fy)+copysign(me*2.0-fabs(zy),zy)*fy; z.z=zz2*(1.0-fz)+copysign(me*2.0-fabs(zz2),zz2)*fz; aux.DE*=fabs(mf);

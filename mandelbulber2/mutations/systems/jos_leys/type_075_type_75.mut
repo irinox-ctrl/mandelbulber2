@@ -1,0 +1,5 @@
+// TYPE_ID: 75
+// NAME: Type 75
+// PARAMS: locals
+// SYSTEM: jos_leys
+double ske=ja*jb*sin(jfreq*r+jph)/(fmax(1e-10,rr)); aux.DE*=(1.0+jf*ske);

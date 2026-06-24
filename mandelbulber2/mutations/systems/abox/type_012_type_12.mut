@@ -1,0 +1,5 @@
+// TYPE_ID: 12
+// NAME: Type 12
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= (1.0 + af * aa / (1.0 + ab * rr));

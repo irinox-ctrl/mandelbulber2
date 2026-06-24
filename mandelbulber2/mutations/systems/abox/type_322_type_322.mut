@@ -1,0 +1,5 @@
+// TYPE_ID: 322
+// NAME: Type 322
+// PARAMS: NA
+// SYSTEM: abox
+double lambda_r = fabs(aa)+0.1; double NA = fabs(ab)+0.1; double N_ph = fmax(fabs(ac)*10, 1.0); double res = lambda_r/(2.0*NA*sqrt(N_ph)); aux.DE *= (1.0 + af * sin(r/fmax(res,0.01))*sin(r/fmax(res,0.01)));

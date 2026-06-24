@@ -1,0 +1,5 @@
+// TYPE_ID: 22
+// NAME: Type 22
+// PARAMS: locals
+// SYSTEM: sm
+double phi3 = 1.6180339887; double r_n = ta/pow(phi3, (double)i); aux.DE *= 1.0/phi3; z *= r_n/fmax(sqrt(z.x*z.x+z.y*z.y+z.z*z.z),0.01);

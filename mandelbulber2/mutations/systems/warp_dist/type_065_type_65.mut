@@ -1,0 +1,5 @@
+// TYPE_ID: 65
+// NAME: Type 65
+// PARAMS: locals
+// SYSTEM: warp_dist
+{ double fx=zx-floor(zx*wa)/wa; double fy=zy-floor(zy*wa)/wa; z.x+=wf*wam*sin(wfq*fx*M_PI*2.0+wph); z.y+=wf*wam*sin(wfq*fy*M_PI*2.0+wph); aux.DE*=(1.0+2.0*fabs(wf*wam*wfq)); }

@@ -1,0 +1,5 @@
+// TYPE_ID: 126
+// NAME: Type 126
+// PARAMS: locals
+// SYSTEM: mb_math
+double dx=fabs(z.x-zx),dy=fabs(z.y-zy),dz=fabs(z.z-zz2); aux.color+=ma*dx+mb*dy+mc*dz;

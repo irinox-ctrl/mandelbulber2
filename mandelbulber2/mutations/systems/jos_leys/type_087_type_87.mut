@@ -1,0 +1,5 @@
+// TYPE_ID: 87
+// NAME: Type 87
+// PARAMS: locals
+// SYSTEM: jos_leys
+double g2=ja*sin(jfreq*zx)*sin(jfreq*zy)*sin(jfreq*zz2)*jb; aux.DE*=(1.0+jf*g2/fmax(1e-10,rr));

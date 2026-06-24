@@ -1,0 +1,5 @@
+// TYPE_ID: 24
+// NAME: Type 24
+// PARAMS: locals
+// SYSTEM: sm
+double n = fmax((double)i+1.0, 1.0); double r_n = ta / (1.0 + log(n)*tb); aux.DE *= 1.0/(1.0+log(n)*tb); z *= r_n/fmax(sqrt(z.x*z.x+z.y*z.y+z.z*z.z),0.01);

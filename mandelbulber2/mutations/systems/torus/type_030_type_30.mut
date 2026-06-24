@@ -1,0 +1,5 @@
+// TYPE_ID: 30
+// NAME: Type 30
+// PARAMS: locals
+// SYSTEM: torus
+double subdiv = fmax(1.0, floor(ta*(double)i*0.1+1.0)); aux.DE /= subdiv*tf+1.0;

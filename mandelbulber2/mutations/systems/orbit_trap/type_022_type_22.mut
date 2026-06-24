@@ -1,0 +1,5 @@
+// TYPE_ID: 22
+// NAME: Type 22
+// PARAMS: locals
+// SYSTEM: orbit_trap
+double d=fmin(sqrt(z.x*z.x+z.y*z.y),sqrt(z.y*z.y+z.z*z.z)); d=fmin(d,sqrt(z.x*z.x+z.z*z.z)); aux.DE *= (1.0 + of*exp(-od*d));

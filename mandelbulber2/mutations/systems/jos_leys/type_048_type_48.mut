@@ -1,0 +1,5 @@
+// TYPE_ID: 48
+// NAME: Type 48
+// PARAMS: locals
+// SYSTEM: jos_leys
+double cle=ja*sin(jfreq*atan2(zy,zx))*exp(-jb*r); aux.DE*=(1.0+jf*cle);

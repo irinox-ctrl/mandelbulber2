@@ -1,0 +1,5 @@
+// TYPE_ID: 25
+// NAME: Type 25
+// PARAMS: locals
+// SYSTEM: sm
+double n = fmax((double)i+1.0, 1.0); double p = fmax(fabs(ta), 0.1); aux.DE *= 1.0/pow(n,p);

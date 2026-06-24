@@ -1,0 +1,5 @@
+// TYPE_ID: 12
+// NAME: Type 12
+// PARAMS: locals
+// SYSTEM: torus
+double sc = fabs(ta) + 0.01; aux.DE *= sc;

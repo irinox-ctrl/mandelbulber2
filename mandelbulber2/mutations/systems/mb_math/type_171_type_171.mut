@@ -1,0 +1,5 @@
+// TYPE_ID: 171
+// NAME: Type 171
+// PARAMS: locals
+// SYSTEM: mb_math
+double fn=sin(zx*ma*10.0)*sin(zy*mb*10.0)*sin(zz2*mc*10.0); aux.DE*=(1.0+0.1*fn);

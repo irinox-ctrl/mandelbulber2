@@ -1,0 +1,5 @@
+// TYPE_ID: 30
+// NAME: Type 30
+// PARAMS: locals
+// SYSTEM: jos_leys
+double hmw=ja*(zx*zy-zy*zz2)/fmax(1e-10,rr*r); aux.DE*=(1.0+jf*hmw);

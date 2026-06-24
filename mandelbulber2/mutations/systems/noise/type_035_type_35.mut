@@ -1,0 +1,5 @@
+// TYPE_ID: 35
+// NAME: Type 35
+// PARAMS: locals
+// SYSTEM: noise
+double v=0, a=nam, f=nfq; double px=z.x,py=z.y,pz=z.z; for(int k=0;k<5;k++){ double h=sin(px*f*127.1+py*f*311.7+pz*f*74.7)*43758.5453; h=h-floor(h); v+=a*h; px=fabs(px)*2.0-na; py=fabs(py)*2.0-nb; pz=fabs(pz)*2.0-nc; f*=2.0; a*=0.5; } aux.DE *= (1.0 + nf*v);

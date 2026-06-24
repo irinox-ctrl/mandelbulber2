@@ -1,0 +1,5 @@
+// TYPE_ID: 23
+// NAME: Type 23
+// PARAMS: locals
+// SYSTEM: pk
+double dar=pa*pb*cos(pfreq*r+pph)/fmax(1e-10,rr); aux.DE*=(1.0+pf*dar);

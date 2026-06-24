@@ -1,0 +1,5 @@
+// TYPE_ID: 67
+// NAME: Type 67
+// PARAMS: locals
+// SYSTEM: as
+double surf_dist = fabs(sqrt(z.x*z.x+z.y*z.y+z.z*z.z) - ta); double skin = fmax(fabs(tb), 0.01); aux.DE *= (1.0 + sf*tc*exp(-surf_dist/skin));

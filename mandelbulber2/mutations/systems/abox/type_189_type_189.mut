@@ -1,0 +1,5 @@
+// TYPE_ID: 189
+// NAME: Type 189
+// PARAMS: locals
+// SYSTEM: abox
+{ double tf=sin(aa*r+ab)*cos(ac*r); aux.DE*=(1.0+ad*fabs(tf)); }

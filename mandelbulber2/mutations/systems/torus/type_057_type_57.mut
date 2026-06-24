@@ -1,0 +1,5 @@
+// TYPE_ID: 57
+// NAME: Type 57
+// PARAMS: locals
+// SYSTEM: torus
+double r2d = sqrt(z.x*z.x+z.y*z.y); double R = ta; double r = tb; double torus_d = sqrt((r2d-R)*(r2d-R)+z.z*z.z)-r; double corrugation = sin(tc*atan2(z.y,z.x)*10.0)*td; aux.DE *= (1.0 + tf*exp(-(torus_d-corrugation)*(torus_d-corrugation)));

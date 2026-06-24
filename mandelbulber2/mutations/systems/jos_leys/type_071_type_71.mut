@@ -1,0 +1,5 @@
+// TYPE_ID: 71
+// NAME: Type 71
+// PARAMS: locals
+// SYSTEM: jos_leys
+double nich=ja*exp(-jb*rr)*sin(jfreq*zx)*cos(jfreq*zy); aux.DE*=(1.0+jf*nich);

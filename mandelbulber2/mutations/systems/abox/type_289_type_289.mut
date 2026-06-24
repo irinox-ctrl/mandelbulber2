@@ -1,0 +1,5 @@
+// TYPE_ID: 289
+// NAME: Type 289
+// PARAMS: locals
+// SYSTEM: abox
+{ double cd=floor(r*aa); double le=exp(-ab*cd); aux.DE*=(1.0+ac*le); }

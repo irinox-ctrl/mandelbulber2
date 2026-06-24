@@ -1,0 +1,5 @@
+// TYPE_ID: 43
+// NAME: Type 43
+// PARAMS: locals
+// SYSTEM: pk
+double mse=pa*pb*exp(-pc*rr)*sin(pfreq*zx); aux.DE*=(1.0+pf*mse);

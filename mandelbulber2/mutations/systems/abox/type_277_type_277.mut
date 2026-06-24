@@ -1,0 +1,5 @@
+// TYPE_ID: 277
+// NAME: Type 277
+// PARAMS: locals
+// SYSTEM: abox
+{ double ms=fmin(fabs(zx),fmin(fabs(zy),fabs(zz2))); aux.DE*=(1.0+aa*ms); }

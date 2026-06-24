@@ -1,0 +1,5 @@
+// TYPE_ID: 154
+// NAME: Type 154
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= (1.0 + af * aa * exp(-ab*r) * sin(ac*r+ad));

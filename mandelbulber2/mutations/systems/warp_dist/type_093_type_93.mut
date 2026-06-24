@@ -1,0 +1,5 @@
+// TYPE_ID: 93
+// NAME: Type 93
+// PARAMS: locals
+// SYSTEM: warp_dist
+{ z.x=r*cos(wfq*zy/r+wph); z.y=r*sin(wfq*zy/r+wph); aux.DE*=(1.0+fabs(wf*wam*wfq/r)); }

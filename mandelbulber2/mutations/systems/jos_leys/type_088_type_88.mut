@@ -1,0 +1,5 @@
+// TYPE_ID: 88
+// NAME: Type 88
+// PARAMS: locals
+// SYSTEM: jos_leys
+double sp7=ja*cos(jfreq*(zx*zy+zy*zz2+zz2*zx)/fmax(1e-10,rr)+jph); aux.DE*=(1.0+jf*sp7);

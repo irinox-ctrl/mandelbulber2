@@ -1,0 +1,5 @@
+// TYPE_ID: 20
+// NAME: Type 20
+// PARAMS: locals
+// SYSTEM: mb_math
+double lt=ma; for(int n=0;n<3&&n<(int)mb;n++){ lt*=0.5; if(fabs(zx)>lt) z.x=copysign(lt*2.0,zx)-zx; if(fabs(zy)>lt) z.y=copysign(lt*2.0,zy)-zy; if(fabs(zz2)>lt) z.z=copysign(lt*2.0,zz2)-zz2; } aux.DE*=fabs(mf);

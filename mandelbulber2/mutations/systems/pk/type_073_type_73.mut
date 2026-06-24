@@ -1,0 +1,5 @@
+// TYPE_ID: 73
+// NAME: Type 73
+// PARAMS: locals
+// SYSTEM: pk
+double mor=pa*(r-pb)*(r-pb)*exp(-pc*r); aux.DE*=(1.0+pf*mor/fmax(1e-10,r));

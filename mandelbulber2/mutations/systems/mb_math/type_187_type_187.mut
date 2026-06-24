@@ -1,0 +1,5 @@
+// TYPE_ID: 187
+// NAME: Type 187
+// PARAMS: locals
+// SYSTEM: mb_math
+z.x=fabs(zx); z.y=fabs(zy); z.z=fabs(zz2); if(fabs(z.x)>ma) z.x=ma*2.0-z.x; if(fabs(z.y)>ma) z.y=ma*2.0-z.y; if(fabs(z.z)>ma) z.z=ma*2.0-z.z; aux.DE*=fabs(mf);

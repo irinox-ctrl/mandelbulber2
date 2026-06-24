@@ -1,0 +1,5 @@
+// TYPE_ID: 211
+// NAME: Type 211
+// PARAMS: locals
+// SYSTEM: abox
+{ double ent=sin(aa*zx)*log(fabs(sin(aa*zx))+1e-21)+sin(ab*zy)*log(fabs(sin(ab*zy))+1e-21); aux.DE*=(1.0+ac*fabs(ent)*0.1); }

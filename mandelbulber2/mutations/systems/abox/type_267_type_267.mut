@@ -1,0 +1,5 @@
+// TYPE_ID: 267
+// NAME: Type 267
+// PARAMS: locals
+// SYSTEM: abox
+{ double rs=sin(aa*r)*fabs(cos(ab*atan2(zy,zx))); aux.DE*=(1.0+ac*rs*rs); }

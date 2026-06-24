@@ -1,0 +1,5 @@
+// TYPE_ID: 90
+// NAME: Type 90
+// PARAMS: locals
+// SYSTEM: sym_kal
+{ double p=fmax(sa,0.01); z.x=z.x-p*round(z.x/p); z.y=z.y-p*round(z.y/p); z.x=fabs(z.x); z.y=fabs(z.y); if(z.x<z.y){double t=z.x;z.x=z.y;z.y=t;} z *= sf; aux.DE *= fabs(sf); { double _cF=(sf-1.0); z.x -= sb*_cF; z.y -= sc*_cF; z.z -= 0*_cF; }; }

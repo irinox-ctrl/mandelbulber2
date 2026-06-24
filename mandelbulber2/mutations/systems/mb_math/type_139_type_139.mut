@@ -1,0 +1,5 @@
+// TYPE_ID: 139
+// NAME: Type 139
+// PARAMS: locals
+// SYSTEM: mb_math
+aux.color+=r*ma*0.01;

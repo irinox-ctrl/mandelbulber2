@@ -1,0 +1,5 @@
+// TYPE_ID: 96
+// NAME: Type 96
+// PARAMS: locals
+// SYSTEM: warp_dist
+{ double denom=zx*zx+zy*zy+1e-21; z.x=wf*wam*zx/denom+wsc*sin(wfq*zy+wph); z.y=-wf*wam*zy/denom+wsc*cos(wfq*zx+wph); aux.DE*=(1.0+fabs(wf*wam/denom)+fabs(wsc*wfq)); }

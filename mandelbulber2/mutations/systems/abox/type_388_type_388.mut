@@ -1,0 +1,5 @@
+// TYPE_ID: 388
+// NAME: Type 388
+// PARAMS: locals
+// SYSTEM: abox
+double U = fabs(aa)+0.01; double t = fabs(ab)+0.01; double n_up = sin(ac*z.x)*sin(ac*z.x); double n_down = cos(ac*z.y)*cos(ac*z.y); double mott = U*n_up*n_down/t; aux.DE *= (1.0 + af * fmin(mott,10.0));

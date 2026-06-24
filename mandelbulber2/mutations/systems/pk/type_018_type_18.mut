@@ -1,0 +1,5 @@
+// TYPE_ID: 18
+// NAME: Type 18
+// PARAMS: locals
+// SYSTEM: pk
+double cmc=pa*cos(pfreq*zx)*cos(pfreq*zy)*pb; aux.DE*=(1.0+pf*cmc/fmax(1e-10,r));

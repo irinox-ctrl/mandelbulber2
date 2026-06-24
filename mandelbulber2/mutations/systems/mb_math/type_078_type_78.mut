@@ -1,0 +1,5 @@
+// TYPE_ID: 78
+// NAME: Type 78
+// PARAMS: locals
+// SYSTEM: mb_math
+double th=ma*M_PI/180.0; double cs=cos(th),sn=sin(th); double nx=zx*cs-zy*sn; double ny=zx*sn+zy*cs; z.x=nx; z.y=ny; double ph=mb*M_PI/180.0; double cp=cos(ph),sp=sin(ph); double nxz=z.x*cp-zz2*sp; double nz=z.x*sp+zz2*cp; z.x=nxz; z.z=nz; aux.DE*=fabs(mf);

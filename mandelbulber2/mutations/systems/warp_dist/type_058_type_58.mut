@@ -1,0 +1,5 @@
+// TYPE_ID: 58
+// NAME: Type 58
+// PARAMS: locals
+// SYSTEM: warp_dist
+{ double ph2=atan2(zy,zx); double th=acos(zz2/r); double d=wf*wam*sin(wfq*ph2*wa+wph)*sin(wb*th); z.x+=d*sin(th)*cos(ph2); z.y+=d*sin(th)*sin(ph2); z.z+=d*cos(th); aux.DE*=(1.0+fabs(wf*wam)); }

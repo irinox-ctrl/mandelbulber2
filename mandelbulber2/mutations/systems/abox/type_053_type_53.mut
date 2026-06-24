@@ -1,0 +1,5 @@
+// TYPE_ID: 53
+// NAME: Type 53
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= fabs(aa * pow(ab, ac));

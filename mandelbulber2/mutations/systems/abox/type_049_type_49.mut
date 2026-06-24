@@ -1,0 +1,5 @@
+// TYPE_ID: 49
+// NAME: Type 49
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= (1.0 + af * aa * (sin(ab*r) + cos(ac*r*r/(r+1e-21))) * 0.5);

@@ -1,0 +1,5 @@
+// TYPE_ID: 9
+// NAME: Type 9
+// PARAMS: locals
+// SYSTEM: jos_leys
+double bs=ja*jb*jc/fmax(1e-10,rr); aux.DE*=(1.0+jf*tanh(bs));

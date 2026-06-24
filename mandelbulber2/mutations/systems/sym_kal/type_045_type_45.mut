@@ -1,0 +1,5 @@
+// TYPE_ID: 45
+// NAME: Type 45
+// PARAMS: locals
+// SYSTEM: sym_kal
+{ z.x = fabs(z.x); z.y = fabs(z.y); z.z = fabs(z.z); double t; if(z.x-z.y<0){t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0){t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0){t=z.y;z.y=z.z;z.z=t;} z *= sf; double _f45=(sf-1.0)*sa; z.x -= _f45; z.y -= _f45; z.z -= _f45; aux.DE=aux.DE*fabs(sf)+1.0; z.x=fabs(z.x); z.y=fabs(z.y); }

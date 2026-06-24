@@ -1,0 +1,5 @@
+// TYPE_ID: 82
+// NAME: Type 82
+// PARAMS: locals
+// SYSTEM: sym_kal
+{ double a=sang+sam*sin(sfq*i); double cs=cos(a),sn=sin(a); z.x=fabs(z.x); double nx=z.x*cs-z.y*sn; z.y=z.x*sn+z.y*cs; z.x=nx; }

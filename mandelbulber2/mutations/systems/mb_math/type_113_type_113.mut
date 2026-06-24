@@ -1,0 +1,5 @@
+// TYPE_ID: 113
+// NAME: Type 113
+// PARAMS: locals
+// SYSTEM: mb_math
+double ga=2.39996322973; double th=i*ga; double r4=sqrt(rr+1e-21); z.x=r4*cos(th)*cos(ma*i); z.y=r4*sin(th)*cos(ma*i); z.z=r4*sin(ma*i); aux.DE*=fabs(mf);

@@ -1,0 +1,5 @@
+// TYPE_ID: 53
+// NAME: Type 53
+// PARAMS: locals
+// SYSTEM: as
+double r = sqrt(z.x*z.x+z.y*z.y+z.z*z.z); double curv = 1.0/fmax(r,0.01); aux.DE *= (1.0 + sf*ta*curv);

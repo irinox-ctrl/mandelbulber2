@@ -1,0 +1,5 @@
+// TYPE_ID: 32
+// NAME: Type 32
+// PARAMS: locals
+// SYSTEM: warp_dist
+{ double cx=-wfq*cos(wfq*zy+wph); double cy=-wfq*cos(wfq*zz2+wph); double cz=-wfq*cos(wfq*zx+wph); z.x+=wf*wam*(cy-cz); z.y+=wf*wam*(cz-cx); z.z+=wf*wam*(cx-cy); aux.DE*=(1.0+3.0*fabs(wf*wam*wfq)); }

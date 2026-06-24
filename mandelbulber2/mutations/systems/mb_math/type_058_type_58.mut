@@ -1,0 +1,5 @@
+// TYPE_ID: 58
+// NAME: Type 58
+// PARAMS: locals
+// SYSTEM: mb_math
+double jv=sin(i*mb)*cos(i*mc); double sc=ma+0.1*fabs(jv); z*=sc; aux.DE*=fabs(sc);

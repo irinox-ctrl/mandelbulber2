@@ -1,0 +1,5 @@
+// TYPE_ID: 306
+// NAME: Type 306
+// PARAMS: locals
+// SYSTEM: abox
+double choice_time = fabs(aa) * 10.0; double theta = (double)i > choice_time ? 1.0 : 0.0; aux.DE *= (1.0 + af * ab * theta);

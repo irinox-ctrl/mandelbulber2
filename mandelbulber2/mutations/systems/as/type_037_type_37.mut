@@ -1,0 +1,5 @@
+// TYPE_ID: 37
+// NAME: Type 37
+// PARAMS: locals
+// SYSTEM: as
+double dist_traveled = sqrt(z.x*z.x+z.y*z.y+z.z*z.z); aux.DE *= exp(-sf*fabs(ta)*dist_traveled);

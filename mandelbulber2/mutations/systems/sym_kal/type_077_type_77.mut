@@ -1,0 +1,5 @@
+// TYPE_ID: 77
+// NAME: Type 77
+// PARAMS: locals
+// SYSTEM: sym_kal
+{ for(int k=0;k<int(fmax(1,sa));k++){ z.x=fabs(z.x)-sb; z.y=fabs(z.y)-sc; if(z.x<z.y){double t=z.x;z.x=z.y;z.y=t;} } }

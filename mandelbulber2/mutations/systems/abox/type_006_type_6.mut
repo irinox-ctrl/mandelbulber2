@@ -1,0 +1,5 @@
+// TYPE_ID: 6
+// NAME: Type 6
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= (1.0 + af * aa * log(1.0 + ab * r));

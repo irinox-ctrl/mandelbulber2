@@ -1,0 +1,5 @@
+// TYPE_ID: 160
+// NAME: Type 160
+// PARAMS: locals
+// SYSTEM: mb_math
+aux.DE=(exp(fmin(10.0,aux.DE))-1.0)*ma;

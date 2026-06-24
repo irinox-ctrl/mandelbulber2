@@ -1,0 +1,5 @@
+// TYPE_ID: 78
+// NAME: Type 78
+// PARAMS: locals
+// SYSTEM: jos_leys
+double kf=ja*atan2(zy,zx)*exp(-jb*fabs(zz2))/M_PI; aux.DE*=(1.0+jf*kf/fmax(1e-10,r));

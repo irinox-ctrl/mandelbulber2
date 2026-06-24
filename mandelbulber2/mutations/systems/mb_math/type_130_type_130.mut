@@ -1,0 +1,5 @@
+// TYPE_ID: 130
+// NAME: Type 130
+// PARAMS: locals
+// SYSTEM: mb_math
+double td=sqrt((zx-ma)*(zx-ma)+(zy-mb)*(zy-mb)+(zz2-mc)*(zz2-mc))-md; aux.color+=fmax(0.0,1.0-fabs(td))*me;

@@ -1,0 +1,5 @@
+// TYPE_ID: 46
+// NAME: Type 46
+// PARAMS: locals
+// SYSTEM: sym_kal
+{ z.x = fabs(z.x); z.y = fabs(z.y); z.z = fabs(z.z); double d1 = z.x - z.y; double d2 = z.y - z.z; if(d1 < 0){double t=z.x;z.x=z.y;z.y=t;} if(d2 < 0){double t=z.y;z.y=z.z;z.z=t;} if(z.x-z.y < 0){double t=z.x;z.x=z.y;z.y=t;} z.x -= sa; z.y -= sb; z.z -= sc; z *= sf; z.x += sa; z.y += sb; z.z += sc; aux.DE = aux.DE*fabs(sf)+1.0; }

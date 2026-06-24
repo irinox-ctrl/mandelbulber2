@@ -1,0 +1,5 @@
+// TYPE_ID: 108
+// NAME: Type 108
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= (1.0 + af * aa * sin(ab*(zx*zy+ac*zz2)));

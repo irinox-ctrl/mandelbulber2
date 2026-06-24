@@ -1,0 +1,5 @@
+// TYPE_ID: 65
+// NAME: Type 65
+// PARAMS: locals
+// SYSTEM: sym_kal
+{ double p=fmax(sa,0.01); double a60=M_PI/3.0; double ux=p, uy=0; double vx=p*cos(a60), vy=p*sin(a60); double det=ux*vy-uy*vx; double ix=floor((z.x*vy-z.y*vx)/det+0.5); double iy=floor((z.y*ux-z.x*uy)/det+0.5); z.x-=ix*ux+iy*vx; z.y-=ix*uy+iy*vy; }

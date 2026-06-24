@@ -1,0 +1,5 @@
+// TYPE_ID: 7
+// NAME: Type 7
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= (1.0 + af * aa * tanh(ab * r));

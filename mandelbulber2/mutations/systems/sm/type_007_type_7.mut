@@ -1,0 +1,5 @@
+// TYPE_ID: 7
+// NAME: Type 7
+// PARAMS: locals
+// SYSTEM: sm
+double w = fabs(ta)+0.01; double wd = w*sin(z.x*tb)*cos(z.y*tc); aux.DE *= (1.0 + sf*wd*td);

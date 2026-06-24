@@ -1,0 +1,5 @@
+// TYPE_ID: 286
+// NAME: Type 286
+// PARAMS: locals
+// SYSTEM: abox
+{ double syk=sin(aa*zx)*sin(ab*zy)*sin(ac*zz2)*sin(ad*r); aux.DE*=(1.0+ae*fabs(syk)); }

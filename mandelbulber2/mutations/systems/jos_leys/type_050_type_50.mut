@@ -1,0 +1,5 @@
+// TYPE_ID: 50
+// NAME: Type 50
+// PARAMS: locals
+// SYSTEM: jos_leys
+double gff=ja*cos(jfreq*zx)*cos(jfreq*zy)/fmax(1e-10,r); aux.DE*=(1.0+jf*gff);

@@ -1,0 +1,5 @@
+// TYPE_ID: 6
+// NAME: Type 6
+// PARAMS: locals
+// SYSTEM: orbit_trap
+double dx=z.x-oa*round(z.x/fmax(oa,1e-21)); double dy=z.y-ob*round(z.y/fmax(ob,1e-21)); double dz=z.z-oc*round(z.z/fmax(oc,1e-21)); double d=sqrt(dx*dx+dy*dy+dz*dz); aux.DE *= (1.0 + of*exp(-od*d));

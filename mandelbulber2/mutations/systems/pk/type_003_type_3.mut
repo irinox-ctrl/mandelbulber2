@@ -1,0 +1,5 @@
+// TYPE_ID: 3
+// NAME: Type 3
+// PARAMS: locals
+// SYSTEM: pk
+double eq=pa*sin(pfreq*zx)*cos(pfreq*zy); aux.DE*=(1.0+pf*eq/fmax(1e-10,r));

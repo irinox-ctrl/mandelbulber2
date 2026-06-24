@@ -1,0 +1,5 @@
+// TYPE_ID: 98
+// NAME: Type 98
+// PARAMS: locals
+// SYSTEM: jos_leys
+double bs=ja*exp(-jb*r)*cos(jfreq*r+jph)*jc; aux.DE*=(1.0+jf*bs);

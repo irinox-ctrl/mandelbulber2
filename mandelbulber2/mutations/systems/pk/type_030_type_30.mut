@@ -1,0 +1,5 @@
+// TYPE_ID: 30
+// NAME: Type 30
+// PARAMS: locals
+// SYSTEM: pk
+double sg=pa*sin(sin(pfreq*zx+pph))*pb; aux.DE*=(1.0+pf*sg/fmax(1e-10,r));

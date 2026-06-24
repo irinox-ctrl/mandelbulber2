@@ -1,0 +1,5 @@
+// TYPE_ID: 114
+// NAME: Type 114
+// PARAMS: locals
+// SYSTEM: abox
+{ double s1=sin(aa*r),s2=sin(ab*r); double w=s1*s1-s2*s2; aux.DE*=(1.0+af*ac*w); }

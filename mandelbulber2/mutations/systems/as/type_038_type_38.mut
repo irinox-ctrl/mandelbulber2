@@ -1,0 +1,5 @@
+// TYPE_ID: 38
+// NAME: Type 38
+// PARAMS: locals
+// SYSTEM: as
+double cos_theta = z.z/fmax(sqrt(z.x*z.x+z.y*z.y+z.z*z.z),1e-21); double phase = (1.0+cos_theta*cos_theta)*0.75; aux.DE *= (1.0 + sf*phase*ta);

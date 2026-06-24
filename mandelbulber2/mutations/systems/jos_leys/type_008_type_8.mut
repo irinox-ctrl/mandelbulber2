@@ -1,0 +1,5 @@
+// TYPE_ID: 8
+// NAME: Type 8
+// PARAMS: locals
+// SYSTEM: jos_leys
+double rl=ja/(fmax(1e-10,r*r)+jb*jb); aux.DE*=(1.0+jf*rl);

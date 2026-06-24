@@ -1,0 +1,5 @@
+// TYPE_ID: 4
+// NAME: Type 4
+// PARAMS: locals
+// SYSTEM: sm
+double jm = sin(z.x*ta)*cos(z.y*tb); double r_ratio = 1.0 + sf*0.3*jm; aux.DE *= r_ratio;

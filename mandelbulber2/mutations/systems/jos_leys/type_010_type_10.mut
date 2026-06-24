@@ -1,0 +1,5 @@
+// TYPE_ID: 10
+// NAME: Type 10
+// PARAMS: locals
+// SYSTEM: jos_leys
+double ew=ja*sin(jfreq*zx)*cos(jfreq*zy)/fmax(1e-10,r); aux.DE*=(1.0+jf*ew);

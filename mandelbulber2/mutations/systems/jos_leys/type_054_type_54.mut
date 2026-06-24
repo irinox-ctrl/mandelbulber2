@@ -1,0 +1,5 @@
+// TYPE_ID: 54
+// NAME: Type 54
+// PARAMS: locals
+// SYSTEM: jos_leys
+double tt=ja*(zx*zy+zy*zz2+zz2*zx)/fmax(1e-10,rr*r); aux.DE*=(1.0+jf*tt);

@@ -1,0 +1,5 @@
+// TYPE_ID: 380
+// NAME: Type 380
+// PARAMS: locals
+// SYSTEM: abox
+double J = fabs(aa)+0.01; double alpha = fabs(ab)+0.01; double g = fabs(ac)+0.01; double gap = J*exp(-1.0/(alpha*g)); aux.DE *= (1.0 + af * gap * sin(ad*r)*sin(ad*r));

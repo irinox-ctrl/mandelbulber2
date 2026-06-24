@@ -1,0 +1,5 @@
+// TYPE_ID: 87
+// NAME: Type 87
+// PARAMS: locals
+// SYSTEM: pk
+double pol=pa*exp(-pb*rr)*cos(pfreq*r)*pc; aux.DE*=(1.0+pf*pol);

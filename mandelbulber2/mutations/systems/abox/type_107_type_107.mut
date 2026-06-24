@@ -1,0 +1,5 @@
+// TYPE_ID: 107
+// NAME: Type 107
+// PARAMS: locals
+// SYSTEM: abox
+{ double q=zx*zx-zy*zy; double s=2.0*zx*zy; aux.DE*=(1.0+af*aa*sin(ab*q/(rr+1e-21))*cos(ac*s/(rr+1e-21))); }

@@ -1,0 +1,5 @@
+// TYPE_ID: 82
+// NAME: Type 82
+// PARAMS: locals
+// SYSTEM: mb_math
+double s=ma; double th=mb*M_PI/180.0; double cs=cos(th),sn=sin(th); z.x=s*(zx*cs-zy*sn); z.y=s*(zx*sn+zy*cs); z.z*=s; aux.DE*=fabs(s)*fabs(mf);

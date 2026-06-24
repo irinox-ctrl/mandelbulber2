@@ -1,0 +1,5 @@
+// TYPE_ID: 110
+// NAME: Type 110
+// PARAMS: locals
+// SYSTEM: abox
+{ double cr=zx*zx+zy*zy; double ci=2.0*zx*zy; double r4=sqrt(cr*cr+ci*ci+zz2*zz2); aux.DE*=(1.0+af*aa*sin(ab*r4)); }

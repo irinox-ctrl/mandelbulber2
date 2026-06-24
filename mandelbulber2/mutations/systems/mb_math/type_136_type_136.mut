@@ -1,0 +1,5 @@
+// TYPE_ID: 136
+// NAME: Type 136
+// PARAMS: locals
+// SYSTEM: mb_math
+aux.color+=(double)i/fmax(1.0,ma)*mb;

@@ -1,0 +1,5 @@
+// TYPE_ID: 36
+// NAME: Type 36
+// PARAMS: locals
+// SYSTEM: mb_math
+double fR2=mb; double ex=exp(fR2-rr); z*=ex; aux.DE*=ex;

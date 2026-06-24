@@ -1,0 +1,5 @@
+// TYPE_ID: 11
+// NAME: Type 11
+// PARAMS: locals
+// SYSTEM: torus
+double speed = sqrt(z.x*z.x+z.y*z.y+z.z*z.z); aux.DE /= (1.0 + tf*speed*ta);

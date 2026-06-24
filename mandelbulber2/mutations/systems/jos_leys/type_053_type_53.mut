@@ -1,0 +1,5 @@
+// TYPE_ID: 53
+// NAME: Type 53
+// PARAMS: locals
+// SYSTEM: jos_leys
+double pm2=ja*(2.0-fabs(zx)+fabs(zy)-fabs(zz2))/fmax(1e-10,r); aux.DE*=(1.0+jf*tanh(pm2));

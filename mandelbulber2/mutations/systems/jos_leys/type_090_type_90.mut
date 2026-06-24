@@ -1,0 +1,5 @@
+// TYPE_ID: 90
+// NAME: Type 90
+// PARAMS: locals
+// SYSTEM: jos_leys
+double hkah=ja*(zx*zx-zy*zy+zz2*zz2)/(fmax(1e-10,rr*r))*jb; aux.DE*=(1.0+jf*hkah);

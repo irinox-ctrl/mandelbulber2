@@ -1,0 +1,5 @@
+// TYPE_ID: 68
+// NAME: Type 68
+// PARAMS: locals
+// SYSTEM: sym_kal
+{ double p=fmax(sa,0.01); z.x=z.x-p*round(z.x/p); z.y=z.y-p*round(z.y/p); z.z=z.z-p*round(z.z/p); double cs=cos(sang),sn=sin(sang); double nx=z.x*cs-z.y*sn; z.y=z.x*sn+z.y*cs; z.x=nx; }

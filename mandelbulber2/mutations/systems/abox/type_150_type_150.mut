@@ -1,0 +1,5 @@
+// TYPE_ID: 150
+// NAME: Type 150
+// PARAMS: locals
+// SYSTEM: abox
+{ double comb=aa*sin(ab*r)+ac*cos(ad*atan2(zy,zx))+ae*sin(aff*acos(zz2/r)); aux.DE*=(1.0+af*comb/3.0); }

@@ -1,0 +1,5 @@
+// TYPE_ID: 103
+// NAME: Type 103
+// PARAMS: locals
+// SYSTEM: abox
+{ double w=aa*cos(ab*zx+ac*zy); aux.DE*=(1.0+af*ad*w*w); }

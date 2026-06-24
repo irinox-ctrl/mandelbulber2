@@ -1,0 +1,5 @@
+// TYPE_ID: 5
+// NAME: Type 5
+// PARAMS: locals
+// SYSTEM: jos_leys
+double hyp=4.0*M_PI*(ja-1.0)/fmax(1e-10,rr); aux.DE*=(1.0+jf*tanh(hyp));

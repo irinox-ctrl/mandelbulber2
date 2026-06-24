@@ -1,0 +1,5 @@
+// TYPE_ID: 14
+// NAME: Type 14
+// PARAMS: locals
+// SYSTEM: warp_dist
+double d1 = sin(wfq*zx+wph); double d2 = sin(wa*zy+wb); z.x += wf*wam*sin(wfq*d1+d2); z.y += wf*wam*cos(wa*d1-d2); aux.DE *= (1.0 + 2.0*fabs(wf*wam*wfq));

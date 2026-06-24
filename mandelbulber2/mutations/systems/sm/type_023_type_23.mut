@@ -1,0 +1,5 @@
+// TYPE_ID: 23
+// NAME: Type 23
+// PARAMS: locals
+// SYSTEM: sm
+double r_n = ta * exp(-(double)i * fabs(tb)); aux.DE *= exp(-fabs(tb)); z *= r_n/fmax(sqrt(z.x*z.x+z.y*z.y+z.z*z.z),0.01);

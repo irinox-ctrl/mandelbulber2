@@ -1,0 +1,5 @@
+// TYPE_ID: 63
+// NAME: Type 63
+// PARAMS: locals
+// SYSTEM: torus
+double r2d = sqrt(z.x*z.x+z.y*z.y); double phi = atan2(z.y,z.x); double gear_n = fmax(floor(fabs(ta)*8+4),4.0); double gear_R = tb*(1.0+tc*fmax(cos(gear_n*phi)-0.5,0.0)); double d = fabs(r2d-gear_R); aux.DE *= (1.0 + tf*exp(-d*td*10.0));

@@ -1,0 +1,5 @@
+// TYPE_ID: 24
+// NAME: Type 24
+// PARAMS: locals
+// SYSTEM: pk
+double mou=pa*sin(pfreq*zx)*sin(pfreq*zy)/fmax(1e-10,r); aux.DE*=(1.0+pf*mou);

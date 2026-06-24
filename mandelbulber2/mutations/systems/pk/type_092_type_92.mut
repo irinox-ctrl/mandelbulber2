@@ -1,0 +1,5 @@
+// TYPE_ID: 92
+// NAME: Type 92
+// PARAMS: locals
+// SYSTEM: pk
+double hv=pa*exp(-pb*rr)*sin(pfreq*r+pph); aux.DE*=(1.0+pf*hv);

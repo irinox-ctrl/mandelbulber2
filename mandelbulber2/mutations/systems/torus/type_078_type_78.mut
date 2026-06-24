@@ -1,0 +1,5 @@
+// TYPE_ID: 78
+// NAME: Type 78
+// PARAMS: locals
+// SYSTEM: torus
+double r2d = sqrt(z.x*z.x+z.y*z.y); double rxz = sqrt(z.x*z.x+z.z*z.z); double ryz = sqrt(z.y*z.y+z.z*z.z); double d1=fabs(sqrt((r2d-ta)*(r2d-ta)+z.z*z.z)-tb); double d2=fabs(sqrt((rxz-ta)*(rxz-ta)+z.y*z.y)-tb); double d3=fabs(sqrt((ryz-ta)*(ryz-ta)+z.x*z.x)-tb); aux.DE *= (1.0 + tf*exp(-fmin(d1,fmin(d2,d3))*tc));

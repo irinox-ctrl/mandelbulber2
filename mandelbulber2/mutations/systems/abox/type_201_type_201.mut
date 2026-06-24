@@ -1,0 +1,5 @@
+// TYPE_ID: 201
+// NAME: Type 201
+// PARAMS: locals
+// SYSTEM: abox
+{ double curl=sin(aa*zy+ab*zz2)-sin(aa*zz2+ab*zx); aux.DE*=(1.0+ac*fabs(curl)); }

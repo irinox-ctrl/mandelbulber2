@@ -1,0 +1,5 @@
+// TYPE_ID: 15
+// NAME: Type 15
+// PARAMS: locals
+// SYSTEM: mb_math
+double jv=ma+0.1*sin(mc*zx)*sin(mc*zy); if(fabs(zx)>jv) z.x=copysign(jv*2.0,zx)-zx; if(fabs(zy)>jv) z.y=copysign(jv*2.0,zy)-zy; aux.DE*=fabs(mf);

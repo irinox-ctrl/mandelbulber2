@@ -1,0 +1,5 @@
+// TYPE_ID: 65
+// NAME: Type 65
+// PARAMS: locals
+// SYSTEM: pk
+double pht=pa*(1.0/(1.0+exp(-pb*(r-pc)))-0.5)*2.0; aux.DE*=(1.0+pf*pht);

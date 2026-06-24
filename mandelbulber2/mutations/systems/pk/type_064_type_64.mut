@@ -1,0 +1,5 @@
+// TYPE_ID: 64
+// NAME: Type 64
+// PARAMS: locals
+// SYSTEM: pk
+double eqs=pa*cos(pfreq*r+pph)/(fmax(1e-10,r)); aux.DE*=(1.0+pf*eqs);

@@ -1,0 +1,5 @@
+// TYPE_ID: 32
+// NAME: Type 32
+// PARAMS: locals
+// SYSTEM: pk
+double cm=0.0; {double d1=zx-zy; double d2=zy-zz2; double d3=zx-zz2; cm=pa*(1.0/fmax(1e-10,d1*d1*d1)+1.0/fmax(1e-10,d2*d2*d2)+1.0/fmax(1e-10,d3*d3*d3));} aux.DE*=(1.0+pf*tanh(cm));

@@ -1,0 +1,5 @@
+// TYPE_ID: 153
+// NAME: Type 153
+// PARAMS: locals
+// SYSTEM: abox
+{ double lip=aa*fmin(1.0,ab/fmax(r,1e-21)); aux.DE*=(1.0+af*lip); }

@@ -1,0 +1,5 @@
+// TYPE_ID: 6
+// NAME: Type 6
+// PARAMS: locals
+// SYSTEM: warp_dist
+double ph = atan2(zy, zx); z.x += wf*wam*sin(wfq*ph + wph); z.y += wf*wam*cos(wfq*ph + wph); aux.DE *= (1.0 + fabs(wf*wam*wfq));

@@ -1,0 +1,5 @@
+// TYPE_ID: 45
+// NAME: Type 45
+// PARAMS: locals
+// SYSTEM: jos_leys
+double nl=ja*fabs(sin(jfreq*zx)*cos(jfreq*zy))*jb; aux.DE*=(1.0+jf*nl/fmax(1e-10,r));

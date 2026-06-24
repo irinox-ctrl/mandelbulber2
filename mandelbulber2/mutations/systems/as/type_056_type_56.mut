@@ -1,0 +1,5 @@
+// TYPE_ID: 56
+// NAME: Type 56
+// PARAMS: locals
+// SYSTEM: as
+double lap = sin((z.x+0.01)*ta)+sin((z.x-0.01)*ta)-2.0*sin(z.x*ta); aux.DE += sf*tb*lap;

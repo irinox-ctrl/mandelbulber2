@@ -1,0 +1,5 @@
+// TYPE_ID: 9
+// NAME: Type 9
+// PARAMS: locals
+// SYSTEM: sm
+double r2d = sqrt(z.x*z.x+z.y*z.y); double R=fabs(ta)+0.1,r=fabs(tb)+0.01; double td2 = (r2d-R)*(r2d-R)+z.z*z.z-r*r; aux.DE *= (1.0 + sf*exp(-fabs(td2)*tc));

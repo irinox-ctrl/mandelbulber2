@@ -1,0 +1,5 @@
+// TYPE_ID: 82
+// NAME: Type 82
+// PARAMS: locals
+// SYSTEM: orbit_trap
+double r=sqrt(z.x*z.x+z.y*z.y); double ph=atan2(z.y,z.x); double d=fabs(r-oa*fabs(cos(ob*ph/2.0))); aux.DE *= (1.0 + of*exp(-od*d));

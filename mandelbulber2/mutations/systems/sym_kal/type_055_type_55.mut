@@ -1,0 +1,5 @@
+// TYPE_ID: 55
+// NAME: Type 55
+// PARAMS: locals
+// SYSTEM: sym_kal
+{ if(r>sa) z*=sa/r; }

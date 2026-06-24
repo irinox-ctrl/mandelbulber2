@@ -1,0 +1,5 @@
+// TYPE_ID: 33
+// NAME: Type 33
+// PARAMS: locals
+// SYSTEM: as
+double disp = sin(z.x*ta*5.0)*sin(z.y*tb*5.0)*sin(z.z*tc*5.0); aux.DE += sf*disp*td;

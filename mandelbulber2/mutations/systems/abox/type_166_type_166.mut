@@ -1,0 +1,5 @@
+// TYPE_ID: 166
+// NAME: Type 166
+// PARAMS: locals
+// SYSTEM: abox
+{ double bnd=aa*sin(floor(r*ab)*M_PI/ab); aux.DE*=(1.0+af*bnd); }

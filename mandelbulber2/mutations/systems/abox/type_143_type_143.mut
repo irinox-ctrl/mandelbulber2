@@ -1,0 +1,5 @@
+// TYPE_ID: 143
+// NAME: Type 143
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= (1.0 + af * aa * sin(ab * (fabs(zx)+fabs(zy)+fabs(zz2))));

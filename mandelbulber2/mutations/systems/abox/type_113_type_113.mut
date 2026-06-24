@@ -1,0 +1,5 @@
+// TYPE_ID: 113
+// NAME: Type 113
+// PARAMS: locals
+// SYSTEM: abox
+{ double p=aa*zx*zy*zz2/(r*r*r+1e-21); aux.DE*=(1.0+af*ab*sin(ac*p)); }

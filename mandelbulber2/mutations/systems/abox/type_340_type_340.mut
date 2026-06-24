@@ -1,0 +1,5 @@
+// TYPE_ID: 340
+// NAME: Type 340
+// PARAMS: locals
+// SYSTEM: abox
+double C_q = aa*aa/(2.0*(fabs(ab)+0.01)); double charging = exp(-C_q*r*r); aux.DE *= (1.0 + af * charging);

@@ -1,0 +1,5 @@
+// TYPE_ID: 32
+// NAME: Type 32
+// PARAMS: locals
+// SYSTEM: jos_leys
+double panch=ja*cos(jfreq*zx)*cos(jfreq*zy)*cos(jfreq*zz2); aux.DE*=(1.0+jf*panch/fmax(1e-10,r));

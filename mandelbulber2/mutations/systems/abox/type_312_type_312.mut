@@ -1,0 +1,5 @@
+// TYPE_ID: 312
+// NAME: Type 312
+// PARAMS: locals
+// SYSTEM: abox
+double v1 = sin(aa*z.x)*sin(aa*z.y); double v2 = cos(ab*z.y)*cos(ab*z.z); double violation = fabs(v1 + v2) - 1.0; aux.DE *= (1.0 + af * fmax(violation, 0.0));

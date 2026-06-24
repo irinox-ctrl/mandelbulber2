@@ -1,0 +1,5 @@
+// TYPE_ID: 355
+// NAME: Type 355
+// PARAMS: locals
+// SYSTEM: abox
+double P_ratio = fmax(fabs(aa), 0.1); double gamma_g = 1.4; double eff = 1.0 - pow(1.0/P_ratio, (gamma_g-1.0)/gamma_g); aux.DE *= (1.0 + af * fabs(eff) * cos(ab*r)*cos(ab*r));

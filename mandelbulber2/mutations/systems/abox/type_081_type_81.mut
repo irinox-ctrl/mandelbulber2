@@ -1,0 +1,5 @@
+// TYPE_ID: 81
+// NAME: Type 81
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= (1.0 + af * aa * fabs(sin(ab * atan2(zz2, sqrt(zx*zx+zy*zy+1e-21)))));

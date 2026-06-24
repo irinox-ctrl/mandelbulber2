@@ -1,0 +1,5 @@
+// TYPE_ID: 136
+// NAME: Type 136
+// PARAMS: locals
+// SYSTEM: abox
+{ double c=fabs(sin(aa*zx)+sin(ab*zy)+sin(ac*zz2))/3.0; aux.DE*=(1.0+af*ad*c); }

@@ -1,0 +1,5 @@
+// TYPE_ID: 84
+// NAME: Type 84
+// PARAMS: locals
+// SYSTEM: jos_leys
+double hmir=ja*cos(jfreq*(zx+zy+zz2)+jph)/fmax(1e-10,r); aux.DE*=(1.0+jf*hmir);

@@ -1,0 +1,5 @@
+// TYPE_ID: 111
+// NAME: Type 111
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= (1.0 + af * aa * tanh(ab*(zx*zx+zy*zy-zz2*zz2)));

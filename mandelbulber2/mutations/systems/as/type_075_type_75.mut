@@ -1,0 +1,5 @@
+// TYPE_ID: 75
+// NAME: Type 75
+// PARAMS: locals
+// SYSTEM: as
+double d_axis = sqrt(z.y*z.y+z.z*z.z); aux.DE *= (1.0 + sf*ta*log(fmax(d_axis,0.01))*tb);

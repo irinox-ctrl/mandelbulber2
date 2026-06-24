@@ -1,0 +1,5 @@
+// TYPE_ID: 238
+// NAME: Type 238
+// PARAMS: locals
+// SYSTEM: abox
+{ double wh=exp(-(r-aa)*(r-aa)/(fmax(ab*ab,0.01))); aux.DE*=(1.0+ac*wh); }

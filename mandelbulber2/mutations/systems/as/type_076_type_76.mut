@@ -1,0 +1,5 @@
+// TYPE_ID: 76
+// NAME: Type 76
+// PARAMS: locals
+// SYSTEM: as
+double d_brane = fabs(z.x - ta); double delta_approx = exp(-d_brane*d_brane*100.0); aux.DE *= (1.0 + sf*tb*delta_approx);

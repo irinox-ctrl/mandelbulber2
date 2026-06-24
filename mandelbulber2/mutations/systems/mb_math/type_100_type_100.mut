@@ -1,0 +1,5 @@
+// TYPE_ID: 100
+// NAME: Type 100
+// PARAMS: locals
+// SYSTEM: mb_math
+double p=mb; double th=ma*pow(fmax(1.0,(double)i),p); double cs=cos(th),sn=sin(th); double nx=zx*cs-zy*sn; double ny=zx*sn+zy*cs; z.x=nx;z.y=ny; aux.DE*=fabs(mf);

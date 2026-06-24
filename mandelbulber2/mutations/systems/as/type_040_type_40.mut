@@ -1,0 +1,5 @@
+// TYPE_ID: 40
+// NAME: Type 40
+// PARAMS: locals
+// SYSTEM: as
+double curl_approx = sin(z.y*ta)*cos(z.z*tb) - cos(z.y*ta)*sin(z.z*tb); aux.DE *= (1.0 + sf*fabs(curl_approx)*tc);

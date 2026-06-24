@@ -1,0 +1,5 @@
+// TYPE_ID: 381
+// NAME: Type 381
+// PARAMS: locals
+// SYSTEM: abox
+double J = fabs(aa)+0.01; double h = fabs(ab)+0.01; double gap = fabs(J-h)/J; double crit_exp = fabs(ac)+0.5; aux.DE *= (1.0 + af * pow(fmax(gap,1e-10), crit_exp));

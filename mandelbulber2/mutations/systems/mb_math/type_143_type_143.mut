@@ -1,0 +1,5 @@
+// TYPE_ID: 143
+// NAME: Type 143
+// PARAMS: locals
+// SYSTEM: mb_math
+aux.color+=sin(i*ma+mb)*mc;

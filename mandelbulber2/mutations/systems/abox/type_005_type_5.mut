@@ -1,0 +1,5 @@
+// TYPE_ID: 5
+// NAME: Type 5
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= (1.0 + af * aa * exp(-ab * rr));

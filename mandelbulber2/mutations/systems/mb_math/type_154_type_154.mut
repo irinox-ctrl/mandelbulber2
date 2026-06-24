@@ -1,0 +1,5 @@
+// TYPE_ID: 154
+// NAME: Type 154
+// PARAMS: locals
+// SYSTEM: mb_math
+double prev=aux.DE; aux.DE=prev+0.5*(prev-ma);

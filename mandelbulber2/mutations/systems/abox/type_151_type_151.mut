@@ -1,0 +1,5 @@
+// TYPE_ID: 151
+// NAME: Type 151
+// PARAMS: locals
+// SYSTEM: abox
+{ double de=aa*r*log(r+1e-21)/fmax(ab,0.01); aux.DE*=(1.0+af*de/(r+1e-21)); }

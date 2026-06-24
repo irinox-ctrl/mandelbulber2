@@ -1,0 +1,5 @@
+// TYPE_ID: 10
+// NAME: Type 10
+// PARAMS: locals
+// SYSTEM: orbit_trap
+int nn=(int)fmax(2,fmin(oa*6,12)); double md=1e10; for(int k=0;k<nn;k++){ double ang=k*2.0*M_PI/nn; double cx=ob*cos(ang); double cy=ob*sin(ang); double d=(z.x-cx)*(z.x-cx)+(z.y-cy)*(z.y-cy)+z.z*z.z; if(d<md)md=d; } aux.DE *= (1.0 + of*exp(-od*sqrt(md)));

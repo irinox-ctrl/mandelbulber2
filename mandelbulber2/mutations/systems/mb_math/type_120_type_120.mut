@@ -1,0 +1,5 @@
+// TYPE_ID: 120
+// NAME: Type 120
+// PARAMS: locals
+// SYSTEM: mb_math
+double sc1=ma,sc2=mb; z*=sc1; double rr2=z.x*z.x+z.y*z.y+z.z*z.z; if(rr2>1e-21){ z*=sc2/sqrt(rr2); } aux.DE*=fmax(fabs(sc1),fabs(sc2));

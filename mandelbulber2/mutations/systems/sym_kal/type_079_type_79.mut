@@ -1,0 +1,5 @@
+// TYPE_ID: 79
+// NAME: Type 79
+// PARAMS: locals
+// SYSTEM: sym_kal
+{ z.x = sa*floor(z.x/fmax(sa,0.01)+0.5)*2.0-z.x; z.y = sb*floor(z.y/fmax(sb,0.01)+0.5)*2.0-z.y; }

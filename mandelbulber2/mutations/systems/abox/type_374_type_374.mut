@@ -1,0 +1,5 @@
+// TYPE_ID: 374
+// NAME: Type 374
+// PARAMS: locals
+// SYSTEM: abox
+double chern = floor(fabs(aa)*2.0+0.5); double mag_order = sin(ab*z.x)*sin(ab*z.y); aux.DE *= (1.0 + af * fabs(chern) * mag_order*mag_order);

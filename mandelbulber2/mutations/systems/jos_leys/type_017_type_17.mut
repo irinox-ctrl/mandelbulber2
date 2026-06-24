@@ -1,0 +1,5 @@
+// TYPE_ID: 17
+// NAME: Type 17
+// PARAMS: locals
+// SYSTEM: jos_leys
+double th=0.0; for(int n=0;n<8;n++){double qn=exp(-M_PI*n*n*fabs(zy)/fmax(0.01,ja)); th+=qn*cos(2.0*M_PI*n*zx/fmax(0.01,ja));} aux.DE*=(1.0+jf*fabs(th));

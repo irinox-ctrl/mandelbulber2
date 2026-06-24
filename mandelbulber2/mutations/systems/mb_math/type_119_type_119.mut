@@ -1,0 +1,5 @@
+// TYPE_ID: 119
+// NAME: Type 119
+// PARAMS: locals
+// SYSTEM: mb_math
+double jv=sin(i*ma)*cos(i*mb); double sc=mf+0.1*jv; z*=sc; aux.DE*=fabs(sc);

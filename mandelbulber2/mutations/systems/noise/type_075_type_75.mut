@@ -1,0 +1,5 @@
+// TYPE_ID: 75
+// NAME: Type 75
+// PARAMS: locals
+// SYSTEM: noise
+double scale=nfq; double wx=z.x*scale; double wy=z.y*scale; double wz=z.z*scale; for(int k=0;k<3;k++){ wx=sin(wx*na+wy); wy=cos(wy*nb+wz); wz=sin(wz*nc+wx); } double h=sin(wx+wy+wz)*0.5+0.5; aux.DE *= (1.0 + nf*h*nam);

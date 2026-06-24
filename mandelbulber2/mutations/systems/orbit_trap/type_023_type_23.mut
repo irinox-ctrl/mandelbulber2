@@ -1,0 +1,5 @@
+// TYPE_ID: 23
+// NAME: Type 23
+// PARAMS: locals
+// SYSTEM: orbit_trap
+double d1=fabs(z.x-oa); double d2=fabs(z.y-ob); double d3=fabs(z.z-oc); double d=d1*d2*d3; aux.DE *= (1.0 + of*exp(-od*d));

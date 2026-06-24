@@ -1,0 +1,5 @@
+// TYPE_ID: 155
+// NAME: Type 155
+// PARAMS: locals
+// SYSTEM: mb_math
+double spd=r*0.01; aux.DE=aux.DE*(1.0+0.5*spd);

@@ -1,0 +1,5 @@
+// TYPE_ID: 97
+// NAME: Type 97
+// PARAMS: locals
+// SYSTEM: jos_leys
+double chnp=ja*jb*tanh(jc*r-jd); aux.DE*=(1.0+jf*chnp/fmax(1e-10,r));

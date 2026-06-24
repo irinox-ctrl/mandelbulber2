@@ -1,0 +1,5 @@
+// TYPE_ID: 48
+// NAME: Type 48
+// PARAMS: locals
+// SYSTEM: torus
+double phi = atan2(z.y,z.x); double genus = fmax(floor(fabs(ta)*3+1),1.0); double fiber = sin(genus*phi)*cos(tb*z.z); aux.DE *= (1.0 + tf*fiber*fiber*tc);

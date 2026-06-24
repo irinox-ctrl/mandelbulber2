@@ -1,0 +1,5 @@
+// TYPE_ID: 78
+// NAME: Type 78
+// PARAMS: locals
+// SYSTEM: orbit_trap
+double d=z.x*z.x+z.y*z.y+z.z*z.z; double v=exp(-oa*d)*sin(ob*sqrt(d)); aux.DE *= (1.0 + of*v);

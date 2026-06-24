@@ -1,0 +1,5 @@
+// TYPE_ID: 26
+// NAME: Type 26
+// PARAMS: locals
+// SYSTEM: pk
+double sat=pa*sin(pfreq*zx+pph)*cos(pfreq*zy)*sin(pfreq*zz2)/fmax(1e-10,r); aux.DE*=(1.0+pf*sat);

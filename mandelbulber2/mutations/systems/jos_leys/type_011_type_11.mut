@@ -1,0 +1,5 @@
+// TYPE_ID: 11
+// NAME: Type 11
+// PARAMS: locals
+// SYSTEM: jos_leys
+double hc=exp(-fabs(zy))*ja/fmax(1e-10,r); aux.DE*=(1.0+jf*hc);

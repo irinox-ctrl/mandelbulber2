@@ -1,0 +1,5 @@
+// TYPE_ID: 128
+// NAME: Type 128
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= (1.0 + af * aa * fabs(zz2)/(r+1e-21));

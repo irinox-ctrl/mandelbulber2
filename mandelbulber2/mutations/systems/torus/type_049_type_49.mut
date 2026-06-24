@@ -1,0 +1,5 @@
+// TYPE_ID: 49
+// NAME: Type 49
+// PARAMS: locals
+// SYSTEM: torus
+double phi = atan2(z.y,z.x); double wrapping = floor(fabs(ta)*4+2); double companion = sin(wrapping*phi)*tb; double r2d = sqrt(z.x*z.x+z.y*z.y); double d = fabs(r2d-tc-companion); aux.DE *= (1.0 + tf*exp(-td*d));

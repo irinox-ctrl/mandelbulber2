@@ -1,0 +1,5 @@
+// TYPE_ID: 55
+// NAME: Type 55
+// PARAMS: locals
+// SYSTEM: pk
+double axa=pa*exp(-pb*r)*cos(pfreq*r+pph); aux.DE*=(1.0+pf*axa);

@@ -1,0 +1,5 @@
+// TYPE_ID: 77
+// NAME: Type 77
+// PARAMS: locals
+// SYSTEM: as
+double throat_d = (z.x-ta)*(z.x-ta)+(z.y-tb)*(z.y-tb)+(z.z-tc)*(z.z-tc); double throat_r = fmax(fabs(td), 0.01); aux.DE *= (1.0 + sf*exp(-throat_d/(throat_r*throat_r)));

@@ -1,0 +1,5 @@
+// TYPE_ID: 84
+// NAME: Type 84
+// PARAMS: locals
+// SYSTEM: as
+double r = sqrt(z.x*z.x+z.y*z.y+z.z*z.z); double theta2 = atan2(z.y,z.x); double phi2 = acos(z.z/fmax(r,1e-21)); double Ylm = sin(ta*theta2)*cos(tb*phi2); aux.DE *= (1.0 + sf*tc*Ylm*Ylm);

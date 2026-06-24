@@ -1,0 +1,5 @@
+// TYPE_ID: 48
+// NAME: Type 48
+// PARAMS: locals
+// SYSTEM: abox
+{ double rr2=rr; double minR=aa; double fixR=ab; if(rr2<minR*minR){double m=fixR*fixR/(minR*minR);aux.DE*=m;} else if(rr2<fixR*fixR){double m=fixR*fixR/rr2;aux.DE*=m;} aux.DE*=(1.0+af*ac*sin(ad*r)); }

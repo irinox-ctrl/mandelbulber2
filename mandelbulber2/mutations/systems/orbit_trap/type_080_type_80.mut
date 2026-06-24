@@ -1,0 +1,5 @@
+// TYPE_ID: 80
+// NAME: Type 80
+// PARAMS: locals
+// SYSTEM: orbit_trap
+double d=sqrt(z.x*z.x+z.y*z.y+z.z*z.z); double cs=cos(oa*(double)i*M_PI/180.0); double sn=sin(oa*(double)i*M_PI/180.0); double rd=fabs((z.x*cs-z.y*sn)); aux.DE *= (1.0 + of*exp(-od*rd));

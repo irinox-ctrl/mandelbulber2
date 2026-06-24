@@ -1,0 +1,5 @@
+// TYPE_ID: 19
+// NAME: Type 19
+// PARAMS: locals
+// SYSTEM: jos_leys
+double hek=ja*sin(jfreq*r)*cos(jfreq*atan2(zy,zx)+jph); aux.DE*=(1.0+jf*hek/fmax(1e-10,r));

@@ -1,0 +1,5 @@
+// TYPE_ID: 54
+// NAME: Type 54
+// PARAMS: locals
+// SYSTEM: warp_dist
+{ double d=wf*wam*exp(-wfq*fabs(r-wa)); z*=(1.0+d); aux.DE*=(1.0+fabs(d)); }

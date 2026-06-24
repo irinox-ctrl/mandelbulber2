@@ -1,0 +1,5 @@
+// TYPE_ID: 11
+// NAME: Type 11
+// PARAMS: locals
+// SYSTEM: noise
+double gx = sin(z.x*nfq*127.1+z.y*311.7)*2.0-1.0; double gy = sin(z.y*nfq*269.5+z.z*183.3)*2.0-1.0; double gz = sin(z.z*nfq*419.2+z.x*371.9)*2.0-1.0; double v = (gx*z.x+gy*z.y+gz*z.z)*nam; aux.DE *= (1.0 + nf*sin(v));

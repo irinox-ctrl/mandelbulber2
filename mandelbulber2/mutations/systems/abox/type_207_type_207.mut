@@ -1,0 +1,5 @@
+// TYPE_ID: 207
+// NAME: Type 207
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= (1.0 + aa / fmax(2.0 * ab * r, 1e-21));

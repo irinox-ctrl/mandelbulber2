@@ -1,0 +1,5 @@
+// TYPE_ID: 290
+// NAME: Type 290
+// PARAMS: locals
+// SYSTEM: abox
+{ double wn2=floor(atan2(zy,zx)*aa/(2.0*M_PI)+0.5); aux.DE*=(1.0+ab*sin(ac*wn2)); }

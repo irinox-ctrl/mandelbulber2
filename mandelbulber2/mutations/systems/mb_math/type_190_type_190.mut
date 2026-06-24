@@ -1,0 +1,5 @@
+// TYPE_ID: 190
+// NAME: Type 190
+// PARAMS: locals
+// SYSTEM: mb_math
+double pw=ma; double rp=pow(fmax(1e-10,r),pw-1.0); double th=atan2(zy,zx)*pw; double ph=asin(zz2/fmax(1e-10,r))*pw; z.x=rp*cos(ph)*cos(th); z.y=rp*cos(ph)*sin(th); z.z=rp*sin(ph); aux.DE*=pw*rp;

@@ -1,0 +1,5 @@
+// TYPE_ID: 6
+// NAME: Type 6
+// PARAMS: locals
+// SYSTEM: pk
+double wp=pa*pb/(fmax(1e-10,rr)); aux.DE*=(1.0+pf*wp);

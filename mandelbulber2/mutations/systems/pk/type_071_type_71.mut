@@ -1,0 +1,5 @@
+// TYPE_ID: 71
+// NAME: Type 71
+// PARAMS: locals
+// SYSTEM: pk
+double mss=pa*exp(-pb*r)*(1.0-cos(pfreq*r)); aux.DE*=(1.0+pf*mss);

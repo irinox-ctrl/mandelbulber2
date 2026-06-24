@@ -1,0 +1,5 @@
+// TYPE_ID: 91
+// NAME: Type 91
+// PARAMS: locals
+// SYSTEM: jos_leys
+double qkah=ja*jb*(zx*zy*zz2)/(fmax(1e-10,rr*rr)); aux.DE*=(1.0+jf*tanh(qkah));

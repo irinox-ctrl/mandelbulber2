@@ -1,0 +1,5 @@
+// TYPE_ID: 31
+// NAME: Type 31
+// PARAMS: locals
+// SYSTEM: as
+double dist = sqrt(z.x*z.x+z.y*z.y+z.z*z.z); double lod = fmax(0.1, dist*ta); aux.DE *= lod;

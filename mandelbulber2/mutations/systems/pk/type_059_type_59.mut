@@ -1,0 +1,5 @@
+// TYPE_ID: 59
+// NAME: Type 59
+// PARAMS: locals
+// SYSTEM: pk
+double yt=pa*exp(-pb*r)*sin(pfreq*r+pph); aux.DE*=(1.0+pf*yt);

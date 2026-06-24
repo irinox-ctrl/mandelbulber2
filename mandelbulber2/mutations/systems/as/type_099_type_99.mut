@@ -1,0 +1,5 @@
+// TYPE_ID: 99
+// NAME: Type 99
+// PARAMS: locals
+// SYSTEM: as
+double grad_phase = fabs(cos(z.x*ta)-cos(z.y*ta)) + fabs(cos(z.y*tb)-cos(z.z*tb)); aux.DE *= (1.0 + sf*tc*grad_phase);

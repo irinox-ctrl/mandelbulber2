@@ -1,0 +1,5 @@
+// TYPE_ID: 59
+// NAME: Type 59
+// PARAMS: locals
+// SYSTEM: as
+double front = fabs(z.x - ta*i*0.01); double shock = (front < fabs(tb)) ? tc : 1.0; aux.DE *= shock;

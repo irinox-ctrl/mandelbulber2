@@ -1,0 +1,5 @@
+// TYPE_ID: 51
+// NAME: Type 51
+// PARAMS: locals
+// SYSTEM: jos_leys
+double lqg=ja*exp(fmin(jb*sin(jfreq*r+jph),20.0)); aux.DE*=(1.0+jf*lqg/fmax(1e-10,r));

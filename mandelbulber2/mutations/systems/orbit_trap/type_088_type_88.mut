@@ -1,0 +1,5 @@
+// TYPE_ID: 88
+// NAME: Type 88
+// PARAMS: locals
+// SYSTEM: orbit_trap
+double r=sqrt(z.x*z.x+z.y*z.y); double d=sqrt((r-oa)*(r-oa)+z.z*z.z); double knot=fabs(d-ob*fabs(sin(oc*atan2(z.z,r-oa)))); aux.DE *= (1.0 + of*exp(-od*knot));

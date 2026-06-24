@@ -1,0 +1,5 @@
+// TYPE_ID: 45
+// NAME: Type 45
+// PARAMS: locals
+// SYSTEM: orbit_trap
+double r=sqrt(z.x*z.x+z.y*z.y+z.z*z.z); double ph=atan2(z.y,z.x); double th=acos(z.z/fmax(r,1e-21)); double d=fabs(r-oa*(1.0+ob*sin(oc*ph)*cos(od*th))); aux.DE *= (1.0 + of*exp(-d));

@@ -1,0 +1,5 @@
+// TYPE_ID: 11
+// NAME: Type 11
+// PARAMS: locals
+// SYSTEM: sm
+double theta=atan2(z.y,z.x); double phi2=acos(z.z/fmax(sqrt(z.x*z.x+z.y*z.y+z.z*z.z),1e-21)); double m=fmax(ta,1.0); double sf_r=pow(fmax(pow(fabs(cos(m*theta/4.0)),tc)+pow(fabs(sin(m*theta/4.0)),tc),1e-21),-1.0/fmax(tb,0.1)); double r=sqrt(z.x*z.x+z.y*z.y+z.z*z.z); aux.DE *= (1.0 + sf*exp(-fabs(r-sf_r*td)*5.0));

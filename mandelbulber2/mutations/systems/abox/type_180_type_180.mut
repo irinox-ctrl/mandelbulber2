@@ -1,0 +1,5 @@
+// TYPE_ID: 180
+// NAME: Type 180
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= (1.0 + 0.1 * aa * fabs(sin(ab*r)));

@@ -1,0 +1,5 @@
+// TYPE_ID: 6
+// NAME: Type 6
+// PARAMS: locals
+// SYSTEM: torus
+double jx=z.x*z.x-z.y*z.y+ta; double jy=2.0*z.x*z.y+tb; double julia_mag=sqrt(jx*jx+jy*jy); aux.DE *= (1.0 + tf*0.1*julia_mag);

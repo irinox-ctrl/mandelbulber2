@@ -1,0 +1,5 @@
+// TYPE_ID: 336
+// NAME: Type 336
+// PARAMS: locals
+// SYSTEM: abox
+double E_field = aa*z.x + ab*z.y + ac*z.z; double rydberg = sin(ad*E_field*E_field); aux.DE *= (1.0 + af * rydberg*rydberg);

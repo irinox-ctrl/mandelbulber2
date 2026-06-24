@@ -1,0 +1,5 @@
+// TYPE_ID: 2
+// NAME: Type 2
+// PARAMS: locals
+// SYSTEM: jos_leys
+double phi=atan2(zy,zx); double sp=ja*exp(2.0*M_PI*(jb*phi+jc*log(fmax(1e-10,r)))); aux.DE*=(1.0+jf*sp);

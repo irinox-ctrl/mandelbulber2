@@ -1,0 +1,5 @@
+// TYPE_ID: 39
+// NAME: Type 39
+// PARAMS: locals
+// SYSTEM: abox
+{ double d=r-aa; aux.DE*=(1.0+af*ab*exp(-ac*d*d)); }

@@ -1,0 +1,5 @@
+// TYPE_ID: 1
+// NAME: Type 1
+// PARAMS: DE0
+// SYSTEM: torus
+double k = ta; double DE0 = tb; aux.DE = 1.0/(1.0 + exp(-k*(aux.DE - DE0)));

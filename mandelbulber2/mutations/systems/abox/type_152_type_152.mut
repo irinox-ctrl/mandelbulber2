@@ -1,0 +1,5 @@
+// TYPE_ID: 152
+// NAME: Type 152
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= fmax(0.01, 1.0 + af * aa * r * sin(ab*log(r+1e-21)+ac));

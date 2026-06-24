@@ -1,0 +1,5 @@
+// TYPE_ID: 36
+// NAME: Type 36
+// PARAMS: locals
+// SYSTEM: torus
+double n = fmax(fabs(ta), 0.1); aux.DE /= n;

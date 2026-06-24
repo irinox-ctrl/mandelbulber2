@@ -1,0 +1,5 @@
+// TYPE_ID: 262
+// NAME: Type 262
+// PARAMS: locals
+// SYSTEM: abox
+{ double a2=sin(aa*zx)*sin(aa*zx)+sin(ab*zy)*sin(ab*zy); aux.DE*=(1.0+ac*ad*a2); }

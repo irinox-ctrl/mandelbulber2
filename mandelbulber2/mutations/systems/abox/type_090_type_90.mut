@@ -1,0 +1,5 @@
+// TYPE_ID: 90
+// NAME: Type 90
+// PARAMS: locals
+// SYSTEM: abox
+{ double fld=aa*(fabs(zx)+fabs(zy)+fabs(zz2)); aux.DE*=(1.0+af*ab*sin(fld)); }

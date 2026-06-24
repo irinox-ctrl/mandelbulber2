@@ -1,0 +1,5 @@
+// TYPE_ID: 52
+// NAME: Type 52
+// PARAMS: locals
+// SYSTEM: mb_math
+double sc=ma+mb*sin(i*mc); z*=sc; aux.DE*=fabs(sc);

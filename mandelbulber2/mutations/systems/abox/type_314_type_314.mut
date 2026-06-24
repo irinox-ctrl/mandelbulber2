@@ -1,0 +1,5 @@
+// TYPE_ID: 314
+// NAME: Type 314
+// PARAMS: locals
+// SYSTEM: abox
+double S = 2.0*sqrt(2.0)*sin(aa*r)*cos(ab*r); double violation = fmax(fabs(S) - 2.0, 0.0); aux.DE *= (1.0 + af * violation);

@@ -1,0 +1,5 @@
+// TYPE_ID: 295
+// NAME: Type 295
+// PARAMS: locals
+// SYSTEM: abox
+{ double ev=sin(aa*r)*sin(aa*r)+cos(ab*r)*cos(ab*r); aux.DE*=(1.0+ac*ev*0.5); }

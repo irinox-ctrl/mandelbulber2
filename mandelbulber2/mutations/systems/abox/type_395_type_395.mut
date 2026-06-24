@@ -1,0 +1,5 @@
+// TYPE_ID: 395
+// NAME: Type 395
+// PARAMS: locals
+// SYSTEM: abox
+double J = fabs(aa)+0.01; double SiSj = sin(ab*z.x)*sin(ab*z.y); double SiSj2 = SiSj*SiSj; double aklt = J*(SiSj + SiSj2/3.0); aux.DE *= (1.0 + af * fabs(aklt));

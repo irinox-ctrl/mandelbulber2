@@ -1,0 +1,5 @@
+// TYPE_ID: 301
+// NAME: Type 301
+// PARAMS: locals
+// SYSTEM: abox
+double psi = sin(aa*r + ab*z.x); aux.DE *= (1.0 + af * psi*psi);

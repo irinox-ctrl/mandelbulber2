@@ -1,0 +1,5 @@
+// TYPE_ID: 209
+// NAME: Type 209
+// PARAMS: locals
+// SYSTEM: abox
+{ double corr=sin(aa*zx)*sin(aa*(-zx))+cos(ab*zy)*cos(ab*(-zy)); aux.DE*=(1.0+ac*fabs(corr)); }

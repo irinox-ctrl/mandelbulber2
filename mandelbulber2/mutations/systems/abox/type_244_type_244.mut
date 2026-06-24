@@ -1,0 +1,5 @@
+// TYPE_ID: 244
+// NAME: Type 244
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= (1.0 + aa * tanh(fabs(zz2 - ab) / fmax(ac, 0.01)));

@@ -1,0 +1,5 @@
+// TYPE_ID: 56
+// NAME: Type 56
+// PARAMS: locals
+// SYSTEM: mb_math
+double f0=1,f1=1; for(int n=0;n<fmin((double)i,20.0);n++){double t=f1;f1=f0+f1;f0=t;} double sc=ma/fmax(1.0,f1); z*=sc; aux.DE*=fabs(sc);

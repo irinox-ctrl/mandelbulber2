@@ -1,0 +1,5 @@
+// TYPE_ID: 124
+// NAME: Type 124
+// PARAMS: locals
+// SYSTEM: abox
+{ double v=aa*sin(ab*zx)*cos(ac*zx)+ad*sin(ae*zy)*cos(aff*zy); aux.DE*=(1.0+af*v*0.5); }

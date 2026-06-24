@@ -1,0 +1,5 @@
+// TYPE_ID: 77
+// NAME: Type 77
+// PARAMS: locals
+// SYSTEM: jos_leys
+double hf=ja*exp(-jb*r)*cos(jfreq*zz2+jph); aux.DE*=(1.0+jf*hf);

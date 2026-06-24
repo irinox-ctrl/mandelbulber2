@@ -1,0 +1,5 @@
+// TYPE_ID: 135
+// NAME: Type 135
+// PARAMS: locals
+// SYSTEM: abox
+{ double dl=fabs(zx-aa*zy-ab); aux.DE*=(1.0+af*ac*exp(-ad*dl*dl)); }

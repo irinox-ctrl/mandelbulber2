@@ -1,0 +1,5 @@
+// TYPE_ID: 54
+// NAME: Type 54
+// PARAMS: locals
+// SYSTEM: orbit_trap
+double gx=fabs(z.x-oa*round(z.x/fmax(oa,1e-21))); double gy=fabs(z.y-oa*round(z.y/fmax(oa,1e-21))); double gz=fabs(z.z-oa*round(z.z/fmax(oa,1e-21))); double d=fmin(gx,fmin(gy,gz)); aux.DE *= (1.0 + of*exp(-od*d));

@@ -1,0 +1,5 @@
+// TYPE_ID: 34
+// NAME: Type 34
+// PARAMS: locals
+// SYSTEM: torus
+double perturb = sin(z.x*ta*20.0)*cos(z.y*tb*20.0)*sin(z.z*tc*20.0); aux.DE *= (1.0 + tf*perturb*td);

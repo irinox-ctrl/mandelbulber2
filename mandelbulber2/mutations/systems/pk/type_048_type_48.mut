@@ -1,0 +1,5 @@
+// TYPE_ID: 48
+// NAME: Type 48
+// PARAMS: locals
+// SYSTEM: pk
+double gre=0.5*(1.0-pa*cos(pfreq*r+pph)/fmax(1e-10,r)); aux.DE*=(1.0+pf*gre);

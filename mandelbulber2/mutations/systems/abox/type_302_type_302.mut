@@ -1,0 +1,5 @@
+// TYPE_ID: 302
+// NAME: Type 302
+// PARAMS: locals
+// SYSTEM: abox
+double psi_f = cos(aa*r); double psi_i = sin(ab*r); double overlap = psi_f*psi_i + 1e-21; double wv = (psi_f*sin(ac*z.x)) / overlap; aux.DE *= (1.0 + af * fabs(wv));

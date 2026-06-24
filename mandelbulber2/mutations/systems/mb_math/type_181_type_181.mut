@@ -1,0 +1,5 @@
+// TYPE_ID: 181
+// NAME: Type 181
+// PARAMS: locals
+// SYSTEM: mb_math
+if(fabs(zx)>ma) z.x=copysign(ma*2.0,zx)-zx; if(fabs(zy)>ma) z.y=copysign(ma*2.0,zy)-zy; if(fabs(zz2)>ma) z.z=copysign(ma*2.0,zz2)-zz2; aux.color+=mb*fabs(z.x-zx); aux.DE*=fabs(mf);

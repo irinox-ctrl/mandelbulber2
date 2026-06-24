@@ -1,0 +1,5 @@
+// TYPE_ID: 55
+// NAME: Type 55
+// PARAMS: locals
+// SYSTEM: jos_leys
+double jon=ja*sin(M_PI*jb*r+jph)/fmax(1e-10,r); aux.DE*=(1.0+jf*jon);

@@ -1,0 +1,5 @@
+// TYPE_ID: 145
+// NAME: Type 145
+// PARAMS: locals
+// SYSTEM: mb_math
+double ns=sin(zx*ma+zy*mb+zz2*mc)*md; aux.color+=ns;

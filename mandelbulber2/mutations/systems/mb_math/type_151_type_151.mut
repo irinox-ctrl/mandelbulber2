@@ -1,0 +1,5 @@
+// TYPE_ID: 151
+// NAME: Type 151
+// PARAMS: locals
+// SYSTEM: mb_math
+double eps=ma*0.001; double dx=(sqrt((zx+eps)*(zx+eps)+zy*zy+zz2*zz2)-sqrt((zx-eps)*(zx-eps)+zy*zy+zz2*zz2))/(2.0*eps); aux.DE=fmax(1e-21,fabs(dx)*aux.DE);

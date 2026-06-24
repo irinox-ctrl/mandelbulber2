@@ -1,0 +1,5 @@
+// TYPE_ID: 54
+// NAME: Type 54
+// PARAMS: locals
+// SYSTEM: torus
+double phi = atan2(z.y,z.x); double r2d = sqrt(z.x*z.x+z.y*z.y); double fig8_r = ta*(2.0+cos(2.0*phi)); double fig8_z = ta*sin(4.0*phi)*0.5; double d = sqrt((r2d-fig8_r)*(r2d-fig8_r)+(z.z-fig8_z)*(z.z-fig8_z)); aux.DE *= (1.0 + tf*exp(-tb*d));

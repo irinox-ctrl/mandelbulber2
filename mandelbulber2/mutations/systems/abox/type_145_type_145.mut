@@ -1,0 +1,5 @@
+// TYPE_ID: 145
+// NAME: Type 145
+// PARAMS: locals
+// SYSTEM: abox
+{ double sp=zx*cos(aa*zy)+zy*cos(aa*zz2)+zz2*cos(aa*zx); aux.DE*=(1.0+af*ab*sin(ac*sp)); }

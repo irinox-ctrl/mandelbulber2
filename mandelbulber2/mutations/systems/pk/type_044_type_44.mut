@@ -1,0 +1,5 @@
+// TYPE_ID: 44
+// NAME: Type 44
+// PARAMS: locals
+// SYSTEM: pk
+double pei=pa*(1.0-exp(-pb*fabs(zx-zy)))/fmax(1e-10,r); aux.DE*=(1.0+pf*pei);

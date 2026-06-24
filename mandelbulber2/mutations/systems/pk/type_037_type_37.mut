@@ -1,0 +1,5 @@
+// TYPE_ID: 37
+// NAME: Type 37
+// PARAMS: locals
+// SYSTEM: pk
+double sep=pa*(sin(pb*zx)+sin(pc*zy)+sin(pd*zz2))/fmax(1e-10,r); aux.DE*=(1.0+pf*sep);

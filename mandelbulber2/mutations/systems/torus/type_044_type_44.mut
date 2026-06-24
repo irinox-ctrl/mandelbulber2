@@ -1,0 +1,5 @@
+// TYPE_ID: 44
+// NAME: Type 44
+// PARAMS: locals
+// SYSTEM: torus
+double r2 = z.x*z.x+z.y*z.y+z.z*z.z+1e-21; double w = sin(ta*r2); double hopf = cos(tb*atan2(z.y,z.x))*sin(tc*acos(z.z/sqrt(r2))); aux.DE *= (1.0 + tf*w*hopf);

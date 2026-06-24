@@ -1,0 +1,5 @@
+// TYPE_ID: 343
+// NAME: Type 343
+// PARAMS: locals
+// SYSTEM: abox
+double omega = aa*r; double n_th = 1.0/(exp(fabs(ab)*omega+1e-21)-1.0+1e-21); double psd = omega*(n_th+0.5); aux.DE *= (1.0 + af * fmin(fabs(psd), 10.0));

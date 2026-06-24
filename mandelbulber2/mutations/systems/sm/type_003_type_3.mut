@@ -1,0 +1,5 @@
+// TYPE_ID: 3
+// NAME: Type 3
+// PARAMS: locals
+// SYSTEM: sm
+double angle = (double)i * 2.39996322972865332 * ta; double cosA=cos(angle),sinA=sin(angle); double nx=z.x*cosA-z.y*sinA; z.y=z.x*sinA+z.y*cosA; z.x=nx;

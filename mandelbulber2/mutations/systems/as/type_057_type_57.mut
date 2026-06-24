@@ -1,0 +1,5 @@
+// TYPE_ID: 57
+// NAME: Type 57
+// PARAMS: locals
+// SYSTEM: as
+double vel_dot = sin(z.x*ta)*cos(z.y*tb); aux.DE *= (1.0 + sf*vel_dot*tc);

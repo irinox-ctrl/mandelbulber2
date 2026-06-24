@@ -1,0 +1,5 @@
+// TYPE_ID: 179
+// NAME: Type 179
+// PARAMS: locals
+// SYSTEM: abox
+{ if(fabs(zx)<aa && fabs(zy)<aa) aux.DE*=ab; }

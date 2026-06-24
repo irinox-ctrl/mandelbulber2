@@ -1,0 +1,5 @@
+// TYPE_ID: 276
+// NAME: Type 276
+// PARAMS: locals
+// SYSTEM: abox
+{ double cf=1.0/(1.0+aa*rr); aux.DE*=(1.0+ab*cf); }

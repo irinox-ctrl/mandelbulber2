@@ -1,0 +1,5 @@
+// TYPE_ID: 28
+// NAME: Type 28
+// PARAMS: locals
+// SYSTEM: warp_dist
+{ double v=0; for(int o=0;o<6;o++){double f=wfq*pow(2.0,o); v+=sin(f*r+wph)/pow(2.0,o);} double d=wf*wam*v; z.x+=d*zx/r; z.y+=d*zy/r; z.z+=d*zz2/r; aux.DE*=(1.0+fabs(wf*wam*wfq*6.0)); }

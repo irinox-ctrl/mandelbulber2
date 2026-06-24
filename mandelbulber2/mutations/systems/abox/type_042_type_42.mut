@@ -1,0 +1,5 @@
+// TYPE_ID: 42
+// NAME: Type 42
+// PARAMS: locals
+// SYSTEM: abox
+{ double rxy=sqrt(zx*zx+zy*zy+1e-21); aux.DE*=(1.0+af*aa*sin(ab*rxy+ac*zz2)); }

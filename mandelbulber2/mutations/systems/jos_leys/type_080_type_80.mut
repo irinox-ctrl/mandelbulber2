@@ -1,0 +1,5 @@
+// TYPE_ID: 80
+// NAME: Type 80
+// PARAMS: locals
+// SYSTEM: jos_leys
+double sft=ja*cos(jfreq*r)*sin(jfreq*atan2(zy,zx)+jph)/fmax(1e-10,r); aux.DE*=(1.0+jf*sft);

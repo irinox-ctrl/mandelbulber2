@@ -1,0 +1,5 @@
+// TYPE_ID: 55
+// NAME: Type 55
+// PARAMS: locals
+// SYSTEM: torus
+double t2 = atan2(z.y,z.x)*ta; double r2d = sqrt(z.x*z.x+z.y*z.y); double lissajous_r = tb*(2.0+sin(3.0*t2)*cos(2.0*t2)); double d = fabs(r2d-lissajous_r)+fabs(z.z)*tc; aux.DE *= (1.0 + tf*exp(-d*td));

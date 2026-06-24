@@ -1,0 +1,5 @@
+// TYPE_ID: 279
+// NAME: Type 279
+// PARAMS: locals
+// SYSTEM: abox
+{ double ee=sin(aa*zx)*sin(aa*(-zx+ab)); aux.DE*=(1.0+ac*fabs(ee)); }

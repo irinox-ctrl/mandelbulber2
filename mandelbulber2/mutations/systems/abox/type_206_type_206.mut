@@ -1,0 +1,5 @@
+// TYPE_ID: 206
+// NAME: Type 206
+// PARAMS: locals
+// SYSTEM: abox
+{ double psi=sin(aa*zx)*sin(ab*zy)*sin(ac*zz2); aux.DE*=fmax(0.01,psi*psi); }

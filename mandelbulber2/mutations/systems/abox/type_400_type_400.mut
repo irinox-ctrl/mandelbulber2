@@ -1,0 +1,5 @@
+// TYPE_ID: 400
+// NAME: Type 400
+// PARAMS: locals
+// SYSTEM: abox
+double rule = sin(aa*z.x)*sin(ab*z.y)*cos(ac*z.z); double evolution = cos(ad*(double)i*0.1); double qca = rule*evolution; aux.DE *= (1.0 + af * qca*qca);

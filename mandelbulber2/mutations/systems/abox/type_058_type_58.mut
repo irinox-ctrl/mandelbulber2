@@ -1,0 +1,5 @@
+// TYPE_ID: 58
+// NAME: Type 58
+// PARAMS: locals
+// SYSTEM: abox
+{ double golden=1.6180339887; aux.DE*=fabs(aa+ab*pow(golden,ac*i-ad)); }

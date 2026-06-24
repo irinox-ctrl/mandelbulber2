@@ -1,0 +1,5 @@
+// TYPE_ID: 90
+// NAME: Type 90
+// PARAMS: locals
+// SYSTEM: orbit_trap
+double r=sqrt(z.x*z.x+z.y*z.y+z.z*z.z); double th=atan2(z.y,z.x); double d=fabs(r-oa*(sin(ob*th)*sin(ob*th)+oc)); aux.DE *= (1.0 + of*exp(-od*d));

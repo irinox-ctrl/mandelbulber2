@@ -1,0 +1,5 @@
+// TYPE_ID: 390
+// NAME: Type 390
+// PARAMS: locals
+// SYSTEM: abox
+double xi_loc = fmax(fabs(aa),0.01); double disorder = fabs(ab); double loc = exp(-r/xi_loc)*disorder; aux.DE *= (1.0 + af * loc);

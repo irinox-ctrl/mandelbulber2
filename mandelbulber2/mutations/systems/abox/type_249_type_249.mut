@@ -1,0 +1,5 @@
+// TYPE_ID: 249
+// NAME: Type 249
+// PARAMS: locals
+// SYSTEM: abox
+{ double rc=aa*exp(-ab/(fmax(ac*r,0.01))); aux.DE*=(1.0+rc); }

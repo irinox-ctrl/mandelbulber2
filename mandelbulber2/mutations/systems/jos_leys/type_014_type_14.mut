@@ -1,0 +1,5 @@
+// TYPE_ID: 14
+// NAME: Type 14
+// PARAMS: locals
+// SYSTEM: jos_leys
+double jt=ja*sin(M_PI*zx/fmax(0.01,jb))*sin(M_PI*zy/fmax(0.01,jc)); aux.DE*=(1.0+jf*jt/fmax(1e-10,rr));

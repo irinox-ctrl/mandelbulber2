@@ -1,0 +1,5 @@
+// TYPE_ID: 192
+// NAME: Type 192
+// PARAMS: locals
+// SYSTEM: mb_math
+double sc=mf; z*=sc; double lt=ma; if(fabs(z.x)>lt) z.x=copysign(lt*2.0,z.x)-z.x; if(fabs(z.y)>lt) z.y=copysign(lt*2.0,z.y)-z.y; if(fabs(z.z)>lt) z.z=copysign(lt*2.0,z.z)-z.z; double rr2=z.x*z.x+z.y*z.y+z.z*z.z; if(rr2<mb) z*=mc/rr2; aux.DE*=fabs(sc);

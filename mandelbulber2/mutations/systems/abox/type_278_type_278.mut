@@ -1,0 +1,5 @@
+// TYPE_ID: 278
+// NAME: Type 278
+// PARAMS: locals
+// SYSTEM: abox
+{ double fw=exp(-aa*fabs(r-ab)*fabs(r-ab)*1000.0); aux.DE*=(1.0+ac*fw); }

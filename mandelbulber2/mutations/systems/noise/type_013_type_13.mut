@@ -1,0 +1,5 @@
+// TYPE_ID: 13
+// NAME: Type 13
+// PARAMS: locals
+// SYSTEM: noise
+double px = z.x*nfq; double py = z.y*nfq; double pz = z.z*nfq; double g = sin(px*127.1+py*311.7+pz*74.7)*2.0-1.0; double t = g*g*(3.0-2.0*g); aux.DE *= (1.0 + nf*t*nam);

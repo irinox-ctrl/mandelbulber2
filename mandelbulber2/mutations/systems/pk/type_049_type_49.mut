@@ -1,0 +1,5 @@
+// TYPE_ID: 49
+// NAME: Type 49
+// PARAMS: locals
+// SYSTEM: pk
+double rg=pa*pow(fmax(1e-10,r),-pb)*cos(pfreq*log(fmax(1e-10,r))+pph); aux.DE*=(1.0+pf*rg);

@@ -1,0 +1,5 @@
+// TYPE_ID: 69
+// NAME: Type 69
+// PARAMS: locals
+// SYSTEM: pk
+double sst=pa*cos(pfreq*r+pph)*exp(-pb*r); aux.DE*=(1.0+pf*sst);

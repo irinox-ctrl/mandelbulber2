@@ -1,0 +1,5 @@
+// TYPE_ID: 47
+// NAME: Type 47
+// PARAMS: locals
+// SYSTEM: mb_math
+double th=ma*M_PI/180.0; double cs=cos(th),sn=sin(th); double rx=zx*cs-zy*sn; double ry=zx*sn+zy*cs; double rrc=rx*rx+ry*ry+zz2*zz2; if(rrc<1e-21) rrc=1e-21; double fR2=mb; if(rrc<fR2){ double m2=fR2/rrc; z*=m2; aux.DE*=m2; }

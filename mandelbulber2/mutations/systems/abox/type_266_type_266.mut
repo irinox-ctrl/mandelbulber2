@@ -1,0 +1,5 @@
+// TYPE_ID: 266
+// NAME: Type 266
+// PARAMS: locals
+// SYSTEM: abox
+{ double sp=sin(aa*zx)*cos(ab*zy); aux.DE*=(1.0+ac*fabs(sp)); }

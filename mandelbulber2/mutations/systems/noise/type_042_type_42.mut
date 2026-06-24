@@ -1,0 +1,5 @@
+// TYPE_ID: 42
+// NAME: Type 42
+// PARAMS: locals
+// SYSTEM: noise
+double md=1e10; double r=sqrt(z.x*z.x+z.y*z.y+z.z*z.z); double th=atan2(z.y,z.x); for(int k=0;k<8;k++){ double a2=k*M_PI*2.0/8.0; double d=fabs(th-a2); if(d>M_PI)d=2.0*M_PI-d; if(d<md)md=d; } aux.DE *= (1.0 + nf*md*r*nam*nfq);

@@ -1,0 +1,5 @@
+// TYPE_ID: 183
+// NAME: Type 183
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= (1.0 + aa * ab * r);

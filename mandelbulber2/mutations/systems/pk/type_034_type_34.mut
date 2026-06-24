@@ -1,0 +1,5 @@
+// TYPE_ID: 34
+// NAME: Type 34
+// PARAMS: locals
+// SYSTEM: pk
+double hs=pa*pb*(zx*zy+zy*zz2+zz2*zx)/(fmax(1e-10,rr*r)); aux.DE*=(1.0+pf*hs);

@@ -1,0 +1,5 @@
+// TYPE_ID: 351
+// NAME: Type 351
+// PARAMS: locals
+// SYSTEM: abox
+double T_hot = fmax(fabs(aa)*r, 0.01); double T_cold = fmax(fabs(ab)*0.5, 0.001); double eff = 1.0 - T_cold/T_hot; double qcorr = sin(ac*r)*sin(ac*r); aux.DE *= (1.0 + af * fabs(eff) * qcorr);

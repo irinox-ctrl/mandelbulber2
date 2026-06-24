@@ -1,0 +1,5 @@
+// TYPE_ID: 274
+// NAME: Type 274
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= exp(-aa * fabs(zz2 - ab));

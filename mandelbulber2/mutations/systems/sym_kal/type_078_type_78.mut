@@ -1,0 +1,5 @@
+// TYPE_ID: 78
+// NAME: Type 78
+// PARAMS: locals
+// SYSTEM: sym_kal
+{ z.x=fabs(z.x); z.y=fabs(z.y); z.z=fabs(z.z); double m=fmax(fmax(z.x,z.y),z.z); if(m==z.y){double t=z.x;z.x=z.y;z.y=t;} if(m==z.z){double t=z.x;z.x=z.z;z.z=t;} }

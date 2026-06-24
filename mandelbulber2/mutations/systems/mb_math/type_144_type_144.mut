@@ -1,0 +1,5 @@
+// TYPE_ID: 144
+// NAME: Type 144
+// PARAMS: locals
+// SYSTEM: mb_math
+aux.color=0.9*aux.color+0.1*ma*r;

@@ -1,0 +1,5 @@
+// TYPE_ID: 296
+// NAME: Type 296
+// PARAMS: locals
+// SYSTEM: abox
+{ double sgn=sin(aa*r)>0?1.0:-1.0; double mc=exp(-ab*rr)*sgn; aux.DE*=(1.0+ac*fabs(mc)); }

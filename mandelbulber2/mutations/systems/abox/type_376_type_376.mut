@@ -1,0 +1,5 @@
+// TYPE_ID: 376
+// NAME: Type 376
+// PARAMS: locals
+// SYSTEM: abox
+double bulk_gap = fabs(aa); double surface = sin(ab*z.x)*sin(ab*z.y)*exp(-ac*fabs(z.z)); double k_F = ad*r; aux.DE *= (1.0 + af * bulk_gap*fabs(surface)*fmin(k_F,5.0));

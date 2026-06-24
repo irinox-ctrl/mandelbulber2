@@ -1,0 +1,5 @@
+// TYPE_ID: 168
+// NAME: Type 168
+// PARAMS: locals
+// SYSTEM: mb_math
+aux.DE*=(1.0+0.1*sin(i*ma));

@@ -1,0 +1,5 @@
+// TYPE_ID: 202
+// NAME: Type 202
+// PARAMS: locals
+// SYSTEM: abox
+{ double grad=(zx*aa+zy*ab+zz2*ac)/(rr+1e-21); aux.DE/=fmax(0.01,1.0+ad*fabs(grad)); }

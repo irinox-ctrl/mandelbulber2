@@ -1,0 +1,5 @@
+// TYPE_ID: 21
+// NAME: Type 21
+// PARAMS: locals
+// SYSTEM: orbit_trap
+double d1=fabs(z.x); double d2=fabs(z.y); double d3=fabs(z.z); aux.DE *= (1.0 + of*exp(-od*fmin(d1,d2))*exp(-od*d3));

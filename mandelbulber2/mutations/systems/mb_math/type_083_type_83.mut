@@ -1,0 +1,5 @@
+// TYPE_ID: 83
+// NAME: Type 83
+// PARAMS: locals
+// SYSTEM: mb_math
+double N=fmax(2.0,ma); double th=2.0*M_PI/N; double cs=cos(th),sn=sin(th); double nx=zx*cs-zy*sn; double ny=zx*sn+zy*cs; z.x=nx; z.y=ny; aux.DE*=fabs(mf);

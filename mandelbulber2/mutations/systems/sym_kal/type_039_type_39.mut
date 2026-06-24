@@ -1,0 +1,5 @@
+// TYPE_ID: 39
+// NAME: Type 39
+// PARAMS: locals
+// SYSTEM: sym_kal
+{ for(int k=0; k<int(fmax(1,sa)); k++) { double cs = cos(sang+k*sb), sn = sin(sang+k*sb); double d = z.x*cs + z.y*sn; if(d < 0) { z.x -= 2.0*d*cs; z.y -= 2.0*d*sn; } z.x = fabs(z.x) - sc; z.y = fabs(z.y) - sd; } }

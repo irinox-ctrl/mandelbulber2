@@ -1,0 +1,5 @@
+// TYPE_ID: 30
+// NAME: Type 30
+// PARAMS: locals
+// SYSTEM: warp_dist
+{ double ph2=atan2(zy,zx); double th=acos(zz2/r); double v=0; for(int o=0;o<4;o++){double f=wfq*pow(2.0,o); v+=sin(f*th+wph)*cos(f*ph2)/pow(2.0,o);} double d=wf*wam*v; z.x+=d*sin(th)*cos(ph2); z.y+=d*sin(th)*sin(ph2); z.z+=d*cos(th); aux.DE*=(1.0+fabs(wf*wam*wfq*4.0)); }

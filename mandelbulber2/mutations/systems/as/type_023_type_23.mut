@@ -1,0 +1,5 @@
+// TYPE_ID: 23
+// NAME: Type 23
+// PARAMS: locals
+// SYSTEM: as
+double light_accum = sin(z.x*ta)*sin(z.y*ta)*0.5+0.5; aux.DE /= (1.0 + sf*light_accum*tb);

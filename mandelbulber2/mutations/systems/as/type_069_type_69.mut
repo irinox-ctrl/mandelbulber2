@@ -1,0 +1,5 @@
+// TYPE_ID: 69
+// NAME: Type 69
+// PARAMS: locals
+// SYSTEM: as
+double winding = sin(z.x*ta)*cos(z.y*tb) + cos(z.x*ta)*sin(z.y*tb); aux.DE *= (1.0 + sf*fabs(winding)*tc);

@@ -1,0 +1,5 @@
+// TYPE_ID: 115
+// NAME: Type 115
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= (1.0 + af * aa * cos(ab*r*r/(r+1e-21)+ac*sin(ad*r)));

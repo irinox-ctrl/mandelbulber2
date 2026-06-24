@@ -1,0 +1,5 @@
+// TYPE_ID: 58
+// NAME: Type 58
+// PARAMS: locals
+// SYSTEM: orbit_trap
+double gx=oa>0.001?fabs(sin(z.x*M_PI/oa)):fabs(z.x); double gy=ob>0.001?fabs(sin(z.y*M_PI/ob)):fabs(z.y); double d=gx*gy; aux.DE *= (1.0 + of*exp(-od*d));

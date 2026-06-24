@@ -1,0 +1,5 @@
+// TYPE_ID: 392
+// NAME: Type 392
+// PARAMS: locals
+// SYSTEM: abox
+double alpha = aa; double u = ab; double k_F = ac; double gap = 2.0*fabs(alpha*u)*fabs(cos(2.0*k_F*z.x)); aux.DE *= (1.0 + af * fmin(gap,10.0));

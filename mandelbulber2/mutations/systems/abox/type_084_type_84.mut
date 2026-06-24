@@ -1,0 +1,5 @@
+// TYPE_ID: 84
+// NAME: Type 84
+// PARAMS: locals
+// SYSTEM: abox
+{ double cs=cos(aa*M_PI/180.0),sn=sin(aa*M_PI/180.0); double rxy=sqrt(zx*zx+zy*zy+1e-21); double nph=atan2(zy,zx)+ab*sin(ac*rxy); aux.DE*=(1.0+af*ad*sin(ae*nph)); }

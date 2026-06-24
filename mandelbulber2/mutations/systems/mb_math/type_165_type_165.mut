@@ -1,0 +1,5 @@
+// TYPE_ID: 165
+// NAME: Type 165
+// PARAMS: locals
+// SYSTEM: mb_math
+double b1=ma,d1=mb,b2=mc,d2=md; aux.DE=(aux.DE<b1)?d1:((aux.DE<b2)?d2:aux.DE);

@@ -1,0 +1,5 @@
+// TYPE_ID: 70
+// NAME: Type 70
+// PARAMS: locals
+// SYSTEM: pk
+double oms=pa*sin(pfreq*zx)*sin(pfreq*zy)*pb/fmax(1e-10,rr); aux.DE*=(1.0+pf*oms);

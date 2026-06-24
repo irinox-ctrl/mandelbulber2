@@ -1,0 +1,5 @@
+// TYPE_ID: 158
+// NAME: Type 158
+// PARAMS: locals
+// SYSTEM: abox
+{ double herm=(4.0*(zz2/r)*(zz2/r)-2.0)*exp(-(zz2/r)*(zz2/r)*0.5); aux.DE*=(1.0+af*aa*ab*herm); }

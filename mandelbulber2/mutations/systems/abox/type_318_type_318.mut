@@ -1,0 +1,5 @@
+// TYPE_ID: 318
+// NAME: Type 318
+// PARAMS: locals
+// SYSTEM: abox
+double dpsi = aa*cos(aa*r + ab*z.x); double fisher = 4.0*dpsi*dpsi; aux.DE *= (1.0 + af * fisher / (1.0 + fisher));

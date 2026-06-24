@@ -1,0 +1,5 @@
+// TYPE_ID: 361
+// NAME: Type 361
+// PARAMS: locals
+// SYSTEM: abox
+double k = aa; double Gamma = fabs(ab)+0.01; double delta = fabs(ac)+0.01; double cooling = Gamma/(2.0*(1.0 + 4.0*delta*delta/(Gamma*Gamma))); aux.DE *= (1.0 + af * cooling * sin(k*r)*sin(k*r));

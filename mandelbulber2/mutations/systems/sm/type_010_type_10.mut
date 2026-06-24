@@ -1,0 +1,5 @@
+// TYPE_ID: 10
+// NAME: Type 10
+// PARAMS: locals
+// SYSTEM: sm
+double px=z.x,py=z.y,pz=z.z; double seg_d=fabs(pz)-fabs(ta); double cap_d=sqrt(px*px+py*py+fmax(seg_d,0.0)*fmax(seg_d,0.0))-fabs(tb); aux.DE *= (1.0 + sf*exp(-cap_d*cap_d*tc));

@@ -1,0 +1,5 @@
+// TYPE_ID: 44
+// NAME: Type 44
+// PARAMS: locals
+// SYSTEM: mb_math
+double fR2=mb; if(rr<fR2){ double qn=rr; if(qn<1e-21) qn=1e-21; double m2=fR2/qn; z*=m2; aux.DE*=m2; }

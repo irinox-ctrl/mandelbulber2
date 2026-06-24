@@ -1,0 +1,5 @@
+// TYPE_ID: 86
+// NAME: Type 86
+// PARAMS: locals
+// SYSTEM: as
+double decay_t = exp(-fabs(ta)*(double)i*0.01); aux.DE *= (1.0 + sf*tb*decay_t*tc);

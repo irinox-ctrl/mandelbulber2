@@ -1,0 +1,5 @@
+// TYPE_ID: 29
+// NAME: Type 29
+// PARAMS: locals
+// SYSTEM: sym_kal
+{ z.x = fabs(z.x); if(z.x - z.y < 0) { double t = z.x; z.x = z.y; z.y = t; } z.y = fabs(z.y); double cs = cos(sang), sn = sin(sang); double nx = z.x*cs - z.z*sn; z.z = z.x*sn + z.z*cs; z.x = nx; }

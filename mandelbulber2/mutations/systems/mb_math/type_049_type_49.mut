@@ -1,0 +1,5 @@
+// TYPE_ID: 49
+// NAME: Type 49
+// PARAMS: locals
+// SYSTEM: mb_math
+double mR2=ma,fR2=mb; double cf=(rr<mR2)?mc:((rr<fR2)?md:0.0); aux.color+=cf;

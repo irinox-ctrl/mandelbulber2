@@ -1,0 +1,5 @@
+// TYPE_ID: 319
+// NAME: Type 319
+// PARAMS: locals
+// SYSTEM: abox
+double F_Q = 4.0*(aa*cos(aa*r))*(aa*cos(aa*r)); double bound = 1.0/sqrt(fmax(ab*F_Q, 1e-21)); aux.DE *= (1.0 + af * bound);

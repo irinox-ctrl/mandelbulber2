@@ -1,0 +1,5 @@
+// TYPE_ID: 280
+// NAME: Type 280
+// PARAMS: locals
+// SYSTEM: abox
+{ double vol=r*r*r; aux.DE*=(1.0+aa*vol/(vol+ab+1e-21)); }

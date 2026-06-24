@@ -1,0 +1,5 @@
+// TYPE_ID: 38
+// NAME: Type 38
+// PARAMS: locals
+// SYSTEM: sym_kal
+{ for(int k=0; k<int(fmax(1,sa)); k++) { z.x = fabs(z.x); z.y = fabs(z.y); z.z = fabs(z.z); z.x -= sb; z.y -= sc; z.z -= sd; if(z.y > z.x) { double t=z.x; z.x=z.y; z.y=t; } if(z.z > z.x) { double t=z.x; z.x=z.z; z.z=t; } if(z.z > z.y) { double t=z.y; z.y=z.z; z.z=t; } z *= sf; aux.DE *= fabs(sf); } }

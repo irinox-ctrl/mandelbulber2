@@ -1,0 +1,5 @@
+// TYPE_ID: 281
+// NAME: Type 281
+// PARAMS: locals
+// SYSTEM: abox
+{ double ly=exp(aa*double(i)*0.01); aux.DE*=(1.0+ab*fmin(ly,ac)); }

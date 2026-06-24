@@ -1,0 +1,5 @@
+// TYPE_ID: 18
+// NAME: Type 18
+// PARAMS: locals
+// SYSTEM: jos_leys
+double eis=0.0; for(int m=-3;m<=3;m++) for(int n=-3;n<=3;n++){if(m==0&&n==0)continue; double dn=m*ja+n*jb; eis+=1.0/fmax(1e-10,pow(fabs(dn*dn+rr),jc));} aux.DE*=(1.0+jf*fabs(eis));

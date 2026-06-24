@@ -1,0 +1,5 @@
+// TYPE_ID: 49
+// NAME: Type 49
+// PARAMS: locals
+// SYSTEM: as
+double decay = exp(-sf*fabs(ta)*(double)i*0.01); aux.DE *= decay;

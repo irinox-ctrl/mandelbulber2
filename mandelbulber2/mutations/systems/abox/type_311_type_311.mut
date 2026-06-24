@@ -1,0 +1,5 @@
+// TYPE_ID: 311
+// NAME: Type 311
+// PARAMS: locals
+// SYSTEM: abox
+double epr = sin(aa*z.x)*cos(ab*z.y) - cos(aa*z.x)*sin(ab*z.y); aux.DE *= (1.0 + af * fabs(epr));

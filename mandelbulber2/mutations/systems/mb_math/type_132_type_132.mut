@@ -1,0 +1,5 @@
+// TYPE_ID: 132
+// NAME: Type 132
+// PARAMS: locals
+// SYSTEM: mb_math
+double dd=fmin(fabs(zx),fmin(fabs(zy),fabs(zz2))); aux.color+=fmax(0.0,1.0-dd*ma)*mb;

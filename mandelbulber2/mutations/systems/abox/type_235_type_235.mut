@@ -1,0 +1,5 @@
+// TYPE_ID: 235
+// NAME: Type 235
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= (1.0 + aa / fmax(r, 1e-21));

@@ -1,0 +1,5 @@
+// TYPE_ID: 51
+// NAME: Type 51
+// PARAMS: locals
+// SYSTEM: torus
+double phi = atan2(z.y,z.x); double r2d = sqrt(z.x*z.x+z.y*z.y); double p=fmax(floor(fabs(ta)*3+2),2.0); double q=fmax(floor(fabs(tb)*3+3),3.0); double knot_r = tc + td*cos(q*phi); double knot_z2 = td*sin(q*phi); double d = sqrt((r2d-knot_r)*(r2d-knot_r)+(z.z-knot_z2)*(z.z-knot_z2)); aux.DE *= (1.0 + tf*exp(-d*5.0));

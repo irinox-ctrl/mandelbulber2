@@ -1,0 +1,5 @@
+// TYPE_ID: 163
+// NAME: Type 163
+// PARAMS: locals
+// SYSTEM: mb_math
+double de0=ma,sg=mb; aux.DE=exp(-(aux.DE-de0)*(aux.DE-de0)/(sg*sg+1e-21));

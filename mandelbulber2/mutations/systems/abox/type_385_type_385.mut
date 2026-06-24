@@ -1,0 +1,5 @@
+// TYPE_ID: 385
+// NAME: Type 385
+// PARAMS: locals
+// SYSTEM: abox
+double J = aa; double q = fmax(floor(fabs(ab)*5+2), 2.0); double angle = 2.0*M_PI/q; double sigma_diff = sin(ac*z.x) - sin(ac*z.y); aux.DE *= (1.0 + af * J*cos(angle*sigma_diff));

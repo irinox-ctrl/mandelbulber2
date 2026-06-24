@@ -1,0 +1,5 @@
+// TYPE_ID: 70
+// NAME: Type 70
+// PARAMS: locals
+// SYSTEM: mb_math
+double off=ma+0.1*sin(i*mb); z.x+=off; z.y+=off*0.5; z.z+=off*0.25; aux.DE*=fabs(mf);

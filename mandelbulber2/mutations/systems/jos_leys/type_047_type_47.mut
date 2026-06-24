@@ -1,0 +1,5 @@
+// TYPE_ID: 47
+// NAME: Type 47
+// PARAMS: locals
+// SYSTEM: jos_leys
+double ip=ja*tanh(jb*(sin(jfreq*zx)+sin(jfreq*zy)+sin(jfreq*zz2))); aux.DE*=(1.0+jf*ip);

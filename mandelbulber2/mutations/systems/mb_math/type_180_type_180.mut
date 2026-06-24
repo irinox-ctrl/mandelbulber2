@@ -1,0 +1,5 @@
+// TYPE_ID: 180
+// NAME: Type 180
+// PARAMS: locals
+// SYSTEM: mb_math
+z.x+=ma*sin(mb*zy); z.y+=mc*sin(md*zz2); z.z+=me*sin(mff*zx); aux.DE*=fabs(mf)*(1.0+fabs(ma*mb)+fabs(mc*md)+fabs(me*mff));

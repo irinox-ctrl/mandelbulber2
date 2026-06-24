@@ -1,0 +1,5 @@
+// TYPE_ID: 208
+// NAME: Type 208
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= (1.0 + aa * (zx*ab + zy*ac + zz2*ad)/(r+1e-21));

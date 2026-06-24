@@ -1,0 +1,5 @@
+// TYPE_ID: 70
+// NAME: Type 70
+// PARAMS: locals
+// SYSTEM: abox
+{ double rat=aa/fmax(ab,1e-21); double s=pow(fabs(rat),ac); aux.DE*=s; }

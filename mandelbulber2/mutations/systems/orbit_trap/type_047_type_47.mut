@@ -1,0 +1,5 @@
+// TYPE_ID: 47
+// NAME: Type 47
+// PARAMS: locals
+// SYSTEM: orbit_trap
+double d=fabs(z.x*z.x/fmax(oa*oa,1e-21)+z.y*z.y/fmax(ob*ob,1e-21)-z.z*z.z/fmax(oc*oc,1e-21)-1.0); aux.DE *= (1.0 + of*exp(-od*d));

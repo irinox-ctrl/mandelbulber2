@@ -1,0 +1,5 @@
+// TYPE_ID: 7
+// NAME: Type 7
+// PARAMS: locals
+// SYSTEM: mb_math
+if(fabs(zx)+fabs(zy)>ma){ double sx=(zx>0)?1.0:-1.0,sy=(zy>0)?1.0:-1.0; double nx=ma*0.5*sx,ny=ma*0.5*sy; z.x=2.0*nx-zx; z.y=2.0*ny-zy; } aux.DE*=fabs(mf)*1.41421356;

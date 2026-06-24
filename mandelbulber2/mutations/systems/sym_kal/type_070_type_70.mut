@@ -1,0 +1,5 @@
+// TYPE_ID: 70
+// NAME: Type 70
+// PARAMS: locals
+// SYSTEM: sym_kal
+{ double p=fmax(sa,0.01); z.x=z.x-p*floor(z.x/p+0.5); z.y=z.y-p*floor(z.y/p+0.5); double cs=cos(sang),sn=sin(sang); if(z.x+z.y>0) { double nx=z.x*cs-z.y*sn; z.y=z.x*sn+z.y*cs; z.x=nx; } }

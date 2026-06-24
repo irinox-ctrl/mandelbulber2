@@ -1,0 +1,5 @@
+// TYPE_ID: 76
+// NAME: Type 76
+// PARAMS: locals
+// SYSTEM: abox
+{ double a=aa*M_PI/180.0; aux.DE*=(1.0+af*fabs(sin(a))); }

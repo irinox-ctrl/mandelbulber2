@@ -1,0 +1,5 @@
+// TYPE_ID: 105
+// NAME: Type 105
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= (1.0 + af * aa * sin(ab*(zx*zx+zy*zy-zz2*zz2)/(rr+1e-21)));

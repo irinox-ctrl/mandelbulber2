@@ -1,0 +1,5 @@
+// TYPE_ID: 185
+// NAME: Type 185
+// PARAMS: locals
+// SYSTEM: mb_math
+double mR2=ma*ma; double fR2=mb*mb; double sm=mc; double t=1.0/(1.0+exp(-sm*(rr-mR2))); double m2=fR2/fmax(1e-21,rr); double sf=(1.0-t)*m2+t; z*=sf; aux.DE*=sf; z*=md; z.x+=me; aux.DE*=fabs(md);

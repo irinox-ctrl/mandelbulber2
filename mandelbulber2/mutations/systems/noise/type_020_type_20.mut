@@ -1,0 +1,5 @@
+// TYPE_ID: 20
+// NAME: Type 20
+// PARAMS: locals
+// SYSTEM: noise
+double r = sqrt(z.x*z.x+z.y*z.y+z.z*z.z); double phi = atan2(z.y,z.x); double theta = acos(z.z/fmax(r,1e-21)); double v = sin(r*nfq)*cos(phi*na)*sin(theta*nb); aux.DE *= (1.0 + nf*v);

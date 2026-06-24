@@ -1,0 +1,5 @@
+// TYPE_ID: 1
+// NAME: Type 1
+// PARAMS: locals
+// SYSTEM: sm
+double branch = 2.0 + floor(3.0*sin((double)i*ta*0.1)); aux.DE *= fmax(branch*tb, 0.01);

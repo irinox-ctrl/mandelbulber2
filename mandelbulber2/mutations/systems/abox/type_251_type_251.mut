@@ -1,0 +1,5 @@
+// TYPE_ID: 251
+// NAME: Type 251
+// PARAMS: locals
+// SYSTEM: abox
+{ double sf2=fmax(0.01,1.0+aa*r); aux.DE/=sf2; }

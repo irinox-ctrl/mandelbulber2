@@ -1,0 +1,5 @@
+// TYPE_ID: 198
+// NAME: Type 198
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= exp(-aa * ab * r);

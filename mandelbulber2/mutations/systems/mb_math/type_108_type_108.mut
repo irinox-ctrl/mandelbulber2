@@ -1,0 +1,5 @@
+// TYPE_ID: 108
+// NAME: Type 108
+// PARAMS: locals
+// SYSTEM: mb_math
+double d4=sqrt(rr+ma*ma); double td=tanh(d4); z*=td/fmax(1e-10,d4); double ch=cosh(d4); aux.DE*=fabs(mf)/(ch*ch+1e-21);

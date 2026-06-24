@@ -1,0 +1,5 @@
+// TYPE_ID: 173
+// NAME: Type 173
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= fabs(aa);

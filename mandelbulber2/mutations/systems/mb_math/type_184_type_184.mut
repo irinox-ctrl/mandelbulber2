@@ -1,0 +1,5 @@
+// TYPE_ID: 184
+// NAME: Type 184
+// PARAMS: locals
+// SYSTEM: mb_math
+double lt=ma*(1.0+mb*r/fmax(1e-10,sqrt(rr))); if(fabs(zx)>lt) z.x=copysign(lt*2.0,zx)-zx; if(fabs(zy)>lt) z.y=copysign(lt*2.0,zy)-zy; if(fabs(zz2)>lt) z.z=copysign(lt*2.0,zz2)-zz2; aux.DE*=fabs(mf);

@@ -1,0 +1,5 @@
+// TYPE_ID: 377
+// NAME: Type 377
+// PARAMS: locals
+// SYSTEM: abox
+double kx = aa*z.x; double ky = ab*z.y; double kz = ac*z.z; double chirality = kx*kx + ky*ky - kz*kz; double fermi_arc = exp(-fabs(chirality)*ad); aux.DE *= (1.0 + af * fermi_arc);

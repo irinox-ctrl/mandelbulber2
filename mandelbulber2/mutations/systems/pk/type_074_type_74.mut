@@ -1,0 +1,5 @@
+// TYPE_ID: 74
+// NAME: Type 74
+// PARAMS: locals
+// SYSTEM: pk
+double moh=pa*exp(-pb*rr)*sin(pfreq*r+pph); aux.DE*=(1.0+pf*moh);

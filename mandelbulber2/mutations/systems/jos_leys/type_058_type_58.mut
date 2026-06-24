@@ -1,0 +1,5 @@
+// TYPE_ID: 58
+// NAME: Type 58
+// PARAMS: locals
+// SYSTEM: jos_leys
+double cs=ja*sin(jfreq*zx)*sin(jfreq*zy)*sin(jfreq*zz2)/(fmax(1e-10,r*r)); aux.DE*=(1.0+jf*cs);

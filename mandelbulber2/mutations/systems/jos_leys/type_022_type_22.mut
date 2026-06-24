@@ -1,0 +1,5 @@
+// TYPE_ID: 22
+// NAME: Type 22
+// PARAMS: locals
+// SYSTEM: jos_leys
+double ruel=1.0; for(int k=1;k<=5;k++){ruel*=(1.0-exp(-ja*k*log(fmax(1e-10,r))));} aux.DE*=(1.0+jf*fabs(ruel));

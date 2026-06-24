@@ -1,0 +1,5 @@
+// TYPE_ID: 29
+// NAME: Type 29
+// PARAMS: locals
+// SYSTEM: warp_dist
+{ double vx=0,vy=0,vz=0; for(int o=0;o<4;o++){double f=wfq*pow(2.0,o); double p=wph+o*M_PI*0.25; vx+=sin(f*zy+p)*cos(f*zz2+p)/pow(2.0,o); vy+=sin(f*zz2+p)*cos(f*zx+p)/pow(2.0,o); vz+=sin(f*zx+p)*cos(f*zy+p)/pow(2.0,o);} z.x+=wf*wam*vx; z.y+=wf*wam*vy; z.z+=wf*wam*vz; aux.DE*=(1.0+3.0*fabs(wf*wam*wfq*4.0)); }

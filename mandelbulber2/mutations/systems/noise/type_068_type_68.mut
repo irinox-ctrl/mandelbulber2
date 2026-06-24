@@ -1,0 +1,5 @@
+// TYPE_ID: 68
+// NAME: Type 68
+// PARAMS: locals
+// SYSTEM: noise
+double r=sqrt(z.x*z.x+z.y*z.y+z.z*z.z); double th=atan2(z.y,z.x)+nam*sin(r*nfq); double ph=acos(z.z/fmax(r,1e-21))+nb*cos(r*nfq*0.7); double h=sin(th*na+ph*nc)*0.5+0.5; aux.DE *= (1.0 + nf*h);

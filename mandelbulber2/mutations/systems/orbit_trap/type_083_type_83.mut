@@ -1,0 +1,5 @@
+// TYPE_ID: 83
+// NAME: Type 83
+// PARAMS: locals
+// SYSTEM: orbit_trap
+double mx=fabs(z.x); double my=fabs(z.y); double mz=fabs(z.z); if(mx<my){double t=mx;mx=my;my=t;} if(mx<mz){double t=mx;mx=mz;mz=t;} double d=mx-oa; aux.DE *= (1.0 + of*exp(-od*fabs(d)));

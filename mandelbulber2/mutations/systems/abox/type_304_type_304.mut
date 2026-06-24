@@ -1,0 +1,5 @@
+// TYPE_ID: 304
+// NAME: Type 304
+// PARAMS: locals
+// SYSTEM: abox
+double E = aa*r; double t = (double)i * 0.01; aux.DE *= (1.0 + af * fabs(ab) * sin(E*t)*sin(E*t));

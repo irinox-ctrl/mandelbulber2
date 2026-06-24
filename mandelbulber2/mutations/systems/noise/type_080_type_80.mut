@@ -1,0 +1,5 @@
+// TYPE_ID: 80
+// NAME: Type 80
+// PARAMS: locals
+// SYSTEM: noise
+double wx=z.x+nam*sin(z.y*nfq)*sin(z.z*nfq*0.5); double wy=z.y+nam*sin(z.z*nfq*0.7)*sin(z.x*nfq); double wz=z.z+nam*sin(z.x*nfq*1.3)*sin(z.y*nfq*0.9); double v=sin(wx*na)*sin(wy*nb)*sin(wz*nc); aux.DE *= (1.0 + nf*v);

@@ -1,0 +1,5 @@
+// TYPE_ID: 46
+// NAME: Type 46
+// PARAMS: locals
+// SYSTEM: torus
+double phi = atan2(z.y,z.x); double half_twist = sin(phi*0.5); double r2d = sqrt(z.x*z.x+z.y*z.y); double torus_d = fabs(r2d-ta); aux.DE *= (1.0 + tf*half_twist*half_twist*exp(-tb*torus_d));

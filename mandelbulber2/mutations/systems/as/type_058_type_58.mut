@@ -1,0 +1,5 @@
+// TYPE_ID: 58
+// NAME: Type 58
+// PARAMS: locals
+// SYSTEM: as
+double v=0,f=ta,a=1.0; for(int k=0;k<4;k++){double h=sin(z.x*f*12.9+z.y*f*78.2+z.z*f*45.1)*43758.5453;h=h-floor(h);v+=a*h;f*=2.0;a*=0.5;} aux.DE *= (1.0 + sf*v*tb);

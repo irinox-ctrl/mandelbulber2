@@ -1,0 +1,5 @@
+// TYPE_ID: 150
+// NAME: Type 150
+// PARAMS: locals
+// SYSTEM: mb_math
+double jv=sin(zx*ma)*sin(zy*mb)*sin(zz2*mc); aux.color+=fabs(jv)*md;

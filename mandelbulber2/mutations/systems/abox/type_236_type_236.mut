@@ -1,0 +1,5 @@
+// TYPE_ID: 236
+// NAME: Type 236
+// PARAMS: locals
+// SYSTEM: abox
+{ double sl=fabs(sqrt(zx*zx+zy*zy)); aux.DE*=(1.0+aa*log(sl+1e-21)*ab); }

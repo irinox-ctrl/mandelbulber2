@@ -1,0 +1,5 @@
+// TYPE_ID: 285
+// NAME: Type 285
+// PARAMS: locals
+// SYSTEM: abox
+{ double goe=sin(aa*r)*cos(ab*r)*sin(ac*r); aux.DE*=(1.0+ad*fabs(goe)); }

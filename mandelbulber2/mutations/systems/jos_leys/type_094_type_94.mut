@@ -1,0 +1,5 @@
+// TYPE_ID: 94
+// NAME: Type 94
+// PARAMS: locals
+// SYSTEM: jos_leys
+double exh=ja*pow(fmax(1e-10,r),-jb)*cos(jfreq*r+jph); aux.DE*=(1.0+jf*exh);

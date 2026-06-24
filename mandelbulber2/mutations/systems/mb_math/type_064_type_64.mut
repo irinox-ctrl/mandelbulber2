@@ -1,0 +1,5 @@
+// TYPE_ID: 64
+// NAME: Type 64
+// PARAMS: locals
+// SYSTEM: mb_math
+double th=atan2(sqrt(zx*zx+zy*zy),zz2); double ph=atan2(zy,zx); double sc=ma+mb*cos(mc*th)*sin(md*ph); z*=sc; aux.DE*=fabs(sc);

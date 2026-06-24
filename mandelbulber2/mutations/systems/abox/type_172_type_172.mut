@@ -1,0 +1,5 @@
+// TYPE_ID: 172
+// NAME: Type 172
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= (1.0 + af * aa * fabs(sin(ab*r)) * fabs(cos(ac*r)));

@@ -1,0 +1,5 @@
+// TYPE_ID: 169
+// NAME: Type 169
+// PARAMS: locals
+// SYSTEM: mb_math
+aux.DE=0.9*aux.DE+0.1*ma;

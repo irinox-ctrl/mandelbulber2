@@ -1,0 +1,5 @@
+// TYPE_ID: 29
+// NAME: Type 29
+// PARAMS: locals
+// SYSTEM: pk
+double nls=pa*exp(-pb*(zx*zx+zy*zy))*cos(pfreq*zz2+pph); aux.DE*=(1.0+pf*nls);

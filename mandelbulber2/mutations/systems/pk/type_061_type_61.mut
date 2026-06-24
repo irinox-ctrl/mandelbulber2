@@ -1,0 +1,5 @@
+// TYPE_ID: 61
+// NAME: Type 61
+// PARAMS: locals
+// SYSTEM: pk
+double rpf=pa*exp(-pb*r)/fmax(1e-10,r); aux.DE*=(1.0+pf*rpf);

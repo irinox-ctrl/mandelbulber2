@@ -1,0 +1,5 @@
+// TYPE_ID: 99
+// NAME: Type 99
+// PARAMS: locals
+// SYSTEM: noise
+double v=0,f=nfq,a=nam; double offset=0; for(int k=0;k<5;k++){ double h=sin(z.x*f*127.1+z.y*f*311.7+z.z*f*74.7+offset)*43758.5453; h=h-floor(h); double r=fabs(h*2.0-1.0); r=offset+r*r*na; v+=a*r; offset=r; f*=2.0; a*=0.5; } aux.DE *= (1.0 + nf*v);

@@ -1,0 +1,5 @@
+// TYPE_ID: 25
+// NAME: Type 25
+// PARAMS: locals
+// SYSTEM: pk
+double hir=pa*pb*exp(-pc*rr)*cos(pfreq*r); aux.DE*=(1.0+pf*hir);

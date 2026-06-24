@@ -1,0 +1,5 @@
+// TYPE_ID: 58
+// NAME: Type 58
+// PARAMS: locals
+// SYSTEM: pk
+double ly=pa*pb*log(fmax(1e-10,r))/fmax(1e-10,r); aux.DE*=(1.0+pf*tanh(ly));

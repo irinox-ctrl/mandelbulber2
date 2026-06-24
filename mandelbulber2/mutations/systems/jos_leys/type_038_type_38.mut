@@ -1,0 +1,5 @@
+// TYPE_ID: 38
+// NAME: Type 38
+// PARAMS: locals
+// SYSTEM: jos_leys
+double rov=ja*sin(jfreq*zx+jph)*cos(jfreq*zy); aux.DE*=(1.0+jf*rov/fmax(1e-10,r));

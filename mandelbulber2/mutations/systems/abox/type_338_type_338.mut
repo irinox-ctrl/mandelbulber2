@@ -1,0 +1,5 @@
+// TYPE_ID: 338
+// NAME: Type 338
+// PARAMS: locals
+// SYSTEM: abox
+double tunnel = exp(-aa*fabs(r-ab)); double current = ac*tunnel; aux.DE *= (1.0 + af * fabs(current));

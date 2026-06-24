@@ -1,0 +1,5 @@
+// TYPE_ID: 32
+// NAME: Type 32
+// PARAMS: locals
+// SYSTEM: mb_math
+double mx=ma,my=mb,mz=mc; double rrm=fmax(zx*zx/fmax(1e-21,mx),fmax(zy*zy/fmax(1e-21,my),zz2*zz2/fmax(1e-21,mz))); double fR2=md; if(rrm<fR2){ double m2=fR2/fmax(1e-21,rrm); z*=m2; aux.DE*=m2; }

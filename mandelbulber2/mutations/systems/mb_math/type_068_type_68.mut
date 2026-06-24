@@ -1,0 +1,5 @@
+// TYPE_ID: 68
+// NAME: Type 68
+// PARAMS: locals
+// SYSTEM: mb_math
+z.x+=zx*0.1*ma; z.y+=zy*0.1*ma; z.z+=zz2*0.1*ma; aux.DE*=fabs(mf);

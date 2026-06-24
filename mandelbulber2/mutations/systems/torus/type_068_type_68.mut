@@ -1,0 +1,5 @@
+// TYPE_ID: 68
+// NAME: Type 68
+// PARAMS: locals
+// SYSTEM: torus
+double r2d = sqrt(z.x*z.x+z.y*z.y); double vortex = ta*exp(-tb*((r2d-tc)*(r2d-tc)+z.z*z.z)); double circulation = sin(td*atan2(z.y,z.x)); aux.DE *= (1.0 + tf*vortex*circulation);

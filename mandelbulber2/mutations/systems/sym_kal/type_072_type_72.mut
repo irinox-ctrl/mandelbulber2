@@ -1,0 +1,5 @@
+// TYPE_ID: 72
+// NAME: Type 72
+// PARAMS: locals
+// SYSTEM: sym_kal
+if(z.x*z.y < 0) { z.x = fabs(z.x); z.y = fabs(z.y); }

@@ -1,0 +1,5 @@
+// TYPE_ID: 350
+// NAME: Type 350
+// PARAMS: locals
+// SYSTEM: abox
+double W = fabs(aa)*log(2.0)*sin(ab*r)*sin(ab*r); aux.DE *= (1.0 + af * W);

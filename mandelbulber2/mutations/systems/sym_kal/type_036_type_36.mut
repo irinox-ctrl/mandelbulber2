@@ -1,0 +1,5 @@
+// TYPE_ID: 36
+// NAME: Type 36
+// PARAMS: locals
+// SYSTEM: sym_kal
+{ double d = 2.0*fmax(0.0, z.x*cos(sang) + z.y*sin(sang)); z.x -= d*cos(sang); z.y -= d*sin(sang); z.x = fabs(z.x); }

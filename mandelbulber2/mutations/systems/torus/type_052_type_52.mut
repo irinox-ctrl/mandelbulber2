@@ -1,0 +1,5 @@
+// TYPE_ID: 52
+// NAME: Type 52
+// PARAMS: locals
+// SYSTEM: torus
+double phi = atan2(z.y,z.x); double r2d = sqrt(z.x*z.x+z.y*z.y); double trefoil_r = ta*(2.0+cos(3.0*phi)); double trefoil_z = ta*sin(3.0*phi); double d = sqrt((r2d-trefoil_r)*(r2d-trefoil_r)+(z.z-trefoil_z)*(z.z-trefoil_z)); aux.DE *= (1.0 + tf*exp(-tb*d));

@@ -1,0 +1,5 @@
+// TYPE_ID: 130
+// NAME: Type 130
+// PARAMS: locals
+// SYSTEM: abox
+{ double orb=fmax(fabs(zx),fmax(fabs(zy),fabs(zz2))); aux.DE*=(1.0+af*aa*cos(ab*orb)); }

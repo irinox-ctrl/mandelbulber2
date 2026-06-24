@@ -1,0 +1,5 @@
+// TYPE_ID: 97
+// NAME: Type 97
+// PARAMS: locals
+// SYSTEM: as
+double div_approx = cos(z.x*ta)*sin(z.y*tb)*cos(z.z*tc); aux.DE *= (1.0 + sf*fabs(div_approx)*td);

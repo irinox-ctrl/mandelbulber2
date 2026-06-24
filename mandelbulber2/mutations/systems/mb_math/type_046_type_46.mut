@@ -1,0 +1,5 @@
+// TYPE_ID: 46
+// NAME: Type 46
+// PARAMS: locals
+// SYSTEM: mb_math
+double ox=ma,oy=mb,oz=mc; double rrc=(zx-ox)*(zx-ox)+(zy-oy)*(zy-oy)+(zz2-oz)*(zz2-oz); if(rrc<1e-21) rrc=1e-21; double fR2=md; if(rrc<fR2){ double m2=fR2/rrc; z*=m2; aux.DE*=m2; }

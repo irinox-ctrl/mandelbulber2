@@ -1,0 +1,5 @@
+// TYPE_ID: 46
+// NAME: Type 46
+// PARAMS: locals
+// SYSTEM: pk
+double sm=pa*sin(pfreq*atan2(zy,zx)+pph)*pb; aux.DE*=(1.0+pf*sm/fmax(1e-10,r));

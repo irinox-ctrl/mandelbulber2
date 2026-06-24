@@ -1,0 +1,5 @@
+// TYPE_ID: 156
+// NAME: Type 156
+// PARAMS: locals
+// SYSTEM: mb_math
+double tr=ma; aux.DE=fmin(aux.DE,tr);

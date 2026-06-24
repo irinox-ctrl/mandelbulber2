@@ -1,0 +1,5 @@
+// TYPE_ID: 124
+// NAME: Type 124
+// PARAMS: locals
+// SYSTEM: mb_math
+double fR2=ma; if(rr<fR2){ double m2=fR2/fmax(1e-21,rr); z*=m2; aux.DE*=m2; }

@@ -1,0 +1,5 @@
+// TYPE_ID: 347
+// NAME: Type 347
+// PARAMS: locals
+// SYSTEM: abox
+double sigma = fabs(aa)*r*r; double relax = fmax(fabs(ab), 0.01); double prod = sigma/relax; aux.DE *= (1.0 + af * (1.0 - exp(-prod)));

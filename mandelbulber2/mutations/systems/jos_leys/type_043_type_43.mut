@@ -1,0 +1,5 @@
+// TYPE_ID: 43
+// NAME: Type 43
+// PARAMS: locals
+// SYSTEM: jos_leys
+double rw=0.0; for(int n=1;n<=8;n++){rw+=cos(jfreq*n*zx+jph*n)*exp(-jb*n);} aux.DE*=(1.0+jf*ja*rw/fmax(1e-10,r));

@@ -1,0 +1,5 @@
+// TYPE_ID: 232
+// NAME: Type 232
+// PARAMS: locals
+// SYSTEM: abox
+{ double vort=fabs(-aa*zy/(rr+1e-21)-(-ab*zx/(rr+1e-21))); aux.DE*=(1.0+ac*vort); }

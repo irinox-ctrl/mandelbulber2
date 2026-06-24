@@ -1,0 +1,5 @@
+// TYPE_ID: 73
+// NAME: Type 73
+// PARAMS: locals
+// SYSTEM: orbit_trap
+double r=sqrt(z.x*z.x+z.y*z.y+z.z*z.z); double prevR=in.point.Length(); double dr=fabs(r-prevR); aux.DE *= (1.0 + of*exp(-od*dr));

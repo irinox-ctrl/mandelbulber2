@@ -1,0 +1,5 @@
+// TYPE_ID: 313
+// NAME: Type 313
+// PARAMS: locals
+// SYSTEM: abox
+double ca = cos(aa*z.x); double cb = cos(ab*z.y); double corr = ca*cb + ca*sin(ab*z.y) + sin(aa*z.x)*cb - sin(aa*z.x)*sin(ab*z.y); aux.DE *= (1.0 + af * fabs(corr) * 0.25);

@@ -1,0 +1,5 @@
+// TYPE_ID: 4
+// NAME: Type 4
+// PARAMS: locals
+// SYSTEM: pk
+double bc=pa*pb*zy/fmax(1e-10,rr); aux.DE*=(1.0+pf*bc);

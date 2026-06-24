@@ -1,0 +1,5 @@
+// TYPE_ID: 84
+// NAME: Type 84
+// PARAMS: locals
+// SYSTEM: mb_math
+double ax=sin(i*ma),ay=cos(i*ma); double nm=sqrt(ax*ax+ay*ay+1e-21); ax/=nm; ay/=nm; double th=mb*M_PI/180.0; double cs=cos(th),sn=sin(th); double d=zx*ax+zy*ay; double px=zx-d*ax,py=zy-d*ay; double rx=px*cs-py*sn+d*ax,ry=px*sn+py*cs+d*ay; z.x=rx;z.y=ry; aux.DE*=fabs(mf);

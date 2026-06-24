@@ -1,0 +1,5 @@
+// TYPE_ID: 5
+// NAME: Type 5
+// PARAMS: locals
+// SYSTEM: pk
+double ham=pa*exp(-pb*r)*sin(pfreq*zx); aux.DE*=(1.0+pf*ham);

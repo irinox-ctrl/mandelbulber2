@@ -1,0 +1,5 @@
+// TYPE_ID: 37
+// NAME: Type 37
+// PARAMS: locals
+// SYSTEM: mb_math
+double fR2=mb; double pw=mc; double m2=pow(fmax(1e-21,fR2/rr),pw); z*=m2; aux.DE*=m2;

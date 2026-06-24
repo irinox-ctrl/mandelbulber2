@@ -1,0 +1,5 @@
+// TYPE_ID: 100
+// NAME: Type 100
+// PARAMS: locals
+// SYSTEM: torus
+double r2d = sqrt(z.x*z.x+z.y*z.y); double phi = atan2(z.y,z.x); double theta = atan2(z.z,r2d-ta); double p=fmax(ta,0.1); double q=fmax(tb,0.1); double torus_knot_r = tc*(2.0+cos(q/p*phi)); double torus_knot_z = tc*sin(q/p*phi); double d = sqrt((r2d-torus_knot_r)*(r2d-torus_knot_r)+(z.z-torus_knot_z)*(z.z-torus_knot_z))-td; aux.DE *= (1.0 + tf*exp(-fabs(d)*5.0));

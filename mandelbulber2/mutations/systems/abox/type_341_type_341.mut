@@ -1,0 +1,5 @@
+// TYPE_ID: 341
+// NAME: Type 341
+// PARAMS: locals
+// SYSTEM: abox
+double flux = aa*z.x*z.y; double inductance = cos(ab*flux); aux.DE *= (1.0 + af * inductance*inductance);

@@ -1,0 +1,5 @@
+// TYPE_ID: 371
+// NAME: Type 371
+// PARAMS: locals
+// SYSTEM: abox
+double Bz = aa; double gradT = ab*z.x; double Ey = ac*gradT*Bz; aux.DE *= (1.0 + af * sin(Ey)*sin(Ey));

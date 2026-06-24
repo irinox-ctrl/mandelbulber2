@@ -1,0 +1,5 @@
+// TYPE_ID: 92
+// NAME: Type 92
+// PARAMS: locals
+// SYSTEM: warp_dist
+{ double k=wf*wam; z.x=zx+k*zy; z.y=zy+k*sin(wfq*zx+wph); aux.DE*=(1.0+fabs(k*wfq)); }

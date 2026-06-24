@@ -1,0 +1,5 @@
+// TYPE_ID: 51
+// NAME: Type 51
+// PARAMS: locals
+// SYSTEM: sym_kal
+{ double ph2=atan2(zy,zx); double n=fmax(1.0,sa); double s=2.0*M_PI/n; ph2=fmod(ph2+10.0*M_PI,s)-s*0.5; double rxy=sqrt(zx*zx+zy*zy); z.x=rxy*cos(ph2); z.y=rxy*sin(ph2); z.z=fabs(z.z); }

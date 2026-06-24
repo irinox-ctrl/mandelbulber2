@@ -1,0 +1,5 @@
+// TYPE_ID: 75
+// NAME: Type 75
+// PARAMS: locals
+// SYSTEM: sym_kal
+{ double d = z.x*cos(sang) + z.y*sin(sang); if(d < soff) { z.x -= 2.0*(d-soff)*cos(sang); z.y -= 2.0*(d-soff)*sin(sang); } }

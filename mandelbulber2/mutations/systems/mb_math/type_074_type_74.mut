@@ -1,0 +1,5 @@
+// TYPE_ID: 74
+// NAME: Type 74
+// PARAMS: locals
+// SYSTEM: mb_math
+double th=i*ma; double spr=mb; z.x+=spr*cos(th); z.y+=spr*sin(th); aux.DE*=fabs(mf);

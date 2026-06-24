@@ -1,0 +1,5 @@
+// TYPE_ID: 34
+// NAME: Type 34
+// PARAMS: locals
+// SYSTEM: jos_leys
+double ml=M_PI*ja/(2.0*fmax(1e-10,r)); aux.DE*=(1.0+jf*tanh(ml));

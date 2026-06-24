@@ -1,0 +1,5 @@
+// TYPE_ID: 55
+// NAME: Type 55
+// PARAMS: locals
+// SYSTEM: sm
+double sc=3.0; CVector4 zz=fabs(z); double vals[4]={zz.x,zz.y,zz.z,zz.w}; for(int a=0;a<4;a++)for(int b=a+1;b<4;b++){if(vals[a]<vals[b]){double t=vals[a];vals[a]=vals[b];vals[b]=t;}} z=CVector4(vals[0],vals[1],vals[2],vals[3])*sc-CVector4(1,1,1,1)*(sc-1.0)+CVector4(ta,tb,tc,td); aux.DE=aux.DE*sc+1.0;

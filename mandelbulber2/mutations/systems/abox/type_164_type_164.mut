@@ -1,0 +1,5 @@
+// TYPE_ID: 164
+// NAME: Type 164
+// PARAMS: locals
+// SYSTEM: abox
+{ double gau=exp(-aa*(r-ab)*(r-ab)); aux.DE*=(1.0+af*ac*gau); }

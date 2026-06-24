@@ -1,0 +1,5 @@
+// TYPE_ID: 372
+// NAME: Type 372
+// PARAMS: locals
+// SYSTEM: abox
+double n_level = floor(fabs(aa)*r*5.0+0.5); double conductance = fmax(n_level,1.0)*ab; aux.DE *= (1.0 + af * fmin(fabs(conductance),10.0) * sin(ac*r)*sin(ac*r));

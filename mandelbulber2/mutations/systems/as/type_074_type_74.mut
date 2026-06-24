@@ -1,0 +1,5 @@
+// TYPE_ID: 74
+// NAME: Type 74
+// PARAMS: locals
+// SYSTEM: as
+double r = sqrt(z.x*z.x+z.y*z.y+z.z*z.z); double monopole = fabs(ta)/fmax(r,0.01); aux.DE *= (1.0 + sf*monopole*tb);

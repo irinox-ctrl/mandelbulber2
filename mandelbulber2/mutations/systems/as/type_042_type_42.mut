@@ -1,0 +1,5 @@
+// TYPE_ID: 42
+// NAME: Type 42
+// PARAMS: locals
+// SYSTEM: as
+double r = sqrt(z.x*z.x+z.y*z.y+z.z*z.z); double mass_d = fmax(r - ta, 0.01); aux.DE *= (1.0 + sf*tb/(mass_d*mass_d));

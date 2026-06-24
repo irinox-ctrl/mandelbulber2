@@ -1,0 +1,5 @@
+// TYPE_ID: 21
+// NAME: Type 21
+// PARAMS: locals
+// SYSTEM: as
+double gi = sin(z.x*ta+z.y*tb)*0.5+0.5; aux.DE /= (1.0 + sf*gi*fabs(tc));

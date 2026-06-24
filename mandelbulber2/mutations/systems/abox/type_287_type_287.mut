@@ -1,0 +1,5 @@
+// TYPE_ID: 287
+// NAME: Type 287
+// PARAMS: locals
+// SYSTEM: abox
+{ double bd2=sin(aa*r)*sin(aa*r); double ent=bd2*log(bd2+1e-21); aux.DE*=(1.0+ab*fabs(ent)); }

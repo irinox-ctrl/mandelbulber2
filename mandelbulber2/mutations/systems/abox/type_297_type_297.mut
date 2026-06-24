@@ -1,0 +1,5 @@
+// TYPE_ID: 297
+// NAME: Type 297
+// PARAMS: locals
+// SYSTEM: abox
+{ double pur=sin(aa*r)*sin(aa*r); aux.DE*=(1.0+ab*pur*pur); }

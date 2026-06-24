@@ -1,0 +1,5 @@
+// TYPE_ID: 93
+// NAME: Type 93
+// PARAMS: locals
+// SYSTEM: mb_math
+z.x+=ma*zy; z.y+=mb*zz2; aux.DE*=fabs(mf)*sqrt(1.0+ma*ma+mb*mb);

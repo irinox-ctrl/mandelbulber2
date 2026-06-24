@@ -1,0 +1,5 @@
+// TYPE_ID: 34
+// NAME: Type 34
+// PARAMS: locals
+// SYSTEM: mb_math
+double sm=mc; double mR2=ma,fR2=mb; double t=1.0/(1.0+exp(-sm*(rr-mR2))); double m2=fR2/fmax(1e-21,rr); double sf=(1.0-t)*m2+t*1.0; z*=sf; aux.DE*=sf;

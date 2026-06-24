@@ -1,0 +1,5 @@
+// TYPE_ID: 152
+// NAME: Type 152
+// PARAMS: locals
+// SYSTEM: mb_math
+double de_num=r*0.5; double de_safe=fmin(aux.DE,de_num); aux.DE=de_safe;

@@ -1,0 +1,5 @@
+// TYPE_ID: 334
+// NAME: Type 334
+// PARAMS: locals
+// SYSTEM: abox
+double omega0 = fabs(aa)+0.1; double Q = fabs(ab)+1.0; double force = ac/(2.0*Q*omega0+1e-21); aux.DE *= (1.0 + af * sin(force*r)*sin(force*r));

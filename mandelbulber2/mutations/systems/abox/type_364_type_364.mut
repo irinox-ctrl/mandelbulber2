@@ -1,0 +1,5 @@
+// TYPE_ID: 364
+// NAME: Type 364
+// PARAMS: locals
+// SYSTEM: abox
+double m_ratio = fmax(fabs(aa),0.1)/fmax(fabs(ab),0.1); double collision = fabs(ac); double eff = m_ratio*collision; aux.DE *= (1.0 + af * fmin(eff,10.0) * sin(ad*r)*sin(ad*r));

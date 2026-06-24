@@ -1,0 +1,5 @@
+// TYPE_ID: 63
+// NAME: Type 63
+// PARAMS: locals
+// SYSTEM: mb_math
+double th=atan2(zy,zx); double sc=ma+mb*cos(mc*th); z*=sc; aux.DE*=fabs(sc);

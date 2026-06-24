@@ -1,0 +1,5 @@
+// TYPE_ID: 87
+// NAME: Type 87
+// PARAMS: locals
+// SYSTEM: noise
+double s=(z.x+z.y+z.z)*nfq; double v1=sin(s*na)*0.5+0.5; double v2=sin(s*nb+M_PI*0.5)*0.5+0.5; double v=v1*v2; aux.DE *= (1.0 + nf*v*nam);

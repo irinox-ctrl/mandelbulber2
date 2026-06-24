@@ -1,0 +1,5 @@
+// TYPE_ID: 333
+// NAME: Type 333
+// PARAMS: locals
+// SYSTEM: abox
+double dL = aa*(z.x - z.y); double L = fmax(r, 0.01); double strain = dL/L; double gauge = ab*strain; aux.DE *= (1.0 + af * sin(gauge)*sin(gauge));

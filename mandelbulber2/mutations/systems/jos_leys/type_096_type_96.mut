@@ -1,0 +1,5 @@
+// TYPE_ID: 96
+// NAME: Type 96
+// PARAMS: locals
+// SYSTEM: jos_leys
+double kov=ja*exp(-jb*fabs(zz2))*cos(jfreq*sqrt(fmax(0.0,zx*zx+zy*zy))); aux.DE*=(1.0+jf*kov);

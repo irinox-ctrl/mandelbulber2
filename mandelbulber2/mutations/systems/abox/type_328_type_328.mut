@@ -1,0 +1,5 @@
+// TYPE_ID: 328
+// NAME: Type 328
+// PARAMS: locals
+// SYSTEM: abox
+double omega0 = fabs(aa)*100.0+1.0; double tau_c = fabs(ab)+0.01; double stability = 1.0/(omega0*sqrt(tau_c*(double)(i+1)*0.01)+1e-21); aux.DE *= (1.0 + af * fmin(stability*ac, 5.0));

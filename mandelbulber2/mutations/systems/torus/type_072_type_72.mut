@@ -1,0 +1,5 @@
+// TYPE_ID: 72
+// NAME: Type 72
+// PARAMS: locals
+// SYSTEM: torus
+double r2d = sqrt(z.x*z.x+z.y*z.y); double R = ta; double thermal = exp(-tb*((r2d-R)*(r2d-R)+z.z*z.z)); double fluctuation = sin(tc*z.x)*sin(tc*z.y)*sin(tc*z.z); aux.DE *= (1.0 + tf*thermal*(1.0+td*fluctuation));

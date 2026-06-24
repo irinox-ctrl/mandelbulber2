@@ -1,0 +1,5 @@
+// TYPE_ID: 153
+// NAME: Type 153
+// PARAMS: locals
+// SYSTEM: mb_math
+aux.DE=0.9*aux.DE+0.1*r*ma;

@@ -1,0 +1,5 @@
+// TYPE_ID: 20
+// NAME: Type 20
+// PARAMS: locals
+// SYSTEM: jos_leys
+double maas=ja*sin(jfreq*log(fmax(1e-10,r)))*cos(jfreq*atan2(zy,zx)); aux.DE*=(1.0+jf*maas);

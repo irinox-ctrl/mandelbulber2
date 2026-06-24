@@ -1,0 +1,5 @@
+// TYPE_ID: 100
+// NAME: Type 100
+// PARAMS: locals
+// SYSTEM: pk
+double clv=pa*sin(pfreq*(zx*zy+zy*zz2)/fmax(1e-10,rr)+pph)*pb; aux.DE*=(1.0+pf*clv);

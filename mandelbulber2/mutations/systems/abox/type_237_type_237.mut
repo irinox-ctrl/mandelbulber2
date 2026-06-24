@@ -1,0 +1,5 @@
+// TYPE_ID: 237
+// NAME: Type 237
+// PARAMS: locals
+// SYSTEM: abox
+{ double bd=exp(-aa*fabs(zz2-ab)); aux.DE*=(1.0+ac*bd); }

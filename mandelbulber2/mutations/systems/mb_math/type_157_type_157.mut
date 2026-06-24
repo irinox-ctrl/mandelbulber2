@@ -1,0 +1,5 @@
+// TYPE_ID: 157
+// NAME: Type 157
+// PARAMS: locals
+// SYSTEM: mb_math
+double j11=1.0+ma*cos(zx),j22=1.0+mb*cos(zy),j33=1.0+mc*cos(zz2); aux.DE*=fmax(fabs(j11),fmax(fabs(j22),fabs(j33)));

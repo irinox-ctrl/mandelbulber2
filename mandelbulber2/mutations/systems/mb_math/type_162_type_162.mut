@@ -1,0 +1,5 @@
+// TYPE_ID: 162
+// NAME: Type 162
+// PARAMS: locals
+// SYSTEM: mb_math
+double k=ma,de0=mb; aux.DE=1.0/(1.0+exp(-k*(aux.DE-de0)));

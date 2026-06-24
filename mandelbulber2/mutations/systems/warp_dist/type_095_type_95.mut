@@ -1,0 +1,5 @@
+// TYPE_ID: 95
+// NAME: Type 95
+// PARAMS: locals
+// SYSTEM: warp_dist
+{ double th=wf*wam/(r*r+1e-10); double cs=cos(th),sn=sin(th); double nx=zx*cs-zy*sn; z.y=zx*sn+zy*cs; z.x=nx; aux.DE*=(1.0+fabs(wf*wam*2.0*r/((r*r+1e-10)*(r*r+1e-10)))); }

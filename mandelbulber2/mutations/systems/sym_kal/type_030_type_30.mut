@@ -1,0 +1,5 @@
+// TYPE_ID: 30
+// NAME: Type 30
+// PARAMS: locals
+// SYSTEM: sym_kal
+{ double n = fmax(2.0, sa); for(int k=0; k<int(n); k++) { double a = k * 2.0*M_PI/n; double cs = cos(a), sn = sin(a); double d = z.x*cs + z.y*sn; if(d < 0) { z.x -= 2.0*d*cs; z.y -= 2.0*d*sn; } } }

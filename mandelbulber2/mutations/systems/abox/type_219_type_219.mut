@@ -1,0 +1,5 @@
+// TYPE_ID: 219
+// NAME: Type 219
+// PARAMS: locals
+// SYSTEM: abox
+{ double v=0; for(int o=0;o<4;o++){v+=sin(aa*pow(2.0,o)*r)/pow(2.0,o);} aux.DE*=(1.0+ab*fabs(v)); }

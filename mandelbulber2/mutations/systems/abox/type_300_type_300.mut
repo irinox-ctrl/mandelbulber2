@@ -1,0 +1,5 @@
+// TYPE_ID: 300
+// NAME: Type 300
+// PARAMS: locals
+// SYSTEM: abox
+{ double mi=sin(aa*r)*sin(ab*r); aux.DE*=(1.0+ac*mi*mi); }

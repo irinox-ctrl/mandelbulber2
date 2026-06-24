@@ -1,0 +1,5 @@
+// TYPE_ID: 51
+// NAME: Type 51
+// PARAMS: locals
+// SYSTEM: pk
+double sh3=pa*floor(sin(pfreq*zx)*3.0+1.5)/3.0; aux.DE*=(1.0+pf*sh3);

@@ -1,0 +1,5 @@
+// TYPE_ID: 138
+// NAME: Type 138
+// PARAMS: locals
+// SYSTEM: mb_math
+double spd=sqrt((z.x-zx)*(z.x-zx)+(z.y-zy)*(z.y-zy)+(z.z-zz2)*(z.z-zz2)); aux.color+=spd*ma;

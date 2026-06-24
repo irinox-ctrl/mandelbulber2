@@ -1,0 +1,5 @@
+// TYPE_ID: 165
+// NAME: Type 165
+// PARAMS: locals
+// SYSTEM: abox
+{ double stp=(r>aa)?ab:ac; aux.DE*=(1.0+af*stp); }

@@ -1,0 +1,5 @@
+// TYPE_ID: 91
+// NAME: Type 91
+// PARAMS: locals
+// SYSTEM: warp_dist
+{ double a=wf*wa; double b=wf*wb; z.x=zx+a*sin(wfq*zy); z.y=zy+b*sin(wfq*zx); aux.DE*=(1.0+fabs((a+b)*wfq)); }

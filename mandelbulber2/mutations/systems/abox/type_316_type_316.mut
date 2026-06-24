@@ -1,0 +1,5 @@
+// TYPE_ID: 316
+// NAME: Type 316
+// PARAMS: locals
+// SYSTEM: abox
+double t1 = sin(aa*(double)i*0.1); double t2 = sin(aa*((double)i+ab)*0.1); double temporal = t1*t2 + t1*sin(aa*((double)i+ac)*0.1); aux.DE *= (1.0 + af * fabs(temporal));

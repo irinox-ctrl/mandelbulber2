@@ -1,0 +1,5 @@
+// TYPE_ID: 298
+// NAME: Type 298
+// PARAMS: locals
+// SYSTEM: abox
+{ double wig=sin(aa*zx)*cos(ab*zy); aux.DE*=(1.0+ac*fabs(wig)); }

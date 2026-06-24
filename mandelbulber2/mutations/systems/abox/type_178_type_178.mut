@@ -1,0 +1,5 @@
+// TYPE_ID: 178
+// NAME: Type 178
+// PARAMS: locals
+// SYSTEM: abox
+{ double d=sqrt((zx-aa)*(zx-aa)+(zy-ab)*(zy-ab)+(zz2-ac)*(zz2-ac)); if(d<ad) aux.DE*=ae; }

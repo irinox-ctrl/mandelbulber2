@@ -1,0 +1,5 @@
+// TYPE_ID: 170
+// NAME: Type 170
+// PARAMS: locals
+// SYSTEM: mb_math
+double ns=sin(zx*ma+zy*mb)*cos(zz2*mc+i*md); aux.DE*=(1.0+me*ns);

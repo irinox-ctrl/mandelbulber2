@@ -1,0 +1,5 @@
+// TYPE_ID: 303
+// NAME: Type 303
+// PARAMS: locals
+// SYSTEM: abox
+double rate = fabs(aa); double variance = z.x*z.x + z.y*z.y; aux.DE *= (1.0 + af * exp(-rate * (double)i * 0.01 * variance));

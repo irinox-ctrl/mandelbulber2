@@ -1,0 +1,5 @@
+// TYPE_ID: 396
+// NAME: Type 396
+// PARAMS: locals
+// SYSTEM: abox
+double J = fabs(aa)+0.01; double Av = sin(ab*z.x)*sin(ab*z.y); double Bp = cos(ac*z.x)*cos(ac*z.y); double toric = 4.0*J*(Av*Av + Bp*Bp); aux.DE *= (1.0 + af * fmin(toric,10.0));

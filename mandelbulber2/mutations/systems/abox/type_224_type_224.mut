@@ -1,0 +1,5 @@
+// TYPE_ID: 224
+// NAME: Type 224
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= (1.0 + aa * cos(2.0 * ab * atan2(zy, zx)));

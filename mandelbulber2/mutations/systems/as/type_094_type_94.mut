@@ -1,0 +1,5 @@
+// TYPE_ID: 94
+// NAME: Type 94
+// PARAMS: locals
+// SYSTEM: as
+double order = sin(z.x*ta)*sin(z.y*tb); double latent = fabs(tc); aux.DE *= (1.0 + sf*latent*order*order);

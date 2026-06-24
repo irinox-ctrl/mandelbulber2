@@ -1,0 +1,5 @@
+// TYPE_ID: 360
+// NAME: Type 360
+// PARAMS: locals
+// SYSTEM: abox
+double T_hot = fmax(fabs(aa),0.02); double T_cold = fmax(fabs(ab),0.01); double cop = T_hot/(T_hot-T_cold+1e-21); double enhance = cos(ac*r)*cos(ac*r); aux.DE *= (1.0 + af * fmin(cop*enhance,10.0));

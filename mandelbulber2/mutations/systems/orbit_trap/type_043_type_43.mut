@@ -1,0 +1,5 @@
+// TYPE_ID: 43
+// NAME: Type 43
+// PARAMS: locals
+// SYSTEM: orbit_trap
+double ex=z.x*z.x/(oa*oa+1e-21); double ey=z.y*z.y/(ob*ob+1e-21); double d=fabs(ex+ey-1.0)*sqrt(oa*oa+ob*ob); aux.DE *= (1.0 + of*exp(-od*d));

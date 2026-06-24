@@ -1,0 +1,5 @@
+// TYPE_ID: 36
+// NAME: Type 36
+// PARAMS: locals
+// SYSTEM: abox
+{ double ph=atan2(zy,zx); double th=acos(zz2/r); aux.DE*=(1.0+af*aa*sin(ab*ph)*sin(ac*th)); }

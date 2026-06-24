@@ -1,0 +1,5 @@
+// TYPE_ID: 95
+// NAME: Type 95
+// PARAMS: locals
+// SYSTEM: jos_leys
+double joy=ja*sin(jfreq*zx/fmax(0.01,jb))*sin(jfreq*zy/fmax(0.01,jc))*sin(jfreq*zz2/fmax(0.01,jd)); aux.DE*=(1.0+jf*joy);

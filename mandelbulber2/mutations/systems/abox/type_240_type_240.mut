@@ -1,0 +1,5 @@
+// TYPE_ID: 240
+// NAME: Type 240
+// PARAMS: locals
+// SYSTEM: abox
+{ double jet=exp(-fabs(sqrt(zx*zx+zy*zy)-aa)/(fmax(ab,0.01))); aux.DE*=(1.0+ac*jet); }

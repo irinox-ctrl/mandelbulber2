@@ -1,0 +1,5 @@
+// TYPE_ID: 75
+// NAME: Type 75
+// PARAMS: locals
+// SYSTEM: mb_math
+z.x+=ma*sin(mb*i); z.y+=mc*sin(md*i); z.z+=me*sin(mff*i); aux.DE*=fabs(mf);

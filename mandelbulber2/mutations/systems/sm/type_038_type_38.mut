@@ -1,0 +1,5 @@
+// TYPE_ID: 38
+// NAME: Type 38
+// PARAMS: locals
+// SYSTEM: sm
+z.x=fabs(z.x);z.y=-fabs(z.y);z.z=fabs(z.z); double sc=3.0; if(z.x-z.z<0.0){double t=z.x;z.x=z.z;z.z=t;} z=z*sc-CVector4(1,1,1,0)*(sc-1.0)*ta; aux.DE=aux.DE*sc+1.0;

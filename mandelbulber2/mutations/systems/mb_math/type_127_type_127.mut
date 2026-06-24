@@ -1,0 +1,5 @@
+// TYPE_ID: 127
+// NAME: Type 127
+// PARAMS: locals
+// SYSTEM: mb_math
+double mR2=ma,fR2=mb; double t=(rr-mR2)/(fR2-mR2+1e-21); t=fmax(0.0,fmin(1.0,t)); aux.color+=t*mc;

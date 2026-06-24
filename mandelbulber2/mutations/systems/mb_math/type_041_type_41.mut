@@ -1,0 +1,5 @@
+// TYPE_ID: 41
+// NAME: Type 41
+// PARAMS: locals
+// SYSTEM: mb_math
+double b1=ma,f1=mb,b2=mc,f2=md,b3=me,f3=mff; double m2=(rr<b1)?f1:((rr<b2)?f2:((rr<b3)?f3:1.0)); z*=m2; aux.DE*=m2;

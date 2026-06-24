@@ -1,0 +1,5 @@
+// TYPE_ID: 258
+// NAME: Type 258
+// PARAMS: locals
+// SYSTEM: abox
+{ double div=(sin(aa*(zx+0.01))-sin(aa*zx))/0.01; aux.DE*=(1.0+ab*fabs(div)); }

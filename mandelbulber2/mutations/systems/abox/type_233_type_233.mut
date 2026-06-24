@@ -1,0 +1,5 @@
+// TYPE_ID: 233
+// NAME: Type 233
+// PARAMS: locals
+// SYSTEM: abox
+{ double sw=1.0/cosh(aa*fabs(r-ab)); aux.DE*=(1.0+ac*sw); }

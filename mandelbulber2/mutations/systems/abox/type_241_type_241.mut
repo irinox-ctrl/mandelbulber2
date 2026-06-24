@@ -1,0 +1,5 @@
+// TYPE_ID: 241
+// NAME: Type 241
+// PARAMS: locals
+// SYSTEM: abox
+{ double halo=1.0/(1.0+pow(r/fmax(aa,0.01),2.0)); aux.DE*=(1.0+ab*halo); }

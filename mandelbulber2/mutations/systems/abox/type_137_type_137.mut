@@ -1,0 +1,5 @@
+// TYPE_ID: 137
+// NAME: Type 137
+// PARAMS: locals
+// SYSTEM: abox
+{ double c=fabs(sin(aa*r)*cos(ab*atan2(zy,zx))); aux.DE*=(1.0+af*ac*c); }

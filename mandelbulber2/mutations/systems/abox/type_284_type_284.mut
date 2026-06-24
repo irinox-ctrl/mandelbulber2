@@ -1,0 +1,5 @@
+// TYPE_ID: 284
+// NAME: Type 284
+// PARAMS: locals
+// SYSTEM: abox
+{ double sff=sin(aa*double(i)*0.1)*sin(ab*double(i)*0.1); aux.DE*=(1.0+ac*fabs(sff)); }

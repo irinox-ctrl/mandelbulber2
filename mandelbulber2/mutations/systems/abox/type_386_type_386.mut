@@ -1,0 +1,5 @@
+// TYPE_ID: 386
+// NAME: Type 386
+// PARAMS: locals
+// SYSTEM: abox
+double J = aa; double lambda = ab; double sigma = sin(ac*z.x)*sin(ac*z.y); double tau = cos(ad*z.x)*cos(ad*z.y); double coupling = J*(sigma + tau + lambda*sigma*tau); aux.DE *= (1.0 + af * fabs(coupling));

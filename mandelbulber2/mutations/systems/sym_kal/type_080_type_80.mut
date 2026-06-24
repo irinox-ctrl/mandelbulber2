@@ -1,0 +1,5 @@
+// TYPE_ID: 80
+// NAME: Type 80
+// PARAMS: locals
+// SYSTEM: sym_kal
+{ double a=sang; for(int k=0;k<3;k++){ z.x=fabs(z.x); double d=z.x*cos(a)+z.y*sin(a); if(d<0){z.x-=2.0*d*cos(a);z.y-=2.0*d*sin(a);} a+=M_PI/3.0*sf; } }

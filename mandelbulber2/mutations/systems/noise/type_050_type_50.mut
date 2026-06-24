@@ -1,0 +1,5 @@
+// TYPE_ID: 50
+// NAME: Type 50
+// PARAMS: locals
+// SYSTEM: noise
+double md=1e10; int nn = (int)fmax(2.0, fmin(na*8.0, 20.0)); for(int dx=-1;dx<=1;dx++) for(int dy=-1;dy<=1;dy++) for(int dz=-1;dz<=1;dz++){ double cx=floor(z.x*nfq)+dx; double cy=floor(z.y*nfq)+dy; double cz=floor(z.z*nfq)+dz; for(int p=0;p<2;p++){ double h1=sin((cx+p*0.5)*127.1+cy*311.7+cz*74.7)*43758.5453; h1=h1-floor(h1); double h2=sin(cx*269.5+(cy+p*0.5)*183.3+cz*346.9)*43758.5453; h2=h2-floor(h2); double d=(z.x*nfq-cx-h1)*(z.x*nfq-cx-h1)+(z.y*nfq-cy-h2)*(z.y*nfq-cy-h2)+(z.z*nfq-cz)*(z.z*nfq-cz); if(d<md)md=d; } } aux.DE *= (1.0 + nf*sqrt(md)*nam);

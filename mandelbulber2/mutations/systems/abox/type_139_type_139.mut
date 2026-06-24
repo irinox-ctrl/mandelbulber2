@@ -1,0 +1,5 @@
+// TYPE_ID: 139
+// NAME: Type 139
+// PARAMS: locals
+// SYSTEM: abox
+{ double h=atan2(zy,zx)/(2.0*M_PI)+0.5; aux.DE*=(1.0+af*aa*sin(ab*h*M_PI*2.0)); }

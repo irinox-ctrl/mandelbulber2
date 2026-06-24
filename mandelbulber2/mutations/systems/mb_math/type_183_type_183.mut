@@ -1,0 +1,5 @@
+// TYPE_ID: 183
+// NAME: Type 183
+// PARAMS: locals
+// SYSTEM: mb_math
+double sc=ma; z*=sc; aux.DE*=fabs(sc); z.x+=mb; z.y+=mc; z.z+=md; double th=me*M_PI/180.0; double cs=cos(th),sn=sin(th); double nx=z.x*cs-z.y*sn; z.y=z.x*sn+z.y*cs; z.x=nx;

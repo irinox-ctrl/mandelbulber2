@@ -1,0 +1,5 @@
+// TYPE_ID: 25
+// NAME: Type 25
+// PARAMS: locals
+// SYSTEM: as
+double wl_diff = fabs(z.x*ta - tb); aux.DE *= (1.0 + sf*tc*wl_diff);

@@ -1,0 +1,5 @@
+// TYPE_ID: 186
+// NAME: Type 186
+// PARAMS: locals
+// SYSTEM: mb_math
+double N=fmax(2.0,ma); double th=atan2(zy,zx); double sector=2.0*M_PI/N; th=fmod(th+sector*0.5+100.0*sector,sector)-sector*0.5; double rxy=sqrt(zx*zx+zy*zy); z.x=rxy*cos(th); z.y=rxy*sin(th); if(fabs(z.x)>mb) z.x=copysign(mb*2.0,z.x)-z.x; aux.DE*=fabs(mf);

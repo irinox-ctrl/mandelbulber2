@@ -1,0 +1,5 @@
+// TYPE_ID: 13
+// NAME: Type 13
+// PARAMS: locals
+// SYSTEM: sm
+double mx=z.x*z.x-z.y*z.y+z.x; double my=2.0*z.x*z.y+z.y; z.x=mx; z.y=my; aux.DE *= 2.0*sqrt(mx*mx+my*my);

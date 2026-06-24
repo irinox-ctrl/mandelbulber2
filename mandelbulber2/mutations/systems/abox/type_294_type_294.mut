@@ -1,0 +1,5 @@
+// TYPE_ID: 294
+// NAME: Type 294
+// PARAMS: locals
+// SYSTEM: abox
+{ double ce=sin(aa*zx)*cos(ab*zy)*sin(ac*zz2); aux.DE*=(1.0+ad*fabs(ce)); }

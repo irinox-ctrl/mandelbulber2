@@ -2,14 +2,13 @@
 """
 Export CPU mutation switch cases to .mut pilot files.
 
-Reads compute_fractal.cpp clip / inversion switches and writes
-mutations/systems/<system>/type_NNN_<slug>.mut with parameter aliases.
+Reads compute_fractal.cpp switches and writes mutations/systems/<system>/type_NNN_<slug>.mut.
 
 Usage:
     python3 export_cpu_cases_to_mut.py --system clip
-    python3 export_cpu_cases_to_mut.py --system inversion
-    python3 export_cpu_cases_to_mut.py --all
-    python3 export_cpu_cases_to_mut.py --all --force   # overwrite existing
+    python3 export_cpu_cases_to_mut.py --all              # clip + inversion
+    python3 export_cpu_cases_to_mut.py --all-de           # 11 DE subsystems
+    python3 export_cpu_cases_to_mut.py --all --all-de --force
 """
 
 from __future__ import annotations
@@ -23,6 +22,9 @@ from typing import Dict, List, Tuple
 ROOT = Path(__file__).resolve().parent.parent.parent
 CPU_FILE = ROOT / "src" / "compute_fractal.cpp"
 SYSTEMS_DIR = ROOT / "mutations" / "systems"
+CODEGEN = Path(__file__).resolve().parent
+sys.path.insert(0, str(CODEGEN))
+import port_cpu_de_cases as PORT  # noqa: E402
 
 SYSTEM_CONFIG = {
     "clip": {
@@ -99,16 +101,7 @@ def find_switch_body(text: str, switch_pattern: str) -> str:
 
 
 def extract_cases(switch_body: str) -> Dict[int, str]:
-    cases: Dict[int, str] = {}
-    pattern = re.compile(r"case\s+(\d+)\s*:\s*(.*?)\sbreak\s*;", re.DOTALL)
-    for m in pattern.finditer(switch_body):
-        case_body = m.group(2).strip()
-        if case_body.startswith("{"):
-            case_body = case_body[1:].lstrip()
-        if case_body.endswith("}"):
-            case_body = case_body[:-1].rstrip()
-        cases[int(m.group(1))] = case_body
-    return cases
+    return PORT.extract_cases(switch_body)
 
 
 def extract_case_name(switch_body: str, case_num: int) -> str:
@@ -129,8 +122,7 @@ def extract_case_name(switch_body: str, case_num: int) -> str:
 def slugify(name: str) -> str:
     slug = name.lower()
     slug = re.sub(r"[^a-z0-9]+", "_", slug)
-    slug = slug.strip("_")
-    return slug[:48] or "type"
+    return slug.strip("_")[:48] or "type"
 
 
 def apply_aliases(body: str, aliases: List[Tuple[str, str]]) -> str:
@@ -151,7 +143,7 @@ def write_mut(path: Path, type_id: int, name: str, system: str, body: str) -> No
     lines = [
         f"// TYPE_ID: {type_id}",
         f"// NAME: {name}",
-        f"// PARAMS: {', '.join(params) if params else 'none'}",
+        f"// PARAMS: {', '.join(params) if params else 'locals'}",
         f"// SYSTEM: {system}",
         body.strip(),
         "",
@@ -159,15 +151,7 @@ def write_mut(path: Path, type_id: int, name: str, system: str, body: str) -> No
     path.write_text("\n".join(lines), encoding="utf-8")
 
 
-def export_system(system: str, force: bool) -> int:
-    cfg = SYSTEM_CONFIG[system]
-    cpu_text = CPU_FILE.read_text(encoding="utf-8")
-    switch_body = find_switch_body(cpu_text, cfg["switch"])
-    cases = extract_cases(switch_body)
-    if not cases:
-        print(f"{system}: no cases found")
-        return 0
-
+def write_cases(system: str, switch_body: str, cases: Dict[int, str], aliases: List[Tuple[str, str]], force: bool) -> int:
     out_dir = SYSTEMS_DIR / system
     out_dir.mkdir(parents=True, exist_ok=True)
 
@@ -184,41 +168,74 @@ def export_system(system: str, force: bool) -> int:
             continue
         name = extract_case_name(switch_body, num)
         slug = slugify(name)
-        fname = f"type_{num:03d}_{slug}.mut"
-        path = out_dir / fname
+        path = out_dir / f"type_{num:03d}_{slug}.mut"
         if not force and path.exists():
             continue
         if force:
             for old in existing_by_id.get(num, []):
                 if old != path and old.exists():
                     old.unlink()
-        body = apply_aliases(cases[num], cfg["aliases"])
-        write_mut(path, num, name, cfg["system_name"], body)
+        body = apply_aliases(cases[num], aliases) if aliases else cases[num]
+        write_mut(path, num, name, system, body)
         written += 1
     print(f"{system}: exported {written} .mut files ({len(cases)} CPU cases total)")
     return written
 
 
+def export_transform_system(system: str, force: bool) -> int:
+    cfg = SYSTEM_CONFIG[system]
+    cpu_text = CPU_FILE.read_text(encoding="utf-8")
+    switch_body = find_switch_body(cpu_text, cfg["switch"])
+    cases = extract_cases(switch_body)
+    if not cases:
+        print(f"{system}: no cases found")
+        return 0
+    return write_cases(system, switch_body, cases, cfg["aliases"], force)
+
+
+def export_de_system(section, cpu_text: str, force: bool) -> int:
+    start = PORT.find_marker_pos(cpu_text, section.marker)
+    _, _, switch_body = PORT.find_switch_body(cpu_text, section.cpu_switch, start)
+    cases = extract_cases(switch_body)
+    if not cases:
+        print(f"{section.section_id}: no cases found")
+        return 0
+    return write_cases(section.section_id, switch_body, cases, [], force)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Export CPU switch cases to .mut files")
     parser.add_argument("--system", choices=sorted(SYSTEM_CONFIG))
-    parser.add_argument("--all", action="store_true")
-    parser.add_argument("--force", action="store_true", help="Overwrite existing .mut files")
+    parser.add_argument("--de-system", choices=[s.section_id for s in PORT.SECTIONS])
+    parser.add_argument("--all", action="store_true", help="clip + inversion")
+    parser.add_argument("--all-de", action="store_true", help="All 11 DE subsystems")
+    parser.add_argument("--force", action="store_true")
     args = parser.parse_args()
 
     if not CPU_FILE.is_file():
         print(f"CPU file not found: {CPU_FILE}")
         return 1
 
-    targets = list(SYSTEM_CONFIG) if args.all else ([args.system] if args.system else [])
-    if not targets:
+    total = 0
+    cpu_text = CPU_FILE.read_text(encoding="utf-8")
+
+    if args.all:
+        for system in SYSTEM_CONFIG:
+            total += export_transform_system(system, args.force)
+    elif args.system:
+        total += export_transform_system(args.system, args.force)
+
+    if args.all_de:
+        for section in PORT.SECTIONS:
+            total += export_de_system(section, cpu_text, args.force)
+    elif args.de_system:
+        section = next(s for s in PORT.SECTIONS if s.section_id == args.de_system)
+        total += export_de_system(section, cpu_text, args.force)
+
+    if total == 0 and not (args.all or args.system or args.all_de or args.de_system):
         parser.print_help()
         return 1
-
-    total = 0
-    for system in targets:
-        total += export_system(system, args.force)
-    return 0 if total >= 0 else 1
+    return 0
 
 
 if __name__ == "__main__":

@@ -1,0 +1,5 @@
+// TYPE_ID: 52
+// NAME: Type 52
+// PARAMS: locals
+// SYSTEM: pk
+double sar=pa*(sin(pfreq*zx)*sin(pfreq*zy)*sin(pfreq*zz2)>0.0?1.0:-1.0)*pb; aux.DE*=(1.0+pf*sar/fmax(1e-10,r));

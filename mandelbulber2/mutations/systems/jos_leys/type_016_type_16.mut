@@ -1,0 +1,5 @@
+// TYPE_ID: 16
+// NAME: Type 16
+// PARAMS: locals
+// SYSTEM: jos_leys
+double wp=1.0/(rr+1e-10); for(int n=1;n<6;n++){double dn2=(zx-n*ja)*(zx-n*ja)+(zy-n*jb)*(zy-n*jb)+zz2*zz2; wp+=1.0/fmax(1e-10,dn2)-1.0/(n*n*ja*ja+n*n*jb*jb+1e-10);} aux.DE*=(1.0+jf*fabs(wp));

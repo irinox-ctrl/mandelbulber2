@@ -1,0 +1,5 @@
+// TYPE_ID: 213
+// NAME: Type 213
+// PARAMS: locals
+// SYSTEM: abox
+{ double vg=(sin(aa*(zx+0.01))-sin(aa*zx))/0.01; aux.DE*=(1.0+ab*fabs(vg)); }

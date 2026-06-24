@@ -1,0 +1,5 @@
+// TYPE_ID: 269
+// NAME: Type 269
+// PARAMS: locals
+// SYSTEM: abox
+{ double gv=sin(aa*r)*sin(ab*r); aux.DE*=(1.0+ac*gv*gv); }

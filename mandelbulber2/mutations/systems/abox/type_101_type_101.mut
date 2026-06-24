@@ -1,0 +1,5 @@
+// TYPE_ID: 101
+// NAME: Type 101
+// PARAMS: locals
+// SYSTEM: abox
+{ double w=aa*sin(ab*r); aux.DE*=(1.0+af*ac*fabs(w)); }

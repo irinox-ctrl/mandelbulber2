@@ -1,0 +1,5 @@
+// TYPE_ID: 384
+// NAME: Type 384
+// PARAMS: locals
+// SYSTEM: abox
+double J = aa; double q = fmax(floor(fabs(ab)*5+2), 2.0); double sigma_i = floor(sin(ac*z.x)*q); double sigma_j = floor(sin(ac*z.y)*q); double delta_s = (sigma_i == sigma_j) ? 1.0 : 0.0; aux.DE *= (1.0 + af * J*delta_s);

@@ -1,0 +1,5 @@
+// TYPE_ID: 226
+// NAME: Type 226
+// PARAMS: locals
+// SYSTEM: abox
+aux.DE *= (1.0 + aa * ab * ac);

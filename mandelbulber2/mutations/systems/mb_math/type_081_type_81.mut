@@ -1,0 +1,5 @@
+// TYPE_ID: 81
+// NAME: Type 81
+// PARAMS: locals
+// SYSTEM: mb_math
+z.x+=ma; z.y+=mb*sin(mc*zz2); aux.DE*=fabs(mf);
