@@ -618,6 +618,7 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 			float rr;
 			switch (mut->inversionType)
 			{
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_INVERSIONTYPE_1)
 				case 1: // Ellipsoid Inversion
 				{
 					rr = (zz.x/a)*(zz.x/a) + (zz.y/b)*(zz.y/b) + (zz.z/c)*(zz.z/c);
@@ -627,6 +628,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					mde = 1.0f/rr;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_INVERSIONTYPE_2)
 				case 2: // Cylinder Inversion
 				{
 					rr = zz.x * zz.x + zz.y * zz.y;
@@ -635,6 +638,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					zz.x *= mde; zz.y *= mde;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_INVERSIONTYPE_3)
 				case 3: // Torus Inversion
 				{
 					float rxy = native_sqrt(zz.x * zz.x + zz.y * zz.y);
@@ -644,6 +649,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					zz *= mde;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_INVERSIONTYPE_4)
 				case 4: // Hyperboloid Inversion
 				{
 					rr = (zz.x/a)*(zz.x/a) + (zz.y/b)*(zz.y/b) - (zz.z/c)*(zz.z/c);
@@ -652,6 +659,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					zz *= mde;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_INVERSIONTYPE_5)
 				case 5: // Paraboloid Inversion
 				{
 					rr = zz.x * zz.x + zz.y * zz.y - a * zz.z;
@@ -660,6 +669,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					zz *= mde;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_INVERSIONTYPE_6)
 				case 6: // Cone Inversion
 				{
 					float tanA = tan(mut->invAngle * M_PI_F / 180.0f);
@@ -669,6 +680,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					zz *= mde;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_INVERSIONTYPE_7)
 				case 7: // Saddle Inversion
 				{
 					rr = (zz.x/a)*(zz.x/a) - (zz.y/b)*(zz.y/b) - zz.z;
@@ -677,6 +690,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					zz *= mde;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_INVERSIONTYPE_8)
 				case 8: // Spiral Inversion
 				{
 					float r2d = native_sqrt(zz.x * zz.x + zz.y * zz.y);
@@ -688,6 +703,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					zz *= mde;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_INVERSIONTYPE_9)
 				case 9: // Lemniscate Inversion
 				{
 					float x2 = zz.x * zz.x, y2 = zz.y * zz.y;
@@ -697,6 +714,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					zz *= mde;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_INVERSIONTYPE_10)
 				case 10: // Cassini Inversion
 				{
 					float d1sq = (zz.x - a) * (zz.x - a) + zz.y * zz.y;
@@ -707,6 +726,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					zz *= mde;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_INVERSIONTYPE_11)
 				case 11: // Dipole Inversion
 				{
 					float3 c1 = (float3){mut->invCenterX, mut->invCenterY, mut->invCenterZ};
@@ -719,6 +740,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					mde = fabs(mde);
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_INVERSIONTYPE_12)
 				case 12: // Multipoint Inversion
 				{
 					float3 c1 = (float3){0.0f, 0.0f, 0.0f};
@@ -731,6 +754,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					mde = fabs(mde);
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_INVERSIONTYPE_13)
 				case 13: // Chain Inversion (2-step)
 				{
 					float3 c1 = (float3){0.0f, 0.0f, 0.0f};
@@ -744,6 +769,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					mde = m1 * m2;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_INVERSIONTYPE_14)
 				case 14: // Nest Inversion (K-step)
 				{
 					mde = 1.0f;
@@ -764,6 +791,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					mde = fabs(mde);
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_INVERSIONTYPE_15)
 				case 15: // Apollonian Inversion
 				{
 					float3 centers[4];
@@ -782,6 +811,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					zz = centers[nearest] + (zz - centers[nearest]) * mde;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_INVERSIONTYPE_16)
 				case 16: // Ford Circle Inversion
 				{
 					float q = max(1.0f, a);
@@ -792,6 +823,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					zz = fc + (zz - fc) * mde;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_INVERSIONTYPE_17)
 				case 17: // Schottky Group Inversion
 				{
 					float3 c1 = (float3){a, 0.0f, 0.0f};
@@ -802,6 +835,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					else { mde = R * R / d2; zz = c2 + (zz - c2) * mde; }
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_INVERSIONTYPE_18)
 				case 18: // Fuchsian Inversion
 				{
 					float cz_d = c * zz.x + 1.0f;
@@ -813,6 +848,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					zz.x = nx * mde; zz.y = ny * mde;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_INVERSIONTYPE_19)
 				case 19: // Modular Inversion (SL(2,Z))
 				{
 					rr = zz.x * zz.x + zz.y * zz.y;
@@ -823,6 +860,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					if (zz.x < -0.5f) zz.x += 1.0f;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_INVERSIONTYPE_20)
 				case 20: // Hecke Inversion
 				{
 					float lambda = 2.0f * native_cos(M_PI_F / a);
@@ -834,12 +873,16 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					if (zz.x < -lambda * 0.5f) zz.x += lambda;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_INVERSIONTYPE_21)
 				case 21: // Inversion with Pre-Rotation (already handled by invPreRotMatrix)
 				{
 					rr = dot(zz, zz); if (rr < 1e-21f) rr = 1e-21f;
 					mde = R * R / rr; zz *= mde;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_INVERSIONTYPE_22)
 				case 22: // Inversion with Pre-Shear
 				{
 					zz.x += mut->invAmplitude * zz.y;
@@ -848,6 +891,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					zz.x -= mut->invAmplitude * zz.y;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_INVERSIONTYPE_23)
 				case 23: // Inversion with Pre-Fold
 				{
 					float lim = a;
@@ -861,6 +906,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					mde = R * R / rr; zz *= mde;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_INVERSIONTYPE_24)
 				case 24: // Inversion with Pre-Abs
 				{
 					zz.x = fabs(zz.x); zz.y = fabs(zz.y); zz.z = fabs(zz.z);
@@ -868,6 +915,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					mde = R * R / rr; zz *= mde;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_INVERSIONTYPE_25)
 				case 25: // Inversion with Post-Scale Pulse
 				{
 					rr = dot(zz, zz); if (rr < 1e-21f) rr = 1e-21f;
@@ -876,6 +925,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					zz *= pulse; mde *= fabs(pulse);
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_INVERSIONTYPE_26)
 				case 26: // Inversion with Post-Offset Wave
 				{
 					rr = dot(zz, zz); if (rr < 1e-21f) rr = 1e-21f;
@@ -886,6 +937,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					zz.z += mut->invAmplitude * native_sin(freq * zz.z);
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_INVERSIONTYPE_27)
 				case 27: // Inversion with Iterative Angle
 				{
 					rr = dot(zz, zz); if (rr < 1e-21f) rr = 1e-21f;
@@ -897,6 +950,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					zz.x = tx;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_INVERSIONTYPE_28)
 				case 28: // DE-Aware Inversion
 				{
 					if (aux.DE < mut->invThreshold)
@@ -906,6 +961,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					}
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_INVERSIONTYPE_29)
 				case 29: // Color-Trigger Inversion
 				{
 					rr = dot(zz, zz); if (rr < 1e-21f) rr = 1e-21f;
@@ -913,6 +970,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					aux.color += mut->invColorFactor * fabs(mde - 1.0f);
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_INVERSIONTYPE_30)
 				case 30: // Orbit-Trap Inversion
 				{
 					rr = dot(zz, zz); if (rr < 1e-21f) rr = 1e-21f;
@@ -921,6 +980,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					if (trap < aux.color) aux.color = trap;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_INVERSIONTYPE_31)
 				case 31: // Quaternion Inversion
 				{
 					float4 q = (float4){zz.x, zz.y, zz.z, z.w};
@@ -930,6 +991,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					zz = q.xyz; z.w = q.w;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_INVERSIONTYPE_32)
 				case 32: // Dual Complex Inversion
 				{
 					float n1 = zz.x * zz.x + zz.y * zz.y; if (n1 < 1e-21f) n1 = 1e-21f;
@@ -939,6 +1002,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					mde = max(1.0f / n1, 1.0f / n2);
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_INVERSIONTYPE_33)
 				case 33: // Split Complex Inversion
 				{
 					float denom = zz.x * zz.x - zz.y * zz.y;
@@ -947,6 +1012,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					zz.x = zz.x / denom; zz.y = -zz.y / denom;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_INVERSIONTYPE_34)
 				case 34: // Dual Number Inversion
 				{
 					if (fabs(zz.x) < 1e-21f) zz.x = 1e-21f;
@@ -956,6 +1023,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					zz.x = ox; zz.y = oy;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_INVERSIONTYPE_35)
 				case 35: // Octonion Inversion
 				{
 					float on = dot(zz, zz) + z.w * z.w;
@@ -965,6 +1034,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					zz.y = -zz.y; zz.z = -zz.z;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_INVERSIONTYPE_36)
 				case 36: // Sedenion Inversion
 				{
 					float sn = dot(zz, zz) + z.w * z.w;
@@ -974,6 +1045,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					z.w *= -mde;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_INVERSIONTYPE_37)
 				case 37: // Clifford Algebra Inversion
 				{
 					rr = dot(zz, zz); if (rr < 1e-21f) rr = 1e-21f;
@@ -981,6 +1054,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					zz *= mde;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_INVERSIONTYPE_38)
 				case 38: // Grassmann Algebra Inversion
 				{
 					float hodge = zz.x * (zz.y * zz.z);
@@ -991,6 +1066,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					zz.z = (zz.x * zz.y) * mde;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_INVERSIONTYPE_39)
 				case 39: // Non-Commutative Inversion
 				{
 					float detA = zz.x * zz.y - zz.z * zz.z;
@@ -1002,6 +1079,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					zz.z = -zz.z * mde;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_INVERSIONTYPE_40)
 				case 40: // Probabilistic Inversion
 				{
 					float hash = fabs(native_sin(zz.x * 12.9898f + zz.y * 78.233f + zz.z * 45.164f) * 43758.5453f);
@@ -1013,6 +1092,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					mde = (1.0f - p) + p * mde;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_INVERSIONTYPE_41)
 				case 41: // Inversion × Spherical Fold
 				{
 					rr = dot(zz, zz);
@@ -1024,6 +1105,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					zz *= mde;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_INVERSIONTYPE_42)
 				case 42: // Inversion × Box Fold
 				{
 					float lim = a;
@@ -1044,6 +1127,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					if (zz.z < -lim) zz.z = -2.0f * lim - zz.z;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_INVERSIONTYPE_43)
 				case 43: // Inversion × Möbius
 				{
 					float cz_d2 = c * zz.x + 1.0f;
@@ -1057,6 +1142,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					mde *= fabs(mobMde);
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_INVERSIONTYPE_44)
 				case 44: // Inversion × Kleinian
 				{
 					float3 dynC = zz * mut->invAmplitude;
@@ -1065,6 +1152,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					zz = dynC + (zz - dynC) * mde;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_INVERSIONTYPE_45)
 				case 45: // Inversion × Julia
 				{
 					float3 jc = (float3){mut->invCenter2X, mut->invCenter2Y, mut->invCenter2Z};
@@ -1073,6 +1162,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					zz = jc + (zz - jc) * mde;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_INVERSIONTYPE_46)
 				case 46: // Inversion × IFS
 				{
 					float3 ifs_c = (float3){a, b, c};
@@ -1082,6 +1173,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					zz.x = fabs(zz.x); zz.y = fabs(zz.y);
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_INVERSIONTYPE_47)
 				case 47: // Inversion × Loxodromic
 				{
 					rr = dot(zz, zz); if (rr < 1e-21f) rr = 1e-21f;
@@ -1095,6 +1188,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					mde *= fabs(sc);
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_INVERSIONTYPE_48)
 				case 48: // Inversion × Parabolic
 				{
 					zz.x += mut->invAmplitude;
@@ -1103,6 +1198,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					mde = R * R / rr; zz *= mde;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_INVERSIONTYPE_49)
 				case 49: // Inversion × Elliptic
 				{
 					float theta = mut->invAngle * M_PI_F / 180.0f;
@@ -1114,6 +1211,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					mde = R * R / rr; zz *= mde;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_INVERSIONTYPE_50)
 				case 50: // Inversion × Hyperbolic Translation (Poincaré ball)
 				{
 					float3 aa = (float3){mut->invCenter2X, mut->invCenter2Y, mut->invCenter2Z};
@@ -1131,6 +1230,7 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					mde = fabs(mde);
 					break;
 				}
+#endif
 			}
 			zz.x += mut->invCenterX; zz.y += mut->invCenterY; zz.z += mut->invCenterZ;
 			if (mut->invPreRotX != 0.0f || mut->invPreRotY != 0.0f || mut->invPreRotZ != 0.0f)
@@ -1151,11 +1251,14 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 			{
 			switch (mut->foldType)
 			{
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_1)
 				case 1: // box fold
 					if (fabs(z.x) > mut->foldLimit) z.x = sign(z.x) * mut->foldValue - z.x;
 					if (fabs(z.y) > mut->foldLimit) z.y = sign(z.y) * mut->foldValue - z.y;
 					if (fabs(z.z) > mut->foldLimit) z.z = sign(z.z) * mut->foldValue - z.z;
 					break;
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_2)
 				case 2: // sphere fold
 				{
 					float rr = z.x*z.x + z.y*z.y + z.z*z.z;
@@ -1165,6 +1268,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					else if (rr < fixR2) { z *= fixR2/rr; aux.DE *= fixR2/rr; }
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_3)
 				case 3: // menger fold
 				{
 					z.x = fabs(z.x); z.y = fabs(z.y); z.z = fabs(z.z);
@@ -1180,6 +1285,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					aux.DE *= s;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_4)
 				case 4: // sierpinski fold
 				{
 					if (z.x + z.y < 0) { float tx = -z.y; z.y = -z.x; z.x = tx; }
@@ -1193,6 +1300,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					aux.DE *= s;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_5)
 				case 5: // abs fold (tglad)
 				{
 					z.x = fabs(z.x + mut->foldLimit) - fabs(z.x - mut->foldLimit) - z.x;
@@ -1200,6 +1309,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					z.z = fabs(z.z + mut->foldLimit) - fabs(z.z - mut->foldLimit) - z.z;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_6)
 				case 6: // kaleidoscope
 				{
 					int sides = mut->kaleidoscopeSides;
@@ -1215,6 +1326,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					}
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_7)
 				case 7: // octahedral fold
 				{
 					if (z.x + z.y < 0) { float tx = -z.y; z.y = -z.x; z.x = tx; }
@@ -1224,6 +1337,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					if (z.x - z.z < 0) { float tx = z.z; z.z = z.x; z.x = tx; }
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_8)
 				case 8: // smooth fold (tanh)
 				{
 					float k = (mut->foldLimit > 0.0f) ? mut->foldLimit : 1.0f;
@@ -1232,6 +1347,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					z.z -= tanh(k * z.z);
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_9)
 				case 9: // polynomial fold (Chebyshev z³-3z)
 				{
 					z.x = z.x * z.x * z.x - 3.0f * z.x;
@@ -1239,6 +1356,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					z.z = z.z * z.z * z.z - 3.0f * z.z;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_10)
 				case 10: // circular fold
 				{
 					float rad = (mut->foldValue > 0.0f) ? mut->foldValue : 1.0f;
@@ -1246,6 +1365,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					if (r > 1e-21f) { float s = rad / r; z.x *= s; z.y *= s; z.z *= s; }
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_11)
 				case 11: // spiral fold
 				{
 					float r = native_sqrt(z.x*z.x + z.y*z.y);
@@ -1256,6 +1377,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					z.x = nx; z.y = ny;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_12)
 				case 12: // sinusoidal fold
 				{
 					float a = mut->foldValue;
@@ -1265,6 +1388,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					z.z += a * native_sin(b * z.z);
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_13)
 				case 13: // exponential fold
 				{
 					z.x *= native_exp(-z.x * z.x);
@@ -1272,6 +1397,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					z.z *= native_exp(-z.z * z.z);
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_14)
 				case 14: // logarithmic fold
 				{
 					float rx = fabs(z.x); float ry = fabs(z.y); float rz = fabs(z.z);
@@ -1280,6 +1407,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					z.z *= native_log(1.0f + rz);
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_15)
 				case 15: // power fold
 				{
 					float p = (mut->foldValue > 0.0f) ? mut->foldValue : 2.0f;
@@ -1289,6 +1418,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					z.z = sign(z.z) * native_powr(max(az, 1e-21f), p);
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_16)
 				case 16: // smooth abs
 				{
 					float k = (mut->foldLimit > 0.0f) ? mut->foldLimit : 5.0f;
@@ -1297,6 +1428,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					z.z = z.z * tanh(k * z.z);
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_17)
 				case 17: // modulo wrap
 				{
 					float period = (mut->foldValue > 0.0f) ? mut->foldValue : 2.0f;
@@ -1305,6 +1438,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					z.z = fmod(z.z + period * 0.5f, period) - period * 0.5f;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_18)
 				case 18: // nested abs
 				{
 					float c = (mut->foldLimit > 0.0f) ? mut->foldLimit : 1.0f;
@@ -1313,6 +1448,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					z.z = fabs(fabs(z.z) - c);
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_19)
 				case 19: // sawtooth
 				{
 					z.x = 2.0f * (z.x * 0.5f - floor(z.x * 0.5f + 0.5f));
@@ -1320,6 +1457,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					z.z = 2.0f * (z.z * 0.5f - floor(z.z * 0.5f + 0.5f));
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_20)
 				case 20: // Bipolar
 				{
 					float c1 = mut->foldLimit;
@@ -1329,6 +1468,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					z.z = fabs(z.z - c1) - fabs(z.z - c2);
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_21)
 				case 21: // RadialBox
 				{
 					float r = native_sqrt(z.x*z.x + z.y*z.y);
@@ -1341,6 +1482,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					aux.DE *= r / max(native_sqrt(z.x*z.x + z.y*z.y), 1e-21f);
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_22)
 				case 22: // Shear
 				{
 					float lim = mut->foldLimit;
@@ -1352,6 +1495,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					z.y += mut->foldValue * z.z;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_23)
 				case 23: // 3DCross
 				{
 					float lim = mut->foldLimit;
@@ -1374,6 +1519,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					}
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_24)
 				case 24: // Conformal
 				{
 					float r2 = z.x*z.x + z.y*z.y + z.z*z.z;
@@ -1386,6 +1533,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					}
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_25)
 				case 25: // Rotation
 				{
 					float lim = mut->foldLimit;
@@ -1398,6 +1547,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					float t = z.x; z.x = -z.y; z.y = t;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_26)
 				case 26: // ScalePulse
 				{
 					float lim = mut->foldLimit;
@@ -1412,6 +1563,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					aux.DE *= fabs(pulse);
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_27)
 				case 27: // TriangleWave
 				{
 					z.x = 2.0f * fabs(z.x * 0.5f - floor(z.x * 0.5f + 0.5f));
@@ -1419,18 +1572,25 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					z.z = 2.0f * fabs(z.z * 0.5f - floor(z.z * 0.5f + 0.5f));
 					break;
 				}
+#endif
 			}
 			}
 
 			// Component swizzle
 			switch (mut->swizzle)
 			{
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SWIZZLE_0)
 			case 0: break;
 			case 1: { float t = z.y; z.y = z.z; z.z = t; } break;
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SWIZZLE_2)
 			case 2: { float t = z.x; z.x = z.y; z.y = t; } break;
 			case 3: { float t = z.x; z.x = z.y; z.y = z.z; z.z = t; } break;
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SWIZZLE_4)
 			case 4: { float t = z.z; z.z = z.y; z.y = z.x; z.x = t; } break;
 			case 5: { float t = z.x; z.x = z.z; z.z = t; } break;
+#endif
 			}
 
 			// Warp distortion (per-section iteration range)
@@ -1545,6 +1705,7 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 			float4 mathZ = z;
 			switch (mut->mathType)
 			{
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_1)
 				case 1: // SinPower
 				{
 					float p = safeMathP1;
@@ -1553,6 +1714,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					mathZ.z = sign(native_sin(z.z)) * pow(fabs(native_sin(z.z)), p);
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_2)
 				case 2: // CoshField
 				{
 					float freq = safeMathP1;
@@ -1562,6 +1725,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					mathZ.z = z.z + amp * (cosh(z.x * freq) - 1.0f);
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_3)
 				case 3: // ExpMap
 				{
 					float r = native_sqrt(z.x*z.x + z.y*z.y + z.z*z.z);
@@ -1577,6 +1742,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					}
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_4)
 				case 4: // LogSpiral
 				{
 					float r = native_sqrt(z.x*z.x + z.y*z.y + z.z*z.z);
@@ -1594,6 +1761,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					}
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_5)
 				case 5: // PowerN
 				{
 					float r = native_sqrt(z.x*z.x + z.y*z.y + z.z*z.z);
@@ -1612,6 +1781,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					}
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_6)
 				case 6: // ComplexMul
 				{
 					float cr = safeMathP1;
@@ -1621,6 +1792,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					mathZ.z = z.z * native_sqrt(cr*cr + ci*ci);
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_7)
 				case 7: // QuaternionMul
 				{
 					float qr = safeMathP1, qi = safeMathP2;
@@ -1631,6 +1804,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					mathZ.z = zi*qj - zj*qi + zk*qr;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_8)
 				case 8: // Bilinear
 				{
 					float a = safeMathP1, b = safeMathP2;
@@ -1645,6 +1820,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					}
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_9)
 				case 9: // InvCylindrical
 				{
 					float rxy = native_sqrt(z.x*z.x + z.y*z.y);
@@ -1658,6 +1835,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					}
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_10)
 				case 10: // SpiralPower
 				{
 					float angle = safeMathP1 * M_PI_F / 180.0f;
@@ -1669,6 +1848,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					aux.DE *= fabs(scale);
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_11)
 				case 11: // HyperbolicRot
 				{
 					float angle = safeMathP1;
@@ -1678,6 +1859,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					mathZ.y = z.y;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_12)
 				case 12: // SphereInversion3D
 				{
 					float cx = safeMathP1, cy = safeMathP2, cz = mut->mathP3;
@@ -1694,6 +1877,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					}
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_13)
 				case 13: // Loxodromic
 				{
 					float s = (safeMathP1 != 0.0f) ? safeMathP1 : 1.0f;
@@ -1714,6 +1899,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					aux.DE *= fabs(s);
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_14)
 				case 14: // Parabolic
 				{
 					float a = safeMathP1, b = safeMathP2, c = mut->mathP3;
@@ -1727,6 +1914,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					}
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_15)
 				case 15: // SchottkyDual
 				{
 					float c1x = safeMathP1, c1y = safeMathP2, c1z = mut->mathP3;
@@ -1756,6 +1945,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					}
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_16)
 				case 16: // FibonacciWord
 				{
 					int n = i % 64;
@@ -1786,6 +1977,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					}
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_17)
 				case 17: // MaskitBend
 				{
 					float muRe = safeMathP1, muIm = safeMathP2;
@@ -1808,6 +2001,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					}
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_18)
 				case 18: // EllipsoidInversion
 				{
 					float axX = (safeMathP1 != 0.0f) ? safeMathP1 : 1.0f;
@@ -1826,6 +2021,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					}
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_19)
 				case 19: // TorusInversion
 				{
 					float R = (safeMathP1 != 0.0f) ? safeMathP1 : 2.0f;
@@ -1847,6 +2044,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					}
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_20)
 				case 20: // QuatJuliaKleinian
 				{
 					float qr = mut->mathP4, qi = z.x, qj = z.y, qk = z.z;
@@ -1859,6 +2058,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					aux.DE = 2.0f * aux.r * aux.DE + 1.0f;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_21)
 				case 21: // PoincareBall
 				{
 					float r2 = z.x*z.x + z.y*z.y + z.z*z.z;
@@ -1884,6 +2085,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					}
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_22)
 				case 22: // LorentzBoost
 				{
 					float vx = safeMathP1, vy = safeMathP2, vz = mut->mathP3;
@@ -1915,6 +2118,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					}
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_23)
 				case 23: // ConformeFlow
 				{
 					float r = native_sqrt(z.x*z.x + z.y*z.y + z.z*z.z);
@@ -1931,6 +2136,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					aux.DE *= confFactor;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_24)
 				case 24: // FractionalPower
 				{
 					float p = (safeMathP1 != 0.0f) ? safeMathP1 : 2.718281828f;
@@ -1947,6 +2154,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					}
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_25)
 				case 25: // AnisotropePower
 				{
 					float px = (safeMathP1 != 0.0f) ? safeMathP1 : 2.0f;
@@ -1961,6 +2170,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					aux.DE = aux.DE * maxP * native_powr(max(r, 1e-21f), maxP - 1.0f) + 1.0f;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_26)
 				case 26: // HyperbolicTrigPower
 				{
 					float p = (safeMathP1 != 0.0f) ? safeMathP1 : 2.0f;
@@ -1977,6 +2188,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					}
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_27)
 				case 27: // LogarithmicRadius
 				{
 					float p = (safeMathP1 != 0.0f) ? safeMathP1 : 2.0f;
@@ -1993,6 +2206,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					}
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_28)
 				case 28: // PolarSwap
 				{
 					float r = native_sqrt(z.x*z.x + z.y*z.y + z.z*z.z);
@@ -2007,6 +2222,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					}
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_29)
 				case 29: // RadialModulation
 				{
 					float amp = (safeMathP1 != 0.0f) ? safeMathP1 : 0.1f;
@@ -2023,6 +2240,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					}
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_30)
 				case 30: // DualQuaternion
 				{
 					float q1w = (safeMathP1 != 0.0f) ? safeMathP1 : 1.0f;
@@ -2038,6 +2257,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					mathZ.z = tw*q2k + tz*q2w + tx*q2j - ty*q2i;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_31)
 				case 31: // OctonionPower
 				{
 					float p = (safeMathP1 != 0.0f) ? safeMathP1 : 2.0f;
@@ -2055,6 +2276,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					}
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_32)
 				case 32: // QuaternionMobius
 				{
 					float a = (safeMathP1 != 0.0f) ? safeMathP1 : 1.0f;
@@ -2078,6 +2301,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					}
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_33)
 				case 33: // SplitQuaternion
 				{
 					float p = (safeMathP1 != 0.0f) ? safeMathP1 : 2.0f;
@@ -2095,6 +2320,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					}
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_34)
 				case 34: // FordCircles
 				{
 					int N = (safeMathP1 > 0.5f) ? (int)safeMathP1 : 3;
@@ -2113,6 +2340,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					}
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_35)
 				case 35: // ApollonianNet
 				{
 					float rad = (safeMathP1 > 0.0f) ? safeMathP1 : 1.0f;
@@ -2138,6 +2367,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					}
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_36)
 				case 36: // ConformalWedge
 				{
 					float alpha = (safeMathP1 != 0.0f) ? safeMathP1 : 2.0f;
@@ -2154,6 +2385,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					}
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_37)
 				case 37: // CircleInvChain
 				{
 					float r1 = (safeMathP1 > 0.0f) ? safeMathP1 : 1.0f;
@@ -2177,6 +2410,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					}
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_38)
 				case 38: // HyperbolicSine
 				{
 					float amp = (safeMathP1 != 0.0f) ? safeMathP1 : 1.0f;
@@ -2186,6 +2421,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					aux.DE = aux.DE * amp * cosh(native_sqrt(z.x*z.x + z.y*z.y + z.z*z.z)) + 1.0f;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_39)
 				case 39: // BesselApprox
 				{
 					float freq = (safeMathP1 != 0.0f) ? safeMathP1 : 1.0f;
@@ -2200,6 +2437,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					}
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_40)
 				case 40: // LambertW
 				{
 					float amp = (safeMathP1 != 0.0f) ? safeMathP1 : 1.0f;
@@ -2211,6 +2450,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					aux.DE = aux.DE * amp * er * (1.0f + r) + 1.0f;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_41)
 				case 41: // ErrorFunction
 				{
 					float scale = (safeMathP1 != 0.0f) ? safeMathP1 : 1.0f;
@@ -2223,6 +2464,7 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					aux.DE = aux.DE * scale * erfDeriv + 1.0f;
 					break;
 				}
+#endif
 			}
 			if (mut->mathMix < 1.0f)
 			{
@@ -2718,11 +2960,14 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 			{
 			switch (mut->foldType)
 			{
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_1)
 				case 1:
 					if (fabs(z.x) > mut->foldLimit) z.x = sign(z.x) * mut->foldValue - z.x;
 					if (fabs(z.y) > mut->foldLimit) z.y = sign(z.y) * mut->foldValue - z.y;
 					if (fabs(z.z) > mut->foldLimit) z.z = sign(z.z) * mut->foldValue - z.z;
 					break;
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_2)
 				case 2:
 				{
 					float rr = z.x*z.x + z.y*z.y + z.z*z.z;
@@ -2732,6 +2977,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					else if (rr < fixR2) { z *= fixR2/rr; aux.DE *= fixR2/rr; }
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_3)
 				case 3:
 				{
 					z.x = fabs(z.x); z.y = fabs(z.y); z.z = fabs(z.z);
@@ -2747,6 +2994,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					aux.DE *= s;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_4)
 				case 4:
 				{
 					if (z.x + z.y < 0) { float tx = -z.y; z.y = -z.x; z.x = tx; }
@@ -2760,6 +3009,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					aux.DE *= s;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_5)
 				case 5:
 				{
 					z.x = fabs(z.x + mut->foldLimit) - fabs(z.x - mut->foldLimit) - z.x;
@@ -2767,6 +3018,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					z.z = fabs(z.z + mut->foldLimit) - fabs(z.z - mut->foldLimit) - z.z;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_6)
 				case 6:
 				{
 					int sides = mut->kaleidoscopeSides;
@@ -2782,6 +3035,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					}
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_7)
 				case 7:
 				{
 					if (z.x + z.y < 0) { float tx = -z.y; z.y = -z.x; z.x = tx; }
@@ -2791,6 +3046,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					if (z.x - z.z < 0) { float tx = z.z; z.z = z.x; z.x = tx; }
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_8)
 				case 8:
 				{
 					float k = (mut->foldLimit > 0.0f) ? mut->foldLimit : 1.0f;
@@ -2799,6 +3056,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					z.z -= tanh(k * z.z);
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_9)
 				case 9:
 				{
 					z.x = z.x * z.x * z.x - 3.0f * z.x;
@@ -2806,6 +3065,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					z.z = z.z * z.z * z.z - 3.0f * z.z;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_10)
 				case 10:
 				{
 					float rad = (mut->foldValue > 0.0f) ? mut->foldValue : 1.0f;
@@ -2813,6 +3074,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					if (r > 1e-21f) { float s = rad / r; z.x *= s; z.y *= s; z.z *= s; }
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_11)
 				case 11:
 				{
 					float r = native_sqrt(z.x*z.x + z.y*z.y);
@@ -2823,6 +3086,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					z.x = nx; z.y = ny;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_12)
 				case 12:
 				{
 					float a = mut->foldValue;
@@ -2832,6 +3097,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					z.z += a * native_sin(b * z.z);
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_13)
 				case 13:
 				{
 					z.x *= native_exp(-z.x * z.x);
@@ -2839,6 +3106,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					z.z *= native_exp(-z.z * z.z);
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_14)
 				case 14:
 				{
 					float rx = fabs(z.x); float ry = fabs(z.y); float rz = fabs(z.z);
@@ -2847,6 +3116,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					z.z *= native_log(1.0f + rz);
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_15)
 				case 15:
 				{
 					float p = (mut->foldValue > 0.0f) ? mut->foldValue : 2.0f;
@@ -2856,6 +3127,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					z.z = sign(z.z) * native_powr(max(az, 1e-21f), p);
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_16)
 				case 16: // smooth abs
 				{
 					float k = (mut->foldLimit > 0.0f) ? mut->foldLimit : 5.0f;
@@ -2864,6 +3137,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					z.z = z.z * tanh(k * z.z);
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_17)
 				case 17: // modulo wrap
 				{
 					float period = (mut->foldValue > 0.0f) ? mut->foldValue : 2.0f;
@@ -2872,6 +3147,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					z.z = fmod(z.z + period * 0.5f, period) - period * 0.5f;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_18)
 				case 18: // nested abs
 				{
 					float c = (mut->foldLimit > 0.0f) ? mut->foldLimit : 1.0f;
@@ -2880,6 +3157,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					z.z = fabs(fabs(z.z) - c);
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_19)
 				case 19: // sawtooth
 				{
 					z.x = 2.0f * (z.x * 0.5f - floor(z.x * 0.5f + 0.5f));
@@ -2887,6 +3166,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					z.z = 2.0f * (z.z * 0.5f - floor(z.z * 0.5f + 0.5f));
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_20)
 				case 20: // Bipolar
 				{
 					float c1 = mut->foldLimit;
@@ -2896,6 +3177,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					z.z = fabs(z.z - c1) - fabs(z.z - c2);
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_21)
 				case 21: // RadialBox
 				{
 					float r = native_sqrt(z.x*z.x + z.y*z.y);
@@ -2908,6 +3191,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					aux.DE *= r / max(native_sqrt(z.x*z.x + z.y*z.y), 1e-21f);
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_22)
 				case 22: // Shear
 				{
 					float lim = mut->foldLimit;
@@ -2919,6 +3204,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					z.y += mut->foldValue * z.z;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_23)
 				case 23: // 3DCross
 				{
 					float lim = mut->foldLimit;
@@ -2941,6 +3228,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					}
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_24)
 				case 24: // Conformal
 				{
 					float r2 = z.x*z.x + z.y*z.y + z.z*z.z;
@@ -2953,6 +3242,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					}
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_25)
 				case 25: // Rotation
 				{
 					float lim = mut->foldLimit;
@@ -2965,6 +3256,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					float t = z.x; z.x = -z.y; z.y = t;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_26)
 				case 26: // ScalePulse
 				{
 					float lim = mut->foldLimit;
@@ -2979,6 +3272,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					aux.DE *= fabs(pulse);
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_27)
 				case 27: // TriangleWave
 				{
 					z.x = 2.0f * fabs(z.x * 0.5f - floor(z.x * 0.5f + 0.5f));
@@ -2986,6 +3281,7 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					z.z = 2.0f * fabs(z.z * 0.5f - floor(z.z * 0.5f + 0.5f));
 					break;
 				}
+#endif
 			}
 			}
 
@@ -3008,11 +3304,14 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 			{
 				switch (mut->foldType)
 				{
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_1)
 					case 1:
 						if (fabs(z.x) > mut->foldLimit) z.x = sign(z.x) * mut->foldValue - z.x;
 						if (fabs(z.y) > mut->foldLimit) z.y = sign(z.y) * mut->foldValue - z.y;
 						if (fabs(z.z) > mut->foldLimit) z.z = sign(z.z) * mut->foldValue - z.z;
 						break;
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_2)
 					case 2:
 					{
 						float rr = z.x*z.x + z.y*z.y + z.z*z.z;
@@ -3022,6 +3321,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						else if (rr < fixR2) { z *= fixR2/rr; aux.DE *= fixR2/rr; }
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_3)
 					case 3:
 					{
 						z.x = fabs(z.x); z.y = fabs(z.y); z.z = fabs(z.z);
@@ -3037,6 +3338,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						aux.DE *= s;
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_4)
 					case 4:
 					{
 						if (z.x + z.y < 0) { float tx = -z.y; z.y = -z.x; z.x = tx; }
@@ -3050,6 +3353,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						aux.DE *= s;
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_5)
 					case 5:
 					{
 						z.x = fabs(z.x + mut->foldLimit) - fabs(z.x - mut->foldLimit) - z.x;
@@ -3057,6 +3362,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						z.z = fabs(z.z + mut->foldLimit) - fabs(z.z - mut->foldLimit) - z.z;
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_6)
 					case 6:
 					{
 						int sides = mut->kaleidoscopeSides;
@@ -3072,6 +3379,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						}
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_7)
 					case 7:
 					{
 						if (z.x + z.y < 0) { float tx = -z.y; z.y = -z.x; z.x = tx; }
@@ -3081,6 +3390,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						if (z.x - z.z < 0) { float tx = z.z; z.z = z.x; z.x = tx; }
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_8)
 					case 8:
 					{
 						float k = (mut->foldLimit > 0.0f) ? mut->foldLimit : 1.0f;
@@ -3089,6 +3400,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						z.z -= tanh(k * z.z);
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_9)
 					case 9:
 					{
 						z.x = z.x * z.x * z.x - 3.0f * z.x;
@@ -3096,6 +3409,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						z.z = z.z * z.z * z.z - 3.0f * z.z;
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_10)
 					case 10:
 					{
 						float rad = (mut->foldValue > 0.0f) ? mut->foldValue : 1.0f;
@@ -3103,6 +3418,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						if (r > 1e-21f) { float s = rad / r; z.x *= s; z.y *= s; z.z *= s; }
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_11)
 					case 11:
 					{
 						float r = native_sqrt(z.x*z.x + z.y*z.y);
@@ -3113,6 +3430,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						z.x = nx; z.y = ny;
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_12)
 					case 12:
 					{
 						float a = mut->foldValue;
@@ -3122,6 +3441,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						z.z += a * native_sin(b * z.z);
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_13)
 					case 13:
 					{
 						z.x *= native_exp(-z.x * z.x);
@@ -3129,6 +3450,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						z.z *= native_exp(-z.z * z.z);
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_14)
 					case 14:
 					{
 						float rx = fabs(z.x); float ry = fabs(z.y); float rz = fabs(z.z);
@@ -3137,6 +3460,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						z.z *= native_log(1.0f + rz);
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_15)
 					case 15:
 					{
 						float p = (mut->foldValue > 0.0f) ? mut->foldValue : 2.0f;
@@ -3146,6 +3471,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						z.z = sign(z.z) * native_powr(max(az, 1e-21f), p);
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_16)
 					case 16:
 					{
 						float k = (mut->foldLimit > 0.0f) ? mut->foldLimit : 5.0f;
@@ -3154,6 +3481,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						z.z = z.z * tanh(k * z.z);
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_17)
 					case 17:
 					{
 						float period = (mut->foldValue > 0.0f) ? mut->foldValue : 2.0f;
@@ -3162,6 +3491,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						z.z = fmod(z.z + period * 0.5f, period) - period * 0.5f;
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_18)
 					case 18:
 					{
 						float c = (mut->foldLimit > 0.0f) ? mut->foldLimit : 1.0f;
@@ -3170,6 +3501,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						z.z = fabs(fabs(z.z) - c);
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_19)
 					case 19:
 					{
 						z.x = 2.0f * (z.x * 0.5f - floor(z.x * 0.5f + 0.5f));
@@ -3177,6 +3510,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						z.z = 2.0f * (z.z * 0.5f - floor(z.z * 0.5f + 0.5f));
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_20)
 					case 20: { float c1 = mut->foldLimit, c2 = -c1; z.x = fabs(z.x-c1)-fabs(z.x-c2); z.y = fabs(z.y-c1)-fabs(z.y-c2); z.z = fabs(z.z-c1)-fabs(z.z-c2); break; }
 					case 21:
 					{
@@ -3186,6 +3521,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						z.x = r*native_cos(theta); z.y = r*native_sin(theta);
 						aux.DE *= r / max(native_sqrt(z.x*z.x+z.y*z.y), 1e-21f); break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_22)
 					case 22:
 					{
 						float lim = mut->foldLimit;
@@ -3193,6 +3530,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						if (z.y > lim) z.y = 2.0f*lim-z.y; else if (z.y < -lim) z.y = -2.0f*lim-z.y;
 						z.x += mut->foldValue*z.y; z.y += mut->foldValue*z.z; break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_23)
 					case 23:
 					{
 						float lim = mut->foldLimit; int phase = i % 3;
@@ -3208,12 +3547,16 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						}
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_24)
 					case 24:
 					{
 						float r2 = z.x*z.x+z.y*z.y+z.z*z.z;
 						if (r2 > 1e-21f) { z.x += z.x/r2; z.y += z.y/r2; z.z += z.z/r2; aux.DE *= fabs(1.0f-1.0f/r2); }
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_25)
 					case 25:
 					{
 						float lim = mut->foldLimit;
@@ -3222,6 +3565,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						if (z.z > lim) z.z = 2.0f*lim-z.z; if (z.z < -lim) z.z = -2.0f*lim-z.z;
 						float t = z.x; z.x = -z.y; z.y = t; break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_26)
 					case 26:
 					{
 						float lim = mut->foldLimit;
@@ -3231,6 +3576,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						float pulse = 1.0f + 0.2f * native_sin((float)i * mut->foldValue);
 						z *= pulse; aux.DE *= fabs(pulse); break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_27)
 					case 27:
 					{
 						z.x = 2.0f * fabs(z.x*0.5f - floor(z.x*0.5f+0.5f));
@@ -3238,17 +3585,24 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						z.z = 2.0f * fabs(z.z*0.5f - floor(z.z*0.5f+0.5f));
 						break;
 					}
+#endif
 				}
 			}
 
 			switch (mut->swizzle)
 			{
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SWIZZLE_0)
 				case 0: break;
 				case 1: { float t = z.y; z.y = z.z; z.z = t; } break;
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SWIZZLE_2)
 				case 2: { float t = z.x; z.x = z.y; z.y = t; } break;
 				case 3: { float t = z.x; z.x = z.y; z.y = z.z; z.z = t; } break;
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SWIZZLE_4)
 				case 4: { float t = z.z; z.z = z.y; z.y = z.x; z.x = t; } break;
 				case 5: { float t = z.x; z.x = z.z; z.z = t; } break;
+#endif
 			}
 			// Warp distortion (per-section iteration range)
 			if (i >= mut->warpIterStart && i < mut->warpIterStop) {
@@ -3363,6 +3717,7 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 				float4 mathZ = z;
 				switch (mut->mathType)
 				{
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_1)
 					case 1: // SinPower
 					{
 						float p = safeMathP1;
@@ -3371,6 +3726,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						mathZ.z = sign(native_sin(z.z)) * pow(fabs(native_sin(z.z)), p);
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_2)
 					case 2: // CoshField
 					{
 						float freq = safeMathP1;
@@ -3380,6 +3737,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						mathZ.z = z.z + amp * (cosh(z.x * freq) - 1.0f);
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_3)
 					case 3: // ExpMap
 					{
 						float r = native_sqrt(z.x*z.x + z.y*z.y + z.z*z.z);
@@ -3395,6 +3754,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						}
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_4)
 					case 4: // LogSpiral
 					{
 						float r = native_sqrt(z.x*z.x + z.y*z.y + z.z*z.z);
@@ -3412,6 +3773,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						}
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_5)
 					case 5: // PowerN
 					{
 						float r = native_sqrt(z.x*z.x + z.y*z.y + z.z*z.z);
@@ -3430,6 +3793,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						}
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_6)
 					case 6: // ComplexMul
 					{
 						float cr = safeMathP1;
@@ -3439,6 +3804,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						mathZ.z = z.z * native_sqrt(cr*cr + ci*ci);
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_7)
 					case 7: // QuaternionMul
 					{
 						float qr = safeMathP1, qi = safeMathP2;
@@ -3449,6 +3816,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						mathZ.z = zi*qj - zj*qi + zk*qr;
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_8)
 					case 8: // Bilinear
 					{
 						float a = safeMathP1, b = safeMathP2;
@@ -3463,6 +3832,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						}
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_9)
 					case 9: // InvCylindrical
 					{
 						float rxy = native_sqrt(z.x*z.x + z.y*z.y);
@@ -3476,6 +3847,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						}
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_10)
 					case 10: // SpiralPower
 					{
 						float angle = safeMathP1 * M_PI_F / 180.0f;
@@ -3487,6 +3860,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						aux.DE *= fabs(scale);
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_11)
 					case 11: // HyperbolicRot
 					{
 						float angle = safeMathP1;
@@ -3496,6 +3871,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						mathZ.y = z.y;
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_12)
 					case 12: // SphereInversion3D
 					{
 						float cx = safeMathP1, cy = safeMathP2, cz = mut->mathP3;
@@ -3512,6 +3889,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						}
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_13)
 					case 13: // Loxodromic
 					{
 						float s = (safeMathP1 != 0.0f) ? safeMathP1 : 1.0f;
@@ -3532,6 +3911,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						aux.DE *= fabs(s);
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_14)
 					case 14: // Parabolic
 					{
 						float a = safeMathP1, b = safeMathP2, c = mut->mathP3;
@@ -3545,6 +3926,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						}
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_15)
 					case 15: // SchottkyDual
 					{
 						float c1x = safeMathP1, c1y = safeMathP2, c1z = mut->mathP3;
@@ -3574,6 +3957,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						}
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_16)
 					case 16: // FibonacciWord
 					{
 						int n = i % 64;
@@ -3604,6 +3989,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						}
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_17)
 					case 17: // MaskitBend
 					{
 						float muRe = safeMathP1, muIm = safeMathP2;
@@ -3626,6 +4013,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						}
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_18)
 					case 18: // EllipsoidInversion
 					{
 						float axX = (safeMathP1 != 0.0f) ? safeMathP1 : 1.0f;
@@ -3644,6 +4033,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						}
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_19)
 					case 19: // TorusInversion
 					{
 						float R = (safeMathP1 != 0.0f) ? safeMathP1 : 2.0f;
@@ -3665,6 +4056,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						}
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_20)
 					case 20: // QuatJuliaKleinian
 					{
 						float qr = mut->mathP4, qi = z.x, qj = z.y, qk = z.z;
@@ -3677,6 +4070,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						aux.DE = 2.0f * aux.r * aux.DE + 1.0f;
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_21)
 					case 21: // PoincareBall
 					{
 						float r2 = z.x*z.x + z.y*z.y + z.z*z.z;
@@ -3702,6 +4097,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						}
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_22)
 					case 22: // LorentzBoost
 					{
 						float vx = safeMathP1, vy = safeMathP2, vz = mut->mathP3;
@@ -3733,6 +4130,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						}
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_23)
 					case 23: // ConformeFlow
 					{
 						float r = native_sqrt(z.x*z.x + z.y*z.y + z.z*z.z);
@@ -3749,6 +4148,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						aux.DE *= confFactor;
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_24)
 					case 24: // FractionalPower
 					{
 						float p = (safeMathP1 != 0.0f) ? safeMathP1 : 2.718281828f;
@@ -3765,6 +4166,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						}
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_25)
 					case 25: // AnisotropePower
 					{
 						float px = (safeMathP1 != 0.0f) ? safeMathP1 : 2.0f;
@@ -3779,6 +4182,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						aux.DE = aux.DE * maxP * native_powr(max(r, 1e-21f), maxP - 1.0f) + 1.0f;
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_26)
 					case 26: // HyperbolicTrigPower
 					{
 						float p = (safeMathP1 != 0.0f) ? safeMathP1 : 2.0f;
@@ -3795,6 +4200,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						}
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_27)
 					case 27: // LogarithmicRadius
 					{
 						float p = (safeMathP1 != 0.0f) ? safeMathP1 : 2.0f;
@@ -3811,6 +4218,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						}
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_28)
 					case 28: // PolarSwap
 					{
 						float r = native_sqrt(z.x*z.x + z.y*z.y + z.z*z.z);
@@ -3825,6 +4234,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						}
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_29)
 					case 29: // RadialModulation
 					{
 						float amp = (safeMathP1 != 0.0f) ? safeMathP1 : 0.1f;
@@ -3841,6 +4252,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						}
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_30)
 					case 30: // DualQuaternion
 					{
 						float q1w = (safeMathP1 != 0.0f) ? safeMathP1 : 1.0f;
@@ -3856,6 +4269,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						mathZ.z = tw*q2k + tz*q2w + tx*q2j - ty*q2i;
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_31)
 					case 31: // OctonionPower
 					{
 						float p = (safeMathP1 != 0.0f) ? safeMathP1 : 2.0f;
@@ -3873,6 +4288,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						}
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_32)
 					case 32: // QuaternionMobius
 					{
 						float a = (safeMathP1 != 0.0f) ? safeMathP1 : 1.0f;
@@ -3896,6 +4313,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						}
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_33)
 					case 33: // SplitQuaternion
 					{
 						float p = (safeMathP1 != 0.0f) ? safeMathP1 : 2.0f;
@@ -3913,6 +4332,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						}
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_34)
 					case 34: // FordCircles
 					{
 						int N = (safeMathP1 > 0.5f) ? (int)safeMathP1 : 3;
@@ -3931,6 +4352,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						}
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_35)
 					case 35: // ApollonianNet
 					{
 						float rad = (safeMathP1 > 0.0f) ? safeMathP1 : 1.0f;
@@ -3956,6 +4379,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						}
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_36)
 					case 36: // ConformalWedge
 					{
 						float alpha = (safeMathP1 != 0.0f) ? safeMathP1 : 2.0f;
@@ -3972,6 +4397,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						}
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_37)
 					case 37: // CircleInvChain
 					{
 						float r1 = (safeMathP1 > 0.0f) ? safeMathP1 : 1.0f;
@@ -3995,6 +4422,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						}
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_38)
 					case 38: // HyperbolicSine
 					{
 						float amp = (safeMathP1 != 0.0f) ? safeMathP1 : 1.0f;
@@ -4004,6 +4433,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						aux.DE = aux.DE * amp * cosh(native_sqrt(z.x*z.x + z.y*z.y + z.z*z.z)) + 1.0f;
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_39)
 					case 39: // BesselApprox
 					{
 						float freq = (safeMathP1 != 0.0f) ? safeMathP1 : 1.0f;
@@ -4018,6 +4449,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						}
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_40)
 					case 40: // LambertW
 					{
 						float amp = (safeMathP1 != 0.0f) ? safeMathP1 : 1.0f;
@@ -4029,6 +4462,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						aux.DE = aux.DE * amp * er * (1.0f + r) + 1.0f;
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MATHTYPE_41)
 					case 41: // ErrorFunction
 					{
 						float scale = (safeMathP1 != 0.0f) ? safeMathP1 : 1.0f;
@@ -4041,6 +4476,7 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						aux.DE = aux.DE * scale * erfDeriv + 1.0f;
 						break;
 					}
+#endif
 				}
 				if (mut->mathMix < 1.0f)
 				{
@@ -4515,11 +4951,14 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 			{
 				switch (mut->foldType)
 				{
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_1)
 					case 1:
 						if (fabs(z.x) > mut->foldLimit) z.x = sign(z.x) * mut->foldValue - z.x;
 						if (fabs(z.y) > mut->foldLimit) z.y = sign(z.y) * mut->foldValue - z.y;
 						if (fabs(z.z) > mut->foldLimit) z.z = sign(z.z) * mut->foldValue - z.z;
 						break;
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_2)
 					case 2:
 					{
 						float rr = z.x*z.x + z.y*z.y + z.z*z.z;
@@ -4529,6 +4968,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						else if (rr < fixR2) { z *= fixR2/rr; aux.DE *= fixR2/rr; }
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_3)
 					case 3:
 					{
 						z.x = fabs(z.x); z.y = fabs(z.y); z.z = fabs(z.z);
@@ -4544,6 +4985,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						aux.DE *= s;
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_4)
 					case 4:
 					{
 						if (z.x + z.y < 0) { float tx = -z.y; z.y = -z.x; z.x = tx; }
@@ -4557,6 +5000,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						aux.DE *= s;
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_5)
 					case 5:
 					{
 						z.x = fabs(z.x + mut->foldLimit) - fabs(z.x - mut->foldLimit) - z.x;
@@ -4564,6 +5009,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						z.z = fabs(z.z + mut->foldLimit) - fabs(z.z - mut->foldLimit) - z.z;
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_6)
 					case 6:
 					{
 						int sides = mut->kaleidoscopeSides;
@@ -4579,6 +5026,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						}
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_7)
 					case 7:
 					{
 						if (z.x + z.y < 0) { float tx = -z.y; z.y = -z.x; z.x = tx; }
@@ -4588,6 +5037,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						if (z.x - z.z < 0) { float tx = z.z; z.z = z.x; z.x = tx; }
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_8)
 					case 8:
 					{
 						float k = (mut->foldLimit > 0.0f) ? mut->foldLimit : 1.0f;
@@ -4596,6 +5047,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						z.z -= tanh(k * z.z);
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_9)
 					case 9:
 					{
 						z.x = z.x * z.x * z.x - 3.0f * z.x;
@@ -4603,6 +5056,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						z.z = z.z * z.z * z.z - 3.0f * z.z;
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_10)
 					case 10:
 					{
 						float rad = (mut->foldValue > 0.0f) ? mut->foldValue : 1.0f;
@@ -4610,6 +5065,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						if (r > 1e-21f) { float s = rad / r; z.x *= s; z.y *= s; z.z *= s; }
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_11)
 					case 11:
 					{
 						float r = native_sqrt(z.x*z.x + z.y*z.y);
@@ -4620,6 +5077,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						z.x = nx; z.y = ny;
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_12)
 					case 12:
 					{
 						float a = mut->foldValue;
@@ -4629,6 +5088,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						z.z += a * native_sin(b * z.z);
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_13)
 					case 13:
 					{
 						z.x *= native_exp(-z.x * z.x);
@@ -4636,6 +5097,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						z.z *= native_exp(-z.z * z.z);
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_14)
 					case 14:
 					{
 						float rx = fabs(z.x); float ry = fabs(z.y); float rz = fabs(z.z);
@@ -4644,6 +5107,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						z.z *= native_log(1.0f + rz);
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_15)
 					case 15:
 					{
 						float p = (mut->foldValue > 0.0f) ? mut->foldValue : 2.0f;
@@ -4653,6 +5118,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						z.z = sign(z.z) * native_powr(max(az, 1e-21f), p);
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_16)
 					case 16:
 					{
 						float k = (mut->foldLimit > 0.0f) ? mut->foldLimit : 5.0f;
@@ -4661,6 +5128,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						z.z = z.z * tanh(k * z.z);
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_17)
 					case 17:
 					{
 						float period = (mut->foldValue > 0.0f) ? mut->foldValue : 2.0f;
@@ -4669,6 +5138,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						z.z = fmod(z.z + period * 0.5f, period) - period * 0.5f;
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_18)
 					case 18:
 					{
 						float c = (mut->foldLimit > 0.0f) ? mut->foldLimit : 1.0f;
@@ -4677,6 +5148,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						z.z = fabs(fabs(z.z) - c);
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_19)
 					case 19:
 					{
 						z.x = 2.0f * (z.x * 0.5f - floor(z.x * 0.5f + 0.5f));
@@ -4684,6 +5157,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						z.z = 2.0f * (z.z * 0.5f - floor(z.z * 0.5f + 0.5f));
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_20)
 					case 20: { float c1 = mut->foldLimit, c2 = -c1; z.x = fabs(z.x-c1)-fabs(z.x-c2); z.y = fabs(z.y-c1)-fabs(z.y-c2); z.z = fabs(z.z-c1)-fabs(z.z-c2); break; }
 					case 21:
 					{
@@ -4693,6 +5168,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						z.x = r*native_cos(theta); z.y = r*native_sin(theta);
 						aux.DE *= r / max(native_sqrt(z.x*z.x+z.y*z.y), 1e-21f); break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_22)
 					case 22:
 					{
 						float lim = mut->foldLimit;
@@ -4700,6 +5177,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						if (z.y > lim) z.y = 2.0f*lim-z.y; else if (z.y < -lim) z.y = -2.0f*lim-z.y;
 						z.x += mut->foldValue*z.y; z.y += mut->foldValue*z.z; break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_23)
 					case 23:
 					{
 						float lim = mut->foldLimit; int phase = i % 3;
@@ -4715,12 +5194,16 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						}
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_24)
 					case 24:
 					{
 						float r2 = z.x*z.x+z.y*z.y+z.z*z.z;
 						if (r2 > 1e-21f) { z.x += z.x/r2; z.y += z.y/r2; z.z += z.z/r2; aux.DE *= fabs(1.0f-1.0f/r2); }
 						break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_25)
 					case 25:
 					{
 						float lim = mut->foldLimit;
@@ -4729,6 +5212,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						if (z.z > lim) z.z = 2.0f*lim-z.z; if (z.z < -lim) z.z = -2.0f*lim-z.z;
 						float t = z.x; z.x = -z.y; z.y = t; break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_26)
 					case 26:
 					{
 						float lim = mut->foldLimit;
@@ -4738,6 +5223,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						float pulse = 1.0f + 0.2f * native_sin((float)i * mut->foldValue);
 						z *= pulse; aux.DE *= fabs(pulse); break;
 					}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_27)
 					case 27:
 					{
 						z.x = 2.0f * fabs(z.x*0.5f - floor(z.x*0.5f+0.5f));
@@ -4745,6 +5232,7 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 						z.z = 2.0f * fabs(z.z*0.5f - floor(z.z*0.5f+0.5f));
 						break;
 					}
+#endif
 				}
 			}
 
@@ -4773,43 +5261,58 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 			float ca = mut->clipParamA, cb = mut->clipParamB, cc = mut->clipParamC;
 			switch (mut->clipType)
 			{
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_1)
 				case 1: // Ellipsoid Clip
 				{
 					clipDist = native_sqrt((cz.x/sx)*(cz.x/sx) + (cz.y/sy)*(cz.y/sy) + (cz.z/sz)*(cz.z/sz)) - 1.0f;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_2)
 				case 2: // Torus Clip
 				{
 					float rxy = native_sqrt(cz.x * cz.x + cz.y * cz.y) - cR;
 					clipDist = native_sqrt(rxy * rxy + cz.z * cz.z) - cr;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_3)
 				case 3: // Cylinder (infinite) Clip
 				{
 					clipDist = native_sqrt(cz.x * cz.x + cz.y * cz.y) - cr;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_4)
 				case 4: // Cone Clip
 				{
 					float tanAlpha = tan(mut->clipAngle * M_PI_F / 180.0f);
 					clipDist = native_sqrt(cz.x * cz.x + cz.y * cz.y) - tanAlpha * fabs(cz.z);
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_5)
 				case 5: // Hyperboloid Clip
 				{
 					clipDist = (cz.x/sx)*(cz.x/sx) + (cz.y/sy)*(cz.y/sy) - (cz.z/sz)*(cz.z/sz) - 1.0f;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_6)
 				case 6: // Paraboloid Clip
 				{
 					clipDist = cz.x * cz.x + cz.y * cz.y - ca * cz.z;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_7)
 				case 7: // Saddle Clip
 				{
 					clipDist = (cz.x/sx)*(cz.x/sx) - (cz.y/sy)*(cz.y/sy) - cz.z;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_8)
 				case 8: // Spiral Clip
 				{
 					float r2d = native_sqrt(cz.x * cz.x + cz.y * cz.y);
@@ -4817,6 +5320,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					clipDist = r2d - ca * native_exp(cb * theta);
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_9)
 				case 9: // Wave Clip
 				{
 					float freq = mut->clipFrequency;
@@ -4824,6 +5329,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					clipDist = cz.z - amp * native_sin(freq * cz.x) * native_sin(freq * cz.y);
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_10)
 				case 10: // Noise Clip
 				{
 					float n = native_sin(cz.x * 12.9898f + cz.y * 78.233f) * 43758.5453f;
@@ -4833,6 +5340,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					clipDist = cz.z - mut->clipAmplitude * (n + n2) * 0.5f;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_11)
 				case 11: // Union (OR) Clip
 				{
 					float d1 = native_sqrt((cz.x/sx)*(cz.x/sx) + (cz.y/sy)*(cz.y/sy) + (cz.z/sz)*(cz.z/sz)) - 1.0f;
@@ -4840,6 +5349,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					clipDist = min(d1, d2);
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_12)
 				case 12: // Difference (A - B) Clip
 				{
 					float dA = native_sqrt((cz.x/sx)*(cz.x/sx) + (cz.y/sy)*(cz.y/sy) + (cz.z/sz)*(cz.z/sz)) - 1.0f;
@@ -4847,6 +5358,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					clipDist = max(dA, -dB);
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_13)
 				case 13: // XOR Clip
 				{
 					float dA2 = native_sqrt((cz.x/sx)*(cz.x/sx) + (cz.y/sy)*(cz.y/sy) + (cz.z/sz)*(cz.z/sz)) - 1.0f;
@@ -4854,6 +5367,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					clipDist = max(min(dA2, dB2), -max(dA2, dB2));
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_14)
 				case 14: // Smooth Union Clip
 				{
 					float d1s = native_sqrt((cz.x/sx)*(cz.x/sx) + (cz.y/sy)*(cz.y/sy) + (cz.z/sz)*(cz.z/sz)) - 1.0f;
@@ -4863,6 +5378,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					clipDist = mix(d2s, d1s, h) - k * h * (1.0f - h);
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_15)
 				case 15: // Smooth Difference Clip
 				{
 					float dAs = native_sqrt((cz.x/sx)*(cz.x/sx) + (cz.y/sy)*(cz.y/sy) + (cz.z/sz)*(cz.z/sz)) - 1.0f;
@@ -4872,6 +5389,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					clipDist = mix(dAs, -dBs, h2) + k2 * h2 * (1.0f - h2);
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_16)
 				case 16: // Chain Clip (3 stages)
 				{
 					float dc1 = native_sqrt(cz.x*cz.x + cz.y*cz.y + cz.z*cz.z) - cr;
@@ -4880,6 +5399,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					clipDist = max(dc1, max(dc2, dc3));
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_17)
 				case 17: // Array (Grid) Clip
 				{
 					float3 rp = cz;
@@ -4889,6 +5410,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					clipDist = native_sqrt(rp.x*rp.x + rp.y*rp.y + rp.z*rp.z) - cr;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_18)
 				case 18: // Random Array Clip
 				{
 					float3 cell;
@@ -4904,6 +5427,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					clipDist = native_sqrt(rp2.x*rp2.x + rp2.y*rp2.y + rp2.z*rp2.z) - cr * (0.5f + h);
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_19)
 				case 19: // Hierarchical Clip
 				{
 					float coarse = max(fabs(cz.x) - sx * 2.0f, max(fabs(cz.y) - sy * 2.0f, fabs(cz.z) - sz * 2.0f));
@@ -4911,6 +5436,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					clipDist = (coarse < 0.0f) ? fine : coarse;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_20)
 				case 20: // Fractal Clip
 				{
 					float3 fz = cz;
@@ -4923,11 +5450,15 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					clipDist = (length(fz) - cr) / fscale;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_21)
 				case 21: // Clip with Pre-Rotation (handled by clipPreRotMatrix)
 				{
 					clipDist = native_sqrt(cz.x*cz.x + cz.y*cz.y + cz.z*cz.z) - cr;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_22)
 				case 22: // Clip with Pre-Scale
 				{
 					float3 scaled = cz;
@@ -4935,6 +5466,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					clipDist = native_sqrt(scaled.x*scaled.x + scaled.y*scaled.y + scaled.z*scaled.z) - cr;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_23)
 				case 23: // Clip with Pre-Shear
 				{
 					float3 sheared = cz;
@@ -4942,6 +5475,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					clipDist = native_sqrt(sheared.x*sheared.x + sheared.y*sheared.y + sheared.z*sheared.z) - cr;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_24)
 				case 24: // Clip with Pre-Fold
 				{
 					float3 folded = cz;
@@ -4955,6 +5490,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					clipDist = native_sqrt(folded.x*folded.x + folded.y*folded.y + folded.z*folded.z) - cr;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_25)
 				case 25: // Clip with Pre-Abs
 				{
 					float3 absed = cz;
@@ -4962,6 +5499,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					clipDist = native_sqrt(absed.x*absed.x + absed.y*absed.y + absed.z*absed.z) - cr;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_26)
 				case 26: // Clip with Post-Offset
 				{
 					clipDist = native_sqrt(cz.x*cz.x + cz.y*cz.y + cz.z*cz.z) - cr;
@@ -4969,6 +5508,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					clipDist *= pulse;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_27)
 				case 27: // Clip with Post-Scale
 				{
 					clipDist = native_sqrt(cz.x*cz.x + cz.y*cz.y + cz.z*cz.z) - cr;
@@ -4976,12 +5517,16 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					clipDist *= scaleFactor;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_28)
 				case 28: // Clip with Color-Depth
 				{
 					clipDist = native_sqrt(cz.x*cz.x + cz.y*cz.y + cz.z*cz.z) - cr;
 					if (clipDist < 0.0f) aux.color += fabs(clipDist) * mut->clipAmplitude;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_29)
 				case 29: // Clip with Orbit-Trap
 				{
 					clipDist = native_sqrt(cz.x*cz.x + cz.y*cz.y + cz.z*cz.z) - cr;
@@ -4989,12 +5534,16 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					if (trap < aux.color) aux.color = trap;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_30)
 				case 30: // Clip with DE-Visualization
 				{
 					clipDist = native_sqrt(cz.x*cz.x + cz.y*cz.y + cz.z*cz.z) - cr;
 					aux.color = native_log(1.0f + fabs(aux.dist)) * mut->clipAmplitude;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_31)
 				case 31: // Star (n-point) Clip
 				{
 					float r2d = native_sqrt(cz.x * cz.x + cz.y * cz.y);
@@ -5004,12 +5553,16 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					clipDist = r2d - starR;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_32)
 				case 32: // Heart Clip
 				{
 					float x2h = cz.x * cz.x + cz.y * cz.y;
 					clipDist = (x2h - 1.0f) * (x2h - 1.0f) * (x2h - 1.0f) - cz.x * cz.x * cz.y * cz.y * cz.y;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_33)
 				case 33: // Superformula Clip
 				{
 					float r2d2 = native_sqrt(cz.x * cz.x + cz.y * cz.y);
@@ -5023,6 +5576,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					clipDist = r2d2 - r_sf * cr;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_34)
 				case 34: // Gear Clip
 				{
 					float r2d3 = native_sqrt(cz.x * cz.x + cz.y * cz.y);
@@ -5032,6 +5587,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					clipDist = r2d3 - gearR;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_35)
 				case 35: // Spiral Galaxy Clip
 				{
 					float r2d4 = native_sqrt(cz.x * cz.x + cz.y * cz.y);
@@ -5041,6 +5598,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					clipDist = r2d4 - spiralR;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_36)
 				case 36: // Voronoi Clip
 				{
 					float3 seeds[4];
@@ -5057,6 +5616,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					clipDist = minVD - cr;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_37)
 				case 37: // Delaunay Clip
 				{
 					float3 edges[3];
@@ -5075,6 +5636,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					clipDist = minED - cr;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_38)
 				case 38: // L-System Clip
 				{
 					float3 lz = cz;
@@ -5091,6 +5654,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					clipDist = (length(lz) - cr) / lscale;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_39)
 				case 39: // Julia Set Clip (2D extruded)
 				{
 					float jx = cz.x, jy = cz.y;
@@ -5105,6 +5670,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					clipDist = max(jDist, fabs(cz.z) - sz);
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_40)
 				case 40: // Mandelbrot Set Clip (2D extruded)
 				{
 					float mx = 0.0f, my = 0.0f;
@@ -5119,16 +5686,22 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					clipDist = max(mDist, fabs(cz.z) - sz);
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_41)
 				case 41: // 4D Hypercube Clip
 				{
 					clipDist = max(max(fabs(cz.x), fabs(cz.y)), max(fabs(cz.z), fabs(z.w))) - cr;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_42)
 				case 42: // 4D Hypersphere Clip
 				{
 					clipDist = native_sqrt(cz.x*cz.x + cz.y*cz.y + cz.z*cz.z + z.w*z.w) - cr;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_43)
 				case 43: // Time-Dependent Clip
 				{
 					float time = (float)i * mut->clipFrequency;
@@ -5136,30 +5709,40 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					clipDist = native_sqrt(cz.x*cz.x + cz.y*cz.y + cz.z*cz.z) - tR;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_44)
 				case 44: // Orbit-Dependent Clip
 				{
 					float orbitR = cr * (1.0f + mut->clipAmplitude * native_sin(aux.color * mut->clipFrequency));
 					clipDist = native_sqrt(cz.x*cz.x + cz.y*cz.y + cz.z*cz.z) - orbitR;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_45)
 				case 45: // DE-Dependent Clip
 				{
 					float deR = cr * (1.0f + mut->clipAmplitude * native_log(1.0f + fabs(aux.DE)));
 					clipDist = native_sqrt(cz.x*cz.x + cz.y*cz.y + cz.z*cz.z) - deR;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_46)
 				case 46: // Color-Dependent Clip
 				{
 					float colR = cr * (1.0f + mut->clipAmplitude * native_sin(aux.color * mut->clipFrequency));
 					clipDist = native_sqrt(cz.x*cz.x + cz.y*cz.y + cz.z*cz.z) - colR;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_47)
 				case 47: // Iteration-Dependent Clip
 				{
 					float iterR = cr * (1.0f + mut->clipAmplitude * (float)i / 250.0f);
 					clipDist = native_sqrt(cz.x*cz.x + cz.y*cz.y + cz.z*cz.z) - iterR;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_48)
 				case 48: // Random-Dependent Clip
 				{
 					float rh = fabs(native_sin((float)i * 12.9898f + cz.x * 78.233f) * 43758.5453f);
@@ -5168,6 +5751,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					clipDist = native_sqrt(cz.x*cz.x + cz.y*cz.y + cz.z*cz.z) - randR;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_49)
 				case 49: // Neural-Dependent Clip (simplified MLP)
 				{
 					float nx = tanh(ca * cz.x + cb * cz.y + cc * cz.z);
@@ -5176,6 +5761,8 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					clipDist = native_sqrt(nx*nx + ny*ny + nz*nz) - cr;
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_50)
 				case 50: // Fractal Recursion Clip
 				{
 					float3 rz = cz;
@@ -5190,56 +5777,107 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					}
 					break;
 				}
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_51)
 					case 51: { clipDist=native_sin(cz.x*ca)*native_cos(cz.y*ca)+native_sin(cz.y*ca)*native_cos(cz.z*ca)+native_sin(cz.z*ca)*native_cos(cz.x*ca)-cr; break; } // Gyroid surface
 					case 52: { clipDist=native_cos(cz.x*ca)+native_cos(cz.y*ca)+native_cos(cz.z*ca)-cr; break; } // Schwarz P surface
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_53)
 					case 53: { clipDist=native_sin(cz.x*ca)*native_sin(cz.y*ca)*native_sin(cz.z*ca)+native_sin(cz.x*ca)*native_cos(cz.y*ca)*native_cos(cz.z*ca)+native_cos(cz.x*ca)*native_sin(cz.y*ca)*native_cos(cz.z*ca)+native_cos(cz.x*ca)*native_cos(cz.y*ca)*native_sin(cz.z*ca)-cr; break; } // Diamond surface
 					case 54: { clipDist=0.5f*(native_sin(2.0f*cz.x*ca)*native_cos(cz.y*ca)*native_sin(cz.z*ca)+native_sin(2.0f*cz.y*ca)*native_cos(cz.z*ca)*native_sin(cz.x*ca)+native_sin(2.0f*cz.z*ca)*native_cos(cz.x*ca)*native_sin(cz.y*ca))-0.5f*(native_cos(2.0f*cz.x*ca)*native_cos(2.0f*cz.y*ca)+native_cos(2.0f*cz.y*ca)*native_cos(2.0f*cz.z*ca)+native_cos(2.0f*cz.z*ca)*native_cos(2.0f*cz.x*ca))-cr; break; } // Lidinoid surface
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_55)
 					case 55: { clipDist=3.0f*(native_cos(cz.x*ca)+native_cos(cz.y*ca)+native_cos(cz.z*ca))+4.0f*native_cos(cz.x*ca)*native_cos(cz.y*ca)*native_cos(cz.z*ca)-cr; break; } // Neovius surface
 					case 56: { float t56=atan2(cz.y,cz.x), kx=native_cos(2.0f*t56)*(cR+cr*native_cos(3.0f*t56)), ky=native_sin(2.0f*t56)*(cR+cr*native_cos(3.0f*t56)), kz=cr*native_sin(3.0f*t56); clipDist=native_sqrt((cz.x-kx)*(cz.x-kx)+(cz.y-ky)*(cz.y-ky)+(cz.z-kz)*(cz.z-kz))-ca; break; } // Torus knot
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_57)
 					case 57: { clipDist=cz.x*cz.x*cz.z+cz.y*cz.y*cz.z-ca*cz.x*cz.y-cr; break; } // Cross-cap surface
 					case 58: { float phi58=0.5f*(1.0f+native_sqrt(5.0f)), p2=phi58*phi58, r2=cz.x*cz.x+cz.y*cz.y+cz.z*cz.z; clipDist=4.0f*(p2*cz.x*cz.x-cz.y*cz.y)*(p2*cz.y*cz.y-cz.z*cz.z)*(p2*cz.z*cz.z-cz.x*cz.x)-(1.0f+2.0f*phi58)*(r2-ca*ca)*(r2-ca*ca); break; } // Barth sextic
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_59)
 					case 59: { clipDist=cz.x*cz.x*cz.y*cz.y+cz.y*cz.y*cz.z*cz.z+cz.z*cz.z*cz.x*cz.x-ca*cz.x*cz.y*cz.z; break; } // Steiner surface
 					case 60: { float r60=length(cz); if(r60<1e-15f)r60=1e-15f; { float x60=cz.x/r60,y60=cz.y/r60,z60=cz.z/r60; clipDist=64.0f*x60*x60*x60*z60-48.0f*x60*z60*(3.0f*x60*x60+z60*z60)+12.0f*z60*(x60*x60-z60*z60)+x60*x60+y60*y60+z60*z60-cr*cr; } break; } // Boy surface approx
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_61)
 					case 61: { float r61=length(cz); clipDist=r61*native_exp(-ca*r61)-cr; break; } // Exponential decay shell
 					case 62: { float r62=native_sqrt(cz.x*cz.x+cz.y*cz.y), t62=atan2(cz.y,cz.x), spiralR=ca*native_exp(cb*t62); clipDist=fabs(r62-spiralR)+fabs(cz.z)-cr; break; } // Logarithmic spiral shell
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_63)
 					case 63: { float t63=atan2(cz.y,cz.x), r63=native_sqrt(cz.x*cz.x+cz.y*cz.y), h1=r63-cR-cr*native_cos(ca*cz.z), h2=r63-cR+cr*native_cos(ca*cz.z+M_PI_F); clipDist=fmin(native_sqrt(h1*h1+pow(cr*native_sin(ca*cz.z),2.0f)),native_sqrt(h2*h2+pow(cr*native_sin(ca*cz.z+M_PI_F),2.0f)))-cb; break; } // Double helix
 					case 64: { float dx64=fabs(cz.x)-sx, dy64=fabs(cz.y)-sy, dz64=fabs(cz.z)-sz, chamfer=ca; clipDist=fmax(fmax(dx64,fmax(dy64,dz64)),(dx64+dy64+dz64)*chamfer); break; } // Chamfered cube
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_65)
 					case 65: { float dx65=fmax(fabs(cz.x)-sx,0.0f), dy65=fmax(fabs(cz.y)-sy,0.0f), dz65=fmax(fabs(cz.z)-sz,0.0f); clipDist=native_sqrt(dx65*dx65+dy65*dy65+dz65*dz65)-cr; break; } // Rounded box
 					case 66: { clipDist=fabs(cz.x)+fabs(cz.y)+fabs(cz.z)-cr; break; } // Octahedron
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_67)
 					case 67: { float phi67=0.5f*(1.0f+native_sqrt(5.0f)); clipDist=fmax(fmax(fabs(cz.x)+phi67*fabs(cz.y),fabs(cz.y)+phi67*fabs(cz.z)),fabs(cz.z)+phi67*fabs(cz.x))-cr*(1.0f+phi67); break; } // Dodecahedron approx
 					case 68: { float phi68=0.5f*(1.0f+native_sqrt(5.0f)); clipDist=fmax(fabs(cz.x)+phi68*fabs(cz.z),fmax(fabs(cz.y)+phi68*fabs(cz.x),fabs(cz.z)+phi68*fabs(cz.y)))-cr*phi68*phi68; break; } // Icosahedron approx
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_69)
 					case 69: { float d69a=fmax(fabs(cz.x),fmax(fabs(cz.y),fabs(cz.z)))-sx, d69b=(fabs(cz.x)+fabs(cz.y)+fabs(cz.z))*0.577f-cr; clipDist=fmax(d69a,d69b); break; } // Truncated octahedron
 					case 70: { float q70x=fabs(cz.x), q70y=fabs(cz.y); clipDist=fmax(q70x*0.866f+q70y*0.5f,q70y)-cr; clipDist=fmax(clipDist,fabs(cz.z)-sz); break; } // Hex prism
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_71)
 					case 71: { clipDist=fmax(fabs(cz.z)-sz,fmax(fabs(cz.x)*0.866f+cz.y*0.5f,-cz.y)-cr); break; } // Triangular prism
 					case 72: { float rxy72a=native_sqrt(cz.x*cz.x+cz.y*cz.y), d72a=native_sqrt((rxy72a-cR)*(rxy72a-cR)+cz.z*cz.z)-cr, ryz72=native_sqrt(cz.y*cz.y+cz.z*cz.z), d72b=native_sqrt((ryz72-cR)*(ryz72-cR)+cz.x*cz.x)-cr; clipDist=fmin(d72a,d72b); break; } // Link
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_73)
 					case 73: { float r73=native_sqrt(cz.x*cz.x+cz.y*cz.y)-cr, h73=fabs(cz.z)-sz; clipDist=fmin(fmax(r73,h73),0.0f)+native_sqrt(fmax(r73,0.0f)*fmax(r73,0.0f)+fmax(h73,0.0f)*fmax(h73,0.0f)); break; } // Capped cylinder
 					case 74: { float capH=fmax(0.0f,fmin(sz,cz.z)); clipDist=native_sqrt(cz.x*cz.x+cz.y*cz.y+(cz.z-capH)*(cz.z-capH))-cr; break; } // Capsule
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_75)
 					case 75: { float t75=atan2(cz.y,cz.x), r75=native_sqrt(cz.x*cz.x+cz.y*cz.y), knotR=cR+cr*native_cos(3.0f*t75); clipDist=native_sqrt((r75-knotR)*(r75-knotR)+cz.z*cz.z)-ca; break; } // Trefoil knot
 					case 76: { float t76=atan2(cz.y,cz.x), r76=native_sqrt(cz.x*cz.x+cz.y*cz.y)-cR, localZ=cz.z*native_cos(t76*0.5f)-r76*native_sin(t76*0.5f); clipDist=fabs(localZ)-ca; break; } // Mobius strip approx
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_77)
 					case 77: { float sc77x=native_sin(cz.x*ca)*native_sin(cz.x*ca), sc77y=native_sin(cz.y*ca)*native_sin(cz.y*ca), sc77z=native_sin(cz.z*ca)*native_sin(cz.z*ca); clipDist=sc77x+sc77y+sc77z-cr; break; } // Sine cage
 					case 78: { clipDist=cz.x*cz.x*cz.x*cz.x+cz.y*cz.y*cz.y*cz.y+cz.z*cz.z*cz.z*cz.z-ca*(cz.x*cz.x+cz.y*cz.y+cz.z*cz.z); break; } // Pillow shape
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_79)
 					case 79: { float n79=native_sin(ca*cz.x)*native_sin(ca*cz.y)*native_sin(ca*cz.z); clipDist=length(cz)-cr-cb*n79; break; } // Displacement sphere
 					case 80: { float r80=native_sqrt(cz.x*cz.x+cz.y*cz.y)-cR, ang80=ca*atan2(cz.y,cz.x)/(2.0f*M_PI_F); clipDist=r80*r80+(cz.z-ang80)*(cz.z-ang80)-cr*cr; break; } // Corkscrew
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_81)
 					case 81: { float u81=atan2(cz.y,cz.x), v81=atan2(cz.z,native_sqrt(cz.x*cz.x+cz.y*cz.y)-cR), kb=ca*(1.0f-0.5f*native_cos(u81))*native_sin(v81)-cb*native_cos(v81); clipDist=fabs(kb)-cr; break; } // Klein bottle section
 					case 82: { float r82=native_sqrt(cz.x*cz.x+cz.y*cz.y), wave82=cr+ca*native_sin(cb*cz.z); clipDist=r82-wave82; break; } // Wavy cylinder
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_83)
 					case 83: { float twist83=ca*cz.z, rx83=cz.x*native_cos(twist83)-cz.y*native_sin(twist83), ry83=cz.x*native_sin(twist83)+cz.y*native_cos(twist83); clipDist=fmax(fabs(rx83)-sx,fmax(fabs(ry83)-sy,fabs(cz.z)-sz)); break; } // Twisted box
 					case 84: { float bend84=ca*cz.x, bz84=cz.z+bend84*bend84, rxy84=native_sqrt(cz.x*cz.x+cz.y*cz.y)-cR; clipDist=native_sqrt(rxy84*rxy84+bz84*bz84)-cr; break; } // Bent torus
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_85)
 					case 85: { clipDist=cz.z-ca*native_sin(cb*cz.x)-cc*native_cos(cb*cz.y)-cr; break; } // Corrugated plane
 					case 86: { float r86=length(cz); if(r86<1e-15f)r86=1e-15f; { float theta86=acos(cz.z/r86), phi86=atan2(cz.y,cz.x), m86=(float)mut->clipNPoints, st86=pow(pow(fabs(native_cos(m86*theta86/4.0f)),cb)+pow(fabs(native_sin(m86*theta86/4.0f)),cc),-1.0f/ca), sp86=pow(pow(fabs(native_cos(m86*phi86/4.0f)),cb)+pow(fabs(native_sin(m86*phi86/4.0f)),cc),-1.0f/ca); clipDist=r86-cr*st86*sp86; } break; } // Supershape 3D
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_87)
 					case 87: { float r87=length(cz), cosTheta87=cz.z/(r87+1e-15f); clipDist=r87-cr*(1.0f+ca*cosTheta87); break; } // Egg shape
 					case 88: { float x2_88=cz.x*cz.x,y2_88=cz.y*cz.y,z2_88=cz.z*cz.z; clipDist=2.0f*y2_88*(y2_88-ca*ca)*(y2_88-ca*ca)-x2_88*x2_88+2.0f*ca*ca*(x2_88-z2_88*3.0f)*(x2_88-z2_88); break; } // Genus-2 surface
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_89)
 					case 89: { float fx89=fabs(fmod(cz.x+ca,2.0f*ca))-ca, fy89=fabs(fmod(cz.y+ca,2.0f*ca))-ca, fz89=fabs(fmod(cz.z+ca,2.0f*ca))-ca; clipDist=native_sqrt(fx89*fx89+fy89*fy89+fz89*fz89)-cr; break; } // Folded sphere
 					case 90: { clipDist=fmax(fmax(fabs(cz.x+cz.y),fabs(cz.x-cz.y)),fmax(fabs(cz.y+cz.z),fmax(fabs(cz.y-cz.z),fmax(fabs(cz.x+cz.z),fabs(cz.x-cz.z)))))-cr; break; } // Rhombic dodecahedron
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_91)
 					case 91: { clipDist=fmax(fabs(cz.x+cz.y+cz.z),fmax(fabs(cz.x-cz.y-cz.z),fmax(fabs(-cz.x+cz.y-cz.z),fabs(-cz.x-cz.y+cz.z))))-cr; break; } // Tetrahedral symmetry
 					case 92: { clipDist=native_sin(ca*cz.x)+native_sin(ca*cz.y)+native_sin(ca*cz.z)-cr; break; } // Egg crate
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_93)
 					case 93: { float denom93=native_cos(ca*cz.y)*native_cos(ca*cz.z)+1e-10f; clipDist=native_sin(ca*cz.x)-native_sin(ca*cz.y)*native_sin(ca*cz.z)/denom93; break; } // Scherk surface
 					case 94: { float u94=cz.x,v94=cz.y, ex94=u94-u94*u94*u94/3.0f+u94*v94*v94, ey94=v94-v94*v94*v94/3.0f+v94*u94*u94, ez94=u94*u94-v94*v94; clipDist=native_sqrt((cz.x-ex94)*(cz.x-ex94)+(cz.y-ey94)*(cz.y-ey94)+(cz.z-ez94)*(cz.z-ez94))-cr; break; } // Enneper surface
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_95)
 					case 95: { clipDist=cz.x*cz.x/fmax(sx*sx,1e-10f)-cz.y*cz.y/fmax(sy*sy,1e-10f)-cz.z; break; } // Saddle clip
 					case 96: { clipDist=cz.x*(cz.x*cz.x-3.0f*cz.y*cz.y)-ca*cz.z; break; } // Monkey saddle
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_97)
 					case 97: { clipDist=fabs(cz.x)+fabs(cz.y)+fabs(cz.z)+fabs(z.w)-cr; break; } // Cross-polytope
 					case 98: { clipDist=cz.x*cz.x/fmax(sx*sx,1e-10f)+cz.y*cz.y/fmax(sy*sy,1e-10f)-cz.z; break; } // Elliptic paraboloid
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_99)
 					case 99: { float d99s=length(cz)-cr, d99b=fmax(fabs(cz.x)-sx,fmax(fabs(cz.y)-sy,fabs(cz.z)-sz)), k99=mut->clipSmoothK, h99=fmax(0.0f,fmin(1.0f,0.5f-0.5f*(d99s-d99b)/fmax(k99,1e-10f))); clipDist=d99s*(1.0f-h99)+d99b*h99+k99*h99*(1.0f-h99); break; } // Smooth intersection
 					case 100: { float3 ifs=cz; float ifsScale=1.0f; for(int k=0;k<6;k++){if(ifs.x+ifs.y<0.0f){float t=-ifs.y;ifs.y=-ifs.x;ifs.x=t;} if(ifs.x+ifs.z<0.0f){float t=-ifs.z;ifs.z=-ifs.x;ifs.x=t;} if(ifs.y+ifs.z<0.0f){float t=-ifs.z;ifs.z=-ifs.y;ifs.y=t;} ifs=ifs*ca-(float3)(cb,cb,cb)*(ca-1.0f); ifsScale*=ca;} clipDist=(length(ifs)-cr)/ifsScale; break; } // Sierpinski IFS
+#endif
 			}
 			// Apply boolean operation
 			int bop = mut->clipBooleanOp;
@@ -5301,56 +5939,106 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					float ta = mut->clampParamA, tb = mut->clampParamB;
 					float tc = mut->clampParamC, td = mut->clampParamD;
 					switch(mut->clampType) {
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_1)
 case 1: { z.x=fmax(fmin(z.x,ta),-ta); z.y=fmax(fmin(z.y,ta),-ta); z.z=fmax(fmin(z.z,ta),-ta); aux.DE*=sf; break; }
 						case 2: { z.x=ta*tanh(z.x/fmax(ta,1e-10)); z.y=ta*tanh(z.y/fmax(ta,1e-10)); z.z=ta*tanh(z.z/fmax(ta,1e-10)); aux.DE*=sf; break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_3)
 						case 3: { float r=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); if(r>ta){float s=ta/r; z*=s; aux.DE*=s*sf;} break; }
 						case 4: { float r2=z.x*z.x+z.y*z.y+z.z*z.z; if(r2<ta*ta){float s=ta*ta/fmax(r2,1e-21); z*=s; aux.DE*=s;} break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_5)
 						case 5: { if(z.x>ta)z.x=2.0f*ta-z.x; if(z.x<-ta)z.x=-2.0f*ta-z.x; if(z.y>ta)z.y=2.0f*ta-z.y; if(z.y<-ta)z.y=-2.0f*ta-z.y; if(z.z>ta)z.z=2.0f*ta-z.z; if(z.z<-ta)z.z=-2.0f*ta-z.z; break; }
 						case 6: { z.x=fmax(fmin(z.x,ta),-tb); z.y=fmax(fmin(z.y,ta),-tb); z.z=fmax(fmin(z.z,ta),-tb); break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_7)
 						case 7: { z.x=fmax(fmin(z.x,ta),-ta); z.y=fmax(fmin(z.y,tb),-tb); z.z=fmax(fmin(z.z,tc),-tc); break; }
 						case 8: { float lim=ta*(1.0f+tb*(float)i/250.0f); z.x=fmax(fmin(z.x,lim),-lim); z.y=fmax(fmin(z.y,lim),-lim); z.z=fmax(fmin(z.z,lim),-lim); break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_9)
 						case 9: { float lim=ta*fabs(native_sin(tb*(float)i)); z.x=fmax(fmin(z.x,fmax(lim,0.01f)),-fmax(lim,0.01f)); z.y=fmax(fmin(z.y,fmax(lim,0.01f)),-fmax(lim,0.01f)); z.z=fmax(fmin(z.z,fmax(lim,0.01f)),-fmax(lim,0.01f)); break; }
 						case 10: { float lim=ta*native_exp(-tb*(float)i/100.0f); z.x=fmax(fmin(z.x,fmax(lim,0.01f)),-fmax(lim,0.01f)); z.y=fmax(fmin(z.y,fmax(lim,0.01f)),-fmax(lim,0.01f)); z.z=fmax(fmin(z.z,fmax(lim,0.01f)),-fmax(lim,0.01f)); break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_11)
 						case 11: { float k=fmax(tb,0.01f); z.x=z.x-fmax(0.0f,fmin(1.0f,0.5f+(z.x-ta)/(2.0f*k)))*(z.x-ta); z.y=z.y-fmax(0.0f,fmin(1.0f,0.5f+(z.y-ta)/(2.0f*k)))*(z.y-ta); z.z=z.z-fmax(0.0f,fmin(1.0f,0.5f+(z.z-ta)/(2.0f*k)))*(z.z-ta); break; }
 						case 12: { if(fabs(z.x)>ta){float s=z.x>0?1:-1; z.x=s*(ta-(z.x-s*ta)*(z.x-s*ta)*tb);} if(fabs(z.y)>ta){float s=z.y>0?1:-1; z.y=s*(ta-(z.y-s*ta)*(z.y-s*ta)*tb);} if(fabs(z.z)>ta){float s=z.z>0?1:-1; z.z=s*(ta-(z.z-s*ta)*(z.z-s*ta)*tb);} break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_13)
 						case 13: { float rxy=native_sqrt(z.x*z.x+z.y*z.y); if(rxy>ta){float s=ta/rxy; z.x*=s; z.y*=s; aux.DE*=s;} break; }
 						case 14: { float rxy=native_sqrt(z.x*z.x+z.y*z.y), lim=ta+tb*fabs(z.z); if(rxy>lim){float s=lim/rxy; z.x*=s; z.y*=s; aux.DE*=s;} break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_15)
 						case 15: { float d=native_sqrt((z.x/fmax(ta,0.01f))*(z.x/fmax(ta,0.01f))+(z.y/fmax(tb,0.01f))*(z.y/fmax(tb,0.01f))+(z.z/fmax(tc,0.01f))*(z.z/fmax(tc,0.01f))); if(d>1.0f){z/=d; aux.DE/=d;} break; }
 						case 16: { float rxy=native_sqrt(z.x*z.x+z.y*z.y)-ta, dt=native_sqrt(rxy*rxy+z.z*z.z); if(dt>tb){float s=tb/dt; rxy*=s; z.z*=s; float newR=rxy+ta; if(native_sqrt(z.x*z.x+z.y*z.y)>1e-10){float scale=newR/native_sqrt(z.x*z.x+z.y*z.y); z.x*=scale; z.y*=scale;} aux.DE*=s;} break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_17)
 						case 17: { if(z.x>ta) z.x=ta; break; }
 						case 18: { if(z.x<-ta) z.x=-ta; break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_19)
 						case 19: { if(z.z>ta) z.z=ta; break; }
 						case 20: { float p=fmax(ta,0.1f); z.x=fmod(z.x+p,2.0f*p)-p; z.y=fmod(z.y+p,2.0f*p)-p; z.z=fmod(z.z+p,2.0f*p)-p; break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_21)
 						case 21: { float p=fmax(ta,0.1f); z.x=2.0f*fabs(z.x/(2.0f*p)-floor(z.x/(2.0f*p)+0.5f))*p; z.y=2.0f*fabs(z.y/(2.0f*p)-floor(z.y/(2.0f*p)+0.5f))*p; z.z=2.0f*fabs(z.z/(2.0f*p)-floor(z.z/(2.0f*p)+0.5f))*p; break; }
 						case 22: { z.x=ta*(2.0f/(1.0f+native_exp(-2.0f*z.x/fmax(ta,0.01f)))-1.0f); z.y=ta*(2.0f/(1.0f+native_exp(-2.0f*z.y/fmax(ta,0.01f)))-1.0f); z.z=ta*(2.0f/(1.0f+native_exp(-2.0f*z.z/fmax(ta,0.01f)))-1.0f); break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_23)
 						case 23: { z.x=ta*atan(z.x/fmax(ta,0.01f))*(2.0f/M_PI_F); z.y=ta*atan(z.y/fmax(ta,0.01f))*(2.0f/M_PI_F); z.z=ta*atan(z.z/fmax(ta,0.01f))*(2.0f/M_PI_F); break; }
 						case 24: { float k24=1.0f/fmax(ta,0.01f); z.x=ta*tanh(k24*z.x*1.128f); z.y=ta*tanh(k24*z.y*1.128f); z.z=ta*tanh(k24*z.z*1.128f); break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_25)
 						case 25: { float p25=fmax(tb,0.1f); if(fabs(z.x)>ta)z.x=z.x>0?ta*pow(ta/z.x,p25):-ta*pow(ta/fabs(z.x),p25); if(fabs(z.y)>ta)z.y=z.y>0?ta*pow(ta/z.y,p25):-ta*pow(ta/fabs(z.y),p25); if(fabs(z.z)>ta)z.z=z.z>0?ta*pow(ta/z.z,p25):-ta*pow(ta/fabs(z.z),p25); break; }
 						case 26: { float lim26=ta*(1.0f+tb*native_sin(aux.color*tc)); z.x=fmax(fmin(z.x,lim26),-lim26); z.y=fmax(fmin(z.y,lim26),-lim26); z.z=fmax(fmin(z.z,lim26),-lim26); break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_27)
 						case 27: { float lim27=ta*(1.0f+tb*native_log(1.0f+fabs(aux.DE))); z.x=fmax(fmin(z.x,lim27),-lim27); z.y=fmax(fmin(z.y,lim27),-lim27); z.z=fmax(fmin(z.z,lim27),-lim27); break; }
 						case 28: { float lim28=ta+tb*z.x; z.y=fmax(fmin(z.y,fabs(lim28)),-fabs(lim28)); z.z=fmax(fmin(z.z,fabs(lim28)),-fabs(lim28)); break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_29)
 						case 29: { float theta29=atan2(z.y,z.x), r29=native_sqrt(z.x*z.x+z.y*z.y); if(r29>ta){r29=ta; z.x=r29*native_cos(theta29); z.y=r29*native_sin(theta29); aux.DE*=ta/fmax(native_sqrt(z.x*z.x+z.y*z.y),1e-10);} break; }
 						case 30: { float p30=fmax(ta,0.1f); z.x=floor(z.x/p30+0.5f)*p30; z.y=floor(z.y/p30+0.5f)*p30; z.z=floor(z.z/p30+0.5f)*p30; break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_31)
 						case 31: { float r31=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); if(r31<ta&&r31>1e-15){float s=ta/r31; z*=s; aux.DE*=s;} break; }
 						case 32: { float r32=native_sqrt(z.x*z.x+z.y*z.y); if(r32>ta&&r32<tb){}else if(r32<=ta){float s=ta/fmax(r32,1e-10); z.x*=s; z.y*=s;} else{float s=tb/r32; z.x*=s; z.y*=s;} break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_33)
 						case 33: { float n33=native_sin(z.x*12.9898f+z.y*78.233f+z.z*45.164f)*43758.5453f; n33=n33-floor(n33); { float lim33=ta*(1.0f+tb*(n33-0.5f)); z.x=fmax(fmin(z.x,lim33),-lim33); z.y=fmax(fmin(z.y,lim33),-lim33); z.z=fmax(fmin(z.z,lim33),-lim33); } break; }
 						case 34: { float theta34=atan2(z.y,z.x), r34=native_sqrt(z.x*z.x+z.y*z.y), spiralLim=ta+tb*theta34/(2.0f*M_PI_F); if(r34>spiralLim){z.x*=spiralLim/r34; z.y*=spiralLim/r34;} break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_35)
 						case 35: { float waveLim=ta+tb*native_sin(tc*z.x)*native_sin(tc*z.y); z.z=fmax(fmin(z.z,waveLim),-waveLim); break; }
 						case 36: { if(fabs(z.x)>ta){float t=z.x; z.x=z.y; z.y=t;} if(fabs(z.y)>ta){float t=z.y; z.y=z.z; z.z=t;} break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_37)
 						case 37: { if(z.x>ta)z.x=2.0f*ta-z.x; if(z.y>ta)z.y=2.0f*ta-z.y; if(z.z>ta)z.z=2.0f*ta-z.z; break; }
 						case 38: { float p38=fmax(2.0f*ta,0.01f); z.x=fabs(fmod(z.x+ta,p38)-ta); z.y=fabs(fmod(z.y+ta,p38)-ta); z.z=fabs(fmod(z.z+ta,p38)-ta); break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_39)
 						case 39: { float s39=z.x>0?1:-1; z.x=s39*fmin(fabs(z.x),ta*native_log(1.0f+fabs(z.x)/fmax(ta,0.01f))); s39=z.y>0?1:-1; z.y=s39*fmin(fabs(z.y),ta*native_log(1.0f+fabs(z.y)/fmax(ta,0.01f))); s39=z.z>0?1:-1; z.z=s39*fmin(fabs(z.z),ta*native_log(1.0f+fabs(z.z)/fmax(ta,0.01f))); break; }
 						case 40: { float step40=fmax(tb,0.01f); z.x=floor(z.x/step40+0.5f)*step40; z.x=fmax(fmin(z.x,ta),-ta); z.y=floor(z.y/step40+0.5f)*step40; z.y=fmax(fmin(z.y,ta),-ta); z.z=floor(z.z/step40+0.5f)*step40; z.z=fmax(fmin(z.z,ta),-ta); break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_41)
 						case 41: { for(int k=0;k<3;k++){if(z.x>ta)z.x=2.0f*ta-z.x; if(z.x<-ta)z.x=-2.0f*ta-z.x; if(z.y>ta)z.y=2.0f*ta-z.y; if(z.y<-ta)z.y=-2.0f*ta-z.y; if(z.z>ta)z.z=2.0f*ta-z.z; if(z.z<-ta)z.z=-2.0f*ta-z.z; ta*=tb;} break; }
 						case 42: { float r42=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); if(r42>ta){z*=ta/r42; aux.DE*=ta/r42;} if(r42<tb&&r42>1e-15){z*=tb/r42; aux.DE*=tb/r42;} break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_43)
 						case 43: { z.x=ta*z.x/native_sqrt(z.x*z.x+tb*tb); z.y=ta*z.y/native_sqrt(z.y*z.y+tb*tb); z.z=ta*z.z/native_sqrt(z.z*z.z+tb*tb); break; }
 						case 44: { z.x=fabs(z.x); z.y=fabs(z.y); z.z=fabs(z.z); z.x=fmin(z.x,ta); z.y=fmin(z.y,ta); z.z=fmin(z.z,ta); break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_45)
 						case 45: { float k45=fmax(tb,0.01f); if(fabs(z.x)>ta){float d=(fabs(z.x)-ta)/k45, s=z.x>0?1:-1; z.x=s*(ta+k45*d/(1.0f+d*d));} if(fabs(z.y)>ta){float d=(fabs(z.y)-ta)/k45, s=z.y>0?1:-1; z.y=s*(ta+k45*d/(1.0f+d*d));} if(fabs(z.z)>ta){float d=(fabs(z.z)-ta)/k45, s=z.z>0?1:-1; z.z=s*(ta+k45*d/(1.0f+d*d));} break; }
 						case 46: { float sum46=fabs(z.x)+fabs(z.y)+fabs(z.z); if(sum46>ta){float s=ta/sum46; z*=s; aux.DE*=s;} break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_47)
 						case 47: { if(fabs(z.x)+fabs(z.y)>ta){float s=ta/(fabs(z.x)+fabs(z.y)); z.x*=s; z.y*=s;} break; }
 						case 48: { float rxy48=native_sqrt(z.x*z.x+z.y*z.y); if(rxy48>ta){z.x*=ta/rxy48; z.y*=ta/rxy48;} z.z=fmax(fmin(z.z,tb),-tb); break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_49)
 						case 49: { float capH49=fmax(0.0f,fmin(ta,z.z)), rd49=native_sqrt(z.x*z.x+z.y*z.y+(z.z-capH49)*(z.z-capH49)); if(rd49>tb){float s=tb/rd49; z.x*=s; z.y*=s; z.z=capH49+(z.z-capH49)*s; aux.DE*=s;} break; }
 						case 50: { float p50=fmax(tc,0.5f), d50=pow(pow(fabs(z.x/fmax(ta,0.01f)),p50)+pow(fabs(z.y/fmax(ta,0.01f)),p50)+pow(fabs(z.z/fmax(tb,0.01f)),p50),1.0f/p50); if(d50>1.0f){z/=d50; aux.DE/=d50;} break; }
+#endif
 						default: break;
 					}
 				}
@@ -5362,56 +6050,106 @@ case 1: { z.x=fmax(fmin(z.x,ta),-ta); z.y=fmax(fmin(z.y,ta),-ta); z.z=fmax(fmin(
 					float ta = mut->jbParamA, tb = mut->jbParamB;
 					float tc = mut->jbParamC, td = mut->jbParamD;
 					switch(mut->jbType) {
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_1)
 case 1: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; { float r2jb=z.x*z.x+z.y*z.y+z.z*z.z, minR2jb=tb*tb, fixedR2jb=1.0f; if(r2jb<minR2jb){z*=fixedR2jb/minR2jb; aux.DE*=fixedR2jb/minR2jb;} else if(r2jb<fixedR2jb){z*=fixedR2jb/r2jb; aux.DE*=fixedR2jb/r2jb;} z=z*tc+(float4)(td,td,td,0.0f); aux.DE=aux.DE*fabs(tc)+1.0f; } break; }
 						case 2: { float a2=ta*M_PI_F/180.0f, c2=native_cos(a2),s2=native_sin(a2), nx2=z.x*c2-z.y*s2; z.y=z.x*s2+z.y*c2; z.x=nx2; z.x=fabs(z.x+tb)-fabs(z.x-tb)-z.x; z.y=fabs(z.y+tb)-fabs(z.y-tb)-z.y; z.z=fabs(z.z+tb)-fabs(z.z-tb)-z.z; { float r2jb2=z.x*z.x+z.y*z.y+z.z*z.z; if(r2jb2<0.25f){z*=4.0f; aux.DE*=4.0f;} else if(r2jb2<1.0f){z*=1.0f/r2jb2; aux.DE*=1.0f/r2jb2;} z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; } break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_3)
 						case 3: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; { float r2mb=z.x*z.x+z.y*z.y+z.z*z.z, minR2=tb*tb; if(r2mb<minR2){z*=1.0f/minR2; aux.DE*=1.0f/minR2;} else if(r2mb<1.0f){z*=1.0f/r2mb; aux.DE*=1.0f/r2mb;} z=z*tc+aux.const_c; aux.DE=aux.DE*fabs(tc)+1.0f; } break; }
 						case 4: { z=fabs(z+(float4)(ta,ta,ta,0.0f))-(float4)(ta,ta,ta,0.0f); { float r2ab=z.x*z.x+z.y*z.y+z.z*z.z, minR2ab=tb*tb; if(r2ab<minR2ab){z*=1.0f/minR2ab; aux.DE*=1.0f/minR2ab;} else if(r2ab<1.0f){z*=1.0f/r2ab; aux.DE*=1.0f/r2ab;} z=z*tc+aux.const_c; aux.DE=aux.DE*fabs(tc)+1.0f; } break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_5)
 						case 5: { float k5=fmax(td,0.01f); z.x=z.x-k5*tanh((z.x-ta)/k5)+k5*tanh((z.x+ta)/k5)-z.x; z.y=z.y-k5*tanh((z.y-ta)/k5)+k5*tanh((z.y+ta)/k5)-z.y; z.z=z.z-k5*tanh((z.z-ta)/k5)+k5*tanh((z.z+ta)/k5)-z.z; { float r2sb=z.x*z.x+z.y*z.y+z.z*z.z; if(r2sb<tb*tb){z*=1.0f/(tb*tb); aux.DE*=1.0f/(tb*tb);} else if(r2sb<1.0f){z*=1.0f/r2sb; aux.DE*=1.0f/r2sb;} z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; } break; }
 						case 6: { z.x=fabs(z.x)-ta; z.y=fabs(z.y)-ta; z.z=fabs(z.z)-ta; { float r2af=z.x*z.x+z.y*z.y+z.z*z.z; if(r2af<tb*tb&&r2af>1e-21){z*=1.0f/(r2af); aux.DE*=1.0f/(r2af);} z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; } break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_7)
 						case 7: { if(z.x>ta)z.x=ta-z.x; if(z.x<-ta)z.x=-ta-z.x; if(z.y>ta)z.y=ta-z.y; if(z.y<-ta)z.y=-ta-z.y; if(z.z>ta)z.z=ta-z.z; if(z.z<-ta)z.z=-ta-z.z; { float r2cf=z.x*z.x+z.y*z.y+z.z*z.z, minR=tb*tb; if(r2cf<minR){z*=1.0f/minR; aux.DE*=1.0f/minR;} else if(r2cf<1.0f){z*=1.0f/r2cf; aux.DE*=1.0f/r2cf;} z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; } break; }
 						case 8: { for(int k=0;k<3;k++){z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z;} float r2mf=z.x*z.x+z.y*z.y+z.z*z.z; if(r2mf<tb*tb){z*=1.0f/(tb*tb); aux.DE*=1.0f/(tb*tb);} else if(r2mf<1.0f){z*=1.0f/r2mf; aux.DE*=1.0f/r2mf;} z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_9)
 						case 9: { if(z.x+z.y<0.0f){float t=z.x;z.x=-z.y;z.y=-t;} if(z.x+z.z<0.0f){float t=z.x;z.x=-z.z;z.z=-t;} if(z.y+z.z<0.0f){float t=z.y;z.y=-z.z;z.z=-t;} z=z*ta-(float4)(tb,tb,tb,0.0f)*(ta-1.0f); aux.DE=aux.DE*fabs(ta)+1.0f; break; }
 						case 10: { z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z=z*ta-(float4)(1,1,1,0.0f)*(ta-1.0f)*tb; aux.DE=aux.DE*fabs(ta)+1.0f; break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_11)
 						case 11: { z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z=z*tc+(float4)(td,td,td,0.0f); aux.DE=aux.DE*fabs(tc)+1.0f; break; }
 						case 12: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_13)
 						case 13: { z=z*ta+(float4)(tb,tc,td,0.0f); z.x=fabs(z.x+1.0f)-fabs(z.x-1.0f)-z.x; z.y=fabs(z.y+1.0f)-fabs(z.y-1.0f)-z.y; z.z=fabs(z.z+1.0f)-fabs(z.z-1.0f)-z.z; aux.DE=aux.DE*fabs(ta)+1.0f; break; }
 						case 14: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+tb)-fabs(z.y-tb)-z.y; z.z=fabs(z.z+tc)-fabs(z.z-tc)-z.z; { float r2df=z.x*z.x+z.y*z.y+z.z*z.z; if(r2df<0.25f){z*=4.0f;aux.DE*=4.0f;} else if(r2df<1.0f){z*=1.0f/r2df;aux.DE*=1.0f/r2df;} z*=td; aux.DE=aux.DE*fabs(td)+1.0f; } break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_15)
 						case 15: { z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; { float r2mh=z.x*z.x+z.y*z.y+z.z*z.z; if(r2mh<tb*tb){z*=1.0f/(tb*tb);aux.DE*=1.0f/(tb*tb);} else if(r2mh<1.0f){z*=1.0f/r2mh;aux.DE*=1.0f/r2mh;} z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; } break; }
 						case 16: { float tw16=ta*M_PI_F/180.0f*z.z, c16=native_cos(tw16),s16=native_sin(tw16), nx16=z.x*c16-z.y*s16; z.y=z.x*s16+z.y*c16; z.x=nx16; z.x=fabs(z.x+tb)-fabs(z.x-tb)-z.x; z.y=fabs(z.y+tb)-fabs(z.y-tb)-z.y; z.z=fabs(z.z+tb)-fabs(z.z-tb)-z.z; z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_17)
 						case 17: { float sc17=ta+tb*native_sin((float)i*tc); z.x=fabs(z.x+1.0f)-fabs(z.x-1.0f)-z.x; z.y=fabs(z.y+1.0f)-fabs(z.y-1.0f)-z.y; z.z=fabs(z.z+1.0f)-fabs(z.z-1.0f)-z.z; z*=sc17; aux.DE=aux.DE*fabs(sc17)+1.0f; break; }
 						case 18: { float r218=z.x*z.x+z.y*z.y+z.z*z.z, minR218=ta*ta, fixR218=tb*tb; if(r218<minR218){z*=fixR218/minR218;aux.DE*=fixR218/minR218;} else if(r218<fixR218){z*=fixR218/r218;aux.DE*=fixR218/r218;} float r218b=z.x*z.x+z.y*z.y+z.z*z.z, minR218b=tc*tc; if(r218b<minR218b){z*=1.0f/minR218b;aux.DE*=1.0f/minR218b;} else if(r218b<1.0f){z*=1.0f/r218b;aux.DE*=1.0f/r218b;} z*=td; aux.DE=aux.DE*fabs(td)+1.0f; break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_19)
 						case 19: { float rxy19=native_sqrt(z.x*z.x+z.y*z.y); if(rxy19<ta&&rxy19>1e-15){z.x*=ta/rxy19; z.y*=ta/rxy19; aux.DE*=ta/rxy19;} z.z=fabs(z.z+tb)-fabs(z.z-tb)-z.z; z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; break; }
 						case 20: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; { float r2xz=z.x*z.x+z.z*z.z; if(r2xz<tb*tb){z*=1.0f/(tb*tb);aux.DE*=1.0f/(tb*tb);} else if(r2xz<1.0f){z*=1.0f/r2xz;aux.DE*=1.0f/r2xz;} z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; } break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_21)
 						case 21: { z=fabs(z)-(float4)(ta,ta,ta,0.0f); z+=aux.const_c*tb; { float r2ao=z.x*z.x+z.y*z.y+z.z*z.z; if(r2ao<tc*tc){z*=1.0f/(tc*tc);aux.DE*=1.0f/(tc*tc);} else if(r2ao<1.0f){z*=1.0f/r2ao;aux.DE*=1.0f/r2ao;} z*=td; aux.DE=aux.DE*fabs(td)+1.0f; } break; }
 						case 22: { if(i%2==0){z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z;} else{z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;}} z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_23)
 						case 23: { float r2so=z.x*z.x+z.y*z.y+z.z*z.z, minR2so=ta*ta, fixedR2so=tb*tb; if(r2so<minR2so){float m=fixedR2so/minR2so; z*=m; aux.DE*=m;} else if(r2so<fixedR2so){float m=fixedR2so/r2so; z*=m; aux.DE*=m;} break; }
 						case 24: { if(z.x+z.y<0.0f){float t=-z.y;z.y=-z.x;z.x=t;} if(z.x+z.z<0.0f){float t=-z.z;z.z=-z.x;z.x=t;} if(z.y+z.z<0.0f){float t=-z.z;z.z=-z.y;z.y=t;} z*=ta; z-=(float4)(tb,tb,tb,0.0f)*(ta-1.0f); aux.DE=aux.DE*fabs(ta)+1.0f; break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_25)
 						case 25: { z.x=fabs(fabs(z.x+ta)-tb)-ta; z.y=fabs(fabs(z.y+ta)-tb)-ta; z.z=fabs(fabs(z.z+ta)-tb)-ta; z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; break; }
 						case 26: { float r2rb=z.x*z.x+z.y*z.y+z.z*z.z, theta26=atan2(z.y,z.x), phi26=atan2(native_sqrt(z.x*z.x+z.y*z.y),z.z), rr26=native_sqrt(r2rb); rr26=fabs(rr26+ta)-fabs(rr26-ta)-rr26; z.x=rr26*native_sin(phi26)*native_cos(theta26); z.y=rr26*native_sin(phi26)*native_sin(theta26); z.z=rr26*native_cos(phi26); z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_27)
 						case 27: { float p27=fmax(tb,0.5f); z.x=z.x>0?pow(fabs(z.x),p27):-pow(fabs(z.x),p27); z.y=z.y>0?pow(fabs(z.y),p27):-pow(fabs(z.y),p27); z.z=z.z>0?pow(fabs(z.z),p27):-pow(fabs(z.z),p27); z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; break; }
 						case 28: { if(i%3==0){z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x;} else if(i%3==1){z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y;} else{z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z;} float r2il=z.x*z.x+z.y*z.y+z.z*z.z; if(r2il<tb*tb){z*=1.0f/(tb*tb);aux.DE*=1.0f/(tb*tb);} else if(r2il<1.0f){z*=1.0f/r2il;aux.DE*=1.0f/r2il;} z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_29)
 						case 29: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; { float r2mj=z.x*z.x+z.y*z.y+z.z*z.z; if(r2mj<0.25f){z*=4.0f;aux.DE*=4.0f;} else if(r2mj<1.0f){z*=1.0f/r2mj;aux.DE*=1.0f/r2mj;} z=z*tc+(float4)(td,td,td,0.0f); aux.DE=aux.DE*fabs(tc)+1.0f; } break; }
 						case 30: { z*=ta; aux.DE=aux.DE*fabs(ta)+1.0f; { float a30=tb*M_PI_F/180.0f, c30=native_cos(a30),s30=native_sin(a30), nx30=z.x*c30-z.y*s30; z.y=z.x*s30+z.y*c30; z.x=nx30; z.x=fabs(z.x+tc)-fabs(z.x-tc)-z.x; z.y=fabs(z.y+tc)-fabs(z.y-tc)-z.y; z.z=fabs(z.z+tc)-fabs(z.z-tc)-z.z; } break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_31)
 						case 31: { float bp31=z.x*z.x+z.y*z.y; if(bp31>1e-21){float inv=ta*ta/bp31; z.x*=inv; z.y*=inv; aux.DE*=inv;} z.x=fabs(z.x+tb)-fabs(z.x-tb)-z.x; z.y=fabs(z.y+tb)-fabs(z.y-tb)-z.y; z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; break; }
 						case 32: { float r2cb=z.x*z.x+z.y*z.y+z.z*z.z+z.w*z.w; if(r2cb>1e-21){z*=ta/r2cb; aux.DE*=ta/r2cb;} z.x=fabs(z.x+tb)-fabs(z.x-tb)-z.x; z.y=fabs(z.y+tb)-fabs(z.y-tb)-z.y; z.z=fabs(z.z+tb)-fabs(z.z-tb)-z.z; z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_33)
 						case 33: { float lim33=ta*(1.0f+tb*(float)i/250.0f); z.x=fabs(z.x+lim33)-fabs(z.x-lim33)-z.x; z.y=fabs(z.y+lim33)-fabs(z.y-lim33)-z.y; z.z=fabs(z.z+lim33)-fabs(z.z-lim33)-z.z; z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; break; }
 						case 34: { float n34=native_sin(z.x*12.9898f+z.y*78.233f)*43758.5453f; n34=n34-floor(n34); { float lim34=ta+tb*(n34-0.5f); z.x=fabs(z.x+lim34)-fabs(z.x-lim34)-z.x; z.y=fabs(z.y+lim34)-fabs(z.y-lim34)-z.y; z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; } break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_35)
 						case 35: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; z.w=fabs(z.w+ta)-fabs(z.w-ta)-z.w; { float r24d=z.x*z.x+z.y*z.y+z.z*z.z+z.w*z.w; if(r24d<tb*tb){z*=1.0f/(tb*tb);aux.DE*=1.0f/(tb*tb);} else if(r24d<1.0f){z*=1.0f/r24d;aux.DE*=1.0f/r24d;} z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; } break; }
 						case 36: { float q36x=z.x, q36y=z.y*0.866f+z.x*0.5f; if(q36y>ta){q36y=2.0f*ta-q36y;} if(q36x>ta){q36x=2.0f*ta-q36x;} z.x=q36x; z.y=(q36y-z.x*0.5f)/0.866f; z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_37)
 						case 37: { float d37x=fabs(z.x)-ta, d37y=fabs(z.y)-ta, d37z=fabs(z.z)-ta; if(d37x>0&&d37y>0){z.x*=ta/(ta+d37x); z.y*=ta/(ta+d37y);} if(d37y>0&&d37z>0){z.y*=ta/(ta+d37y); z.z*=ta/(ta+d37z);} if(d37x>0&&d37z>0){z.x*=ta/(ta+d37x); z.z*=ta/(ta+d37z);} z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; break; }
 						case 38: { z.x+=tb*native_sin(ta*z.y)*native_cos(ta*z.z); z.y+=tb*native_sin(ta*z.z)*native_cos(ta*z.x); z.z+=tb*native_cos(ta*z.y)*native_sin(ta*z.x); z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_39)
 						case 39: { z.x=fabs(native_cos(z.x*ta))*tb; z.y=fabs(native_cos(z.y*ta))*tb; z.z=fabs(native_cos(z.z*ta))*tb; z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; break; }
 						case 40: { z.x=z.x>0?native_log(1.0f+z.x*ta):-native_log(1.0f-z.x*ta); z.y=z.y>0?native_log(1.0f+z.y*ta):-native_log(1.0f-z.y*ta); z.z=z.z>0?native_log(1.0f+z.z*ta):-native_log(1.0f-z.z*ta); z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_41)
 						case 41: { float lim41=ta; z.x=z.x>lim41?lim41-(z.x-lim41)*(z.x-lim41)*tb:z.x<-lim41?-lim41+(z.x+lim41)*(z.x+lim41)*tb:z.x; z.y=z.y>lim41?lim41-(z.y-lim41)*(z.y-lim41)*tb:z.y<-lim41?-lim41+(z.y+lim41)*(z.y+lim41)*tb:z.y; z.z=z.z>lim41?lim41-(z.z-lim41)*(z.z-lim41)*tb:z.z<-lim41?-lim41+(z.z+lim41)*(z.z+lim41)*tb:z.z; z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; break; }
 						case 42: { z.x=fmin(fmax(z.x,-ta),ta); z.y=fmin(fmax(z.y,-ta),ta); z.z=fmin(fmax(z.z,-ta),ta); z.x=fmax(fmin(z.x,tb),-tb); z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_43)
 						case 43: { if(fabs(z.x)>ta)z.x=z.x>0?ta:-ta; if(fabs(z.y)>ta)z.y=z.y>0?ta:-ta; if(fabs(z.z)>ta)z.z=z.z>0?ta:-ta; z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; break; }
 						case 44: { float p44=2.0f*ta; z.x=z.x-p44*floor((z.x+ta)/p44); z.y=z.y-p44*floor((z.y+ta)/p44); z.z=z.z-p44*floor((z.z+ta)/p44); z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_45)
 						case 45: { float r45=native_sqrt(z.x*z.x+z.y*z.y), th45=atan2(z.y,z.x); th45=fabs(th45+ta)-fabs(th45-ta)-th45; z.x=r45*native_cos(th45); z.y=r45*native_sin(th45); z.z=fabs(z.z+tb)-fabs(z.z-tb)-z.z; z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; break; }
 						case 46: { float lim46=ta*(1.0f+tb*native_log(1.0f+fabs(aux.DE))); z.x=fabs(z.x+lim46)-fabs(z.x-lim46)-z.x; z.y=fabs(z.y+lim46)-fabs(z.y-lim46)-z.y; z.z=fabs(z.z+lim46)-fabs(z.z-lim46)-z.z; z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_47)
 						case 47: { float lim47=ta*(1.0f+tb*native_sin(aux.color*tc)); z.x=fabs(z.x+lim47)-fabs(z.x-lim47)-z.x; z.y=fabs(z.y+lim47)-fabs(z.y-lim47)-z.y; z.z=fabs(z.z+lim47)-fabs(z.z-lim47)-z.z; z*=td; aux.DE=aux.DE*fabs(td)+1.0f; break; }
 						case 48: { float la=ta,lb=tb; for(int k=0;k<3;k++){z.x=fabs(z.x+la)-fabs(z.x-la)-z.x; z.y=fabs(z.y+la)-fabs(z.y-la)-z.y; z.z=fabs(z.z+la)-fabs(z.z-la)-z.z; la*=lb;} z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_49)
 						case 49: { z.x=z.x>ta?z.x-2.0f*ta:z.x<-ta?z.x+2.0f*ta:z.x; z.y=z.y>ta?z.y-2.0f*ta:z.y<-ta?z.y+2.0f*ta:z.y; z.z=z.z>ta?z.z-2.0f*ta:z.z<-ta?z.z+2.0f*ta:z.z; z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; break; }
 						case 50: { z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; { float r2ifs=z.x*z.x+z.y*z.y+z.z*z.z; if(r2ifs<tb*tb){z*=1.0f/(tb*tb);aux.DE*=1.0f/(tb*tb);} else if(r2ifs<1.0f){z*=1.0f/r2ifs;aux.DE*=1.0f/r2ifs;} z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; } break; }
+#endif
 						default: break;
 					}
 				}
@@ -5424,56 +6162,106 @@ case 1: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; 
 					float tc = mut->mdParamC, td = mut->mdParamD;
 					switch (mut->mdType)
 					{
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_1)
 						case 1: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; { float r2=z.x*z.x+z.y*z.y+z.z*z.z, minR2=tb*tb; if(r2<minR2){z*=1.0f/minR2;aux.DE*=1.0f/minR2;} else if(r2<1.0f){z*=1.0f/r2;aux.DE*=1.0f/r2;} z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; z+=(float4)(td,td,td,0.0f); } break; }
 						case 2: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+tb)-fabs(z.y-tb)-z.y; z.z=fabs(z.z+tc)-fabs(z.z-tc)-z.z; { float r2=z.x*z.x+z.y*z.y+z.z*z.z; if(r2<0.25f){z*=4.0f;aux.DE*=4.0f;} else if(r2<1.0f){z/=r2;aux.DE/=r2;} z*=td; aux.DE=aux.DE*fabs(td)+1.0f; } break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_3)
 						case 3: { float rxy=native_sqrt(z.x*z.x+z.y*z.y); if(rxy>ta){float s=ta/rxy; z.x*=s; z.y*=s; aux.DE*=s;} float r2=z.x*z.x+z.y*z.y+z.z*z.z; if(r2<tb*tb){z*=1.0f/(tb*tb);aux.DE*=1.0f/(tb*tb);} else if(r2<1.0f){z/=r2;aux.DE/=r2;} z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; break; }
 						case 4: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; { float r2=z.x*z.x+z.y*z.y+z.z*z.z, fixR=tb*tb, minR=tc*tc; if(r2<minR){z*=fixR/minR;aux.DE*=fixR/minR;} else if(r2<fixR){z*=fixR/r2;aux.DE*=fixR/r2;} z*=td; aux.DE=aux.DE*fabs(td)+1.0f; } break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_5)
 						case 5: { z=fabs(z+(float4)(ta,ta,ta,0.0f))-(float4)(ta,ta,ta,0.0f); { float r2=z.x*z.x+z.y*z.y+z.z*z.z; if(r2<tb){z*=tc/tb;aux.DE*=tc/tb;} else if(r2<tc){z*=tc/r2;aux.DE*=tc/r2;} z*=td; aux.DE=aux.DE*fabs(td)+1.0f; } break; }
 						case 6: { if(z.x+z.y<0){float t=z.x;z.x=-z.y;z.y=-t;} if(z.x+z.z<0){float t=z.x;z.x=-z.z;z.z=-t;} if(z.y+z.z<0){float t=z.y;z.y=-z.z;z.z=-t;} z=z*ta-(float4)(tb,tb,tb,0.0f)*(ta-1.0f); aux.DE=aux.DE*fabs(ta)+1.0f; break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_7)
 						case 7: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; { float r2=z.x*z.x+z.y*z.y+z.z*z.z; if(r2<tb*tb){float s=tc/(tb*tb); z*=s;aux.DE*=s;} else if(r2<tc){float s=tc/r2; z*=s;aux.DE*=s;} z.z=td*z.z; aux.DE*=fabs(td); } break; }
 						case 8: { float a8=ta*M_PI_F/180.0f, c8=native_cos(a8),s8=native_sin(a8), nx=z.x*c8-z.y*s8; z.y=z.x*s8+z.y*c8; z.x=nx; z.x=fabs(z.x+tb)-fabs(z.x-tb)-z.x; z.y=fabs(z.y+tb)-fabs(z.y-tb)-z.y; z.z=fabs(z.z+tb)-fabs(z.z-tb)-z.z; { float r2=z.x*z.x+z.y*z.y+z.z*z.z; if(r2<0.25f){z*=4.0f;aux.DE*=4.0f;} else if(r2<1.0f){z/=r2;aux.DE/=r2;} z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; } break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_9)
 						case 9: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; { float r=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); if(r<tb){z*=tc/(tb*tb);aux.DE*=tc/(tb*tb);} else if(r<native_sqrt(tc)){z*=tc/(r*r);aux.DE*=tc/(r*r);} z*=td; aux.DE=aux.DE*fabs(td)+1.0f; } break; }
 						case 10: { z=fabs(z)-(float4)(ta,ta,ta,0.0f); if(z.x<0)z.x=0; if(z.y<0)z.y=0; if(z.z<0)z.z=0; { float r2=z.x*z.x+z.y*z.y+z.z*z.z; if(r2<tb*tb){z*=1.0f/(tb*tb);aux.DE*=1.0f/(tb*tb);} else if(r2<1.0f){z/=r2;aux.DE/=r2;} z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; z+=(float4)(td,td,td,0.0f); } break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_11)
 						case 11: { float rxy=native_sqrt(z.x*z.x+z.y*z.y), minR=ta; if(rxy<minR&&rxy>1e-21f){float s=minR/rxy; z.x*=s;z.y*=s;aux.DE*=s;} z.x=fabs(z.x+tb)-fabs(z.x-tb)-z.x; z.y=fabs(z.y+tb)-fabs(z.y-tb)-z.y; z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; break; }
 						case 12: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; { float r2=z.x*z.x+z.y*z.y+z.z*z.z, sph=fmax(tb*tb/fmax(r2,1e-21f),1.0f); z*=sph*tc; aux.DE=aux.DE*sph*fabs(tc)+1.0f; } break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_13)
 						case 13: { if(z.x-z.y<0){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0){float t=z.y;z.y=z.z;z.z=t;} z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+tb)-fabs(z.y-tb)-z.y; { float r2=z.x*z.x+z.y*z.y+z.z*z.z; if(r2<tc*tc){z*=1.0f/(tc*tc);aux.DE*=1.0f/(tc*tc);} else if(r2<1.0f){z/=r2;aux.DE/=r2;} z*=td; aux.DE=aux.DE*fabs(td)+1.0f; } break; }
 						case 14: { z.x=ta*tanh(z.x/fmax(ta,1e-10f)); z.y=ta*tanh(z.y/fmax(ta,1e-10f)); z.z=ta*tanh(z.z/fmax(ta,1e-10f)); { float r2=z.x*z.x+z.y*z.y+z.z*z.z; if(r2<tb*tb){z*=tc/(tb*tb);aux.DE*=tc/(tb*tb);} else if(r2<tc){z*=tc/r2;aux.DE*=tc/r2;} z*=td; aux.DE=aux.DE*fabs(td)+1.0f; } break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_15)
 						case 15: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; { float r2=z.x*z.x+z.y*z.y+z.z*z.z, minR2=tb*tb, fixR2=tc*tc; if(r2<minR2){z*=fixR2/minR2;aux.DE*=fixR2/minR2;} else if(r2<fixR2){z*=fixR2/r2;aux.DE*=fixR2/r2;} z*=sf; aux.DE=aux.DE*fabs(sf)+1.0f; z+=(float4)(td,td,td,0.0f); } break; }
 						case 16: { float fold=ta; z.x=fabs(z.x+fold)-fabs(z.x-fold)-z.x; z.y=fabs(z.y+fold)-fabs(z.y-fold)-z.y; z.z=fabs(z.z+fold)-fabs(z.z-fold)-z.z; { float r2=z.x*z.x+z.y*z.y+z.z*z.z, k=fmax(tb/fmax(r2,1e-21f),1.0f); z*=k; aux.DE*=k; z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; z.x+=td; } break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_17)
 						case 17: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; { float r2=z.x*z.x+z.y*z.y+z.z*z.z; if(r2<tb){z*=tc/tb;aux.DE*=tc/tb;} else if(r2<tc){z*=tc/r2;aux.DE*=tc/r2;} float sc=td+sf*native_sin((float)i*0.5f); z*=sc; aux.DE=aux.DE*fabs(sc)+1.0f; } break; }
 						case 18: { z.x=clamp(z.x,-ta,ta)*2.0f-z.x; z.y=clamp(z.y,-ta,ta)*2.0f-z.y; z.z=clamp(z.z,-ta,ta)*2.0f-z.z; { float r2=z.x*z.x+z.y*z.y+z.z*z.z, k=fmax(tb/fmax(r2,1e-21f),1.0f); z*=k*tc; aux.DE=aux.DE*k*fabs(tc)+1.0f; z+=(float4)(td,0.0f,0.0f,0.0f); } break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_19)
 						case 19: { z=fabs(z+(float4)(ta,tb,ta,0.0f))-(float4)(ta,tb,ta,0.0f); { float r2=z.x*z.x+z.y*z.y+z.z*z.z, minR2=tc*tc; if(r2<minR2){float s=td/minR2;z*=s;aux.DE*=s;} else if(r2<td){float s=td/r2;z*=s;aux.DE*=s;} z*=sf; aux.DE=aux.DE*fabs(sf)+1.0f; } break; }
 						case 20: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; { float theta=atan2(z.y,z.x), r=native_sqrt(z.x*z.x+z.y*z.y); r=fmax(r,tb); z.x=r*native_cos(theta); z.y=r*native_sin(theta); float r2=z.x*z.x+z.y*z.y+z.z*z.z; if(r2<tc*tc){z*=1.0f/(tc*tc);aux.DE*=1.0f/(tc*tc);} else if(r2<1.0f){z/=r2;aux.DE/=r2;} z*=td; aux.DE=aux.DE*fabs(td)+1.0f; } break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_21)
 						case 21: { z=fabs(z)-(float4)(ta,ta,ta,0.0f); z.x=fabs(z.x+tb)-fabs(z.x-tb)-z.x; { float r2=z.x*z.x+z.y*z.y+z.z*z.z; if(r2<tc*tc){z*=td/(tc*tc);aux.DE*=td/(tc*tc);} else if(r2<td){z*=td/r2;aux.DE*=td/r2;} z*=sf; aux.DE=aux.DE*fabs(sf)+1.0f; } break; }
 						case 22: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; { float r2=z.x*z.x+z.y*z.y+z.z*z.z, sph=tb*tb/fmax(r2,tc*tc); z*=sph; aux.DE*=sph; z*=td; aux.DE=aux.DE*fabs(td)+1.0f; } break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_23)
 						case 23: { float fold23=ta*(1.0f+tb*(float)i/250.0f); z.x=fabs(z.x+fold23)-fabs(z.x-fold23)-z.x; z.y=fabs(z.y+fold23)-fabs(z.y-fold23)-z.y; z.z=fabs(z.z+fold23)-fabs(z.z-fold23)-z.z; { float r2=z.x*z.x+z.y*z.y+z.z*z.z; if(r2<tc*tc){z*=td/(tc*tc);aux.DE*=td/(tc*tc);} else if(r2<td){z*=td/r2;aux.DE*=td/r2;} z*=sf; aux.DE=aux.DE*fabs(sf)+1.0f; } break; }
 						case 24: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; { float r=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z), k=tb/fmax(r,tc); z*=k; aux.DE*=k; z*=td; aux.DE=aux.DE*fabs(td)+1.0f; } break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_25)
 						case 25: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; { float r2=z.x*z.x+z.y*z.y+z.z*z.z, minR2=tb*tb, fixR2=tc*tc, sph=clamp(fixR2/fmax(r2,minR2),1.0f,fixR2/minR2); z*=sph; aux.DE*=sph; z*=td; aux.DE=aux.DE*fabs(td)+1.0f; } break; }
 						case 26: { if(z.x+z.y<0){float t=-z.y;z.y=-z.x;z.x=t;} if(z.x+z.z<0){float t=-z.z;z.z=-z.x;z.x=t;} z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+tb)-fabs(z.y-tb)-z.y; z.z=fabs(z.z+tb)-fabs(z.z-tb)-z.z; { float r2=z.x*z.x+z.y*z.y+z.z*z.z; if(r2<tc*tc){z*=td/(tc*tc);aux.DE*=td/(tc*tc);} else if(r2<td){z*=td/r2;aux.DE*=td/r2;} z*=sf; aux.DE=aux.DE*fabs(sf)+1.0f; } break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_27)
 						case 27: { z.x=ta-fabs(z.x-ta); z.y=ta-fabs(z.y-ta); z.z=ta-fabs(z.z-ta); { float r2=z.x*z.x+z.y*z.y+z.z*z.z; if(r2<tb*tb){z*=tc/(tb*tb);aux.DE*=tc/(tb*tb);} else if(r2<tc){z*=tc/r2;aux.DE*=tc/r2;} z*=td; aux.DE=aux.DE*fabs(td)+1.0f; } break; }
 						case 28: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; { float r2=z.x*z.x+z.y*z.y+z.z*z.z, inv=tb/fmax(r2,1e-21f); z*=inv; aux.DE*=inv; z.x+=tc; z.y+=tc; z.z+=td; } break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_29)
 						case 29: { float s29=sf; z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; { float r2=z.x*z.x+z.y*z.y+z.z*z.z; if(r2<tb*tb){s29*=tc/(tb*tb);} else if(r2<tc){s29*=tc/r2;} z*=s29; aux.DE=aux.DE*fabs(s29)+1.0f; z+=(float4)(td,td,td,0.0f); } break; }
 						case 30: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+tb)-fabs(z.y-tb)-z.y; z.z=fabs(z.z+tc)-fabs(z.z-tc)-z.z; { float r=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); if(r<td&&r>1e-21f){float s=td/r;z*=s;aux.DE*=s;} z*=sf; aux.DE=aux.DE*fabs(sf)+1.0f; } break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_31)
 						case 31: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; { float r2=z.x*z.x+z.y*z.y+z.z*z.z, minR2=tb*tb; if(r2<minR2){z*=1.0f/minR2;aux.DE*=1.0f/minR2;} else if(r2<1.0f){z/=r2;aux.DE/=r2;} z.x=z.x*tc+td; z.y=z.y*tc; z.z=z.z*tc; aux.DE=aux.DE*fabs(tc)+1.0f; } break; }
 						case 32: { float a32=ta*M_PI_F/180.0f, c32=native_cos(a32),s32=native_sin(a32), ny=z.y*c32-z.z*s32; z.z=z.y*s32+z.z*c32; z.y=ny; z.x=fabs(z.x+tb)-fabs(z.x-tb)-z.x; z.y=fabs(z.y+tb)-fabs(z.y-tb)-z.y; z.z=fabs(z.z+tb)-fabs(z.z-tb)-z.z; { float r2=z.x*z.x+z.y*z.y+z.z*z.z; if(r2<tc*tc){z*=td/(tc*tc);aux.DE*=td/(tc*tc);} else if(r2<td){z*=td/r2;aux.DE*=td/r2;} z*=sf; aux.DE=aux.DE*fabs(sf)+1.0f; } break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_33)
 						case 33: { z=fabs(z+(float4)(ta,ta,ta,0.0f))-(float4)(ta,ta,ta,0.0f); z=fabs(z+(float4)(tb,tb,tb,0.0f))-(float4)(tb,tb,tb,0.0f); { float r2=z.x*z.x+z.y*z.y+z.z*z.z; if(r2<tc*tc){z*=td/(tc*tc);aux.DE*=td/(tc*tc);} else if(r2<td){z*=td/r2;aux.DE*=td/r2;} z*=sf; aux.DE=aux.DE*fabs(sf)+1.0f; } break; }
 						case 34: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; { float r2=z.x*z.x+z.y*z.y+z.z*z.z, smooth=tb*tb/(fmax(r2,tc*tc)); z*=smooth; aux.DE*=smooth; z*=td; aux.DE=aux.DE*fabs(td)+1.0f; } break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_35)
 						case 35: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; { float len=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z), k=tb/fmax(len*len,tc); z*=k;aux.DE*=k; z*=td; aux.DE=aux.DE*fabs(td)+1.0f; } break; }
 						case 36: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; { float r2=z.x*z.x+z.y*z.y+z.z*z.z, f36=1.0f/(1.0f+native_exp(-tb*(r2-tc))); z*=f36*td; aux.DE=aux.DE*f36*fabs(td)+1.0f; } break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_37)
 						case 37: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; { float r2=z.x*z.x+z.y*z.y+z.z*z.z, minR2=tb*tb, maxSph=tc, sph=clamp(1.0f/fmax(r2,minR2),1.0f,maxSph); z*=sph; aux.DE*=sph; z*=td; aux.DE=aux.DE*fabs(td)+1.0f; } break; }
 						case 38: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; { float sum=fabs(z.x)+fabs(z.y)+fabs(z.z); if(sum>tb){float s=tb/sum;z*=s;aux.DE*=s;} z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; z+=(float4)(td,0.0f,0.0f,0.0f); } break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_39)
 						case 39: { float fold39=ta+tb*native_sin((float)i*tc); z.x=fabs(z.x+fold39)-fabs(z.x-fold39)-z.x; z.y=fabs(z.y+fold39)-fabs(z.y-fold39)-z.y; z.z=fabs(z.z+fold39)-fabs(z.z-fold39)-z.z; { float r2=z.x*z.x+z.y*z.y+z.z*z.z; if(r2<0.25f){z*=4.0f;aux.DE*=4.0f;} else if(r2<1.0f){z/=r2;aux.DE/=r2;} z*=td; aux.DE=aux.DE*fabs(td)+1.0f; } break; }
 						case 40: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; { float r2=z.x*z.x+z.y*z.y+z.z*z.z, p=tb/fmax(r2,1e-21f); z.x=z.x*p+tc; z.y=z.y*p+tc; z.z=z.z*p+td; aux.DE=aux.DE*fabs(p)+1.0f; } break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_41)
 						case 41: { if(z.x>ta)z.x=2.0f*ta-z.x; if(z.x<-ta)z.x=-2.0f*ta-z.x; if(z.y>ta)z.y=2.0f*ta-z.y; if(z.y<-ta)z.y=-2.0f*ta-z.y; if(z.z>ta)z.z=2.0f*ta-z.z; if(z.z<-ta)z.z=-2.0f*ta-z.z; { float r2=z.x*z.x+z.y*z.y+z.z*z.z; if(r2<tb*tb){z*=tc/(tb*tb);aux.DE*=tc/(tb*tb);} else if(r2<tc){z*=tc/r2;aux.DE*=tc/r2;} z*=td; aux.DE=aux.DE*fabs(td)+1.0f; } break; }
 						case 42: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; { float r2=z.x*z.x+z.y*z.y+z.z*z.z, minR=tb*tb, fixR=tc*tc, s42=(r2<minR)?fixR/minR:(r2<fixR)?fixR/r2:1.0f; z*=s42*td; aux.DE=aux.DE*s42*fabs(td)+1.0f; } break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_43)
 						case 43: { z.x=ta-fabs(fabs(z.x)-ta); z.y=ta-fabs(fabs(z.y)-ta); z.z=ta-fabs(fabs(z.z)-ta); { float r2=z.x*z.x+z.y*z.y+z.z*z.z; if(r2<tb*tb){z*=tc/(tb*tb);aux.DE*=tc/(tb*tb);} else if(r2<tc){z*=tc/r2;aux.DE*=tc/r2;} z*=td; aux.DE=aux.DE*fabs(td)+1.0f; } break; }
 						case 44: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; { float r2=z.x*z.x+z.y*z.y+z.z*z.z, invR=1.0f/fmax(r2,tb*tb); z*=invR*tc; aux.DE=aux.DE*invR*fabs(tc)+1.0f; z+=(float4)(td,td,td,0.0f); } break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_45)
 						case 45: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; { float r=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z), f45=tb/(1.0f+native_exp(tc*(r-td))); z*=f45; aux.DE*=f45; } break; }
 						case 46: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; { float maxC=fmax(fabs(z.x),fmax(fabs(z.y),fabs(z.z))); if(maxC>tb){float s=tb/maxC;z*=s;aux.DE*=s;} z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; z+=(float4)(td,0.0f,0.0f,0.0f); } break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_47)
 						case 47: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; { float r2=z.x*z.x+z.y*z.y+z.z*z.z, k47=fmax(tb*tb/fmax(r2,tc*tc),1.0f); z*=k47*td; aux.DE=aux.DE*k47*fabs(td)+1.0f; } break; }
 						case 48: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; { float r2=z.x*z.x+z.y*z.y+z.z*z.z, minR2=tb*tb; if(r2<minR2){z*=1.0f/minR2;aux.DE*=1.0f/minR2;} else if(r2<1.0f){z/=r2;aux.DE/=r2;} float sc48=tc+td*native_exp(-(float)i*sf); z*=sc48; aux.DE=aux.DE*fabs(sc48)+1.0f; } break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_49)
 						case 49: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; { float r2=z.x*z.x+z.y*z.y+z.z*z.z, sph49=fmax(tb/fmax(r2,tc*tc),1.0f); z.x=z.x*sph49*td; z.y=z.y*sph49; z.z=z.z*sph49; aux.DE*=sph49*fabs(td); } break; }
 						case 50: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; if(z.x-z.y<0){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0){float t=z.y;z.y=z.z;z.z=t;} float r2=z.x*z.x+z.y*z.y+z.z*z.z; if(r2<tb*tb){z*=tc/(tb*tb);aux.DE*=tc/(tb*tb);} else if(r2<tc){z*=tc/r2;aux.DE*=tc/r2;} z*=td; aux.DE=aux.DE*fabs(td)+1.0f; break; }
+#endif
 						default: break;
 					}
 				}
@@ -5761,4 +6549,3 @@ case 1: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; 
 			}
 		}
 	}
-}
