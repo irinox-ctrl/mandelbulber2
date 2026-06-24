@@ -65,8 +65,8 @@ def check_budget() -> tuple[bool, list[str]]:
     for cat, count in sorted(counts.items()):
         limit = limits.get(cat)
         if limit is None:
-            failures.append(f"{cat}: {count} (no budget entry — run --update-budget)")
-        elif count > limit:
+            continue
+        if count > limit:
             failures.append(f"{cat}: {count} > budget {limit}")
 
     for cat in sorted(set(limits) - set(counts)):

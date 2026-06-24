@@ -48,6 +48,56 @@
         {"name": "mutation_inv_iter_stop", "field": "invIterStop", "type": "int", "default": 10000},
         {"name": "mutation_inversion_section_weight", "field": "inversionWeight", "type": "double", "default": 1.0}
       ]
+    },
+    "clip": {
+      "struct_prefix": "clip",
+      "type_field": "clipType",
+      "enabled_field": "clipEnabled",
+      "iter_start": "clipIterStart",
+      "iter_stop": "clipIterStop",
+      "weight_field": "clipWeight",
+      "param_aliases": {
+        "Sx": "SizeX",
+        "Sy": "SizeY",
+        "Sz": "SizeZ",
+        "CR": "Radius",
+        "MR": "MajorRadius",
+        "PA": "ParamA",
+        "PB": "ParamB",
+        "PC": "ParamC",
+        "ANG": "Angle",
+        "AMP": "Amplitude",
+        "FREQ": "Frequency",
+        "K": "SmoothK"
+      },
+      "initparams": [
+        {"name": "mutation_clip_enabled", "field": "clipEnabled", "type": "bool", "default": true},
+        {"name": "mutation_clip_type", "field": "clipType", "type": "int", "default": 1, "min": 0, "max": 100},
+        {"name": "mutation_clip_center_ax", "field": "clipCenterX", "type": "double", "default": 0.0},
+        {"name": "mutation_clip_center_ay", "field": "clipCenterY", "type": "double", "default": 0.0},
+        {"name": "mutation_clip_center_az", "field": "clipCenterZ", "type": "double", "default": 0.0},
+        {"name": "mutation_clip_size_ax", "field": "clipSizeX", "type": "double", "default": 5.0},
+        {"name": "mutation_clip_size_ay", "field": "clipSizeY", "type": "double", "default": 5.0},
+        {"name": "mutation_clip_size_az", "field": "clipSizeZ", "type": "double", "default": 5.0},
+        {"name": "mutation_clip_radius", "field": "clipRadius", "type": "double", "default": 1.0},
+        {"name": "mutation_clip_major_radius", "field": "clipMajorRadius", "type": "double", "default": 2.0},
+        {"name": "mutation_clip_angle", "field": "clipAngle", "type": "double", "default": 0.0},
+        {"name": "mutation_clip_amplitude", "field": "clipAmplitude", "type": "double", "default": 0.5},
+        {"name": "mutation_clip_frequency", "field": "clipFrequency", "type": "double", "default": 1.0},
+        {"name": "mutation_clip_smooth_k", "field": "clipSmoothK", "type": "double", "default": 0.1},
+        {"name": "mutation_clip_boolean_op", "field": "clipBooleanOp", "type": "int", "default": 0},
+        {"name": "mutation_clip_pre_rot_ax", "field": "clipPreRotX", "type": "double", "default": 0.0},
+        {"name": "mutation_clip_pre_rot_ay", "field": "clipPreRotY", "type": "double", "default": 0.0},
+        {"name": "mutation_clip_pre_rot_az", "field": "clipPreRotZ", "type": "double", "default": 0.0},
+        {"name": "mutation_clip_n_points", "field": "clipNPoints", "type": "int", "default": 5},
+        {"name": "mutation_clip_param_a", "field": "clipParamA", "type": "double", "default": 1.0},
+        {"name": "mutation_clip_param_b", "field": "clipParamB", "type": "double", "default": 1.0},
+        {"name": "mutation_clip_param_c", "field": "clipParamC", "type": "double", "default": 1.0},
+        {"name": "mutation_clip_threshold", "field": "clipThreshold", "type": "double", "default": 0.1},
+        {"name": "mutation_clip_iter_start", "field": "clipIterStart", "type": "int", "default": 0},
+        {"name": "mutation_clip_iter_stop", "field": "clipIterStop", "type": "int", "default": 10000},
+        {"name": "mutation_clip_section_weight", "field": "clipWeight", "type": "double", "default": 1.0}
+      ]
     }
   }
 }

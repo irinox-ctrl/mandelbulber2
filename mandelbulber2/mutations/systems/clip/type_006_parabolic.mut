@@ -1,0 +1,5 @@
+// TYPE_ID: 6
+// NAME: Parabolic clip
+// PARAMS: PA
+// SYSTEM: clip
+clipDist=cz.x*cz.x+cz.y*cz.y-PA*cz.z; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0; }

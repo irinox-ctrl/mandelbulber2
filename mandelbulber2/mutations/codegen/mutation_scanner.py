@@ -128,7 +128,7 @@ def extract_switch_cases(lines: List[str]) -> Dict[str, Set[int]]:
             if switch_idx is not None:
                 depth = 0
                 started = False
-                for j in range(switch_idx, min(switch_idx + 1200, len(lines))):
+                for j in range(switch_idx, min(switch_idx + 3000, len(lines))):
                     line = lines[j]
                     if not started:
                         if "{" in line:
