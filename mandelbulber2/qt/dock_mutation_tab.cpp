@@ -493,9 +493,9 @@ void cDockMutationTab::UpdateMutationGrayOut() const
 	};
 
 	// Helper: default group children to gray; registry enables per-type active params
-	auto grayOutGroupSystem = [styleWidget](QComboBox *combo, QGroupBox *group) {
+	auto grayOutGroupSystem = [this, styleWidget](QComboBox *combo, QGroupBox *group) {
 		if (!combo || !group) return;
-		const bool groupOn = group->isChecked();
+		const bool groupOn = ui->groupCheck_mutation_enabled->isChecked() && group->isChecked();
 		styleWidget(combo, groupOn);
 		QList<QWidget *> children = group->findChildren<QWidget *>();
 		for (QWidget *w : children)

@@ -7,8 +7,8 @@
 #define MANDELBULBER2_QT_DOCK_MUTATION_TAB_H_
 
 #include <memory>
+#include <QStringList>
 #include <QSet>
-#include <QString>
 #include <QWidget>
 #include <QPropertyAnimation>
 #include "my_widget_with_params.h"
