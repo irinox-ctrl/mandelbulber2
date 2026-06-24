@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mutation_systems_group3.ui'
 **
-** Created by: Qt User Interface Compiler version 5.15.3
+** Created by: Qt User Interface Compiler version 5.15.13
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -677,7 +677,7 @@ public:
     {
         groupCheck_mutation_torus_enabled->setTitle(QCoreApplication::translate("cMutationSystemsGroup3", "MandelTorus DE", nullptr));
         label_torus_type->setText(QCoreApplication::translate("cMutationSystemsGroup3", "Torus Type:", nullptr));
-        label->setText(QCoreApplication::translate("cMutationSystemsGroup3", "Wt", nullptr));
+        label->setText(QCoreApplication::translate("cMutationSystemsGroup3", "Weight", nullptr));
 #if QT_CONFIG(tooltip)
         spinbox_mutation_torus_section_weight->setToolTip(QCoreApplication::translate("cMutationSystemsGroup3", "Section weight: 1=full effect, 0=off", nullptr));
 #endif // QT_CONFIG(tooltip)
@@ -727,7 +727,7 @@ public:
         pushButton_mutation_reset->setText(QCoreApplication::translate("cMutationSystemsGroup3", "Reset Mutation to Defaults", nullptr));
         groupCheck_mutation_clamp_enabled->setTitle(QCoreApplication::translate("cMutationSystemsGroup3", "T Clamp", nullptr));
         label_clamp_type->setText(QCoreApplication::translate("cMutationSystemsGroup3", "Clamp Type:", nullptr));
-        label1->setText(QCoreApplication::translate("cMutationSystemsGroup3", "Wt", nullptr));
+        label1->setText(QCoreApplication::translate("cMutationSystemsGroup3", "Weight", nullptr));
 #if QT_CONFIG(tooltip)
         spinbox_mutation_clamp_section_weight->setToolTip(QCoreApplication::translate("cMutationSystemsGroup3", "Section weight: 1=full effect, 0=off", nullptr));
 #endif // QT_CONFIG(tooltip)
@@ -796,7 +796,7 @@ public:
 
         groupCheck_mutation_jb_enabled->setTitle(QCoreApplication::translate("cMutationSystemsGroup3", "T Julia Box", nullptr));
         label_jb_type->setText(QCoreApplication::translate("cMutationSystemsGroup3", "Julia Box Type:", nullptr));
-        label2->setText(QCoreApplication::translate("cMutationSystemsGroup3", "Wt", nullptr));
+        label2->setText(QCoreApplication::translate("cMutationSystemsGroup3", "Weight", nullptr));
 #if QT_CONFIG(tooltip)
         spinbox_mutation_jb_section_weight->setToolTip(QCoreApplication::translate("cMutationSystemsGroup3", "Section weight: 1=full effect, 0=off", nullptr));
 #endif // QT_CONFIG(tooltip)

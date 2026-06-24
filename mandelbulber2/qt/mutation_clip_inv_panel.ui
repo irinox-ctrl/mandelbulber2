@@ -39,7 +39,7 @@
         </widget>
       </item>
       <item row="0" column="6">
-       <widget class="QLabel"><property name="text"><string>Wt</string></property><property name="alignment"><set>Qt::AlignCenter</set></property></widget>
+       <widget class="QLabel"><property name="text"><string>Weight</string></property><property name="alignment"><set>Qt::AlignCenter</set></property></widget>
       </item>
       <item row="1" column="6">
        <widget class="MyDoubleSpinBox" name="spinbox_mutation_inversion_section_weight">
@@ -562,7 +562,7 @@
       <item row="4" column="4">
        <widget class="QLabel" name="label_inv_minr">
         <property name="text">
-         <string>MinR:</string>
+         <string>Min Radius:</string>
         </property>
        </widget>
       </item>
@@ -901,7 +901,7 @@
         </widget>
       </item>
       <item row="0" column="6">
-       <widget class="QLabel"><property name="text"><string>Wt</string></property><property name="alignment"><set>Qt::AlignCenter</set></property></widget>
+       <widget class="QLabel"><property name="text"><string>Weight</string></property><property name="alignment"><set>Qt::AlignCenter</set></property></widget>
       </item>
       <item row="1" column="6">
        <widget class="MyDoubleSpinBox" name="spinbox_mutation_clip_section_weight">

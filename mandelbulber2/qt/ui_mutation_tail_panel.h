@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mutation_tail_panel.ui'
 **
-** Created by: Qt User Interface Compiler version 5.15.3
+** Created by: Qt User Interface Compiler version 5.15.13
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -1025,9 +1025,9 @@ public:
 
     void retranslateUi(QWidget *cMutationTailPanel)
     {
-        groupCheck_mutation_md_enabled->setTitle(QCoreApplication::translate("cMutationTailPanel", "T Mandalay", nullptr));
+        groupCheck_mutation_md_enabled->setTitle(QCoreApplication::translate("cMutationTailPanel", "Mandalay Fold DE", nullptr));
         label_md_type->setText(QCoreApplication::translate("cMutationTailPanel", "Type:", nullptr));
-        label->setText(QCoreApplication::translate("cMutationTailPanel", "Wt", nullptr));
+        label->setText(QCoreApplication::translate("cMutationTailPanel", "Weight", nullptr));
 #if QT_CONFIG(tooltip)
         spinbox_mutation_md_section_weight->setToolTip(QCoreApplication::translate("cMutationTailPanel", "Section weight: 1=full effect, 0=off", nullptr));
 #endif // QT_CONFIG(tooltip)
@@ -1050,22 +1050,22 @@ public:
         comboBox_mutation_md_type->setItemText(12, QCoreApplication::translate("cMutationTailPanel", "Double Sphere", nullptr));
         comboBox_mutation_md_type->setItemText(13, QCoreApplication::translate("cMutationTailPanel", "Sorted Mandalay", nullptr));
         comboBox_mutation_md_type->setItemText(14, QCoreApplication::translate("cMutationTailPanel", "Tanh Fold", nullptr));
-        comboBox_mutation_md_type->setItemText(15, QCoreApplication::translate("cMutationTailPanel", "MinR/FixR Classic", nullptr));
+        comboBox_mutation_md_type->setItemText(15, QCoreApplication::translate("cMutationTailPanel", "Min/Fixed Radius Classic", nullptr));
         comboBox_mutation_md_type->setItemText(16, QCoreApplication::translate("cMutationTailPanel", "Offset-X Mandalay", nullptr));
         comboBox_mutation_md_type->setItemText(17, QCoreApplication::translate("cMutationTailPanel", "Iteration-Scale", nullptr));
         comboBox_mutation_md_type->setItemText(18, QCoreApplication::translate("cMutationTailPanel", "Clamp Fold", nullptr));
-        comboBox_mutation_md_type->setItemText(19, QCoreApplication::translate("cMutationTailPanel", "AB Offset", nullptr));
+        comboBox_mutation_md_type->setItemText(19, QCoreApplication::translate("cMutationTailPanel", "Axis-Balanced Offset", nullptr));
         comboBox_mutation_md_type->setItemText(20, QCoreApplication::translate("cMutationTailPanel", "Polar Mandalay", nullptr));
         comboBox_mutation_md_type->setItemText(21, QCoreApplication::translate("cMutationTailPanel", "Abs Mandalay", nullptr));
         comboBox_mutation_md_type->setItemText(22, QCoreApplication::translate("cMutationTailPanel", "Force Sphere", nullptr));
         comboBox_mutation_md_type->setItemText(23, QCoreApplication::translate("cMutationTailPanel", "Iter-Evolve Fold", nullptr));
         comboBox_mutation_md_type->setItemText(24, QCoreApplication::translate("cMutationTailPanel", "Radius-K Mandalay", nullptr));
-        comboBox_mutation_md_type->setItemText(25, QCoreApplication::translate("cMutationTailPanel", "Smooth MinR", nullptr));
+        comboBox_mutation_md_type->setItemText(25, QCoreApplication::translate("cMutationTailPanel", "Smooth Minimum Radius", nullptr));
         comboBox_mutation_md_type->setItemText(26, QCoreApplication::translate("cMutationTailPanel", "Kaleidoscopic Mandalay", nullptr));
         comboBox_mutation_md_type->setItemText(27, QCoreApplication::translate("cMutationTailPanel", "Mirror Fold", nullptr));
         comboBox_mutation_md_type->setItemText(28, QCoreApplication::translate("cMutationTailPanel", "Inversion Mandalay", nullptr));
         comboBox_mutation_md_type->setItemText(29, QCoreApplication::translate("cMutationTailPanel", "Scale-Accumulate", nullptr));
-        comboBox_mutation_md_type->setItemText(30, QCoreApplication::translate("cMutationTailPanel", "Asymmetric-3", nullptr));
+        comboBox_mutation_md_type->setItemText(30, QCoreApplication::translate("cMutationTailPanel", "Three-Axis Asymmetric", nullptr));
         comboBox_mutation_md_type->setItemText(31, QCoreApplication::translate("cMutationTailPanel", "XYZ-Offset Mandalay", nullptr));
         comboBox_mutation_md_type->setItemText(32, QCoreApplication::translate("cMutationTailPanel", "Y-Rotate Mandalay", nullptr));
         comboBox_mutation_md_type->setItemText(33, QCoreApplication::translate("cMutationTailPanel", "Double Fold", nullptr));
@@ -1073,7 +1073,7 @@ public:
         comboBox_mutation_md_type->setItemText(35, QCoreApplication::translate("cMutationTailPanel", "Length-Sphere", nullptr));
         comboBox_mutation_md_type->setItemText(36, QCoreApplication::translate("cMutationTailPanel", "Sigmoid Mandalay", nullptr));
         comboBox_mutation_md_type->setItemText(37, QCoreApplication::translate("cMutationTailPanel", "Capped Sphere", nullptr));
-        comboBox_mutation_md_type->setItemText(38, QCoreApplication::translate("cMutationTailPanel", "L1 Mandalay", nullptr));
+        comboBox_mutation_md_type->setItemText(38, QCoreApplication::translate("cMutationTailPanel", "L1-Norm Mandalay", nullptr));
         comboBox_mutation_md_type->setItemText(39, QCoreApplication::translate("cMutationTailPanel", "Iteration-Wave", nullptr));
         comboBox_mutation_md_type->setItemText(40, QCoreApplication::translate("cMutationTailPanel", "Multi-Offset", nullptr));
         comboBox_mutation_md_type->setItemText(41, QCoreApplication::translate("cMutationTailPanel", "Bounce Mandalay", nullptr));
@@ -1096,7 +1096,7 @@ public:
         label_mutation_md_iter_stop->setText(QCoreApplication::translate("cMutationTailPanel", "Iter Stop:", nullptr));
         groupCheck_mutation_as_enabled->setTitle(QCoreApplication::translate("cMutationTailPanel", "Amazing Surf DE", nullptr));
         label_as_type->setText(QCoreApplication::translate("cMutationTailPanel", "Type:", nullptr));
-        label1->setText(QCoreApplication::translate("cMutationTailPanel", "Wt", nullptr));
+        label1->setText(QCoreApplication::translate("cMutationTailPanel", "Weight", nullptr));
 #if QT_CONFIG(tooltip)
         spinbox_mutation_as_section_weight->setToolTip(QCoreApplication::translate("cMutationTailPanel", "Section weight: 1=full effect, 0=off", nullptr));
 #endif // QT_CONFIG(tooltip)
@@ -1145,7 +1145,7 @@ public:
         label_mutation_as_iter_stop->setText(QCoreApplication::translate("cMutationTailPanel", "Iter Stop:", nullptr));
         groupCheck_mutation_sm_enabled->setTitle(QCoreApplication::translate("cMutationTailPanel", "SphereTree/Menger", nullptr));
         label_sm_type->setText(QCoreApplication::translate("cMutationTailPanel", "Type:", nullptr));
-        label2->setText(QCoreApplication::translate("cMutationTailPanel", "Wt", nullptr));
+        label2->setText(QCoreApplication::translate("cMutationTailPanel", "Weight", nullptr));
 #if QT_CONFIG(tooltip)
         spinbox_mutation_sm_section_weight->setToolTip(QCoreApplication::translate("cMutationTailPanel", "Section weight: 1=full effect, 0=off", nullptr));
 #endif // QT_CONFIG(tooltip)
@@ -1194,7 +1194,7 @@ public:
         label_mutation_sm_iter_stop->setText(QCoreApplication::translate("cMutationTailPanel", "Iter Stop:", nullptr));
         groupCheck_mutation_blockify_enabled->setTitle(QCoreApplication::translate("cMutationTailPanel", "Blockify", nullptr));
         label_blockify_type->setText(QCoreApplication::translate("cMutationTailPanel", "Type:", nullptr));
-        label3->setText(QCoreApplication::translate("cMutationTailPanel", "Wt", nullptr));
+        label3->setText(QCoreApplication::translate("cMutationTailPanel", "Weight", nullptr));
 #if QT_CONFIG(tooltip)
         spinbox_mutation_blockify_section_weight->setToolTip(QCoreApplication::translate("cMutationTailPanel", "Section weight: 1=full effect, 0=off", nullptr));
 #endif // QT_CONFIG(tooltip)
@@ -1263,7 +1263,7 @@ public:
         label_mutation_blockify_iter_stop->setText(QCoreApplication::translate("cMutationTailPanel", "Iter Stop:", nullptr));
         groupCheck_mutation_tile_enabled->setTitle(QCoreApplication::translate("cMutationTailPanel", "Tile", nullptr));
         label_tile_type->setText(QCoreApplication::translate("cMutationTailPanel", "Type:", nullptr));
-        label4->setText(QCoreApplication::translate("cMutationTailPanel", "Wt", nullptr));
+        label4->setText(QCoreApplication::translate("cMutationTailPanel", "Weight", nullptr));
 #if QT_CONFIG(tooltip)
         spinbox_mutation_tile_section_weight->setToolTip(QCoreApplication::translate("cMutationTailPanel", "Section weight: 1=full effect, 0=off", nullptr));
 #endif // QT_CONFIG(tooltip)

@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'dock_mutation_tab.ui'
 **
-** Created by: Qt User Interface Compiler version 5.15.3
+** Created by: Qt User Interface Compiler version 5.15.13
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -2160,7 +2160,7 @@ public:
         comboBox_mutation_fold_type->setItemText(2, QCoreApplication::translate("cDockMutationTab", "Sphere Fold", nullptr));
         comboBox_mutation_fold_type->setItemText(3, QCoreApplication::translate("cDockMutationTab", "Menger Fold", nullptr));
         comboBox_mutation_fold_type->setItemText(4, QCoreApplication::translate("cDockMutationTab", "Sierpinski Fold", nullptr));
-        comboBox_mutation_fold_type->setItemText(5, QCoreApplication::translate("cDockMutationTab", "Abs Fold (tglad)", nullptr));
+        comboBox_mutation_fold_type->setItemText(5, QCoreApplication::translate("cDockMutationTab", "Absolute Fold", nullptr));
         comboBox_mutation_fold_type->setItemText(6, QCoreApplication::translate("cDockMutationTab", "Kaleidoscope", nullptr));
         comboBox_mutation_fold_type->setItemText(7, QCoreApplication::translate("cDockMutationTab", "Octahedral", nullptr));
         comboBox_mutation_fold_type->setItemText(8, QCoreApplication::translate("cDockMutationTab", "Smooth (tanh)", nullptr));

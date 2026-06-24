@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mutation_systems_group2.ui'
 **
-** Created by: Qt User Interface Compiler version 5.15.3
+** Created by: Qt User Interface Compiler version 5.15.13
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -732,8 +732,8 @@ public:
     void retranslateUi(QWidget *cMutationSystemsGroup2)
     {
         groupCheck_mutation_abox_enabled->setTitle(QCoreApplication::translate("cMutationSystemsGroup2", "Abox DE System", nullptr));
-        label_ab_type->setText(QCoreApplication::translate("cMutationSystemsGroup2", "AB Type:", nullptr));
-        label->setText(QCoreApplication::translate("cMutationSystemsGroup2", "Wt", nullptr));
+        label_ab_type->setText(QCoreApplication::translate("cMutationSystemsGroup2", "Abox DE Type:", nullptr));
+        label->setText(QCoreApplication::translate("cMutationSystemsGroup2", "Weight", nullptr));
 #if QT_CONFIG(tooltip)
         spinbox_mutation_abox_section_weight->setToolTip(QCoreApplication::translate("cMutationSystemsGroup2", "Section weight: 1=full effect, 0=off", nullptr));
 #endif // QT_CONFIG(tooltip)
@@ -786,7 +786,7 @@ public:
         label_ab_iter_stop->setText(QCoreApplication::translate("cMutationSystemsGroup2", "Stop:", nullptr));
         groupCheck_mutation_noise_enabled->setTitle(QCoreApplication::translate("cMutationSystemsGroup2", "Noise & Procedural DE", nullptr));
         label_noise_type->setText(QCoreApplication::translate("cMutationSystemsGroup2", "Noise Type:", nullptr));
-        label1->setText(QCoreApplication::translate("cMutationSystemsGroup2", "Wt", nullptr));
+        label1->setText(QCoreApplication::translate("cMutationSystemsGroup2", "Weight", nullptr));
 #if QT_CONFIG(tooltip)
         spinbox_mutation_noise_section_weight->setToolTip(QCoreApplication::translate("cMutationSystemsGroup2", "Section weight: 1=full effect, 0=off", nullptr));
 #endif // QT_CONFIG(tooltip)
@@ -837,7 +837,7 @@ public:
         label_noise_iter_stop->setText(QCoreApplication::translate("cMutationSystemsGroup2", "Stop:", nullptr));
         groupCheck_mutation_orbit_trap_enabled->setTitle(QCoreApplication::translate("cMutationSystemsGroup2", "Orbit Trap DE", nullptr));
         label_orbit_type->setText(QCoreApplication::translate("cMutationSystemsGroup2", "Orbit Type:", nullptr));
-        label2->setText(QCoreApplication::translate("cMutationSystemsGroup2", "Wt", nullptr));
+        label2->setText(QCoreApplication::translate("cMutationSystemsGroup2", "Weight", nullptr));
 #if QT_CONFIG(tooltip)
         spinbox_mutation_orbit_trap_section_weight->setToolTip(QCoreApplication::translate("cMutationSystemsGroup2", "Section weight: 1=full effect, 0=off", nullptr));
 #endif // QT_CONFIG(tooltip)

@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mutation_clip_inv_panel.ui'
 **
-** Created by: Qt User Interface Compiler version 5.15.3
+** Created by: Qt User Interface Compiler version 5.15.13
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -1007,7 +1007,7 @@ public:
     {
         groupCheck_mutation_inversion_enabled->setTitle(QCoreApplication::translate("cMutationClipInvPanel", "Inversion System", nullptr));
         label_mutation_inv_type->setText(QCoreApplication::translate("cMutationClipInvPanel", "Inversion Type:", nullptr));
-        label->setText(QCoreApplication::translate("cMutationClipInvPanel", "Wt", nullptr));
+        label->setText(QCoreApplication::translate("cMutationClipInvPanel", "Weight", nullptr));
 #if QT_CONFIG(tooltip)
         spinbox_mutation_inversion_section_weight->setToolTip(QCoreApplication::translate("cMutationClipInvPanel", "Section weight: 1=full effect, 0=off", nullptr));
 #endif // QT_CONFIG(tooltip)
@@ -1095,7 +1095,7 @@ public:
         label_inv_iter_stop->setText(QCoreApplication::translate("cMutationClipInvPanel", "Stop:", nullptr));
         groupCheck_mutation_clip_enabled->setTitle(QCoreApplication::translate("cMutationClipInvPanel", "Clip System", nullptr));
         label_mutation_clip_type->setText(QCoreApplication::translate("cMutationClipInvPanel", "Clip Type:", nullptr));
-        label1->setText(QCoreApplication::translate("cMutationClipInvPanel", "Wt", nullptr));
+        label1->setText(QCoreApplication::translate("cMutationClipInvPanel", "Weight", nullptr));
 #if QT_CONFIG(tooltip)
         spinbox_mutation_clip_section_weight->setToolTip(QCoreApplication::translate("cMutationClipInvPanel", "Section weight: 1=full effect, 0=off", nullptr));
 #endif // QT_CONFIG(tooltip)

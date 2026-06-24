@@ -11,7 +11,7 @@
 <item row="1" column="0">
  <widget class="MyGroupBox" name="groupCheck_mutation_md_enabled">
   <property name="title">
-   <string>T Mandalay</string>
+   <string>Mandalay Fold DE</string>
   </property>
   <property name="checkable">
    <bool>true</bool>
@@ -29,7 +29,7 @@
            </widget>
          </item>
          <item row="0" column="6">
-          <widget class="QLabel"><property name="text"><string>Wt</string></property><property name="alignment"><set>Qt::AlignCenter</set></property></widget>
+          <widget class="QLabel"><property name="text"><string>Weight</string></property><property name="alignment"><set>Qt::AlignCenter</set></property></widget>
          </item>
          <item row="1" column="6">
           <widget class="MyDoubleSpinBox" name="spinbox_mutation_md_section_weight">
@@ -128,7 +128,7 @@
      </item>
      <item>
       <property name="text">
-       <string>MinR/FixR Classic</string>
+       <string>Min/Fixed Radius Classic</string>
       </property>
      </item>
      <item>
@@ -148,7 +148,7 @@
      </item>
      <item>
       <property name="text">
-       <string>AB Offset</string>
+       <string>Axis-Balanced Offset</string>
       </property>
      </item>
      <item>
@@ -178,7 +178,7 @@
      </item>
      <item>
       <property name="text">
-       <string>Smooth MinR</string>
+       <string>Smooth Minimum Radius</string>
       </property>
      </item>
      <item>
@@ -203,7 +203,7 @@
      </item>
      <item>
       <property name="text">
-       <string>Asymmetric-3</string>
+       <string>Three-Axis Asymmetric</string>
       </property>
      </item>
      <item>
@@ -243,7 +243,7 @@
      </item>
      <item>
       <property name="text">
-       <string>L1 Mandalay</string>
+       <string>L1-Norm Mandalay</string>
       </property>
      </item>
      <item>
@@ -298,12 +298,12 @@
      </item>
      <item>
       <property name="text">
-       <string>Aniso-Sphere</string>
+       <string>Anisotropic Sphere</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>IFS-Mandalay</string>
+       <string>IFS Mandalay</string>
       </property>
      </item>
     </widget>
@@ -391,7 +391,7 @@
     <widget class="QLabel" name="label_as_type"><property name="text"><string>Type:</string></property></widget>
    </item>
    <item row="0" column="6">
-    <widget class="QLabel"><property name="text"><string>Wt</string></property><property name="alignment"><set>Qt::AlignCenter</set></property></widget>
+    <widget class="QLabel"><property name="text"><string>Weight</string></property><property name="alignment"><set>Qt::AlignCenter</set></property></widget>
    </item>
    <item row="1" column="6">
     <widget class="MyDoubleSpinBox" name="spinbox_mutation_as_section_weight">
@@ -483,7 +483,7 @@
     <widget class="QLabel" name="label_sm_type"><property name="text"><string>Type:</string></property></widget>
    </item>
    <item row="0" column="6">
-    <widget class="QLabel"><property name="text"><string>Wt</string></property><property name="alignment"><set>Qt::AlignCenter</set></property></widget>
+    <widget class="QLabel"><property name="text"><string>Weight</string></property><property name="alignment"><set>Qt::AlignCenter</set></property></widget>
    </item>
    <item row="1" column="6">
     <widget class="MyDoubleSpinBox" name="spinbox_mutation_sm_section_weight">
@@ -565,7 +565,7 @@
     <widget class="QLabel" name="label_blockify_type"><property name="text"><string>Type:</string></property></widget>
    </item>
    <item row="0" column="6">
-    <widget class="QLabel"><property name="text"><string>Wt</string></property><property name="alignment"><set>Qt::AlignCenter</set></property></widget>
+    <widget class="QLabel"><property name="text"><string>Weight</string></property><property name="alignment"><set>Qt::AlignCenter</set></property></widget>
    </item>
    <item row="1" column="6">
     <widget class="MyDoubleSpinBox" name="spinbox_mutation_blockify_section_weight">
@@ -667,7 +667,7 @@
     <widget class="QLabel" name="label_tile_type"><property name="text"><string>Type:</string></property></widget>
    </item>
    <item row="0" column="6">
-    <widget class="QLabel"><property name="text"><string>Wt</string></property><property name="alignment"><set>Qt::AlignCenter</set></property></widget>
+    <widget class="QLabel"><property name="text"><string>Weight</string></property><property name="alignment"><set>Qt::AlignCenter</set></property></widget>
    </item>
    <item row="1" column="6">
     <widget class="MyDoubleSpinBox" name="spinbox_mutation_tile_section_weight">

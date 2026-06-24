@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mutation_jos_pk_panel.ui'
 **
-** Created by: Qt User Interface Compiler version 5.15.3
+** Created by: Qt User Interface Compiler version 5.15.13
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -572,8 +572,8 @@ public:
     void retranslateUi(QWidget *cMutationJosPkPanel)
     {
         groupCheck_mutation_jos_leys_enabled->setTitle(QCoreApplication::translate("cMutationJosPkPanel", "Jos Leys DE System", nullptr));
-        label_jos_type->setText(QCoreApplication::translate("cMutationJosPkPanel", "Jos Leys Type:", nullptr));
-        label->setText(QCoreApplication::translate("cMutationJosPkPanel", "Wt", nullptr));
+        label_jos_type->setText(QCoreApplication::translate("cMutationJosPkPanel", "Jos Leys DE Type:", nullptr));
+        label->setText(QCoreApplication::translate("cMutationJosPkPanel", "Weight", nullptr));
 #if QT_CONFIG(tooltip)
         spinbox_mutation_jos_leys_section_weight->setToolTip(QCoreApplication::translate("cMutationJosPkPanel", "Section weight: 1=full effect, 0=off", nullptr));
 #endif // QT_CONFIG(tooltip)
@@ -625,8 +625,8 @@ public:
         label_jos_iter->setText(QCoreApplication::translate("cMutationJosPkPanel", "Jos Iter:", nullptr));
         label_jos_iter_stop->setText(QCoreApplication::translate("cMutationJosPkPanel", "Stop:", nullptr));
         groupCheck_mutation_pk_enabled->setTitle(QCoreApplication::translate("cMutationJosPkPanel", "Pseudokleinian DE System", nullptr));
-        label_pk_type->setText(QCoreApplication::translate("cMutationJosPkPanel", "PK Type:", nullptr));
-        label1->setText(QCoreApplication::translate("cMutationJosPkPanel", "Wt", nullptr));
+        label_pk_type->setText(QCoreApplication::translate("cMutationJosPkPanel", "Nylander DE Type:", nullptr));
+        label1->setText(QCoreApplication::translate("cMutationJosPkPanel", "Weight", nullptr));
 #if QT_CONFIG(tooltip)
         spinbox_mutation_pk_section_weight->setToolTip(QCoreApplication::translate("cMutationJosPkPanel", "Section weight: 1=full effect, 0=off", nullptr));
 #endif // QT_CONFIG(tooltip)

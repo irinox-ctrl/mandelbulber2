@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mutation_systems_group1.ui'
 **
-** Created by: Qt User Interface Compiler version 5.15.3
+** Created by: Qt User Interface Compiler version 5.15.13
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -834,8 +834,8 @@ public:
     void retranslateUi(QWidget *cMutationSystemsGroup1)
     {
         groupCheck_mutation_mb_math_enabled->setTitle(QCoreApplication::translate("cMutationSystemsGroup1", "Mandelbox Math System", nullptr));
-        label_mb_math_type->setText(QCoreApplication::translate("cMutationSystemsGroup1", "MB Type:", nullptr));
-        label->setText(QCoreApplication::translate("cMutationSystemsGroup1", "Wt", nullptr));
+        label_mb_math_type->setText(QCoreApplication::translate("cMutationSystemsGroup1", "Mandelbox Math Type:", nullptr));
+        label->setText(QCoreApplication::translate("cMutationSystemsGroup1", "Weight", nullptr));
 #if QT_CONFIG(tooltip)
         spinbox_mutation_mb_math_section_weight->setToolTip(QCoreApplication::translate("cMutationSystemsGroup1", "Section weight: 1=full effect, 0=off", nullptr));
 #endif // QT_CONFIG(tooltip)
@@ -887,8 +887,8 @@ public:
         label_mb_iter->setText(QCoreApplication::translate("cMutationSystemsGroup1", "MB Iter:", nullptr));
         label_mb_iter_stop->setText(QCoreApplication::translate("cMutationSystemsGroup1", "Stop:", nullptr));
         groupCheck_mutation_warp_dist_enabled->setTitle(QCoreApplication::translate("cMutationSystemsGroup1", "Warp Distortion System", nullptr));
-        label_wd_type->setText(QCoreApplication::translate("cMutationSystemsGroup1", "WD Type:", nullptr));
-        label1->setText(QCoreApplication::translate("cMutationSystemsGroup1", "Wt", nullptr));
+        label_wd_type->setText(QCoreApplication::translate("cMutationSystemsGroup1", "Warp Distortion Type:", nullptr));
+        label1->setText(QCoreApplication::translate("cMutationSystemsGroup1", "Weight", nullptr));
 #if QT_CONFIG(tooltip)
         spinbox_mutation_warp_dist_section_weight->setToolTip(QCoreApplication::translate("cMutationSystemsGroup1", "Section weight: 1=full effect, 0=off", nullptr));
 #endif // QT_CONFIG(tooltip)
@@ -940,8 +940,8 @@ public:
         label_wd_iter->setText(QCoreApplication::translate("cMutationSystemsGroup1", "WD Iter:", nullptr));
         label_wd_iter_stop->setText(QCoreApplication::translate("cMutationSystemsGroup1", "Stop:", nullptr));
         groupCheck_mutation_symmetry_enabled->setTitle(QCoreApplication::translate("cMutationSystemsGroup1", "Symmetry / Kaleidoscope", nullptr));
-        label_sk_type->setText(QCoreApplication::translate("cMutationSystemsGroup1", "SK Type:", nullptr));
-        label2->setText(QCoreApplication::translate("cMutationSystemsGroup1", "Wt", nullptr));
+        label_sk_type->setText(QCoreApplication::translate("cMutationSystemsGroup1", "Symmetry Type:", nullptr));
+        label2->setText(QCoreApplication::translate("cMutationSystemsGroup1", "Weight", nullptr));
 #if QT_CONFIG(tooltip)
         spinbox_mutation_symmetry_section_weight->setToolTip(QCoreApplication::translate("cMutationSystemsGroup1", "Section weight: 1=full effect, 0=off", nullptr));
 #endif // QT_CONFIG(tooltip)
