@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "description": "Per-category MEDIUM heuristic limits from mutation_scanner.py runtime safety pass.",
+  "headroom_factor": 1.15,
+  "categories": {
+    "DE_UNBOUNDED": 360,
+    "DIV_ZERO": 452,
+    "LOG_DOMAIN": 50,
+    "GPU_DOUBLE": 0,
+    "GPU_CVECTOR": 0,
+    "GPU_IN_POINT": 0,
+    "GPU_CPP_CAST": 0
+  }
+}

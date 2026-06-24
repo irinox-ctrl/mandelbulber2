@@ -3758,215 +3758,285 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_30)
 					case 30: { float hmw=ja*(zx*zy-zy*zz2)/fmax(1e-10f,rr*r); aux.DE*=(1.0f+jf*hmw); break; }
 #endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_31)
 					case 31: { float ana=ja*native_sin(jfreq*rr+jph)/fmax(1e-10f,r); aux.DE*=(1.0f+jf*ana); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_32)
 					case 32: { float panch=ja*native_cos(jfreq*zx)*native_cos(jfreq*zy)*native_cos(jfreq*zz2); aux.DE*=(1.0f+jf*panch/fmax(1e-10f,r)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_33)
 					case 33: { float mt=ja/(2.0f*fmax(1e-10f,fabs(zx-zy))); aux.DE*=(1.0f+jf*tanh(mt)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_34)
 					case 34: { float ml=M_PI_F*ja/(2.0f*fmax(1e-10f,r)); aux.DE*=(1.0f+jf*tanh(ml)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_35)
 					case 35: { float sw=ja*jb/(fmax(1e-10f,r)*jc); aux.DE*=(1.0f+jf*tanh(sw)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_36)
 					case 36: { float pw=ja*native_exp(-jb*rr); aux.DE*=(1.0f+jf*pw); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_37)
 					case 37: { float gp=ja*native_sqrt(fmax(0.0f,r/jb)); aux.DE*=(1.0f+jf*tanh(gp)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_38)
 					case 38: { float rov=ja*native_sin(jfreq*zx+jph)*native_cos(jfreq*zy); aux.DE*=(1.0f+jf*rov/fmax(1e-10f,r)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_39)
 					case 39: { float barb=ja*native_sqrt(fmax(0.0f,zx*zx+zy*zy))/fmax(1e-10f,r); aux.DE*=(1.0f+jf*barb); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_40)
 					case 40: { float con=ja*native_exp(-jb*fabs(zz2))*native_sin(jfreq*r); aux.DE*=(1.0f+jf*con); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_41)
 					case 41: { float ach=ja*native_sin(jfreq*zx)*native_sin(jfreq*zy)*native_cos(jfreq*zz2)/fmax(1e-10f,r); aux.DE*=(1.0f+jf*ach); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_42)
 					case 42: { float que=ja/(fmax(1e-10f,rr)); aux.DE*=(1.0f+jf*que); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_43)
 					case 43: { float rw=0.0f; for(int n=1;n<=8;n++){rw+=native_cos(jfreq*n*zx+jph*n)*native_exp(-jb*n);} aux.DE*=(1.0f+jf*ja*rw/fmax(1e-10f,r)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_44)
 					case 44: { float nd=ja*native_floor(native_sin(jfreq*zx)*native_sin(jfreq*zy)*4.0f+2.0f)/4.0f; aux.DE*=(1.0f+jf*nd); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_45)
 					case 45: { float nl=ja*fabs(native_sin(jfreq*zx)*native_cos(jfreq*zy))*jb; aux.DE*=(1.0f+jf*nl/fmax(1e-10f,r)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_46)
 					case 46: { float pc=ja*(tanh(jb*(r-jc))+1.0f)*0.5f; aux.DE*=(1.0f+jf*pc); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_47)
 					case 47: { float ip=ja*tanh(jb*(native_sin(jfreq*zx)+native_sin(jfreq*zy)+native_sin(jfreq*zz2))); aux.DE*=(1.0f+jf*ip); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_48)
 					case 48: { float cle=ja*native_sin(jfreq*atan2(zy,zx))*native_exp(-jb*r); aux.DE*=(1.0f+jf*cle); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_49)
 					case 49: { float sle=ja*zy/(fmax(1e-10f,rr))*native_exp(-jb*fabs(zx)); aux.DE*=(1.0f+jf*sle); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_50)
 					case 50: { float gff=ja*native_cos(jfreq*zx)*native_cos(jfreq*zy)/fmax(1e-10f,r); aux.DE*=(1.0f+jf*gff); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_51)
 					case 51: { float lqg=ja*native_exp(fmin(jb*native_sin(jfreq*r+jph),20.0f)); aux.DE*=(1.0f+jf*lqg/fmax(1e-10f,r)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_52)
 					case 52: { float bm=ja*native_sqrt(fmax(0.0f,rr-jb*jb))/fmax(1e-10f,rr); aux.DE*=(1.0f+jf*bm); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_53)
 					case 53: { float pm2=ja*(2.0f-fabs(zx)+fabs(zy)-fabs(zz2))/fmax(1e-10f,r); aux.DE*=(1.0f+jf*tanh(pm2)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_54)
 					case 54: { float tt=ja*(zx*zy+zy*zz2+zz2*zx)/fmax(1e-10f,rr*r); aux.DE*=(1.0f+jf*tt); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_55)
 					case 55: { float jon=ja*native_sin(M_PI_F*jb*r+jph)/fmax(1e-10f,r); aux.DE*=(1.0f+jf*jon); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_56)
 					case 56: { float hom=ja*(native_sin(jfreq*zx)+native_sin(jfreq*zy))*jb/fmax(1e-10f,rr); aux.DE*=(1.0f+jf*hom); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_57)
 					case 57: { float kau=ja*tanh(jb*native_sin(jfreq*r)*native_cos(jfreq*atan2(zy,zx))); aux.DE*=(1.0f+jf*kau); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_58)
 					case 58: { float cs=ja*native_sin(jfreq*zx)*native_sin(jfreq*zy)*native_sin(jfreq*zz2)/(fmax(1e-10f,r*r)); aux.DE*=(1.0f+jf*cs); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_59)
 					case 59: { float wrt=ja*jb*native_cos(jfreq*r+jph)/fmax(1e-10f,rr); aux.DE*=(1.0f+jf*wrt); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_60)
 					case 60: { float tv=ja*jb*jc/(fmax(1e-10f,rr*r)); aux.DE*=(1.0f+jf*tanh(tv)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_61)
 					case 61: { float cy=ja*native_pow(fmax(1e-10f,r),jb-3.0f); aux.DE*=(1.0f+jf*cy); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_62)
 					case 62: { float dw=ja/(fmax(1e-10f,rr))*native_cos(jfreq*zz2); aux.DE*=(1.0f+jf*dw); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_63)
 					case 63: { float yd=ja*jb*(zx*zy-zy*zx)/(fmax(1e-10f,rr)); aux.DE*=(1.0f+jf*yd*jc); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_64)
 					case 64: { float mtc=ja*native_sin(jfreq*zx+jph)*native_cos(jfreq*zy)*native_sin(jfreq*zz2)/fmax(1e-10f,r); aux.DE*=(1.0f+jf*mtc); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_65)
 					case 65: { float fus=ja*(native_sin(jb*zx)*native_sin(jc*zy)+native_sin(jd*zz2))/fmax(1e-10f,r); aux.DE*=(1.0f+jf*fus); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_66)
 					case 66: { float bra=ja*native_cos(jfreq*atan2(zy,zx)+jph)*native_cos(jfreq*atan2(zz2,r)); aux.DE*=(1.0f+jf*bra); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_67)
 					case 67: { float rib=ja*native_sin(jfreq*r)*native_cos(jb*atan2(zy,zx)+jph); aux.DE*=(1.0f+jf*rib/fmax(1e-10f,r)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_68)
 					case 68: { float hopf=ja*jb*tanh(jc*(zx*zy+zy*zz2)); aux.DE*=(1.0f+jf*hopf/fmax(1e-10f,r)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_69)
 					case 69: { float qg=ja*native_pow(fmax(1e-10f,r),-jb)*native_sin(jfreq*r+jph); aux.DE*=(1.0f+jf*qg); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_70)
 					case 70: { float dd=ja*jb*(1.0f/(fmax(1e-10f,rr))+zx*zy/(fmax(1e-10f,rr*r))); aux.DE*=(1.0f+jf*tanh(dd)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_71)
 					case 71: { float nich=ja*native_exp(-jb*rr)*native_sin(jfreq*zx)*native_cos(jfreq*zy); aux.DE*=(1.0f+jf*nich); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_72)
 					case 72: { float rack=ja*(zx*zx-zy*zy)/(fmax(1e-10f,rr))*jb; aux.DE*=(1.0f+jf*rack); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_73)
 					case 73: { float quan=ja*(zx*zx*zx-3.0f*zx*zy*zy)/(fmax(1e-10f,rr*r))*jb; aux.DE*=(1.0f+jf*quan); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_74)
 					case 74: { float biq=ja*native_sin(jfreq*(zx+zy))*native_cos(jfreq*(zx-zy))/fmax(1e-10f,r); aux.DE*=(1.0f+jf*biq); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_75)
 					case 75: { float ske=ja*jb*native_sin(jfreq*r+jph)/(fmax(1e-10f,rr)); aux.DE*=(1.0f+jf*ske); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_76)
 					case 76: { float khov=ja*native_pow(fmax(1e-10f,native_sin(jfreq*r)),2.0f)*jb/fmax(1e-10f,r); aux.DE*=(1.0f+jf*khov); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_77)
 					case 77: { float hf=ja*native_exp(-jb*r)*native_cos(jfreq*zz2+jph); aux.DE*=(1.0f+jf*hf); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_78)
 					case 78: { float kf=ja*atan2(zy,zx)*native_exp(-jb*fabs(zz2))/M_PI_F; aux.DE*=(1.0f+jf*kf/fmax(1e-10f,r)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_79)
 					case 79: { float ech2=ja*native_sin(jfreq*zx)*native_exp(-jb*zy)*native_cos(jfreq*zz2)/fmax(1e-10f,r); aux.DE*=(1.0f+jf*ech2); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_80)
 					case 80: { float sft=ja*native_cos(jfreq*r)*native_sin(jfreq*atan2(zy,zx)+jph)/fmax(1e-10f,r); aux.DE*=(1.0f+jf*sft); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_81)
 					case 81: { float lag=ja*(zx*zy+zy*zz2)/(fmax(1e-10f,rr))*jb; aux.DE*=(1.0f+jf*lag); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_82)
 					case 82: { float fuk=ja*native_sin(jb*zx)*native_cos(jc*zy)*native_sin(jd*zz2)/fmax(1e-10f,r); aux.DE*=(1.0f+jf*fuk); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_83)
 					case 83: { float mir=ja*(native_sin(jfreq*zx)*native_sin(jfreq*zy)-native_cos(jfreq*zz2))/fmax(1e-10f,r); aux.DE*=(1.0f+jf*mir); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_84)
 					case 84: { float hmir=ja*native_cos(jfreq*(zx+zy+zz2)+jph)/fmax(1e-10f,r); aux.DE*=(1.0f+jf*hmir); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_85)
 					case 85: { float syz=ja*native_sin(jfreq*r)*native_sin(jfreq*atan2(zy,zx))*native_cos(jfreq*zz2/fmax(0.01f,jb)); aux.DE*=(1.0f+jf*syz); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_86)
 					case 86: { float slag=ja*native_cos(jfreq*zx+jph)*jb; aux.DE*=(1.0f+jf*slag/fmax(1e-10f,r)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_87)
 					case 87: { float g2=ja*native_sin(jfreq*zx)*native_sin(jfreq*zy)*native_sin(jfreq*zz2)*jb; aux.DE*=(1.0f+jf*g2/fmax(1e-10f,rr)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_88)
 					case 88: { float sp7=ja*native_cos(jfreq*(zx*zy+zy*zz2+zz2*zx)/fmax(1e-10f,rr)+jph); aux.DE*=(1.0f+jf*sp7); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_89)
 					case 89: { float cy2=ja*native_exp(-jb*rr)*jc; aux.DE*=(1.0f+jf*cy2); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_90)
 					case 90: { float hkah=ja*(zx*zx-zy*zy+zz2*zz2)/(fmax(1e-10f,rr*r))*jb; aux.DE*=(1.0f+jf*hkah); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_91)
 					case 91: { float qkah=ja*jb*(zx*zy*zz2)/(fmax(1e-10f,rr*rr)); aux.DE*=(1.0f+jf*tanh(qkah)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_92)
 					case 92: { float sas=ja*native_sqrt(fmax(0.0f,r-jb))/fmax(1e-10f,r); aux.DE*=(1.0f+jf*sas); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_93)
 					case 93: { float s3s=ja*(native_sin(jfreq*zx)+native_sin(jfreq*zy)+native_sin(jfreq*zz2))/(3.0f*fmax(1e-10f,r)); aux.DE*=(1.0f+jf*s3s); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_94)
 					case 94: { float exh=ja*native_pow(fmax(1e-10f,r),-jb)*native_cos(jfreq*r+jph); aux.DE*=(1.0f+jf*exh); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_95)
 					case 95: { float joy=ja*native_sin(jfreq*zx/fmax(0.01f,jb))*native_sin(jfreq*zy/fmax(0.01f,jc))*native_sin(jfreq*zz2/fmax(0.01f,jd)); aux.DE*=(1.0f+jf*joy); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_96)
 					case 96: { float kov=ja*native_exp(-jb*fabs(zz2))*native_cos(jfreq*native_sqrt(fmax(0.0f,zx*zx+zy*zy))); aux.DE*=(1.0f+jf*kov); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_97)
 					case 97: { float chnp=ja*jb*tanh(jc*r-jd); aux.DE*=(1.0f+jf*chnp/fmax(1e-10f,r)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_98)
 					case 98: { float bs=ja*native_exp(-jb*r)*native_cos(jfreq*r+jph)*jc; aux.DE*=(1.0f+jf*bs); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_99)
 					case 99: { float ah=ja*jb/(fmax(1e-10f,rr))*native_cos(jfreq*atan2(zy,zx)+jph); aux.DE*=(1.0f+jf*ah); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JOSLEYSDETYPE_100)
 					case 100: { float gh=ja*jb*jc/fmax(1e-10f,r)*native_sin(jfreq*zz2+jph); aux.DE*=(1.0f+jf*gh); break; }
+#endif
 
 					default: break;
 #endif
@@ -4073,215 +4143,285 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_30)
 					case 30: { float sg=pa*native_sin(native_sin(pfreq*zx+pph))*pb; aux.DE*=(1.0f+pf*sg/fmax(1e-10f,r)); break; }
 #endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_31)
 					case 31: { float toda=pa*native_exp(pb*(zx-zy))-pa*native_exp(pb*(zy-zz2)); aux.DE*=(1.0f+pf*tanh(toda)/fmax(1e-10f,r)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_32)
 					case 32: { float cm=0.0f; {float d1=zx-zy; float d2=zy-zz2; float d3=zx-zz2; cm=pa*(1.0f/fmax(1e-10f,d1*d1*d1)+1.0f/fmax(1e-10f,d2*d2*d2)+1.0f/fmax(1e-10f,d3*d3*d3));} aux.DE*=(1.0f+pf*tanh(cm)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_33)
 					case 33: { float rs=pa*tanh(pb*(zx-zy))*tanh(pb*(zy-zz2))/fmax(1e-10f,r); aux.DE*=(1.0f+pf*rs); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_34)
 					case 34: { float hs=pa*pb*(zx*zy+zy*zz2+zz2*zx)/(fmax(1e-10f,rr*r)); aux.DE*=(1.0f+pf*hs); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_35)
 					case 35: { float bm=pa*native_sin(pfreq*zx)*native_sin(pfreq*zy)*pb/fmax(1e-10f,r); aux.DE*=(1.0f+pf*bm); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_36)
 					case 36: { float aci=pa*native_sin(pfreq*r+pph)*native_cos(pfreq*atan2(zy,zx))/fmax(1e-10f,r); aux.DE*=(1.0f+pf*aci); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_37)
 					case 37: { float sep=pa*(native_sin(pb*zx)+native_sin(pc*zy)+native_sin(pd*zz2))/fmax(1e-10f,r); aux.DE*=(1.0f+pf*sep); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_38)
 					case 38: { float aa=pa*native_cos(pfreq*r)*pfreq/fmax(1e-10f,r); aux.DE*=(1.0f+pf*aa); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_39)
 					case 39: { float kam=pa*native_cos(pfreq*r+pph)*(1.0f-pb/fmax(1e-10f,r)); aux.DE*=(1.0f+pf*kam); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_40)
 					case 40: { float nek=pa*native_exp(-1.0f/fmax(1e-10f,native_pow(fmax(1e-10f,pb),pc))); aux.DE*=(1.0f+pf*nek); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_41)
 					case 41: { float ard=pa*native_sin(pfreq*zx)*native_cos(pfreq*zy)*native_sin(pfreq*zz2)/fmax(1e-10f,rr); aux.DE*=(1.0f+pf*ard); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_42)
 					case 42: { float abm=pa*fabs(native_sin(pfreq*zx+pph))/fmax(1e-10f,r); aux.DE*=(1.0f+pf*abm); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_43)
 					case 43: { float mse=pa*pb*native_exp(-pc*rr)*native_sin(pfreq*zx); aux.DE*=(1.0f+pf*mse); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_44)
 					case 44: { float pei=pa*(1.0f-native_exp(-pb*fabs(zx-zy)))/fmax(1e-10f,r); aux.DE*=(1.0f+pf*pei); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_45)
 					case 45: { float fk=pa*native_sin(pfreq*zx+pph)*native_cos(pb*zy); aux.DE*=(1.0f+pf*fk/fmax(1e-10f,r)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_46)
 					case 46: { float sm=pa*native_sin(pfreq*atan2(zy,zx)+pph)*pb; aux.DE*=(1.0f+pf*sm/fmax(1e-10f,r)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_47)
 					case 47: { float chi=pa*tanh(pb*(r-pc)); aux.DE*=(1.0f+pf*chi); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_48)
 					case 48: { float gre=0.5f*(1.0f-pa*native_cos(pfreq*r+pph)/fmax(1e-10f,r)); aux.DE*=(1.0f+pf*gre); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_49)
 					case 49: { float rg=pa*native_pow(fmax(1e-10f,r),-pb)*native_cos(pfreq*native_log(fmax(1e-10f,r))+pph); aux.DE*=(1.0f+pf*rg); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_50)
 					case 50: { float fg=pa*4.669201609f*native_sin(pfreq*r+pph)/(fmax(1e-10f,r)); aux.DE*=(1.0f+pf*fg); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_51)
 					case 51: { float sh3=pa*native_floor(native_sin(pfreq*zx)*3.0f+1.5f)/3.0f; aux.DE*=(1.0f+pf*sh3); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_52)
 					case 52: { float sar=pa*(native_sin(pfreq*zx)*native_sin(pfreq*zy)*native_sin(pfreq*zz2)>0.0f?1.0f:-1.0f)*pb; aux.DE*=(1.0f+pf*sar/fmax(1e-10f,r)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_53)
 					case 53: { float sml=pa*tanh(pb*zx)*tanh(pb*zy); aux.DE*=(1.0f+pf*sml); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_54)
 					case 54: { float ano=pa*fabs(fmod(pb*zx+pc*zy,1.0f)-0.5f)*4.0f; aux.DE*=(1.0f+pf*ano/fmax(1e-10f,r)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_55)
 					case 55: { float axa=pa*native_exp(-pb*r)*native_cos(pfreq*r+pph); aux.DE*=(1.0f+pf*axa); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_56)
 					case 56: { float srb=pa*pb*native_exp(-pc*rr)/fmax(1e-10f,r); aux.DE*=(1.0f+pf*srb); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_57)
 					case 57: { float pes=0.0f; {float lya=pa*native_log(fmax(1e-10f,r)); pes=lya*pb;} aux.DE*=(1.0f+pf*tanh(pes)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_58)
 					case 58: { float ly=pa*pb*native_log(fmax(1e-10f,r))/fmax(1e-10f,r); aux.DE*=(1.0f+pf*tanh(ly)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_59)
 					case 59: { float yt=pa*native_exp(-pb*r)*native_sin(pfreq*r+pph); aux.DE*=(1.0f+pf*yt); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_60)
 					case 60: { float to=pa*pb*native_sin(pfreq*zx)*native_sin(pfreq*zy)/(fmax(1e-10f,rr)); aux.DE*=(1.0f+pf*to); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_61)
 					case 61: { float rpf=pa*native_exp(-pb*r)/fmax(1e-10f,r); aux.DE*=(1.0f+pf*rpf); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_62)
 					case 62: { float thf=pa*tanh(pb*(r-pc))*pd; aux.DE*=(1.0f+pf*thf); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_63)
 					case 63: { float gib=pa*native_exp(-pb*rr)*pc; aux.DE*=(1.0f+pf*gib); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_64)
 					case 64: { float eqs=pa*native_cos(pfreq*r+pph)/(fmax(1e-10f,r)); aux.DE*=(1.0f+pf*eqs); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_65)
 					case 65: { float pht=pa*(1.0f/(1.0f+native_exp(-pb*(r-pc)))-0.5f)*2.0f; aux.DE*=(1.0f+pf*pht); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_66)
 					case 66: { float brf=pa*native_exp(-pb*r)*native_cos(pfreq*atan2(zy,zx)+pph); aux.DE*=(1.0f+pf*brf); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_67)
 					case 67: { float spc=pa*native_sin(pfreq*zx)*native_cos(pfreq*zy)*native_sin(pfreq*zz2)*pb; aux.DE*=(1.0f+pf*spc/fmax(1e-10f,r)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_68)
 					case 68: { float sha=pa*native_exp(-pb*fabs(r-pc)); aux.DE*=(1.0f+pf*sha); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_69)
 					case 69: { float sst=pa*native_cos(pfreq*r+pph)*native_exp(-pb*r); aux.DE*=(1.0f+pf*sst); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_70)
 					case 70: { float oms=pa*native_sin(pfreq*zx)*native_sin(pfreq*zy)*pb/fmax(1e-10f,rr); aux.DE*=(1.0f+pf*oms); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_71)
 					case 71: { float mss=pa*native_exp(-pb*r)*(1.0f-native_cos(pfreq*r)); aux.DE*=(1.0f+pf*mss); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_72)
 					case 72: { float gfl=-pa*pb*(zx+zy+zz2)/fmax(1e-10f,r*r); aux.DE*=(1.0f+pf*tanh(gfl)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_73)
 					case 73: { float mor=pa*(r-pb)*(r-pb)*native_exp(-pc*r); aux.DE*=(1.0f+pf*mor/fmax(1e-10f,r)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_74)
 					case 74: { float moh=pa*native_exp(-pb*rr)*native_sin(pfreq*r+pph); aux.DE*=(1.0f+pf*moh); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_75)
 					case 75: { float flo=pa*native_sin(pfreq*zx)*native_cos(pfreq*zy)*pb; aux.DE*=(1.0f+pf*flo/fmax(1e-10f,r)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_76)
 					case 76: { float sca=pa*pb*r*r/(fmax(1e-10f,r*r+pc*pc)); aux.DE*=(1.0f+pf*sca); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_77)
 					case 77: { float hof=pa*pb/fmax(1e-10f,r); aux.DE*=(1.0f+pf*tanh(hof)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_78)
 					case 78: { float hz=pa*M_PI_F*pb/(2.0f*fmax(1e-10f,r)); aux.DE*=(1.0f+pf*tanh(hz)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_79)
 					case 79: { float ekh=pa*native_sin(pfreq*r+pph)*pb/fmax(1e-10f,r); aux.DE*=(1.0f+pf*ekh); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_80)
 					case 80: { float nsq=pa*pb*(1.0f-r/fmax(1e-10f,pc)); aux.DE*=(1.0f+pf*tanh(nsq)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_81)
 					case 81: { float emb=pa*pb*native_sin(pfreq*r+pph)/fmax(1e-10f,rr); aux.DE*=(1.0f+pf*emb); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_82)
 					case 82: { float echc=pa*native_sin(pfreq*zx)*native_cos(pfreq*zy)*pb/fmax(1e-10f,r); aux.DE*=(1.0f+pf*echc); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_83)
 					case 83: { float fib=pa*native_sin(pfreq*r)*native_cos(1.618033988749f*pfreq*r+pph)/fmax(1e-10f,r); aux.DE*=(1.0f+pf*fib); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_84)
 					case 84: { float hut=pa*pb*native_sin(pfreq*atan2(zy,zx)+pph)/fmax(1e-10f,r); aux.DE*=(1.0f+pf*hut); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_85)
 					case 85: { float cmk=pa*native_cos(pfreq*r)*native_exp(-pb*r)*pc; aux.DE*=(1.0f+pf*cmk); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_86)
 					case 86: { float vfc=pa*pb*native_sin(pfreq*r+pph)/(fmax(1e-10f,r*r)); aux.DE*=(1.0f+pf*vfc); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_87)
 					case 87: { float pol=pa*native_exp(-pb*rr)*native_cos(pfreq*r)*pc; aux.DE*=(1.0f+pf*pol); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_88)
 					case 88: { float scc=pa*tanh(pb*r)*native_cos(pfreq*r+pph)/fmax(1e-10f,r); aux.DE*=(1.0f+pf*scc); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_89)
 					case 89: { float gwi=pa*pb*native_sin(pfreq*zx)*native_sin(pfreq*zy)*native_sin(pfreq*zz2)/(fmax(1e-10f,rr)); aux.DE*=(1.0f+pf*gwi); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_90)
 					case 90: { float qco=pa*native_cos(pfreq*(zx+zy+zz2)+pph)*pb/fmax(1e-10f,r); aux.DE*=(1.0f+pf*qco); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_91)
 					case 91: { float msy=pa*(native_sin(pfreq*zx)*native_sin(pfreq*zy)-native_cos(pfreq*zz2))/fmax(1e-10f,r); aux.DE*=(1.0f+pf*msy); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_92)
 					case 92: { float hv=pa*native_exp(-pb*rr)*native_sin(pfreq*r+pph); aux.DE*=(1.0f+pf*hv); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_93)
 					case 93: { float bat=pa*native_cos(pfreq*zx+pph)*native_cos(pfreq*zy)*native_cos(pfreq*zz2)/fmax(1e-10f,r); aux.DE*=(1.0f+pf*bat); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_94)
 					case 94: { float gpo=pa*pb*native_sin(pfreq*r)/(fmax(1e-10f,r*r)); aux.DE*=(1.0f+pf*gpo); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_95)
 					case 95: { float syzf=pa*native_sin(pfreq*r)*native_sin(pfreq*atan2(zy,zx)+pph)*pb; aux.DE*=(1.0f+pf*syzf/fmax(1e-10f,r)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_96)
 					case 96: { float gs=pa*native_exp(-pb*fabs(zz2))*native_cos(pfreq*native_sqrt(fmax(0.0f,zx*zx+zy*zy))+pph); aux.DE*=(1.0f+pf*gs); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_97)
 					case 97: { float scd=pa*pb*tanh(pc*native_sin(pfreq*r+pph)); aux.DE*=(1.0f+pf*scd/fmax(1e-10f,r)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_98)
 					case 98: { float thf2=pa*native_sin(pfreq*zx+pph)*native_cos(pfreq*zy)*pb; aux.DE*=(1.0f+pf*thf2/fmax(1e-10f,r)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_99)
 					case 99: { float cla=pa*pb*(zx*zy+zy*zz2+zz2*zx)/(fmax(1e-10f,rr*r)); aux.DE*=(1.0f+pf*cla); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_PKDETYPE_100)
 					case 100: { float clv=pa*native_sin(pfreq*(zx*zy+zy*zz2)/fmax(1e-10f,rr)+pph)*pb; aux.DE*=(1.0f+pf*clv); break; }
+#endif
 
 					default: break;
 #endif
@@ -4388,515 +4528,685 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_30)
 					case 30: { float rrp=zx*zx+zy*zy-ma*zz2, ar=fabs(rrp); if(ar<1e-21) ar=1e-21;{ float m2=mb*mb/ar; z*=m2; aux.DE*=m2*native_sqrt(1.0+4.0*ma*ma); } break; }
 #endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_31)
 					case 31: { float mR2=ma*(1.0f+0.1f*native_sin(i*mc)); float fR2=mb; if(rr<mR2) z*=fR2/mR2; else if(rr<fR2) z*=fR2/rr; aux.DE*=fabs(mf)*fR2/fmax(1e-21f,fmin(rr,mR2)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_32)
 					case 32: { float mx=ma,my=mb,mz=mc; float rrm=fmax(zx*zx/fmax(1e-21f,mx),fmax(zy*zy/fmax(1e-21f,my),zz2*zz2/fmax(1e-21f,mz))); float fR2=md; if(rrm<fR2){ float m2=fR2/fmax(1e-21f,rrm); z*=m2; aux.DE*=m2; } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_33)
 					case 33: { float mR2_1=ma,f1=mb,mR2_2=mc,f2=md; if(rr<mR2_1){ z*=f1; aux.DE*=f1; } float rr2=z.x*z.x+z.y*z.y+z.z*z.z; if(rr2<mR2_2){ z*=f2; aux.DE*=f2; } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_34)
 					case 34: { float sm=mc; float mR2=ma,fR2=mb; float t=1.0f/(1.0f+native_exp(-sm*(rr-mR2))); float m2=fR2/fmax(1e-21f,rr); float sf=(1.0f-t)*m2+t*1.0f; z*=sf; aux.DE*=sf; break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_35)
 					case 35: { float fR2=mb; float lg=native_log(fmax(1e-21f,fR2))/native_log(fmax(1e-21f,rr)); z*=lg; aux.DE*=lg/(rr*native_log(fmax(1e-21f,rr))); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_36)
 					case 36: { float fR2=mb; float ex=native_exp(fR2-rr); z*=ex; aux.DE*=ex; break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_37)
 					case 37: { float fR2=mb; float pw=mc; float m2=native_pow(fmax(1e-21f,fR2/rr),pw); z*=m2; aux.DE*=m2; break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_38)
 					case 38: { float k=mc,fR2=mb; float sg=1.0f/(1.0f+native_exp(k*(rr-fR2))); z*=sg; aux.DE*=sg; break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_39)
 					case 39: { float fR2=mb,sg=mc; float gs=native_exp(-(rr-fR2)*(rr-fR2)/(sg*sg+1e-21f)); z*=gs; aux.DE*=gs; break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_40)
 					case 40: { float mR2=ma,fR2=mb,f1=mc; float m2=(rr<mR2)?f1:((rr<fR2)?fR2/rr:1.0f); z*=m2; aux.DE*=m2; break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_41)
 					case 41: { float b1=ma,f1=mb,b2=mc,f2=md,b3=me,f3=mff; float m2=(rr<b1)?f1:((rr<b2)?f2:((rr<b3)?f3:1.0f)); z*=m2; aux.DE*=m2; break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_42)
 					case 42: { float fR2=mb; if(rr<fR2){ float m2=1.0f/fmax(1e-21f,rr); z.x=ma+fR2*(zx-ma)*m2; z.y=ma+fR2*(zy-ma)*m2; z.z=ma+fR2*(zz2-ma)*m2; aux.DE*=fR2*m2; } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_43)
 					case 43: { float fR2=mb; if(rr<fR2){ float den=mc*zx+md+1e-21f; z.x=(ma*zx+mb)/(den); z.y=zy/fmax(1e-10f,fabs(den)); z.z=zz2/fmax(1e-10f,fabs(den)); aux.DE*=fabs(ma*md-mb*mc)/(den*den); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_44)
 					case 44: { float fR2=mb; if(rr<fR2){ float qn=rr; if(qn<1e-21f) qn=1e-21f; float m2=fR2/qn; z*=m2; aux.DE*=m2; } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_45)
 					case 45: { float dm=fmax(1e-10f,acosh(fmax(1.0f,r))); float dmax=ma; if(dm<dmax){ float sc=dmax/dm; z*=sc; aux.DE*=sc*dmax/(dm*sinh(dm)+1e-21f); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_46)
 					case 46: { float ox=ma,oy=mb,oz=mc; float rrc=(zx-ox)*(zx-ox)+(zy-oy)*(zy-oy)+(zz2-oz)*(zz2-oz); if(rrc<1e-21f) rrc=1e-21f; float fR2=md; if(rrc<fR2){ float m2=fR2/rrc; z*=m2; aux.DE*=m2; } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_47)
 					case 47: { float th=ma*M_PI_F/180.0f; float cs=native_cos(th),sn=native_sin(th); float rx=zx*cs-zy*sn; float ry=zx*sn+zy*cs; float rrc=rx*rx+ry*ry+zz2*zz2; if(rrc<1e-21f) rrc=1e-21f; float fR2=mb; if(rrc<fR2){ float m2=fR2/rrc; z*=m2; aux.DE*=m2; } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_48)
 					case 48: { float fR2=ma*(1.0f+0.1f*native_sin(i*mb)); float mR2=mc; if(rr<mR2){ z*=fR2/mR2; aux.DE*=fR2/mR2; } else if(rr<fR2){ z*=fR2/rr; aux.DE*=fR2/rr; } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_49)
 					case 49: { float mR2=ma,fR2=mb; float cf=(rr<mR2)?mc:((rr<fR2)?md:0.0f); aux.color+=cf; break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_50)
 					case 50: { aux.color+=native_log(fmax(1e-21f,aux.DE))*ma; break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_51)
 					case 51: { z.x*=ma; z.y*=mb; z.z*=mc; aux.DE*=fmax(fabs(ma),fmax(fabs(mb),fabs(mc))); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_52)
 					case 52: { float sc=ma+mb*native_sin(i*mc); z*=sc; aux.DE*=fabs(sc); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_53)
 					case 53: { float sc=ma*native_exp(-i*mb); z*=sc; aux.DE*=fabs(sc); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_54)
 					case 54: { float sc=ma/(1.0f+native_log(1.0f+i)); z*=sc; aux.DE*=fabs(sc); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_55)
 					case 55: { float p=fmax(0.01f,mb); float sc=ma/fmax(1e-10f,native_pow(fmax(1.0f,(float)i),p)); z*=sc; aux.DE*=fabs(sc); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_56)
 					case 56: { float f0=1,f1=1; for(int n=0;n<fmin((float)i,20.0f);n++){float t=f1;f1=f0+f1;f0=t;} float sc=ma/fmax(1.0f,f1); z*=sc; aux.DE*=fabs(sc); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_57)
 					case 57: { float ns=native_sin(i*12.9898f+zx*78.233f)*43758.5453f; ns=ns-native_floor(ns); float sc=ma+ns*mb; z*=sc; aux.DE*=fabs(sc); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_58)
 					case 58: { float jv=native_sin(i*mb)*native_cos(i*mc); float sc=ma+0.1f*fabs(jv); z*=sc; aux.DE*=fabs(sc); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_59)
 					case 59: { float sc=ma*(1.0f+0.1f*r); z*=sc; aux.DE*=fabs(sc)*(1.0f+0.1f*r); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_60)
 					case 60: { float sc=ma+0.1f*native_sin(i*mb); z*=sc; aux.DE*=fabs(sc); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_61)
 					case 61: { float sc=ma+0.1f*mf; z*=sc; aux.DE*=fabs(sc)*1.1f; break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_62)
 					case 62: { float sc=(zx>0)?ma:mb; z*=sc; aux.DE*=fmax(fabs(ma),fabs(mb)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_63)
 					case 63: { float th=atan2(zy,zx); float sc=ma+mb*native_cos(mc*th); z*=sc; aux.DE*=fabs(sc); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_64)
 					case 64: { float th=atan2(native_sqrt(zx*zx+zy*zy),zz2); float ph=atan2(zy,zx); float sc=ma+mb*native_cos(mc*th)*native_sin(md*ph); z*=sc; aux.DE*=fabs(sc); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_65)
 					case 65: { float off=ma+0.1f*native_sin(i*mb); z.x+=off; z.y+=off; z.z+=off; aux.DE*=fabs(mf); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_66)
 					case 66: { z.x+=ma; z.y+=mb; z.z+=mc; aux.DE*=fabs(mf); break; }
+#endif
 
-					case 67: { float cl=in.point.Length(); z.x+=cl*ma; z.y+=cl*ma; z.z+=cl*ma; aux.DE*=fabs(mf); break; }
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_67)
+					case 67: { float cl=length(pointTransformed); z.x+=cl*ma; z.y+=cl*ma; z.z+=cl*ma; aux.DE*=fabs(mf); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_68)
 					case 68: { z.x+=zx*0.1f*ma; z.y+=zy*0.1f*ma; z.z+=zz2*0.1f*ma; aux.DE*=fabs(mf); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_69)
 					case 69: { float ns=native_sin(zx*ma+zy*mb+zz2*mc)*md; z.x+=ns; z.y+=ns; z.z+=ns; aux.DE*=fabs(mf); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_70)
 					case 70: { float off=ma+0.1f*native_sin(i*mb); z.x+=off; z.y+=off*0.5f; z.z+=off*0.25f; aux.DE*=fabs(mf); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_71)
 					case 71: { float off=ma+0.1f*mf; z.x+=off; z.y+=off; z.z+=off; aux.DE*=fabs(mf); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_72)
 					case 72: { float off=(rr<ma)?mb:mc; z.x+=off; z.y+=off; z.z+=off; aux.DE*=fabs(mf); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_73)
 					case 73: { float off=ma*(1.0f+0.1f*r); z.x+=off; z.y+=off; z.z+=off; aux.DE*=fabs(mf); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_74)
 					case 74: { float th=i*ma; float spr=mb; z.x+=spr*native_cos(th); z.y+=spr*native_sin(th); aux.DE*=fabs(mf); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_75)
 					case 75: { z.x+=ma*native_sin(mb*i); z.y+=mc*native_sin(md*i); z.z+=me*native_sin(mff*i); aux.DE*=fabs(mf); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_76)
 					case 76: { float ga=2.39996322973f; float th=i*ga; float cs=native_cos(th),sn=native_sin(th); float nx=zx*cs-zy*sn; float ny=zx*sn+zy*cs; z.x=nx; z.y=ny; aux.DE*=fabs(mf); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_77)
 					case 77: { float hth=ma*M_PI_F/360.0f; float ax=mb,ay=mc,az=md; float nm=native_sqrt(ax*ax+ay*ay+az*az+1e-21f); ax/=nm;ay/=nm;az/=nm; float cq=native_cos(hth),sq=native_sin(hth); float qw=cq,qx=sq*ax,qy=sq*ay,qz=sq*az; float nx=zx*(1-2*(qy*qy+qz*qz))+zy*2*(qx*qy-qw*qz)+zz2*2*(qx*qz+qw*qy); float ny=zx*2*(qx*qy+qw*qz)+zy*(1-2*(qx*qx+qz*qz))+zz2*2*(qy*qz-qw*qx); float nz=zx*2*(qx*qz-qw*qy)+zy*2*(qy*qz+qw*qx)+zz2*(1-2*(qx*qx+qy*qy)); z.x=nx;z.y=ny;z.z=nz; aux.DE*=fabs(mf); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_78)
 					case 78: { float th=ma*M_PI_F/180.0f; float cs=native_cos(th),sn=native_sin(th); float nx=zx*cs-zy*sn; float ny=zx*sn+zy*cs; z.x=nx; z.y=ny; float ph=mb*M_PI_F/180.0f; float cp=native_cos(ph),sp=native_sin(ph); float nxz=z.x*cp-zz2*sp; float nz=z.x*sp+zz2*cp; z.x=nxz; z.z=nz; aux.DE*=fabs(mf); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_79)
 					case 79: { float th=ma*M_PI_F/180.0f; float cs=native_cos(th),sn=native_sin(th); z.x=zx*cs-zy*sn; z.y=zx*sn+zy*cs; float ph=mb*M_PI_F/180.0f; cs=native_cos(ph); sn=native_sin(ph); float ty=z.y*cs-zz2*sn; z.z=z.y*sn+zz2*cs; z.y=ty; float ps=mc*M_PI_F/180.0f; cs=native_cos(ps);sn=native_sin(ps); float tx=z.x*cs-z.z*sn; z.z=z.x*sn+z.z*cs; z.x=tx; aux.DE*=fabs(mf); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_80)
 					case 80: { float v=ma; float gm=1.0f/native_sqrt(fmax(1e-10f,1.0f-v*v)); z.x=gm*(zx-v*zz2); z.z=gm*(zz2-v*zx); aux.DE*=fabs(mf)*gm; break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_81)
 					case 81: { z.x+=ma; z.y+=mb*native_sin(mc*zz2); aux.DE*=fabs(mf); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_82)
 					case 82: { float s=ma; float th=mb*M_PI_F/180.0f; float cs=native_cos(th),sn=native_sin(th); z.x=s*(zx*cs-zy*sn); z.y=s*(zx*sn+zy*cs); z.z*=s; aux.DE*=fabs(s)*fabs(mf); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_83)
 					case 83: { float N=fmax(2.0f,ma); float th=2.0f*M_PI_F/N; float cs=native_cos(th),sn=native_sin(th); float nx=zx*cs-zy*sn; float ny=zx*sn+zy*cs; z.x=nx; z.y=ny; aux.DE*=fabs(mf); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_84)
 					case 84: { float ax=native_sin(i*ma),ay=native_cos(i*ma); float nm=native_sqrt(ax*ax+ay*ay+1e-21f); ax/=nm; ay/=nm; float th=mb*M_PI_F/180.0f; float cs=native_cos(th),sn=native_sin(th); float d=zx*ax+zy*ay; float px=zx-d*ax,py=zy-d*ay; float rx=px*cs-py*sn+d*ax,ry=px*sn+py*cs+d*ay; z.x=rx;z.y=ry; aux.DE*=fabs(mf); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_85)
 					case 85: { float ns=native_sin(i*12.9898f+78.233f)*43758.5453f; ns=ns-native_floor(ns); float th=ns*2.0f*M_PI_F*ma; float cs=native_cos(th),sn=native_sin(th); float nx=zx*cs-zy*sn; float ny=zx*sn+zy*cs; z.x=nx;z.y=ny; aux.DE*=fabs(mf); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_86)
 					case 86: { float th=ma+mb*i; float cs=native_cos(th),sn=native_sin(th); float nx=zx*cs-zy*sn; float ny=zx*sn+zy*cs; z.x=nx;z.y=ny; aux.DE*=fabs(mf); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_87)
 					case 87: { float th=ma+mf; float cs=native_cos(th),sn=native_sin(th); float nx=zx*cs-zy*sn; float ny=zx*sn+zy*cs; z.x=nx;z.y=ny; aux.DE*=fabs(mf); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_88)
 					case 88: { if(zx>0){ float th=ma*M_PI_F/180.0f; float cs=native_cos(th),sn=native_sin(th); z.x=zx*cs-zy*sn; z.y=zx*sn+zy*cs; } else { float th=mb*M_PI_F/180.0f; float cs=native_cos(th),sn=native_sin(th); z.x=zx*cs-zy*sn; z.y=zx*sn+zy*cs; } aux.DE*=fabs(mf); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_89)
 					case 89: { float th=ma*(1.0f+0.1f*r); float cs=native_cos(th),sn=native_sin(th); float nx=zx*cs-zy*sn; float ny=zx*sn+zy*cs; z.x=nx;z.y=ny; aux.DE*=fabs(mf); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_90)
 					case 90: { float ph=atan2(zy,zx); float th=ma+mb*native_cos(mc*ph); float cs=native_cos(th),sn=native_sin(th); float nx=zx*cs-zy*sn; float ny=zx*sn+zy*cs; z.x=nx;z.y=ny; aux.DE*=fabs(mf); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_91)
 					case 91: { float N=fmax(2.0f,ma); float th=atan2(zy,zx); float sector=2.0f*M_PI_F/N; th=fmod(th+sector*0.5f+100.0f*sector,sector)-sector*0.5f; float rxy=native_sqrt(zx*zx+zy*zy); z.x=rxy*native_cos(th); z.y=rxy*native_sin(th); aux.DE*=fabs(mf); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_92)
 					case 92: { float nx=fabs(zx); float ny=fabs(zy); float nz2=fabs(zz2); if(ma>0) z.x=nx; if(mb>0) z.y=ny; if(mc>0) z.z=nz2; aux.DE*=fabs(mf); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_93)
 					case 93: { z.x+=ma*zy; z.y+=mb*zz2; aux.DE*=fabs(mf)*native_sqrt(1.0f+ma*ma+mb*mb); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_94)
 					case 94: { float rxy=native_sqrt(zx*zx+zy*zy); float th=atan2(zy,zx)+ma*zz2; z.x=rxy*native_cos(th); z.y=rxy*native_sin(th); aux.DE*=fabs(mf)*native_sqrt(1.0f+ma*ma*rxy*rxy); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_95)
 					case 95: { float cv=ma; float rxy=native_sqrt(zx*zx+zy*zy); float th=atan2(zy,zx)+cv*rxy; z.x=rxy*native_cos(th); z.y=rxy*native_sin(th); aux.DE*=fabs(mf)*(1.0f+cv*rxy); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_96)
 					case 96: { float tf=ma; z.x*=(1.0f-tf*zz2); z.y*=(1.0f-tf*zz2); aux.DE*=fabs(mf)*(1.0f-tf*zz2); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_97)
 					case 97: { float g=ma; float th=atan2(zy,zx)+g*native_log(fmax(1e-10f,native_sqrt(zx*zx+zy*zy))); float rxy=native_sqrt(zx*zx+zy*zy); z.x=rxy*native_cos(th); z.y=rxy*native_sin(th); aux.DE*=fabs(mf)*g; break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_98)
 					case 98: { float th=ma*native_exp(i*mb); float cs=native_cos(th),sn=native_sin(th); float nx=zx*cs-zy*sn; float ny=zx*sn+zy*cs; z.x=nx;z.y=ny; aux.DE*=fabs(mf); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_99)
 					case 99: { float th=ma*native_log(1.0f+i); float cs=native_cos(th),sn=native_sin(th); float nx=zx*cs-zy*sn; float ny=zx*sn+zy*cs; z.x=nx;z.y=ny; aux.DE*=fabs(mf); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_100)
 					case 100: { float p=mb; float th=ma*native_pow(fmax(1.0f,(float)i),p); float cs=native_cos(th),sn=native_sin(th); float nx=zx*cs-zy*sn; float ny=zx*sn+zy*cs; z.x=nx;z.y=ny; aux.DE*=fabs(mf); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_101)
 					case 101: { float w=ma; float rr4=rr+w*w; if(rr4<1e-21f) rr4=1e-21f; float sc=mf; z.x=zx*sc+w*0.1f; z.y=zy*sc; z.z=zz2*sc; aux.DE*=fabs(sc); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_102)
 					case 102: { float w=ma,v=mb; float rr5=rr+w*w+v*v; if(rr5<1e-21f) rr5=1e-21f; float sc=mf; z*=sc; z.x+=w*0.05f; z.y+=v*0.05f; aux.DE*=fabs(sc); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_103)
 					case 103: { float w=ma*native_sin(mb*i); z.x+=w*0.1f; aux.DE*=fabs(mf); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_104)
 					case 104: { float th4=ma*M_PI_F/180.0f; float cs=native_cos(th4),sn=native_sin(th4); float nw=zz2*sn; z.z=zz2*cs; z.x+=nw*0.1f; aux.DE*=fabs(mf); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_105)
 					case 105: { float cx=ma,cy=mb,cz=mc; (void)md; z.x+=cx*mf; z.y+=cy*mf; z.z+=cz*mf; aux.DE*=fabs(mf); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_106)
 					case 106: { float qw=ma,qx=zx,qy=zy,qz=zz2; float nm=native_sqrt(qw*qw+qx*qx+qy*qy+qz*qz+1e-21f); z.x=qx/nm*mf; z.y=qy/nm*mf; z.z=qz/nm*mf; aux.DE*=fabs(mf)/nm; break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_107)
 					case 107: { float q1w=ma,q2w=mb; float nm1=native_sqrt(zx*zx+zy*zy+q1w*q1w+1e-21f); float nm2=native_sqrt(zz2*zz2+q2w*q2w+1e-21f); z.x*=nm2/(nm1+1e-21f); z.y*=nm2/(nm1+1e-21f); aux.DE*=fabs(mf)*nm2/(nm1+1e-21f); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_108)
 					case 108: { float d4=native_sqrt(rr+ma*ma); float td=tanh(d4); z*=td/fmax(1e-10f,d4); float ch=cosh(d4); aux.DE*=fabs(mf)/(ch*ch+1e-21f); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_109)
 					case 109: { float rr4=rr+ma*ma; float nm4=native_sqrt(rr4+1e-21f); z*=1.0f/nm4; aux.DE*=fabs(mf)/nm4; break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_110)
 					case 110: { float rxy=native_sqrt(zx*zx+zy*zy+1e-21f); z.x=(rxy-ma)*native_cos(atan2(zy,zx)); z.y=(rxy-ma)*native_sin(atan2(zy,zx)); aux.DE*=fabs(mf)*rxy; break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_111)
 					case 111: { float R=ma,rr2=mb; float th=atan2(zy,zx); z.x=(R+rr2*native_cos(th))*native_cos(mc*i); z.y=(R+rr2*native_cos(th))*native_sin(mc*i); z.z=rr2*native_sin(th); aux.DE*=fabs(mf)*R; break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_112)
 					case 112: { float th=ma*M_PI_F/180.0f; float ph=mb*M_PI_F/180.0f; float cs1=native_cos(th),sn1=native_sin(th),cs2=native_cos(ph); float nx=zx*cs1-zy*sn1; float ny=zx*sn1+zy*cs1; float nz2=zz2*cs2; z.x=nx;z.y=ny;z.z=nz2; aux.DE*=fabs(mf); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_113)
 					case 113: { float ga=2.39996322973f; float th=i*ga; float r4=native_sqrt(rr+1e-21f); z.x=r4*native_cos(th)*native_cos(ma*i); z.y=r4*native_sin(th)*native_cos(ma*i); z.z=r4*native_sin(ma*i); aux.DE*=fabs(mf); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_114)
 					case 114: { float D=ma; float sc=native_pow(2.0f,D); z*=sc/fmax(1e-10f,r); aux.DE*=sc/fmax(1e-10f,r); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_115)
 					case 115: { float h=((native_sin(i*12.9898f+78.233f)*43758.5453f) - native_floor(native_sin(i*12.9898f+78.233f)*43758.5453f)); if(h<ma){ z.x=-z.x; z.y=-z.y; } aux.DE*=fabs(mf); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_116)
 					case 116: { float w=ma+0.1f*native_sin(i*mb); z.x+=w*0.1f; aux.DE*=fabs(mf); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_117)
 					case 117: { z.x+=0.1f*zx*ma; z.y+=0.1f*zy*ma; z.z+=0.1f*zz2*ma; aux.DE*=fabs(mf)*1.1f; break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_118)
 					case 118: { float ns=native_sin(zx*ma+i*mb)*native_cos(zy*mc); z.x+=ns*0.1f*md; z.y+=ns*0.1f*md; aux.DE*=fabs(mf); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_119)
 					case 119: { float jv=native_sin(i*ma)*native_cos(i*mb); float sc=mf+0.1f*jv; z*=sc; aux.DE*=fabs(sc); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_120)
 					case 120: { float sc1=ma,sc2=mb; z*=sc1; float rr2=z.x*z.x+z.y*z.y+z.z*z.z; if(rr2>1e-21f){ z*=sc2/native_sqrt(rr2); } aux.DE*=fmax(fabs(sc1),fabs(sc2)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_121)
 					case 121: { float h=((native_sin(i*12.9898f+78.233f)*43758.5453f) - native_floor(native_sin(i*12.9898f+78.233f)*43758.5453f)); float w=(h<ma)?mb:mc; z.x+=w*0.1f; aux.DE*=fabs(mf); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_122)
 					case 122: { float h=((native_sin(i*12.9898f+zx*78.233f)*43758.5453f) - native_floor(native_sin(i*12.9898f+zx*78.233f)*43758.5453f)); float sc=ma+h*mb*0.1f; z*=sc; aux.DE*=fabs(sc); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_123)
 					case 123: { float p=ma; z.x=fmod(zx+p*0.5f,p)-p*0.5f; z.y=fmod(zy+p*0.5f,p)-p*0.5f; z.z=fmod(zz2+p*0.5f,p)-p*0.5f; aux.DE*=fabs(mf)/fmax(0.01f,p); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_124)
 					case 124: { float fR2=ma; if(rr<fR2){ float m2=fR2/fmax(1e-21f,rr); z*=m2; aux.DE*=m2; } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_125)
 					case 125: { if(fabs(zx)>ma) z.x=copysign(ma,zx); if(fabs(zy)>ma) z.y=copysign(ma,zy); if(fabs(zz2)>ma) z.z=copysign(ma,zz2); aux.DE*=fabs(mf); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_126)
 					case 126: { float dx=fabs(z.x-zx),dy=fabs(z.y-zy),dz=fabs(z.z-zz2); aux.color+=ma*dx+mb*dy+mc*dz; break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_127)
 					case 127: { float mR2=ma,fR2=mb; float t=(rr-mR2)/(fR2-mR2+1e-21f); t=fmax(0.0f,fmin(1.0f,t)); aux.color+=t*mc; break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_128)
 					case 128: { aux.color+=native_log(fabs(mf)+1e-21f)*ma; break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_129)
 					case 129: { float th=atan2(zy,zx); aux.color+=fabs(th)*ma; break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_130)
 					case 130: { float td=native_sqrt((zx-ma)*(zx-ma)+(zy-mb)*(zy-mb)+(zz2-mc)*(zz2-mc))-md; aux.color+=fmax(0.0f,1.0f-fabs(td))*me; break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_131)
 					case 131: { float ax1=ma,ay1=mb,bx1=mc,by1=md; float dx=bx1-ax1,dy=by1-ay1; float t=((zx-ax1)*dx+(zy-ay1)*dy)/(dx*dx+dy*dy+1e-21f); t=fmax(0.0f,fmin(1.0f,t)); float px=ax1+t*dx,py=ay1+t*dy; float dd=native_sqrt((zx-px)*(zx-px)+(zy-py)*(zy-py)); aux.color+=fmax(0.0f,1.0f-dd)*me; break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_132)
 					case 132: { float dd=fmin(fabs(zx),fmin(fabs(zy),fabs(zz2))); aux.color+=fmax(0.0f,1.0f-dd*ma)*mb; break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_133)
 					case 133: { float nx=ma,ny=mb,nz2=mc; float nm=native_sqrt(nx*nx+ny*ny+nz2*nz2+1e-21f); float dd=fabs(zx*nx/nm+zy*ny/nm+zz2*nz2/nm-md); aux.color+=fmax(0.0f,1.0f-dd)*me; break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_134)
 					case 134: { float R=ma,rr2=mb; float rxy=native_sqrt(zx*zx+zy*zy+1e-21f); float td=(rxy-R)*(rxy-R)+zz2*zz2-rr2*rr2; aux.color+=fmax(0.0f,1.0f-fabs(td))*mc; break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_135)
 					case 135: { float jv=native_sin(zx*ma)*native_sin(zy*mb); aux.color+=fabs(jv)*mc; break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_136)
 					case 136: { aux.color+=(float)i/fmax(1.0f,ma)*mb; break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_137)
 					case 137: { aux.color+=native_log(fmax(1e-21f,aux.DE))*ma; break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_138)
 					case 138: { float spd=native_sqrt((z.x-zx)*(z.x-zx)+(z.y-zy)*(z.y-zy)+(z.z-zz2)*(z.z-zz2)); aux.color+=spd*ma; break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_139)
 					case 139: { aux.color+=r*ma*0.01f; break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_140)
 					case 140: { float th=atan2(zy,zx); aux.color+=th*ma; break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_141)
 					case 141: { aux.color+=r*ma; break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_142)
 					case 142: { float p=fmax(0.01f,ma); float cx2=native_floor(zx/p),cy2=native_floor(zy/p),cz2=native_floor(zz2/p); float h=((native_sin(cx2*12.9898f+cy2*78.233f+cz2*37.719f)*43758.5453f) - native_floor(native_sin(cx2*12.9898f+cy2*78.233f+cz2*37.719f)*43758.5453f)); aux.color+=h*mb; break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_143)
 					case 143: { aux.color+=native_sin(i*ma+mb)*mc; break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_144)
 					case 144: { aux.color=0.9f*aux.color+0.1f*ma*r; break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_145)
 					case 145: { float ns=native_sin(zx*ma+zy*mb+zz2*mc)*md; aux.color+=ns; break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_146)
-					case 146: { float cl=in.point.Length(); aux.color+=cl*ma; break; }
+					case 146: { float cl=length(pointTransformed); aux.color+=cl*ma; break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_147)
 					case 147: { aux.color+=native_sqrt(zx*zx+zy*zy)*ma; break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_148)
 					case 148: { float fc=fabs(z.x-zx)*0.3f+r*0.3f+fabs(atan2(zy,zx))*0.4f; aux.color+=fc*ma; break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_149)
 					case 149: { float ns=native_sin(zx*ma+zy*mb)*native_cos(zz2*mc+i*md); aux.color+=fabs(ns)*me; break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_150)
 					case 150: { float jv=native_sin(zx*ma)*native_sin(zy*mb)*native_sin(zz2*mc); aux.color+=fabs(jv)*md; break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_151)
 					case 151: { float eps=ma*0.001f; float dx=(native_sqrt((zx+eps)*(zx+eps)+zy*zy+zz2*zz2)-native_sqrt((zx-eps)*(zx-eps)+zy*zy+zz2*zz2))/(2.0f*eps); aux.DE=fmax(1e-21f,fabs(dx)*aux.DE); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_152)
 					case 152: { float de_num=r*0.5f; float de_safe=fmin(aux.DE,de_num); aux.DE=de_safe; break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_153)
 					case 153: { aux.DE=0.9f*aux.DE+0.1f*r*ma; break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_154)
 					case 154: { float prev=aux.DE; aux.DE=prev+0.5f*(prev-ma); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_155)
 					case 155: { float spd=r*0.01f; aux.DE=aux.DE*(1.0f+0.5f*spd); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_156)
 					case 156: { float tr=ma; aux.DE=fmin(aux.DE,tr); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_157)
 					case 157: { float j11=1.0f+ma*native_cos(zx),j22=1.0f+mb*native_cos(zy),j33=1.0f+mc*native_cos(zz2); aux.DE*=fmax(fabs(j11),fmax(fabs(j22),fabs(j33))); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_158)
 					case 158: { float h=ma*native_sin(zx)*native_sin(zy)*native_sin(zz2); aux.DE*=(1.0f+h*0.5f); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_159)
 					case 159: { aux.DE=native_log(fmax(1e-21f,aux.DE))*ma+mb; break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_160)
 					case 160: { aux.DE=(native_exp(fmin(10.0f,aux.DE))-1.0f)*ma; break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_161)
 					case 161: { float p=ma; aux.DE=native_pow(fmax(1e-21f,aux.DE),p); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_162)
 					case 162: { float k=ma,de0=mb; aux.DE=1.0f/(1.0f+native_exp(-k*(aux.DE-de0))); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_163)
 					case 163: { float de0=ma,sg=mb; aux.DE=native_exp(-(aux.DE-de0)*(aux.DE-de0)/(sg*sg+1e-21f)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_164)
 					case 164: { float th2=ma; aux.DE=(aux.DE>th2)?mb:mc; break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_165)
 					case 165: { float b1=ma,d1=mb,b2=mc,d2=md; aux.DE=(aux.DE<b1)?d1:((aux.DE<b2)?d2:aux.DE); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_166)
 					case 166: { float ns=native_sin(zx*ma+zy*mb+zz2*mc)*md; aux.DE+=ns; aux.DE=fmax(1e-21f,aux.DE); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_167)
 					case 167: { float jv=fabs(native_sin(zx*ma)*native_sin(zy*mb)); aux.DE*=(1.0f+0.1f*jv); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_168)
 					case 168: { aux.DE*=(1.0f+0.1f*native_sin(i*ma)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_169)
 					case 169: { aux.DE=0.9f*aux.DE+0.1f*ma; break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_170)
 					case 170: { float ns=native_sin(zx*ma+zy*mb)*native_cos(zz2*mc+i*md); aux.DE*=(1.0f+me*ns); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_171)
 					case 171: { float fn=native_sin(zx*ma*10.0f)*native_sin(zy*mb*10.0f)*native_sin(zz2*mc*10.0f); aux.DE*=(1.0f+0.1f*fn); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_172)
 					case 172: { float spd=r*0.01f; aux.DE/=(1.0f+spd); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_173)
 					case 173: { aux.DE*=fabs(mf); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_174)
 					case 174: { if(fabs(zx)>ma) z.x=copysign(ma*2.0f,zx)-zx; float rr2=z.x*z.x+z.y*z.y+z.z*z.z; if(rr2<mb*mb) z*=mc*mc/(rr2+1e-21f); aux.DE*=fabs(mf); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_175)
 					case 175: { float sc=ma+mb*native_sin(i*mc); z*=sc; if(fabs(z.x)>md) z.x=copysign(md*2.0f,z.x)-z.x; aux.DE*=fabs(sc); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_176)
 					case 176: { float th=ma*M_PI_F/180.0f; float cs=native_cos(th),sn=native_sin(th); z.x=zx*cs-zy*sn; z.y=zx*sn+zy*cs; if(fabs(z.x)>mb) z.x=copysign(mb*2.0f,z.x)-z.x; aux.DE*=fabs(mf); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_177)
 					case 177: { if(fabs(zx)>ma) z.x=copysign(ma*2.0f,zx)-zx; if(fabs(zy)>ma) z.y=copysign(ma*2.0f,zy)-zy; if(fabs(zz2)>ma) z.z=copysign(ma*2.0f,zz2)-zz2; float rr2=z.x*z.x+z.y*z.y+z.z*z.z; float fR2=mb; if(rr2<mc) z*=fR2/mc; else if(rr2<fR2) z*=fR2/rr2; z*=md; z.x+=me; z.y+=mff; z.z+=mg; aux.DE*=fabs(md); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_178)
 					case 178: { float th=i*2.39996322973f; float cs=native_cos(th),sn=native_sin(th); z.x=zx*cs-zy*sn; z.y=zx*sn+zy*cs; if(fabs(z.x)>ma) z.x=copysign(ma*2.0f,z.x)-z.x; z*=mb; aux.DE*=fabs(mb); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_179)
 					case 179: { float rxy=native_sqrt(zx*zx+zy*zy); if(rxy>ma){ float th=atan2(zy,zx); z.x=(ma*2.0f-rxy)*native_cos(th); z.y=(ma*2.0f-rxy)*native_sin(th); } float rr2=z.x*z.x+z.y*z.y+z.z*z.z; if(rr2<mb) z*=mc/rr2; aux.DE*=fabs(mf); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_180)
 					case 180: { z.x+=ma*native_sin(mb*zy); z.y+=mc*native_sin(md*zz2); z.z+=me*native_sin(mff*zx); aux.DE*=fabs(mf)*(1.0f+fabs(ma*mb)+fabs(mc*md)+fabs(me*mff)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_181)
 					case 181: { if(fabs(zx)>ma) z.x=copysign(ma*2.0f,zx)-zx; if(fabs(zy)>ma) z.y=copysign(ma*2.0f,zy)-zy; if(fabs(zz2)>ma) z.z=copysign(ma*2.0f,zz2)-zz2; aux.color+=mb*fabs(z.x-zx); aux.DE*=fabs(mf); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_182)
 					case 182: { float rr2=rr; float mR2=ma*ma; float fR2=mb*mb; if(rr2<mR2){ z*=fR2/mR2; aux.DE*=fR2/mR2; } else if(rr2<fR2){ z*=fR2/rr2; aux.DE*=fR2/rr2; } aux.color+=mc*native_log(fmax(1e-21f,rr2/(mR2+1e-21f))); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_183)
 					case 183: { float sc=ma; z*=sc; aux.DE*=fabs(sc); z.x+=mb; z.y+=mc; z.z+=md; float th=me*M_PI_F/180.0f; float cs=native_cos(th),sn=native_sin(th); float nx=z.x*cs-z.y*sn; z.y=z.x*sn+z.y*cs; z.x=nx; break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_184)
 					case 184: { float lt=ma*(1.0f+mb*r/fmax(1e-10f,native_sqrt(rr))); if(fabs(zx)>lt) z.x=copysign(lt*2.0f,zx)-zx; if(fabs(zy)>lt) z.y=copysign(lt*2.0f,zy)-zy; if(fabs(zz2)>lt) z.z=copysign(lt*2.0f,zz2)-zz2; aux.DE*=fabs(mf); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_185)
 					case 185: { float mR2=ma*ma; float fR2=mb*mb; float sm=mc; float t=1.0f/(1.0f+native_exp(-sm*(rr-mR2))); float m2=fR2/fmax(1e-21f,rr); float sf=(1.0f-t)*m2+t; z*=sf; aux.DE*=sf; z*=md; z.x+=me; aux.DE*=fabs(md); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_186)
 					case 186: { float N=fmax(2.0f,ma); float th=atan2(zy,zx); float sector=2.0f*M_PI_F/N; th=fmod(th+sector*0.5f+100.0f*sector,sector)-sector*0.5f; float rxy=native_sqrt(zx*zx+zy*zy); z.x=rxy*native_cos(th); z.y=rxy*native_sin(th); if(fabs(z.x)>mb) z.x=copysign(mb*2.0f,z.x)-z.x; aux.DE*=fabs(mf); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_187)
 					case 187: { z.x=fabs(zx); z.y=fabs(zy); z.z=fabs(zz2); if(fabs(z.x)>ma) z.x=ma*2.0f-z.x; if(fabs(z.y)>ma) z.y=ma*2.0f-z.y; if(fabs(z.z)>ma) z.z=ma*2.0f-z.z; aux.DE*=fabs(mf); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_188)
 					case 188: { if(fabs(zx)>ma) z.x=copysign(ma*2.0f,zx)-zx; if(fabs(zy)>ma) z.y=copysign(ma*2.0f,zy)-zy; if(fabs(zz2)>ma) z.z=copysign(ma*2.0f,zz2)-zz2; float rr2=z.x*z.x+z.y*z.y+z.z*z.z; if(rr2<mb) z*=mc/rr2; else if(rr2<mc) z*=mc/rr2; float th=md*M_PI_F/180.0f; float cs=native_cos(th),sn=native_sin(th); float nx=z.x*cs-z.y*sn; z.y=z.x*sn+z.y*cs; z.x=nx; z*=me; z.x+=mff; aux.DE*=fabs(me); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_189)
 					case 189: { float rxy=native_sqrt(zx*zx+zy*zy); float th=atan2(zy,zx)+ma*native_sin(mb*zz2); z.x=rxy*native_cos(th); z.y=rxy*native_sin(th); if(fabs(z.x)>mc) z.x=copysign(mc*2.0f,z.x)-z.x; aux.DE*=fabs(mf)*(1.0f+fabs(ma*mb)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_190)
 					case 190: { float pw=ma; float rp=native_pow(fmax(1e-10f,r),pw-1.0f); float th=atan2(zy,zx)*pw; float ph=native_asin(zz2/fmax(1e-10f,r))*pw; z.x=rp*native_cos(ph)*native_cos(th); z.y=rp*native_cos(ph)*native_sin(th); z.z=rp*native_sin(ph); aux.DE*=pw*rp; break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_191)
 					case 191: { z.x+=ma*native_sin(mb*i)*native_cos(mc*zy); z.y+=md*native_cos(me*i)*native_sin(mff*zx); z.z+=mg*native_sin(mh*i); aux.DE*=fabs(mf); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_192)
 					case 192: { float sc=mf; z*=sc; float lt=ma; if(fabs(z.x)>lt) z.x=copysign(lt*2.0f,z.x)-z.x; if(fabs(z.y)>lt) z.y=copysign(lt*2.0f,z.y)-z.y; if(fabs(z.z)>lt) z.z=copysign(lt*2.0f,z.z)-z.z; float rr2=z.x*z.x+z.y*z.y+z.z*z.z; if(rr2<mb) z*=mc/rr2; aux.DE*=fabs(sc); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_193)
 					case 193: { float p=fmax(0.01f,ma); z.x=fmod(zx+p*0.5f,p)-p*0.5f; z.y=fmod(zy+p*0.5f,p)-p*0.5f; z.z=fmod(zz2+p*0.5f,p)-p*0.5f; if(fabs(z.x)>mb) z.x=copysign(mb*2.0f,z.x)-z.x; aux.DE*=fabs(mf)/fmax(0.01f,p); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_194)
 					case 194: { float ex=native_exp(-ma*rr); z*=(1.0f+mb*ex); aux.DE*=(1.0f+mb*ex); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_195)
 					case 195: { float sg=1.0f/(1.0f+native_exp(-ma*(r-mb))); z*=(1.0f+mc*sg); aux.DE*=(1.0f+mc*sg); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_196)
 					case 196: { z.x+=ma*native_sin(mb*zx)*native_cos(mc*zy); z.y+=md*native_cos(me*zy)*native_sin(mff*zz2); z.z+=mg*native_sin(mh*zz2)*native_cos(ma*zx); aux.DE*=fabs(mf); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_197)
 					case 197: { float th1=ma*M_PI_F/180.0f+mb*native_sin(i*mc); float cs1=native_cos(th1),sn1=native_sin(th1); z.x=zx*cs1-zy*sn1; z.y=zx*sn1+zy*cs1; if(fabs(z.x)>md) z.x=copysign(md*2.0f,z.x)-z.x; z*=me; aux.DE*=fabs(me); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_198)
 					case 198: { float rr2=rr; float fR2=ma*ma; if(rr2<fR2){ float m2=fR2/fmax(1e-21f,rr2); z*=m2; aux.DE*=m2; } float th=mb*M_PI_F/180.0f; float cs=native_cos(th),sn=native_sin(th); float nx=z.x*cs-z.y*sn; z.y=z.x*sn+z.y*cs; z.x=nx; z*=mc; z.x+=md; aux.DE*=fabs(mc); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_199)
 					case 199: { float lt=ma+mb*native_sin(mc*i)*native_cos(md*r); if(fabs(zx)>lt) z.x=copysign(lt*2.0f,zx)-zx; if(fabs(zy)>lt) z.y=copysign(lt*2.0f,zy)-zy; if(fabs(zz2)>lt) z.z=copysign(lt*2.0f,zz2)-zz2; float rr2=z.x*z.x+z.y*z.y+z.z*z.z; if(rr2<me*me) z*=mff*mff/(rr2+1e-21f); z*=mg; aux.DE*=fabs(mg); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MBMATHTYPE_200)
 					case 200: { if(fabs(zx)>ma) z.x=copysign(ma*2.0f,zx)-zx; if(fabs(zy)>ma) z.y=copysign(ma*2.0f,zy)-zy; if(fabs(zz2)>ma) z.z=copysign(ma*2.0f,zz2)-zz2; float rr2=z.x*z.x+z.y*z.y+z.z*z.z; float fR2=mb*mb; float mR2=mc*mc; if(rr2<mR2) z*=fR2/mR2; else if(rr2<fR2) z*=fR2/rr2; z*=md; z.x+=me; z.y+=mff; z.z+=mg; float th=mh*M_PI_F/180.0f; float cs=native_cos(th),sn=native_sin(th); float nx=z.x*cs-z.y*sn; z.y=z.x*sn+z.y*cs; z.x=nx; aux.DE*=fabs(md); break; }
+#endif
 
 					default: break;
 #endif
@@ -5003,215 +5313,285 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_30)
 						case 30: { { float ph2=atan2(zy,zx), th=acos(zz2/r), v=0; for(int o=0;o<4;o++){float f=wfq*pow(2.0,o); v+=native_sin(f*th+wph)*native_cos(f*ph2)/pow(2.0,o);} float d=wf*wam*v; z.x+=d*native_sin(th)*native_cos(ph2); z.y+=d*native_sin(th)*native_sin(ph2); z.z+=d*native_cos(th); aux.DE*=(1.0+fabs(wf*wam*wfq*4.0)); } break; }
 #endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_31)
 						case 31: { z.x += wf*wam*(native_cos(wfq*zy+wph)-native_cos(wfq*zz2+wph)); z.y += wf*wam*(native_cos(wfq*zz2+wph)-native_cos(wfq*zx+wph)); z.z += wf*wam*(native_cos(wfq*zx+wph)-native_cos(wfq*zy+wph)); aux.DE *= (1.0f + 3.0f*fabs(wf*wam*wfq)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_32)
 						case 32: { { float cx=-wfq*native_cos(wfq*zy+wph); float cy=-wfq*native_cos(wfq*zz2+wph); float cz=-wfq*native_cos(wfq*zx+wph); z.x+=wf*wam*(cy-cz); z.y+=wf*wam*(cz-cx); z.z+=wf*wam*(cx-cy); aux.DE*=(1.0f+3.0f*fabs(wf*wam*wfq)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_33)
 						case 33: { z.x += wf*wam*native_sin(wfq*zy+wph)*native_sin(wa*zz2); z.y += -wf*wam*native_sin(wfq*zx+wph)*native_sin(wa*zz2); aux.DE *= (1.0f + 2.0f*fabs(wf*wam*wfq)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_34)
 						case 34: { z.x += wf*wam*native_sin(wfq*zz2+wph); z.z += -wf*wam*native_sin(wfq*zx+wph); aux.DE *= (1.0f + 2.0f*fabs(wf*wam*wfq)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_35)
 						case 35: { z.y += wf*wam*native_sin(wfq*zx+wph); z.x += -wf*wam*native_sin(wfq*zy+wph); aux.DE *= (1.0f + 2.0f*fabs(wf*wam*wfq)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_36)
 						case 36: { { float dx=wf*wam*wfq*native_cos(wfq*zy+wph); float dy=wf*wam*wa*native_cos(wa*zz2+wph); float dz=wf*wam*wfq*native_cos(wfq*zx+wph); z.x+=dy-dz; z.y+=dz-dx; z.z+=dx-dy; aux.DE*=(1.0f+3.0f*fabs(wf*wam*wfq)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_37)
 						case 37: { { float psi=wf*wam*native_sin(wfq*zx+wph)*native_cos(wa*zy)*native_sin(wb*zz2); z.x+=wf*wam*wa*native_sin(wfq*zx)*native_cos(wa*zy); z.y+=-wf*wam*wfq*native_cos(wfq*zx)*native_sin(wa*zy); aux.DE*=(1.0f+2.0f*fabs(wf*wam*wfq)); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_38)
 						case 38: { { float u=wf*wam*native_sin(wfq*r+wph); z.x+=u*(-zy/r); z.y+=u*(zx/r); aux.DE*=(1.0f+fabs(wf*wam*wfq)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_39)
 						case 39: { { float u=wf*wam*native_sin(wfq*zz2+wph); z.x+=u*(-zy/(native_sqrt(zx*zx+zy*zy)+1e-21f)); z.y+=u*(zx/(native_sqrt(zx*zx+zy*zy)+1e-21f)); aux.DE*=(1.0f+fabs(wf*wam*wfq)); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_40)
 						case 40: { { float ph2=atan2(zy,zx); float u=wf*wam*native_sin(wfq*ph2+wph); z.z+=u; aux.DE*=(1.0f+fabs(wf*wam*wfq)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_41)
 						case 41: { { float th=wf*wfq*zz2+wph; float cs=native_cos(th),sn=native_sin(th); float nx=zx*cs-zy*sn; z.y=zx*sn+zy*cs; z.x=nx; aux.DE*=(1.0f+fabs(wf*wfq*wam)); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_42)
 						case 42: { { float th=wf*wfq*zx+wph; float cs=native_cos(th),sn=native_sin(th); float ny=zy*cs-zz2*sn; z.z=zy*sn+zz2*cs; z.y=ny; aux.DE*=(1.0f+fabs(wf*wfq*wam)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_43)
 						case 43: { { float th=wf*wfq*zy+wph; float cs=native_cos(th),sn=native_sin(th); float nx=zx*cs-zz2*sn; z.z=zx*sn+zz2*cs; z.x=nx; aux.DE*=(1.0f+fabs(wf*wfq*wam)); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_44)
 						case 44: { { float th=wf*wfq*r+wph; float cs=native_cos(th),sn=native_sin(th); float nx=zx*cs-zy*sn; z.y=zx*sn+zy*cs; z.x=nx; aux.DE*=(1.0f+fabs(wf*wfq*wam)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_45)
 						case 45: { { float a1=wf*wa*native_sin(wfq*zz2+wph); float cs=native_cos(a1),sn=native_sin(a1); float nx=zx*cs-zy*sn; z.y=zx*sn+zy*cs; z.x=nx; float a2=wf*wb*native_sin(wfq*zx+wph); cs=native_cos(a2); sn=native_sin(a2); float ny=zy*cs-zz2*sn; z.z=zy*sn+zz2*cs; z.y=ny; aux.DE*=(1.0f+fabs(wf*(wa+wb)*wfq)); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_46)
 						case 46: { { float ph2=atan2(zy,zx)+wf*wam*native_sin(wfq*zz2+wph); float rxy=native_sqrt(zx*zx+zy*zy); z.x=rxy*native_cos(ph2); z.y=rxy*native_sin(ph2); aux.DE*=(1.0f+fabs(wf*wam*wfq)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_47)
 						case 47: { { float th=native_acos(zz2/r)+wf*wam*native_sin(wfq*r+wph); float ph2=atan2(zy,zx); z.x=r*native_sin(th)*native_cos(ph2); z.y=r*native_sin(th)*native_sin(ph2); z.z=r*native_cos(th); aux.DE*=(1.0f+fabs(wf*wam*wfq)); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_48)
 						case 48: { { float a=wf*wam*zz2*wfq; float cs=native_cos(a),sn=native_sin(a); float nx=zx*cs-zy*sn; z.y=zx*sn+zy*cs; z.x=nx; z.z+=wf*wb*native_sin(wfq*r+wph); aux.DE*=(1.0f+fabs(wf*(wam+wb)*wfq)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_49)
 						case 49: { { float a=wf*wam*native_sin(wfq*zz2+wph); z.x=zx*native_cos(a)-zy*native_sin(a)+wf*wb*native_sin(wfq*zy); z.y=zx*native_sin(a)+zy*native_cos(a)+wf*wc*native_cos(wfq*zz2); z.z+=wf*wd*native_sin(wfq*zx+wph); aux.DE*=(1.0f+fabs(wf*(wam+wb+wc+wd)*wfq/4.0f)); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_50)
 						case 50: { { float t=wf*wfq*native_log(r+1e-21f)+wph; float cs=native_cos(t),sn=native_sin(t); float nx=zx*cs-zy*sn; z.y=zx*sn+zy*cs; z.x=nx; aux.DE*=(1.0f+fabs(wf*wfq/(r+1e-21f))); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_51)
 						case 51: { { float d=wf*wam*native_sin(wfq*r+wph); z*=(1.0f+d/r); aux.DE*=(1.0f+fabs(d/r)); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_52)
 						case 52: { { float d=wf*wam/(1.0f+native_exp(-wfq*(r-wa))); z*=(1.0f+d); aux.DE*=(1.0f+fabs(d)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_53)
 						case 53: { { float d=wf*wam*native_exp(-wfq*r*r); z*=(1.0f+d); aux.DE*=(1.0f+fabs(d)); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_54)
 						case 54: { { float d=wf*wam*native_exp(-wfq*fabs(r-wa)); z*=(1.0f+d); aux.DE*=(1.0f+fabs(d)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_55)
 						case 55: { { float d=wf*wam*(native_sin(wfq*r+wph)+native_sin(wa*r+wb))*0.5f; z*=(1.0f+d/r); aux.DE*=(1.0f+fabs(d/r)); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_56)
 						case 56: { { float rxy=native_sqrt(zx*zx+zy*zy+1e-21f); float d=wf*wam*native_sin(wfq*rxy+wph); z.x+=d*zx/rxy; z.y+=d*zy/rxy; aux.DE*=(1.0f+fabs(wf*wam*wfq)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_57)
 						case 57: { { float d=wf*wam*native_sin(wfq*zz2+wph)*native_exp(-wa*native_sqrt(zx*zx+zy*zy)); z.x+=d*zx/r; z.y+=d*zy/r; z.z+=d*zz2/r; aux.DE*=(1.0f+fabs(d)); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_58)
 						case 58: { { float ph2=atan2(zy,zx); float th=native_acos(zz2/r); float d=wf*wam*native_sin(wfq*ph2*wa+wph)*native_sin(wb*th); z.x+=d*native_sin(th)*native_cos(ph2); z.y+=d*native_sin(th)*native_sin(ph2); z.z+=d*native_cos(th); aux.DE*=(1.0f+fabs(wf*wam)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_59)
 						case 59: { { float nr=r+wf*wam*native_sin(wfq*r+wph); z*=(nr/r); aux.DE*=(nr/r); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_60)
 						case 60: { { float f2=1.0f+wf*wam*native_sin(wfq*r+wph)/(r+1e-21f); z*=f2; aux.DE*=fabs(f2); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_61)
 						case 61: { z.x += wf*wam*native_sin(wfq*native_floor(zy*wa)/wa + wph); aux.DE *= (1.0f + fabs(wf*wam*wfq)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_62)
 						case 62: { z.y += wf*wam*native_sin(wfq*native_floor(zz2*wa)/wa + wph); aux.DE *= (1.0f + fabs(wf*wam*wfq)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_63)
 						case 63: { z.z += wf*wam*native_sin(wfq*native_floor(zx*wa)/wa + wph); aux.DE *= (1.0f + fabs(wf*wam*wfq)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_64)
 						case 64: { { float gx=native_floor(zx*wa+0.5f)/wa; float gy=native_floor(zy*wa+0.5f)/wa; z.x+=wf*wam*native_sin(wfq*gy+wph); z.y+=wf*wam*native_cos(wfq*gx+wph); aux.DE*=(1.0f+2.0f*fabs(wf*wam*wfq)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_65)
 						case 65: { { float fx=zx-native_floor(zx*wa)/wa; float fy=zy-native_floor(zy*wa)/wa; z.x+=wf*wam*native_sin(wfq*fx*M_PI_F*2.0f+wph); z.y+=wf*wam*native_sin(wfq*fy*M_PI_F*2.0f+wph); aux.DE*=(1.0f+2.0f*fabs(wf*wam*wfq)); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_66)
 						case 66: { { float d=zx*wa-native_floor(zx*wa+0.5f); z.x+=wf*wam*d*native_sin(wfq*zy+wph); aux.DE*=(1.0f+fabs(wf*wam*wfq)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_67)
 						case 67: { { float d=native_sin(wfq*zx+wph)*native_sin(wa*zy+wb)*native_sin(wc*zz2+wd); z.x+=wf*wam*d; z.y+=wf*wam*d; z.z+=wf*wam*d; aux.DE*=(1.0f+3.0f*fabs(wf*wam)); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_68)
 						case 68: { { float d=wf*wam*native_sin(wfq*(zx+zy+zz2)+wph); z.x+=d; z.y+=d; z.z+=d; aux.DE*=(1.0f+3.0f*fabs(wf*wam*wfq)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_69)
 						case 69: { { float d=wf*wam*native_sin(wfq*(zx*zy+zy*zz2+zz2*zx)/(r*r+1e-21f)+wph); z.x+=d; z.y+=d; z.z+=d; aux.DE*=(1.0f+3.0f*fabs(wf*wam*wfq)); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_70)
 						case 70: { { float v=wf*wam*native_cos(wfq*zx+wph)*native_cos(wa*zy+wb)*native_cos(wc*zz2+wd); z.x+=v*native_sin(wfq*zy); z.y+=v*native_sin(wa*zz2); z.z+=v*native_sin(wc*zx); aux.DE*=(1.0f+3.0f*fabs(wf*wam)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_71)
 						case 71: { { float d=wf*wam*native_exp(-wfq*(zx*zx+zy*zy)); z.z+=d; aux.DE*=(1.0f+fabs(d)); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_72)
 						case 72: { { float d=wf*wam*native_exp(-wfq*r)*native_sin(wa*r+wph); z.x+=d*zx/r; z.y+=d*zy/r; z.z+=d*zz2/r; aux.DE*=(1.0f+fabs(d)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_73)
 						case 73: { { float d=wf*wam*native_exp(-wfq*fabs(zz2))*native_sin(wa*native_sqrt(zx*zx+zy*zy)+wph); z.z+=d; aux.DE*=(1.0f+fabs(d)); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_74)
 						case 74: { { float d=wf*wam/(1.0f+wfq*(zx*zx+zy*zy+zz2*zz2)); z.x+=d*native_sin(wa*zy+wph); z.y+=d*native_cos(wa*zz2+wph); aux.DE*=(1.0f+2.0f*fabs(d*wa)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_75)
 						case 75: { { z *= (1.0f + wf*wam*native_pow(fabs(native_sin(wfq*r+wph)), wa)); aux.DE *= (1.0f + fabs(wf*wam)); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_76)
 						case 76: { { float p=wf*wam*native_pow(r+1e-21f, wa-1.0f)*native_sin(wfq*r+wph); z.x+=p*zx; z.y+=p*zy; z.z+=p*zz2; aux.DE*=(1.0f+fabs(p*r)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_77)
 						case 77: { { float d=wf*wam*tanh(wfq*(r-wa)); z*=(1.0f+d); aux.DE*=(1.0f+fabs(d)); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_78)
 						case 78: { { float d=wf*wam*native_log(1.0f+wfq*r)*native_sin(wa*r+wph)/(r+1e-21f); z.x+=d*zx; z.y+=d*zy; z.z+=d*zz2; aux.DE*=(1.0f+fabs(d*r)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_79)
 						case 79: { { float d=wf*wam*native_sin(wfq*native_log(r+1e-21f)+wph); z*=(1.0f+d/r); aux.DE*=(1.0f+fabs(d/r)); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_80)
 						case 80: { { float sg=1.0f/(1.0f+native_exp(-wfq*(r-wa))); z*=(1.0f+wf*wam*(2.0f*sg-1.0f)); aux.DE*=(1.0f+fabs(wf*wam*(2.0f*sg-1.0f))); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_81)
 						case 81: { { float rxy=native_sqrt(zx*zx+zy*zy+1e-21f); float d=wf*wam*native_sin(wfq*rxy+wph); z.z+=d; aux.DE*=(1.0f+fabs(wf*wam*wfq)); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_82)
 						case 82: { { float rxy=native_sqrt(zx*zx+zy*zy+1e-21f); float d=wf*wam*native_sin(wfq*zz2+wph); z.x+=d*zx/rxy; z.y+=d*zy/rxy; aux.DE*=(1.0f+fabs(wf*wam*wfq)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_83)
 						case 83: { { float rxy=native_sqrt(zx*zx+zy*zy+1e-21f); float rt=rxy-wa; float dt=native_sqrt(rt*rt+zz2*zz2); float d=wf*wam*native_sin(wfq*dt+wph); z.x+=d*(rt/dt)*(zx/rxy); z.y+=d*(rt/dt)*(zy/rxy); z.z+=d*(zz2/dt); aux.DE*=(1.0f+fabs(wf*wam*wfq)); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_84)
 						case 84: { { float ph2=atan2(zy,zx); float d=wf*wam*native_sin(wfq*ph2*wa+wph); z.z+=d; aux.DE*=(1.0f+fabs(wf*wam*wfq)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_85)
 						case 85: { { float ph2=atan2(zy,zx); float rxy=native_sqrt(zx*zx+zy*zy+1e-21f); z.x+=-wf*wam*native_sin(ph2)*native_sin(wfq*zz2+wph); z.y+=wf*wam*native_cos(ph2)*native_sin(wfq*zz2+wph); aux.DE*=(1.0f+fabs(wf*wam*wfq)); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_86)
 						case 86: { { float rxy=native_sqrt(zx*zx+zy*zy+1e-21f); float d=wf*wam*native_sin(wfq*rxy+wph)*native_cos(wa*zz2); z.x+=d*zx/rxy; z.y+=d*zy/rxy; z.z+=wf*wam*native_cos(wfq*rxy+wph)*native_sin(wa*zz2); aux.DE*=(1.0f+2.0f*fabs(wf*wam*wfq)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_87)
 						case 87: { { float rxy=native_sqrt(zx*zx+zy*zy+1e-21f); float ph2=atan2(zy,zx)+wf*wam*native_sin(wfq*zz2+wph)/rxy; z.x=rxy*native_cos(ph2); z.y=rxy*native_sin(ph2); aux.DE*=(1.0f+fabs(wf*wam*wfq/rxy)); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_88)
 						case 88: { { float rxy=native_sqrt(zx*zx+zy*zy+1e-21f); float ph2=atan2(zy,zx); float nr=rxy+wf*wam*native_sin(wfq*zz2+wph)*native_sin(wa*ph2); z.x=nr*native_cos(ph2); z.y=nr*native_sin(ph2); aux.DE*=(1.0f+fabs(wf*wam*wfq)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_89)
 						case 89: { { float rxy=native_sqrt(zx*zx+zy*zy+1e-21f); z.z+=wf*wam*native_sin(wfq*rxy+wph)*native_cos(wa*atan2(zy,zx)); aux.DE*=(1.0f+fabs(wf*wam*wfq)); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_90)
 						case 90: { { float rxy=native_sqrt(zx*zx+zy*zy+1e-21f); float rt=rxy-wa; float ang=atan2(zz2,rt); float d=wf*wam*native_sin(wfq*ang+wph); z.x+=d*(zx/rxy); z.y+=d*(zy/rxy); aux.DE*=(1.0f+fabs(wf*wam*wfq)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_91)
 						case 91: { { float a=wf*wa; float b=wf*wb; z.x=zx+a*native_sin(wfq*zy); z.y=zy+b*native_sin(wfq*zx); aux.DE*=(1.0f+fabs((a+b)*wfq)); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_92)
 						case 92: { { float k=wf*wam; z.x=zx+k*zy; z.y=zy+k*native_sin(wfq*zx+wph); aux.DE*=(1.0f+fabs(k*wfq)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_93)
 						case 93: { { z.x=r*native_cos(wfq*zy/r+wph); z.y=r*native_sin(wfq*zy/r+wph); aux.DE*=(1.0f+fabs(wf*wam*wfq/r)); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_94)
 						case 94: { { float nr=r+wf*wam*native_sin(wfq*atan2(zy,zx)*wa+wph); z*=(nr/r); aux.DE*=(nr/r); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_95)
 						case 95: { { float th=wf*wam/(r*r+1e-10f); float cs=native_cos(th),sn=native_sin(th); float nx=zx*cs-zy*sn; z.y=zx*sn+zy*cs; z.x=nx; aux.DE*=(1.0f+fabs(wf*wam*2.0f*r/((r*r+1e-10f)*(r*r+1e-10f)))); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_96)
 						case 96: { { float denom=zx*zx+zy*zy+1e-21f; z.x=wf*wam*zx/denom+wsc*native_sin(wfq*zy+wph); z.y=-wf*wam*zy/denom+wsc*native_cos(wfq*zx+wph); aux.DE*=(1.0f+fabs(wf*wam/denom)+fabs(wsc*wfq)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_97)
 						case 97: { { float a1=wfq; float a2=wa; z.x=zx*native_cos(a1*zy)-zy*native_sin(a1*zy)+wf*wam*native_sin(a2*zz2+wph); z.y=zx*native_sin(a1*zy)+zy*native_cos(a1*zy)+wf*wam*native_cos(a2*zz2+wph); aux.DE*=(1.0f+fabs(wf*wam*a1)+fabs(wf*wam*a2)); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_98)
 						case 98: { { float lx=wf*wam*native_sin(wfq*zy+wph)*(1.0f-native_exp(-wa*r)); float ly=wf*wb*native_sin(wfq*zz2+wph)*(1.0f-native_exp(-wa*r)); float lz=wf*wc*native_sin(wfq*zx+wph)*(1.0f-native_exp(-wa*r)); z.x+=lx; z.y+=ly; z.z+=lz; aux.DE*=(1.0f+fabs(wf*(wam+wb+wc)*wfq/3.0f)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_99)
 						case 99: { { float t=wfq*r+wph; float d=wf*wam*native_sin(t)*native_sin(wa*t); z.x+=d*zx/r; z.y+=d*zy/r; z.z+=d*zz2/r; aux.DE*=(1.0f+fabs(d)); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_WARPDISTTYPE_100)
 						case 100: { { float d=wf*wam*(native_sin(wfq*zx+wph)+native_sin(wa*zy+wb)+native_sin(wc*zz2+wd)); z*=(1.0f+d/(3.0f*r)); aux.DE*=(1.0f+fabs(d/(3.0f*r))); } break; }
+#endif
 
 					default: break;
 #endif
@@ -5319,215 +5699,285 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_30)
 						case 30: { { float n = fmax(2.0, sa); for(int k=0; k<(int)(n); k++) { float a = k * 2.0*M_PI_F/n, cs = native_cos(a), sn = native_sin(a), d = z.x*cs + z.y*sn; if(d < 0) { z.x -= 2.0*d*cs; z.y -= 2.0*d*sn; } } } break; }
 #endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_31)
 						case 31: { { z.x = fabs(z.x); z.y = fabs(z.y); if(z.y > z.x) { float t=z.x; z.x=z.y; z.y=t; } z.x -= sa; z.y -= sb; } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_32)
 						case 32: { { z.x = fabs(z.x); z.y = fabs(z.y); z.z = fabs(z.z); if(z.y > z.x) { float t=z.x; z.x=z.y; z.y=t; } if(z.z > z.x) { float t=z.x; z.x=z.z; z.z=t; } if(z.z > z.y) { float t=z.y; z.y=z.z; z.z=t; } z.x -= sa; z.y -= sb; z.z -= sc; } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_33)
 						case 33: { { z.x = fabs(z.x); z.y = fabs(z.y); z.z = fabs(z.z); if(z.x - z.y < 0) { float t=z.x; z.x=z.y; z.y=t; } if(z.x - z.z < 0) { float t=z.x; z.x=z.z; z.z=t; } if(z.y - z.z < 0) { float t=z.y; z.y=z.z; z.z=t; } z.x -= sa; z.y -= sb; z.z -= sc; float cs = native_cos(sang), sn = native_sin(sang); float nx = z.x*cs - z.y*sn; z.y = z.x*sn + z.y*cs; z.x = nx; } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_34)
 						case 34: { { z.x = fabs(z.x); z.y = fabs(z.y); float d = z.x*native_cos(sang) + z.y*native_sin(sang); if(d < 0) { z.x -= 2.0f*d*native_cos(sang); z.y -= 2.0f*d*native_sin(sang); } z.x -= sa; z.y -= sb; z.z -= 0; } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_35)
 						case 35: { { z.x = fabs(z.x); z.y = fabs(z.y); z.z = fabs(z.z); z.x -= sa; z.y -= sb; z.z -= sc; if(z.y > z.x) { float t=z.x; z.x=z.y; z.y=t; } if(z.z > z.x) { float t=z.x; z.x=z.z; z.z=t; } if(z.z > z.y) { float t=z.y; z.y=z.z; z.z=t; } } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_36)
 						case 36: { { float d = 2.0f*fmax(0.0f, z.x*native_cos(sang) + z.y*native_sin(sang)); z.x -= d*native_cos(sang); z.y -= d*native_sin(sang); z.x = fabs(z.x); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_37)
 						case 37: { { z.x = fabs(z.x); z.y = fabs(z.y); float a = sang; for(int k=0; k<3; k++) { float d = 2.0f*fmin(0.0f, z.x*native_cos(a) + z.y*native_sin(a)); z.x -= d*native_cos(a); z.y -= d*native_sin(a); a += M_PI_F/3.0f; } z.x -= sa; z.y -= sb; z.z -= 0; } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_38)
-						case 38: { { for(int k=0; k<int(fmax(1,sa)); k++) { z.x = fabs(z.x); z.y = fabs(z.y); z.z = fabs(z.z); z.x -= sb; z.y -= sc; z.z -= sd; if(z.y > z.x) { float t=z.x; z.x=z.y; z.y=t; } if(z.z > z.x) { float t=z.x; z.x=z.z; z.z=t; } if(z.z > z.y) { float t=z.y; z.y=z.z; z.z=t; } z *= sf; aux.DE *= fabs(sf); } } break; }
+						case 38: { { for(int k=0; k<(int)(fmax(1,sa)); k++) { z.x = fabs(z.x); z.y = fabs(z.y); z.z = fabs(z.z); z.x -= sb; z.y -= sc; z.z -= sd; if(z.y > z.x) { float t=z.x; z.x=z.y; z.y=t; } if(z.z > z.x) { float t=z.x; z.x=z.z; z.z=t; } if(z.z > z.y) { float t=z.y; z.y=z.z; z.z=t; } z *= sf; aux.DE *= fabs(sf); } } break; }
+#endif
 
-						case 39: { { for(int k=0; k<int(fmax(1,sa)); k++) { float cs = native_cos(sang+k*sb), sn = native_sin(sang+k*sb); float d = z.x*cs + z.y*sn; if(d < 0) { z.x -= 2.0f*d*cs; z.y -= 2.0f*d*sn; } z.x = fabs(z.x) - sc; z.y = fabs(z.y) - sd; } } break; }
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_39)
+						case 39: { { for(int k=0; k<(int)(fmax(1,sa)); k++) { float cs = native_cos(sang+k*sb), sn = native_sin(sang+k*sb); float d = z.x*cs + z.y*sn; if(d < 0) { z.x -= 2.0f*d*cs; z.y -= 2.0f*d*sn; } z.x = fabs(z.x) - sc; z.y = fabs(z.y) - sd; } } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_40)
 						case 40: { { z.x = fabs(z.x); z.y = fabs(z.y); z.z = fabs(z.z); z.x = z.x - sa*round(z.x/fmax(sa,1e-21f)); z.y = z.y - sb*round(z.y/fmax(sb,1e-21f)); z.z = z.z - sc*round(z.z/fmax(sc,1e-21f)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_41)
 						case 41: { { z.x = fabs(z.x); z.y = fabs(z.y); z.z = fabs(z.z); if(z.x - z.y < 0) { float t=z.x; z.x=z.y; z.y=t; } if(z.x - z.z < 0) { float t=z.x; z.x=z.z; z.z=t; } if(z.y - z.z < 0) { float t=z.y; z.y=z.z; z.z=t; } z *= sf; { float _cF=(sf-1.0f); z.x -= sa*_cF; z.y -= sb*_cF; z.z -= sc*_cF; }; aux.DE = aux.DE * fabs(sf) + 1.0f; } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_42)
 						case 42: { { if(z.x + z.y < 0) { float t=-z.y; z.y=-z.x; z.x=t; } if(z.x + z.z < 0) { float t=-z.z; z.z=-z.x; z.x=t; } if(z.y + z.z < 0) { float t=-z.z; z.z=-z.y; z.y=t; } z *= sf; { float _cF=(sf-1.0f); z.x -= sa*_cF; z.y -= sb*_cF; z.z -= sc*_cF; }; aux.DE = aux.DE * fabs(sf) + 1.0f; } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_43)
 						case 43: { { z.x = fabs(z.x); z.y = fabs(z.y); if(z.x - z.y < 0) { float t=z.x; z.x=z.y; z.y=t; } z.x -= sa; z *= sf; z.x += sa; aux.DE = aux.DE * fabs(sf) + 1.0f; } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_44)
 						case 44: { { z.x = fabs(z.x); z.y = fabs(z.y); z.z = fabs(z.z); if(z.x - z.y < 0) { float t=z.x; z.x=z.y; z.y=t; } if(z.x - z.z < 0) { float t=z.x; z.x=z.z; z.z=t; } if(z.y - z.z < 0) { float t=z.y; z.y=z.z; z.z=t; } z.z -= 0.5f*sc*(sf-1.0f)/sf; z.z = fabs(z.z); z.z += 0.5f*sc*(sf-1.0f)/sf; z *= sf; { float _cF=(sf-1.0f); z.x -= sa*_cF; z.y -= sb*_cF; z.z -= sc*_cF; }; aux.DE = aux.DE*fabs(sf)+1.0f; } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_45)
 						case 45: { { z.x = fabs(z.x); z.y = fabs(z.y); z.z = fabs(z.z); float t; if(z.x-z.y<0){t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0){t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0){t=z.y;z.y=z.z;z.z=t;} z *= sf; float _f45=(sf-1.0f)*sa; z.x -= _f45; z.y -= _f45; z.z -= _f45; aux.DE=aux.DE*fabs(sf)+1.0f; z.x=fabs(z.x); z.y=fabs(z.y); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_46)
 						case 46: { { z.x = fabs(z.x); z.y = fabs(z.y); z.z = fabs(z.z); float d1 = z.x - z.y; float d2 = z.y - z.z; if(d1 < 0){float t=z.x;z.x=z.y;z.y=t;} if(d2 < 0){float t=z.y;z.y=z.z;z.z=t;} if(z.x-z.y < 0){float t=z.x;z.x=z.y;z.y=t;} z.x -= sa; z.y -= sb; z.z -= sc; z *= sf; z.x += sa; z.y += sb; z.z += sc; aux.DE = aux.DE*fabs(sf)+1.0f; } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_47)
 						case 47: { { z.x = sa - fabs(z.x - sa); z.y = sb - fabs(z.y - sb); z.z = sc - fabs(z.z - sc); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_48)
 						case 48: { { z.x = fabs(z.x); z.y = fabs(z.y); z.z = fabs(z.z); if(z.x>sa) z.x=2.0f*sa-z.x; if(z.y>sb) z.y=2.0f*sb-z.y; if(z.z>sc) z.z=2.0f*sc-z.z; } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_49)
 						case 49: { { float p=sa; z.x = z.x - p*native_floor(z.x/p+0.5f); z.y = z.y - p*native_floor(z.y/p+0.5f); z.z = z.z - p*native_floor(z.z/p+0.5f); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_50)
 						case 50: { { float px=sa, py=sb; z.x = z.x - px*native_floor(z.x/px+0.5f); z.y = z.y - py*native_floor(z.y/py+0.5f); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_51)
 						case 51: { { float ph2=atan2(zy,zx); float n=fmax(1.0f,sa); float s=2.0f*M_PI_F/n; ph2=fmod(ph2+10.0f*M_PI_F,s)-s*0.5f; float rxy=native_sqrt(zx*zx+zy*zy); z.x=rxy*native_cos(ph2); z.y=rxy*native_sin(ph2); z.z=fabs(z.z); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_52)
 						case 52: { { float ph2=atan2(zy,zx); float th=native_acos(zz2/r); float n=fmax(1.0f,sa); float sp=2.0f*M_PI_F/n; ph2=fmod(ph2+10.0f*M_PI_F,sp)-sp*0.5f; float m=fmax(1.0f,sb); float st=M_PI_F/m; th=fmod(th+10.0f*M_PI_F,st); z.x=r*native_sin(th)*native_cos(ph2); z.y=r*native_sin(th)*native_sin(ph2); z.z=r*native_cos(th); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_53)
 						case 53: { { float ph2=atan2(zy,zx)+sang; float rxy=native_sqrt(zx*zx+zy*zy); z.x=rxy*native_cos(ph2); z.y=rxy*native_sin(ph2); z.z=fabs(zz2); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_54)
 						case 54: { { float rxy=native_sqrt(zx*zx+zy*zy); if(rxy>sa) { float f=sa/rxy; z.x*=f; z.y*=f; } } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_55)
 						case 55: { { if(r>sa) z*=sa/r; } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_56)
 						case 56: { { if(r<sa) z*=sa*sa/(r*r); else if(r<sb) z*=sa*sa/(r*r); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_57)
 						case 57: { { float rr=r*r; if(rr<sa*sa) z*=sb*sb/(sa*sa); else if(rr<sb*sb) z*=sb*sb/rr; } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_58)
 						case 58: { { float th=native_acos(zz2/r); float n=fmax(1.0f,sa); float st=M_PI_F/n; th=fmod(th+10.0f*M_PI_F,st); z.x=r*native_sin(th)*native_cos(atan2(zy,zx)); z.y=r*native_sin(th)*native_sin(atan2(zy,zx)); z.z=r*native_cos(th); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_59)
 						case 59: { { float p=sa; z.x=z.x-p*round(z.x/p); z.y=z.y-p*round(z.y/p); z.z=z.z-p*round(z.z/p); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_60)
 						case 60: { { z.x=fabs(z.x)-sa; z.y=fabs(z.y)-sb; z.z=fabs(z.z)-sc; if(z.x<0) z.x=-z.x; if(z.y<0) z.y=-z.y; if(z.z<0) z.z=-z.z; } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_61)
 						case 61: { { float px=fmax(sa,0.01f); z.x=z.x-px*native_floor(z.x/px); z.y=fabs(z.y); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_62)
 						case 62: { { float px=fmax(sa,0.01f), py=fmax(sb,0.01f); z.x=z.x-px*native_floor(z.x/px); z.y=z.y-py*native_floor(z.y/py); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_63)
 						case 63: { { float px=fmax(sa,0.01f), py=fmax(sb,0.01f); z.x=z.x-px*native_floor(z.x/px); z.y=z.y-py*native_floor(z.y/py); z.x=fabs(z.x-px*0.5f); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_64)
 						case 64: { { float px=fmax(sa,0.01f), py=fmax(sb,0.01f); float ix=native_floor(z.x/px); z.x=z.x-px*ix; z.y=z.y-py*native_floor(z.y/py); if(fmod(ix,2.0f)>0.5f) z.x=px-z.x; } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_65)
 						case 65: { { float p=fmax(sa,0.01f); float a60=M_PI_F/3.0f; float ux=p, uy=0; float vx=p*native_cos(a60), vy=p*native_sin(a60); float det=ux*vy-uy*vx; float ix=native_floor((z.x*vy-z.y*vx)/det+0.5f); float iy=native_floor((z.y*ux-z.x*uy)/det+0.5f); z.x-=ix*ux+iy*vx; z.y-=ix*uy+iy*vy; } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_66)
 						case 66: { { float px=fmax(sa,0.01f), py=fmax(sb,0.01f), pz=fmax(sc,0.01f); z.x=z.x-px*native_floor(z.x/px); z.y=z.y-py*native_floor(z.y/py); z.z=z.z-pz*native_floor(z.z/pz); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_67)
 						case 67: { { float px=fmax(sa,0.01f), py=fmax(sb,0.01f), pz=fmax(sc,0.01f); z.x=z.x-px*round(z.x/px); z.y=z.y-py*round(z.y/py); z.z=z.z-pz*round(z.z/pz); z.x=fabs(z.x); z.y=fabs(z.y); z.z=fabs(z.z); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_68)
 						case 68: { { float p=fmax(sa,0.01f); z.x=z.x-p*round(z.x/p); z.y=z.y-p*round(z.y/p); z.z=z.z-p*round(z.z/p); float cs=native_cos(sang),sn=native_sin(sang); float nx=z.x*cs-z.y*sn; z.y=z.x*sn+z.y*cs; z.x=nx; } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_69)
 						case 69: { { float p=fmax(sa,0.01f); float ix=round(z.x/p); float iy=round(z.y/p); z.x-=ix*p; z.y-=iy*p; float a=sang*(ix+iy); float cs=native_cos(a),sn=native_sin(a); float nx=z.x*cs-z.y*sn; z.y=z.x*sn+z.y*cs; z.x=nx; } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_70)
 						case 70: { { float p=fmax(sa,0.01f); z.x=z.x-p*native_floor(z.x/p+0.5f); z.y=z.y-p*native_floor(z.y/p+0.5f); float cs=native_cos(sang),sn=native_sin(sang); if(z.x+z.y>0) { float nx=z.x*cs-z.y*sn; z.y=z.x*sn+z.y*cs; z.x=nx; } } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_71)
 						case 71: { if(z.x*z.y > 0) { float t=z.x; z.x=z.y; z.y=t; } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_72)
 						case 72: { if(z.x*z.y < 0) { z.x = fabs(z.x); z.y = fabs(z.y); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_73)
 						case 73: { if(r < sa) { z *= sf; aux.DE *= fabs(sf); } else { z.x = fabs(z.x); z.y = fabs(z.y); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_74)
-						case 74: { if(fmod(float(i), sa) < sb) { z.x = fabs(z.x); z.y = fabs(z.y); z.z = fabs(z.z); } break; }
+						case 74: { if(fmod((float)(i), sa) < sb) { z.x = fabs(z.x); z.y = fabs(z.y); z.z = fabs(z.z); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_75)
 						case 75: { { float d = z.x*native_cos(sang) + z.y*native_sin(sang); if(d < soff) { z.x -= 2.0f*(d-soff)*native_cos(sang); z.y -= 2.0f*(d-soff)*native_sin(sang); } } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_76)
 						case 76: { { float d1 = z.x*native_cos(sang)+z.y*native_sin(sang); if(d1<0){z.x-=2.0f*d1*native_cos(sang);z.y-=2.0f*d1*native_sin(sang);} float a2=sang+M_PI_F/fmax(1.0f,sa); float d2=z.x*native_cos(a2)+z.y*native_sin(a2); if(d2<0){z.x-=2.0f*d2*native_cos(a2);z.y-=2.0f*d2*native_sin(a2);} } break; }
+#endif
 
-						case 77: { { for(int k=0;k<int(fmax(1,sa));k++){ z.x=fabs(z.x)-sb; z.y=fabs(z.y)-sc; if(z.x<z.y){float t=z.x;z.x=z.y;z.y=t;} } } break; }
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_77)
+						case 77: { { for(int k=0;k<(int)(fmax(1,sa));k++){ z.x=fabs(z.x)-sb; z.y=fabs(z.y)-sc; if(z.x<z.y){float t=z.x;z.x=z.y;z.y=t;} } } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_78)
 						case 78: { { z.x=fabs(z.x); z.y=fabs(z.y); z.z=fabs(z.z); float m=fmax(fmax(z.x,z.y),z.z); if(m==z.y){float t=z.x;z.x=z.y;z.y=t;} if(m==z.z){float t=z.x;z.x=z.z;z.z=t;} } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_79)
 						case 79: { { z.x = sa*native_floor(z.x/fmax(sa,0.01f)+0.5f)*2.0f-z.x; z.y = sb*native_floor(z.y/fmax(sb,0.01f)+0.5f)*2.0f-z.y; } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_80)
 						case 80: { { float a=sang; for(int k=0;k<3;k++){ z.x=fabs(z.x); float d=z.x*native_cos(a)+z.y*native_sin(a); if(d<0){z.x-=2.0f*d*native_cos(a);z.y-=2.0f*d*native_sin(a);} a+=M_PI_F/3.0f*sf; } } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_81)
 						case 81: { { float n=fmax(2.0f,sa+sb*native_sin(sfq*i)); float ang2=atan2(zy,zx); float s=2.0f*M_PI_F/n; ang2=fmod(ang2+10.0f*M_PI_F,s)-s*0.5f; float rxy=native_sqrt(zx*zx+zy*zy); z.x=rxy*native_cos(ang2); z.y=rxy*native_sin(ang2); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_82)
 						case 82: { { float a=sang+sam*native_sin(sfq*i); float cs=native_cos(a),sn=native_sin(a); z.x=fabs(z.x); float nx=z.x*cs-z.y*sn; z.y=z.x*sn+z.y*cs; z.x=nx; } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_83)
 						case 83: { { float d=sf*sam*native_sin(sfq*r+sang); z.x=fabs(z.x)+d; z.y=fabs(z.y)+d; z.z=fabs(z.z)+d; aux.DE*=(1.0f+fabs(d)/r); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_84)
 						case 84: { { float n=fmax(2.0f,sa); float ang2=atan2(zy,zx); float s=2.0f*M_PI_F/n; ang2=fmod(ang2+10.0f*M_PI_F+sam*native_sin(sfq*i),s)-s*0.5f; float rxy=native_sqrt(zx*zx+zy*zy); z.x=rxy*native_cos(ang2); z.y=rxy*native_sin(ang2); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_85)
 						case 85: { { z.x=fabs(z.x); z.y=fabs(z.y); z.z=fabs(z.z); z *= sf + sam*native_sin(sfq*i); aux.DE *= fabs(sf + sam*native_sin(sfq*i)); { float _cF=(sf-1.0f); z.x -= sa*_cF; z.y -= sb*_cF; z.z -= sc*_cF; }; } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_86)
 						case 86: { { if(i%2==0){z.x=fabs(z.x);z.y=fabs(z.y);} else{float cs=native_cos(sang),sn=native_sin(sang);float nx=z.x*cs-z.y*sn;z.y=z.x*sn+z.y*cs;z.x=nx;} } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_87)
 						case 87: { { float rr=z.x*z.x+z.y*z.y+z.z*z.z; if(rr<sa*sa){z*=sb*sb/(sa*sa);aux.DE*=sb*sb/(sa*sa);} else if(rr<sb*sb){z*=sb*sb/rr;aux.DE*=sb*sb/rr;} z.x=fabs(z.x); z.y=fabs(z.y); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_88)
 						case 88: { { if(z.x+z.y<0){float t=-z.y;z.y=-z.x;z.x=t;} if(z.x+z.z<0){float t=-z.z;z.z=-z.x;z.x=t;} z *= sf; { float _cF=(sf-1.0f); z.x -= sa*_cF; z.y -= sb*_cF; z.z -= sc*_cF; }; aux.DE=aux.DE*fabs(sf)+1.0f; if(z.y-z.z<0){float t=z.y;z.y=z.z;z.z=t;} } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_89)
 						case 89: { { z.x=fabs(z.x)-sa; z.y=fabs(z.y)-sb; if(z.x<z.y){float t=z.x;z.x=z.y;z.y=t;} float rr=z.x*z.x+z.y*z.y+z.z*z.z; if(rr<sc*sc){float m=sd*sd/(sc*sc);z*=m;aux.DE*=m;} else if(rr<sd*sd){float m=sd*sd/rr;z*=m;aux.DE*=m;} } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_90)
 						case 90: { { float p=fmax(sa,0.01f); z.x=z.x-p*round(z.x/p); z.y=z.y-p*round(z.y/p); z.x=fabs(z.x); z.y=fabs(z.y); if(z.x<z.y){float t=z.x;z.x=z.y;z.y=t;} z *= sf; aux.DE *= fabs(sf); { float _cF=(sf-1.0f); z.x -= sb*_cF; z.y -= sc*_cF; z.z -= 0*_cF; }; } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_91)
 						case 91: { { z.x=fabs(z.x)-sa; z.y=fabs(z.y)-sb; z.z=fabs(z.z)-sc; if(z.x<z.y){float t=z.x;z.x=z.y;z.y=t;} if(z.x<z.z){float t=z.x;z.x=z.z;z.z=t;} if(z.y<z.z){float t=z.y;z.y=z.z;z.z=t;} z*=sf; aux.DE*=fabs(sf); z.x += sa; z.y += sb; z.z += sc; } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_92)
 						case 92: { { float cs=native_cos(sang),sn=native_sin(sang); z.x=fabs(z.x); z.y=fabs(z.y); float d=z.x*sn+z.y*cs; if(d<0){z.x-=2.0f*d*sn;z.y-=2.0f*d*cs;} z.x-=sa; z.y-=sb; z*=sf; z.x+=sa; z.y+=sb; aux.DE=aux.DE*fabs(sf)+1.0f; } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_93)
 						case 93: { { z.x=fabs(z.x); z.y=fabs(z.y); z.z=fabs(z.z); if(z.x-z.y<0){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0){float t=z.x;z.x=z.z;z.z=t;} z*=sf; z.x-=sa*(sf-1.0f); z.y-=sb*(sf-1.0f); z.z-=sc*(sf-1.0f); float rr=z.x*z.x+z.y*z.y+z.z*z.z; if(rr<sd*sd){z*=sd*sd/rr;aux.DE*=sd*sd/rr;} aux.DE=aux.DE*fabs(sf)+1.0f; } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_94)
-						case 94: { { for(int k=0;k<int(fmax(1,sa));k++){ z.x=fabs(z.x); z.y=fabs(z.y); z.z=fabs(z.z); if(z.x-z.y<0){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0){float t=z.y;z.y=z.z;z.z=t;} z.x-=sb; z.y-=sc; z.z-=sd; float cs=native_cos(sang+k*sfq),sn=native_sin(sang+k*sfq); float nx=z.x*cs-z.y*sn; z.y=z.x*sn+z.y*cs; z.x=nx; z.x+=sb; z.y+=sc; z.z+=sd; } } break; }
+						case 94: { { for(int k=0;k<(int)(fmax(1,sa));k++){ z.x=fabs(z.x); z.y=fabs(z.y); z.z=fabs(z.z); if(z.x-z.y<0){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0){float t=z.y;z.y=z.z;z.z=t;} z.x-=sb; z.y-=sc; z.z-=sd; float cs=native_cos(sang+k*sfq),sn=native_sin(sang+k*sfq); float nx=z.x*cs-z.y*sn; z.y=z.x*sn+z.y*cs; z.x=nx; z.x+=sb; z.y+=sc; z.z+=sd; } } break; }
+#endif
 
-						case 95: { { float n=fmax(2.0f,sa); for(int k=0;k<int(n);k++){ float a=k*M_PI_F/n; float d=z.x*native_cos(a)+z.y*native_sin(a); if(d<0){z.x-=2.0f*d*native_cos(a);z.y-=2.0f*d*native_sin(a);} } z.z=fabs(z.z); } break; }
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_95)
+						case 95: { { float n=fmax(2.0f,sa); for(int k=0;k<(int)(n);k++){ float a=k*M_PI_F/n; float d=z.x*native_cos(a)+z.y*native_sin(a); if(d<0){z.x-=2.0f*d*native_cos(a);z.y-=2.0f*d*native_sin(a);} } z.z=fabs(z.z); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_96)
 						case 96: { { z=fabs(z); if(z.x<z.y){float t=z.x;z.x=z.y;z.y=t;} if(z.x<z.z){float t=z.x;z.x=z.z;z.z=t;} if(z.y<z.z){float t=z.y;z.y=z.z;z.z=t;} z.x -= sa; z.y -= sb; z.z -= sc; float rr=z.x*z.x+z.y*z.y+z.z*z.z; if(rr<sd*sd){float m=sf*sf/fmax(rr,1e-21f);z*=m;aux.DE*=m;} z*=sf;aux.DE*=fabs(sf); z.x += sa; z.y += sb; z.z += sc; } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_97)
 						case 97: { { float a=2.0f*M_PI_F/fmax(1.0f,sa); float cs=native_cos(a),sn=native_sin(a); z.x=fabs(z.x); z.y=fabs(z.y); float d=z.x*sn+z.y*cs-soff; if(d>0){z.x-=d*sn;z.y-=d*cs;} z.x-=sb; z*=sf; z.x+=sb; aux.DE=aux.DE*fabs(sf)+1.0f; } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_98)
 						case 98: { { z.x=fabs(z.x); z.y=fabs(z.y); z.z=fabs(z.z); float d=2.0f*fmin(0.0f,z.x+z.y+z.z-sa); z.x-=d/3.0f; z.y-=d/3.0f; z.z-=d/3.0f; } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_99)
 						case 99: { { z.x=fabs(z.x); z.y=fabs(z.y); z.z=fabs(z.z); if(z.x-z.y<0){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0){float t=z.y;z.y=z.z;z.z=t;} z.z-=0.5f*sa; z.z=-fabs(z.z)+0.5f*sa; float cs=native_cos(sang),sn=native_sin(sang); float nx=z.x*cs-z.y*sn; z.y=z.x*sn+z.y*cs; z.x=nx; } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SYMKALTYPE_100)
 						case 100: { { z.x=fabs(z.x)-sa; z.y=fabs(z.y)-sb; z.z=fabs(z.z)-sc; if(z.x<z.y){float t=z.x;z.x=z.y;z.y=t;} if(z.x<z.z){float t=z.x;z.x=z.z;z.z=t;} if(z.y<z.z){float t=z.y;z.y=z.z;z.z=t;} float rr=z.x*z.x+z.y*z.y+z.z*z.z; if(rr<sd*sd){float m=sf*sf/fmax(rr,1e-21f);z*=m;aux.DE*=m;} z*=sf; aux.DE=aux.DE*fabs(sf)+1.0f; { float _cF=(1.0f-sf); z.x += sa*_cF; z.y += sb*_cF; z.z += sc*_cF; }; } break; }
+#endif
 
 					default: break;
 #endif
@@ -5638,1115 +6088,1485 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_30)
 						case 30: { aux.DE *= (1.0 + af * aa * native_sin(ab*r)*native_exp(-ac*r)); break; }
 #endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_31)
 						case 31: { aux.DE *= (1.0f + af * aa * fabs(native_sin(ab*r+ac))*native_exp(-ad*r)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_32)
 						case 32: { { float s = aa * native_sin(ab*r+ac*atan2(zy,zx)) * native_exp(-ad*r); aux.DE *= (1.0f + af*s); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_33)
 						case 33: { aux.DE *= (1.0f + af * aa * tanh(ab*(r-ac))); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_34)
 						case 34: { aux.DE *= (1.0f + af * aa * native_sin(ab*native_log(r+1e-21f))); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_35)
 						case 35: { aux.DE *= (1.0f + af * aa * native_cos(ab*native_log(r+1e-21f)+ac)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_36)
 						case 36: { { float ph=atan2(zy,zx); float th=native_acos(zz2/r); aux.DE*=(1.0f+af*aa*native_sin(ab*ph)*native_sin(ac*th)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_37)
 						case 37: { { float ph=atan2(zy,zx); aux.DE*=(1.0f+af*aa*native_cos(ab*ph+ac*r)); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_38)
 						case 38: { aux.DE *= fmax(0.01f, 1.0f + af * aa * native_sin(ab*r) * native_cos(ac*r)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_39)
 						case 39: { { float d=r-aa; aux.DE*=(1.0f+af*ab*native_exp(-ac*d*d)); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_40)
 						case 40: { aux.DE *= (1.0f + af * aa * native_sin(ab*r) / (r+1e-21f)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_41)
 						case 41: { { float n=native_sin(aa*zx)*native_sin(ab*zy)*native_sin(ac*zz2); aux.DE*=(1.0f+af*ad*n); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_42)
 						case 42: { { float rxy=native_sqrt(zx*zx+zy*zy+1e-21f); aux.DE*=(1.0f+af*aa*native_sin(ab*rxy+ac*zz2)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_43)
 						case 43: { aux.DE *= (1.0f + af * aa * native_cos(ab*zx+ac*zy+ad*zz2)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_44)
 						case 44: { { float v=aa*native_sin(ab*r)+ac*native_cos(ad*r); aux.DE*=(1.0f+af*v*0.5f); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_45)
 						case 45: { aux.DE *= fmax(0.01f, 1.0f + af * aa * native_pow(fabs(native_sin(ab*r)), ac)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_46)
 						case 46: { aux.DE *= (1.0f + af * aa * native_sin(ab*r*r/(r+1e-21f))); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_47)
 						case 47: { { float f=aa+ab*native_sin(ac*i); aux.DE*=(1.0f+af*f); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_48)
 						case 48: { { float rr2=rr; float minR=aa; float fixR=ab; if(rr2<minR*minR){float m=fixR*fixR/(minR*minR);aux.DE*=m;} else if(rr2<fixR*fixR){float m=fixR*fixR/rr2;aux.DE*=m;} aux.DE*=(1.0f+af*ac*native_sin(ad*r)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_49)
 						case 49: { aux.DE *= (1.0f + af * aa * (native_sin(ab*r) + native_cos(ac*r*r/(r+1e-21f))) * 0.5f); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_50)
 						case 50: { { float d=fabs(r-aa); float ring=native_exp(-ab*d*d); aux.DE*=(1.0f+af*ac*ring); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_51)
 						case 51: { aux.DE *= fabs(aa); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_52)
 						case 52: { aux.DE *= fabs(aa + ab*native_sin(ac*i)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_53)
 						case 53: { aux.DE *= fabs(aa * native_pow(ab, ac)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_54)
 						case 54: { aux.DE *= fabs(aa + ab * r); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_55)
 						case 55: { aux.DE *= fmax(0.01f, fabs(aa + ab * native_sin(ac * r))); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_56)
 						case 56: { aux.DE *= fabs(aa + ab * native_exp(-ac * i)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_57)
 						case 57: { aux.DE *= fabs(aa + ab * native_log(1.0f + ac * i)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_58)
 						case 58: { { float golden=1.6180339887f; aux.DE*=fabs(aa+ab*native_pow(golden,ac*i-ad)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_59)
 						case 59: { aux.DE *= fabs(aa + ab * native_sin(ac * i) * native_cos(ad * r)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_60)
 						case 60: { { float s=aa+ab*tanh(ac*(i-ad)); aux.DE*=fabs(s); } break; }
+#endif
 
-						case 61: { aux.DE *= fmax(0.01f, fabs(aa + ab * fmod(float(i) * ac, ad))); break; }
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_61)
+						case 61: { aux.DE *= fmax(0.01f, fabs(aa + ab * fmod((float)(i) * ac, ad))); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_62)
 						case 62: { aux.DE *= fabs(aa + ab / (1.0f + ac * i)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_63)
 						case 63: { { float ph=atan2(zy,zx); aux.DE*=fabs(aa+ab*native_sin(ac*ph)); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_64)
 						case 64: { aux.DE *= fabs(aa + ab * (zx*zx - zy*zy) / (rr + 1e-21f)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_65)
 						case 65: { aux.DE *= fabs(aa + ab * native_sin(ac * i * M_PI_F / ad)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_66)
-						case 66: { { float s=aa*(1.0f+ab*native_sin(ac*float(i))); aux.DE*=fabs(s); } break; }
+						case 66: { { float s=aa*(1.0f+ab*native_sin(ac*(float)(i))); aux.DE*=fabs(s); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_67)
 						case 67: { aux.DE *= fabs(aa + ab * fabs(native_sin(ac * r + ad * i))); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_68)
 						case 68: { { float s=aa+ab*native_cos(ac*r)*native_sin(ad*i*0.1f); aux.DE*=fabs(s); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_69)
 						case 69: { aux.DE *= fabs(aa + ab * (native_sin(ac*zx)+native_sin(ad*zy)+native_sin(ae*zz2))/3.0f); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_70)
 						case 70: { { float rat=aa/fmax(ab,1e-21f); float s=native_pow(fabs(rat),ac); aux.DE*=s; } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_71)
 						case 71: { aux.DE *= fmax(0.01f, fabs(aa * native_exp(-ab * fabs(native_sin(ac * r))))); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_72)
 						case 72: { { float s=aa+ab*native_pow(fabs(native_sin(ac*r)),ad); aux.DE*=fabs(s); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_73)
 						case 73: { aux.DE *= fabs(aa + ab * tanh(ac * native_sin(ad * r))); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_74)
 						case 74: { { float mix=0.5f+0.5f*native_sin(ac*i); float s=aa*(1.0f-mix)+ab*mix; aux.DE*=fabs(s); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_75)
 						case 75: { aux.DE *= fabs(aa + ab * native_sin(ac * r) * native_log(1.0f + ad * r)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_76)
 						case 76: { { float a=aa*M_PI_F/180.0f; aux.DE*=(1.0f+af*fabs(native_sin(a))); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_77)
 						case 77: { { float a=aa*M_PI_F/180.0f+ab*native_sin(ac*i); aux.DE*=(1.0f+af*fabs(native_sin(a))); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_78)
 						case 78: { aux.DE *= (1.0f + af * aa * native_sin(ab*atan2(zy,zx))); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_79)
 						case 79: { aux.DE *= (1.0f + af * aa * native_cos(ab*atan2(zy,zx)+ac*native_acos(zz2/r))); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_80)
 						case 80: { { float ph=atan2(zy,zx); float n=fmax(1.0f,aa); float s=2.0f*M_PI_F/n; float sector=fmod(ph+10.0f*M_PI_F,s)/s; aux.DE*=(1.0f+af*ab*native_sin(M_PI_F*sector)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_81)
 						case 81: { aux.DE *= (1.0f + af * aa * fabs(native_sin(ab * atan2(zz2, native_sqrt(zx*zx+zy*zy+1e-21f))))); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_82)
 						case 82: { { float q1=zx*native_cos(aa)-zy*native_sin(aa); float q2=zx*native_sin(aa)+zy*native_cos(aa); aux.DE*=(1.0f+af*ab*native_sin(ac*q1)*native_cos(ad*q2)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_83)
 						case 83: { aux.DE *= (1.0f + af * aa * native_cos(ab * (zx+zy+zz2))); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_84)
 						case 84: { { float cs=native_cos(aa*M_PI_F/180.0f),sn=native_sin(aa*M_PI_F/180.0f); float rxy=native_sqrt(zx*zx+zy*zy+1e-21f); float nph=atan2(zy,zx)+ab*native_sin(ac*rxy); aux.DE*=(1.0f+af*ad*native_sin(ae*nph)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_85)
 						case 85: { aux.DE *= (1.0f + af * aa * native_sin(ab*(zx*zy+zy*zz2+zz2*zx)/(rr+1e-21f))); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_86)
 						case 86: { { float gld=aa*0.618033988749895f; aux.DE*=(1.0f+af*ab*native_sin(ac*gld*i)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_87)
 						case 87: { aux.DE *= (1.0f + af * aa * native_sin(ab*r+ac*atan2(zy,zx)+ad*i*0.1f)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_88)
 						case 88: { { float sw=fabs(zx)>fabs(zy)?zx:zy; aux.DE*=(1.0f+af*aa*native_sin(ab*sw)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_89)
 						case 89: { aux.DE *= (1.0f + af * aa * native_cos(ab*zx*zy/(r+1e-21f))); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_90)
 						case 90: { { float fld=aa*(fabs(zx)+fabs(zy)+fabs(zz2)); aux.DE*=(1.0f+af*ab*native_sin(fld)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_91)
 						case 91: { aux.DE *= (1.0f + af * aa * native_sin(ab*i) * native_cos(ac*r) * native_sin(ad*atan2(zy,zx))); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_92)
 						case 92: { { float sym=fabs(zx-zy)+fabs(zy-zz2)+fabs(zz2-zx); aux.DE*=(1.0f+af*aa*native_sin(ab*sym)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_93)
 						case 93: { aux.DE *= (1.0f + af * aa * tanh(ab*native_sin(ac*atan2(zy,zx)))); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_94)
 						case 94: { { float det=zx*zy-zy*zz2+zz2*zx; aux.DE*=(1.0f+af*aa*native_sin(ab*det/(rr+1e-21f))); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_95)
 						case 95: { aux.DE *= (1.0f + af * aa * native_sin(ab*r) * native_sin(ac*atan2(zy,zx)+ad*native_acos(zz2/r))); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_96)
 						case 96: { { float tw=aa*zz2+ab; float cs=native_cos(tw),sn=native_sin(tw); aux.DE*=(1.0f+af*ac*fabs(sn)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_97)
 						case 97: { aux.DE *= (1.0f + af * aa * fabs(native_sin(ab*zx))*fabs(native_sin(ac*zy))*fabs(native_sin(ad*zz2))); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_98)
 						case 98: { { float mir=fmin(fabs(zx),fmin(fabs(zy),fabs(zz2))); aux.DE*=(1.0f+af*aa*native_sin(ab*mir)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_99)
 						case 99: { { float mx=fmax(fabs(zx),fmax(fabs(zy),fabs(zz2))); aux.DE*=(1.0f+af*aa*native_cos(ab*mx)); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_100)
 						case 100: { aux.DE *= (1.0f + af * aa * native_sin(ab*r+ac*native_sin(ad*r))); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_101)
 						case 101: { { float w=aa*native_sin(ab*r); aux.DE*=(1.0f+af*ac*fabs(w)); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_102)
 						case 102: { { float r4=native_sqrt(rr+aa*aa*native_sin(ab*r)*native_sin(ab*r)); aux.DE*=(1.0f+af*ac*(r4-r)/(r+1e-21f)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_103)
 						case 103: { { float w=aa*native_cos(ab*zx+ac*zy); aux.DE*=(1.0f+af*ad*w*w); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_104)
 						case 104: { { float w=aa*native_sin(ab*i*0.1f); float r4=native_sqrt(rr+w*w); aux.DE*=(1.0f+af*ac*native_sin(ad*r4)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_105)
 						case 105: { aux.DE *= (1.0f + af * aa * native_sin(ab*(zx*zx+zy*zy-zz2*zz2)/(rr+1e-21f))); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_106)
 						case 106: { { float w=aa*native_sin(ab*r+ac*i*0.1f); aux.DE*=(1.0f+af*ad*native_exp(-ae*w*w)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_107)
 						case 107: { { float q=zx*zx-zy*zy; float s=2.0f*zx*zy; aux.DE*=(1.0f+af*aa*native_sin(ab*q/(rr+1e-21f))*native_cos(ac*s/(rr+1e-21f))); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_108)
 						case 108: { aux.DE *= (1.0f + af * aa * native_sin(ab*(zx*zy+ac*zz2))); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_109)
 						case 109: { { float hd=native_sin(aa*zx)*native_cos(ab*zy)+native_sin(ac*zy)*native_cos(ad*zz2)+native_sin(ae*zz2)*native_cos(aff*zx); aux.DE*=(1.0f+af*ag*hd/3.0f); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_110)
 						case 110: { { float cr=zx*zx+zy*zy; float ci=2.0f*zx*zy; float r4=native_sqrt(cr*cr+ci*ci+zz2*zz2); aux.DE*=(1.0f+af*aa*native_sin(ab*r4)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_111)
 						case 111: { aux.DE *= (1.0f + af * aa * tanh(ab*(zx*zx+zy*zy-zz2*zz2))); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_112)
 						case 112: { aux.DE *= (1.0f + af * aa * native_sin(ab*zx+ac) * native_sin(ad*zy+ae) * native_cos(aff*zz2)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_113)
 						case 113: { { float p=aa*zx*zy*zz2/(r*r*r+1e-21f); aux.DE*=(1.0f+af*ab*native_sin(ac*p)); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_114)
 						case 114: { { float s1=native_sin(aa*r),s2=native_sin(ab*r); float w=s1*s1-s2*s2; aux.DE*=(1.0f+af*ac*w); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_115)
 						case 115: { aux.DE *= (1.0f + af * aa * native_cos(ab*r*r/(r+1e-21f)+ac*native_sin(ad*r))); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_116)
 						case 116: { { float w=aa*native_sin(ab*(zx+zy+zz2))+ac*native_cos(ad*(zx-zy+zz2)); aux.DE*=(1.0f+af*w*0.5f); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_117)
 						case 117: { aux.DE *= (1.0f + af * aa * native_sin(ab*zx*zx/(rr+1e-21f)+ac*zy*zy/(rr+1e-21f))); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_118)
 						case 118: { { float v=aa*native_sin(ab*r)+ac*native_sin(ad*r)+ae*native_sin(aff*r); aux.DE*=(1.0f+af*v/3.0f); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_119)
 						case 119: { aux.DE *= (1.0f + af * aa * native_exp(-ab*fabs(zx*zy*zz2)/(r*r*r+1e-21f))); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_120)
 						case 120: { { float w=aa+ab*native_sin(ac*r+ad*native_sin(ae*r)); aux.DE*=(1.0f+af*w); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_121)
 						case 121: { aux.DE *= (1.0f + af * aa * native_sin(ab*(r - native_floor(r*ac)/ac))); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_122)
 						case 122: { { float ph4=atan2(zz2,native_sqrt(zx*zx+zy*zy+1e-21f)); aux.DE*=(1.0f+af*aa*native_sin(ab*ph4+ac*r)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_123)
 						case 123: { aux.DE *= (1.0f + af * aa * fabs(native_sin(ab*r)*native_cos(ac*r)*native_sin(ad*r))); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_124)
 						case 124: { { float v=aa*native_sin(ab*zx)*native_cos(ac*zx)+ad*native_sin(ae*zy)*native_cos(aff*zy); aux.DE*=(1.0f+af*v*0.5f); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_125)
 						case 125: { aux.DE *= (1.0f + af * aa * (native_sin(ab*r)+native_sin(ac*r)+native_sin(ad*r)+native_sin(ae*r))/4.0f); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_126)
 						case 126: { aux.DE *= (1.0f + af * aa * fabs(zx)/(r+1e-21f)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_127)
 						case 127: { aux.DE *= (1.0f + af * aa * fabs(zy)/(r+1e-21f)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_128)
 						case 128: { aux.DE *= (1.0f + af * aa * fabs(zz2)/(r+1e-21f)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_129)
 						case 129: { { float orb=fmin(fabs(zx),fmin(fabs(zy),fabs(zz2))); aux.DE*=(1.0f+af*aa*native_sin(ab*orb)); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_130)
 						case 130: { { float orb=fmax(fabs(zx),fmax(fabs(zy),fabs(zz2))); aux.DE*=(1.0f+af*aa*native_cos(ab*orb)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_131)
 						case 131: { { float orb=native_sqrt(zx*zx+zy*zy); aux.DE*=(1.0f+af*aa*native_sin(ab*orb)); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_132)
 						case 132: { { float dt=fabs(native_sqrt(zx*zx+zy*zy)-aa); aux.DE*=(1.0f+af*ab*native_exp(-ac*dt*dt)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_133)
 						case 133: { { float ds=fmax(fabs(zx)-aa,fabs(zy)-ab); ds=fmax(ds,fabs(zz2)-ac); aux.DE*=(1.0f+af*ad*native_exp(-ae*ds*ds)); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_134)
 						case 134: { { float dp=fabs(zx*native_cos(aa)+zy*native_sin(aa)-ab); aux.DE*=(1.0f+af*ac*native_exp(-ad*dp*dp)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_135)
 						case 135: { { float dl=fabs(zx-aa*zy-ab); aux.DE*=(1.0f+af*ac*native_exp(-ad*dl*dl)); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_136)
 						case 136: { { float c=fabs(native_sin(aa*zx)+native_sin(ab*zy)+native_sin(ac*zz2))/3.0f; aux.DE*=(1.0f+af*ad*c); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_137)
 						case 137: { { float c=fabs(native_sin(aa*r)*native_cos(ab*atan2(zy,zx))); aux.DE*=(1.0f+af*ac*c); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_138)
 						case 138: { { float c=fabs(zx*zy+zy*zz2+zz2*zx)/(rr+1e-21f); aux.DE*=(1.0f+af*aa*c); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_139)
 						case 139: { { float h=atan2(zy,zx)/(2.0f*M_PI_F)+0.5f; aux.DE*=(1.0f+af*aa*native_sin(ab*h*M_PI_F*2.0f)); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_140)
 						case 140: { { float s=r/(r+aa); aux.DE*=(1.0f+af*ab*s); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_141)
 						case 141: { { float v=native_sin(aa*zx)*native_sin(ab*zy)+native_sin(ac*zy)*native_sin(ad*zz2); aux.DE*=(1.0f+af*ae*v*0.5f); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_142)
 						case 142: { { float orb=fabs(zx-native_floor(zx*aa)/aa)*fabs(zy-native_floor(zy*ab)/ab); aux.DE*=(1.0f+af*ac*native_sin(ad*orb)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_143)
 						case 143: { aux.DE *= (1.0f + af * aa * native_sin(ab * (fabs(zx)+fabs(zy)+fabs(zz2)))); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_144)
 						case 144: { { float d2=fabs(zx*zx/fmax(aa*aa,0.01f)+zy*zy/fmax(ab*ab,0.01f)-1.0f); aux.DE*=(1.0f+af*ac*native_exp(-ad*d2)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_145)
 						case 145: { { float sp=zx*native_cos(aa*zy)+zy*native_cos(aa*zz2)+zz2*native_cos(aa*zx); aux.DE*=(1.0f+af*ab*native_sin(ac*sp)); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_146)
-						case 146: { { float cl=native_sin(aa*in.point.Length()+ab*r); aux.DE*=(1.0f+af*ac*cl); } break; }
+						case 146: { { float cl=native_sin(aa*length(pointTransformed)+ab*r); aux.DE*=(1.0f+af*ac*cl); } break; }
+#endif
 
-						case 147: { { float it=float(i)/fmax(float(aa),1.0f); aux.DE*=(1.0f+af*ab*native_sin(ac*it*M_PI_F)); } break; }
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_147)
+						case 147: { { float it=(float)(i)/fmax((float)(aa),1.0f); aux.DE*=(1.0f+af*ab*native_sin(ac*it*M_PI_F)); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_148)
 						case 148: { { float gr=native_sin(aa*zx*zy/(r+1e-21f))+native_cos(ab*zy*zz2/(r+1e-21f)); aux.DE*=(1.0f+af*ac*gr*0.5f); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_149)
 						case 149: { { float pat=native_sin(aa*zx)*native_cos(ab*zy)*native_sin(ac*zz2)*native_cos(ad*r); aux.DE*=(1.0f+af*ae*pat); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_150)
 						case 150: { { float comb=aa*native_sin(ab*r)+ac*native_cos(ad*atan2(zy,zx))+ae*native_sin(aff*native_acos(zz2/r)); aux.DE*=(1.0f+af*comb/3.0f); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_151)
 						case 151: { { float de=aa*r*native_log(r+1e-21f)/fmax(ab,0.01f); aux.DE*=(1.0f+af*de/(r+1e-21f)); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_152)
 						case 152: { aux.DE *= fmax(0.01f, 1.0f + af * aa * r * native_sin(ab*native_log(r+1e-21f)+ac)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_153)
 						case 153: { { float lip=aa*fmin(1.0f,ab/fmax(r,1e-21f)); aux.DE*=(1.0f+af*lip); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_154)
 						case 154: { aux.DE *= (1.0f + af * aa * native_exp(-ab*r) * native_sin(ac*r+ad)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_155)
 						case 155: { { float bess=native_sin(aa*r)/(aa*r+1e-21f); aux.DE*=(1.0f+af*ab*bess); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_156)
 						case 156: { { float cheb=native_cos(aa*native_acos(fmin(1.0f,fmax(-1.0f,zz2/r)))); aux.DE*=(1.0f+af*ab*cheb); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_157)
 						case 157: { { float leg=(3.0f*(zz2/r)*(zz2/r)-1.0f)*0.5f; aux.DE*=(1.0f+af*aa*leg); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_158)
 						case 158: { { float herm=(4.0f*(zz2/r)*(zz2/r)-2.0f)*native_exp(-(zz2/r)*(zz2/r)*0.5f); aux.DE*=(1.0f+af*aa*ab*herm); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_159)
 						case 159: { { float lag=1.0f-aa*r+aa*aa*r*r*0.5f; aux.DE*=(1.0f+af*ab*lag*native_exp(-ac*r)); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_160)
 						case 160: { aux.DE *= (1.0f + af * aa * native_sin(ab*r+ac) * native_sin(ad*r+ae) * native_sin(aff*r+ag)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_161)
 						case 161: { { float gr=aa*r*native_exp(-ab*r*r)*native_sin(ac*r); aux.DE*=(1.0f+af*gr); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_162)
 						case 162: { aux.DE *= (1.0f + af * aa * native_sin(ab*r) * tanh(ac*r)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_163)
 						case 163: { { float sg=1.0f/(1.0f+native_exp(-aa*(r-ab))); aux.DE*=(1.0f+af*ac*sg*(1.0f-sg)); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_164)
 						case 164: { { float gau=native_exp(-aa*(r-ab)*(r-ab)); aux.DE*=(1.0f+af*ac*gau); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_165)
 						case 165: { { float stp=(r>aa)?ab:ac; aux.DE*=(1.0f+af*stp); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_166)
 						case 166: { { float bnd=aa*native_sin(native_floor(r*ab)*M_PI_F/ab); aux.DE*=(1.0f+af*bnd); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_167)
 						case 167: { { float v=0; for(int o=0;o<4;o++){v+=native_sin(aa*native_pow(2.0f,o)*r+ab*o)/(native_pow(2.0f,o));} aux.DE*=(1.0f+af*ac*v); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_168)
 						case 168: { { float jc=aa*native_sin(ab*r)+ac*native_sin(ad*atan2(zy,zx)); aux.DE*=(1.0f+af*jc*0.5f); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_169)
 						case 169: { { float tmp=aa+ab*native_sin(ac*r)*native_cos(ad*i*0.1f); aux.DE*=(1.0f+af*tmp); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_170)
 						case 170: { { float fb=0; float prev=aa; float curr=ab; for(int k=0;k<6;k++){float nxt=prev+curr; fb+=native_sin(nxt*r)/(nxt+1.0f); prev=curr; curr=nxt;} aux.DE*=(1.0f+af*ac*fb); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_171)
 						case 171: { { float orb=r; float v=aa*native_sin(ab*orb)+ac*native_cos(ad*orb*orb/(r+1e-21f)); aux.DE*=(1.0f+af*v); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_172)
 						case 172: { aux.DE *= (1.0f + af * aa * fabs(native_sin(ab*r)) * fabs(native_cos(ac*r))); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_173)
 						case 173: { aux.DE *= fabs(aa); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_174)
 						case 174: { aux.DE *= (1.0f + fabs(aa*M_PI_F/180.0f) * ab); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_175)
 						case 175: { aux.DE *= (1.0f + fabs(aa + ab + ac)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_176)
-						case 176: { aux.DE *= fmax(0.01f, aa * float(i) / fmax(float(ab), 1.0f)); break; }
+						case 176: { aux.DE *= fmax(0.01f, aa * (float)(i) / fmax((float)(ab), 1.0f)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_177)
 						case 177: { { if(fabs(zx)>aa||fabs(zy)>aa||fabs(zz2)>aa) aux.DE*=ab; } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_178)
 						case 178: { { float d=native_sqrt((zx-aa)*(zx-aa)+(zy-ab)*(zy-ab)+(zz2-ac)*(zz2-ac)); if(d<ad) aux.DE*=ae; } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_179)
 						case 179: { { if(fabs(zx)<aa && fabs(zy)<aa) aux.DE*=ab; } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_180)
 						case 180: { aux.DE *= (1.0f + 0.1f * aa * fabs(native_sin(ab*r))); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_181)
 						case 181: { aux.DE *= (1.0f - aa * ab * native_exp(-ac*r)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_182)
 						case 182: { aux.DE /= fmax(0.01f, 1.0f + aa * ab); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_183)
 						case 183: { aux.DE *= (1.0f + aa * ab * r); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_184)
 						case 184: { aux.DE /= fmax(0.01f, 1.0f + aa * ab * native_sin(ac*r)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_185)
 						case 185: { aux.DE *= (1.0f + aa * ab * r); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_186)
 						case 186: { aux.DE *= (1.0f + aa * fabs(ab - 550.0f) * 0.001f); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_187)
 						case 187: { aux.DE *= (1.0f + aa * fabs(native_sin(ab*zx)*native_cos(ac*zy))); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_188)
 						case 188: { { float fr=native_pow(fabs(1.0f-fabs(zz2)/r),5.0f); aux.DE*=(1.0f+aa*fr); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_189)
 						case 189: { { float tf=native_sin(aa*r+ab)*native_cos(ac*r); aux.DE*=(1.0f+ad*fabs(tf)); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_190)
 						case 190: { { float an=fabs(zx*aa+zy*ab+zz2*ac)/(r+1e-21f); aux.DE*=(1.0f+ad*an); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_191)
 						case 191: { aux.DE /= fmax(0.01f, 1.0f + aa * ab); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_192)
 						case 192: { aux.DE *= (1.0f + aa * native_exp(-ab * r)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_193)
 						case 193: { aux.DE *= (1.0f + aa * ab * r); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_194)
 						case 194: { aux.DE += aa * ab * native_sin(ac*zx)*native_cos(ad*zy); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_195)
 						case 195: { aux.DE *= (1.0f + aa * ab * native_sin(ac*zx+ad*zy+ae*zz2)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_196)
 						case 196: { aux.DE *= fmax(0.01f, aa * ab / fmax(ac, 0.01f)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_197)
 						case 197: { aux.DE /= fmax(0.01f, aa); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_198)
 						case 198: { aux.DE *= native_exp(-aa * ab * r); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_199)
 						case 199: { aux.DE *= (1.0f + aa * ab * (1.0f + ac*native_cos(ad*atan2(zy,zx)))); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_200)
 						case 200: { aux.DE /= fmax(0.01f, 1.0f + aa * ab); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_201)
 						case 201: { { float curl=native_sin(aa*zy+ab*zz2)-native_sin(aa*zz2+ab*zx); aux.DE*=(1.0f+ac*fabs(curl)); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_202)
 						case 202: { { float grad=(zx*aa+zy*ab+zz2*ac)/(rr+1e-21f); aux.DE/=fmax(0.01f,1.0f+ad*fabs(grad)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_203)
 						case 203: { aux.DE *= (1.0f + aa * ab / fmax(rr, 1e-21f)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_204)
 						case 204: { { float v2=aa*aa; float c2=ab*ab; aux.DE*=native_sqrt(fmax(0.01f,1.0f-v2/fmax(c2,1e-21f))); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_205)
 						case 205: { aux.DE *= native_exp(-aa * fabs(r - ab)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_206)
 						case 206: { { float psi=native_sin(aa*zx)*native_sin(ab*zy)*native_sin(ac*zz2); aux.DE*=fmax(0.01f,psi*psi); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_207)
 						case 207: { aux.DE *= (1.0f + aa / fmax(2.0f * ab * r, 1e-21f)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_208)
 						case 208: { aux.DE *= (1.0f + aa * (zx*ab + zy*ac + zz2*ad)/(r+1e-21f)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_209)
 						case 209: { { float corr=native_sin(aa*zx)*native_sin(aa*(-zx))+native_cos(ab*zy)*native_cos(ab*(-zy)); aux.DE*=(1.0f+ac*fabs(corr)); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_210)
-						case 210: { aux.DE *= native_exp(-aa * ab * float(i) * 0.01f); break; }
+						case 210: { aux.DE *= native_exp(-aa * ab * (float)(i) * 0.01f); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_211)
 						case 211: { { float ent=native_sin(aa*zx)*native_log(fabs(native_sin(aa*zx))+1e-21f)+native_sin(ab*zy)*native_log(fabs(native_sin(ab*zy))+1e-21f); aux.DE*=(1.0f+ac*fabs(ent)*0.1f); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_212)
 						case 212: { aux.DE *= (1.0f + aa / fmax(ab * ac, 1e-21f)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_213)
 						case 213: { { float vg=(native_sin(aa*(zx+0.01f))-native_sin(aa*zx))/0.01f; aux.DE*=(1.0f+ab*fabs(vg)); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_214)
 						case 214: { { float curv=(native_sin(aa*zx+0.01f)+native_sin(aa*zx-0.01f)-2.0f*native_sin(aa*zx))/0.0001f; aux.DE*=(1.0f+ab*fabs(curv)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_215)
 						case 215: { aux.DE *= (1.0f + aa * native_cos(ab) / fmax(ac, 0.01f)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_216)
 						case 216: { { float cg=(native_sin(aa*(zx+0.01f))-native_sin(aa*zx))/0.01f; aux.DE*=(1.0f+ab*fabs(cg)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_217)
 						case 217: { { float lap=native_sin(aa*(zx+0.01f))+native_sin(aa*(zx-0.01f))-2.0f*native_sin(aa*zx); aux.DE+=ab*lap; } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_218)
 						case 218: { { float adv=(native_sin(aa*zx)-native_sin(aa*(zx-0.01f)))/0.01f; aux.DE*=(1.0f+ab*fabs(adv)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_219)
 						case 219: { { float v=0; for(int o=0;o<4;o++){v+=native_sin(aa*native_pow(2.0f,o)*r)/native_pow(2.0f,o);} aux.DE*=(1.0f+ab*fabs(v)); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_220)
 						case 220: { { float sh=(r>aa)?ab:0.0f; aux.DE*=(1.0f+ac*sh); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_221)
 						case 221: { { float dw=aa-ab; float bw=ac*0.5f; float q=ad/fmax(native_sqrt(dw*dw+bw*bw),1e-21f); aux.DE*=(1.0f+af*q); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_222)
 						case 222: { aux.DE *= (1.0f + aa * native_cos(ab * r + ac)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_223)
 						case 223: { aux.DE *= (1.0f + aa / fmax(ab, 1e-21f) * native_cos(ac)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_224)
 						case 224: { aux.DE *= (1.0f + aa * native_cos(2.0f * ab * atan2(zy, zx))); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_225)
 						case 225: { aux.DE *= (1.0f + aa * fabs(native_sin(2.0f * ab * atan2(zz2, native_sqrt(zx*zx+zy*zy+1e-21f))))); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_226)
 						case 226: { aux.DE *= (1.0f + aa * ab * ac); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_227)
 						case 227: { { float lp=fmod(r*aa, ab); aux.DE*=(1.0f+ac*native_sin(M_PI_F*lp/fmax(ab,0.01f))); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_228)
 						case 228: { { float skin=native_exp(-fabs(zz2)*aa/fmax(ab,0.01f)); aux.DE*=(1.0f+ac*skin); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_229)
 						case 229: { aux.DE *= (1.0f + aa * fabs(ab)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_230)
 						case 230: { { float wn=native_floor(atan2(zy,zx)*aa/(2.0f*M_PI_F)+0.5f); aux.DE*=(1.0f+ab*fabs(wn)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_231)
 						case 231: { { float tc=native_floor(atan2(zy,zx)*aa/(2.0f*M_PI_F)+0.5f); aux.DE*=(1.0f+ab*fabs(tc)*native_sin(ac*r)); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_232)
 						case 232: { { float vort=fabs(-aa*zy/(rr+1e-21f)-(-ab*zx/(rr+1e-21f))); aux.DE*=(1.0f+ac*vort); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_233)
 						case 233: { { float sw=1.0f/cosh(aa*fabs(r-ab)); aux.DE*=(1.0f+ac*sw); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_234)
 						case 234: { { float inst=native_exp(-aa*(rr+1e-21f)); aux.DE*=(1.0f+ab*inst); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_235)
 						case 235: { aux.DE *= (1.0f + aa / fmax(r, 1e-21f)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_236)
 						case 236: { { float sl=fabs(native_sqrt(zx*zx+zy*zy)); aux.DE*=(1.0f+aa*native_log(sl+1e-21f)*ab); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_237)
 						case 237: { { float bd=native_exp(-aa*fabs(zz2-ab)); aux.DE*=(1.0f+ac*bd); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_238)
 						case 238: { { float wh=native_exp(-(r-aa)*(r-aa)/(fmax(ab*ab,0.01f))); aux.DE*=(1.0f+ac*wh); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_239)
 						case 239: { aux.DE /= fmax(0.01f, 1.0f - aa / fmax(r, aa + 1e-21f)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_240)
 						case 240: { { float jet=native_exp(-fabs(native_sqrt(zx*zx+zy*zy)-aa)/(fmax(ab,0.01f))); aux.DE*=(1.0f+ac*jet); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_241)
 						case 241: { { float halo=1.0f/(1.0f+native_pow(r/fmax(aa,0.01f),2.0f)); aux.DE*=(1.0f+ab*halo); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_242)
 						case 242: { aux.DE *= native_exp(fmin(aa * ab * r, 20.0f)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_243)
 						case 243: { { float cs2=native_log(fmax(fabs(native_sqrt(zx*zx+zy*zy)),1e-21f)/fmax(aa,0.01f)); aux.DE*=(1.0f+ab*ac*cs2); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_244)
 						case 244: { aux.DE *= (1.0f + aa * tanh(fabs(zz2 - ab) / fmax(ac, 0.01f))); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_245)
 						case 245: { { float ylm=native_sin(aa*native_acos(zz2/r))*native_cos(ab*atan2(zy,zx)); aux.DE*=(1.0f+ac*fabs(ylm)); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_246)
 						case 246: { aux.DE *= native_exp(aa * ab); break; }
+#endif
 
-						case 247: { { float rh=aa*ab*native_exp(-ac*float(i)*0.01f); aux.DE*=(1.0f+rh); } break; }
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_247)
+						case 247: { { float rh=aa*ab*native_exp(-ac*(float)(i)*0.01f); aux.DE*=(1.0f+rh); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_248)
 						case 248: { { float ns=aa*ab*native_sin(ac*r)/(1.0f+ad*r); aux.DE*=(1.0f+ns); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_249)
 						case 249: { { float rc=aa*native_exp(-ab/(fmax(ac*r,0.01f))); aux.DE*=(1.0f+rc); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_250)
 						case 250: { { float sf2=1.0f+aa*r; aux.DE*=sf2*native_sqrt(fmax(0.01f,ab*ac/(fmax(r,1e-21f)))); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_251)
 						case 251: { { float sf2=fmax(0.01f,1.0f+aa*r); aux.DE/=sf2; } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_252)
-						case 252: { aux.DE *= (1.0f + aa * (1.0f - native_exp(-float(i) * 0.01f / fmax(ab, 0.01f)))); break; }
+						case 252: { aux.DE *= (1.0f + aa * (1.0f - native_exp(-(float)(i) * 0.01f / fmax(ab, 0.01f)))); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_253)
 						case 253: { { float bn=native_exp(-aa*rr)*ab; aux.DE*=(1.0f+bn); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_254)
 						case 254: { { float fv=aa*native_exp(-ab*rr); aux.DE*=(1.0f+fv); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_255)
 						case 255: { { float op=native_sin(aa*r)*native_sin(aa*r); aux.DE*=(1.0f+ab*op); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_256)
 						case 256: { { float d=fabs(r-aa); aux.DE*=fmax(0.01f,native_pow(d+1e-21f,-ab)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_257)
 						case 257: { aux.DE *= (1.0f + aa * native_log(fmax(ab, 0.01f) / fmax(r, 1e-21f))); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_258)
 						case 258: { { float div=(native_sin(aa*(zx+0.01f))-native_sin(aa*zx))/0.01f; aux.DE*=(1.0f+ab*fabs(div)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_259)
 						case 259: { { float vev=aa*r*r; aux.DE*=(1.0f+ab*vev); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_260)
 						case 260: { { float grd=(native_sin(aa*(r+0.01f))-native_sin(aa*r))/0.01f; aux.DE*=(1.0f+ab*fabs(grd)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_261)
 						case 261: { aux.DE *= (1.0f + aa * ab * rr); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_262)
 						case 262: { { float a2=native_sin(aa*zx)*native_sin(aa*zx)+native_sin(ab*zy)*native_sin(ab*zy); aux.DE*=(1.0f+ac*ad*a2); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_263)
 						case 263: { { float psi2=native_sin(aa*r)*native_sin(aa*r); aux.DE*=(1.0f+ab*psi2); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_264)
 						case 264: { { float phi=native_sin(aa*r); aux.DE*=(1.0f+ab*phi*phi+ac*phi*phi*phi*phi); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_265)
 						case 265: { { float tmn=(zx*zx+zy*zy+zz2*zz2)/(rr+1e-21f); aux.DE*=(1.0f+aa*ab*tmn); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_266)
 						case 266: { { float sp=native_sin(aa*zx)*native_cos(ab*zy); aux.DE*=(1.0f+ac*fabs(sp)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_267)
 						case 267: { { float rs=native_sin(aa*r)*fabs(native_cos(ab*atan2(zy,zx))); aux.DE*=(1.0f+ac*rs*rs); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_268)
 						case 268: { { float kr=native_sin(aa*zx)*native_sin(ab*zy)-native_cos(aa*zx)*native_cos(ab*zy); aux.DE*=(1.0f+ac*kr*kr); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_269)
 						case 269: { { float gv=native_sin(aa*r)*native_sin(ab*r); aux.DE*=(1.0f+ac*gv*gv); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_270)
 						case 270: { { float xs=fabs(native_sin(aa*r)-zx); aux.DE*=(1.0f+ab*xs*xs); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_271)
 						case 271: { { float m5=native_sin(aa*r)*native_sin(ab*r)*native_sin(ac*r); aux.DE*=(1.0f+ad*m5*m5); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_272)
 						case 272: { { float wf2=native_exp(-aa*fabs(zz2)); aux.DE*=(1.0f+ab*ac*wf2); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_273)
 						case 273: { { float kk=native_sin(aa*r/fmax(ab,0.01f))*native_sin(ac*r/fmax(ab,0.01f)); aux.DE*=(1.0f+ad*kk); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_274)
 						case 274: { aux.DE *= native_exp(-aa * fabs(zz2 - ab)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_275)
 						case 275: { { float av=r>1e-21f?(fabs(zx)+fabs(zy)+fabs(zz2))/(r):1.0f; aux.DE*=(1.0f+aa*ab*av); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_276)
 						case 276: { { float cf=1.0f/(1.0f+aa*rr); aux.DE*=(1.0f+ab*cf); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_277)
 						case 277: { { float ms=fmin(fabs(zx),fmin(fabs(zy),fabs(zz2))); aux.DE*=(1.0f+aa*ms); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_278)
 						case 278: { { float fw=native_exp(-aa*fabs(r-ab)*fabs(r-ab)*1000.0f); aux.DE*=(1.0f+ac*fw); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_279)
 						case 279: { { float ee=native_sin(aa*zx)*native_sin(aa*(-zx+ab)); aux.DE*=(1.0f+ac*fabs(ee)); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_280)
 						case 280: { { float vol=r*r*r; aux.DE*=(1.0f+aa*vol/(vol+ab+1e-21f)); } break; }
+#endif
 
-						case 281: { { float ly=native_exp(aa*float(i)*0.01f); aux.DE*=(1.0f+ab*fmin(ly,ac)); } break; }
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_281)
+						case 281: { { float ly=native_exp(aa*(float)(i)*0.01f); aux.DE*=(1.0f+ab*fmin(ly,ac)); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_282)
-						case 282: { { float bv=fabs(zx-aa*native_sin(ab*zy))/(float(i)+1.0f); aux.DE*=(1.0f+ac*bv); } break; }
+						case 282: { { float bv=fabs(zx-aa*native_sin(ab*zy))/((float)(i)+1.0f); aux.DE*=(1.0f+ac*bv); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_283)
 						case 283: { { float scr=native_log(fmax(aa,1.0f))*ab*native_sin(ac*r); aux.DE*=(1.0f+fabs(scr)*0.01f); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_284)
-						case 284: { { float sff=native_sin(aa*float(i)*0.1f)*native_sin(ab*float(i)*0.1f); aux.DE*=(1.0f+ac*fabs(sff)); } break; }
+						case 284: { { float sff=native_sin(aa*(float)(i)*0.1f)*native_sin(ab*(float)(i)*0.1f); aux.DE*=(1.0f+ac*fabs(sff)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_285)
 						case 285: { { float goe=native_sin(aa*r)*native_cos(ab*r)*native_sin(ac*r); aux.DE*=(1.0f+ad*fabs(goe)); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_286)
 						case 286: { { float syk=native_sin(aa*zx)*native_sin(ab*zy)*native_sin(ac*zz2)*native_sin(ad*r); aux.DE*=(1.0f+ae*fabs(syk)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_287)
 						case 287: { { float bd2=native_sin(aa*r)*native_sin(aa*r); float ent=bd2*native_log(bd2+1e-21f); aux.DE*=(1.0f+ab*fabs(ent)); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_288)
 						case 288: { { float ml=native_floor(native_log(r+1e-21f)/native_log(fmax(aa,1.01f))); aux.DE*=(1.0f+ab*native_sin(ac*ml)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_289)
 						case 289: { { float cd=native_floor(r*aa); float le=native_exp(-ab*cd); aux.DE*=(1.0f+ac*le); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_290)
 						case 290: { { float wn2=native_floor(atan2(zy,zx)*aa/(2.0f*M_PI_F)+0.5f); aux.DE*=(1.0f+ab*native_sin(ac*wn2)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_291)
 						case 291: { { float sw2=native_floor(zx*aa+0.5f)*native_floor(zy*ab+0.5f); aux.DE*=(1.0f+ac*native_sin(ad*sw2)); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_292)
 						case 292: { { float cc=native_floor(r*aa)*3.0f; aux.DE*=(1.0f+ab*native_sin(ac*cc)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_293)
 						case 293: { { float pc=fmod(native_floor(r*aa),ab); aux.DE*=(1.0f+ac*native_sin(ad*pc)); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_294)
 						case 294: { { float ce=native_sin(aa*zx)*native_cos(ab*zy)*native_sin(ac*zz2); aux.DE*=(1.0f+ad*fabs(ce)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_295)
 						case 295: { { float ev=native_sin(aa*r)*native_sin(aa*r)+native_cos(ab*r)*native_cos(ab*r); aux.DE*=(1.0f+ac*ev*0.5f); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_296)
 						case 296: { { float sgn=native_sin(aa*r)>0?1.0f:-1.0f; float mc=native_exp(-ab*rr)*sgn; aux.DE*=(1.0f+ac*fabs(mc)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_297)
 						case 297: { { float pur=native_sin(aa*r)*native_sin(aa*r); aux.DE*=(1.0f+ab*pur*pur); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_298)
 						case 298: { { float wig=native_sin(aa*zx)*native_cos(ab*zy); aux.DE*=(1.0f+ac*fabs(wig)); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_299)
 						case 299: { { float hus=native_exp(-aa*(zx*zx+zy*zy))*native_sin(ab*r); aux.DE*=(1.0f+ac*fabs(hus)); } break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_300)
 						case 300: { { float mi=native_sin(aa*r)*native_sin(ab*r); aux.DE*=(1.0f+ac*mi*mi); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_301)
 						case 301: { float psi = native_sin(aa*r + ab*z.x); aux.DE *= (1.0f + af * psi*psi); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_302)
 						case 302: { float psi_f = native_cos(aa*r); float psi_i = native_sin(ab*r); float overlap = psi_f*psi_i + 1e-21f; float wv = (psi_f*native_sin(ac*z.x)) / overlap; aux.DE *= (1.0f + af * fabs(wv)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_303)
 						case 303: { float rate = fabs(aa); float variance = z.x*z.x + z.y*z.y; aux.DE *= (1.0f + af * native_exp(-rate * (float)i * 0.01f * variance)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_304)
 						case 304: { float E = aa*r; float t = (float)i * 0.01f; aux.DE *= (1.0f + af * fabs(ab) * native_sin(E*t)*native_sin(E*t)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_305)
 						case 305: { float path1 = native_sin(aa*z.x + ab*z.y); float path2 = native_sin(ac*z.x - ab*z.y); aux.DE *= (1.0f + af * fabs(path1 - path2)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_306)
 						case 306: { float choice_time = fabs(aa) * 10.0f; float theta = (float)i > choice_time ? 1.0f : 0.0f; aux.DE *= (1.0f + af * ab * theta); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_307)
 						case 307: { float visibility = native_cos(aa*r)*native_cos(aa*r); float erased = native_sin(ab*z.x + ac*z.y); aux.DE *= (1.0f + af * visibility * erased*erased); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_308)
 						case 308: { float source = native_sin(aa*z.x + ab*z.y + ac*z.z); float target = native_sin(aa*(z.x+ad) + ab*(z.y+ae) + ac*(z.z+aff)); float fidelity = source*target; aux.DE *= (1.0f + af * fabs(fidelity)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_309)
 						case 309: { float psi = native_sin(aa*r); float clone = native_sin(aa*r + ab*0.1f); float fidelity = 1.0f - (psi-clone)*(psi-clone)*0.5f; aux.DE *= (1.0f + af * fmax(fidelity, 0.0f)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_310)
 						case 310: { float Iz = native_sin(aa*z.x)*native_sin(ab*z.y); float classical = native_sin(aa*z.x)*0.5f; float discord = fabs(Iz - classical); aux.DE *= (1.0f + af * discord); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_311)
 						case 311: { float epr = native_sin(aa*z.x)*native_cos(ab*z.y) - native_cos(aa*z.x)*native_sin(ab*z.y); aux.DE *= (1.0f + af * fabs(epr)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_312)
 						case 312: { float v1 = native_sin(aa*z.x)*native_sin(aa*z.y); float v2 = native_cos(ab*z.y)*native_cos(ab*z.z); float violation = fabs(v1 + v2) - 1.0f; aux.DE *= (1.0f + af * fmax(violation, 0.0f)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_313)
 						case 313: { float ca = native_cos(aa*z.x); float cb = native_cos(ab*z.y); float corr = ca*cb + ca*native_sin(ab*z.y) + native_sin(aa*z.x)*cb - native_sin(aa*z.x)*native_sin(ab*z.y); aux.DE *= (1.0f + af * fabs(corr) * 0.25f); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_314)
 						case 314: { float S = 2.0f*native_sqrt(2.0f)*native_sin(aa*r)*native_cos(ab*r); float violation = fmax(fabs(S) - 2.0f, 0.0f); aux.DE *= (1.0f + af * violation); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_315)
 						case 315: { float bound = 2.0f*native_sqrt(2.0f); float corr = bound * native_cos(aa*r) * native_sin(ab*z.x); aux.DE *= (1.0f + af * fabs(corr) / bound); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_316)
 						case 316: { float t1 = native_sin(aa*(float)i*0.1f); float t2 = native_sin(aa*((float)i+ab)*0.1f); float temporal = t1*t2 + t1*native_sin(aa*((float)i+ac)*0.1f); aux.DE *= (1.0f + af * fabs(temporal)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_317)
 						case 317: { float rho = native_sin(aa*z.x)*native_sin(aa*z.x) + native_cos(ab*z.y)*native_cos(ab*z.y); float witness = rho - ac; aux.DE *= (1.0f + af * fmax(-witness, 0.0f)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_318)
 						case 318: { float dpsi = aa*native_cos(aa*r + ab*z.x); float fisher = 4.0f*dpsi*dpsi; aux.DE *= (1.0f + af * fisher / (1.0f + fisher)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_319)
 						case 319: { float F_Q = 4.0f*(aa*native_cos(aa*r))*(aa*native_cos(aa*r)); float bound = 1.0f/native_sqrt(fmax(ab*F_Q, 1e-21f)); aux.DE *= (1.0f + af * bound); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_320)
 						case 320: { float N = fmax(fabs(aa)*10.0f, 1.0f); float dphi = 1.0f/(N*native_sqrt(fmax(fabs(ab), 1e-21f))); float sql = 1.0f/native_sqrt(N); float gain = (sql*sql)/(dphi*dphi+1e-21f); aux.DE *= (1.0f + af * fmin(gain, 10.0f) * native_sin(ac*r)*native_sin(ac*r)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_321)
 						case 321: { float T2 = fabs(aa) + 0.01f; float sensitivity = 1.0f/(ab*native_sqrt(T2)+1e-21f); aux.DE *= (1.0f + af * native_sin(ac*r)*native_sin(ac*r) * fmin(sensitivity, 10.0f)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_322)
 						case 322: { float lambda_r = fabs(aa)+0.1f; float NA = fabs(ab)+0.1f; float N_ph = fmax(fabs(ac)*10, 1.0f); float res = lambda_r/(2.0f*NA*native_sqrt(N_ph)); aux.DE *= (1.0f + af * native_sin(r/fmax(res,0.01f))*native_sin(r/fmax(res,0.01f))); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_323)
 						case 323: { float N = fmax(fabs(aa)*5, 1.0f); float pattern = native_sin(N*ab*z.x)*native_sin(N*ab*z.y); aux.DE *= (1.0f + af * pattern*pattern); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_324)
 						case 324: { float snr_q = native_exp(-aa*r*r); float snr_c = native_exp(-ab*r*r); float advantage = snr_q/(snr_c+1e-21f); aux.DE *= (1.0f + af * fmin(advantage, 10.0f)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_325)
 						case 325: { float tau = fabs(aa)*r; float N_s = fmax(fabs(ab), 0.1f); float N_i = fmax(fabs(ac), 0.1f); float range_res = tau/(2.0f*native_sqrt(N_s*N_i)+1e-21f); aux.DE *= (1.0f + af * native_sin(range_res)*native_sin(range_res)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_326)
 						case 326: { float omega_rot = aa*z.x + ab*z.y; float phase = ac*omega_rot; aux.DE *= (1.0f + af * native_sin(phase)*native_sin(phase)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_327)
 						case 327: { float g_eff = aa; float T = fabs(ab)+0.01f; float phase = g_eff*T*T*ac; aux.DE *= (1.0f + af * native_cos(phase)*native_cos(phase)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_328)
 						case 328: { float omega0 = fabs(aa)*100.0f+1.0f; float tau_c = fabs(ab)+0.01f; float stability = 1.0f/(omega0*native_sqrt(tau_c*(float)(i+1)*0.01f)+1e-21f); aux.DE *= (1.0f + af * fmin(stability*ac, 5.0f)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_329)
 						case 329: { float B = aa*z.x + ab*z.y + ac*z.z; float sensitivity = native_sin(ad*B); aux.DE *= (1.0f + af * sensitivity*sensitivity); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_330)
 						case 330: { float k_eff = aa; float T = fabs(ab)+0.01f; float accel = k_eff*T*T*ac*r; aux.DE *= (1.0f + af * native_sin(accel)*native_sin(accel)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_331)
 						case 331: { float T_eff = fabs(aa)*r + 0.01f; float C = fabs(ab)+0.1f; float dE = fabs(ac)+0.01f; float res = T_eff*T_eff/(C*dE); aux.DE *= (1.0f + af * fmin(res, 10.0f)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_332)
 						case 332: { float pressure = aa*r*r + ab*z.x; float sensitivity = native_sin(ac*pressure); aux.DE *= (1.0f + af * sensitivity*sensitivity); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_333)
 						case 333: { float dL = aa*(z.x - z.y); float L = fmax(r, 0.01f); float strain = dL/L; float gauge = ab*strain; aux.DE *= (1.0f + af * native_sin(gauge)*native_sin(gauge)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_334)
 						case 334: { float omega0 = fabs(aa)+0.1f; float Q = fabs(ab)+1.0f; float force = ac/(2.0f*Q*omega0+1e-21f); aux.DE *= (1.0f + af * native_sin(force*r)*native_sin(force*r)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_335)
 						case 335: { float torque = aa*z.x*z.y - ab*z.y*z.z; float thermal = fabs(ac)+0.01f; aux.DE *= (1.0f + af * fabs(torque)/(thermal+fabs(torque))); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_336)
 						case 336: { float E_field = aa*z.x + ab*z.y + ac*z.z; float rydberg = native_sin(ad*E_field*E_field); aux.DE *= (1.0f + af * rydberg*rydberg); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_337)
 						case 337: { float V_jj = aa*native_sin(ab*r); float josephson = native_cos(ac*V_jj); aux.DE *= (1.0f + af * (1.0f - josephson*josephson)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_338)
 						case 338: { float tunnel = native_exp(-aa*fabs(r-ab)); float current = ac*tunnel; aux.DE *= (1.0f + af * fabs(current)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_339)
 						case 339: { float n = native_floor(fabs(aa)*r*5.0f+0.5f); float R_H = 1.0f/(fmax(n,1.0f)*ab+1e-21f); aux.DE *= (1.0f + af * fmin(R_H, 10.0f)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_340)
 						case 340: { float C_q = aa*aa/(2.0f*(fabs(ab)+0.01f)); float charging = native_exp(-C_q*r*r); aux.DE *= (1.0f + af * charging); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_341)
 						case 341: { float flux = aa*z.x*z.y; float inductance = native_cos(ab*flux); aux.DE *= (1.0f + af * inductance*inductance); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_342)
 						case 342: { float L_q = fabs(aa)+0.01f; float C_q = fabs(ab)+0.01f; float Z = native_sqrt(L_q/C_q); float match = 1.0f/(1.0f + (Z-ac)*(Z-ac)); aux.DE *= (1.0f + af * match); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_343)
 						case 343: { float omega = aa*r; float n_th = 1.0f/(native_exp(fabs(ab)*omega+1e-21f)-1.0f+1e-21f); float psd = omega*(n_th+0.5f); aux.DE *= (1.0f + af * fmin(fabs(psd), 10.0f)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_344)
 						case 344: { float dE = fabs(aa)*r; float tau = fmax(fabs(ab),0.01f); float uncertainty = dE*tau; aux.DE *= (1.0f + af * native_exp(-uncertainty)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_345)
 						case 345: { float W = aa*r*r; float T_eff = fmax(fabs(ab), 0.01f); float jarzynski = native_exp(-W/T_eff); aux.DE *= (1.0f + af * jarzynski); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_346)
 						case 346: { float Q_heat = aa*r; float T_eff = fmax(fabs(ab), 0.01f); float C = fmax(fabs(ac), 0.01f); float fluct = Q_heat/(T_eff*T_eff*C+1e-21f); aux.DE *= (1.0f + af * native_exp(-fabs(fluct))); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_347)
 						case 347: { float sigma = fabs(aa)*r*r; float relax = fmax(fabs(ab), 0.01f); float prod = sigma/relax; aux.DE *= (1.0f + af * (1.0f - native_exp(-prod))); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_348)
 						case 348: { float W = aa*(z.x*z.x + z.y*z.y); float T_eff = fmax(fabs(ab), 0.01f); float ratio = native_exp(-W/T_eff); aux.DE *= (1.0f + af * fmin(ratio, 10.0f)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_349)
 						case 349: { float info = fabs(native_sin(aa*z.x)*native_cos(ab*z.y)); float work = ac*info*native_log(2.0f); aux.DE *= (1.0f + af * fabs(work)/(1.0f+fabs(work))); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_350)
 						case 350: { float W = fabs(aa)*native_log(2.0f)*native_sin(ab*r)*native_sin(ab*r); aux.DE *= (1.0f + af * W); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_351)
 						case 351: { float T_hot = fmax(fabs(aa)*r, 0.01f); float T_cold = fmax(fabs(ab)*0.5f, 0.001f); float eff = 1.0f - T_cold/T_hot; float qcorr = native_sin(ac*r)*native_sin(ac*r); aux.DE *= (1.0f + af * fabs(eff) * qcorr); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_352)
 						case 352: { float w_cold = fabs(aa)+0.1f; float w_hot = fabs(ab)+0.2f; float eff = 1.0f - w_cold/w_hot; float adiabatic = native_cos(ac*r)*native_cos(ac*r); aux.DE *= (1.0f + af * fabs(eff) * adiabatic); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_353)
 						case 353: { float V_ratio = fmax(fabs(aa), 0.1f)/fmax(fabs(ab), 0.1f); float T_ratio = fmax(fabs(ac), 0.1f)/fmax(fabs(ad), 0.1f); float eff = native_log(fmax(V_ratio,1e-21f))/(native_log(fmax(T_ratio,1e-21f))+1e-21f); aux.DE *= (1.0f + af * fmin(fabs(eff), 5.0f) * native_sin(r)*native_sin(r)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_354)
 						case 354: { float gamma_g = 1.4f; float ratio = fmax(fabs(aa), 0.1f); float eff = 1.0f - (native_pow(ratio, gamma_g)-1.0f)/(gamma_g*(ratio-1.0f)+1e-21f); aux.DE *= (1.0f + af * fabs(eff) * native_sin(ab*r)*native_sin(ab*r)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_355)
 						case 355: { float P_ratio = fmax(fabs(aa), 0.1f); float gamma_g = 1.4f; float eff = 1.0f - native_pow(1.0f/P_ratio, (gamma_g-1.0f)/gamma_g); aux.DE *= (1.0f + af * fabs(eff) * native_cos(ab*r)*native_cos(ab*r)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_356)
 						case 356: { float T_ratio = fmax(fabs(aa)+0.1f, 0.01f) / fmax(fabs(ab)+0.1f, 0.01f); float regen = fmin(fabs(ac), 1.0f); float eff = (1.0f - 1.0f/T_ratio) * regen; aux.DE *= (1.0f + af * fabs(eff)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_357)
 						case 357: { float expansion = fmax(fabs(aa), 0.1f); float T_ratio = fmax(fabs(ab)+0.1f, 0.01f)/fmax(fabs(ac)+0.1f, 0.01f); float eff = (1.0f - 1.0f/T_ratio)*expansion/(expansion+1.0f); aux.DE *= (1.0f + af * fabs(eff) * native_sin(ad*r)*native_sin(ad*r)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_358)
 						case 358: { float T_ratio = fmax(fabs(aa)+0.1f,0.01f)/fmax(fabs(ab)+0.1f,0.01f); float loss = 1.0f-fmin(fabs(ac),0.99f); float eff = (1.0f-1.0f/T_ratio)*loss; aux.DE *= (1.0f + af * fabs(eff) * native_cos(ad*r)*native_cos(ad*r)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_359)
 						case 359: { float T_cold = fmax(fabs(aa),0.01f); float T_hot = fmax(fabs(ab),0.02f); float cop = T_cold/(T_hot-T_cold+1e-21f); float qcop = cop*native_sin(ac*r)*native_sin(ac*r); aux.DE *= (1.0f + af * fmin(fabs(qcop),10.0f)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_360)
 						case 360: { float T_hot = fmax(fabs(aa),0.02f); float T_cold = fmax(fabs(ab),0.01f); float cop = T_hot/(T_hot-T_cold+1e-21f); float enhance = native_cos(ac*r)*native_cos(ac*r); aux.DE *= (1.0f + af * fmin(cop*enhance,10.0f)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_361)
 						case 361: { float k = aa; float Gamma = fabs(ab)+0.01f; float delta = fabs(ac)+0.01f; float cooling = Gamma/(2.0f*(1.0f + 4.0f*delta*delta/(Gamma*Gamma))); aux.DE *= (1.0f + af * cooling * native_sin(k*r)*native_sin(k*r)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_362)
 						case 362: { float U0 = aa; float delta = fabs(ab)+0.01f; float pol_grad = native_sin(ac*z.x)*native_cos(ac*z.y); float eff = U0/(delta+1e-21f)*pol_grad*pol_grad; aux.DE *= (1.0f + af * fmin(fabs(eff),10.0f)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_363)
 						case 363: { float T_ratio = fmax(fabs(aa),0.01f)/fmax(fabs(ab),0.01f); float eta = fabs(ac)+1.0f; float eff = native_pow(T_ratio, 3.0f)*eta; aux.DE *= (1.0f + af * fmin(fabs(eff),10.0f) * native_sin(r)*native_sin(r)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_364)
 						case 364: { float m_ratio = fmax(fabs(aa),0.1f)/fmax(fabs(ab),0.1f); float collision = fabs(ac); float eff = m_ratio*collision; aux.DE *= (1.0f + af * fmin(eff,10.0f) * native_sin(ad*r)*native_sin(ad*r)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_365)
 						case 365: { float eta = fabs(aa)*0.1f; float Omega = fabs(ab)+0.1f; float nu_m = fabs(ac)+0.1f; float eff = eta*Omega*Omega/((fabs(ad)+0.01f)*nu_m); aux.DE *= (1.0f + af * fmin(eff,10.0f)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_366)
 						case 366: { float Sxy = native_sin(aa*z.x)*native_cos(ab*z.y); float Sxx = native_sin(aa*z.x)*native_sin(aa*z.x)+0.01f; float Syy = native_cos(ab*z.y)*native_cos(ab*z.y)+0.01f; float gain = Sxy*Sxy/(Sxx*Syy); aux.DE *= (1.0f + af * fabs(gain)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_367)
 						case 367: { float g = fabs(aa)+0.01f; float kappa = fabs(ab)+0.01f; float delta = fabs(ac)+0.01f; float cooling = g*g/(kappa*kappa+delta*delta); float n_ph = native_sin(ad*r)*native_sin(ad*r)*10.0f; aux.DE *= (1.0f + af * cooling*fmin(n_ph,10.0f)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_368)
 						case 368: { float Cg = fabs(aa)+0.01f; float Vg = ab; float C = fabs(ac)+0.01f; float coupling = Cg*Vg/C; aux.DE *= (1.0f + af * native_sin(coupling*r)*native_sin(coupling*r)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_369)
 						case 369: { float S = aa; float sigma = fabs(ab)+0.01f; float T_eff = fabs(ac)*r+0.01f; float kappa = fabs(ad)+0.01f; float ZT = S*S*sigma*T_eff/kappa; aux.DE *= (1.0f + af * fmin(ZT,10.0f)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_370)
 						case 370: { float Ss = aa; float gradT = ab*z.x+ac*z.y; float spin_pol = native_sin(ad*r); aux.DE *= (1.0f + af * fabs(Ss*gradT*spin_pol)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_371)
 						case 371: { float Bz = aa; float gradT = ab*z.x; float Ey = ac*gradT*Bz; aux.DE *= (1.0f + af * native_sin(Ey)*native_sin(Ey)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_372)
 						case 372: { float n_level = native_floor(fabs(aa)*r*5.0f+0.5f); float conductance = fmax(n_level,1.0f)*ab; aux.DE *= (1.0f + af * fmin(fabs(conductance),10.0f) * native_sin(ac*r)*native_sin(ac*r)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_373)
 						case 373: { float edge = native_exp(-aa*fabs(z.x)); float helical = native_sin(ab*z.y); aux.DE *= (1.0f + af * edge * helical*helical); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_374)
 						case 374: { float chern = native_floor(fabs(aa)*2.0f+0.5f); float mag_order = native_sin(ab*z.x)*native_sin(ab*z.y); aux.DE *= (1.0f + af * fabs(chern) * mag_order*mag_order); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_375)
 						case 375: { float valley = native_sin(aa*z.x)*native_cos(ab*z.y) - native_cos(aa*z.x)*native_sin(ab*z.y); float broken_inv = native_sin(ac*r); aux.DE *= (1.0f + af * fabs(valley*broken_inv)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_376)
 						case 376: { float bulk_gap = fabs(aa); float surface = native_sin(ab*z.x)*native_sin(ab*z.y)*native_exp(-ac*fabs(z.z)); float k_F = ad*r; aux.DE *= (1.0f + af * bulk_gap*fabs(surface)*fmin(k_F,5.0f)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_377)
 						case 377: { float kx = aa*z.x; float ky = ab*z.y; float kz = ac*z.z; float chirality = kx*kx + ky*ky - kz*kz; float fermi_arc = native_exp(-fabs(chirality)*ad); aux.DE *= (1.0f + af * fermi_arc); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_378)
 						case 378: { float E_D = aa; float v_F = fabs(ab)+0.01f; float k = ac*r; float cone = fabs(E_D)/(v_F*fmax(fabs(k),0.01f)); aux.DE *= (1.0f + af * fmin(cone,10.0f) * native_sin(r)*native_sin(r)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_379)
 						case 379: { float xi = fmax(fabs(aa),0.01f); float L = fabs(ab)*r; float overlap = native_exp(-L/xi); float gap = fabs(ac); aux.DE *= (1.0f + af * overlap*gap); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_380)
 						case 380: { float J = fabs(aa)+0.01f; float alpha = fabs(ab)+0.01f; float g = fabs(ac)+0.01f; float gap = J*native_exp(-1.0f/(alpha*g)); aux.DE *= (1.0f + af * gap * native_sin(ad*r)*native_sin(ad*r)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_381)
 						case 381: { float J = fabs(aa)+0.01f; float h = fabs(ab)+0.01f; float gap = fabs(J-h)/J; float crit_exp = fabs(ac)+0.5f; aux.DE *= (1.0f + af * native_pow(fmax(gap,1e-10f), crit_exp)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_382)
 						case 382: { float J = aa; float Si = native_sin(ab*z.x); float Sj = native_sin(ab*z.y); float coupling = J*Si*Sj; aux.DE *= (1.0f + af * fabs(coupling)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_383)
 						case 383: { float J = aa; float Sx = native_sin(ab*z.x)*native_cos(ac*z.y); float Sy = native_cos(ab*z.x)*native_sin(ac*z.y); float coupling = J*(Sx+Sy); aux.DE *= (1.0f + af * fabs(coupling)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_384)
 						case 384: { float J = aa; float q = fmax(native_floor(fabs(ab)*5+2), 2.0f); float sigma_i = native_floor(native_sin(ac*z.x)*q); float sigma_j = native_floor(native_sin(ac*z.y)*q); float delta_s = (sigma_i == sigma_j) ? 1.0f : 0.0f; aux.DE *= (1.0f + af * J*delta_s); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_385)
 						case 385: { float J = aa; float q = fmax(native_floor(fabs(ab)*5+2), 2.0f); float angle = 2.0f*M_PI_F/q; float sigma_diff = native_sin(ac*z.x) - native_sin(ac*z.y); aux.DE *= (1.0f + af * J*native_cos(angle*sigma_diff)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_386)
 						case 386: { float J = aa; float lambda = ab; float sigma = native_sin(ac*z.x)*native_sin(ac*z.y); float tau = native_cos(ad*z.x)*native_cos(ad*z.y); float coupling = J*(sigma + tau + lambda*sigma*tau); aux.DE *= (1.0f + af * fabs(coupling)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_387)
 						case 387: { float W = aa; float X = ab; float Y = ac; float sigma = native_sin(ad*z.x)*native_sin(ad*z.y); float tau = native_cos(ad*z.x)*native_cos(ad*z.y); float v = W*sigma + X*tau + Y*sigma*tau; aux.DE *= (1.0f + af * fabs(v)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_388)
 						case 388: { float U = fabs(aa)+0.01f; float t = fabs(ab)+0.01f; float n_up = native_sin(ac*z.x)*native_sin(ac*z.x); float n_down = native_cos(ac*z.y)*native_cos(ac*z.y); float mott = U*n_up*n_down/t; aux.DE *= (1.0f + af * fmin(mott,10.0f)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_389)
 						case 389: { float t = fabs(aa)+0.01f; float J = ab; float hop = t*native_sin(ac*z.x)*native_cos(ac*z.y); float exchange = J*native_sin(ad*z.x)*native_sin(ad*z.y); aux.DE *= (1.0f + af * fabs(hop + exchange)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_390)
 						case 390: { float xi_loc = fmax(fabs(aa),0.01f); float disorder = fabs(ab); float loc = native_exp(-r/xi_loc)*disorder; aux.DE *= (1.0f + af * loc); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_391)
 						case 391: { float U = fabs(aa)+0.01f; float U_c = fabs(ab)+0.01f; float n = native_sin(ac*r)*0.5f+0.5f; float gap = (U/U_c)*(n-0.5f)*(n-0.5f); aux.DE *= (1.0f + af * fmin(gap*4.0f,10.0f)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_392)
 						case 392: { float alpha = aa; float u = ab; float k_F = ac; float gap = 2.0f*fabs(alpha*u)*fabs(native_cos(2.0f*k_F*z.x)); aux.DE *= (1.0f + af * fmin(gap,10.0f)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_393)
 						case 393: { float J = fabs(aa)+0.01f; float g = fabs(ab)+0.01f; float gap = J*native_exp(-M_PI_F*J/(g*g)); float singlet = native_cos(ac*z.x)*native_cos(ac*z.y); aux.DE *= (1.0f + af * gap*singlet*singlet); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_394)
 						case 394: { float J = fabs(aa)+0.01f; float S = fmax(native_floor(fabs(ab)+1),1.0f); float gap = J*native_exp(-M_PI_F*S); float string_order = native_sin(ac*r); aux.DE *= (1.0f + af * gap*string_order*string_order); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_395)
 						case 395: { float J = fabs(aa)+0.01f; float SiSj = native_sin(ab*z.x)*native_sin(ab*z.y); float SiSj2 = SiSj*SiSj; float aklt = J*(SiSj + SiSj2/3.0f); aux.DE *= (1.0f + af * fabs(aklt)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_396)
 						case 396: { float J = fabs(aa)+0.01f; float Av = native_sin(ab*z.x)*native_sin(ab*z.y); float Bp = native_cos(ac*z.x)*native_cos(ac*z.y); float toric = 4.0f*J*(Av*Av + Bp*Bp); aux.DE *= (1.0f + af * fmin(toric,10.0f)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_397)
 						case 397: { float F1 = native_sin(aa*z.x); float F2 = native_sin(ab*z.y); float F3 = native_cos(ac*z.x); float F4 = native_cos(ad*z.y); float wen = F1*F2*F3*F4; aux.DE *= (1.0f + af * fabs(wen)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_398)
 						case 398: { float sn = native_sin(aa*z.x+ab*z.y); float fusion = sn*sn; float F_sym = native_cos(ac*r)*native_cos(ac*r); float lw = fusion*F_sym; aux.DE *= (1.0f + af * lw); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_399)
 						case 399: { float psi = native_sin(aa*z.x + ab*(float)i*0.1f); float coin = native_cos(ac*z.y); float walker = psi*psi*coin*coin; aux.DE *= (1.0f + af * walker); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ABOXTYPE_400)
 						case 400: { float rule = native_sin(aa*z.x)*native_sin(ab*z.y)*native_cos(ac*z.z); float evolution = native_cos(ad*(float)i*0.1f); float qca = rule*evolution; aux.DE *= (1.0f + af * qca*qca); break; }
+#endif
 
 					default: break;
 #endif
@@ -6858,209 +7678,277 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_32)
 					case 32: { float v=0, a=nam, f=nfq; for(int k=0;k<5;k++){ float h=native_sin(z.x*f)*native_cos(z.y*f)*native_sin(z.z*f); v+=a*h; f*=na; a*=nb; } aux.DE *= (1.0f + nf*v); break; }
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_33)
 					case 33: { float v=0, w=1.0f, f=nfq; for(int k=0;k<5;k++){ float h=native_sin(z.x*f*127.1f+z.y*f*311.7f+z.z*f*74.7f)*43758.5453f; h=h-native_floor(h); v+=w*h; w*=h; f*=2.0f; } aux.DE *= (1.0f + nf*v*nam); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_34)
 					case 34: { float v=1.0f, f=nfq; for(int k=0;k<5;k++){ float h=native_sin(z.x*f*127.1f+z.y*f*311.7f+z.z*f*74.7f)*43758.5453f; h=h-native_floor(h); v*=(h*0.5f+0.75f); f*=2.0f; } aux.DE *= (1.0f + nf*(v-1.0f)*nam); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_35)
 					case 35: { float v=0, a=nam, f=nfq; float px=z.x,py=z.y,pz=z.z; for(int k=0;k<5;k++){ float h=native_sin(px*f*127.1f+py*f*311.7f+pz*f*74.7f)*43758.5453f; h=h-native_floor(h); v+=a*h; px=fabs(px)*2.0f-na; py=fabs(py)*2.0f-nb; pz=fabs(pz)*2.0f-nc; f*=2.0f; a*=0.5f; } aux.DE *= (1.0f + nf*v); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_36)
 					case 36: { float md=1e10f; for(int dx=-1;dx<=1;dx++) for(int dy=-1;dy<=1;dy++) for(int dz=-1;dz<=1;dz++){ float cx=native_floor(z.x*nfq)+dx+0.5f; float cy=native_floor(z.y*nfq)+dy+0.5f; float cz=native_floor(z.z*nfq)+dz+0.5f; float h=native_sin(cx*127.1f+cy*311.7f+cz*74.7f)*43758.5453f; h=h-native_floor(h); cx+=h*0.5f; float d=(z.x*nfq-cx)*(z.x*nfq-cx)+(z.y*nfq-cy)*(z.y*nfq-cy)+(z.z*nfq-cz)*(z.z*nfq-cz); if(d<md)md=d; } aux.DE *= (1.0f + nf*native_sqrt(md)*nam); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_37)
 					case 37: { float md1=1e10f,md2=1e10f; for(int dx=-1;dx<=1;dx++) for(int dy=-1;dy<=1;dy++) for(int dz=-1;dz<=1;dz++){ float cx=native_floor(z.x*nfq)+dx; float cy=native_floor(z.y*nfq)+dy; float cz=native_floor(z.z*nfq)+dz; float h=native_sin(cx*127.1f+cy*311.7f+cz*74.7f)*43758.5453f; h=h-native_floor(h); cx+=h; float d=(z.x*nfq-cx)*(z.x*nfq-cx)+(z.y*nfq-cy)*(z.y*nfq-cy)+(z.z*nfq-cz)*(z.z*nfq-cz); if(d<md1){md2=md1;md1=d;}else if(d<md2)md2=d; } aux.DE *= (1.0f + nf*(native_sqrt(md2)-native_sqrt(md1))*nam); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_38)
 					case 38: { float md=1e10f; for(int dx=-1;dx<=1;dx++) for(int dy=-1;dy<=1;dy++){ float cx=native_floor(z.x*nfq)+dx+0.5f; float cy=native_floor(z.y*nfq)+dy+0.5f; float h=native_sin(cx*127.1f+cy*311.7f)*43758.5453f; h=h-native_floor(h); cx+=h*0.5f; float d=fabs(z.x*nfq-cx)+fabs(z.y*nfq-cy); if(d<md)md=d; } aux.DE *= (1.0f + nf*md*nam); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_39)
 					case 39: { float md=1e10f; for(int dx=-1;dx<=1;dx++) for(int dy=-1;dy<=1;dy++) for(int dz=-1;dz<=1;dz++){ float cx=native_floor(z.x*nfq)+dx; float cy=native_floor(z.y*nfq)+dy; float cz=native_floor(z.z*nfq)+dz; float h=native_sin(cx*127.1f+cy*311.7f+cz*74.7f)*43758.5453f; h=h-native_floor(h); cx+=h; float d=fmax(fabs(z.x*nfq-cx),fmax(fabs(z.y*nfq-cy),fabs(z.z*nfq-cz))); if(d<md)md=d; } aux.DE *= (1.0f + nf*md*nam); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_40)
 					case 40: { float md=1e10f; for(int dx=-1;dx<=1;dx++) for(int dy=-1;dy<=1;dy++) for(int dz=-1;dz<=1;dz++){ float cx=native_floor(z.x*nfq)+dx; float cy=native_floor(z.y*nfq)+dy; float cz=native_floor(z.z*nfq)+dz; float h1=native_sin(cx*127.1f+cy*311.7f+cz*74.7f)*43758.5453f; h1=h1-native_floor(h1); float h2=native_sin(cx*269.5f+cy*183.3f+cz*346.9f)*43758.5453f; h2=h2-native_floor(h2); float h3=native_sin(cx*419.2f+cy*371.9f+cz*529.7f)*43758.5453f; h3=h3-native_floor(h3); float d=(z.x*nfq-cx-h1)*(z.x*nfq-cx-h1)+(z.y*nfq-cy-h2)*(z.y*nfq-cy-h2)+(z.z*nfq-cz-h3)*(z.z*nfq-cz-h3); if(d<md)md=d; } aux.DE *= (1.0f + nf*native_sqrt(md)*nam); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_41)
 					case 41: { float md1=1e10f,md2=1e10f; for(int dx=-1;dx<=1;dx++) for(int dy=-1;dy<=1;dy++) for(int dz=-1;dz<=1;dz++){ float cx=native_floor(z.x*nfq)+dx; float cy=native_floor(z.y*nfq)+dy; float cz=native_floor(z.z*nfq)+dz; float h=native_sin(cx*127.1f+cy*311.7f+cz*74.7f)*43758.5453f; h=h-native_floor(h); cx+=h; float d=(z.x*nfq-cx)*(z.x*nfq-cx)+(z.y*nfq-cy)*(z.y*nfq-cy)+(z.z*nfq-cz)*(z.z*nfq-cz); if(d<md1){md2=md1;md1=d;}else if(d<md2)md2=d; } aux.DE *= (1.0f + nf*md1*md2*nam); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_42)
 					case 42: { float md=1e10f; float r=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float th=atan2(z.y,z.x); for(int k=0;k<8;k++){ float a2=k*M_PI_F*2.0f/8.0f; float d=fabs(th-a2); if(d>M_PI_F)d=2.0f*M_PI_F-d; if(d<md)md=d; } aux.DE *= (1.0f + nf*md*r*nam*nfq); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_43)
 					case 43: { float v=0; for(int dx=-1;dx<=1;dx++) for(int dy=-1;dy<=1;dy++) for(int dz=-1;dz<=1;dz++){ float cx=native_floor(z.x*nfq)+dx; float cy=native_floor(z.y*nfq)+dy; float cz=native_floor(z.z*nfq)+dz; float h=native_sin(cx*127.1f+cy*311.7f+cz*74.7f)*43758.5453f; h=h-native_floor(h); float d=(z.x*nfq-cx-h)*(z.x*nfq-cx-h)+(z.y*nfq-cy-h)*(z.y*nfq-cy-h)+(z.z*nfq-cz-h)*(z.z*nfq-cz-h); v+=native_exp(-na*d); } aux.DE *= (1.0f + nf*(1.0f-v)*nam); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_44)
 					case 44: { float md=1e10f; for(int dx=-1;dx<=1;dx++) for(int dy=-1;dy<=1;dy++) for(int dz=-1;dz<=1;dz++){ float cx=native_floor(z.x*nfq)+dx; float cy=native_floor(z.y*nfq)+dy; float cz=native_floor(z.z*nfq)+dz; float h=native_sin(cx*127.1f+cy*311.7f+cz*74.7f)*43758.5453f; h=h-native_floor(h); cx+=h; float d=native_sqrt((z.x*nfq-cx)*(z.x*nfq-cx)+(z.y*nfq-cy)*(z.y*nfq-cy)+(z.z*nfq-cz)*(z.z*nfq-cz)); if(d<md)md=d; } float v=native_sin(md*M_PI_F*na); aux.DE *= (1.0f + nf*v*nam); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_45)
 					case 45: { float md=1e10f,cd=0; for(int dx=-1;dx<=1;dx++) for(int dy=-1;dy<=1;dy++) for(int dz=-1;dz<=1;dz++){ float cx=native_floor(z.x*nfq)+dx; float cy=native_floor(z.y*nfq)+dy; float cz=native_floor(z.z*nfq)+dz; float h=native_sin(cx*127.1f+cy*311.7f+cz*74.7f)*43758.5453f; h=h-native_floor(h); cx+=h; float d=(z.x*nfq-cx)*(z.x*nfq-cx)+(z.y*nfq-cy)*(z.y*nfq-cy)+(z.z*nfq-cz)*(z.z*nfq-cz); if(d<md){md=d;cd=h;} } aux.DE *= (1.0f + nf*cd*nam); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_46)
 					case 46: { float md1=1e10f,md2=1e10f,md3=1e10f; for(int dx=-1;dx<=1;dx++) for(int dy=-1;dy<=1;dy++) for(int dz=-1;dz<=1;dz++){ float cx=native_floor(z.x*nfq)+dx; float cy=native_floor(z.y*nfq)+dy; float cz=native_floor(z.z*nfq)+dz; float h=native_sin(cx*127.1f+cy*311.7f+cz*74.7f)*43758.5453f; h=h-native_floor(h); cx+=h; float d=(z.x*nfq-cx)*(z.x*nfq-cx)+(z.y*nfq-cy)*(z.y*nfq-cy)+(z.z*nfq-cz)*(z.z*nfq-cz); if(d<md1){md3=md2;md2=md1;md1=d;}else if(d<md2){md3=md2;md2=d;}else if(d<md3)md3=d; } aux.DE *= (1.0f + nf*(native_sqrt(md3)-native_sqrt(md1))*nam); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_47)
 					case 47: { float md=1e10f; for(int dx=-1;dx<=1;dx++) for(int dy=-1;dy<=1;dy++){ float cx=native_floor(z.x*nfq)+dx; float cy=native_floor(z.y*nfq)+dy; float h=native_sin(cx*127.1f+cy*311.7f)*43758.5453f; h=h-native_floor(h); cx+=h*na; float hy=native_sin(cx*269.5f+cy*183.3f)*43758.5453f; hy=hy-native_floor(hy); cy+=hy*nb; float d=(z.x*nfq-cx)*(z.x*nfq-cx)+(z.y*nfq-cy)*(z.y*nfq-cy); if(d<md)md=d; } float v = native_sin(z.z*nfq)*0.5f+0.5f; aux.DE *= (1.0f + nf*(native_sqrt(md)+v*nc)*nam); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_48)
 					case 48: { float md=1e10f; for(int dx=-1;dx<=1;dx++) for(int dy=-1;dy<=1;dy++) for(int dz=-1;dz<=1;dz++){ float cx=native_floor(z.x*nfq)+dx; float cy=native_floor(z.y*nfq)+dy; float cz=native_floor(z.z*nfq)+dz; float h=native_sin(cx*127.1f+cy*311.7f+cz*74.7f)*43758.5453f; h=h-native_floor(h); cx+=h; float d=(z.x*nfq-cx)*(z.x*nfq-cx)+(z.y*nfq-cy)*(z.y*nfq-cy)+(z.z*nfq-cz)*(z.z*nfq-cz); if(d<md)md=d; } md=native_sqrt(md); float v=md-native_floor(md*na)/na; aux.DE *= (1.0f + nf*v*nam); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_49)
 					case 49: { float v=0,a=nam,f=nfq; for(int k=0;k<4;k++){ float md=1e10f; for(int dx=-1;dx<=1;dx++) for(int dy=-1;dy<=1;dy++){ float cx=native_floor(z.x*f)+dx; float cy=native_floor(z.y*f)+dy; float h=native_sin(cx*127.1f+cy*311.7f)*43758.5453f; h=h-native_floor(h); cx+=h; float d=(z.x*f-cx)*(z.x*f-cx)+(z.y*f-cy)*(z.y*f-cy); if(d<md)md=d; } v+=a*native_sqrt(md); f*=2.0f; a*=0.5f; } aux.DE *= (1.0f + nf*v); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_50)
 					case 50: { float md=1e10f; int nn = (int)fmax(2.0f, fmin(na*8.0f, 20.0f)); for(int dx=-1;dx<=1;dx++) for(int dy=-1;dy<=1;dy++) for(int dz=-1;dz<=1;dz++){ float cx=native_floor(z.x*nfq)+dx; float cy=native_floor(z.y*nfq)+dy; float cz=native_floor(z.z*nfq)+dz; for(int p=0;p<2;p++){ float h1=native_sin((cx+p*0.5f)*127.1f+cy*311.7f+cz*74.7f)*43758.5453f; h1=h1-native_floor(h1); float h2=native_sin(cx*269.5f+(cy+p*0.5f)*183.3f+cz*346.9f)*43758.5453f; h2=h2-native_floor(h2); float d=(z.x*nfq-cx-h1)*(z.x*nfq-cx-h1)+(z.y*nfq-cy-h2)*(z.y*nfq-cy-h2)+(z.z*nfq-cz)*(z.z*nfq-cz); if(d<md)md=d; } } aux.DE *= (1.0f + nf*native_sqrt(md)*nam); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_51)
 					case 51: { float v=0, a=nam, f=nfq; for(int k=0;k<5;k++){ float h=native_sin(z.x*f*127.1f+z.y*f*311.7f+z.z*f*74.7f)*43758.5453f; h=h-native_floor(h); float r2=fabs(h*2.0f-1.0f); v+=a*(1.0f-r2); f*=2.0f; a*=0.5f; } aux.DE *= (1.0f + nf*v*v); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_52)
 					case 52: { float v=0,a=nam,f=nfq,w=1.0f; for(int k=0;k<5;k++){ float h=native_sin(z.x*f*127.1f+z.y*f*311.7f+z.z*f*74.7f)*43758.5453f; h=h-native_floor(h); float r2=1.0f-fabs(h*2.0f-1.0f); r2*=r2; v+=r2*a*w; w=fmin(r2*na, 1.0f); f*=2.0f; a*=0.5f; } aux.DE *= (1.0f + nf*v); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_53)
 					case 53: { float v=0,a=nam,f=nfq; for(int k=0;k<5;k++){ float h=native_sin(z.x*f+z.y*f*1.3f+z.z*f*0.7f); v+=a*fabs(h); f*=2.0f; a*=0.5f; } aux.DE *= (1.0f + nf*v); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_54)
 					case 54: { float v=0,a=nam,f=nfq; for(int k=0;k<5;k++){ float h=native_sin(z.x*f*127.1f+z.y*f*311.7f+z.z*f*74.7f)*43758.5453f; h=h-native_floor(h); v+=a*fabs(native_sin(h*M_PI_F*na)); f*=2.0f; a*=0.5f; } aux.DE *= (1.0f + nf*v); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_55)
 					case 55: { float v=0,a=nam,f=nfq; for(int k=0;k<5;k++){ float h=native_sin(z.x*f+z.y*f*1.3f+z.z*f*0.7f); float ridge=1.0f-fabs(h); ridge=ridge*ridge; v+=a*ridge; f*=na; a*=nb; } aux.DE *= (1.0f + nf*v); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_56)
 					case 56: { float v=0,f=nfq; for(int k=0;k<5;k++){ float h=native_sin(z.x*f*127.1f+z.y*f*311.7f+z.z*f*74.7f)*43758.5453f; h=h-native_floor(h); v=fmax(v,h*nam/(1.0f+k*0.5f)); f*=2.0f; } aux.DE *= (1.0f + nf*v); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_57)
 					case 57: { float v=0,a=nam,f=nfq,prev=0; for(int k=0;k<5;k++){ float h=native_sin(z.x*f*127.1f+z.y*f*311.7f+z.z*f*74.7f)*43758.5453f; h=h-native_floor(h); float cur=fabs(h*2.0f-1.0f); v+=a*cur*prev; prev=cur; f*=2.0f; a*=0.5f; } aux.DE *= (1.0f + nf*v); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_58)
 					case 58: { float v=0,a=nam,f=nfq; for(int k=0;k<5;k++){ float h1=native_sin(z.x*f+z.y*f*1.3f)*0.5f+0.5f; float h2=native_sin(z.y*f*0.7f+z.z*f*1.1f)*0.5f+0.5f; float h3=native_sin(z.z*f*0.9f+z.x*f*1.5f)*0.5f+0.5f; v+=a*(h1+h2+h3)/3.0f; f*=2.0f; a*=0.5f; } aux.DE *= (1.0f + nf*(v*2.0f-1.0f)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_59)
 					case 59: { float v=0,a=nam,f=nfq; for(int k=0;k<6;k++){ float r=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float h=native_sin(r*f)*43758.5453f; h=h-native_floor(h); v+=a*h; f*=2.0f; a*=0.5f; } aux.DE *= (1.0f + nf*v); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_60)
 					case 60: { float v=0,a=nam,f=nfq; for(int k=0;k<5;k++){ float h=native_sin(z.x*f+z.y*f*1.3f+z.z*f*0.7f); float billow=fabs(h)*2.0f-1.0f; v+=a*billow; f*=2.0f; a*=0.5f; } aux.DE *= (1.0f + nf*v); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_61)
 					case 61: { float v=0,a=nam,f=nfq; for(int k=0;k<5;k++){ float h=native_sin(z.x*f+z.y*f*0.7f+z.z*f*1.3f)*0.5f+0.5f; v+=a*native_pow(h, na); f*=2.0f; a*=0.5f; } aux.DE *= (1.0f + nf*v); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_62)
 					case 62: { float v=0,a=nam,f=nfq; float px=z.x,py=z.y,pz=z.z; for(int k=0;k<5;k++){ float h=native_sin(px*f*127.1f+py*f*311.7f+pz*f*74.7f)*43758.5453f; h=h-native_floor(h); v+=a*fabs(h*2.0f-1.0f); float wx=native_sin(py*f*269.5f)*na; float wy=native_sin(pz*f*183.3f)*nb; float wz=native_sin(px*f*419.2f)*nc; px+=wx; py+=wy; pz+=wz; f*=2.0f; a*=0.5f; } aux.DE *= (1.0f + nf*v); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_63)
 					case 63: { float v=0,a=nam,f=nfq; for(int k=0;k<5;k++){ float h=native_sin(z.x*f*127.1f+z.y*f*311.7f+z.z*f*74.7f)*43758.5453f; h=h-native_floor(h); if(k%2==0) v+=a*h; else v+=a*(1.0f-h); f*=2.0f; a*=0.5f; } aux.DE *= (1.0f + nf*v); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_64)
 					case 64: { float v=0,a=nam,f=nfq; for(int k=0;k<5;k++){ float h=native_sin(z.x*f+z.y*f*1.3f+z.z*f*0.7f); float hs=h*h*sign(h); v+=a*hs; f*=2.0f; a*=0.5f; } aux.DE *= (1.0f + nf*v); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_65)
 					case 65: { float v=0,a=nam,f=nfq; for(int k=0;k<5;k++){ float h=native_sin(z.x*f*127.1f+z.y*f*311.7f+z.z*f*74.7f+nd*i)*43758.5453f; h=h-native_floor(h); v+=a*h; f*=2.0f; a*=0.5f; } aux.DE *= (1.0f + nf*v); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_66)
 					case 66: { float wx=z.x+nam*native_sin(z.y*nfq); float wy=z.y+nam*native_sin(z.z*nfq); float wz=z.z+nam*native_sin(z.x*nfq); float h=native_sin(wx*127.1f+wy*311.7f+wz*74.7f)*43758.5453f; h=h-native_floor(h); aux.DE *= (1.0f + nf*h); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_67)
 					case 67: { float wx=z.x+nam*native_sin(z.y*nfq+z.z*nfq*0.5f); float wy=z.y+nam*native_sin(z.z*nfq*1.3f+z.x*nfq*0.7f); float wz=z.z+nam*native_sin(z.x*nfq*0.9f+z.y*nfq*1.1f); float wx2=wx+nb*native_sin(wy*nfq*2.0f); float wy2=wy+nb*native_sin(wz*nfq*2.0f); float wz2=wz+nb*native_sin(wx*nfq*2.0f); float h=native_sin(wx2*127.1f+wy2*311.7f+wz2*74.7f)*43758.5453f; h=h-native_floor(h); aux.DE *= (1.0f + nf*h); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_68)
 					case 68: { float r=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float th=atan2(z.y,z.x)+nam*native_sin(r*nfq); float ph=native_acos(z.z/fmax(r,1e-21f))+nb*native_cos(r*nfq*0.7f); float h=native_sin(th*na+ph*nc)*0.5f+0.5f; aux.DE *= (1.0f + nf*h); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_69)
 					case 69: { float h1=native_sin(z.x*nfq*127.1f+z.y*nfq*311.7f)*43758.5453f; h1=h1-native_floor(h1); float h2=native_sin(z.y*nfq*269.5f+z.z*nfq*183.3f)*43758.5453f; h2=h2-native_floor(h2); float wx=z.x+(h1*2.0f-1.0f)*nam; float wy=z.y+(h2*2.0f-1.0f)*nam; float v=native_sin(wx*nfq*na+wy*nfq*nb); aux.DE *= (1.0f + nf*v); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_70)
 					case 70: { float v=0,f=nfq,a=nam; float px=z.x,py=z.y,pz=z.z; for(int k=0;k<4;k++){ float h=native_sin(px*f*127.1f+py*f*311.7f+pz*f*74.7f)*43758.5453f; h=h-native_floor(h); v+=a*h; px+=native_sin(py*f*na)*nb; py+=native_sin(pz*f*na)*nb; pz+=native_sin(px*f*na)*nb; f*=2.0f; a*=0.5f; } aux.DE *= (1.0f + nf*v); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_71)
 					case 71: { float wx=z.x+nam*native_sin(z.y*nfq)*native_cos(z.z*nfq*0.5f); float wy=z.y+nam*native_cos(z.x*nfq*0.7f)*native_sin(z.z*nfq); float v=native_sin(wx*na)*native_cos(wy*nb); aux.DE *= (1.0f + nf*v); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_72)
 					case 72: { float r=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float wr=r+nam*native_sin(r*nfq); float h=native_sin(wr*na*127.1f)*43758.5453f; h=h-native_floor(h); aux.DE *= (1.0f + nf*h); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_73)
 					case 73: { float v=native_sin(z.x*nfq+nam*native_sin(z.y*nfq+nam*native_sin(z.z*nfq))); aux.DE *= (1.0f + nf*v); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_74)
 					case 74: { float t=nd*i*0.01f; float wx=z.x+nam*native_sin(z.y*nfq+t); float wy=z.y+nam*native_sin(z.z*nfq+t*1.3f); float wz=z.z+nam*native_sin(z.x*nfq+t*0.7f); float h=native_sin(wx*127.1f+wy*311.7f+wz*74.7f)*43758.5453f; h=h-native_floor(h); aux.DE *= (1.0f + nf*h); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_75)
 					case 75: { float scale=nfq; float wx=z.x*scale; float wy=z.y*scale; float wz=z.z*scale; for(int k=0;k<3;k++){ wx=native_sin(wx*na+wy); wy=native_cos(wy*nb+wz); wz=native_sin(wz*nc+wx); } float h=native_sin(wx+wy+wz)*0.5f+0.5f; aux.DE *= (1.0f + nf*h*nam); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_76)
 					case 76: { float h1=native_sin(z.x*nfq+z.y*nfq*0.5f)*0.5f+0.5f; float h2=native_sin(z.y*nfq*1.3f+z.z*nfq*0.7f)*0.5f+0.5f; float v=native_sin((z.x+h1*nam)*na)*native_cos((z.y+h2*nam)*nb); aux.DE *= (1.0f + nf*v); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_77)
 					case 77: { float wx=z.x+nam*native_sin(nfq*z.y); float wy=z.y+nam*native_cos(nfq*z.x); float v1=native_sin(wx*na); float v2=native_cos(wy*nb); float v=v1*v2; z.x+=nf*v*nc*0.01f; z.y+=nf*v*nd*0.01f; aux.DE *= (1.0f + nf*fabs(v)*0.1f); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_78)
 					case 78: { float r2=z.x*z.x+z.y*z.y+z.z*z.z; float h=native_sin(r2*nfq)*43758.5453f; h=h-native_floor(h); float wx=z.x*(1.0f+h*nam); float wy=z.y*(1.0f+h*nam); float v=native_sin(wx*na+wy*nb)*0.5f+0.5f; aux.DE *= (1.0f + nf*v); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_79)
 					case 79: { float v=0,f=nfq; for(int k=0;k<4;k++){ float h=native_sin(z.x*f+native_sin(z.y*f*na)*nam); v+=h/(1.0f+k); f*=2.0f; } aux.DE *= (1.0f + nf*v*0.25f); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_80)
 					case 80: { float wx=z.x+nam*native_sin(z.y*nfq)*native_sin(z.z*nfq*0.5f); float wy=z.y+nam*native_sin(z.z*nfq*0.7f)*native_sin(z.x*nfq); float wz=z.z+nam*native_sin(z.x*nfq*1.3f)*native_sin(z.y*nfq*0.9f); float v=native_sin(wx*na)*native_sin(wy*nb)*native_sin(wz*nc); aux.DE *= (1.0f + nf*v); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_81)
 					case 81: { float s=(z.x+z.y+z.z)/3.0f; float ix=native_floor(z.x+s); float iy=native_floor(z.y+s); float iz=native_floor(z.z+s); float t=(ix+iy+iz)/6.0f; float x0=z.x-ix+t; float y0=z.y-iy+t; float z0=z.z-iz+t; float h=native_sin(ix*127.1f+iy*311.7f+iz*74.7f)*43758.5453f; h=h-native_floor(h); float v=fmax(0.0f,0.6f-x0*x0-y0*y0-z0*z0); v=v*v*v*v*h; aux.DE *= (1.0f + nf*v*nam*32.0f); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_82)
 					case 82: { float s=(z.x+z.y+z.z)*nfq/3.0f; float v=native_sin(s*127.1f)*43758.5453f; v=v-native_floor(v); float v2=native_sin(s*269.5f)*43758.5453f; v2=v2-native_floor(v2); aux.DE *= (1.0f + nf*(v*na+v2*nb)*0.5f*nam); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_83)
 					case 83: { float skew=(z.x+z.y)*nfq*(native_sqrt(3.0f)-1.0f)/2.0f; float ix=native_floor(z.x*nfq+skew); float iy=native_floor(z.y*nfq+skew); float unskew=(ix+iy)*(3.0f-native_sqrt(3.0f))/6.0f; float x0=z.x*nfq-ix+unskew; float y0=z.y*nfq-iy+unskew; float h=native_sin(ix*127.1f+iy*311.7f)*43758.5453f; h=h-native_floor(h); float t0=0.5f-x0*x0-y0*y0; float v=t0>0?t0*t0*t0*t0*h:0; aux.DE *= (1.0f + nf*v*nam*70.0f); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_84)
 					case 84: { float v=0,f=nfq,a=nam; for(int k=0;k<5;k++){ float s=(z.x*f+z.y*f+z.z*f)/3.0f; float h=native_sin(s*127.1f+k*519.3f)*43758.5453f; h=h-native_floor(h); v+=a*h; f*=2.0f; a*=0.5f; } aux.DE *= (1.0f + nf*v); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_85)
 					case 85: { float v=0,f=nfq,a=nam; for(int k=0;k<5;k++){ float s=(z.x*f+z.y*f+z.z*f)/3.0f; float h=native_sin(s*127.1f+k*519.3f)*43758.5453f; h=h-native_floor(h); v+=a*fabs(h*2.0f-1.0f); f*=2.0f; a*=0.5f; } aux.DE *= (1.0f + nf*v); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_86)
 					case 86: { float v=0,f=nfq,a=nam; for(int k=0;k<5;k++){ float s=(z.x*f+z.y*f+z.z*f)/3.0f; float h=native_sin(s*127.1f+k*519.3f)*43758.5453f; h=h-native_floor(h); float ridge=1.0f-fabs(h*2.0f-1.0f); ridge*=ridge; v+=a*ridge; f*=2.0f; a*=0.5f; } aux.DE *= (1.0f + nf*v); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_87)
 					case 87: { float s=(z.x+z.y+z.z)*nfq; float v1=native_sin(s*na)*0.5f+0.5f; float v2=native_sin(s*nb+M_PI_F*0.5f)*0.5f+0.5f; float v=v1*v2; aux.DE *= (1.0f + nf*v*nam); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_88)
 					case 88: { float v=0; float px=z.x*nfq,py=z.y*nfq,pz=z.z*nfq; for(int k=0;k<4;k++){ float s=(px+py+pz)/3.0f; float h=native_sin(s*127.1f+k*91.7f)*43758.5453f; h=h-native_floor(h); v+=h*nam/(1.0f+k); px+=native_sin(py)*na; py+=native_sin(pz)*nb; pz+=native_sin(px)*nc; } aux.DE *= (1.0f + nf*v*0.25f); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_89)
 					case 89: { float r=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float th=atan2(z.y,z.x); float s=(r*nfq+th*na)/3.0f; float h=native_sin(s*127.1f)*43758.5453f; h=h-native_floor(h); aux.DE *= (1.0f + nf*h*nam); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_90)
 					case 90: { float v=0,f=nfq,a=nam; float cs=native_cos(nd*M_PI_F/180.0f),sn=native_sin(nd*M_PI_F/180.0f); float px=z.x,py=z.y; for(int k=0;k<5;k++){ float s=(px*f+py*f+z.z*f)/3.0f; float h=native_sin(s*127.1f+k*519.3f)*43758.5453f; h=h-native_floor(h); v+=a*h; float nx=px*cs-py*sn; py=px*sn+py*cs; px=nx; f*=2.0f; a*=0.5f; } aux.DE *= (1.0f + nf*v); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_91)
 					case 91: { float vn=native_sin(z.x*nfq*127.1f+z.y*nfq*311.7f+z.z*nfq*74.7f)*43758.5453f; vn=vn-native_floor(vn); float md=1e10f; for(int dx=-1;dx<=1;dx++) for(int dy=-1;dy<=1;dy++){ float cx=native_floor(z.x*nfq)+dx; float cy=native_floor(z.y*nfq)+dy; float h=native_sin(cx*127.1f+cy*311.7f)*43758.5453f; h=h-native_floor(h); cx+=h; float d=(z.x*nfq-cx)*(z.x*nfq-cx)+(z.y*nfq-cy)*(z.y*nfq-cy); if(d<md)md=d; } aux.DE *= (1.0f + nf*(vn*na+native_sqrt(md)*nb)*nam); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_92)
 					case 92: { float v=0,f=nfq,a=nam; for(int k=0;k<5;k++){ float h=native_sin(z.x*f*127.1f+z.y*f*311.7f+z.z*f*74.7f)*43758.5453f; h=h-native_floor(h); v+=a*native_sin(h*M_PI_F*2.0f*na); f*=2.0f; a*=0.5f; } aux.DE *= (1.0f + nf*v); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_93)
 					case 93: { float t=nd*i*0.1f; float v=0,f=nfq,a=nam; for(int k=0;k<5;k++){ float h=native_sin(z.x*f*127.1f+z.y*f*311.7f+z.z*f*74.7f+t)*43758.5453f; h=h-native_floor(h); v+=a*h; f*=2.0f; a*=0.5f; } aux.DE *= (1.0f + nf*v); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_94)
 					case 94: { float v1=0,v2=0,f=nfq,a=nam; for(int k=0;k<4;k++){ float h=native_sin(z.x*f*127.1f+z.y*f*311.7f+z.z*f*74.7f)*43758.5453f; h=h-native_floor(h); v1+=a*h; v2+=a*fabs(h*2.0f-1.0f); f*=2.0f; a*=0.5f; } float blend=native_sin(z.x*na+z.y*nb)*0.5f+0.5f; aux.DE *= (1.0f + nf*(v1*blend+v2*(1.0f-blend))); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_95)
 					case 95: { float v=0,f=nfq,a=nam; for(int k=0;k<5;k++){ float h=native_sin(z.x*f*127.1f+z.y*f*311.7f+z.z*f*74.7f)*43758.5453f; h=h-native_floor(h); float erosion=native_exp(-na*h); v+=a*erosion; f*=2.0f; a*=0.5f; } aux.DE *= (1.0f + nf*v); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_96)
 					case 96: { float v=0,f=nfq; for(int k=0;k<5;k++){ float h=native_sin(z.x*f*127.1f+z.y*f*311.7f+z.z*f*74.7f)*43758.5453f; h=h-native_floor(h); float terrace=native_floor(h*na+0.5f)/fmax(na,1e-21f); v+=terrace/(1.0f+k); f*=2.0f; } aux.DE *= (1.0f + nf*v*nam*0.2f); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_97)
 					case 97: { float v=0,f=nfq,a=nam; for(int k=0;k<5;k++){ float h=native_sin(z.x*f*127.1f+z.y*f*311.7f+z.z*f*74.7f)*43758.5453f; h=h-native_floor(h); float swiss=fabs(h*2.0f-1.0f); swiss=1.0f-swiss*swiss; v+=a*swiss; f*=2.0f; a*=0.5f; } aux.DE *= (1.0f + nf*v); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_98)
 					case 98: { float v=0,f=nfq,a=nam; float px=z.x,py=z.y,pz=z.z; for(int k=0;k<5;k++){ float h=native_sin(px*f*127.1f+py*f*311.7f+pz*f*74.7f)*43758.5453f; h=h-native_floor(h); v+=a*h; float wx=native_sin(py*f*na)*nb*a; float wy=native_sin(pz*f*na)*nb*a; float wz=native_sin(px*f*na)*nb*a; px+=wx; py+=wy; pz+=wz; f*=2.0f; a*=0.5f; } aux.DE *= (1.0f + nf*v); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_99)
 					case 99: { float v=0,f=nfq,a=nam; float offset=0; for(int k=0;k<5;k++){ float h=native_sin(z.x*f*127.1f+z.y*f*311.7f+z.z*f*74.7f+offset)*43758.5453f; h=h-native_floor(h); float r=fabs(h*2.0f-1.0f); r=offset+r*r*na; v+=a*r; offset=r; f*=2.0f; a*=0.5f; } aux.DE *= (1.0f + nf*v); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_NOISETYPE_100)
 					case 100: { float v1=0,v2=0,f=nfq,a=nam; for(int k=0;k<5;k++){ float h=native_sin(z.x*f*127.1f+z.y*f*311.7f+z.z*f*74.7f)*43758.5453f; h=h-native_floor(h); v1+=a*h; float ridge=1.0f-fabs(h*2.0f-1.0f); v2+=a*ridge*ridge; f*=2.0f; a*=0.5f; } float t=native_sin(z.x*na+z.y*nb+z.z*nc)*0.5f+0.5f; aux.DE *= (1.0f + nf*(v1*(1.0f-t)+v2*t)); break; }
+#endif
 
 					default: break;
 #endif
@@ -7168,209 +8056,277 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_32)
 					case 32: { float r=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float d=fabs(r-oa); aux.DE *= (1.0f + of*native_exp(-od*d)); break; }
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_33)
 					case 33: { float r=native_sqrt(z.x*z.x+z.y*z.y); float d=native_sqrt((r-oa)*(r-oa)+z.z*z.z)-ob; aux.DE *= (1.0f + of*native_exp(-od*fabs(d))); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_34)
 					case 34: { float r=native_sqrt(z.x*z.x+z.y*z.y); float th=atan2(z.y,z.x); float sf2=native_pow(fabs(native_cos(oa*th/4.0f)),ob)+native_pow(fabs(native_sin(oa*th/4.0f)),ob); float sr=oc*native_pow(sf2,-1.0f/fmax(ob,1e-21f)); float d=fabs(r-sr); aux.DE *= (1.0f + of*native_exp(-od*d)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_35)
 					case 35: { float ph=atan2(z.y,z.x); float r=native_sqrt(z.x*z.x+z.y*z.y); int n=(int)fmax(3,fmin(oa,12)); float star_r=ob*(1.0f+oc*native_cos(n*ph)); float d=fabs(r-star_r); aux.DE *= (1.0f + of*native_exp(-od*d)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_36)
 					case 36: { float r=native_sqrt(z.x*z.x+z.y*z.y); float ph=atan2(z.y,z.x); float lemnR=oa*oa*native_cos(2.0f*ph); float d=fabs(r*r-lemnR); aux.DE *= (1.0f + of*native_exp(-od*d*0.5f)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_37)
 					case 37: { float r=native_sqrt(z.x*z.x+z.y*z.y); float ph=atan2(z.y,z.x); float rose_r=oa*native_sin(ob*ph); float d=fabs(r-fabs(rose_r)); aux.DE *= (1.0f + of*native_exp(-od*d)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_38)
 					case 38: { float ph=atan2(z.y,z.x); float r=native_sqrt(z.x*z.x+z.y*z.y); float spiral_r=oa*native_exp(ob*ph); float d=fabs(r-spiral_r); aux.DE *= (1.0f + of*native_exp(-od*d)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_39)
 					case 39: { float r=native_sqrt(z.x*z.x+z.y*z.y); float ph=atan2(z.y,z.x); float heart_r=oa*(1.0f-native_sin(ph)); float d=fabs(r-heart_r); aux.DE *= (1.0f + of*native_exp(-od*d)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_40)
 					case 40: { float d1=native_sqrt(z.x*z.x+z.y*z.y)-oa; float d2=native_sqrt(z.y*z.y+z.z*z.z)-oa; float d3=native_sqrt(z.x*z.x+z.z*z.z)-oa; float d=fmin(fabs(d1),fmin(fabs(d2),fabs(d3))); aux.DE *= (1.0f + of*native_exp(-od*d)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_41)
 					case 41: { float r=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float d1=fabs(r-oa); float d2=fabs(r-ob); aux.DE *= (1.0f + of*native_exp(-od*d1)*native_exp(-od*d2)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_42)
 					case 42: { float r=native_sqrt(z.x*z.x+z.y*z.y); float d=r*r-(oa*z.x+ob*z.y); d=fabs(d)/fmax(r+1e-21f, 1e-21f); aux.DE *= (1.0f + of*native_exp(-od*d)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_43)
 					case 43: { float ex=z.x*z.x/(oa*oa+1e-21f); float ey=z.y*z.y/(ob*ob+1e-21f); float d=fabs(ex+ey-1.0f)*native_sqrt(oa*oa+ob*ob); aux.DE *= (1.0f + of*native_exp(-od*d)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_44)
 					case 44: { float r=native_sqrt(z.x*z.x+z.y*z.y); float t2=native_sqrt((r-oa)*(r-oa)+z.z*z.z); float d=fabs(t2-ob)+fabs(z.z)*oc; aux.DE *= (1.0f + of*native_exp(-od*d)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_45)
 					case 45: { float r=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float ph=atan2(z.y,z.x); float th=native_acos(z.z/fmax(r,1e-21f)); float d=fabs(r-oa*(1.0f+ob*native_sin(oc*ph)*native_cos(od*th))); aux.DE *= (1.0f + of*native_exp(-d)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_46)
 					case 46: { float d=fabs(z.x*z.x+z.y*z.y-oa*z.z*z.z); d=native_sqrt(d); aux.DE *= (1.0f + of*native_exp(-od*d)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_47)
 					case 47: { float d=fabs(z.x*z.x/fmax(oa*oa,1e-21f)+z.y*z.y/fmax(ob*ob,1e-21f)-z.z*z.z/fmax(oc*oc,1e-21f)-1.0f); aux.DE *= (1.0f + of*native_exp(-od*d)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_48)
 					case 48: { float r=native_sqrt(z.x*z.x+z.y*z.y); float ph=atan2(z.y,z.x); float cyl_r=oa+ob*native_sin(oc*z.z)*native_cos(od*ph); float d=fabs(r-cyl_r); aux.DE *= (1.0f + of*native_exp(-d)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_49)
 					case 49: { float d1=fabs(fmax(fabs(z.x),fabs(z.y))-oa); float d2=fabs(fmax(fabs(z.y),fabs(z.z))-oa); float d3=fabs(fmax(fabs(z.x),fabs(z.z))-oa); float d=fmin(d1,fmin(d2,d3)); aux.DE *= (1.0f + of*native_exp(-od*d)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_50)
 					case 50: { float dx=fabs(fabs(z.x)-oa); float dy=fabs(fabs(z.y)-oa); float dz=fabs(fabs(z.z)-oa); float d=dx+dy+dz; aux.DE *= (1.0f + of*native_exp(-od*d)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_51)
 					case 51: { float d1=fabs(z.x); float d2=fabs(z.y); float d=fmin(d1,d2); aux.DE *= (1.0f + of*native_exp(-od*d)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_52)
 					case 52: { float d1=fmin(fabs(z.x),fabs(z.y)); float d2=fabs(z.z); aux.DE *= (1.0f + of*native_exp(-od*(d1+d2*oa))); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_53)
 					case 53: { float gx=fabs(z.x-oa*round(z.x/fmax(oa,1e-21f))); float gy=fabs(z.y-ob*round(z.y/fmax(ob,1e-21f))); float d=fmin(gx,gy); aux.DE *= (1.0f + of*native_exp(-od*d)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_54)
 					case 54: { float gx=fabs(z.x-oa*round(z.x/fmax(oa,1e-21f))); float gy=fabs(z.y-oa*round(z.y/fmax(oa,1e-21f))); float gz=fabs(z.z-oa*round(z.z/fmax(oa,1e-21f))); float d=fmin(gx,fmin(gy,gz)); aux.DE *= (1.0f + of*native_exp(-od*d)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_55)
 					case 55: { float cs=native_cos(oa*M_PI_F/180.0f),sn=native_sin(oa*M_PI_F/180.0f); float rx=z.x*cs-z.y*sn; float ry=z.x*sn+z.y*cs; float d=fmin(fabs(rx),fabs(ry)); aux.DE *= (1.0f + of*native_exp(-od*d)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_56)
 					case 56: { float ph=atan2(z.y,z.x); int n=(int)fmax(3,fmin(oa,16)); float d=native_sqrt(z.x*z.x+z.y*z.y)*fabs(native_sin(n*ph*0.5f)); aux.DE *= (1.0f + of*native_exp(-od*d)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_57)
 					case 57: { float d1=fabs(z.x-z.y); float d2=fabs(z.x+z.y); float d=fmin(d1,d2)*0.7071f; aux.DE *= (1.0f + of*native_exp(-od*d)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_58)
 					case 58: { float gx=oa>0.001f?fabs(native_sin(z.x*M_PI_F/oa)):fabs(z.x); float gy=ob>0.001f?fabs(native_sin(z.y*M_PI_F/ob)):fabs(z.y); float d=gx*gy; aux.DE *= (1.0f + of*native_exp(-od*d)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_59)
 					case 59: { float d1=fmin(fabs(z.x-oa),fabs(z.x+oa)); float d2=fmin(fabs(z.y-ob),fabs(z.y+ob)); float d3=fmin(fabs(z.z-oc),fabs(z.z+oc)); float d=fmin(d1,fmin(d2,d3)); aux.DE *= (1.0f + of*native_exp(-od*d)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_60)
 					case 60: { float r=native_sqrt(z.x*z.x+z.y*z.y); float ph=atan2(z.y,z.x); int n=(int)fmax(3,fmin(oa,16)); float seg=2.0f*M_PI_F/n; float sph=fmod(ph+M_PI_F+seg*0.5f,seg)-seg*0.5f; float d=r*fabs(native_sin(sph)); aux.DE *= (1.0f + of*native_exp(-od*d)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_61)
 					case 61: { float d=fabs(z.x*z.x-z.y*z.y-oa*oa); aux.DE *= (1.0f + of*native_exp(-od*d)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_62)
 					case 62: { float hx=z.x*2.0f/3.0f+z.y/3.0f; float hy=z.y*2.0f/native_sqrt(3.0f); float d=fmin(fabs(hx-round(hx)),fabs(hy-round(hy)))*oa; aux.DE *= (1.0f + of*native_exp(-od*d)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_63)
 					case 63: { float d=native_sin(z.x*oa*M_PI_F)*native_sin(z.y*ob*M_PI_F)*native_sin(z.z*oc*M_PI_F); aux.DE *= (1.0f + of*fabs(d)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_64)
 					case 64: { float r=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float ph=atan2(z.y,z.x); float th=native_acos(z.z/fmax(r,1e-21f)); float d=fabs(native_sin(oa*ph)*native_sin(ob*th))*r; aux.DE *= (1.0f + of*native_exp(-od*d)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_65)
 					case 65: { float gx=fabs(z.x-oa*round(z.x/fmax(oa,1e-21f))); float gy=fabs(z.y-ob*round(z.y/fmax(ob,1e-21f))); float d=native_sqrt(gx*gx+gy*gy); aux.DE *= (1.0f + of*native_exp(-od*d)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_66)
 					case 66: { float d=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float w=native_exp(-oa*(float)i); aux.DE *= (1.0f + of*native_exp(-od*d)*w); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_67)
 					case 67: { float d=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float phase=native_sin(ob*(float)i*M_PI_F/180.0f)*0.5f+0.5f; aux.DE *= (1.0f + of*native_exp(-od*d)*phase); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_68)
 					case 68: { float d=native_sqrt((z.x-oa*native_sin(ob*i))*(z.x-oa*native_sin(ob*i))+(z.y-oa*native_cos(ob*i))*(z.y-oa*native_cos(ob*i))+z.z*z.z); aux.DE *= (1.0f + of*native_exp(-od*d)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_69)
 					case 69: { float d=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float trap_r=oa+ob*(float)i; float ring=fabs(d-trap_r); aux.DE *= (1.0f + of*native_exp(-od*ring)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_70)
 					case 70: { float d=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); if(d < oa) { aux.DE *= (1.0f + of*native_exp(-od*(oa-d))); } break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_71)
 					case 71: { float d=fabs(z.x)+fabs(z.y)+fabs(z.z); float w = (i%2==0) ? 1.0f : -0.5f; aux.DE *= (1.0f + of*w*native_exp(-od*d)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_72)
 					case 72: { float d=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float v=native_sin(d*oa+ob*(float)i); aux.DE *= (1.0f + of*v*v); break; }
+#endif
 
-					case 73: { float r=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float prevR=in.point.Length(); float dr=fabs(r-prevR); aux.DE *= (1.0f + of*native_exp(-od*dr)); break; }
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_73)
+					case 73: { float r=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float prevR=length(pointTransformed); float dr=fabs(r-prevR); aux.DE *= (1.0f + of*native_exp(-od*dr)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_74)
 					case 74: { float d=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float n=fmax(1.0f,oa*10.0f); float trap=fabs(d-round(d*n)/n)*n; aux.DE *= (1.0f + of*native_exp(-od*trap)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_75)
 					case 75: { float d=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float v=1.0f/(1.0f+native_exp(-oa*(d-ob))); aux.DE *= (1.0f + of*(v-0.5f)*2.0f); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_76)
 					case 76: { float d=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float decay=native_exp(-oa*d); float osc=native_sin(ob*d+oc*(float)i); aux.DE *= (1.0f + of*decay*osc); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_77)
 					case 77: { float d=fabs(z.x*z.y)+fabs(z.y*z.z)+fabs(z.z*z.x); aux.DE *= (1.0f + of*native_exp(-od*d)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_78)
 					case 78: { float d=z.x*z.x+z.y*z.y+z.z*z.z; float v=native_exp(-oa*d)*native_sin(ob*native_sqrt(d)); aux.DE *= (1.0f + of*v); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_79)
 					case 79: { float r=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float ph=atan2(z.y,z.x); float d=fabs(r-oa)*fabs(native_sin(ob*ph)); aux.DE *= (1.0f + of*native_exp(-od*d)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_80)
 					case 80: { float d=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float cs=native_cos(oa*(float)i*M_PI_F/180.0f); float sn=native_sin(oa*(float)i*M_PI_F/180.0f); float rd=fabs((z.x*cs-z.y*sn)); aux.DE *= (1.0f + of*native_exp(-od*rd)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_81)
 					case 81: { float d=fabs(z.x*z.x+z.y*z.y-oa*oa*z.z); aux.DE *= (1.0f + of*native_exp(-od*d)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_82)
 					case 82: { float r=native_sqrt(z.x*z.x+z.y*z.y); float ph=atan2(z.y,z.x); float d=fabs(r-oa*fabs(native_cos(ob*ph/2.0f))); aux.DE *= (1.0f + of*native_exp(-od*d)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_83)
 					case 83: { float mx=fabs(z.x); float my=fabs(z.y); float mz=fabs(z.z); if(mx<my){float t=mx;mx=my;my=t;} if(mx<mz){float t=mx;mx=mz;mz=t;} float d=mx-oa; aux.DE *= (1.0f + of*native_exp(-od*fabs(d))); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_84)
 					case 84: { float d1=native_sqrt(z.x*z.x+z.y*z.y)-oa; float d2=fabs(z.z)-ob; float d=native_sqrt(fmax(d1,0.0f)*fmax(d1,0.0f)+fmax(d2,0.0f)*fmax(d2,0.0f))+fmin(fmax(d1,d2),0.0f); aux.DE *= (1.0f + of*native_exp(-od*fabs(d))); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_85)
 					case 85: { float r=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float ph=atan2(z.y,z.x); float th=native_acos(z.z/fmax(r,1e-21f)); int nph=(int)fmax(2,oa*4); int nth=(int)fmax(2,ob*4); float dph=fabs(native_sin(nph*ph*0.5f)); float dth=fabs(native_sin(nth*th*0.5f)); float d=r*dph*dth; aux.DE *= (1.0f + of*native_exp(-od*d)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_86)
 					case 86: { float d=fabs(native_sin(z.x*oa)*native_sin(z.y*ob)*native_sin(z.z*oc)); aux.DE *= (1.0f + of*d); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_87)
 					case 87: { float d1=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z)-oa; float d2=fmax(fabs(z.x),fmax(fabs(z.y),fabs(z.z)))-ob; float d=fmax(d1,-d2); aux.DE *= (1.0f + of*native_exp(-od*fabs(d))); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_88)
 					case 88: { float r=native_sqrt(z.x*z.x+z.y*z.y); float d=native_sqrt((r-oa)*(r-oa)+z.z*z.z); float knot=fabs(d-ob*fabs(native_sin(oc*atan2(z.z,r-oa)))); aux.DE *= (1.0f + of*native_exp(-od*knot)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_89)
 					case 89: { float d=native_pow(fabs(z.x),oa)+native_pow(fabs(z.y),oa)+native_pow(fabs(z.z),oa); d=native_pow(d,1.0f/fmax(oa,1e-21f))-ob; aux.DE *= (1.0f + of*native_exp(-od*fabs(d))); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_90)
 					case 90: { float r=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float th=atan2(z.y,z.x); float d=fabs(r-oa*(native_sin(ob*th)*native_sin(ob*th)+oc)); aux.DE *= (1.0f + of*native_exp(-od*d)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_91)
 					case 91: { float d1=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float d2=native_sqrt((z.x-oa)*(z.x-oa)+(z.y-ob)*(z.y-ob)+(z.z-oc)*(z.z-oc)); float d=fabs(d1-d2); aux.DE *= (1.0f + of*native_exp(-od*d)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_92)
 					case 92: { float d=fabs(z.x*z.y*z.z); d=native_pow(d,1.0f/3.0f); aux.DE *= (1.0f + of*native_exp(-od*d)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_93)
 					case 93: { float r=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float ph=atan2(z.y,z.x); float clover=oa*fabs(native_sin(ob*ph)); float d=fabs(r-clover); aux.DE *= (1.0f + of*native_exp(-od*d)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_94)
 					case 94: { float d1=fabs(z.x)-oa; float d2=fabs(z.y)-ob; float d3=fabs(z.z)-oc; float outside=native_sqrt(fmax(d1,0.0f)*fmax(d1,0.0f)+fmax(d2,0.0f)*fmax(d2,0.0f)+fmax(d3,0.0f)*fmax(d3,0.0f)); float inside=fmin(fmax(d1,fmax(d2,d3)),0.0f); float d=outside+inside; aux.DE *= (1.0f + of*native_exp(-od*fabs(d))); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_95)
 					case 95: { float md=1e10f; for(int k=0;k<(int)fmax(2,fmin(oa*4,8));k++){ float ang=k*2.0f*M_PI_F/fmax(oa*4,2); float cx=ob*native_cos(ang); float cy=ob*native_sin(ang); for(int j=0;j<(int)fmax(2,fmin(oc*4,8));j++){ float az=j*2.0f*M_PI_F/fmax(oc*4,2); float cz=od*native_sin(az); float d=(z.x-cx)*(z.x-cx)+(z.y-cy)*(z.y-cy)+(z.z-cz)*(z.z-cz); if(d<md)md=d; }} aux.DE *= (1.0f + of*native_exp(-native_sqrt(md))); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_96)
 					case 96: { float r=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float d=native_sin(r*oa)*native_sin(z.x*ob)*native_sin(z.y*oc); aux.DE *= (1.0f + of*fabs(d)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_97)
 					case 97: { float r=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float ph=atan2(z.y,z.x); float th=native_acos(z.z/fmax(r,1e-21f)); float Y=native_sin(th)*native_cos(oa*ph); float d=fabs(r-ob*(1.0f+oc*Y)); aux.DE *= (1.0f + of*native_exp(-od*d)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_98)
 					case 98: { float d=0; for(int k=1;k<=(int)fmax(1,fmin(oa*4,6));k++){ float rk=ob*(float)k; float dk=fabs(native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z)-rk); d+=native_exp(-oc*dk); } aux.DE *= (1.0f + of*d/(oa*4+1e-21f)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_99)
 					case 99: { float r=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float d=fabs(r-oa); float v=native_exp(-ob*d)*native_cos(oc*d); z.x += of*v*z.x/fmax(r,1e-21f)*0.01f; z.y += of*v*z.y/fmax(r,1e-21f)*0.01f; z.z += of*v*z.z/fmax(r,1e-21f)*0.01f; aux.DE *= (1.0f + of*fabs(v)*0.1f); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ORBITTRAPTYPE_100)
 					case 100: { float d1=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z)-oa; float d2=native_sqrt((z.x-ob)*(z.x-ob)+z.y*z.y+z.z*z.z)-oc; float d=fmin(fabs(d1),fabs(d2)); float blend=native_sin(z.x*od+z.y*od)*0.5f+0.5f; aux.DE *= (1.0f + of*(d1*(1.0f-blend)+d2*blend)*native_exp(-d)); break; }
+#endif
 
 					default: break;
 #endif
@@ -7478,209 +8434,277 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_32)
 					case 32: { float edge = fabs(z.x-round(z.x*ta)/fmax(ta,1e-21f)) + fabs(z.y-round(z.y*ta)/fmax(ta,1e-21f)); aux.DE *= (1.0f + tf*edge*tb); break; }
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_33)
 					case 33: { float h = native_sin(z.x*ta*10.0f)*native_sin(z.y*tb*10.0f)*native_sin(z.z*tc*10.0f); aux.DE += tf*h*td; break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_34)
 					case 34: { float perturb = native_sin(z.x*ta*20.0f)*native_cos(z.y*tb*20.0f)*native_sin(z.z*tc*20.0f); aux.DE *= (1.0f + tf*perturb*td); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_35)
 					case 35: { float depth = native_sin(z.x*ta+z.y*tb)*0.5f+0.5f; aux.DE *= (1.0f + tf*depth*tc); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_36)
 					case 36: { float n = fmax(fabs(ta), 0.1f); aux.DE /= n; break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_37)
 					case 37: { float dist = native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); aux.DE *= native_exp(-tf*fabs(ta)*dist); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_38)
 					case 38: { float cos_th = z.z/fmax(native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z),1e-21f); float phase = (1.0f-ta*ta)/(1.0f+ta*ta-2.0f*ta*cos_th+1e-21f); aux.DE *= (1.0f + tf*phase*tb); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_39)
 					case 39: { float emission = native_sin(z.x*ta)*native_sin(z.y*ta)*native_sin(z.z*ta); emission = emission*emission; aux.DE /= (1.0f + tf*emission*tb); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_40)
 					case 40: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float theta = atan2(z.z,r2d-ta); float twist = native_sin(tb*phi + tc*theta); aux.DE *= (1.0f + tf*twist*twist); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_41)
 					case 41: { float R = fabs(ta)+0.1f; float r_min = fabs(tb)+0.01f; float ratio = R/r_min; aux.DE *= (1.0f + tf*ratio*0.1f); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_42)
 					case 42: { float R = fabs(ta)+0.1f; float r_min = fabs(tb)+0.01f; float ratio = r_min/R; aux.DE *= (1.0f + tf*ratio); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_43)
 					case 43: { float phi = atan2(z.y,z.x); float revolutions = ta*phi/(2.0f*M_PI_F); aux.DE *= (1.0f + tf*native_sin(revolutions*2.0f*M_PI_F)*tb); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_44)
 					case 44: { float r2 = z.x*z.x+z.y*z.y+z.z*z.z+1e-21f; float w = native_sin(ta*r2); float hopf = native_cos(tb*atan2(z.y,z.x))*native_sin(tc*native_acos(z.z/native_sqrt(r2))); aux.DE *= (1.0f + tf*w*hopf); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_45)
 					case 45: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float helix_r = ta + tb*native_sin(tc*phi); float d = fabs(r2d - helix_r); aux.DE *= (1.0f + tf*native_exp(-td*d)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_46)
 					case 46: { float phi = atan2(z.y,z.x); float half_twist = native_sin(phi*0.5f); float r2d = native_sqrt(z.x*z.x+z.y*z.y); float torus_d = fabs(r2d-ta); aux.DE *= (1.0f + tf*half_twist*half_twist*native_exp(-tb*torus_d)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_47)
 					case 47: { float phi = atan2(z.y,z.x); float R = ta; float r_k = tb*(1.0f+0.5f*native_cos(phi)); float r2d = native_sqrt(z.x*z.x+z.y*z.y); float d = fabs(r2d-R) + fabs(z.z)*r_k; aux.DE *= (1.0f + tf*native_exp(-tc*d)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_48)
 					case 48: { float phi = atan2(z.y,z.x); float genus = fmax(native_floor(fabs(ta)*3+1),1.0f); float fiber = native_sin(genus*phi)*native_cos(tb*z.z); aux.DE *= (1.0f + tf*fiber*fiber*tc); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_49)
 					case 49: { float phi = atan2(z.y,z.x); float wrapping = native_floor(fabs(ta)*4+2); float companion = native_sin(wrapping*phi)*tb; float r2d = native_sqrt(z.x*z.x+z.y*z.y); float d = fabs(r2d-tc-companion); aux.DE *= (1.0f + tf*native_exp(-td*d)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_50)
 					case 50: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float neg_curv = native_sin(ta*phi)*native_sin(tb*z.z)*native_exp(-tc*fabs(r2d-td)); aux.DE *= (1.0f + tf*neg_curv*neg_curv); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_51)
 					case 51: { float phi = atan2(z.y,z.x); float r2d = native_sqrt(z.x*z.x+z.y*z.y); float p=fmax(native_floor(fabs(ta)*3+2),2.0f); float q=fmax(native_floor(fabs(tb)*3+3),3.0f); float knot_r = tc + td*native_cos(q*phi); float knot_z2 = td*native_sin(q*phi); float d = native_sqrt((r2d-knot_r)*(r2d-knot_r)+(z.z-knot_z2)*(z.z-knot_z2)); aux.DE *= (1.0f + tf*native_exp(-d*5.0f)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_52)
 					case 52: { float phi = atan2(z.y,z.x); float r2d = native_sqrt(z.x*z.x+z.y*z.y); float trefoil_r = ta*(2.0f+native_cos(3.0f*phi)); float trefoil_z = ta*native_sin(3.0f*phi); float d = native_sqrt((r2d-trefoil_r)*(r2d-trefoil_r)+(z.z-trefoil_z)*(z.z-trefoil_z)); aux.DE *= (1.0f + tf*native_exp(-tb*d)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_53)
 					case 53: { float phi = atan2(z.y,z.x); float r2d = native_sqrt(z.x*z.x+z.y*z.y); float cinquefoil_r = ta*(2.0f+native_cos(5.0f*phi)); float cinquefoil_z = ta*native_sin(5.0f*phi); float d = native_sqrt((r2d-cinquefoil_r)*(r2d-cinquefoil_r)+(z.z-cinquefoil_z)*(z.z-cinquefoil_z)); aux.DE *= (1.0f + tf*native_exp(-tb*d)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_54)
 					case 54: { float phi = atan2(z.y,z.x); float r2d = native_sqrt(z.x*z.x+z.y*z.y); float fig8_r = ta*(2.0f+native_cos(2.0f*phi)); float fig8_z = ta*native_sin(4.0f*phi)*0.5f; float d = native_sqrt((r2d-fig8_r)*(r2d-fig8_r)+(z.z-fig8_z)*(z.z-fig8_z)); aux.DE *= (1.0f + tf*native_exp(-tb*d)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_55)
 					case 55: { float t2 = atan2(z.y,z.x)*ta; float r2d = native_sqrt(z.x*z.x+z.y*z.y); float lissajous_r = tb*(2.0f+native_sin(3.0f*t2)*native_cos(2.0f*t2)); float d = fabs(r2d-lissajous_r)+fabs(z.z)*tc; aux.DE *= (1.0f + tf*native_exp(-d*td)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_56)
 					case 56: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float theta = atan2(z.z,r2d-ta); float bump = native_sin(tb*phi)*native_sin(tc*theta); aux.DE *= (1.0f + tf*bump*bump*td); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_57)
 					case 57: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float R = ta; float r = tb; float torus_d = native_sqrt((r2d-R)*(r2d-R)+z.z*z.z)-r; float corrugation = native_sin(tc*atan2(z.y,z.x)*10.0f)*td; aux.DE *= (1.0f + tf*native_exp(-(torus_d-corrugation)*(torus_d-corrugation))); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_58)
 					case 58: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float wave_R = ta + tb*native_sin(tc*phi)*native_sin(td*z.z); float d = fabs(r2d-wave_R); aux.DE *= (1.0f + tf*native_exp(-d*5.0f)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_59)
 					case 59: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float spiral_R = ta + tb*phi/(2.0f*M_PI_F); float d = fabs(r2d-spiral_R)+fabs(z.z)*tc; aux.DE *= (1.0f + tf*native_exp(-d*td)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_60)
 					case 60: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float star_n = fmax(native_floor(fabs(ta)*5+3),3.0f); float phi = atan2(z.y,z.x); float star_R = tb*(1.0f+tc*native_cos(star_n*phi)); float d = fabs(r2d-star_R)+fabs(z.z)*td; aux.DE *= (1.0f + tf*native_exp(-d*5.0f)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_61)
 					case 61: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float R = ta; float r = tb; float torus_d = native_sqrt((r2d-R)*(r2d-R)+z.z*z.z)-r; float fracture = native_sin(z.x*tc*20.0f)*native_sin(z.y*tc*20.0f)*td; aux.DE *= (1.0f + tf*native_exp(-fabs(torus_d)*5.0f)*(1.0f+fracture)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_62)
 					case 62: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float egg_R = ta*(1.0f+tb*native_sin(phi)); float d = native_sqrt((r2d-egg_R)*(r2d-egg_R)+z.z*z.z)-tc; aux.DE *= (1.0f + tf*native_exp(-fabs(d)*td)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_63)
 					case 63: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float gear_n = fmax(native_floor(fabs(ta)*8+4),4.0f); float gear_R = tb*(1.0f+tc*fmax(native_cos(gear_n*phi)-0.5f,0.0f)); float d = fabs(r2d-gear_R); aux.DE *= (1.0f + tf*native_exp(-d*td*10.0f)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_64)
 					case 64: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float R = ta; float r = tb; float torus_d = native_sqrt((r2d-R)*(r2d-R)+z.z*z.z)-r; float erosion = native_sin(z.x*tc*5.0f)*native_sin(z.y*tc*5.0f)*native_sin(z.z*tc*5.0f); aux.DE *= (1.0f + tf*native_exp(-fabs(torus_d)*5.0f)*fabs(erosion)*td); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_65)
 					case 65: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float theta = atan2(z.z,r2d-ta); float superformula = native_pow(fabs(native_cos(tb*theta/4.0f)),tc)+native_pow(fabs(native_sin(tb*theta/4.0f)),tc); float sf_r = td*native_pow(superformula,-1.0f/fmax(tc,0.01f)); float d = native_sqrt((r2d-ta)*(r2d-ta)+z.z*z.z)-sf_r; aux.DE *= (1.0f + tf*native_exp(-fabs(d)*5.0f)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_66)
 					case 66: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float R = ta; float gravity = 1.0f/fmax((r2d-R)*(r2d-R)+z.z*z.z+0.01f, 0.01f); aux.DE *= (1.0f + tf*fmin(gravity*tb,10.0f)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_67)
 					case 67: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float B_field = ta*native_sin(tb*phi)/(fmax(fabs(r2d-tc),0.01f)); aux.DE *= (1.0f + tf*fmin(fabs(B_field),10.0f)*td); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_68)
 					case 68: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float vortex = ta*native_exp(-tb*((r2d-tc)*(r2d-tc)+z.z*z.z)); float circulation = native_sin(td*atan2(z.y,z.x)); aux.DE *= (1.0f + tf*vortex*circulation); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_69)
 					case 69: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float plasma = native_sin(ta*r2d)*native_cos(tb*phi)*native_sin(tc*z.z); float temperature = native_exp(-td*native_sqrt((r2d-1.0f)*(r2d-1.0f)+z.z*z.z)); aux.DE *= (1.0f + tf*plasma*temperature); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_70)
 					case 70: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float R = ta; float charge = tb/fmax(native_sqrt((r2d-R)*(r2d-R)+z.z*z.z),0.01f); float screen = native_exp(-tc*native_sqrt((r2d-R)*(r2d-R)+z.z*z.z)); aux.DE *= (1.0f + tf*charge*screen*td); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_71)
 					case 71: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float wave1 = native_sin(ta*phi + tb*z.z); float wave2 = native_sin(tc*phi - tb*z.z); float interference = (wave1+wave2)*(wave1+wave2)*0.25f; aux.DE *= (1.0f + tf*interference*td); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_72)
 					case 72: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float R = ta; float thermal = native_exp(-tb*((r2d-R)*(r2d-R)+z.z*z.z)); float fluctuation = native_sin(tc*z.x)*native_sin(tc*z.y)*native_sin(tc*z.z); aux.DE *= (1.0f + tf*thermal*(1.0f+td*fluctuation)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_73)
 					case 73: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); int modes = (int)fmax(2,fmin(ta*5,10)); float v = 0; for(int m=1;m<=modes;m++) v+=native_sin(m*phi*tb)*native_cos(m*z.z*tc)/m; aux.DE *= (1.0f + tf*v*v*td); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_74)
 					case 74: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float R = ta; float diffusion = 1.0f/(1.0f + tb*(float)i*0.01f); float concentration = native_exp(-tc*fabs(r2d-R))*diffusion; aux.DE *= (1.0f + tf*concentration*td); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_75)
 					case 75: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float reaction = native_sin(ta*phi)*native_sin(tb*z.z); float diffuse = native_exp(-tc*((r2d-td)*(r2d-td))); float rd = reaction*diffuse; aux.DE *= (1.0f + tf*rd*rd); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_76)
 					case 76: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float d1 = native_sqrt((r2d-ta)*(r2d-ta)+z.z*z.z)-tb; float d2 = native_sqrt((r2d-tc)*(r2d-tc)+z.z*z.z)-td; aux.DE *= (1.0f + tf*native_exp(-fmin(d1*d1,d2*d2)*5.0f)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_77)
 					case 77: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float ryz = native_sqrt(z.y*z.y+z.z*z.z); float d1 = native_sqrt((r2d-ta)*(r2d-ta)+z.z*z.z)-tb; float d2 = native_sqrt((ryz-ta)*(ryz-ta)+z.x*z.x)-tb; aux.DE *= (1.0f + tf*native_exp(-fmin(d1*d1,d2*d2)*tc)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_78)
 					case 78: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float rxz = native_sqrt(z.x*z.x+z.z*z.z); float ryz = native_sqrt(z.y*z.y+z.z*z.z); float d1=fabs(native_sqrt((r2d-ta)*(r2d-ta)+z.z*z.z)-tb); float d2=fabs(native_sqrt((rxz-ta)*(rxz-ta)+z.y*z.y)-tb); float d3=fabs(native_sqrt((ryz-ta)*(ryz-ta)+z.x*z.x)-tb); aux.DE *= (1.0f + tf*native_exp(-fmin(d1,fmin(d2,d3))*tc)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_79)
 					case 79: { float phi = atan2(z.y,z.x); float r2d = native_sqrt(z.x*z.x+z.y*z.y); int n = (int)fmax(2,fmin(ta*4,8)); float md = 1e10f; for(int k=0;k<n;k++){ float ang = k*2.0f*M_PI_F/n; float cx = tb*native_cos(ang); float cy = tb*native_sin(ang); float d = native_sqrt((z.x-cx)*(z.x-cx)+(z.y-cy)*(z.y-cy)+z.z*z.z)-tc; if(fabs(d)<md) md=fabs(d); } aux.DE *= (1.0f + tf*native_exp(-md*td)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_80)
 					case 80: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float R_var = ta + tb*native_sin(tc*phi); float torus_d = native_sqrt((r2d-R_var)*(r2d-R_var)+z.z*z.z)-td; aux.DE *= (1.0f + tf*native_exp(-torus_d*torus_d*5.0f)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_81)
 					case 81: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float d1 = native_sqrt((r2d-ta)*(r2d-ta)+z.z*z.z)-tb; float d2 = native_sqrt((r2d-ta)*(r2d-ta)+(z.z-tc)*(z.z-tc))-tb; aux.DE *= (1.0f + tf*native_exp(-fmin(fabs(d1),fabs(d2))*td)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_82)
 					case 82: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float R1 = ta; float r1 = tb; float R2 = tc; float r2 = td; float d1 = native_sqrt((r2d-R1)*(r2d-R1)+z.z*z.z)-r1; float d2 = native_sqrt((r2d-R2)*(r2d-R2)+z.z*z.z)-r2; float smooth = -native_log(fmax(native_exp(-d1*5.0f)+native_exp(-d2*5.0f),1e-21f))/5.0f; aux.DE *= (1.0f + tf*native_exp(-smooth*smooth)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_83)
 					case 83: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float torus_d = native_sqrt((r2d-ta)*(r2d-ta)+z.z*z.z)-tb; float sphere_d = native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z)-tc; float d = fmax(torus_d, -sphere_d); aux.DE *= (1.0f + tf*native_exp(-fabs(d)*td)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_84)
 					case 84: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float torus_d = native_sqrt((r2d-ta)*(r2d-ta)+z.z*z.z)-tb; float box_d = fmax(fabs(z.x)-tc,fmax(fabs(z.y)-tc,fabs(z.z)-td))-0.0f; float d = fmax(torus_d,box_d); aux.DE *= (1.0f + tf*native_exp(-fabs(d)*5.0f)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_85)
 					case 85: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float inner_r = tb*(1.0f+tc*native_sin(td*phi)); float torus_d = native_sqrt((r2d-ta)*(r2d-ta)+z.z*z.z)-inner_r; aux.DE *= (1.0f + tf*native_exp(-torus_d*torus_d*5.0f)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_86)
 					case 86: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float flow = native_sin(ta*phi-(float)i*tb*0.1f); float torus_d = native_sqrt((r2d-tc)*(r2d-tc)+z.z*z.z)-td; aux.DE *= (1.0f + tf*flow*flow*native_exp(-fabs(torus_d)*5.0f)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_87)
 					case 87: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float omega = ta*(float)i*0.01f; float R_t = tb*(1.0f+tc*native_sin(omega)); float torus_d = native_sqrt((r2d-R_t)*(r2d-R_t)+z.z*z.z)-td; aux.DE *= (1.0f + tf*native_exp(-torus_d*torus_d*5.0f)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_88)
 					case 88: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float stretch = 1.0f + ta*native_sin(tb*phi); float torus_d = native_sqrt((r2d-tc*stretch)*(r2d-tc*stretch)+z.z*z.z)-td/stretch; aux.DE *= (1.0f + tf*native_exp(-torus_d*torus_d*5.0f)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_89)
 					case 89: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float phase = ta*(float)i*0.1f; float wobble_z = tb*native_sin(phase); float torus_d = native_sqrt((r2d-tc)*(r2d-tc)+(z.z-wobble_z)*(z.z-wobble_z))-td; aux.DE *= (1.0f + tf*native_exp(-torus_d*torus_d*5.0f)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_90)
 					case 90: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float pulse = native_exp(-ta*((float)i*0.1f-tb)*((float)i*0.1f-tb)); float torus_d = native_sqrt((r2d-tc)*(r2d-tc)+z.z*z.z)-td*(1.0f+pulse); aux.DE *= (1.0f + tf*native_exp(-torus_d*torus_d*5.0f)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_91)
 					case 91: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float bifurcation = ta*native_sin(tb*phi)*native_sin(tc*phi*2.0f); float torus_d = native_sqrt((r2d-td-bifurcation)*(r2d-td-bifurcation)+z.z*z.z)-0.3f; aux.DE *= (1.0f + tf*native_exp(-torus_d*torus_d*5.0f)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_92)
 					case 92: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float chaos = native_sin(ta*z.x)*native_cos(tb*z.y)*native_sin(tc*z.z); float torus_d = native_sqrt((r2d-td)*(r2d-td)+z.z*z.z)-fabs(chaos)*0.5f; aux.DE *= (1.0f + tf*native_exp(-torus_d*torus_d*5.0f)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_93)
 					case 93: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float soliton = 1.0f/cosh(ta*(r2d-tb)); float torus_phase = native_sin(tc*phi+td*z.z); aux.DE *= (1.0f + tf*soliton*torus_phase*torus_phase); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_94)
 					case 94: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float breather = native_sin(ta*(float)i*0.1f)*native_sin(tb*phi)/cosh(tc*(r2d-td)); aux.DE *= (1.0f + tf*breather*breather); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_95)
 					case 95: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float torus_d = native_sqrt((r2d-ta)*(r2d-ta)+z.z*z.z)-tb; float damping = native_exp(-tc*(float)i*0.01f); aux.DE *= (1.0f + tf*native_sin(torus_d*td*10.0f)*damping); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_96)
 					case 96: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float theta = atan2(z.z,r2d-ta); float villarceau = native_sin(phi+theta*tb)*native_sin(phi-theta*tb); aux.DE *= (1.0f + tf*villarceau*villarceau*tc); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_97)
 					case 97: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float dupin = ta*(1.0f+tb*native_cos(phi))*(1.0f+tc*native_cos(atan2(z.z,r2d-ta))); float d = fabs(native_sqrt((r2d-ta)*(r2d-ta)+z.z*z.z)-dupin*0.3f); aux.DE *= (1.0f + tf*native_exp(-d*td)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_98)
 					case 98: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float theta = atan2(z.z,r2d-ta); float clifford_r = ta*(native_cos(tb*phi)*native_cos(tc*theta)); float clifford_d = fabs(native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z)-fabs(clifford_r)); aux.DE *= (1.0f + tf*native_exp(-clifford_d*td)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_99)
 					case 99: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float lawson_r = ta*native_cos(tb*phi)*native_cos(tc*z.z); float d = fabs(r2d-fabs(lawson_r)-td); aux.DE *= (1.0f + tf*native_exp(-d*5.0f)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_TORUSTYPE_100)
 					case 100: { float r2d = native_sqrt(z.x*z.x+z.y*z.y); float phi = atan2(z.y,z.x); float theta = atan2(z.z,r2d-ta); float p=fmax(ta,0.1f); float q=fmax(tb,0.1f); float torus_knot_r = tc*(2.0f+native_cos(q/p*phi)); float torus_knot_z = tc*native_sin(q/p*phi); float d = native_sqrt((r2d-torus_knot_r)*(r2d-torus_knot_r)+(z.z-torus_knot_z)*(z.z-torus_knot_z))-td; aux.DE *= (1.0f + tf*native_exp(-fabs(d)*5.0f)); break; }
+#endif
 
 					default: break;
 #endif
@@ -7791,209 +8815,277 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_32)
 						case 32: { float edge_len = fabs(z.x-z.y) + fabs(z.y-z.z) + fabs(z.z-z.x); aux.DE *= (1.0f + sf*ta*edge_len*tb); break; }
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_33)
 						case 33: { float disp = native_sin(z.x*ta*5.0f)*native_sin(z.y*tb*5.0f)*native_sin(z.z*tc*5.0f); aux.DE += sf*disp*td; break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_34)
 						case 34: { float h = native_sin(z.x*ta*7.0f+z.y*tb*11.0f+z.z*tc*13.0f)*43758.5453f; h=h-native_floor(h); aux.DE *= (1.0f + sf*(h*2.0f-1.0f)*td*0.1f); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_35)
 						case 35: { float parallax = fabs(ta)*z.z/fmax(fabs(tb),0.01f); aux.DE *= (1.0f + sf*parallax*0.1f); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_36)
 						case 36: { float n = fmax(fabs(ta)+1.0f, 1.01f); aux.DE /= n; break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_37)
 						case 37: { float dist_traveled = native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); aux.DE *= native_exp(-sf*fabs(ta)*dist_traveled); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_38)
 						case 38: { float cos_theta = z.z/fmax(native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z),1e-21f); float phase = (1.0f+cos_theta*cos_theta)*0.75f; aux.DE *= (1.0f + sf*phase*ta); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_39)
 						case 39: { float emission = native_sin(z.x*ta)*native_sin(z.y*ta)*0.5f+0.5f; aux.DE /= (1.0f + sf*emission*fabs(tb)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_40)
 						case 40: { float curl_approx = native_sin(z.y*ta)*native_cos(z.z*tb) - native_cos(z.y*ta)*native_sin(z.z*tb); aux.DE *= (1.0f + sf*fabs(curl_approx)*tc); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_41)
 						case 41: { float grad = (native_sin(z.x*ta)-native_sin((z.x+0.01f)*ta))/0.01f; aux.DE /= (1.0f + sf*fabs(grad)*tb); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_42)
 						case 42: { float r = native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float mass_d = fmax(r - ta, 0.01f); aux.DE *= (1.0f + sf*tb/(mass_d*mass_d)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_43)
 						case 43: { float v2 = (z.x*z.x+z.y*z.y+z.z*z.z)*ta*ta; float lorentz = native_sqrt(fmax(1.0f - fmin(v2, 0.99f), 0.01f)); aux.DE *= lorentz; break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_44)
 						case 44: { float barrier = fabs(z.x - ta); aux.DE *= native_exp(-sf*fabs(tb)*barrier); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_45)
 						case 45: { float psi2 = native_sin(ta*z.x)*native_sin(tb*z.y)*native_sin(tc*z.z); aux.DE *= (1.0f + sf*psi2*psi2); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_46)
 						case 46: { float momentum = native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z)*ta; float pos = fmax(fabs(z.x), 0.01f); aux.DE *= (1.0f + sf*tb/(2.0f*momentum*pos+0.01f)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_47)
 						case 47: { float spin_dot = z.x*native_sin(ta)+z.y*native_cos(ta)+z.z*native_sin(tb); aux.DE *= (1.0f + sf*tc*spin_dot); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_48)
 						case 48: { float corr = native_sin(z.x*ta)*native_sin((-z.x)*ta) + native_sin(z.y*tb)*native_sin((-z.y)*tb); aux.DE *= (1.0f + sf*fabs(corr)*tc); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_49)
 						case 49: { float decay = native_exp(-sf*fabs(ta)*(float)i*0.01f); aux.DE *= decay; break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_50)
 						case 50: { float entropy = native_sin(z.x*ta*3.0f)*native_sin(z.y*tb*5.0f)*native_sin(z.z*tc*7.0f); float temp = fabs(td)+0.01f; aux.DE *= (1.0f + sf*temp*entropy*entropy); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_51)
 						case 51: { float kT = fmax(fabs(ta)*fabs(tb), 0.01f); aux.DE *= (1.0f + sf*tc/kT); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_52)
 						case 52: { float vel_grad = fabs(z.x-z.y)*ta + fabs(z.y-z.z)*tb; aux.DE *= (1.0f + sf*tc*vel_grad); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_53)
 						case 53: { float r = native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float curv = 1.0f/fmax(r,0.01f); aux.DE *= (1.0f + sf*ta*curv); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_54)
 						case 54: { float tube_r = fmax(fabs(native_sqrt(z.x*z.x+z.y*z.y) - ta), 0.01f); aux.DE *= (1.0f + sf*native_cos(tb)/tube_r); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_55)
 						case 55: { float conc_grad = fabs(native_sin(z.x*ta) - native_sin(z.y*ta)); aux.DE *= (1.0f + sf*tb*conc_grad); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_56)
 						case 56: { float lap = native_sin((z.x+0.01f)*ta)+native_sin((z.x-0.01f)*ta)-2.0f*native_sin(z.x*ta); aux.DE += sf*tb*lap; break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_57)
 						case 57: { float vel_dot = native_sin(z.x*ta)*native_cos(z.y*tb); aux.DE *= (1.0f + sf*vel_dot*tc); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_58)
 						case 58: { float v=0,f=ta,a=1.0f; for(int k=0;k<4;k++){float h=native_sin(z.x*f*12.9f+z.y*f*78.2f+z.z*f*45.1f)*43758.5453f;h=h-native_floor(h);v+=a*h;f*=2.0f;a*=0.5f;} aux.DE *= (1.0f + sf*v*tb); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_59)
 						case 59: { float front = fabs(z.x - ta*i*0.01f); float shock = (front < fabs(tb)) ? tc : 1.0f; aux.DE *= shock; break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_60)
 						case 60: { float freq_diff = fabs(native_sin(z.x*ta) - native_sin(z.x*tb)); float Q = fmax(fabs(tc), 0.1f); aux.DE *= (1.0f + sf*Q*1.0f/fmax(freq_diff+0.01f, 0.01f)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_61)
 						case 61: { float phase_diff = ta*z.x - tb*z.y; aux.DE *= (1.0f + sf*native_cos(phase_diff)*tc); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_62)
 						case 62: { float v_source = ta * 0.1f; float angle = atan2(z.y, z.x); aux.DE *= (1.0f + sf*v_source*native_cos(angle)*tb); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_63)
 						case 63: { float theta = atan2(z.y, z.x); aux.DE *= (1.0f + sf*ta*native_cos(2.0f*theta)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_64)
 						case 64: { float phi2 = atan2(z.z, native_sqrt(z.x*z.x+z.y*z.y)); aux.DE *= (1.0f + sf*ta*fabs(native_sin(2.0f*phi2))); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_65)
 						case 65: { float r = native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float path = r * fabs(ta) * fabs(tb); aux.DE *= (1.0f + sf*tc*path); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_66)
 						case 66: { float lat_pt = fmod(fabs(z.x*ta), 1.0f); float bandgap = (lat_pt < 0.5f) ? 1.0f : tb; aux.DE *= bandgap; break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_67)
 						case 67: { float surf_dist = fabs(native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z) - ta); float skin = fmax(fabs(tb), 0.01f); aux.DE *= (1.0f + sf*tc*native_exp(-surf_dist/skin)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_68)
 						case 68: { float neg_idx = fabs(ta); aux.DE *= (1.0f + sf*neg_idx*fabs(tb)); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_69)
 						case 69: { float winding = native_sin(z.x*ta)*native_cos(z.y*tb) + native_cos(z.x*ta)*native_sin(z.y*tb); aux.DE *= (1.0f + sf*fabs(winding)*tc); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_70)
 						case 70: { float charge = native_sin(z.x*ta*5.0f)*native_sin(z.y*tb*5.0f)*native_sin(z.z*tc*5.0f); aux.DE *= (1.0f + sf*charge*charge*td); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_71)
 						case 71: { float curl_mag = fabs(native_sin(z.y*ta)-native_sin(z.z*ta)) + fabs(native_sin(z.z*tb)-native_sin(z.x*tb)); aux.DE *= (1.0f + sf*curl_mag*tc); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_72)
 						case 72: { float r = native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float sech_val = 1.0f/cosh(fmin(ta*(r-tb), 20.0f)); aux.DE *= (1.0f + sf*tc*sech_val); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_73)
 						case 73: { float S = fabs(ta)*native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); aux.DE *= (1.0f + sf*tb*native_exp(-fmin(S,20.0f))); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_74)
 						case 74: { float r = native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float monopole = fabs(ta)/fmax(r,0.01f); aux.DE *= (1.0f + sf*monopole*tb); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_75)
 						case 75: { float d_axis = native_sqrt(z.y*z.y+z.z*z.z); aux.DE *= (1.0f + sf*ta*native_log(fmax(d_axis,0.01f))*tb); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_76)
 						case 76: { float d_brane = fabs(z.x - ta); float delta_approx = native_exp(-d_brane*d_brane*100.0f); aux.DE *= (1.0f + sf*tb*delta_approx); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_77)
 						case 77: { float throat_d = (z.x-ta)*(z.x-ta)+(z.y-tb)*(z.y-tb)+(z.z-tc)*(z.z-tc); float throat_r = fmax(fabs(td), 0.01f); aux.DE *= (1.0f + sf*native_exp(-throat_d/(throat_r*throat_r))); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_78)
 						case 78: { float r = native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float rs = fmax(fabs(ta), 0.01f); aux.DE /= fmax(1.0f - rs/fmax(r,rs+0.01f), 0.01f); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_79)
 						case 79: { float jet_d = z.y*z.y+z.z*z.z; float jet_w = fmax(fabs(tb), 0.01f); aux.DE *= (1.0f + sf*ta*native_exp(-jet_d/(jet_w*jet_w))); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_80)
 						case 80: { float r = native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float halo = 1.0f/(1.0f + r*r/(fmax(ta*ta,0.01f))); aux.DE *= (1.0f + sf*tb*halo); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_81)
 						case 81: { float r = native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); aux.DE *= native_exp(sf*fabs(ta)*r*0.01f); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_82)
 						case 82: { float d_string = native_sqrt(z.y*z.y+z.z*z.z); float horizon = fmax(fabs(tb), 0.01f); aux.DE *= (1.0f + sf*ta*native_log(fmax(d_string/horizon,0.01f))); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_83)
 						case 83: { float d_wall = fabs(z.x - ta); float thickness = fmax(fabs(tb), 0.01f); aux.DE *= (1.0f + sf*tc*tanh(d_wall/thickness)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_84)
 						case 84: { float r = native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float theta2 = atan2(z.y,z.x); float phi2 = native_acos(z.z/fmax(r,1e-21f)); float Ylm = native_sin(ta*theta2)*native_cos(tb*phi2); aux.DE *= (1.0f + sf*tc*Ylm*Ylm); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_85)
 						case 85: { float r = native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float efold = r*fabs(ta); aux.DE *= native_exp(sf*fmin(efold*tb, 10.0f)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_86)
 						case 86: { float decay_t = native_exp(-fabs(ta)*(float)i*0.01f); aux.DE *= (1.0f + sf*tb*decay_t*tc); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_87)
 						case 87: { float baryon = native_sin(z.x*ta)*native_sin(z.y*tb); float rate = native_exp(-fabs(tc)*(float)i*0.01f); aux.DE *= (1.0f + sf*baryon*baryon*rate*td); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_88)
 						case 88: { float ion_frac = native_exp(-fabs(ta)/fmax(fabs(tb)*(float)i*0.01f+0.01f, 0.01f)); aux.DE *= (1.0f + sf*ion_frac*tc); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_89)
 						case 89: { float r = native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float scale_a = fmax(r*ta, 0.01f); float energy = 1.0f/(scale_a*scale_a); aux.DE *= (1.0f + sf*native_sqrt(energy)*tb); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_90)
 						case 90: { float r = native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float scale_a = fmax(r*ta, 0.01f); aux.DE /= fmax(scale_a*tb, 0.01f); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_91)
 						case 91: { float ent_max = fabs(ta); float heat_time = fmax(fabs(tb), 0.01f); aux.DE *= (1.0f + sf*ent_max*(1.0f-native_exp(-(float)i*0.01f/heat_time))); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_92)
 						case 92: { float bubble = native_sin(z.x*ta*5.0f)*native_sin(z.y*tb*5.0f)*native_sin(z.z*tc*5.0f); aux.DE *= (1.0f + sf*fabs(bubble)*td); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_93)
 						case 93: { float barrier2 = fabs(ta); float tunnel = native_exp(-barrier2*native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z)); aux.DE *= (1.0f + sf*tunnel*tb); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_94)
 						case 94: { float order = native_sin(z.x*ta)*native_sin(z.y*tb); float latent = fabs(tc); aux.DE *= (1.0f + sf*latent*order*order); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_95)
 						case 95: { float d_crit = native_sqrt((z.x-ta)*(z.x-ta)+(z.y-tb)*(z.y-tb)+(z.z-tc)*(z.z-tc)); float expo = fmax(fabs(td), 0.1f); aux.DE *= native_pow(fmax(d_crit, 0.01f), -expo); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_96)
 						case 96: { float cutoff = fmax(fabs(ta), 0.01f); float r = native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); aux.DE *= (1.0f + sf*tb*native_log(fmax(cutoff/fmax(r,0.01f), 0.01f))); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_97)
 						case 97: { float div_approx = native_cos(z.x*ta)*native_sin(z.y*tb)*native_cos(z.z*tc); aux.DE *= (1.0f + sf*fabs(div_approx)*td); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_98)
 						case 98: { float vev = native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z)*ta; aux.DE *= (1.0f + sf*vev*vev*tb); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_99)
 						case 99: { float grad_phase = fabs(native_cos(z.x*ta)-native_cos(z.y*ta)) + fabs(native_cos(z.y*tb)-native_cos(z.z*tb)); aux.DE *= (1.0f + sf*tc*grad_phase); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_ASTYPE_100)
 						case 100: { float r = native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float higgs = ta*tb*r*r; aux.DE *= (1.0f + sf*higgs); break; }
+#endif
 
 					default: break;
 #endif
@@ -8106,209 +9198,277 @@ formulaOut Fractal(__constant sClInConstants *consts, float3 point, sClCalcParam
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_32)
 						case 32: { float sc=3.0f; z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z=z*sc-float4(1,1,1,0)*(sc-1.0f); z.x+=aux.const_c.x*ta; z.y+=aux.const_c.y*ta; z.z+=aux.const_c.z*ta; aux.DE=aux.DE*sc+1.0f; break; }
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_33)
 						case 33: { float sc=3.0f; float period=fmax(fabs(ta),0.1f); z=float4(fmod(z.x+100.0f*period,period)-period*0.5f, fmod(z.y+100.0f*period,period)-period*0.5f, fmod(z.z+100.0f*period,period)-period*0.5f, z.w); z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z=z*sc-float4(1,1,1,0)*(sc-1.0f); aux.DE=aux.DE*sc+1.0f; break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_34)
 						case 34: { float sc=3.0f; float r2=z.x*z.x+z.y*z.y+z.z*z.z; if(r2<1e-21f)r2=1e-21f; float inv=ta*ta/r2; z*=inv; aux.DE*=inv; z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z=z*sc-float4(1,1,1,0)*(sc-1.0f); aux.DE=aux.DE*sc+1.0f; break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_35)
 						case 35: { float lim=fabs(ta)+0.5f; if(z.x>lim)z.x=2.0f*lim-z.x; if(z.x<-lim)z.x=-2.0f*lim-z.x; if(z.y>lim)z.y=2.0f*lim-z.y; if(z.y<-lim)z.y=-2.0f*lim-z.y; if(z.z>lim)z.z=2.0f*lim-z.z; if(z.z<-lim)z.z=-2.0f*lim-z.z; float sc=3.0f; z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z=z*sc-float4(1,1,1,0)*(sc-1.0f); aux.DE=aux.DE*sc+1.0f; break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_36)
 						case 36: { float r2=z.x*z.x+z.y*z.y+z.z*z.z; float minR2=fabs(ta)*fabs(ta); float fixedR2=1.0f; float m; if(r2<minR2)m=fixedR2/minR2; else if(r2<fixedR2)m=fixedR2/r2; else m=1.0f; z*=m; aux.DE*=m; float sc=3.0f; z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z=z*sc-float4(1,1,1,0)*(sc-1.0f); aux.DE=aux.DE*sc+1.0f; break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_37)
 						case 37: { int n=(int)fmax(ta,2.0f); float angle=M_PI_F/n; for(int k=0;k<n;k++){float a=k*2.0f*angle; float d=z.x*native_cos(a)+z.y*native_sin(a); if(d<0.0f){z.x-=2.0f*d*native_cos(a);z.y-=2.0f*d*native_sin(a);}} float sc=3.0f; z=z*sc-float4(1,1,1,0)*(sc-1.0f)*tb; aux.DE=aux.DE*sc+1.0f; break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_38)
 						case 38: { z.x=fabs(z.x);z.y=-fabs(z.y);z.z=fabs(z.z); float sc=3.0f; if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} z=z*sc-float4(1,1,1,0)*(sc-1.0f)*ta; aux.DE=aux.DE*sc+1.0f; break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_39)
 						case 39: { float twist_k=ta*0.01f; float angle=twist_k*(float)i; float ca=native_cos(angle),sa=native_sin(angle); float nx=z.x*ca-z.y*sa; z.y=z.x*sa+z.y*ca; z.x=nx; float sc=3.0f; z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z=z*sc-float4(1,1,1,0)*(sc-1.0f); aux.DE=aux.DE*sc+1.0f; break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_40)
 						case 40: { float bend=ta*0.001f; z.z+=bend*(z.x*z.x+z.y*z.y); float sc=3.0f; z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z=z*sc-float4(1,1,1,0)*(sc-1.0f); aux.DE=aux.DE*sc+1.0f; break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_41)
 						case 41: { float shear=ta*0.1f; z.x+=shear*z.y; float sc=3.0f; z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z=z*sc-float4(1,1,1,0)*(sc-1.0f); aux.DE=aux.DE*sc+1.0f; break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_42)
 						case 42: { float taper=ta*0.01f; z.x*=(1.0f-taper*z.z); z.y*=(1.0f-taper*z.z); float sc=3.0f; z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z=z*sc-float4(1,1,1,0)*(sc-1.0f); aux.DE=aux.DE*sc+1.0f; break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_43)
 						case 43: { float period=fmax(fabs(ta),0.1f); z=float4(fmod(z.x+100.0f*period,period)-period*0.5f, fmod(z.y+100.0f*period,period)-period*0.5f, fmod(z.z+100.0f*period,period)-period*0.5f, z.w); float sc=3.0f; z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z=z*sc-float4(1,1,1,0)*(sc-1.0f); aux.DE=aux.DE*sc+1.0f; break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_44)
 						case 44: { float sc1=3.0f; z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z=z*sc1-float4(1,1,1,0)*(sc1-1.0f); aux.DE=aux.DE*sc1+1.0f; z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z=z*sc1-float4(1,1,1,0)*(sc1-1.0f); aux.DE=aux.DE*sc1+1.0f; break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_45)
 						case 45: { float sc=3.0f; z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z=z*sc-float4(1,1,1,0)*(sc-1.0f); aux.DE=aux.DE*fabs(sc)+1.0f; float surfScale=fabs(ta)+0.5f; z.x=fabs(z.x+surfScale)-fabs(z.x-surfScale)-z.x; z.y=fabs(z.y+surfScale)-fabs(z.y-surfScale)-z.y; break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_46)
 						case 46: { float sc=3.0f; float r2=z.x*z.x+z.y*z.y+z.z*z.z; float minR2=fabs(ta)*fabs(ta); float fixedR2=1.0f; float m; if(r2<minR2)m=fixedR2/minR2; else if(r2<fixedR2)m=fixedR2/r2; else m=1.0f; z*=m; aux.DE=aux.DE*m; z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z=z*sc-float4(1,1,1,0)*(sc-1.0f); aux.DE=aux.DE*sc+1.0f; break; }
+#endif
 
-						case 47: { float sc=3.0f; z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z=z*sc-float4(1,1,1,0)*(sc-1.0f); aux.DE=aux.DE*sc+1.0f; float k_angle=ta*M_PI_F/180.0f; CVector3 nv(native_cos(k_angle),native_sin(k_angle),0); CVector3 zv=z.GetXYZ(); float dot=zv.Dot(nv); if(dot<0){zv=zv-nv*(2.0f*dot); z=float4(zv,z.w);} break; }
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_47)
+						case 47: { float sc=3.0f; z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z=z*sc-float4(1,1,1,0)*(sc-1.0f); aux.DE=aux.DE*sc+1.0f; float k_angle=ta*M_PI_F/180.0f; float3 nv=(float3)(native_cos(k_angle),native_sin(k_angle),0.0f); float3 zv=z.xyz; float dotv=dot(zv,nv); if(dotv<0.0f){zv=zv-nv*(2.0f*dotv); z=(float4)(zv,z.w);} break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_48)
 						case 48: { float sc=3.0f; z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z=z*sc-float4(1,1,1,0)*(sc-1.0f); aux.DE=aux.DE*sc+1.0f; z+=float4(aux.const_c.x*ta,aux.const_c.y*ta,aux.const_c.z*ta,0)*tb; break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_49)
 						case 49: { float sc=3.0f+0.1f*native_sin((float)i*ta); z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z=z*sc-float4(1,1,1,0)*(sc-1.0f); aux.DE=aux.DE*fabs(sc)+1.0f; z=float4(0.9f*z.x+0.1f*ta,0.9f*z.y+0.1f*tb,0.9f*z.z+0.1f*tc,z.w); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_50)
 						case 50: { float h1=native_sin(ta*z.x+tb*z.y+tc*z.z); float h2=native_sin(td*h1+ta*(float)i*0.1f); float sc=3.0f+sf*h2*0.1f; z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z=z*sc-float4(1,1,1,0)*(sc-1.0f); aux.DE=aux.DE*fabs(sc)+1.0f; break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_51)
 						case 51: { float sc=3.0f; float4 zz=fabs(z); float vals[4]={zz.x,zz.y,zz.z,zz.w}; for(int a=0;a<4;a++)for(int b=a+1;b<4;b++){if(vals[a]<vals[b]){float t=vals[a];vals[a]=vals[b];vals[b]=t;}} z=float4(vals[0],vals[1],vals[2],vals[3])*sc-float4(1,1,1,1)*(sc-1.0f); aux.DE=aux.DE*sc+1.0f; break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_52)
 						case 52: { float sc=3.0f; float v[5]={fabs(z.x),fabs(z.y),fabs(z.z),fabs(z.w),fabs(native_sin(z.x+z.y))}; for(int a=0;a<5;a++)for(int b=a+1;b<5;b++){if(v[a]<v[b]){float t=v[a];v[a]=v[b];v[b]=t;}} z=float4(v[0],v[1],v[2],v[3])*sc-float4(1,1,1,1)*(sc-1.0f); aux.DE=aux.DE*sc+1.0f; break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_53)
 						case 53: { float sc=3.0f; z.w=ta; float4 zz=fabs(z); float vals[4]={zz.x,zz.y,zz.z,zz.w}; for(int a=0;a<4;a++)for(int b=a+1;b<4;b++){if(vals[a]<vals[b]){float t=vals[a];vals[a]=vals[b];vals[b]=t;}} z=float4(vals[0],vals[1],vals[2],vals[3])*sc-float4(1,1,1,1)*(sc-1.0f); aux.DE=aux.DE*sc+1.0f; break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_54)
 						case 54: { float angle4d=ta*M_PI_F/180.0f*(float)i; float ca=native_cos(angle4d),sa=native_sin(angle4d); float nx=z.x*ca-z.w*sa; z.w=z.x*sa+z.w*ca; z.x=nx; float sc=3.0f; float4 zz=fabs(z); float vals[4]={zz.x,zz.y,zz.z,zz.w}; for(int a=0;a<4;a++)for(int b=a+1;b<4;b++){if(vals[a]<vals[b]){float t=vals[a];vals[a]=vals[b];vals[b]=t;}} z=float4(vals[0],vals[1],vals[2],vals[3])*sc-float4(1,1,1,1)*(sc-1.0f); aux.DE=aux.DE*sc+1.0f; break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_55)
 						case 55: { float sc=3.0f; float4 zz=fabs(z); float vals[4]={zz.x,zz.y,zz.z,zz.w}; for(int a=0;a<4;a++)for(int b=a+1;b<4;b++){if(vals[a]<vals[b]){float t=vals[a];vals[a]=vals[b];vals[b]=t;}} z=float4(vals[0],vals[1],vals[2],vals[3])*sc-float4(1,1,1,1)*(sc-1.0f)+float4(ta,tb,tc,td); aux.DE=aux.DE*sc+1.0f; break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_56)
 						case 56: { float sc=3.0f; float qn=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z+z.w*z.w); z.w=qn*ta; float4 zz=fabs(z); float vals[4]={zz.x,zz.y,zz.z,zz.w}; for(int a=0;a<4;a++)for(int b=a+1;b<4;b++){if(vals[a]<vals[b]){float t=vals[a];vals[a]=vals[b];vals[b]=t;}} z=float4(vals[0],vals[1],vals[2],vals[3])*sc-float4(1,1,1,1)*(sc-1.0f); aux.DE=aux.DE*sc+1.0f; break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_57)
 						case 57: { float sc=3.0f; float qr=z.x,qi=z.y,qj=z.z,qk=z.w; z.x=qr*qi-qj*qk; z.y=qr*qj+qi*qk; z.z=qr*qk-qi*qj; z.w=qr*qr-qi*qi-qj*qj-qk*qk; z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z=z*sc-float4(1,1,1,1)*(sc-1.0f)*ta; aux.DE=aux.DE*sc+1.0f; break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_58)
 						case 58: { float r=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z+z.w*z.w); float d=tanh(fmin(r*ta,10.0f)); float4 unit=z/fmax(r,1e-21f); z=unit*d; float sc=3.0f; z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z=z*sc-float4(1,1,1,0)*(sc-1.0f); float ch=cosh(fmin(r*ta,20.0f)); aux.DE=aux.DE*sc/(ch*ch)+1.0f; break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_59)
 						case 59: { float r4=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z+z.w*z.w); if(r4>1e-21f){z/=r4;} float sc=3.0f; z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z=z*sc-float4(1,1,1,0)*(sc-1.0f)*ta; aux.DE=aux.DE*sc+1.0f; break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_60)
 						case 60: { float r2d=native_sqrt(z.x*z.x+z.y*z.y); float theta=atan2(z.y,z.x); z.x=r2d; z.y=theta*ta; float sc=3.0f; z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z=z*sc-float4(1,1,1,0)*(sc-1.0f); z.x=z.x*native_cos(z.y/fmax(ta,0.01f))-z.z*native_sin(z.y/fmax(ta,0.01f)); aux.DE=aux.DE*sc+1.0f; break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_61)
 						case 61: { float R=fabs(ta)+0.5f; float r2d=native_sqrt(z.x*z.x+z.y*z.y); z.x=r2d-R; float sc=3.0f; z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z=z*sc-float4(1,1,1,0)*(sc-1.0f); aux.DE=aux.DE*sc+1.0f; break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_62)
 						case 62: { float theta4=ta*M_PI_F/180.0f; float ca=native_cos(theta4),sa=native_sin(theta4); float nx=z.z*ca-z.w*sa; z.w=z.z*sa+z.w*ca; z.z=nx; float sc=3.0f; z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z=z*sc-float4(1,1,1,0)*(sc-1.0f); aux.DE=aux.DE*sc+1.0f; break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_63)
 						case 63: { float golden=2.39996322972865332f; float theta=(float)i*golden*ta; z.x+=native_cos(theta)*tb*0.01f; z.y+=native_sin(theta)*tb*0.01f; z.z+=native_cos(theta*0.5f)*tc*0.01f; z.w=native_sin(theta*0.5f)*td*0.01f; float sc=3.0f; z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z=z*sc-float4(1,1,1,0)*(sc-1.0f); aux.DE=aux.DE*sc+1.0f; break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_64)
 						case 64: { float D=2.7268f; float sc=native_pow(3.0f,D/3.0f); z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z=z*sc-float4(1,1,1,0)*(sc-1.0f)*ta; aux.DE=aux.DE*sc+1.0f; break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_65)
 						case 65: { float h=native_sin(z.x*12.9898f+z.y*78.233f+z.z*45.164f+(float)i*ta)*43758.5453f; h=h-native_floor(h); float sc=3.0f; z=fabs(z); float vals[3]={z.x,z.y,z.z}; if(h>0.5f){if(vals[0]<vals[1]){float t=vals[0];vals[0]=vals[1];vals[1]=t;}} if(h>0.25f){if(vals[0]<vals[2]){float t=vals[0];vals[0]=vals[2];vals[2]=t;}} if(h>0.75f){if(vals[1]<vals[2]){float t=vals[1];vals[1]=vals[2];vals[2]=t;}} z=float4(vals[0],vals[1],vals[2],z.w)*sc-float4(1,1,1,0)*(sc-1.0f); aux.DE=aux.DE*sc+1.0f; break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_66)
 						case 66: { float sc=3.0f; float sq32=0.866025f; z=fabs(z); float d=z.x*sq32+z.y*0.5f; if(d<0.0f){z.x-=2.0f*d*sq32;z.y-=d;} z=z*sc-float4(1,1,1,0)*(sc-1.0f)*ta; aux.DE=aux.DE*sc+1.0f; break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_67)
 						case 67: { float sc=3.0f; float a60=M_PI_F/3.0f; for(int k=0;k<6;k++){float a=k*a60; float d=z.x*native_cos(a)+z.y*native_sin(a); if(d<0.0f){z.x-=2.0f*d*native_cos(a);z.y-=2.0f*d*native_sin(a);}} z=z*sc-float4(1,1,1,0)*(sc-1.0f)*ta; aux.DE=aux.DE*sc+1.0f; break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_68)
 						case 68: { float sc=3.0f; float a45=M_PI_F/4.0f; for(int k=0;k<8;k++){float a=k*a45; float d=z.x*native_cos(a)+z.y*native_sin(a); if(d<0.0f){z.x-=2.0f*d*native_cos(a);z.y-=2.0f*d*native_sin(a);}} z=z*sc-float4(1,1,1,0)*(sc-1.0f)*ta; aux.DE=aux.DE*sc+1.0f; break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_69)
 						case 69: { float sc=3.0f; float a30=M_PI_F/6.0f; for(int k=0;k<12;k++){float a=k*a30; float d=z.x*native_cos(a)+z.y*native_sin(a); if(d<0.0f){z.x-=2.0f*d*native_cos(a);z.y-=2.0f*d*native_sin(a);}} z=z*sc-float4(1,1,1,0)*(sc-1.0f)*ta; aux.DE=aux.DE*sc+1.0f; break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_70)
 						case 70: { float sc=3.0f; float a72=M_PI_F*2.0f/5.0f; for(int k=0;k<5;k++){float a=k*a72; float d=z.x*native_cos(a)+z.y*native_sin(a); if(d<0.0f){z.x-=2.0f*d*native_cos(a);z.y-=2.0f*d*native_sin(a);}} z=z*sc-float4(1,1,1,0)*(sc-1.0f)*ta; aux.DE=aux.DE*sc+1.0f; break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_71)
 						case 71: { float sc=3.0f; float a60=M_PI_F/3.0f; for(int k=0;k<6;k++){float a=k*a60; float d=z.x*native_cos(a)+z.y*native_sin(a); if(d<0.0f){z.x-=2.0f*d*native_cos(a);z.y-=2.0f*d*native_sin(a);}} z=z*sc-float4(1,1,1,0)*(sc-1.0f)*ta; aux.DE=aux.DE*sc+1.0f; break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_72)
 						case 72: { float sc=3.0f; float a45=M_PI_F/4.0f; for(int k=0;k<8;k++){float a=k*a45; float d=z.x*native_cos(a)+z.y*native_sin(a); if(d<0.0f){z.x-=2.0f*d*native_cos(a);z.y-=2.0f*d*native_sin(a);}} z=z*sc-float4(1,1,1,0)*(sc-1.0f)*ta; aux.DE=aux.DE*sc+1.0f; break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_73)
 						case 73: { float sc=3.0f; float a36=M_PI_F/5.0f; for(int k=0;k<10;k++){float a=k*a36; float d=z.x*native_cos(a)+z.y*native_sin(a); if(d<0.0f){z.x-=2.0f*d*native_cos(a);z.y-=2.0f*d*native_sin(a);}} z=z*sc-float4(1,1,1,0)*(sc-1.0f)*ta; aux.DE=aux.DE*sc+1.0f; break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_74)
 						case 74: { int n=(int)fmax(ta,3.0f); float sc=3.0f; float aStep=M_PI_F*2.0f/n; for(int k=0;k<n&&k<16;k++){float a=k*aStep; float d=z.x*native_cos(a)+z.y*native_sin(a); if(d<0.0f){z.x-=2.0f*d*native_cos(a);z.y-=2.0f*d*native_sin(a);}} z=z*sc-float4(1,1,1,0)*(sc-1.0f)*tb; aux.DE=aux.DE*sc+1.0f; break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_75)
 						case 75: { float sc=3.0f; int n=(int)fmax(ta,3.0f); float amp=fabs(tb); float theta=atan2(z.y,z.x); float r2d=native_sqrt(z.x*z.x+z.y*z.y); float star_r=r2d*(1.0f+amp*native_cos(n*theta)); z.x=star_r*native_cos(theta); z.y=star_r*native_sin(theta); z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z=z*sc-float4(1,1,1,0)*(sc-1.0f); aux.DE=aux.DE*sc+1.0f; break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_76)
 						case 76: { float sc=3.0f; float theta=atan2(z.y,z.x); float r2d=native_sqrt(z.x*z.x+z.y*z.y); float heart_r=r2d*(1.0f-native_sin(theta)*fabs(ta)); z.x=heart_r*native_cos(theta); z.y=heart_r*native_sin(theta); z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z=z*sc-float4(1,1,1,0)*(sc-1.0f); aux.DE=aux.DE*sc+1.0f; break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_77)
 						case 77: { float spiral_a=ta*0.01f*(float)i; float ca=native_cos(spiral_a),sa=native_sin(spiral_a); float nx=z.x*ca-z.y*sa; z.y=z.x*sa+z.y*ca; z.x=nx; float sc=3.0f; z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z=z*sc-float4(1,1,1,0)*(sc-1.0f); aux.DE=aux.DE*sc+1.0f; break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_78)
 						case 78: { float r2=z.x*z.x+z.y*z.y; z.z+=ta*0.001f*r2; float sc=3.0f; z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z=z*sc-float4(1,1,1,0)*(sc-1.0f); aux.DE=aux.DE*sc+1.0f; break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_79)
 						case 79: { float r2d=native_sqrt(z.x*z.x+z.y*z.y); float taper_w=1.0f-ta*0.01f*fabs(r2d); z.x*=taper_w; z.y*=taper_w; float sc=3.0f; z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z=z*sc-float4(1,1,1,0)*(sc-1.0f); aux.DE=aux.DE*sc+1.0f; break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_80)
 						case 80: { float twist_a=ta*0.01f*native_sqrt(z.x*z.x+z.y*z.y); float ca=native_cos(twist_a),sa=native_sin(twist_a); float nx=z.x*ca-z.y*sa; z.y=z.x*sa+z.y*ca; z.x=nx; float sc=3.0f; z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z=z*sc-float4(1,1,1,0)*(sc-1.0f); aux.DE=aux.DE*sc+1.0f; break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_81)
 						case 81: { float eps=fmax(fabs(ta),0.01f); float sc=3.0f; z=fabs(z); float t; if(z.x<z.y){float blend=0.5f+0.5f*tanh((z.y-z.x)/eps);t=z.x*(1.0f-blend)+z.y*blend;z.y=z.y*(1.0f-blend)+z.x*blend;z.x=t;} if(z.x<z.z){t=z.x;z.x=z.z;z.z=t;} if(z.y<z.z){t=z.y;z.y=z.z;z.z=t;} z=z*sc-float4(1,1,1,0)*(sc-1.0f); aux.DE=aux.DE*sc+1.0f; break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_82)
 						case 82: { float h=native_sin(z.x*ta*127.1f+z.y*ta*311.7f+z.z*ta*74.7f)*43758.5453f; h=h-native_floor(h); z+=float4(h,1.0f-h,h*0.5f,0)*tb*0.01f; float sc=3.0f; z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z=z*sc-float4(1,1,1,0)*(sc-1.0f); aux.DE=aux.DE*sc+1.0f; break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_83)
 						case 83: { float sc=3.0f; z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z=z*sc-float4(1,1,1,0)*(sc-1.0f)+float4(ta,tb,tc,0); aux.DE=aux.DE*sc+1.0f; break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_84)
 						case 84: { float period=fmax(fabs(ta),0.1f); z=float4(fmod(fabs(z.x)+100.0f*period,period)-period*0.5f, fmod(fabs(z.y)+100.0f*period,period)-period*0.5f, fmod(fabs(z.z)+100.0f*period,period)-period*0.5f, z.w); float sc=3.0f; z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z=z*sc-float4(1,1,1,0)*(sc-1.0f); aux.DE=aux.DE*sc+1.0f; break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_85)
 						case 85: { float r2=z.x*z.x+z.y*z.y+z.z*z.z; if(r2<1e-21f)r2=1e-21f; float inv=ta*ta/r2; z*=inv; aux.DE*=inv; float sc=3.0f; z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z=z*sc-float4(1,1,1,0)*(sc-1.0f); aux.DE=aux.DE*sc+1.0f; break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_86)
 						case 86: { float sc=3.0f; z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z=z*sc-float4(1,1,1,0)*(sc-1.0f); aux.DE=aux.DE*sc+1.0f; float r=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); aux.DE*=(1.0f+sf*native_exp(-r*ta)*tb); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_87)
 						case 87: { float sc=3.0f; if(z.x+z.y<0.0f){float t=z.x;z.x=-z.y;z.y=-t;} if(z.x+z.z<0.0f){float t=z.x;z.x=-z.z;z.z=-t;} if(z.y+z.z<0.0f){float t=z.y;z.y=-z.z;z.z=-t;} z=z*sc-float4(1,1,1,0)*(sc-1.0f)*ta; aux.DE=aux.DE*sc+1.0f; z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z=z*sc-float4(1,1,1,0)*(sc-1.0f); aux.DE=aux.DE*sc+1.0f; break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_88)
 						case 88: { float sc=3.0f; z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z=z*sc-float4(1,1,1,0)*(sc-1.0f); aux.DE=aux.DE*sc+1.0f; float koch_scale=2.0f*ta; z.x=fabs(z.x)-koch_scale*0.5f; z.y=fabs(z.y)-koch_scale*0.5f; break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_89)
 						case 89: { float sc=3.0f; z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z=z*sc-float4(1,1,1,0)*(sc-1.0f); aux.DE=aux.DE*sc+1.0f; if(z.x>0)z.x=-(z.x-1.0f); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_90)
 						case 90: { float sc=3.0f; z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z=z*sc-float4(1,1,1,0)*(sc-1.0f); aux.DE=aux.DE*sc+1.0f; float fern_angle=ta*M_PI_F/180.0f; float ca=native_cos(fern_angle),sa=native_sin(fern_angle); float nx=z.x*ca-z.z*sa; z.z=z.x*sa+z.z*ca; z.x=nx; z*=0.85f*tb; aux.DE*=0.85f*fabs(tb); break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_91)
 						case 91: { float r=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); float sc=3.0f; z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z=z*sc-float4(1,1,1,0)*(sc-1.0f); aux.DE=aux.DE*sc+1.0f; float shell=fabs(r-ta)-tb; aux.DE*=(1.0f+sf*native_exp(-shell*shell*tc)); break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_92)
 						case 92: { float period=fmax(fabs(ta),0.1f); z=float4(fmod(z.x+100.0f*period,period)-period*0.5f, fmod(z.y+100.0f*period,period)-period*0.5f, fmod(z.z+100.0f*period,period)-period*0.5f, z.w); float sc=3.0f; z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z=z*sc-float4(1,1,1,0)*(sc-1.0f); aux.DE=aux.DE*sc+1.0f; break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_93)
 						case 93: { float r2=z.x*z.x+z.y*z.y+z.z*z.z; if(r2<1e-21f)r2=1e-21f; float inv=ta*ta/r2; z*=inv; aux.DE*=inv; float sc=3.0f; z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z=z*sc-float4(1,1,1,0)*(sc-1.0f); aux.DE=aux.DE*sc+1.0f; break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_94)
 						case 94: { float clip=fabs(ta); z.x=fmin(fmax(z.x,-clip),clip); z.y=fmin(fmax(z.y,-clip),clip); z.z=fmin(fmax(z.z,-clip),clip); float sc=3.0f; z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z=z*sc-float4(1,1,1,0)*(sc-1.0f); aux.DE=aux.DE*sc+1.0f; break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_95)
 						case 95: { float lim=fabs(ta)+0.5f; if(z.x>lim)z.x=2.0f*lim-z.x; if(z.x<-lim)z.x=-2.0f*lim-z.x; if(z.y>lim)z.y=2.0f*lim-z.y; if(z.y<-lim)z.y=-2.0f*lim-z.y; if(z.z>lim)z.z=2.0f*lim-z.z; if(z.z<-lim)z.z=-2.0f*lim-z.z; float sc=3.0f; z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z=z*sc-float4(1,1,1,0)*(sc-1.0f); aux.DE=aux.DE*sc+1.0f; break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_96)
 						case 96: { float r2=z.x*z.x+z.y*z.y+z.z*z.z; float minR2=fabs(ta)*fabs(ta); float fixedR2=1.0f; float m; if(r2<minR2)m=fixedR2/minR2; else if(r2<fixedR2)m=fixedR2/r2; else m=1.0f; z*=m; aux.DE*=m; float sc=3.0f; z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z=z*sc-float4(1,1,1,0)*(sc-1.0f); aux.DE=aux.DE*sc+1.0f; break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_97)
 						case 97: { float angle=ta*M_PI_F/180.0f*(float)i; float ca=native_cos(angle),sa=native_sin(angle); float nx=z.x*ca-z.y*sa; z.y=z.x*sa+z.y*ca; z.x=nx; float sc=3.0f; z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z=z*sc-float4(1,1,1,0)*(sc-1.0f); aux.DE=aux.DE*sc+1.0f; break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_98)
 						case 98: { float sc=3.0f*(1.0f+sf*0.1f*native_sin((float)i*ta)); z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z=z*sc-float4(1,1,1,0)*(sc-1.0f); aux.DE=aux.DE*fabs(sc)+1.0f; break; }
+#endif
 
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_99)
 						case 99: { float sc=3.0f; float offset=fabs(ta); z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z=z*sc-float4(1,1,1,0)*(sc-1.0f); aux.DE=aux.DE*sc+offset; break; }
 #endif
 
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SMTYPE_100)
 						case 100: { float h1=native_sin(ta*z.x+tb*z.y+tc*z.z); float h2=native_sin(td*h1+ta*(float)i*0.1f); float sc=3.0f+sf*h2*0.05f; z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z=z*sc-float4(1,1,1,0)*(sc-1.0f); aux.DE=aux.DE*fabs(sc)+1.0f; break; }
+#endif
 
 					default: break;
 #endif

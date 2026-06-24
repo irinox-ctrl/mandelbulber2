@@ -68,12 +68,17 @@ def load_config():
                 SYSTEM_PARAM_MAP[name] = {}
             prefix = sys_cfg.get("struct_prefix", name)
             SYSTEM_PARAM_MAP[name]["struct_prefix"] = prefix
-            SYSTEM_PARAM_MAP[name]["type_field"] = f"{prefix}Type"
-            SYSTEM_PARAM_MAP[name]["iter_start"] = f"{prefix}IterStart"
-            SYSTEM_PARAM_MAP[name]["iter_stop"] = f"{prefix}IterStop"
-            SYSTEM_PARAM_MAP[name]["enabled_field"] = f"{prefix}Enabled"
-            for p in sys_cfg.get("params", []):
-                SYSTEM_PARAM_MAP[name][p] = f"Param{p[-1].upper()}" if len(p) == 2 else p
+            SYSTEM_PARAM_MAP[name]["type_field"] = sys_cfg.get("type_field", f"{prefix}Type")
+            SYSTEM_PARAM_MAP[name]["iter_start"] = sys_cfg.get("iter_start", f"{prefix}IterStart")
+            SYSTEM_PARAM_MAP[name]["iter_stop"] = sys_cfg.get("iter_stop", f"{prefix}IterStop")
+            SYSTEM_PARAM_MAP[name]["enabled_field"] = sys_cfg.get("enabled_field", f"{prefix}Enabled")
+            aliases = sys_cfg.get("param_aliases", {})
+            if aliases:
+                for alias, field in aliases.items():
+                    SYSTEM_PARAM_MAP[name][alias] = field
+            else:
+                for p in sys_cfg.get("params", []):
+                    SYSTEM_PARAM_MAP[name][p] = f"Param{p[-1].upper()}" if len(p) == 2 else p
 
 
 def parse_mut_file(filepath):

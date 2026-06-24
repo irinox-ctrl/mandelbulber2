@@ -121,7 +121,17 @@ def cpu_body_to_gpu(body: str) -> str:
     out = re.sub(r"\b1e-21\b(?![fF])", "1e-21f", out)
     out = re.sub(r"\b1e-10\b(?![fF])", "1e-10f", out)
     out = re.sub(r"(?<![\w.])(\d+\.\d+)(?![fFeEdD\w])", r"\1f", out)
-    out = re.sub(r"(?<![\w.])(\d+)e([+-]?\d+)(?![fFeEdD\w])", r"\1e\2f", out, flags=re.I)
+    out = re.sub(r"\bCVector4\b", "float4", out)
+    out = re.sub(r"\bCVector3\b", "float3", out)
+    out = re.sub(r"\.GetXYZ\(\)", ".xyz", out)
+    out = re.sub(r"\bin\.point\.Length\(\)", "length(pointTransformed)", out)
+
+    def _cpp_cast_to_ocl(m: re.Match) -> str:
+        typ = m.group(1)
+        inner = m.group(2)
+        return f"({typ})({inner})"
+
+    out = re.sub(r"\b(int|float)\(([^()]*(?:\([^()]*\)[^()]*)*)\)", _cpp_cast_to_ocl, out)
     return out
 
 

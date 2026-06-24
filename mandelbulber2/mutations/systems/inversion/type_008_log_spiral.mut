@@ -1,0 +1,5 @@
+// TYPE_ID: 8
+// NAME: Log-spiral inversion
+// PARAMS: FREQ
+// SYSTEM: inversion
+double r2d=sqrt(zz.x*zz.x+zz.y*zz.y); double theta=atan2(zz.y,zz.x); double k=FREQ; rr=r2d*exp(-k*theta); if(fabs(rr)<1e-21)rr=1e-21; mde=1.0/rr; zz*=mde;
