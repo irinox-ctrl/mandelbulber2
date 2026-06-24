@@ -1581,17 +1581,23 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 			{
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SWIZZLE_0)
 			case 0: break;
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SWIZZLE_1)
 			case 1: { float t = z.y; z.y = z.z; z.z = t; } break;
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SWIZZLE_2)
 			case 2: { float t = z.x; z.x = z.y; z.y = t; } break;
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SWIZZLE_3)
 			case 3: { float t = z.x; z.x = z.y; z.y = z.z; z.z = t; } break;
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SWIZZLE_4)
 			case 4: { float t = z.z; z.z = z.y; z.y = z.x; z.x = t; } break;
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SWIZZLE_5)
 			case 5: { float t = z.x; z.x = z.z; z.z = t; } break;
 #endif
 			}
+#endif
 
 			// Warp distortion (per-section iteration range)
 			if (i >= mut->warpIterStart && i < mut->warpIterStop) {
@@ -3513,6 +3519,7 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_20)
 					case 20: { float c1 = mut->foldLimit, c2 = -c1; z.x = fabs(z.x-c1)-fabs(z.x-c2); z.y = fabs(z.y-c1)-fabs(z.y-c2); z.z = fabs(z.z-c1)-fabs(z.z-c2); break; }
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_21)
 					case 21:
 					{
 						float r = native_sqrt(z.x*z.x + z.y*z.y); float theta = atan2(z.y, z.x);
@@ -3593,17 +3600,23 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 			{
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SWIZZLE_0)
 				case 0: break;
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SWIZZLE_1)
 				case 1: { float t = z.y; z.y = z.z; z.z = t; } break;
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SWIZZLE_2)
 				case 2: { float t = z.x; z.x = z.y; z.y = t; } break;
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SWIZZLE_3)
 				case 3: { float t = z.x; z.x = z.y; z.y = z.z; z.z = t; } break;
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SWIZZLE_4)
 				case 4: { float t = z.z; z.z = z.y; z.y = z.x; z.x = t; } break;
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_SWIZZLE_5)
 				case 5: { float t = z.x; z.x = z.z; z.z = t; } break;
 #endif
 			}
+#endif
 			// Warp distortion (per-section iteration range)
 			if (i >= mut->warpIterStart && i < mut->warpIterStop) {
 			if (mut->warpType == 1)
@@ -5160,6 +5173,7 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_20)
 					case 20: { float c1 = mut->foldLimit, c2 = -c1; z.x = fabs(z.x-c1)-fabs(z.x-c2); z.y = fabs(z.y-c1)-fabs(z.y-c2); z.z = fabs(z.z-c1)-fabs(z.z-c2); break; }
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_FOLDTYPE_21)
 					case 21:
 					{
 						float r = native_sqrt(z.x*z.x + z.y*z.y); float theta = atan2(z.y, z.x);
@@ -5780,105 +5794,155 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_51)
 					case 51: { clipDist=native_sin(cz.x*ca)*native_cos(cz.y*ca)+native_sin(cz.y*ca)*native_cos(cz.z*ca)+native_sin(cz.z*ca)*native_cos(cz.x*ca)-cr; break; } // Gyroid surface
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_52)
 					case 52: { clipDist=native_cos(cz.x*ca)+native_cos(cz.y*ca)+native_cos(cz.z*ca)-cr; break; } // Schwarz P surface
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_53)
 					case 53: { clipDist=native_sin(cz.x*ca)*native_sin(cz.y*ca)*native_sin(cz.z*ca)+native_sin(cz.x*ca)*native_cos(cz.y*ca)*native_cos(cz.z*ca)+native_cos(cz.x*ca)*native_sin(cz.y*ca)*native_cos(cz.z*ca)+native_cos(cz.x*ca)*native_cos(cz.y*ca)*native_sin(cz.z*ca)-cr; break; } // Diamond surface
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_54)
 					case 54: { clipDist=0.5f*(native_sin(2.0f*cz.x*ca)*native_cos(cz.y*ca)*native_sin(cz.z*ca)+native_sin(2.0f*cz.y*ca)*native_cos(cz.z*ca)*native_sin(cz.x*ca)+native_sin(2.0f*cz.z*ca)*native_cos(cz.x*ca)*native_sin(cz.y*ca))-0.5f*(native_cos(2.0f*cz.x*ca)*native_cos(2.0f*cz.y*ca)+native_cos(2.0f*cz.y*ca)*native_cos(2.0f*cz.z*ca)+native_cos(2.0f*cz.z*ca)*native_cos(2.0f*cz.x*ca))-cr; break; } // Lidinoid surface
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_55)
 					case 55: { clipDist=3.0f*(native_cos(cz.x*ca)+native_cos(cz.y*ca)+native_cos(cz.z*ca))+4.0f*native_cos(cz.x*ca)*native_cos(cz.y*ca)*native_cos(cz.z*ca)-cr; break; } // Neovius surface
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_56)
 					case 56: { float t56=atan2(cz.y,cz.x), kx=native_cos(2.0f*t56)*(cR+cr*native_cos(3.0f*t56)), ky=native_sin(2.0f*t56)*(cR+cr*native_cos(3.0f*t56)), kz=cr*native_sin(3.0f*t56); clipDist=native_sqrt((cz.x-kx)*(cz.x-kx)+(cz.y-ky)*(cz.y-ky)+(cz.z-kz)*(cz.z-kz))-ca; break; } // Torus knot
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_57)
 					case 57: { clipDist=cz.x*cz.x*cz.z+cz.y*cz.y*cz.z-ca*cz.x*cz.y-cr; break; } // Cross-cap surface
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_58)
 					case 58: { float phi58=0.5f*(1.0f+native_sqrt(5.0f)), p2=phi58*phi58, r2=cz.x*cz.x+cz.y*cz.y+cz.z*cz.z; clipDist=4.0f*(p2*cz.x*cz.x-cz.y*cz.y)*(p2*cz.y*cz.y-cz.z*cz.z)*(p2*cz.z*cz.z-cz.x*cz.x)-(1.0f+2.0f*phi58)*(r2-ca*ca)*(r2-ca*ca); break; } // Barth sextic
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_59)
 					case 59: { clipDist=cz.x*cz.x*cz.y*cz.y+cz.y*cz.y*cz.z*cz.z+cz.z*cz.z*cz.x*cz.x-ca*cz.x*cz.y*cz.z; break; } // Steiner surface
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_60)
 					case 60: { float r60=length(cz); if(r60<1e-15f)r60=1e-15f; { float x60=cz.x/r60,y60=cz.y/r60,z60=cz.z/r60; clipDist=64.0f*x60*x60*x60*z60-48.0f*x60*z60*(3.0f*x60*x60+z60*z60)+12.0f*z60*(x60*x60-z60*z60)+x60*x60+y60*y60+z60*z60-cr*cr; } break; } // Boy surface approx
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_61)
 					case 61: { float r61=length(cz); clipDist=r61*native_exp(-ca*r61)-cr; break; } // Exponential decay shell
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_62)
 					case 62: { float r62=native_sqrt(cz.x*cz.x+cz.y*cz.y), t62=atan2(cz.y,cz.x), spiralR=ca*native_exp(cb*t62); clipDist=fabs(r62-spiralR)+fabs(cz.z)-cr; break; } // Logarithmic spiral shell
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_63)
 					case 63: { float t63=atan2(cz.y,cz.x), r63=native_sqrt(cz.x*cz.x+cz.y*cz.y), h1=r63-cR-cr*native_cos(ca*cz.z), h2=r63-cR+cr*native_cos(ca*cz.z+M_PI_F); clipDist=fmin(native_sqrt(h1*h1+pow(cr*native_sin(ca*cz.z),2.0f)),native_sqrt(h2*h2+pow(cr*native_sin(ca*cz.z+M_PI_F),2.0f)))-cb; break; } // Double helix
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_64)
 					case 64: { float dx64=fabs(cz.x)-sx, dy64=fabs(cz.y)-sy, dz64=fabs(cz.z)-sz, chamfer=ca; clipDist=fmax(fmax(dx64,fmax(dy64,dz64)),(dx64+dy64+dz64)*chamfer); break; } // Chamfered cube
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_65)
 					case 65: { float dx65=fmax(fabs(cz.x)-sx,0.0f), dy65=fmax(fabs(cz.y)-sy,0.0f), dz65=fmax(fabs(cz.z)-sz,0.0f); clipDist=native_sqrt(dx65*dx65+dy65*dy65+dz65*dz65)-cr; break; } // Rounded box
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_66)
 					case 66: { clipDist=fabs(cz.x)+fabs(cz.y)+fabs(cz.z)-cr; break; } // Octahedron
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_67)
 					case 67: { float phi67=0.5f*(1.0f+native_sqrt(5.0f)); clipDist=fmax(fmax(fabs(cz.x)+phi67*fabs(cz.y),fabs(cz.y)+phi67*fabs(cz.z)),fabs(cz.z)+phi67*fabs(cz.x))-cr*(1.0f+phi67); break; } // Dodecahedron approx
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_68)
 					case 68: { float phi68=0.5f*(1.0f+native_sqrt(5.0f)); clipDist=fmax(fabs(cz.x)+phi68*fabs(cz.z),fmax(fabs(cz.y)+phi68*fabs(cz.x),fabs(cz.z)+phi68*fabs(cz.y)))-cr*phi68*phi68; break; } // Icosahedron approx
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_69)
 					case 69: { float d69a=fmax(fabs(cz.x),fmax(fabs(cz.y),fabs(cz.z)))-sx, d69b=(fabs(cz.x)+fabs(cz.y)+fabs(cz.z))*0.577f-cr; clipDist=fmax(d69a,d69b); break; } // Truncated octahedron
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_70)
 					case 70: { float q70x=fabs(cz.x), q70y=fabs(cz.y); clipDist=fmax(q70x*0.866f+q70y*0.5f,q70y)-cr; clipDist=fmax(clipDist,fabs(cz.z)-sz); break; } // Hex prism
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_71)
 					case 71: { clipDist=fmax(fabs(cz.z)-sz,fmax(fabs(cz.x)*0.866f+cz.y*0.5f,-cz.y)-cr); break; } // Triangular prism
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_72)
 					case 72: { float rxy72a=native_sqrt(cz.x*cz.x+cz.y*cz.y), d72a=native_sqrt((rxy72a-cR)*(rxy72a-cR)+cz.z*cz.z)-cr, ryz72=native_sqrt(cz.y*cz.y+cz.z*cz.z), d72b=native_sqrt((ryz72-cR)*(ryz72-cR)+cz.x*cz.x)-cr; clipDist=fmin(d72a,d72b); break; } // Link
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_73)
 					case 73: { float r73=native_sqrt(cz.x*cz.x+cz.y*cz.y)-cr, h73=fabs(cz.z)-sz; clipDist=fmin(fmax(r73,h73),0.0f)+native_sqrt(fmax(r73,0.0f)*fmax(r73,0.0f)+fmax(h73,0.0f)*fmax(h73,0.0f)); break; } // Capped cylinder
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_74)
 					case 74: { float capH=fmax(0.0f,fmin(sz,cz.z)); clipDist=native_sqrt(cz.x*cz.x+cz.y*cz.y+(cz.z-capH)*(cz.z-capH))-cr; break; } // Capsule
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_75)
 					case 75: { float t75=atan2(cz.y,cz.x), r75=native_sqrt(cz.x*cz.x+cz.y*cz.y), knotR=cR+cr*native_cos(3.0f*t75); clipDist=native_sqrt((r75-knotR)*(r75-knotR)+cz.z*cz.z)-ca; break; } // Trefoil knot
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_76)
 					case 76: { float t76=atan2(cz.y,cz.x), r76=native_sqrt(cz.x*cz.x+cz.y*cz.y)-cR, localZ=cz.z*native_cos(t76*0.5f)-r76*native_sin(t76*0.5f); clipDist=fabs(localZ)-ca; break; } // Mobius strip approx
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_77)
 					case 77: { float sc77x=native_sin(cz.x*ca)*native_sin(cz.x*ca), sc77y=native_sin(cz.y*ca)*native_sin(cz.y*ca), sc77z=native_sin(cz.z*ca)*native_sin(cz.z*ca); clipDist=sc77x+sc77y+sc77z-cr; break; } // Sine cage
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_78)
 					case 78: { clipDist=cz.x*cz.x*cz.x*cz.x+cz.y*cz.y*cz.y*cz.y+cz.z*cz.z*cz.z*cz.z-ca*(cz.x*cz.x+cz.y*cz.y+cz.z*cz.z); break; } // Pillow shape
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_79)
 					case 79: { float n79=native_sin(ca*cz.x)*native_sin(ca*cz.y)*native_sin(ca*cz.z); clipDist=length(cz)-cr-cb*n79; break; } // Displacement sphere
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_80)
 					case 80: { float r80=native_sqrt(cz.x*cz.x+cz.y*cz.y)-cR, ang80=ca*atan2(cz.y,cz.x)/(2.0f*M_PI_F); clipDist=r80*r80+(cz.z-ang80)*(cz.z-ang80)-cr*cr; break; } // Corkscrew
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_81)
 					case 81: { float u81=atan2(cz.y,cz.x), v81=atan2(cz.z,native_sqrt(cz.x*cz.x+cz.y*cz.y)-cR), kb=ca*(1.0f-0.5f*native_cos(u81))*native_sin(v81)-cb*native_cos(v81); clipDist=fabs(kb)-cr; break; } // Klein bottle section
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_82)
 					case 82: { float r82=native_sqrt(cz.x*cz.x+cz.y*cz.y), wave82=cr+ca*native_sin(cb*cz.z); clipDist=r82-wave82; break; } // Wavy cylinder
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_83)
 					case 83: { float twist83=ca*cz.z, rx83=cz.x*native_cos(twist83)-cz.y*native_sin(twist83), ry83=cz.x*native_sin(twist83)+cz.y*native_cos(twist83); clipDist=fmax(fabs(rx83)-sx,fmax(fabs(ry83)-sy,fabs(cz.z)-sz)); break; } // Twisted box
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_84)
 					case 84: { float bend84=ca*cz.x, bz84=cz.z+bend84*bend84, rxy84=native_sqrt(cz.x*cz.x+cz.y*cz.y)-cR; clipDist=native_sqrt(rxy84*rxy84+bz84*bz84)-cr; break; } // Bent torus
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_85)
 					case 85: { clipDist=cz.z-ca*native_sin(cb*cz.x)-cc*native_cos(cb*cz.y)-cr; break; } // Corrugated plane
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_86)
 					case 86: { float r86=length(cz); if(r86<1e-15f)r86=1e-15f; { float theta86=acos(cz.z/r86), phi86=atan2(cz.y,cz.x), m86=(float)mut->clipNPoints, st86=pow(pow(fabs(native_cos(m86*theta86/4.0f)),cb)+pow(fabs(native_sin(m86*theta86/4.0f)),cc),-1.0f/ca), sp86=pow(pow(fabs(native_cos(m86*phi86/4.0f)),cb)+pow(fabs(native_sin(m86*phi86/4.0f)),cc),-1.0f/ca); clipDist=r86-cr*st86*sp86; } break; } // Supershape 3D
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_87)
 					case 87: { float r87=length(cz), cosTheta87=cz.z/(r87+1e-15f); clipDist=r87-cr*(1.0f+ca*cosTheta87); break; } // Egg shape
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_88)
 					case 88: { float x2_88=cz.x*cz.x,y2_88=cz.y*cz.y,z2_88=cz.z*cz.z; clipDist=2.0f*y2_88*(y2_88-ca*ca)*(y2_88-ca*ca)-x2_88*x2_88+2.0f*ca*ca*(x2_88-z2_88*3.0f)*(x2_88-z2_88); break; } // Genus-2 surface
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_89)
 					case 89: { float fx89=fabs(fmod(cz.x+ca,2.0f*ca))-ca, fy89=fabs(fmod(cz.y+ca,2.0f*ca))-ca, fz89=fabs(fmod(cz.z+ca,2.0f*ca))-ca; clipDist=native_sqrt(fx89*fx89+fy89*fy89+fz89*fz89)-cr; break; } // Folded sphere
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_90)
 					case 90: { clipDist=fmax(fmax(fabs(cz.x+cz.y),fabs(cz.x-cz.y)),fmax(fabs(cz.y+cz.z),fmax(fabs(cz.y-cz.z),fmax(fabs(cz.x+cz.z),fabs(cz.x-cz.z)))))-cr; break; } // Rhombic dodecahedron
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_91)
 					case 91: { clipDist=fmax(fabs(cz.x+cz.y+cz.z),fmax(fabs(cz.x-cz.y-cz.z),fmax(fabs(-cz.x+cz.y-cz.z),fabs(-cz.x-cz.y+cz.z))))-cr; break; } // Tetrahedral symmetry
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_92)
 					case 92: { clipDist=native_sin(ca*cz.x)+native_sin(ca*cz.y)+native_sin(ca*cz.z)-cr; break; } // Egg crate
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_93)
 					case 93: { float denom93=native_cos(ca*cz.y)*native_cos(ca*cz.z)+1e-10f; clipDist=native_sin(ca*cz.x)-native_sin(ca*cz.y)*native_sin(ca*cz.z)/denom93; break; } // Scherk surface
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_94)
 					case 94: { float u94=cz.x,v94=cz.y, ex94=u94-u94*u94*u94/3.0f+u94*v94*v94, ey94=v94-v94*v94*v94/3.0f+v94*u94*u94, ez94=u94*u94-v94*v94; clipDist=native_sqrt((cz.x-ex94)*(cz.x-ex94)+(cz.y-ey94)*(cz.y-ey94)+(cz.z-ez94)*(cz.z-ez94))-cr; break; } // Enneper surface
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_95)
 					case 95: { clipDist=cz.x*cz.x/fmax(sx*sx,1e-10f)-cz.y*cz.y/fmax(sy*sy,1e-10f)-cz.z; break; } // Saddle clip
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_96)
 					case 96: { clipDist=cz.x*(cz.x*cz.x-3.0f*cz.y*cz.y)-ca*cz.z; break; } // Monkey saddle
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_97)
 					case 97: { clipDist=fabs(cz.x)+fabs(cz.y)+fabs(cz.z)+fabs(z.w)-cr; break; } // Cross-polytope
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_98)
 					case 98: { clipDist=cz.x*cz.x/fmax(sx*sx,1e-10f)+cz.y*cz.y/fmax(sy*sy,1e-10f)-cz.z; break; } // Elliptic paraboloid
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_99)
 					case 99: { float d99s=length(cz)-cr, d99b=fmax(fabs(cz.x)-sx,fmax(fabs(cz.y)-sy,fabs(cz.z)-sz)), k99=mut->clipSmoothK, h99=fmax(0.0f,fmin(1.0f,0.5f-0.5f*(d99s-d99b)/fmax(k99,1e-10f))); clipDist=d99s*(1.0f-h99)+d99b*h99+k99*h99*(1.0f-h99); break; } // Smooth intersection
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLIPTYPE_100)
 					case 100: { float3 ifs=cz; float ifsScale=1.0f; for(int k=0;k<6;k++){if(ifs.x+ifs.y<0.0f){float t=-ifs.y;ifs.y=-ifs.x;ifs.x=t;} if(ifs.x+ifs.z<0.0f){float t=-ifs.z;ifs.z=-ifs.x;ifs.x=t;} if(ifs.y+ifs.z<0.0f){float t=-ifs.z;ifs.z=-ifs.y;ifs.y=t;} ifs=ifs*ca-(float3)(cb,cb,cb)*(ca-1.0f); ifsScale*=ca;} clipDist=(length(ifs)-cr)/ifsScale; break; } // Sierpinski IFS
 #endif
 			}
+#endif
 			// Apply boolean operation
 			int bop = mut->clipBooleanOp;
 			if (bop == 0) aux.dist = max(aux.dist, clipDist); // Intersection (AND)
@@ -5941,105 +6005,155 @@ kernel void Nebula(__global float4 *inOutImage, __constant sClInConstants *const
 					switch(mut->clampType) {
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_1)
 case 1: { z.x=fmax(fmin(z.x,ta),-ta); z.y=fmax(fmin(z.y,ta),-ta); z.z=fmax(fmin(z.z,ta),-ta); aux.DE*=sf; break; }
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_2)
 						case 2: { z.x=ta*tanh(z.x/fmax(ta,1e-10)); z.y=ta*tanh(z.y/fmax(ta,1e-10)); z.z=ta*tanh(z.z/fmax(ta,1e-10)); aux.DE*=sf; break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_3)
 						case 3: { float r=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); if(r>ta){float s=ta/r; z*=s; aux.DE*=s*sf;} break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_4)
 						case 4: { float r2=z.x*z.x+z.y*z.y+z.z*z.z; if(r2<ta*ta){float s=ta*ta/fmax(r2,1e-21); z*=s; aux.DE*=s;} break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_5)
 						case 5: { if(z.x>ta)z.x=2.0f*ta-z.x; if(z.x<-ta)z.x=-2.0f*ta-z.x; if(z.y>ta)z.y=2.0f*ta-z.y; if(z.y<-ta)z.y=-2.0f*ta-z.y; if(z.z>ta)z.z=2.0f*ta-z.z; if(z.z<-ta)z.z=-2.0f*ta-z.z; break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_6)
 						case 6: { z.x=fmax(fmin(z.x,ta),-tb); z.y=fmax(fmin(z.y,ta),-tb); z.z=fmax(fmin(z.z,ta),-tb); break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_7)
 						case 7: { z.x=fmax(fmin(z.x,ta),-ta); z.y=fmax(fmin(z.y,tb),-tb); z.z=fmax(fmin(z.z,tc),-tc); break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_8)
 						case 8: { float lim=ta*(1.0f+tb*(float)i/250.0f); z.x=fmax(fmin(z.x,lim),-lim); z.y=fmax(fmin(z.y,lim),-lim); z.z=fmax(fmin(z.z,lim),-lim); break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_9)
 						case 9: { float lim=ta*fabs(native_sin(tb*(float)i)); z.x=fmax(fmin(z.x,fmax(lim,0.01f)),-fmax(lim,0.01f)); z.y=fmax(fmin(z.y,fmax(lim,0.01f)),-fmax(lim,0.01f)); z.z=fmax(fmin(z.z,fmax(lim,0.01f)),-fmax(lim,0.01f)); break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_10)
 						case 10: { float lim=ta*native_exp(-tb*(float)i/100.0f); z.x=fmax(fmin(z.x,fmax(lim,0.01f)),-fmax(lim,0.01f)); z.y=fmax(fmin(z.y,fmax(lim,0.01f)),-fmax(lim,0.01f)); z.z=fmax(fmin(z.z,fmax(lim,0.01f)),-fmax(lim,0.01f)); break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_11)
 						case 11: { float k=fmax(tb,0.01f); z.x=z.x-fmax(0.0f,fmin(1.0f,0.5f+(z.x-ta)/(2.0f*k)))*(z.x-ta); z.y=z.y-fmax(0.0f,fmin(1.0f,0.5f+(z.y-ta)/(2.0f*k)))*(z.y-ta); z.z=z.z-fmax(0.0f,fmin(1.0f,0.5f+(z.z-ta)/(2.0f*k)))*(z.z-ta); break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_12)
 						case 12: { if(fabs(z.x)>ta){float s=z.x>0?1:-1; z.x=s*(ta-(z.x-s*ta)*(z.x-s*ta)*tb);} if(fabs(z.y)>ta){float s=z.y>0?1:-1; z.y=s*(ta-(z.y-s*ta)*(z.y-s*ta)*tb);} if(fabs(z.z)>ta){float s=z.z>0?1:-1; z.z=s*(ta-(z.z-s*ta)*(z.z-s*ta)*tb);} break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_13)
 						case 13: { float rxy=native_sqrt(z.x*z.x+z.y*z.y); if(rxy>ta){float s=ta/rxy; z.x*=s; z.y*=s; aux.DE*=s;} break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_14)
 						case 14: { float rxy=native_sqrt(z.x*z.x+z.y*z.y), lim=ta+tb*fabs(z.z); if(rxy>lim){float s=lim/rxy; z.x*=s; z.y*=s; aux.DE*=s;} break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_15)
 						case 15: { float d=native_sqrt((z.x/fmax(ta,0.01f))*(z.x/fmax(ta,0.01f))+(z.y/fmax(tb,0.01f))*(z.y/fmax(tb,0.01f))+(z.z/fmax(tc,0.01f))*(z.z/fmax(tc,0.01f))); if(d>1.0f){z/=d; aux.DE/=d;} break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_16)
 						case 16: { float rxy=native_sqrt(z.x*z.x+z.y*z.y)-ta, dt=native_sqrt(rxy*rxy+z.z*z.z); if(dt>tb){float s=tb/dt; rxy*=s; z.z*=s; float newR=rxy+ta; if(native_sqrt(z.x*z.x+z.y*z.y)>1e-10){float scale=newR/native_sqrt(z.x*z.x+z.y*z.y); z.x*=scale; z.y*=scale;} aux.DE*=s;} break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_17)
 						case 17: { if(z.x>ta) z.x=ta; break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_18)
 						case 18: { if(z.x<-ta) z.x=-ta; break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_19)
 						case 19: { if(z.z>ta) z.z=ta; break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_20)
 						case 20: { float p=fmax(ta,0.1f); z.x=fmod(z.x+p,2.0f*p)-p; z.y=fmod(z.y+p,2.0f*p)-p; z.z=fmod(z.z+p,2.0f*p)-p; break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_21)
 						case 21: { float p=fmax(ta,0.1f); z.x=2.0f*fabs(z.x/(2.0f*p)-floor(z.x/(2.0f*p)+0.5f))*p; z.y=2.0f*fabs(z.y/(2.0f*p)-floor(z.y/(2.0f*p)+0.5f))*p; z.z=2.0f*fabs(z.z/(2.0f*p)-floor(z.z/(2.0f*p)+0.5f))*p; break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_22)
 						case 22: { z.x=ta*(2.0f/(1.0f+native_exp(-2.0f*z.x/fmax(ta,0.01f)))-1.0f); z.y=ta*(2.0f/(1.0f+native_exp(-2.0f*z.y/fmax(ta,0.01f)))-1.0f); z.z=ta*(2.0f/(1.0f+native_exp(-2.0f*z.z/fmax(ta,0.01f)))-1.0f); break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_23)
 						case 23: { z.x=ta*atan(z.x/fmax(ta,0.01f))*(2.0f/M_PI_F); z.y=ta*atan(z.y/fmax(ta,0.01f))*(2.0f/M_PI_F); z.z=ta*atan(z.z/fmax(ta,0.01f))*(2.0f/M_PI_F); break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_24)
 						case 24: { float k24=1.0f/fmax(ta,0.01f); z.x=ta*tanh(k24*z.x*1.128f); z.y=ta*tanh(k24*z.y*1.128f); z.z=ta*tanh(k24*z.z*1.128f); break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_25)
 						case 25: { float p25=fmax(tb,0.1f); if(fabs(z.x)>ta)z.x=z.x>0?ta*pow(ta/z.x,p25):-ta*pow(ta/fabs(z.x),p25); if(fabs(z.y)>ta)z.y=z.y>0?ta*pow(ta/z.y,p25):-ta*pow(ta/fabs(z.y),p25); if(fabs(z.z)>ta)z.z=z.z>0?ta*pow(ta/z.z,p25):-ta*pow(ta/fabs(z.z),p25); break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_26)
 						case 26: { float lim26=ta*(1.0f+tb*native_sin(aux.color*tc)); z.x=fmax(fmin(z.x,lim26),-lim26); z.y=fmax(fmin(z.y,lim26),-lim26); z.z=fmax(fmin(z.z,lim26),-lim26); break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_27)
 						case 27: { float lim27=ta*(1.0f+tb*native_log(1.0f+fabs(aux.DE))); z.x=fmax(fmin(z.x,lim27),-lim27); z.y=fmax(fmin(z.y,lim27),-lim27); z.z=fmax(fmin(z.z,lim27),-lim27); break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_28)
 						case 28: { float lim28=ta+tb*z.x; z.y=fmax(fmin(z.y,fabs(lim28)),-fabs(lim28)); z.z=fmax(fmin(z.z,fabs(lim28)),-fabs(lim28)); break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_29)
 						case 29: { float theta29=atan2(z.y,z.x), r29=native_sqrt(z.x*z.x+z.y*z.y); if(r29>ta){r29=ta; z.x=r29*native_cos(theta29); z.y=r29*native_sin(theta29); aux.DE*=ta/fmax(native_sqrt(z.x*z.x+z.y*z.y),1e-10);} break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_30)
 						case 30: { float p30=fmax(ta,0.1f); z.x=floor(z.x/p30+0.5f)*p30; z.y=floor(z.y/p30+0.5f)*p30; z.z=floor(z.z/p30+0.5f)*p30; break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_31)
 						case 31: { float r31=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); if(r31<ta&&r31>1e-15){float s=ta/r31; z*=s; aux.DE*=s;} break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_32)
 						case 32: { float r32=native_sqrt(z.x*z.x+z.y*z.y); if(r32>ta&&r32<tb){}else if(r32<=ta){float s=ta/fmax(r32,1e-10); z.x*=s; z.y*=s;} else{float s=tb/r32; z.x*=s; z.y*=s;} break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_33)
 						case 33: { float n33=native_sin(z.x*12.9898f+z.y*78.233f+z.z*45.164f)*43758.5453f; n33=n33-floor(n33); { float lim33=ta*(1.0f+tb*(n33-0.5f)); z.x=fmax(fmin(z.x,lim33),-lim33); z.y=fmax(fmin(z.y,lim33),-lim33); z.z=fmax(fmin(z.z,lim33),-lim33); } break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_34)
 						case 34: { float theta34=atan2(z.y,z.x), r34=native_sqrt(z.x*z.x+z.y*z.y), spiralLim=ta+tb*theta34/(2.0f*M_PI_F); if(r34>spiralLim){z.x*=spiralLim/r34; z.y*=spiralLim/r34;} break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_35)
 						case 35: { float waveLim=ta+tb*native_sin(tc*z.x)*native_sin(tc*z.y); z.z=fmax(fmin(z.z,waveLim),-waveLim); break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_36)
 						case 36: { if(fabs(z.x)>ta){float t=z.x; z.x=z.y; z.y=t;} if(fabs(z.y)>ta){float t=z.y; z.y=z.z; z.z=t;} break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_37)
 						case 37: { if(z.x>ta)z.x=2.0f*ta-z.x; if(z.y>ta)z.y=2.0f*ta-z.y; if(z.z>ta)z.z=2.0f*ta-z.z; break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_38)
 						case 38: { float p38=fmax(2.0f*ta,0.01f); z.x=fabs(fmod(z.x+ta,p38)-ta); z.y=fabs(fmod(z.y+ta,p38)-ta); z.z=fabs(fmod(z.z+ta,p38)-ta); break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_39)
 						case 39: { float s39=z.x>0?1:-1; z.x=s39*fmin(fabs(z.x),ta*native_log(1.0f+fabs(z.x)/fmax(ta,0.01f))); s39=z.y>0?1:-1; z.y=s39*fmin(fabs(z.y),ta*native_log(1.0f+fabs(z.y)/fmax(ta,0.01f))); s39=z.z>0?1:-1; z.z=s39*fmin(fabs(z.z),ta*native_log(1.0f+fabs(z.z)/fmax(ta,0.01f))); break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_40)
 						case 40: { float step40=fmax(tb,0.01f); z.x=floor(z.x/step40+0.5f)*step40; z.x=fmax(fmin(z.x,ta),-ta); z.y=floor(z.y/step40+0.5f)*step40; z.y=fmax(fmin(z.y,ta),-ta); z.z=floor(z.z/step40+0.5f)*step40; z.z=fmax(fmin(z.z,ta),-ta); break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_41)
 						case 41: { for(int k=0;k<3;k++){if(z.x>ta)z.x=2.0f*ta-z.x; if(z.x<-ta)z.x=-2.0f*ta-z.x; if(z.y>ta)z.y=2.0f*ta-z.y; if(z.y<-ta)z.y=-2.0f*ta-z.y; if(z.z>ta)z.z=2.0f*ta-z.z; if(z.z<-ta)z.z=-2.0f*ta-z.z; ta*=tb;} break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_42)
 						case 42: { float r42=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); if(r42>ta){z*=ta/r42; aux.DE*=ta/r42;} if(r42<tb&&r42>1e-15){z*=tb/r42; aux.DE*=tb/r42;} break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_43)
 						case 43: { z.x=ta*z.x/native_sqrt(z.x*z.x+tb*tb); z.y=ta*z.y/native_sqrt(z.y*z.y+tb*tb); z.z=ta*z.z/native_sqrt(z.z*z.z+tb*tb); break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_44)
 						case 44: { z.x=fabs(z.x); z.y=fabs(z.y); z.z=fabs(z.z); z.x=fmin(z.x,ta); z.y=fmin(z.y,ta); z.z=fmin(z.z,ta); break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_45)
 						case 45: { float k45=fmax(tb,0.01f); if(fabs(z.x)>ta){float d=(fabs(z.x)-ta)/k45, s=z.x>0?1:-1; z.x=s*(ta+k45*d/(1.0f+d*d));} if(fabs(z.y)>ta){float d=(fabs(z.y)-ta)/k45, s=z.y>0?1:-1; z.y=s*(ta+k45*d/(1.0f+d*d));} if(fabs(z.z)>ta){float d=(fabs(z.z)-ta)/k45, s=z.z>0?1:-1; z.z=s*(ta+k45*d/(1.0f+d*d));} break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_46)
 						case 46: { float sum46=fabs(z.x)+fabs(z.y)+fabs(z.z); if(sum46>ta){float s=ta/sum46; z*=s; aux.DE*=s;} break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_47)
 						case 47: { if(fabs(z.x)+fabs(z.y)>ta){float s=ta/(fabs(z.x)+fabs(z.y)); z.x*=s; z.y*=s;} break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_48)
 						case 48: { float rxy48=native_sqrt(z.x*z.x+z.y*z.y); if(rxy48>ta){z.x*=ta/rxy48; z.y*=ta/rxy48;} z.z=fmax(fmin(z.z,tb),-tb); break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_49)
 						case 49: { float capH49=fmax(0.0f,fmin(ta,z.z)), rd49=native_sqrt(z.x*z.x+z.y*z.y+(z.z-capH49)*(z.z-capH49)); if(rd49>tb){float s=tb/rd49; z.x*=s; z.y*=s; z.z=capH49+(z.z-capH49)*s; aux.DE*=s;} break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_CLAMPTYPE_50)
 						case 50: { float p50=fmax(tc,0.5f), d50=pow(pow(fabs(z.x/fmax(ta,0.01f)),p50)+pow(fabs(z.y/fmax(ta,0.01f)),p50)+pow(fabs(z.z/fmax(tb,0.01f)),p50),1.0f/p50); if(d50>1.0f){z/=d50; aux.DE/=d50;} break; }
 #endif
 						default: break;
+#endif
 					}
 				}
 
@@ -6052,105 +6166,155 @@ case 1: { z.x=fmax(fmin(z.x,ta),-ta); z.y=fmax(fmin(z.y,ta),-ta); z.z=fmax(fmin(
 					switch(mut->jbType) {
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_1)
 case 1: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; { float r2jb=z.x*z.x+z.y*z.y+z.z*z.z, minR2jb=tb*tb, fixedR2jb=1.0f; if(r2jb<minR2jb){z*=fixedR2jb/minR2jb; aux.DE*=fixedR2jb/minR2jb;} else if(r2jb<fixedR2jb){z*=fixedR2jb/r2jb; aux.DE*=fixedR2jb/r2jb;} z=z*tc+(float4)(td,td,td,0.0f); aux.DE=aux.DE*fabs(tc)+1.0f; } break; }
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_2)
 						case 2: { float a2=ta*M_PI_F/180.0f, c2=native_cos(a2),s2=native_sin(a2), nx2=z.x*c2-z.y*s2; z.y=z.x*s2+z.y*c2; z.x=nx2; z.x=fabs(z.x+tb)-fabs(z.x-tb)-z.x; z.y=fabs(z.y+tb)-fabs(z.y-tb)-z.y; z.z=fabs(z.z+tb)-fabs(z.z-tb)-z.z; { float r2jb2=z.x*z.x+z.y*z.y+z.z*z.z; if(r2jb2<0.25f){z*=4.0f; aux.DE*=4.0f;} else if(r2jb2<1.0f){z*=1.0f/r2jb2; aux.DE*=1.0f/r2jb2;} z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; } break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_3)
 						case 3: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; { float r2mb=z.x*z.x+z.y*z.y+z.z*z.z, minR2=tb*tb; if(r2mb<minR2){z*=1.0f/minR2; aux.DE*=1.0f/minR2;} else if(r2mb<1.0f){z*=1.0f/r2mb; aux.DE*=1.0f/r2mb;} z=z*tc+aux.const_c; aux.DE=aux.DE*fabs(tc)+1.0f; } break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_4)
 						case 4: { z=fabs(z+(float4)(ta,ta,ta,0.0f))-(float4)(ta,ta,ta,0.0f); { float r2ab=z.x*z.x+z.y*z.y+z.z*z.z, minR2ab=tb*tb; if(r2ab<minR2ab){z*=1.0f/minR2ab; aux.DE*=1.0f/minR2ab;} else if(r2ab<1.0f){z*=1.0f/r2ab; aux.DE*=1.0f/r2ab;} z=z*tc+aux.const_c; aux.DE=aux.DE*fabs(tc)+1.0f; } break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_5)
 						case 5: { float k5=fmax(td,0.01f); z.x=z.x-k5*tanh((z.x-ta)/k5)+k5*tanh((z.x+ta)/k5)-z.x; z.y=z.y-k5*tanh((z.y-ta)/k5)+k5*tanh((z.y+ta)/k5)-z.y; z.z=z.z-k5*tanh((z.z-ta)/k5)+k5*tanh((z.z+ta)/k5)-z.z; { float r2sb=z.x*z.x+z.y*z.y+z.z*z.z; if(r2sb<tb*tb){z*=1.0f/(tb*tb); aux.DE*=1.0f/(tb*tb);} else if(r2sb<1.0f){z*=1.0f/r2sb; aux.DE*=1.0f/r2sb;} z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; } break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_6)
 						case 6: { z.x=fabs(z.x)-ta; z.y=fabs(z.y)-ta; z.z=fabs(z.z)-ta; { float r2af=z.x*z.x+z.y*z.y+z.z*z.z; if(r2af<tb*tb&&r2af>1e-21){z*=1.0f/(r2af); aux.DE*=1.0f/(r2af);} z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; } break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_7)
 						case 7: { if(z.x>ta)z.x=ta-z.x; if(z.x<-ta)z.x=-ta-z.x; if(z.y>ta)z.y=ta-z.y; if(z.y<-ta)z.y=-ta-z.y; if(z.z>ta)z.z=ta-z.z; if(z.z<-ta)z.z=-ta-z.z; { float r2cf=z.x*z.x+z.y*z.y+z.z*z.z, minR=tb*tb; if(r2cf<minR){z*=1.0f/minR; aux.DE*=1.0f/minR;} else if(r2cf<1.0f){z*=1.0f/r2cf; aux.DE*=1.0f/r2cf;} z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; } break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_8)
 						case 8: { for(int k=0;k<3;k++){z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z;} float r2mf=z.x*z.x+z.y*z.y+z.z*z.z; if(r2mf<tb*tb){z*=1.0f/(tb*tb); aux.DE*=1.0f/(tb*tb);} else if(r2mf<1.0f){z*=1.0f/r2mf; aux.DE*=1.0f/r2mf;} z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_9)
 						case 9: { if(z.x+z.y<0.0f){float t=z.x;z.x=-z.y;z.y=-t;} if(z.x+z.z<0.0f){float t=z.x;z.x=-z.z;z.z=-t;} if(z.y+z.z<0.0f){float t=z.y;z.y=-z.z;z.z=-t;} z=z*ta-(float4)(tb,tb,tb,0.0f)*(ta-1.0f); aux.DE=aux.DE*fabs(ta)+1.0f; break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_10)
 						case 10: { z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z=z*ta-(float4)(1,1,1,0.0f)*(ta-1.0f)*tb; aux.DE=aux.DE*fabs(ta)+1.0f; break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_11)
 						case 11: { z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z=z*tc+(float4)(td,td,td,0.0f); aux.DE=aux.DE*fabs(tc)+1.0f; break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_12)
 						case 12: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_13)
 						case 13: { z=z*ta+(float4)(tb,tc,td,0.0f); z.x=fabs(z.x+1.0f)-fabs(z.x-1.0f)-z.x; z.y=fabs(z.y+1.0f)-fabs(z.y-1.0f)-z.y; z.z=fabs(z.z+1.0f)-fabs(z.z-1.0f)-z.z; aux.DE=aux.DE*fabs(ta)+1.0f; break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_14)
 						case 14: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+tb)-fabs(z.y-tb)-z.y; z.z=fabs(z.z+tc)-fabs(z.z-tc)-z.z; { float r2df=z.x*z.x+z.y*z.y+z.z*z.z; if(r2df<0.25f){z*=4.0f;aux.DE*=4.0f;} else if(r2df<1.0f){z*=1.0f/r2df;aux.DE*=1.0f/r2df;} z*=td; aux.DE=aux.DE*fabs(td)+1.0f; } break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_15)
 						case 15: { z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; { float r2mh=z.x*z.x+z.y*z.y+z.z*z.z; if(r2mh<tb*tb){z*=1.0f/(tb*tb);aux.DE*=1.0f/(tb*tb);} else if(r2mh<1.0f){z*=1.0f/r2mh;aux.DE*=1.0f/r2mh;} z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; } break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_16)
 						case 16: { float tw16=ta*M_PI_F/180.0f*z.z, c16=native_cos(tw16),s16=native_sin(tw16), nx16=z.x*c16-z.y*s16; z.y=z.x*s16+z.y*c16; z.x=nx16; z.x=fabs(z.x+tb)-fabs(z.x-tb)-z.x; z.y=fabs(z.y+tb)-fabs(z.y-tb)-z.y; z.z=fabs(z.z+tb)-fabs(z.z-tb)-z.z; z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_17)
 						case 17: { float sc17=ta+tb*native_sin((float)i*tc); z.x=fabs(z.x+1.0f)-fabs(z.x-1.0f)-z.x; z.y=fabs(z.y+1.0f)-fabs(z.y-1.0f)-z.y; z.z=fabs(z.z+1.0f)-fabs(z.z-1.0f)-z.z; z*=sc17; aux.DE=aux.DE*fabs(sc17)+1.0f; break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_18)
 						case 18: { float r218=z.x*z.x+z.y*z.y+z.z*z.z, minR218=ta*ta, fixR218=tb*tb; if(r218<minR218){z*=fixR218/minR218;aux.DE*=fixR218/minR218;} else if(r218<fixR218){z*=fixR218/r218;aux.DE*=fixR218/r218;} float r218b=z.x*z.x+z.y*z.y+z.z*z.z, minR218b=tc*tc; if(r218b<minR218b){z*=1.0f/minR218b;aux.DE*=1.0f/minR218b;} else if(r218b<1.0f){z*=1.0f/r218b;aux.DE*=1.0f/r218b;} z*=td; aux.DE=aux.DE*fabs(td)+1.0f; break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_19)
 						case 19: { float rxy19=native_sqrt(z.x*z.x+z.y*z.y); if(rxy19<ta&&rxy19>1e-15){z.x*=ta/rxy19; z.y*=ta/rxy19; aux.DE*=ta/rxy19;} z.z=fabs(z.z+tb)-fabs(z.z-tb)-z.z; z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_20)
 						case 20: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; { float r2xz=z.x*z.x+z.z*z.z; if(r2xz<tb*tb){z*=1.0f/(tb*tb);aux.DE*=1.0f/(tb*tb);} else if(r2xz<1.0f){z*=1.0f/r2xz;aux.DE*=1.0f/r2xz;} z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; } break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_21)
 						case 21: { z=fabs(z)-(float4)(ta,ta,ta,0.0f); z+=aux.const_c*tb; { float r2ao=z.x*z.x+z.y*z.y+z.z*z.z; if(r2ao<tc*tc){z*=1.0f/(tc*tc);aux.DE*=1.0f/(tc*tc);} else if(r2ao<1.0f){z*=1.0f/r2ao;aux.DE*=1.0f/r2ao;} z*=td; aux.DE=aux.DE*fabs(td)+1.0f; } break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_22)
 						case 22: { if(i%2==0){z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z;} else{z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;}} z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_23)
 						case 23: { float r2so=z.x*z.x+z.y*z.y+z.z*z.z, minR2so=ta*ta, fixedR2so=tb*tb; if(r2so<minR2so){float m=fixedR2so/minR2so; z*=m; aux.DE*=m;} else if(r2so<fixedR2so){float m=fixedR2so/r2so; z*=m; aux.DE*=m;} break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_24)
 						case 24: { if(z.x+z.y<0.0f){float t=-z.y;z.y=-z.x;z.x=t;} if(z.x+z.z<0.0f){float t=-z.z;z.z=-z.x;z.x=t;} if(z.y+z.z<0.0f){float t=-z.z;z.z=-z.y;z.y=t;} z*=ta; z-=(float4)(tb,tb,tb,0.0f)*(ta-1.0f); aux.DE=aux.DE*fabs(ta)+1.0f; break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_25)
 						case 25: { z.x=fabs(fabs(z.x+ta)-tb)-ta; z.y=fabs(fabs(z.y+ta)-tb)-ta; z.z=fabs(fabs(z.z+ta)-tb)-ta; z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_26)
 						case 26: { float r2rb=z.x*z.x+z.y*z.y+z.z*z.z, theta26=atan2(z.y,z.x), phi26=atan2(native_sqrt(z.x*z.x+z.y*z.y),z.z), rr26=native_sqrt(r2rb); rr26=fabs(rr26+ta)-fabs(rr26-ta)-rr26; z.x=rr26*native_sin(phi26)*native_cos(theta26); z.y=rr26*native_sin(phi26)*native_sin(theta26); z.z=rr26*native_cos(phi26); z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_27)
 						case 27: { float p27=fmax(tb,0.5f); z.x=z.x>0?pow(fabs(z.x),p27):-pow(fabs(z.x),p27); z.y=z.y>0?pow(fabs(z.y),p27):-pow(fabs(z.y),p27); z.z=z.z>0?pow(fabs(z.z),p27):-pow(fabs(z.z),p27); z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_28)
 						case 28: { if(i%3==0){z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x;} else if(i%3==1){z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y;} else{z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z;} float r2il=z.x*z.x+z.y*z.y+z.z*z.z; if(r2il<tb*tb){z*=1.0f/(tb*tb);aux.DE*=1.0f/(tb*tb);} else if(r2il<1.0f){z*=1.0f/r2il;aux.DE*=1.0f/r2il;} z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_29)
 						case 29: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; { float r2mj=z.x*z.x+z.y*z.y+z.z*z.z; if(r2mj<0.25f){z*=4.0f;aux.DE*=4.0f;} else if(r2mj<1.0f){z*=1.0f/r2mj;aux.DE*=1.0f/r2mj;} z=z*tc+(float4)(td,td,td,0.0f); aux.DE=aux.DE*fabs(tc)+1.0f; } break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_30)
 						case 30: { z*=ta; aux.DE=aux.DE*fabs(ta)+1.0f; { float a30=tb*M_PI_F/180.0f, c30=native_cos(a30),s30=native_sin(a30), nx30=z.x*c30-z.y*s30; z.y=z.x*s30+z.y*c30; z.x=nx30; z.x=fabs(z.x+tc)-fabs(z.x-tc)-z.x; z.y=fabs(z.y+tc)-fabs(z.y-tc)-z.y; z.z=fabs(z.z+tc)-fabs(z.z-tc)-z.z; } break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_31)
 						case 31: { float bp31=z.x*z.x+z.y*z.y; if(bp31>1e-21){float inv=ta*ta/bp31; z.x*=inv; z.y*=inv; aux.DE*=inv;} z.x=fabs(z.x+tb)-fabs(z.x-tb)-z.x; z.y=fabs(z.y+tb)-fabs(z.y-tb)-z.y; z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_32)
 						case 32: { float r2cb=z.x*z.x+z.y*z.y+z.z*z.z+z.w*z.w; if(r2cb>1e-21){z*=ta/r2cb; aux.DE*=ta/r2cb;} z.x=fabs(z.x+tb)-fabs(z.x-tb)-z.x; z.y=fabs(z.y+tb)-fabs(z.y-tb)-z.y; z.z=fabs(z.z+tb)-fabs(z.z-tb)-z.z; z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_33)
 						case 33: { float lim33=ta*(1.0f+tb*(float)i/250.0f); z.x=fabs(z.x+lim33)-fabs(z.x-lim33)-z.x; z.y=fabs(z.y+lim33)-fabs(z.y-lim33)-z.y; z.z=fabs(z.z+lim33)-fabs(z.z-lim33)-z.z; z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_34)
 						case 34: { float n34=native_sin(z.x*12.9898f+z.y*78.233f)*43758.5453f; n34=n34-floor(n34); { float lim34=ta+tb*(n34-0.5f); z.x=fabs(z.x+lim34)-fabs(z.x-lim34)-z.x; z.y=fabs(z.y+lim34)-fabs(z.y-lim34)-z.y; z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; } break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_35)
 						case 35: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; z.w=fabs(z.w+ta)-fabs(z.w-ta)-z.w; { float r24d=z.x*z.x+z.y*z.y+z.z*z.z+z.w*z.w; if(r24d<tb*tb){z*=1.0f/(tb*tb);aux.DE*=1.0f/(tb*tb);} else if(r24d<1.0f){z*=1.0f/r24d;aux.DE*=1.0f/r24d;} z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; } break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_36)
 						case 36: { float q36x=z.x, q36y=z.y*0.866f+z.x*0.5f; if(q36y>ta){q36y=2.0f*ta-q36y;} if(q36x>ta){q36x=2.0f*ta-q36x;} z.x=q36x; z.y=(q36y-z.x*0.5f)/0.866f; z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_37)
 						case 37: { float d37x=fabs(z.x)-ta, d37y=fabs(z.y)-ta, d37z=fabs(z.z)-ta; if(d37x>0&&d37y>0){z.x*=ta/(ta+d37x); z.y*=ta/(ta+d37y);} if(d37y>0&&d37z>0){z.y*=ta/(ta+d37y); z.z*=ta/(ta+d37z);} if(d37x>0&&d37z>0){z.x*=ta/(ta+d37x); z.z*=ta/(ta+d37z);} z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_38)
 						case 38: { z.x+=tb*native_sin(ta*z.y)*native_cos(ta*z.z); z.y+=tb*native_sin(ta*z.z)*native_cos(ta*z.x); z.z+=tb*native_cos(ta*z.y)*native_sin(ta*z.x); z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_39)
 						case 39: { z.x=fabs(native_cos(z.x*ta))*tb; z.y=fabs(native_cos(z.y*ta))*tb; z.z=fabs(native_cos(z.z*ta))*tb; z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_40)
 						case 40: { z.x=z.x>0?native_log(1.0f+z.x*ta):-native_log(1.0f-z.x*ta); z.y=z.y>0?native_log(1.0f+z.y*ta):-native_log(1.0f-z.y*ta); z.z=z.z>0?native_log(1.0f+z.z*ta):-native_log(1.0f-z.z*ta); z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_41)
 						case 41: { float lim41=ta; z.x=z.x>lim41?lim41-(z.x-lim41)*(z.x-lim41)*tb:z.x<-lim41?-lim41+(z.x+lim41)*(z.x+lim41)*tb:z.x; z.y=z.y>lim41?lim41-(z.y-lim41)*(z.y-lim41)*tb:z.y<-lim41?-lim41+(z.y+lim41)*(z.y+lim41)*tb:z.y; z.z=z.z>lim41?lim41-(z.z-lim41)*(z.z-lim41)*tb:z.z<-lim41?-lim41+(z.z+lim41)*(z.z+lim41)*tb:z.z; z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_42)
 						case 42: { z.x=fmin(fmax(z.x,-ta),ta); z.y=fmin(fmax(z.y,-ta),ta); z.z=fmin(fmax(z.z,-ta),ta); z.x=fmax(fmin(z.x,tb),-tb); z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_43)
 						case 43: { if(fabs(z.x)>ta)z.x=z.x>0?ta:-ta; if(fabs(z.y)>ta)z.y=z.y>0?ta:-ta; if(fabs(z.z)>ta)z.z=z.z>0?ta:-ta; z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_44)
 						case 44: { float p44=2.0f*ta; z.x=z.x-p44*floor((z.x+ta)/p44); z.y=z.y-p44*floor((z.y+ta)/p44); z.z=z.z-p44*floor((z.z+ta)/p44); z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_45)
 						case 45: { float r45=native_sqrt(z.x*z.x+z.y*z.y), th45=atan2(z.y,z.x); th45=fabs(th45+ta)-fabs(th45-ta)-th45; z.x=r45*native_cos(th45); z.y=r45*native_sin(th45); z.z=fabs(z.z+tb)-fabs(z.z-tb)-z.z; z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_46)
 						case 46: { float lim46=ta*(1.0f+tb*native_log(1.0f+fabs(aux.DE))); z.x=fabs(z.x+lim46)-fabs(z.x-lim46)-z.x; z.y=fabs(z.y+lim46)-fabs(z.y-lim46)-z.y; z.z=fabs(z.z+lim46)-fabs(z.z-lim46)-z.z; z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_47)
 						case 47: { float lim47=ta*(1.0f+tb*native_sin(aux.color*tc)); z.x=fabs(z.x+lim47)-fabs(z.x-lim47)-z.x; z.y=fabs(z.y+lim47)-fabs(z.y-lim47)-z.y; z.z=fabs(z.z+lim47)-fabs(z.z-lim47)-z.z; z*=td; aux.DE=aux.DE*fabs(td)+1.0f; break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_48)
 						case 48: { float la=ta,lb=tb; for(int k=0;k<3;k++){z.x=fabs(z.x+la)-fabs(z.x-la)-z.x; z.y=fabs(z.y+la)-fabs(z.y-la)-z.y; z.z=fabs(z.z+la)-fabs(z.z-la)-z.z; la*=lb;} z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_49)
 						case 49: { z.x=z.x>ta?z.x-2.0f*ta:z.x<-ta?z.x+2.0f*ta:z.x; z.y=z.y>ta?z.y-2.0f*ta:z.y<-ta?z.y+2.0f*ta:z.y; z.z=z.z>ta?z.z-2.0f*ta:z.z<-ta?z.z+2.0f*ta:z.z; z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_JBTYPE_50)
 						case 50: { z=fabs(z); if(z.x-z.y<0.0f){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0.0f){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0.0f){float t=z.y;z.y=z.z;z.z=t;} z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; { float r2ifs=z.x*z.x+z.y*z.y+z.z*z.z; if(r2ifs<tb*tb){z*=1.0f/(tb*tb);aux.DE*=1.0f/(tb*tb);} else if(r2ifs<1.0f){z*=1.0f/r2ifs;aux.DE*=1.0f/r2ifs;} z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; } break; }
 #endif
 						default: break;
+#endif
 					}
 				}
 
@@ -6164,105 +6328,155 @@ case 1: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; 
 					{
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_1)
 						case 1: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; { float r2=z.x*z.x+z.y*z.y+z.z*z.z, minR2=tb*tb; if(r2<minR2){z*=1.0f/minR2;aux.DE*=1.0f/minR2;} else if(r2<1.0f){z*=1.0f/r2;aux.DE*=1.0f/r2;} z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; z+=(float4)(td,td,td,0.0f); } break; }
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_2)
 						case 2: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+tb)-fabs(z.y-tb)-z.y; z.z=fabs(z.z+tc)-fabs(z.z-tc)-z.z; { float r2=z.x*z.x+z.y*z.y+z.z*z.z; if(r2<0.25f){z*=4.0f;aux.DE*=4.0f;} else if(r2<1.0f){z/=r2;aux.DE/=r2;} z*=td; aux.DE=aux.DE*fabs(td)+1.0f; } break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_3)
 						case 3: { float rxy=native_sqrt(z.x*z.x+z.y*z.y); if(rxy>ta){float s=ta/rxy; z.x*=s; z.y*=s; aux.DE*=s;} float r2=z.x*z.x+z.y*z.y+z.z*z.z; if(r2<tb*tb){z*=1.0f/(tb*tb);aux.DE*=1.0f/(tb*tb);} else if(r2<1.0f){z/=r2;aux.DE/=r2;} z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_4)
 						case 4: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; { float r2=z.x*z.x+z.y*z.y+z.z*z.z, fixR=tb*tb, minR=tc*tc; if(r2<minR){z*=fixR/minR;aux.DE*=fixR/minR;} else if(r2<fixR){z*=fixR/r2;aux.DE*=fixR/r2;} z*=td; aux.DE=aux.DE*fabs(td)+1.0f; } break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_5)
 						case 5: { z=fabs(z+(float4)(ta,ta,ta,0.0f))-(float4)(ta,ta,ta,0.0f); { float r2=z.x*z.x+z.y*z.y+z.z*z.z; if(r2<tb){z*=tc/tb;aux.DE*=tc/tb;} else if(r2<tc){z*=tc/r2;aux.DE*=tc/r2;} z*=td; aux.DE=aux.DE*fabs(td)+1.0f; } break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_6)
 						case 6: { if(z.x+z.y<0){float t=z.x;z.x=-z.y;z.y=-t;} if(z.x+z.z<0){float t=z.x;z.x=-z.z;z.z=-t;} if(z.y+z.z<0){float t=z.y;z.y=-z.z;z.z=-t;} z=z*ta-(float4)(tb,tb,tb,0.0f)*(ta-1.0f); aux.DE=aux.DE*fabs(ta)+1.0f; break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_7)
 						case 7: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; { float r2=z.x*z.x+z.y*z.y+z.z*z.z; if(r2<tb*tb){float s=tc/(tb*tb); z*=s;aux.DE*=s;} else if(r2<tc){float s=tc/r2; z*=s;aux.DE*=s;} z.z=td*z.z; aux.DE*=fabs(td); } break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_8)
 						case 8: { float a8=ta*M_PI_F/180.0f, c8=native_cos(a8),s8=native_sin(a8), nx=z.x*c8-z.y*s8; z.y=z.x*s8+z.y*c8; z.x=nx; z.x=fabs(z.x+tb)-fabs(z.x-tb)-z.x; z.y=fabs(z.y+tb)-fabs(z.y-tb)-z.y; z.z=fabs(z.z+tb)-fabs(z.z-tb)-z.z; { float r2=z.x*z.x+z.y*z.y+z.z*z.z; if(r2<0.25f){z*=4.0f;aux.DE*=4.0f;} else if(r2<1.0f){z/=r2;aux.DE/=r2;} z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; } break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_9)
 						case 9: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; { float r=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); if(r<tb){z*=tc/(tb*tb);aux.DE*=tc/(tb*tb);} else if(r<native_sqrt(tc)){z*=tc/(r*r);aux.DE*=tc/(r*r);} z*=td; aux.DE=aux.DE*fabs(td)+1.0f; } break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_10)
 						case 10: { z=fabs(z)-(float4)(ta,ta,ta,0.0f); if(z.x<0)z.x=0; if(z.y<0)z.y=0; if(z.z<0)z.z=0; { float r2=z.x*z.x+z.y*z.y+z.z*z.z; if(r2<tb*tb){z*=1.0f/(tb*tb);aux.DE*=1.0f/(tb*tb);} else if(r2<1.0f){z/=r2;aux.DE/=r2;} z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; z+=(float4)(td,td,td,0.0f); } break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_11)
 						case 11: { float rxy=native_sqrt(z.x*z.x+z.y*z.y), minR=ta; if(rxy<minR&&rxy>1e-21f){float s=minR/rxy; z.x*=s;z.y*=s;aux.DE*=s;} z.x=fabs(z.x+tb)-fabs(z.x-tb)-z.x; z.y=fabs(z.y+tb)-fabs(z.y-tb)-z.y; z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_12)
 						case 12: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; { float r2=z.x*z.x+z.y*z.y+z.z*z.z, sph=fmax(tb*tb/fmax(r2,1e-21f),1.0f); z*=sph*tc; aux.DE=aux.DE*sph*fabs(tc)+1.0f; } break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_13)
 						case 13: { if(z.x-z.y<0){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0){float t=z.y;z.y=z.z;z.z=t;} z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+tb)-fabs(z.y-tb)-z.y; { float r2=z.x*z.x+z.y*z.y+z.z*z.z; if(r2<tc*tc){z*=1.0f/(tc*tc);aux.DE*=1.0f/(tc*tc);} else if(r2<1.0f){z/=r2;aux.DE/=r2;} z*=td; aux.DE=aux.DE*fabs(td)+1.0f; } break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_14)
 						case 14: { z.x=ta*tanh(z.x/fmax(ta,1e-10f)); z.y=ta*tanh(z.y/fmax(ta,1e-10f)); z.z=ta*tanh(z.z/fmax(ta,1e-10f)); { float r2=z.x*z.x+z.y*z.y+z.z*z.z; if(r2<tb*tb){z*=tc/(tb*tb);aux.DE*=tc/(tb*tb);} else if(r2<tc){z*=tc/r2;aux.DE*=tc/r2;} z*=td; aux.DE=aux.DE*fabs(td)+1.0f; } break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_15)
 						case 15: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; { float r2=z.x*z.x+z.y*z.y+z.z*z.z, minR2=tb*tb, fixR2=tc*tc; if(r2<minR2){z*=fixR2/minR2;aux.DE*=fixR2/minR2;} else if(r2<fixR2){z*=fixR2/r2;aux.DE*=fixR2/r2;} z*=sf; aux.DE=aux.DE*fabs(sf)+1.0f; z+=(float4)(td,td,td,0.0f); } break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_16)
 						case 16: { float fold=ta; z.x=fabs(z.x+fold)-fabs(z.x-fold)-z.x; z.y=fabs(z.y+fold)-fabs(z.y-fold)-z.y; z.z=fabs(z.z+fold)-fabs(z.z-fold)-z.z; { float r2=z.x*z.x+z.y*z.y+z.z*z.z, k=fmax(tb/fmax(r2,1e-21f),1.0f); z*=k; aux.DE*=k; z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; z.x+=td; } break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_17)
 						case 17: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; { float r2=z.x*z.x+z.y*z.y+z.z*z.z; if(r2<tb){z*=tc/tb;aux.DE*=tc/tb;} else if(r2<tc){z*=tc/r2;aux.DE*=tc/r2;} float sc=td+sf*native_sin((float)i*0.5f); z*=sc; aux.DE=aux.DE*fabs(sc)+1.0f; } break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_18)
 						case 18: { z.x=clamp(z.x,-ta,ta)*2.0f-z.x; z.y=clamp(z.y,-ta,ta)*2.0f-z.y; z.z=clamp(z.z,-ta,ta)*2.0f-z.z; { float r2=z.x*z.x+z.y*z.y+z.z*z.z, k=fmax(tb/fmax(r2,1e-21f),1.0f); z*=k*tc; aux.DE=aux.DE*k*fabs(tc)+1.0f; z+=(float4)(td,0.0f,0.0f,0.0f); } break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_19)
 						case 19: { z=fabs(z+(float4)(ta,tb,ta,0.0f))-(float4)(ta,tb,ta,0.0f); { float r2=z.x*z.x+z.y*z.y+z.z*z.z, minR2=tc*tc; if(r2<minR2){float s=td/minR2;z*=s;aux.DE*=s;} else if(r2<td){float s=td/r2;z*=s;aux.DE*=s;} z*=sf; aux.DE=aux.DE*fabs(sf)+1.0f; } break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_20)
 						case 20: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; { float theta=atan2(z.y,z.x), r=native_sqrt(z.x*z.x+z.y*z.y); r=fmax(r,tb); z.x=r*native_cos(theta); z.y=r*native_sin(theta); float r2=z.x*z.x+z.y*z.y+z.z*z.z; if(r2<tc*tc){z*=1.0f/(tc*tc);aux.DE*=1.0f/(tc*tc);} else if(r2<1.0f){z/=r2;aux.DE/=r2;} z*=td; aux.DE=aux.DE*fabs(td)+1.0f; } break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_21)
 						case 21: { z=fabs(z)-(float4)(ta,ta,ta,0.0f); z.x=fabs(z.x+tb)-fabs(z.x-tb)-z.x; { float r2=z.x*z.x+z.y*z.y+z.z*z.z; if(r2<tc*tc){z*=td/(tc*tc);aux.DE*=td/(tc*tc);} else if(r2<td){z*=td/r2;aux.DE*=td/r2;} z*=sf; aux.DE=aux.DE*fabs(sf)+1.0f; } break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_22)
 						case 22: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; { float r2=z.x*z.x+z.y*z.y+z.z*z.z, sph=tb*tb/fmax(r2,tc*tc); z*=sph; aux.DE*=sph; z*=td; aux.DE=aux.DE*fabs(td)+1.0f; } break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_23)
 						case 23: { float fold23=ta*(1.0f+tb*(float)i/250.0f); z.x=fabs(z.x+fold23)-fabs(z.x-fold23)-z.x; z.y=fabs(z.y+fold23)-fabs(z.y-fold23)-z.y; z.z=fabs(z.z+fold23)-fabs(z.z-fold23)-z.z; { float r2=z.x*z.x+z.y*z.y+z.z*z.z; if(r2<tc*tc){z*=td/(tc*tc);aux.DE*=td/(tc*tc);} else if(r2<td){z*=td/r2;aux.DE*=td/r2;} z*=sf; aux.DE=aux.DE*fabs(sf)+1.0f; } break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_24)
 						case 24: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; { float r=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z), k=tb/fmax(r,tc); z*=k; aux.DE*=k; z*=td; aux.DE=aux.DE*fabs(td)+1.0f; } break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_25)
 						case 25: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; { float r2=z.x*z.x+z.y*z.y+z.z*z.z, minR2=tb*tb, fixR2=tc*tc, sph=clamp(fixR2/fmax(r2,minR2),1.0f,fixR2/minR2); z*=sph; aux.DE*=sph; z*=td; aux.DE=aux.DE*fabs(td)+1.0f; } break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_26)
 						case 26: { if(z.x+z.y<0){float t=-z.y;z.y=-z.x;z.x=t;} if(z.x+z.z<0){float t=-z.z;z.z=-z.x;z.x=t;} z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+tb)-fabs(z.y-tb)-z.y; z.z=fabs(z.z+tb)-fabs(z.z-tb)-z.z; { float r2=z.x*z.x+z.y*z.y+z.z*z.z; if(r2<tc*tc){z*=td/(tc*tc);aux.DE*=td/(tc*tc);} else if(r2<td){z*=td/r2;aux.DE*=td/r2;} z*=sf; aux.DE=aux.DE*fabs(sf)+1.0f; } break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_27)
 						case 27: { z.x=ta-fabs(z.x-ta); z.y=ta-fabs(z.y-ta); z.z=ta-fabs(z.z-ta); { float r2=z.x*z.x+z.y*z.y+z.z*z.z; if(r2<tb*tb){z*=tc/(tb*tb);aux.DE*=tc/(tb*tb);} else if(r2<tc){z*=tc/r2;aux.DE*=tc/r2;} z*=td; aux.DE=aux.DE*fabs(td)+1.0f; } break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_28)
 						case 28: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; { float r2=z.x*z.x+z.y*z.y+z.z*z.z, inv=tb/fmax(r2,1e-21f); z*=inv; aux.DE*=inv; z.x+=tc; z.y+=tc; z.z+=td; } break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_29)
 						case 29: { float s29=sf; z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; { float r2=z.x*z.x+z.y*z.y+z.z*z.z; if(r2<tb*tb){s29*=tc/(tb*tb);} else if(r2<tc){s29*=tc/r2;} z*=s29; aux.DE=aux.DE*fabs(s29)+1.0f; z+=(float4)(td,td,td,0.0f); } break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_30)
 						case 30: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+tb)-fabs(z.y-tb)-z.y; z.z=fabs(z.z+tc)-fabs(z.z-tc)-z.z; { float r=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z); if(r<td&&r>1e-21f){float s=td/r;z*=s;aux.DE*=s;} z*=sf; aux.DE=aux.DE*fabs(sf)+1.0f; } break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_31)
 						case 31: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; { float r2=z.x*z.x+z.y*z.y+z.z*z.z, minR2=tb*tb; if(r2<minR2){z*=1.0f/minR2;aux.DE*=1.0f/minR2;} else if(r2<1.0f){z/=r2;aux.DE/=r2;} z.x=z.x*tc+td; z.y=z.y*tc; z.z=z.z*tc; aux.DE=aux.DE*fabs(tc)+1.0f; } break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_32)
 						case 32: { float a32=ta*M_PI_F/180.0f, c32=native_cos(a32),s32=native_sin(a32), ny=z.y*c32-z.z*s32; z.z=z.y*s32+z.z*c32; z.y=ny; z.x=fabs(z.x+tb)-fabs(z.x-tb)-z.x; z.y=fabs(z.y+tb)-fabs(z.y-tb)-z.y; z.z=fabs(z.z+tb)-fabs(z.z-tb)-z.z; { float r2=z.x*z.x+z.y*z.y+z.z*z.z; if(r2<tc*tc){z*=td/(tc*tc);aux.DE*=td/(tc*tc);} else if(r2<td){z*=td/r2;aux.DE*=td/r2;} z*=sf; aux.DE=aux.DE*fabs(sf)+1.0f; } break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_33)
 						case 33: { z=fabs(z+(float4)(ta,ta,ta,0.0f))-(float4)(ta,ta,ta,0.0f); z=fabs(z+(float4)(tb,tb,tb,0.0f))-(float4)(tb,tb,tb,0.0f); { float r2=z.x*z.x+z.y*z.y+z.z*z.z; if(r2<tc*tc){z*=td/(tc*tc);aux.DE*=td/(tc*tc);} else if(r2<td){z*=td/r2;aux.DE*=td/r2;} z*=sf; aux.DE=aux.DE*fabs(sf)+1.0f; } break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_34)
 						case 34: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; { float r2=z.x*z.x+z.y*z.y+z.z*z.z, smooth=tb*tb/(fmax(r2,tc*tc)); z*=smooth; aux.DE*=smooth; z*=td; aux.DE=aux.DE*fabs(td)+1.0f; } break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_35)
 						case 35: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; { float len=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z), k=tb/fmax(len*len,tc); z*=k;aux.DE*=k; z*=td; aux.DE=aux.DE*fabs(td)+1.0f; } break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_36)
 						case 36: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; { float r2=z.x*z.x+z.y*z.y+z.z*z.z, f36=1.0f/(1.0f+native_exp(-tb*(r2-tc))); z*=f36*td; aux.DE=aux.DE*f36*fabs(td)+1.0f; } break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_37)
 						case 37: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; { float r2=z.x*z.x+z.y*z.y+z.z*z.z, minR2=tb*tb, maxSph=tc, sph=clamp(1.0f/fmax(r2,minR2),1.0f,maxSph); z*=sph; aux.DE*=sph; z*=td; aux.DE=aux.DE*fabs(td)+1.0f; } break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_38)
 						case 38: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; { float sum=fabs(z.x)+fabs(z.y)+fabs(z.z); if(sum>tb){float s=tb/sum;z*=s;aux.DE*=s;} z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; z+=(float4)(td,0.0f,0.0f,0.0f); } break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_39)
 						case 39: { float fold39=ta+tb*native_sin((float)i*tc); z.x=fabs(z.x+fold39)-fabs(z.x-fold39)-z.x; z.y=fabs(z.y+fold39)-fabs(z.y-fold39)-z.y; z.z=fabs(z.z+fold39)-fabs(z.z-fold39)-z.z; { float r2=z.x*z.x+z.y*z.y+z.z*z.z; if(r2<0.25f){z*=4.0f;aux.DE*=4.0f;} else if(r2<1.0f){z/=r2;aux.DE/=r2;} z*=td; aux.DE=aux.DE*fabs(td)+1.0f; } break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_40)
 						case 40: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; { float r2=z.x*z.x+z.y*z.y+z.z*z.z, p=tb/fmax(r2,1e-21f); z.x=z.x*p+tc; z.y=z.y*p+tc; z.z=z.z*p+td; aux.DE=aux.DE*fabs(p)+1.0f; } break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_41)
 						case 41: { if(z.x>ta)z.x=2.0f*ta-z.x; if(z.x<-ta)z.x=-2.0f*ta-z.x; if(z.y>ta)z.y=2.0f*ta-z.y; if(z.y<-ta)z.y=-2.0f*ta-z.y; if(z.z>ta)z.z=2.0f*ta-z.z; if(z.z<-ta)z.z=-2.0f*ta-z.z; { float r2=z.x*z.x+z.y*z.y+z.z*z.z; if(r2<tb*tb){z*=tc/(tb*tb);aux.DE*=tc/(tb*tb);} else if(r2<tc){z*=tc/r2;aux.DE*=tc/r2;} z*=td; aux.DE=aux.DE*fabs(td)+1.0f; } break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_42)
 						case 42: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; { float r2=z.x*z.x+z.y*z.y+z.z*z.z, minR=tb*tb, fixR=tc*tc, s42=(r2<minR)?fixR/minR:(r2<fixR)?fixR/r2:1.0f; z*=s42*td; aux.DE=aux.DE*s42*fabs(td)+1.0f; } break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_43)
 						case 43: { z.x=ta-fabs(fabs(z.x)-ta); z.y=ta-fabs(fabs(z.y)-ta); z.z=ta-fabs(fabs(z.z)-ta); { float r2=z.x*z.x+z.y*z.y+z.z*z.z; if(r2<tb*tb){z*=tc/(tb*tb);aux.DE*=tc/(tb*tb);} else if(r2<tc){z*=tc/r2;aux.DE*=tc/r2;} z*=td; aux.DE=aux.DE*fabs(td)+1.0f; } break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_44)
 						case 44: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; { float r2=z.x*z.x+z.y*z.y+z.z*z.z, invR=1.0f/fmax(r2,tb*tb); z*=invR*tc; aux.DE=aux.DE*invR*fabs(tc)+1.0f; z+=(float4)(td,td,td,0.0f); } break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_45)
 						case 45: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; { float r=native_sqrt(z.x*z.x+z.y*z.y+z.z*z.z), f45=tb/(1.0f+native_exp(tc*(r-td))); z*=f45; aux.DE*=f45; } break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_46)
 						case 46: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; { float maxC=fmax(fabs(z.x),fmax(fabs(z.y),fabs(z.z))); if(maxC>tb){float s=tb/maxC;z*=s;aux.DE*=s;} z*=tc; aux.DE=aux.DE*fabs(tc)+1.0f; z+=(float4)(td,0.0f,0.0f,0.0f); } break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_47)
 						case 47: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; { float r2=z.x*z.x+z.y*z.y+z.z*z.z, k47=fmax(tb*tb/fmax(r2,tc*tc),1.0f); z*=k47*td; aux.DE=aux.DE*k47*fabs(td)+1.0f; } break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_48)
 						case 48: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; { float r2=z.x*z.x+z.y*z.y+z.z*z.z, minR2=tb*tb; if(r2<minR2){z*=1.0f/minR2;aux.DE*=1.0f/minR2;} else if(r2<1.0f){z/=r2;aux.DE/=r2;} float sc48=tc+td*native_exp(-(float)i*sf); z*=sc48; aux.DE=aux.DE*fabs(sc48)+1.0f; } break; }
 #endif
 #if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_49)
 						case 49: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; { float r2=z.x*z.x+z.y*z.y+z.z*z.z, sph49=fmax(tb/fmax(r2,tc*tc),1.0f); z.x=z.x*sph49*td; z.y=z.y*sph49; z.z=z.z*sph49; aux.DE*=sph49*fabs(td); } break; }
+#endif
+#if !defined(MUTATION_PRUNE) || defined(MUT_NEED_MDTYPE_50)
 						case 50: { z.x=fabs(z.x+ta)-fabs(z.x-ta)-z.x; z.y=fabs(z.y+ta)-fabs(z.y-ta)-z.y; z.z=fabs(z.z+ta)-fabs(z.z-ta)-z.z; if(z.x-z.y<0){float t=z.x;z.x=z.y;z.y=t;} if(z.x-z.z<0){float t=z.x;z.x=z.z;z.z=t;} if(z.y-z.z<0){float t=z.y;z.y=z.z;z.z=t;} float r2=z.x*z.x+z.y*z.y+z.z*z.z; if(r2<tb*tb){z*=tc/(tb*tb);aux.DE*=tc/(tb*tb);} else if(r2<tc){z*=tc/r2;aux.DE*=tc/r2;} z*=td; aux.DE=aux.DE*fabs(td)+1.0f; break; }
 #endif
 						default: break;
+#endif
 					}
 				}
 

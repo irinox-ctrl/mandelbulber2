@@ -35,14 +35,13 @@
 
 #include "opencl_engine_render_fractal.h"
 
+#include "opencl_mutation_defines.hpp"
 #include "perf_scope.hpp"
 
 #include <functional>
 #include <iostream>
 #include <map>
 #include <memory>
-#include <set>
-
 #include <QtAlgorithms>
 #include <QtConcurrent>
 
@@ -1133,40 +1132,7 @@ void cOpenClEngineRenderFractal::SetParametersForIterationWeight(cNineFractals *
 	}
 	if (weightUsed) definesCollector += " -DITERATION_WEIGHT";
 
-	// Check if any formula slot uses mutation — skip entire mutation code path if not
-	bool mutationUsed = false;
-	std::set<int> invTypes, foldTypes, swizzles, mathTypes, clipTypes, clampTypes, jbTypes, mdTypes;
-	for (int i = 0; i < NUMBER_OF_FRACTALS; i++)
-	{
-		const sFormulaMutationParams &mp = fractals->GetMutationParams(i);
-		if (!mp.enabled) continue;
-		mutationUsed = true;
-		invTypes.insert(mp.inversionType);
-		foldTypes.insert(static_cast<int>(mp.foldType));
-		swizzles.insert(static_cast<int>(mp.swizzle));
-		mathTypes.insert(static_cast<int>(mp.mathType));
-		clipTypes.insert(mp.clipType);
-		clampTypes.insert(mp.clampType);
-		jbTypes.insert(mp.jbType);
-		mdTypes.insert(mp.mdType);
-	}
-	if (mutationUsed)
-	{
-		definesCollector += " -DUSE_MUTATION";
-		definesCollector += " -DMUTATION_PRUNE";
-		auto emitNeedDefines = [&](const char *prefix, const std::set<int> &values) {
-			for (int v : values)
-				definesCollector += QString(" -D%1_%2").arg(prefix).arg(v);
-		};
-		emitNeedDefines("MUT_NEED_INVERSIONTYPE", invTypes);
-		emitNeedDefines("MUT_NEED_FOLDTYPE", foldTypes);
-		emitNeedDefines("MUT_NEED_SWIZZLE", swizzles);
-		emitNeedDefines("MUT_NEED_MATHTYPE", mathTypes);
-		emitNeedDefines("MUT_NEED_CLIPTYPE", clipTypes);
-		emitNeedDefines("MUT_NEED_CLAMPTYPE", clampTypes);
-		emitNeedDefines("MUT_NEED_JBTYPE", jbTypes);
-		emitNeedDefines("MUT_NEED_MDTYPE", mdTypes);
-	}
+	AppendMutationOpenClDefines(fractals, definesCollector);
 }
 
 void cOpenClEngineRenderFractal::SetParameters(

@@ -7,6 +7,8 @@
 
 #include "opencl_engine_render_nebula.h"
 
+#include "opencl_mutation_defines.hpp"
+
 #include <memory>
 #include <map>
 #include <QApplication>
@@ -132,6 +134,8 @@ void cOpenClEngineRenderNebula::SetParameters(
 		}
 	}
 	if (weightUsed) definesCollector += " -DITERATION_WEIGHT";
+
+	AppendMutationOpenClDefines(fractals.get(), definesCollector);
 
 	if (paramRender->limitsEnabled) definesCollector += " -DLIMITS_ENABLED";
 
