@@ -1,0 +1,5 @@
+// TYPE_ID: 24
+// NAME: Type 24
+// PARAMS: none
+// SYSTEM: inversion
+zz.x=fabs(zz.x); zz.y=fabs(zz.y); zz.z=fabs(zz.z); rr=zz.Dot(zz); if(rr<1e-21)rr=1e-21; mde=iR*iR/rr; zz*=mde;

@@ -1,0 +1,5 @@
+// TYPE_ID: 44
+// NAME: Type 44
+// PARAMS: AMP, CR, FREQ
+// SYSTEM: clip
+double orbitR=CR*(1.0+AMP*sin(aux.color*FREQ)); clipDist=cz.Length()-orbitR; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

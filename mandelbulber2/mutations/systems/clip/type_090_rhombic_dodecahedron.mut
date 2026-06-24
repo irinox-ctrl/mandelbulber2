@@ -1,0 +1,5 @@
+// TYPE_ID: 90
+// NAME: Rhombic dodecahedron
+// PARAMS: CR
+// SYSTEM: clip
+clipDist=fmax(fmax(fabs(cz.x+cz.y),fabs(cz.x-cz.y)),fmax(fabs(cz.y+cz.z),fmax(fabs(cz.y-cz.z),fmax(fabs(cz.x+cz.z),fabs(cz.x-cz.z)))))-CR; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

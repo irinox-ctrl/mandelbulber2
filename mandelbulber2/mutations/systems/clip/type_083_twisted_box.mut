@@ -1,0 +1,5 @@
+// TYPE_ID: 83
+// NAME: Twisted box
+// PARAMS: PA
+// SYSTEM: clip
+double twist83=PA*cz.z; double rx83=cz.x*cos(twist83)-cz.y*sin(twist83); double ry83=cz.x*sin(twist83)+cz.y*cos(twist83); clipDist=fmax(fabs(rx83)-Sx,fmax(fabs(ry83)-Sy,fabs(cz.z)-Sz)); if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

@@ -1,0 +1,5 @@
+// TYPE_ID: 80
+// NAME: Corkscrew
+// PARAMS: CR, MR, PA
+// SYSTEM: clip
+double r80=sqrt(cz.x*cz.x+cz.y*cz.y)-MR; double c80=r80*r80+(cz.z-PA*atan2(cz.y,cz.x)/(2.0*M_PI))*(cz.z-PA*atan2(cz.y,cz.x)/(2.0*M_PI))-CR*CR; clipDist=c80; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

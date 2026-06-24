@@ -1,0 +1,5 @@
+// TYPE_ID: 72
+// NAME: Link (two interlocked tori)
+// PARAMS: CR, MR
+// SYSTEM: clip
+double rxy72a=sqrt(cz.x*cz.x+cz.y*cz.y); double d72a=sqrt((rxy72a-MR)*(rxy72a-MR)+cz.z*cz.z)-CR; double ryz72=sqrt(cz.y*cz.y+cz.z*cz.z); double d72b=sqrt((ryz72-MR)*(ryz72-MR)+cz.x*cz.x)-CR; clipDist=fmin(d72a,d72b); if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

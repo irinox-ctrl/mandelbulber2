@@ -1,0 +1,5 @@
+// TYPE_ID: 60
+// NAME: Boy surface approximation
+// PARAMS: CR
+// SYSTEM: clip
+double r60=cz.Length(); if(r60<1e-15)r60=1e-15; double x60=cz.x/r60,y60=cz.y/r60,z60=cz.z/r60; clipDist=64.0*x60*x60*x60*z60-48.0*x60*z60*(3.0*x60*x60+z60*z60)+12.0*z60*(x60*x60-z60*z60)+x60*x60+y60*y60+z60*z60-CR*CR; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

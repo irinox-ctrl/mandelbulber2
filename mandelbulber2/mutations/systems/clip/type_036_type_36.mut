@@ -1,0 +1,5 @@
+// TYPE_ID: 36
+// NAME: Type 36
+// PARAMS: CR, PA, PB, PC
+// SYSTEM: clip
+CVector3 seeds[4]; seeds[0]=CVector3(PA,0,0); seeds[1]=CVector3(-PA,PB,0); seeds[2]=CVector3(0,-PA,PC); seeds[3]=CVector3(PB,PC,-PA); double minVD=1e20; for(int k=0;k<4;k++){double vd=(cz-seeds[k]).Length(); if(vd<minVD)minVD=vd;} clipDist=minVD-CR; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

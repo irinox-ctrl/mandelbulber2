@@ -1,0 +1,5 @@
+// TYPE_ID: 82
+// NAME: Wavy cylinder
+// PARAMS: CR, PA, PB
+// SYSTEM: clip
+double r82=sqrt(cz.x*cz.x+cz.y*cz.y); double wave82=CR+PA*sin(PB*cz.z); clipDist=r82-wave82; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

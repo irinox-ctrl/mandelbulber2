@@ -1,5 +1,0 @@
-// TYPE_ID: 6
-// NAME: Cone inversion
-// PARAMS: PA
-// SYSTEM: inversion
-double tanA=tan(mut.invAngle*M_PI/180.0); rr=zz.x*zz.x+zz.y*zz.y-tanA*tanA*zz.z*zz.z; if(fabs(rr)<1e-21)rr=1e-21; mde=1.0/fabs(rr); zz*=mde;

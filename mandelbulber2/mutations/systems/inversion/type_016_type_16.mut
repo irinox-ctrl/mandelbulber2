@@ -1,0 +1,5 @@
+// TYPE_ID: 16
+// NAME: Type 16
+// PARAMS: PA
+// SYSTEM: inversion
+double q=fmax(1.0,PA); double cr2=1.0/(2.0*q*q); CVector3 fc(1.0/q,cr2,0); double d=(zz-fc).Dot(zz-fc); if(d<1e-21)d=1e-21; mde=cr2*cr2/d; zz=fc+(zz-fc)*mde;

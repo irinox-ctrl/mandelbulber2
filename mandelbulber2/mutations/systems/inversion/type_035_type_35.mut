@@ -1,0 +1,5 @@
+// TYPE_ID: 35
+// NAME: Type 35
+// PARAMS: none
+// SYSTEM: inversion
+double on=zz.Dot(zz)+z.w*z.w; if(on<1e-21)on=1e-21; mde=1.0/on; zz*=mde; z.w*=-mde; zz.y=-zz.y; zz.z=-zz.z;

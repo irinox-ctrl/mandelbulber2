@@ -1,0 +1,5 @@
+// TYPE_ID: 34
+// NAME: Type 34
+// PARAMS: CR, NPTS
+// SYSTEM: clip
+double r2d3=sqrt(cz.x*cz.x+cz.y*cz.y); double theta3=atan2(cz.y,cz.x); int ng=NPTS; double gearR=CR*(1.0+0.1*tanh(sin((double)ng*theta3))); clipDist=r2d3-gearR; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

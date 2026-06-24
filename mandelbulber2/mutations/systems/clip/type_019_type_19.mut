@@ -1,0 +1,5 @@
+// TYPE_ID: 19
+// NAME: Type 19
+// PARAMS: CR
+// SYSTEM: clip
+double coarse=fmax(fabs(cz.x)-Sx*2.0,fmax(fabs(cz.y)-Sy*2.0,fabs(cz.z)-Sz*2.0)); double fine=cz.Length()-CR; clipDist=(coarse<0.0)?fine:coarse; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

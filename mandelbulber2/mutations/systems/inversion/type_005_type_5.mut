@@ -1,0 +1,5 @@
+// TYPE_ID: 5
+// NAME: Type 5
+// PARAMS: PA
+// SYSTEM: inversion
+rr=zz.x*zz.x+zz.y*zz.y-PA*zz.z; if(fabs(rr)<1e-21)rr=1e-21; mde=1.0/fabs(rr); zz*=mde;

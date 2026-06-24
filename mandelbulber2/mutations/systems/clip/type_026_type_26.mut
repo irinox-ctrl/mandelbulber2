@@ -1,0 +1,5 @@
+// TYPE_ID: 26
+// NAME: Type 26
+// PARAMS: CR, FREQ
+// SYSTEM: clip
+clipDist=cz.Length()-CR; double pulse=1.0+0.1*sin((double)i*FREQ); clipDist*=pulse; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

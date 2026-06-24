@@ -1,0 +1,5 @@
+// TYPE_ID: 1
+// NAME: Type 1
+// PARAMS: none
+// SYSTEM: clip
+clipDist=sqrt((cz.x/Sx)*(cz.x/Sx)+(cz.y/Sy)*(cz.y/Sy)+(cz.z/Sz)*(cz.z/Sz))-1.0; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

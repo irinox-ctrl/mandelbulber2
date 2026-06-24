@@ -1,0 +1,5 @@
+// TYPE_ID: 71
+// NAME: Triangular prism
+// PARAMS: CR
+// SYSTEM: clip
+clipDist=fmax(fabs(cz.z)-Sz,fmax(fabs(cz.x)*0.866+cz.y*0.5,-cz.y)-CR); if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

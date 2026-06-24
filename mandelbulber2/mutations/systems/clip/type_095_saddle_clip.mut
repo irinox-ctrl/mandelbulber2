@@ -1,0 +1,5 @@
+// TYPE_ID: 95
+// NAME: Saddle clip
+// PARAMS: none
+// SYSTEM: clip
+clipDist=cz.x*cz.x/fmax(Sx*Sx,1e-10)-cz.y*cz.y/fmax(Sy*Sy,1e-10)-cz.z; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

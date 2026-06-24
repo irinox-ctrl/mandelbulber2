@@ -1,0 +1,5 @@
+// TYPE_ID: 93
+// NAME: Scherk surface
+// PARAMS: PA
+// SYSTEM: clip
+clipDist=sin(PA*cz.x)-sinh(PA*cz.y)*sinh(PA*cz.z)/(cosh(PA*cz.y)*cosh(PA*cz.z)+1e-10); if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

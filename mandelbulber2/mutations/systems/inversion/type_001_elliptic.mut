@@ -1,5 +1,0 @@
-// TYPE_ID: 1
-// NAME: Elliptic inversion
-// PARAMS: PA, PB, PC
-// SYSTEM: inversion
-rr=(zz.x/PA)*(zz.x/PA)+(zz.y/PB)*(zz.y/PB)+(zz.z/PC)*(zz.z/PC); if(rr<1e-21)rr=1e-21; mde=1.0/rr; zz.x*=mde*PA*PA; zz.y*=mde*PB*PB; zz.z*=mde*PC*PC; mde=1.0/rr;

@@ -1,0 +1,5 @@
+// TYPE_ID: 63
+// NAME: Double helix
+// PARAMS: CR, MR, PA, PB
+// SYSTEM: clip
+double t63=atan2(cz.y,cz.x); double r63=sqrt(cz.x*cz.x+cz.y*cz.y); double h1=r63-MR-CR*cos(PA*cz.z); double h2=r63-MR+CR*cos(PA*cz.z+M_PI); clipDist=fmin(sqrt(h1*h1+pow(CR*sin(PA*cz.z),2.0)),sqrt(h2*h2+pow(CR*sin(PA*cz.z+M_PI),2.0)))-PB; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

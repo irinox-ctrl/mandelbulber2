@@ -1,0 +1,5 @@
+// TYPE_ID: 11
+// NAME: Type 11
+// PARAMS: none
+// SYSTEM: inversion
+CVector3 c1(mut.invCenterX,mut.invCenterY,mut.invCenterZ); CVector3 c2(mut.invCenter2X,mut.invCenter2Y,mut.invCenter2Z); CVector3 zr=zz+CVector3(mut.invCenterX,mut.invCenterY,mut.invCenterZ); double d1=(zr-c1).Dot(zr-c1); if(d1<1e-21)d1=1e-21; double d2=(zr-c2).Dot(zr-c2); if(d2<1e-21)d2=1e-21; mde=iR*iR/d1-mut.invRadius2*mut.invRadius2/d2; zz*=mde; mde=fabs(mde);

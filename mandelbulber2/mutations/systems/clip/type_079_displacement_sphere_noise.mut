@@ -1,0 +1,5 @@
+// TYPE_ID: 79
+// NAME: Displacement sphere (noise)
+// PARAMS: CR, PA, PB
+// SYSTEM: clip
+double n79=sin(PA*cz.x)*sin(PA*cz.y)*sin(PA*cz.z); clipDist=cz.Length()-CR-PB*n79; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

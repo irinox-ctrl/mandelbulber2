@@ -1,0 +1,5 @@
+// TYPE_ID: 19
+// NAME: Type 19
+// PARAMS: none
+// SYSTEM: inversion
+rr=zz.x*zz.x+zz.y*zz.y; if(rr<1e-21)rr=1e-21; if(rr<1.0){mde=1.0/rr;zz.x*=mde;zz.y*=-mde;} else{mde=1.0;} if(zz.x>0.5)zz.x-=1.0; if(zz.x<-0.5)zz.x+=1.0;

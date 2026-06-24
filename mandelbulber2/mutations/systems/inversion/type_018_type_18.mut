@@ -1,0 +1,5 @@
+// TYPE_ID: 18
+// NAME: Type 18
+// PARAMS: PA, PB, PC
+// SYSTEM: inversion
+double cz_d=PC*zz.x+1.0; double dn=cz_d*cz_d+PC*PC*zz.y*zz.y; if(dn<1e-21)dn=1e-21; mde=1.0/dn; double nx=(PA*zz.x+PB)*cz_d+PA*PC*zz.y*zz.y; double ny=zz.y*(PA-PB*PC); zz.x=nx*mde; zz.y=ny*mde;

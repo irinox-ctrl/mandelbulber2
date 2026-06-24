@@ -1,0 +1,5 @@
+// TYPE_ID: 67
+// NAME: Dodecahedron approx
+// PARAMS: CR
+// SYSTEM: clip
+double phi67=0.5*(1.0+sqrt(5.0)); double iphi67=1.0/phi67; clipDist=fmax(fmax(fabs(cz.x)+phi67*fabs(cz.y),fabs(cz.y)+phi67*fabs(cz.z)),fabs(cz.z)+phi67*fabs(cz.x))-CR*(1.0+phi67); if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

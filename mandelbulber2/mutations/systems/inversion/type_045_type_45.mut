@@ -1,0 +1,5 @@
+// TYPE_ID: 45
+// NAME: Type 45
+// PARAMS: none
+// SYSTEM: inversion
+CVector3 jc(mut.invCenter2X,mut.invCenter2Y,mut.invCenter2Z); rr=(zz-jc).Dot(zz-jc); if(rr<1e-21)rr=1e-21; mde=iR*iR/rr; zz=jc+(zz-jc)*mde;

@@ -1,0 +1,5 @@
+// TYPE_ID: 47
+// NAME: Type 47
+// PARAMS: ANG
+// SYSTEM: inversion
+rr=zz.Dot(zz); if(rr<1e-21)rr=1e-21; mde=iR*iR/rr; zz*=mde; double theta=ANG*M_PI/180.0; double cosT=cos(theta),sinT=sin(theta); double tx2=zz.x*cosT-zz.y*sinT; zz.y=zz.x*sinT+zz.y*cosT; zz.x=tx2; zz*=isc; mde*=fabs(isc);

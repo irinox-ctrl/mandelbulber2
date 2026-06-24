@@ -1,0 +1,5 @@
+// TYPE_ID: 36
+// NAME: Type 36
+// PARAMS: none
+// SYSTEM: inversion
+double sn=zz.Dot(zz)+z.w*z.w; if(sn<1e-21)sn=1e-21; mde=1.0/sn; zz=CVector3(zz.x,-zz.y,-zz.z)*mde; z.w*=-mde;

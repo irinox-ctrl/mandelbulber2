@@ -1,0 +1,5 @@
+// TYPE_ID: 86
+// NAME: Supershape 3D
+// PARAMS: CR, NPTS, PA, PB, PC
+// SYSTEM: clip
+double r86=cz.Length(); if(r86<1e-15)r86=1e-15; double theta86=acos(cz.z/r86); double phi86=atan2(cz.y,cz.x); double m86=(double)NPTS; double st86=pow(pow(fabs(cos(m86*theta86/4.0)),PB)+pow(fabs(sin(m86*theta86/4.0)),PC),-1.0/PA); double sp86=pow(pow(fabs(cos(m86*phi86/4.0)),PB)+pow(fabs(sin(m86*phi86/4.0)),PC),-1.0/PA); clipDist=r86-CR*st86*sp86; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

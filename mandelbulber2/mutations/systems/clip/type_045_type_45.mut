@@ -1,0 +1,5 @@
+// TYPE_ID: 45
+// NAME: Type 45
+// PARAMS: AMP, CR
+// SYSTEM: clip
+double deR=CR*(1.0+AMP*log(1.0+fabs(aux.DE))); clipDist=cz.Length()-deR; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

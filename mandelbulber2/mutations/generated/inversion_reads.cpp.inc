@@ -1,0 +1,31 @@
+// Auto-generated nine_fractals.cpp reads for inversion
+
+		mutationParams[i].inversionEnabled = generalPar->Get<bool>("mutation_inversion_enabled", i + 1);
+		mutationParams[i].inversionType = generalPar->Get<int>("mutation_inv_type", i + 1);
+		mutationParams[i].invCenterX = generalPar->Get<double>("mutation_inv_center_ax", i + 1);
+		mutationParams[i].invCenterY = generalPar->Get<double>("mutation_inv_center_ay", i + 1);
+		mutationParams[i].invCenterZ = generalPar->Get<double>("mutation_inv_center_az", i + 1);
+		mutationParams[i].invRadius = generalPar->Get<double>("mutation_inv_radius", i + 1);
+		mutationParams[i].invParamA = generalPar->Get<double>("mutation_inv_param_a", i + 1);
+		mutationParams[i].invParamB = generalPar->Get<double>("mutation_inv_param_b", i + 1);
+		mutationParams[i].invParamC = generalPar->Get<double>("mutation_inv_param_c", i + 1);
+		mutationParams[i].invScale = generalPar->Get<double>("mutation_inv_scale", i + 1);
+		mutationParams[i].invAngle = generalPar->Get<double>("mutation_inv_angle", i + 1);
+		mutationParams[i].invFrequency = generalPar->Get<double>("mutation_inv_frequency", i + 1);
+		mutationParams[i].invAmplitude = generalPar->Get<double>("mutation_inv_amplitude", i + 1);
+		mutationParams[i].invMinR = generalPar->Get<double>("mutation_inv_min_r", i + 1);
+		mutationParams[i].invMaxR = generalPar->Get<double>("mutation_inv_max_r", i + 1);
+		mutationParams[i].invPreRotX = generalPar->Get<double>("mutation_inv_pre_rot_ax", i + 1);
+		mutationParams[i].invPreRotY = generalPar->Get<double>("mutation_inv_pre_rot_ay", i + 1);
+		mutationParams[i].invPreRotZ = generalPar->Get<double>("mutation_inv_pre_rot_az", i + 1);
+		mutationParams[i].invCenter2X = generalPar->Get<double>("mutation_inv_center2_ax", i + 1);
+		mutationParams[i].invCenter2Y = generalPar->Get<double>("mutation_inv_center2_ay", i + 1);
+		mutationParams[i].invCenter2Z = generalPar->Get<double>("mutation_inv_center2_az", i + 1);
+		mutationParams[i].invRadius2 = generalPar->Get<double>("mutation_inv_radius2", i + 1);
+		mutationParams[i].invWeight = generalPar->Get<double>("mutation_inv_weight", i + 1);
+		mutationParams[i].invNSteps = generalPar->Get<int>("mutation_inv_n_steps", i + 1);
+		mutationParams[i].invThreshold = generalPar->Get<double>("mutation_inv_threshold", i + 1);
+		mutationParams[i].invColorFactor = generalPar->Get<double>("mutation_inv_color_factor", i + 1);
+		mutationParams[i].invIterStart = generalPar->Get<int>("mutation_inv_iter_start", i + 1);
+		mutationParams[i].invIterStop = generalPar->Get<int>("mutation_inv_iter_stop", i + 1);
+		mutationParams[i].inversionWeight = generalPar->Get<double>("mutation_inversion_section_weight", i + 1);

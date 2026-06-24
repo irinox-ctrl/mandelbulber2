@@ -1,0 +1,5 @@
+// TYPE_ID: 18
+// NAME: Type 18
+// PARAMS: CR
+// SYSTEM: clip
+CVector3 cell; cell.x=(Sx>0.001)?floor(cz.x/Sx):0; cell.y=(Sy>0.001)?floor(cz.y/Sy):0; cell.z=(Sz>0.001)?floor(cz.z/Sz):0; double h=fabs(sin(cell.x*127.1+cell.y*311.7+cell.z*74.7)*43758.5453); h=h-floor(h); CVector3 rp2=cz; if(Sx>0.001)rp2.x=fmod(cz.x+Sx*0.5,Sx)-Sx*0.5; if(Sy>0.001)rp2.y=fmod(cz.y+Sy*0.5,Sy)-Sy*0.5; if(Sz>0.001)rp2.z=fmod(cz.z+Sz*0.5,Sz)-Sz*0.5; clipDist=rp2.Length()-CR*(0.5+h); if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

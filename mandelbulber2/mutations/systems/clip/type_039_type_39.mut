@@ -1,0 +1,5 @@
+// TYPE_ID: 39
+// NAME: Type 39
+// PARAMS: CR, PA, PB
+// SYSTEM: clip
+double jx=cz.x,jy=cz.y; for(int k=0;k<8;k++){double tx=jx*jx-jy*jy+PA; jy=2.0*jx*jy+PB; jx=tx; if(jx*jx+jy*jy>4.0)break;} double jDist=(jx*jx+jy*jy>4.0)?-CR:CR; clipDist=fmax(jDist,fabs(cz.z)-Sz); if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

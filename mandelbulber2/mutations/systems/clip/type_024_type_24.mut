@@ -1,0 +1,5 @@
+// TYPE_ID: 24
+// NAME: Type 24
+// PARAMS: CR, PA
+// SYSTEM: clip
+CVector3 folded=cz; double lim=PA; if(folded.x>lim)folded.x=2.0*lim-folded.x; if(folded.x<-lim)folded.x=-2.0*lim-folded.x; if(folded.y>lim)folded.y=2.0*lim-folded.y; if(folded.y<-lim)folded.y=-2.0*lim-folded.y; if(folded.z>lim)folded.z=2.0*lim-folded.z; if(folded.z<-lim)folded.z=-2.0*lim-folded.z; clipDist=folded.Length()-CR; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

@@ -1,0 +1,5 @@
+// TYPE_ID: 31
+// NAME: Type 31
+// PARAMS: none
+// SYSTEM: inversion
+CVector4 q(zz.x,zz.y,zz.z,z.w); double qn=q.Dot(q); if(qn<1e-21)qn=1e-21; mde=1.0/qn; q=CVector4(q.x,-q.y,-q.z,-q.w)*mde; zz=CVector3(q.x,q.y,q.z); z.w=q.w;

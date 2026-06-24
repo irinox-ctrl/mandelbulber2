@@ -1,0 +1,5 @@
+// TYPE_ID: 34
+// NAME: Type 34
+// PARAMS: none
+// SYSTEM: inversion
+if(fabs(zz.x)<1e-21)zz.x=1e-21; mde=1.0/(zz.x*zz.x); double ox=1.0/zz.x; double oy=-zz.y/(zz.x*zz.x); zz.x=ox; zz.y=oy;

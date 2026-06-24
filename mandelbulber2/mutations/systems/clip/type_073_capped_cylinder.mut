@@ -1,0 +1,5 @@
+// TYPE_ID: 73
+// NAME: Capped cylinder
+// PARAMS: CR
+// SYSTEM: clip
+double r73=sqrt(cz.x*cz.x+cz.y*cz.y)-CR; double h73=fabs(cz.z)-Sz; clipDist=fmin(fmax(r73,h73),0.0)+sqrt(fmax(r73,0.0)*fmax(r73,0.0)+fmax(h73,0.0)*fmax(h73,0.0)); if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

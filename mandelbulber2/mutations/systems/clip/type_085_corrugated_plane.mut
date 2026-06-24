@@ -1,0 +1,5 @@
+// TYPE_ID: 85
+// NAME: Corrugated plane
+// PARAMS: CR, PA, PB, PC
+// SYSTEM: clip
+clipDist=cz.z-PA*sin(PB*cz.x)-PC*cos(PB*cz.y)-CR; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

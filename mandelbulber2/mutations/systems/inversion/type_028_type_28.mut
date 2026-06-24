@@ -1,0 +1,5 @@
+// TYPE_ID: 28
+// NAME: Type 28
+// PARAMS: THR
+// SYSTEM: inversion
+if(aux.DE<THR){rr=zz.Dot(zz); if(rr<1e-21)rr=1e-21; mde=iR*iR/rr; zz*=mde;

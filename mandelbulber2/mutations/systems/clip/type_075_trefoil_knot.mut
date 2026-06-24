@@ -1,0 +1,5 @@
+// TYPE_ID: 75
+// NAME: Trefoil knot
+// PARAMS: CR, MR, PA
+// SYSTEM: clip
+double t75=atan2(cz.y,cz.x); double r75=sqrt(cz.x*cz.x+cz.y*cz.y); double knotR=MR+CR*cos(3.0*t75); clipDist=sqrt((r75-knotR)*(r75-knotR)+cz.z*cz.z)-PA; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

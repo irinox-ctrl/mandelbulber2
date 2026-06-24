@@ -1,0 +1,5 @@
+// TYPE_ID: 9
+// NAME: Type 9
+// PARAMS: AMP, FREQ
+// SYSTEM: clip
+double freq=FREQ; double amp=AMP; clipDist=cz.z-amp*sin(freq*cz.x)*sin(freq*cz.y); if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

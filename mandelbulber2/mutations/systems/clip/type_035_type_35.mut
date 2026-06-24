@@ -1,0 +1,5 @@
+// TYPE_ID: 35
+// NAME: Type 35
+// PARAMS: NPTS, PA, PB, PC
+// SYSTEM: clip
+double r2d4=sqrt(cz.x*cz.x+cz.y*cz.y); double theta4=atan2(cz.y,cz.x); int ns=NPTS; double spiralR=PA*exp(-PB*theta4)*(1.0+PC*cos((double)ns*theta4)); clipDist=r2d4-spiralR; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

@@ -1,0 +1,5 @@
+// TYPE_ID: 40
+// NAME: Type 40
+// PARAMS: CR
+// SYSTEM: clip
+double mx=0,my=0; for(int k=0;k<8;k++){double tx2=mx*mx-my*my+cz.x; my=2.0*mx*my+cz.y; mx=tx2; if(mx*mx+my*my>4.0)break;} double mDist=(mx*mx+my*my>4.0)?-CR:CR; clipDist=fmax(mDist,fabs(cz.z)-Sz); if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

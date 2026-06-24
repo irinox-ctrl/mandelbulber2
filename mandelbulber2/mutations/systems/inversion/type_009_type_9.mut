@@ -1,0 +1,5 @@
+// TYPE_ID: 9
+// NAME: Type 9
+// PARAMS: PA
+// SYSTEM: inversion
+double x2=zz.x*zz.x,y2=zz.y*zz.y; rr=(x2+y2)*(x2+y2)-PA*PA*(x2-y2); if(fabs(rr)<1e-21)rr=1e-21; mde=1.0/fabs(rr); zz*=mde;

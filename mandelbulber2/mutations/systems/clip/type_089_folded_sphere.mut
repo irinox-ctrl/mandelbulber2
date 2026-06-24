@@ -1,0 +1,5 @@
+// TYPE_ID: 89
+// NAME: Folded sphere
+// PARAMS: CR, PA
+// SYSTEM: clip
+double fx89=fabs(fmod(cz.x+PA,2.0*PA))-PA; double fy89=fabs(fmod(cz.y+PA,2.0*PA))-PA; double fz89=fabs(fmod(cz.z+PA,2.0*PA))-PA; clipDist=sqrt(fx89*fx89+fy89*fy89+fz89*fz89)-CR; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

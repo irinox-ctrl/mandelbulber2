@@ -1,0 +1,5 @@
+// TYPE_ID: 4
+// NAME: Type 4
+// PARAMS: ANG
+// SYSTEM: clip
+double tanAlpha=tan(ANG*M_PI/180.0); clipDist=sqrt(cz.x*cz.x+cz.y*cz.y)-tanAlpha*fabs(cz.z); if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

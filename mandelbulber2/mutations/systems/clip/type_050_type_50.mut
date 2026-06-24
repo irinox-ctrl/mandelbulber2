@@ -1,0 +1,5 @@
+// TYPE_ID: 50
+// NAME: Type 50
+// PARAMS: CR, PA
+// SYSTEM: clip
+CVector3 rz=cz; double rscale=1.0; for(int k=0;k<5;k++){rz.x=fabs(rz.x)*2.0-PA; rz.y=fabs(rz.y)*2.0-PA; rz.z=fabs(rz.z)*2.0-PA; rscale*=2.0; double rd=rz.Length()-CR; rd/=rscale; if(rd<clipDist)clipDist=rd;} if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

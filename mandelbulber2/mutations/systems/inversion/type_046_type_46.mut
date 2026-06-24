@@ -1,0 +1,5 @@
+// TYPE_ID: 46
+// NAME: Type 46
+// PARAMS: PA, PB, PC
+// SYSTEM: inversion
+CVector3 ifs_c(PA,PB,PC); double d=(zz-ifs_c).Dot(zz-ifs_c); if(d<1e-21)d=1e-21; mde=iR*iR/d; zz=ifs_c+(zz-ifs_c)*mde; zz.x=fabs(zz.x); zz.y=fabs(zz.y);

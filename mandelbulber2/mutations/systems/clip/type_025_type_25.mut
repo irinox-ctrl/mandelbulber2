@@ -1,0 +1,5 @@
+// TYPE_ID: 25
+// NAME: Type 25
+// PARAMS: CR
+// SYSTEM: clip
+CVector3 absed(fabs(cz.x),fabs(cz.y),fabs(cz.z)); clipDist=absed.Length()-CR; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

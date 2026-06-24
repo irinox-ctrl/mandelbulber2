@@ -1,0 +1,5 @@
+// TYPE_ID: 77
+// NAME: Sine cage
+// PARAMS: CR, PA
+// SYSTEM: clip
+double sc77x=sin(cz.x*PA)*sin(cz.x*PA); double sc77y=sin(cz.y*PA)*sin(cz.y*PA); double sc77z=sin(cz.z*PA)*sin(cz.z*PA); clipDist=sc77x+sc77y+sc77z-CR; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

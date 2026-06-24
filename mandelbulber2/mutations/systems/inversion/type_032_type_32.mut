@@ -1,0 +1,5 @@
+// TYPE_ID: 32
+// NAME: Type 32
+// PARAMS: none
+// SYSTEM: inversion
+double n1=zz.x*zz.x+zz.y*zz.y; if(n1<1e-21)n1=1e-21; double n2=zz.z*zz.z+z.w*z.w; if(n2<1e-21)n2=1e-21; zz.x/=n1; zz.y/=-n1; zz.z/=n2; z.w/=-n2; mde=fmax(1.0/n1,1.0/n2);

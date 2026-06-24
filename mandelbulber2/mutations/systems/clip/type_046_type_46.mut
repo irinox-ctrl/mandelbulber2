@@ -1,0 +1,5 @@
+// TYPE_ID: 46
+// NAME: Type 46
+// PARAMS: AMP, CR, FREQ
+// SYSTEM: clip
+double colR=CR*(1.0+AMP*sin(aux.color*FREQ)); clipDist=cz.Length()-colR; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

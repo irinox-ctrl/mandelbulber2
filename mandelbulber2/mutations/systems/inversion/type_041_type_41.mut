@@ -1,0 +1,5 @@
+// TYPE_ID: 41
+// NAME: Type 41
+// PARAMS: MAXR, MINR
+// SYSTEM: inversion
+rr=zz.Dot(zz); double minR2=MINR*MINR; double maxR2=MAXR*MAXR; if(rr<minR2)mde=maxR2/minR2; else if(rr<maxR2)mde=maxR2/rr; else mde=1.0; zz*=mde;

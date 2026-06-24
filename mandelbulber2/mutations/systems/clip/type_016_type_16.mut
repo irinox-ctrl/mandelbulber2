@@ -1,0 +1,5 @@
+// TYPE_ID: 16
+// NAME: Type 16
+// PARAMS: CR
+// SYSTEM: clip
+double dc1=cz.Length()-CR; double dc2=fmax(fabs(cz.x)-Sx,fmax(fabs(cz.y)-Sy,fabs(cz.z)-Sz)); double dc3=sqrt(cz.x*cz.x+cz.y*cz.y)-CR*0.5; clipDist=fmax(dc1,fmax(dc2,dc3)); if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

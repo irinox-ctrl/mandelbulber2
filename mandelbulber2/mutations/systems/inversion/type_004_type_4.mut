@@ -1,0 +1,5 @@
+// TYPE_ID: 4
+// NAME: Type 4
+// PARAMS: PA, PB, PC
+// SYSTEM: inversion
+rr=(zz.x/PA)*(zz.x/PA)+(zz.y/PB)*(zz.y/PB)-(zz.z/PC)*(zz.z/PC); if(fabs(rr)<1e-21)rr=1e-21; mde=1.0/fabs(rr); zz*=mde;

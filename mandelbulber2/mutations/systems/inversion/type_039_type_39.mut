@@ -1,0 +1,5 @@
+// TYPE_ID: 39
+// NAME: Type 39
+// PARAMS: none
+// SYSTEM: inversion
+double detA=zz.x*zz.y-zz.z*zz.z; if(fabs(detA)<1e-21)detA=1e-21; mde=1.0/fabs(detA); double tx=zz.y*mde; zz.y=zz.x*mde; zz.x=tx; zz.z=-zz.z*mde;

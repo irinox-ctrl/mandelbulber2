@@ -1,0 +1,5 @@
+// TYPE_ID: 97
+// NAME: Cross-polytope (hyperoctahedron)
+// PARAMS: CR
+// SYSTEM: clip
+clipDist=fabs(cz.x)+fabs(cz.y)+fabs(cz.z)+fabs(z.w)-CR; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

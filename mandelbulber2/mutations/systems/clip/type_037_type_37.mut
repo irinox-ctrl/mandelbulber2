@@ -1,0 +1,5 @@
+// TYPE_ID: 37
+// NAME: Type 37
+// PARAMS: CR, PA
+// SYSTEM: clip
+CVector3 edges[3]; edges[0]=CVector3(PA,0,0); edges[1]=CVector3(-PA*0.5,PA*0.866,0); edges[2]=CVector3(-PA*0.5,-PA*0.866,0); double minED=1e20; for(int k=0;k<3;k++){CVector3 e=edges[(k+1)%3]-edges[k]; CVector3 p=cz-edges[k]; double t=fmax(0.0,fmin(1.0,p.Dot(e)/e.Dot(e))); double ed=(p-e*t).Length(); if(ed<minED)minED=ed;} clipDist=minED-CR; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

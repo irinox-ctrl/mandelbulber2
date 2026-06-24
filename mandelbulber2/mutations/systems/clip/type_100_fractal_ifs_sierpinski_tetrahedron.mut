@@ -1,0 +1,5 @@
+// TYPE_ID: 100
+// NAME: Fractal IFS (Sierpinski tetrahedron)
+// PARAMS: CR, PA, PB
+// SYSTEM: clip
+CVector3 ifs=cz; double ifsScale=1.0; for(int k=0;k<6;k++){if(ifs.x+ifs.y<0.0){double tx=-ifs.y;ifs.y=-ifs.x;ifs.x=tx;} if(ifs.x+ifs.z<0.0){double tx=-ifs.z;ifs.z=-ifs.x;ifs.x=tx;} if(ifs.y+ifs.z<0.0){double ty=-ifs.z;ifs.z=-ifs.y;ifs.y=ty;} ifs=ifs*PA-CVector3(PB,PB,PB)*(PA-1.0); ifsScale*=PA;} clipDist=(ifs.Length()-CR)/ifsScale; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

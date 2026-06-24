@@ -1,0 +1,5 @@
+// TYPE_ID: 57
+// NAME: Cross-cap surface
+// PARAMS: CR, PA
+// SYSTEM: clip
+double r57=cz.Length(); clipDist=cz.x*cz.x*cz.z+cz.y*cz.y*cz.z-PA*cz.x*cz.y-CR; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

@@ -1,0 +1,5 @@
+// TYPE_ID: 64
+// NAME: Chamfered cube
+// PARAMS: PA
+// SYSTEM: clip
+double dx64=fabs(cz.x)-Sx; double dy64=fabs(cz.y)-Sy; double dz64=fabs(cz.z)-Sz; double chamfer=PA; clipDist=fmax(fmax(dx64,fmax(dy64,dz64)),(dx64+dy64+dz64)*chamfer); if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

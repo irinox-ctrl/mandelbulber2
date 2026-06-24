@@ -1,0 +1,5 @@
+// TYPE_ID: 13
+// NAME: Type 13
+// PARAMS: CR
+// SYSTEM: clip
+double dA2=sqrt((cz.x/Sx)*(cz.x/Sx)+(cz.y/Sy)*(cz.y/Sy)+(cz.z/Sz)*(cz.z/Sz))-1.0; double dB2=cz.Length()-CR; clipDist=fmax(fmin(dA2,dB2),-fmax(dA2,dB2)); if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

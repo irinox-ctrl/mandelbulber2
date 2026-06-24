@@ -1,0 +1,5 @@
+// TYPE_ID: 10
+// NAME: Type 10
+// PARAMS: PA
+// SYSTEM: inversion
+double d1sq=(zz.x-PA)*(zz.x-PA)+zz.y*zz.y; double d2sq=(zz.x+PA)*(zz.x+PA)+zz.y*zz.y; rr=d1sq*d2sq+zz.z*zz.z; if(fabs(rr)<1e-21)rr=1e-21; mde=1.0/rr; zz*=mde;

@@ -1,0 +1,5 @@
+// TYPE_ID: 50
+// NAME: Type 50
+// PARAMS: none
+// SYSTEM: inversion
+CVector3 aa(mut.invCenter2X,mut.invCenter2Y,mut.invCenter2Z); double an=aa.Dot(aa); double za=zz.Dot(aa); double zn=zz.Dot(zz); double dn3=1.0+2.0*za+an*zn; if(fabs(dn3)<1e-21)dn3=1e-21; zz=(zz*(1.0+2.0*za+an)+aa*(1.0+zn))/dn3; mde=(1.0-an)/(dn3*dn3); rr=zz.Dot(zz); if(rr<1e-21)rr=1e-21; double invMde=iR*iR/rr; zz*=invMde; mde*=invMde; mde=fabs(mde);

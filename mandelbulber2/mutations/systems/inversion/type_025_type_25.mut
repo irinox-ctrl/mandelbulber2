@@ -1,0 +1,5 @@
+// TYPE_ID: 25
+// NAME: Type 25
+// PARAMS: FREQ
+// SYSTEM: inversion
+rr=zz.Dot(zz); if(rr<1e-21)rr=1e-21; mde=iR*iR/rr; zz*=mde; double pulse=isc*(1.0+0.1*sin((double)i*FREQ)); zz*=pulse; mde*=fabs(pulse);

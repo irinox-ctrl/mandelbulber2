@@ -1,0 +1,5 @@
+// TYPE_ID: 8
+// NAME: Type 8
+// PARAMS: PA, PB
+// SYSTEM: clip
+double r2d=sqrt(cz.x*cz.x+cz.y*cz.y); double theta=atan2(cz.y,cz.x); clipDist=r2d-PA*exp(PB*theta); if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

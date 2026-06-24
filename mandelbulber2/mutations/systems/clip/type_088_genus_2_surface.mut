@@ -1,0 +1,5 @@
+// TYPE_ID: 88
+// NAME: Genus-2 surface
+// PARAMS: PA
+// SYSTEM: clip
+double x2_88=cz.x*cz.x,y2_88=cz.y*cz.y,z2_88=cz.z*cz.z; clipDist=2.0*y2_88*(y2_88-PA*PA)*(y2_88-PA*PA)-x2_88*x2_88+2.0*PA*PA*(x2_88-z2_88*3.0)*(x2_88-z2_88); if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

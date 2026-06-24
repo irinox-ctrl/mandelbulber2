@@ -1,0 +1,5 @@
+// TYPE_ID: 17
+// NAME: Type 17
+// PARAMS: CR
+// SYSTEM: clip
+CVector3 rp=cz; if(Sx>0.001)rp.x=fmod(cz.x+Sx*0.5,Sx)-Sx*0.5; if(Sy>0.001)rp.y=fmod(cz.y+Sy*0.5,Sy)-Sy*0.5; if(Sz>0.001)rp.z=fmod(cz.z+Sz*0.5,Sz)-Sz*0.5; clipDist=rp.Length()-CR; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

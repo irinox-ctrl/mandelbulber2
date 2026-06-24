@@ -1,0 +1,5 @@
+// TYPE_ID: 29
+// NAME: Type 29
+// PARAMS: CR
+// SYSTEM: clip
+clipDist=cz.Length()-CR; double trap=cz.Length(); if(trap<aux.color)aux.color=trap; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

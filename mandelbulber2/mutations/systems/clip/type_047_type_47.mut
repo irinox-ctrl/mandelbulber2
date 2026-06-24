@@ -1,0 +1,5 @@
+// TYPE_ID: 47
+// NAME: Type 47
+// PARAMS: AMP, CR
+// SYSTEM: clip
+double iterR=CR*(1.0+AMP*(double)i/250.0); clipDist=cz.Length()-iterR; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

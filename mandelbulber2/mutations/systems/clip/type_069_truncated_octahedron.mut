@@ -1,0 +1,5 @@
+// TYPE_ID: 69
+// NAME: Truncated octahedron
+// PARAMS: CR
+// SYSTEM: clip
+double d69a=fmax(fabs(cz.x),fmax(fabs(cz.y),fabs(cz.z)))-Sx; double d69b=(fabs(cz.x)+fabs(cz.y)+fabs(cz.z))*0.577-CR; clipDist=fmax(d69a,d69b); if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

@@ -1,0 +1,31 @@
+// Auto-generated initparameters snippet for inversion
+
+		par->addParam("mutation_inversion_enabled", i, true, morphLinear, paramStandard);
+		par->addParam("mutation_inv_type", i, 0, 0, 50, morphAkima, paramStandard);
+		par->addParam("mutation_inv_center_ax", i, 0.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_inv_center_ay", i, 0.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_inv_center_az", i, 0.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_inv_radius", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_inv_param_a", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_inv_param_b", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_inv_param_c", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_inv_scale", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_inv_angle", i, 0.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_inv_frequency", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_inv_amplitude", i, 0.5, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_inv_min_r", i, 0.5, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_inv_max_r", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_inv_pre_rot_ax", i, 0.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_inv_pre_rot_ay", i, 0.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_inv_pre_rot_az", i, 0.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_inv_center2_ax", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_inv_center2_ay", i, 0.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_inv_center2_az", i, 0.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_inv_radius2", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_inv_weight", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_inv_n_steps", i, 2, 0, 10000, morphAkima, paramStandard);
+		par->addParam("mutation_inv_threshold", i, 0.1, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_inv_color_factor", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);
+		par->addParam("mutation_inv_iter_start", i, 0, 0, 10000, morphAkima, paramStandard);
+		par->addParam("mutation_inv_iter_stop", i, 10000, 0, 10000, morphAkima, paramStandard);
+		par->addParam("mutation_inversion_section_weight", i, 1.0, -100.0, 100.0, morphAkima, paramStandard);

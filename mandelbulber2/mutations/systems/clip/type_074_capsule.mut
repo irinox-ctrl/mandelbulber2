@@ -1,0 +1,5 @@
+// TYPE_ID: 74
+// NAME: Capsule
+// PARAMS: CR
+// SYSTEM: clip
+double capH=fmax(0.0,fmin(Sz,cz.z)); clipDist=sqrt(cz.x*cz.x+cz.y*cz.y+(cz.z-capH)*(cz.z-capH))-CR; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

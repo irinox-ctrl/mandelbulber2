@@ -1,0 +1,5 @@
+// TYPE_ID: 40
+// NAME: Type 40
+// PARAMS: WGT
+// SYSTEM: inversion
+double hash=fabs(sin(zz.x*12.9898+zz.y*78.233+zz.z*45.164)*43758.5453); hash=hash-floor(hash); double p=WGT; rr=zz.Dot(zz); if(rr<1e-21)rr=1e-21; if(hash<p){mde=iR*iR/rr;zz*=mde;} else{mde=1.0;} mde=(1.0-p)+p*mde;

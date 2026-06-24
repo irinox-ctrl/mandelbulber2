@@ -1,0 +1,5 @@
+// TYPE_ID: 43
+// NAME: Type 43
+// PARAMS: AMP, CR, FREQ
+// SYSTEM: clip
+double time=(double)i*FREQ; double tR=CR*(1.0+AMP*sin(time)); clipDist=cz.Length()-tR; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

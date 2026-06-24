@@ -1,0 +1,5 @@
+// TYPE_ID: 65
+// NAME: Rounded box
+// PARAMS: CR
+// SYSTEM: clip
+double dx65=fmax(fabs(cz.x)-Sx,0.0); double dy65=fmax(fabs(cz.y)-Sy,0.0); double dz65=fmax(fabs(cz.z)-Sz,0.0); clipDist=sqrt(dx65*dx65+dy65*dy65+dz65*dz65)-CR; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

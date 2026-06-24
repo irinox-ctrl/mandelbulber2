@@ -1,0 +1,5 @@
+// TYPE_ID: 58
+// NAME: Barth sextic
+// PARAMS: PA
+// SYSTEM: clip
+double phi58=0.5*(1.0+sqrt(5.0)); double p2=phi58*phi58; clipDist=4.0*(p2*cz.x*cz.x-cz.y*cz.y)*(p2*cz.y*cz.y-cz.z*cz.z)*(p2*cz.z*cz.z-cz.x*cz.x)-(1.0+2.0*phi58)*(cz.x*cz.x+cz.y*cz.y+cz.z*cz.z-PA*PA)*(cz.x*cz.x+cz.y*cz.y+cz.z*cz.z-PA*PA); if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

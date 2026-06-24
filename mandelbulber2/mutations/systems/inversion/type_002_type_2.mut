@@ -1,0 +1,5 @@
+// TYPE_ID: 2
+// NAME: Type 2
+// PARAMS: none
+// SYSTEM: inversion
+rr=zz.x*zz.x+zz.y*zz.y; if(rr<1e-21)rr=1e-21; mde=iR*iR/rr; zz.x*=mde; zz.y*=mde;

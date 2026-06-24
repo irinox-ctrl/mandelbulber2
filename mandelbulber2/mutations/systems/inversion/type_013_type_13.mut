@@ -1,0 +1,5 @@
+// TYPE_ID: 13
+// NAME: Type 13
+// PARAMS: none
+// SYSTEM: inversion
+CVector3 c1(0,0,0); CVector3 c2(mut.invCenter2X,mut.invCenter2Y,mut.invCenter2Z); double d1=(zz-c1).Dot(zz-c1); if(d1<1e-21)d1=1e-21; double m1=iR*iR/d1; CVector3 z1=c1+(zz-c1)*m1; double d2=(z1-c2).Dot(z1-c2); if(d2<1e-21)d2=1e-21; double m2=mut.invRadius2*mut.invRadius2/d2; zz=c2+(z1-c2)*m2; mde=m1*m2;

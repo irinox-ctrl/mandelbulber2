@@ -1,0 +1,5 @@
+// TYPE_ID: 10
+// NAME: Type 10
+// PARAMS: AMP
+// SYSTEM: clip
+double n=sin(cz.x*12.9898+cz.y*78.233)*43758.5453; n=(n-floor(n))*2.0-1.0; double n2=sin(cz.y*19.8672+cz.z*53.471)*28947.3125; n2=(n2-floor(n2))*2.0-1.0; clipDist=cz.z-AMP*(n+n2)*0.5; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

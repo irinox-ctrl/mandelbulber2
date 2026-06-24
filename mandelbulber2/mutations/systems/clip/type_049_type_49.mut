@@ -1,0 +1,5 @@
+// TYPE_ID: 49
+// NAME: Type 49
+// PARAMS: CR, PA, PB, PC
+// SYSTEM: clip
+double nx=tanh(PA*cz.x+PB*cz.y+PC*cz.z); double ny=tanh(PB*cz.x-PA*cz.y+PC*cz.z); double nz=tanh(PC*cz.x+PA*cz.y-PB*cz.z); clipDist=sqrt(nx*nx+ny*ny+nz*nz)-CR; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

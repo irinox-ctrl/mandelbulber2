@@ -1,0 +1,5 @@
+// TYPE_ID: 37
+// NAME: Type 37
+// PARAMS: none
+// SYSTEM: inversion
+rr=zz.Dot(zz); if(rr<1e-21)rr=1e-21; mde=1.0/rr; zz*=mde;

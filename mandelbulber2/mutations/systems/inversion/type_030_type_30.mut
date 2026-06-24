@@ -1,0 +1,5 @@
+// TYPE_ID: 30
+// NAME: Type 30
+// PARAMS: none
+// SYSTEM: inversion
+rr=zz.Dot(zz); if(rr<1e-21)rr=1e-21; mde=iR*iR/rr; zz*=mde; double trap=zz.Length(); if(trap<aux.color)aux.color=trap;

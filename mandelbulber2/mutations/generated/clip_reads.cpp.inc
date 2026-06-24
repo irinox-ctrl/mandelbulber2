@@ -1,0 +1,28 @@
+// Auto-generated nine_fractals.cpp reads for clip
+
+		mutationParams[i].clipEnabled = generalPar->Get<bool>("mutation_clip_enabled", i + 1);
+		mutationParams[i].clipType = generalPar->Get<int>("mutation_clip_type", i + 1);
+		mutationParams[i].clipCenterX = generalPar->Get<double>("mutation_clip_center_ax", i + 1);
+		mutationParams[i].clipCenterY = generalPar->Get<double>("mutation_clip_center_ay", i + 1);
+		mutationParams[i].clipCenterZ = generalPar->Get<double>("mutation_clip_center_az", i + 1);
+		mutationParams[i].clipSizeX = generalPar->Get<double>("mutation_clip_size_ax", i + 1);
+		mutationParams[i].clipSizeY = generalPar->Get<double>("mutation_clip_size_ay", i + 1);
+		mutationParams[i].clipSizeZ = generalPar->Get<double>("mutation_clip_size_az", i + 1);
+		mutationParams[i].clipRadius = generalPar->Get<double>("mutation_clip_radius", i + 1);
+		mutationParams[i].clipMajorRadius = generalPar->Get<double>("mutation_clip_major_radius", i + 1);
+		mutationParams[i].clipAngle = generalPar->Get<double>("mutation_clip_angle", i + 1);
+		mutationParams[i].clipAmplitude = generalPar->Get<double>("mutation_clip_amplitude", i + 1);
+		mutationParams[i].clipFrequency = generalPar->Get<double>("mutation_clip_frequency", i + 1);
+		mutationParams[i].clipSmoothK = generalPar->Get<double>("mutation_clip_smooth_k", i + 1);
+		mutationParams[i].clipBooleanOp = generalPar->Get<int>("mutation_clip_boolean_op", i + 1);
+		mutationParams[i].clipPreRotX = generalPar->Get<double>("mutation_clip_pre_rot_ax", i + 1);
+		mutationParams[i].clipPreRotY = generalPar->Get<double>("mutation_clip_pre_rot_ay", i + 1);
+		mutationParams[i].clipPreRotZ = generalPar->Get<double>("mutation_clip_pre_rot_az", i + 1);
+		mutationParams[i].clipNPoints = generalPar->Get<int>("mutation_clip_n_points", i + 1);
+		mutationParams[i].clipParamA = generalPar->Get<double>("mutation_clip_param_a", i + 1);
+		mutationParams[i].clipParamB = generalPar->Get<double>("mutation_clip_param_b", i + 1);
+		mutationParams[i].clipParamC = generalPar->Get<double>("mutation_clip_param_c", i + 1);
+		mutationParams[i].clipThreshold = generalPar->Get<double>("mutation_clip_threshold", i + 1);
+		mutationParams[i].clipIterStart = generalPar->Get<int>("mutation_clip_iter_start", i + 1);
+		mutationParams[i].clipIterStop = generalPar->Get<int>("mutation_clip_iter_stop", i + 1);
+		mutationParams[i].clipWeight = generalPar->Get<double>("mutation_clip_section_weight", i + 1);

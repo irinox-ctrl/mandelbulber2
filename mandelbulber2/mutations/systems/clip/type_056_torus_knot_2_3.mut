@@ -1,0 +1,5 @@
+// TYPE_ID: 56
+// NAME: Torus knot (2,3)
+// PARAMS: CR, MR, PA
+// SYSTEM: clip
+double t56=atan2(cz.y,cz.x); double r56xy=sqrt(cz.x*cz.x+cz.y*cz.y); double kx=cos(2.0*t56)*(MR+CR*cos(3.0*t56)); double ky=sin(2.0*t56)*(MR+CR*cos(3.0*t56)); double kz=CR*sin(3.0*t56); clipDist=sqrt((cz.x-kx)*(cz.x-kx)+(cz.y-ky)*(cz.y-ky)+(cz.z-kz)*(cz.z-kz))-PA; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

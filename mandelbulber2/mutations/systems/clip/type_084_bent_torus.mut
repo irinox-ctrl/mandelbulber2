@@ -1,0 +1,5 @@
+// TYPE_ID: 84
+// NAME: Bent torus
+// PARAMS: CR, MR, PA
+// SYSTEM: clip
+double bend84=PA*cz.x; double bz84=cz.z+bend84*bend84; double rxy84=sqrt(cz.x*cz.x+cz.y*cz.y)-MR; clipDist=sqrt(rxy84*rxy84+bz84*bz84)-CR; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

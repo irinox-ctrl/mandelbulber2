@@ -1,0 +1,5 @@
+// TYPE_ID: 44
+// NAME: Type 44
+// PARAMS: AMP
+// SYSTEM: inversion
+CVector3 dynC=zz*AMP; rr=(zz-dynC).Dot(zz-dynC); if(rr<1e-21)rr=1e-21; mde=iR*iR/rr; zz=dynC+(zz-dynC)*mde;

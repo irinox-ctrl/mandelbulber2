@@ -429,6 +429,15 @@ def full_rebuild():
     """Validate all systems and regenerate code."""
     print("=== Full Rebuild ===\n")
 
+    export_script = Path(__file__).parent / "export_cpu_cases_to_mut.py"
+    if export_script.exists():
+        print("Step 0: Sync .mut files from CPU (clip + inversion)...")
+        import subprocess
+        subprocess.run(
+            [sys.executable, str(export_script), "--all", "--force"],
+            check=False,
+        )
+
     # Step 1: Validate
     print("Step 1: Validating all systems...")
     if not validate_system():

@@ -1,0 +1,5 @@
+// TYPE_ID: 17
+// NAME: Type 17
+// PARAMS: PA
+// SYSTEM: inversion
+CVector3 c1(PA,0,0); CVector3 c2(-PA,0,0); double d1=(zz-c1).Dot(zz-c1); if(d1<1e-21)d1=1e-21; double d2=(zz-c2).Dot(zz-c2); if(d2<1e-21)d2=1e-21; if(d1<d2){mde=iR*iR/d1; zz=c1+(zz-c1)*mde;} else{mde=iR*iR/d2; zz=c2+(zz-c2)*mde;

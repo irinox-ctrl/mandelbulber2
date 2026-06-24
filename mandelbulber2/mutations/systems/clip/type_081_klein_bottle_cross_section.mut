@@ -1,0 +1,5 @@
+// TYPE_ID: 81
+// NAME: Klein bottle cross-section
+// PARAMS: CR, MR, PA, PB
+// SYSTEM: clip
+double u81=atan2(cz.y,cz.x); double v81=atan2(cz.z,sqrt(cz.x*cz.x+cz.y*cz.y)-MR); double kb=PA*(1.0-0.5*cos(u81))*sin(v81)-PB*cos(v81); clipDist=fabs(kb)-CR; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

@@ -1,0 +1,5 @@
+// TYPE_ID: 26
+// NAME: Type 26
+// PARAMS: AMP, FREQ
+// SYSTEM: inversion
+rr=zz.Dot(zz); if(rr<1e-21)rr=1e-21; mde=iR*iR/rr; zz*=mde; double freq=FREQ; zz.x+=AMP*sin(freq*zz.x); zz.y+=AMP*sin(freq*zz.y); zz.z+=AMP*sin(freq*zz.z);

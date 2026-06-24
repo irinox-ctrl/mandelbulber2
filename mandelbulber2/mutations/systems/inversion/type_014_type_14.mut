@@ -1,0 +1,5 @@
+// TYPE_ID: 14
+// NAME: Type 14
+// PARAMS: NSTP
+// SYSTEM: inversion
+mde=1.0; CVector3 cc(0,0,0); double rk=iR; for(int k=0;k<NSTP&&k<8;k++){CVector3 delta=zz-cc; double dk=delta.Dot(delta); if(dk<1e-21)dk=1e-21; double mk=rk*rk/dk; zz=cc+delta*mk; mde*=mk; cc.x+=mut.invCenter2X/(double)(k+1); cc.y+=mut.invCenter2Y/(double)(k+1); cc.z+=mut.invCenter2Z/(double)(k+1); rk*=0.8;} mde=fabs(mde);

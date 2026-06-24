@@ -1,0 +1,5 @@
+// TYPE_ID: 3
+// NAME: Type 3
+// PARAMS: PA
+// SYSTEM: inversion
+double rxy=sqrt(zz.x*zz.x+zz.y*zz.y); rr=(rxy-PA)*(rxy-PA)+zz.z*zz.z; if(rr<1e-21)rr=1e-21; mde=iR*iR/rr; zz*=mde;

@@ -1,0 +1,5 @@
+// TYPE_ID: 87
+// NAME: Egg shape
+// PARAMS: CR, PA
+// SYSTEM: clip
+double r87=cz.Length(); double cosTheta87=cz.z/(r87+1e-15); clipDist=r87-CR*(1.0+PA*cosTheta87); if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

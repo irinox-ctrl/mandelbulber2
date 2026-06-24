@@ -1,0 +1,5 @@
+// TYPE_ID: 54
+// NAME: Lidinoid surface
+// PARAMS: CR, PA
+// SYSTEM: clip
+clipDist=0.5*(sin(2.0*cz.x*PA)*cos(cz.y*PA)*sin(cz.z*PA)+sin(2.0*cz.y*PA)*cos(cz.z*PA)*sin(cz.x*PA)+sin(2.0*cz.z*PA)*cos(cz.x*PA)*sin(cz.y*PA))-0.5*(cos(2.0*cz.x*PA)*cos(2.0*cz.y*PA)+cos(2.0*cz.y*PA)*cos(2.0*cz.z*PA)+cos(2.0*cz.z*PA)*cos(2.0*cz.x*PA))-CR; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

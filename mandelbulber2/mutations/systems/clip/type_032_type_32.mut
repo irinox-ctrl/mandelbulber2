@@ -1,0 +1,5 @@
+// TYPE_ID: 32
+// NAME: Type 32
+// PARAMS: none
+// SYSTEM: clip
+double x2h=cz.x*cz.x+cz.y*cz.y; clipDist=(x2h-1.0)*(x2h-1.0)*(x2h-1.0)-cz.x*cz.x*cz.y*cz.y*cz.y; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

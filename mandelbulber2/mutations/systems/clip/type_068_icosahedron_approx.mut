@@ -1,0 +1,5 @@
+// TYPE_ID: 68
+// NAME: Icosahedron approx
+// PARAMS: CR
+// SYSTEM: clip
+double phi68=0.5*(1.0+sqrt(5.0)); clipDist=fmax(fabs(cz.x)+phi68*fabs(cz.z),fmax(fabs(cz.y)+phi68*fabs(cz.x),fabs(cz.z)+phi68*fabs(cz.y)))-CR*phi68*phi68; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

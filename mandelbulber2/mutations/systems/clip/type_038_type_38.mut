@@ -1,0 +1,5 @@
+// TYPE_ID: 38
+// NAME: Type 38
+// PARAMS: CR, PA, PB
+// SYSTEM: clip
+CVector3 lz=cz; double lscale=1.0; for(int k=0;k<3;k++){lz.x=fabs(lz.x); lz.y=fabs(lz.y); lz.z=fabs(lz.z); if(lz.x<lz.y){double t=lz.x;lz.x=lz.y;lz.y=t;} if(lz.x<lz.z){double t=lz.x;lz.x=lz.z;lz.z=t;} if(lz.y<lz.z){double t=lz.y;lz.y=lz.z;lz.z=t;} lz=lz*PA-CVector3(PB,PB,PB)*(PA-1.0); lscale*=PA;} clipDist=(lz.Length()-CR)/lscale; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

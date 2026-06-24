@@ -15,7 +15,15 @@
         "PC": "ParamC",
         "iR": "Radius",
         "isc": "Scale",
-        "FREQ": "Frequency"
+        "FREQ": "Frequency",
+        "ANG": "Angle",
+        "AMP": "Amplitude",
+        "MINR": "MinR",
+        "MAXR": "MaxR",
+        "WGT": "Weight",
+        "THR": "Threshold",
+        "COLF": "ColorFactor",
+        "NSTP": "NSteps"
       },
       "initparams": [
         {"name": "mutation_inversion_enabled", "field": "inversionEnabled", "type": "bool", "default": true},
@@ -68,7 +76,8 @@
         "ANG": "Angle",
         "AMP": "Amplitude",
         "FREQ": "Frequency",
-        "K": "SmoothK"
+        "K": "SmoothK",
+        "NPTS": "NPoints"
       },
       "initparams": [
         {"name": "mutation_clip_enabled", "field": "clipEnabled", "type": "bool", "default": true},

@@ -1,0 +1,5 @@
+// TYPE_ID: 20
+// NAME: Type 20
+// PARAMS: PA
+// SYSTEM: inversion
+double lambda=2.0*cos(M_PI/PA); rr=zz.x*zz.x+zz.y*zz.y; if(rr<1e-21)rr=1e-21; if(rr<1.0){mde=1.0/rr;zz.x*=mde;zz.y*=-mde;} else{mde=1.0;} if(zz.x>lambda*0.5)zz.x-=lambda; if(zz.x<-lambda*0.5)zz.x+=lambda;

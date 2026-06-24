@@ -1,0 +1,5 @@
+// TYPE_ID: 43
+// NAME: Type 43
+// PARAMS: PA, PB, PC
+// SYSTEM: inversion
+double cz_d2=PC*zz.x+1.0; double dn2=cz_d2*cz_d2+PC*PC*zz.y*zz.y; if(dn2<1e-21)dn2=1e-21; double mobMde=(PA*1.0-PB*PC)/dn2; zz.x=(PA*zz.x+PB)/(PC*zz.x+1.0+1e-21); zz.y=zz.y*mobMde; rr=zz.Dot(zz); if(rr<1e-21)rr=1e-21; mde=iR*iR/rr; zz*=mde; mde*=fabs(mobMde);

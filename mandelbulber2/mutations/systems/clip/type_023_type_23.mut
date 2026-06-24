@@ -1,0 +1,5 @@
+// TYPE_ID: 23
+// NAME: Type 23
+// PARAMS: AMP, CR
+// SYSTEM: clip
+CVector3 sheared=cz; sheared.x+=AMP*cz.y; clipDist=sheared.Length()-CR; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

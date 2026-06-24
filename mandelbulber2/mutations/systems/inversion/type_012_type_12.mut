@@ -1,0 +1,5 @@
+// TYPE_ID: 12
+// NAME: Type 12
+// PARAMS: WGT
+// SYSTEM: inversion
+CVector3 c1(0,0,0); CVector3 c2(mut.invCenter2X,mut.invCenter2Y,mut.invCenter2Z); double w1=WGT,w2=1.0-w1; double d1=(zz-c1).Dot(zz-c1); if(d1<1e-21)d1=1e-21; double d2=(zz-c2).Dot(zz-c2); if(d2<1e-21)d2=1e-21; mde=w1*iR*iR/d1+w2*mut.invRadius2*mut.invRadius2/d2; zz*=mde; mde=fabs(mde);

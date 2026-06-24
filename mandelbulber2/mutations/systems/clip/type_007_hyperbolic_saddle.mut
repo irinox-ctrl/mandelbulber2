@@ -1,5 +1,0 @@
-// TYPE_ID: 7
-// NAME: Hyperbolic saddle clip
-// PARAMS: Sx, Sy
-// SYSTEM: clip
-clipDist=(cz.x/Sx)*(cz.x/Sx)-(cz.y/Sy)*(cz.y/Sy)-cz.z; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0; }

@@ -1,0 +1,5 @@
+// TYPE_ID: 33
+// NAME: Type 33
+// PARAMS: CR, NPTS, PA, PB, PC
+// SYSTEM: clip
+double r2d2=sqrt(cz.x*cz.x+cz.y*cz.y); double theta2=atan2(cz.y,cz.x); double m=(double)NPTS; double n1=PA,n2=PB,n3=PC; double t=m*theta2/4.0; double r_sf=pow(pow(fabs(cos(t)/Sx),n2)+pow(fabs(sin(t)/Sy),n3),-1.0/n1); clipDist=r2d2-r_sf*CR; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

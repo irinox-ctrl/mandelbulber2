@@ -1,0 +1,5 @@
+// TYPE_ID: 29
+// NAME: Type 29
+// PARAMS: COLF
+// SYSTEM: inversion
+rr=zz.Dot(zz); if(rr<1e-21)rr=1e-21; mde=iR*iR/rr; zz*=mde; aux.color+=COLF*fabs(mde-1.0);

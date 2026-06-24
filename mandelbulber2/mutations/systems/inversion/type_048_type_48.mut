@@ -1,0 +1,5 @@
+// TYPE_ID: 48
+// NAME: Type 48
+// PARAMS: AMP
+// SYSTEM: inversion
+zz.x+=AMP; zz.y+=AMP*zz.x*zz.x; rr=zz.Dot(zz); if(rr<1e-21)rr=1e-21; mde=iR*iR/rr; zz*=mde;

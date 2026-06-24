@@ -1,0 +1,31 @@
+// Auto-generated struct fields for inversion (reference)
+
+	bool inversionEnabled;
+	int inversionType;
+	double invCenterX;
+	double invCenterY;
+	double invCenterZ;
+	double invRadius;
+	double invParamA;
+	double invParamB;
+	double invParamC;
+	double invScale;
+	double invAngle;
+	double invFrequency;
+	double invAmplitude;
+	double invMinR;
+	double invMaxR;
+	double invPreRotX;
+	double invPreRotY;
+	double invPreRotZ;
+	double invCenter2X;
+	double invCenter2Y;
+	double invCenter2Z;
+	double invRadius2;
+	double invWeight;
+	int invNSteps;
+	double invThreshold;
+	double invColorFactor;
+	int invIterStart;
+	int invIterStop;
+	double inversionWeight;

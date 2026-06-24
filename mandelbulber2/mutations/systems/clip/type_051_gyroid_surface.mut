@@ -1,0 +1,5 @@
+// TYPE_ID: 51
+// NAME: Gyroid surface
+// PARAMS: CR, PA
+// SYSTEM: clip
+clipDist=sin(cz.x*PA)*cos(cz.y*PA)+sin(cz.y*PA)*cos(cz.z*PA)+sin(cz.z*PA)*cos(cz.x*PA)-CR; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

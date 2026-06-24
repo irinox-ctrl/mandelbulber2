@@ -1,0 +1,5 @@
+// TYPE_ID: 27
+// NAME: Type 27
+// PARAMS: none
+// SYSTEM: inversion
+rr=zz.Dot(zz); if(rr<1e-21)rr=1e-21; mde=iR*iR/rr; zz*=mde; double ga=(double)i*2.399963; double cosA=cos(ga),sinA=sin(ga); double tx=zz.x*cosA-zz.y*sinA; zz.y=zz.x*sinA+zz.y*cosA; zz.x=tx;

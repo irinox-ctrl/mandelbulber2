@@ -1,0 +1,5 @@
+// TYPE_ID: 55
+// NAME: Neovius surface
+// PARAMS: CR, PA
+// SYSTEM: clip
+clipDist=3.0*(cos(cz.x*PA)+cos(cz.y*PA)+cos(cz.z*PA))+4.0*cos(cz.x*PA)*cos(cz.y*PA)*cos(cz.z*PA)-CR; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

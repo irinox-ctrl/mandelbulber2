@@ -1,0 +1,5 @@
+// TYPE_ID: 22
+// NAME: Type 22
+// PARAMS: AMP
+// SYSTEM: inversion
+zz.x+=AMP*zz.y; rr=zz.Dot(zz); if(rr<1e-21)rr=1e-21; mde=iR*iR/rr; zz*=mde; zz.x-=AMP*zz.y;

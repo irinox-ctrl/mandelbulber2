@@ -1,0 +1,5 @@
+// TYPE_ID: 27
+// NAME: Type 27
+// PARAMS: CR, PA
+// SYSTEM: clip
+clipDist=cz.Length()-CR; double sf=PA*(1.0+0.1*(double)i/250.0); clipDist*=sf; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

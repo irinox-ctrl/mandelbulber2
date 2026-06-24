@@ -1,0 +1,5 @@
+// TYPE_ID: 3
+// NAME: Type 3
+// PARAMS: CR
+// SYSTEM: clip
+clipDist=sqrt(cz.x*cz.x+cz.y*cz.y)-CR; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

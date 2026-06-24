@@ -1,0 +1,5 @@
+// TYPE_ID: 33
+// NAME: Type 33
+// PARAMS: none
+// SYSTEM: inversion
+double dn=zz.x*zz.x-zz.y*zz.y; if(fabs(dn)<1e-21)dn=1e-21; mde=1.0/fabs(dn); zz.x=zz.x/dn; zz.y=-zz.y/dn;

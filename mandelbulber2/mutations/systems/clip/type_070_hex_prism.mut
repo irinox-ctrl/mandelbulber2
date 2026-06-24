@@ -1,0 +1,5 @@
+// TYPE_ID: 70
+// NAME: Hex prism
+// PARAMS: CR
+// SYSTEM: clip
+double q70x=fabs(cz.x); double q70y=fabs(cz.y); clipDist=fmax(q70x*0.866+q70y*0.5,q70y)-CR; clipDist=fmax(clipDist,fabs(cz.z)-Sz); if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

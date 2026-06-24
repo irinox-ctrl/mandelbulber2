@@ -1,0 +1,5 @@
+// TYPE_ID: 92
+// NAME: Sine-wave egg crate
+// PARAMS: CR, PA
+// SYSTEM: clip
+clipDist=sin(PA*cz.x)+sin(PA*cz.y)+sin(PA*cz.z)-CR; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;

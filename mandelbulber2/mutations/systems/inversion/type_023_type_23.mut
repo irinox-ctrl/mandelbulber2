@@ -1,0 +1,5 @@
+// TYPE_ID: 23
+// NAME: Type 23
+// PARAMS: PA
+// SYSTEM: inversion
+double lim=PA; if(zz.x>lim)zz.x=2.0*lim-zz.x; if(zz.x<-lim)zz.x=-2.0*lim-zz.x; if(zz.y>lim)zz.y=2.0*lim-zz.y; if(zz.y<-lim)zz.y=-2.0*lim-zz.y; if(zz.z>lim)zz.z=2.0*lim-zz.z; if(zz.z<-lim)zz.z=-2.0*lim-zz.z; rr=zz.Dot(zz); if(rr<1e-21)rr=1e-21; mde=iR*iR/rr; zz*=mde;

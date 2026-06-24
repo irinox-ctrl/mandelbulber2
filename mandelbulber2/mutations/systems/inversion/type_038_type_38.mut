@@ -1,0 +1,5 @@
+// TYPE_ID: 38
+// NAME: Type 38
+// PARAMS: none
+// SYSTEM: inversion
+double hodge=zz.x*(zz.y*zz.z); if(fabs(hodge)<1e-21)hodge=1e-21; mde=1.0/fabs(hodge); zz.x=(zz.y*zz.z)*mde; zz.y=(zz.x*zz.z)*mde; zz.z=(zz.x*zz.y)*mde;

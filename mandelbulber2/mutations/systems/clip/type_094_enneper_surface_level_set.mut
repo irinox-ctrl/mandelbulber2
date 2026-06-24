@@ -1,0 +1,5 @@
+// TYPE_ID: 94
+// NAME: Enneper surface level set
+// PARAMS: CR
+// SYSTEM: clip
+double u94=cz.x,v94=cz.y; double ex94=u94-u94*u94*u94/3.0+u94*v94*v94; double ey94=v94-v94*v94*v94/3.0+v94*u94*u94; double ez94=u94*u94-v94*v94; clipDist=sqrt((cz.x-ex94)*(cz.x-ex94)+(cz.y-ey94)*(cz.y-ey94)+(cz.z-ez94)*(cz.z-ez94))-CR; if (clipDist < 0.0) { cz.x *= 0.0; cz.y *= 0.0; cz.z *= 0.0;
