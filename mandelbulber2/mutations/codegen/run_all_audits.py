@@ -27,6 +27,7 @@ AUDITS = [
     ("scanner --validate-ui", [sys.executable, str(CODEGEN / "mutation_scanner.py"), "--validate-ui"], {}),
     ("scanner --ci", [sys.executable, str(CODEGEN / "mutation_scanner.py"), "--ci"], {}),
     ("mutation_audit --ci", [sys.executable, str(CODEGEN / "mutation_audit.py"), "--ci"], {}),
+    ("generate_mutation_ui_registry", [sys.executable, str(CODEGEN / "generate_mutation_ui_registry.py")], {}),
     ("ui_audit --ci", [sys.executable, str(CODEGEN / "ui_audit.py"), "--ci"], {}),
     ("combo_audit --ci", [sys.executable, str(CODEGEN / "combo_audit.py"), "--ci"], {}),
     ("julia_audit --ci", [sys.executable, str(CODEGEN / "julia_audit.py"), "--ci"], {}),

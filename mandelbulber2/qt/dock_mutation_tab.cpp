@@ -12,6 +12,7 @@
 #include "formula/definition/all_fractal_list.hpp"
 
 #include <QSet>
+#include <functional>
 
 #define MUT_CLIP_INV (ui->widget_mutation_clip_inv_panel->clipInvUi())
 #define MUT_JOS_PK (ui->widget_mutation_jos_pk_panel->josPkUi())
@@ -317,42 +318,22 @@ void cDockMutationTab::SynchronizeInterface(
 	SynchronizeInterfaceWindow(this, par, mode);
 }
 
-void cDockMutationTab::SetMutationWidgetsEnabled(const QStringList &names, bool enabled) const
+void cDockMutationTab::MarkFormulaHiddenWidgets(const QStringList &names, bool hidden) const
 {
+	if (!hidden) return;
 	for (const QString &name : names)
-	{
-		QWidget *w = ui->groupCheck_mutation_enabled->findChild<QWidget *>(name);
-		if (!w)
-		{
-			// Handle vector widgets: "name_x_1" should be "name_1_x"
-			// The Init() rename inserts tab index before component letter
-			QString lastTwo = name.right(2);
-			if (lastTwo.startsWith("_"))
-			{
-				// Check if this looks like "baseName_component_idx" pattern
-				// e.g. "spinboxd3_mutation_julia_c_rot_x_1" → try "spinboxd3_mutation_julia_c_rot_1_x"
-				int lastUnderscore = name.lastIndexOf('_');
-				if (lastUnderscore > 0)
-				{
-					QString tabSuffix = name.mid(lastUnderscore); // e.g. "_1"
-					QString beforeSuffix = name.left(lastUnderscore);
-					QString component = beforeSuffix.right(2); // e.g. "_x"
-					if (component == "_x" || component == "_y" || component == "_z")
-					{
-						QString base = beforeSuffix.left(beforeSuffix.size() - 2);
-						QString altName = base + tabSuffix + component;
-						w = ui->groupCheck_mutation_enabled->findChild<QWidget *>(altName);
-					}
-				}
-			}
-		}
-		if (w) w->setEnabled(enabled);
-	}
+		m_formulaHiddenWidgets.insert(name);
 }
 
 void cDockMutationTab::UpdateMutationFieldVisibility(int formulaIndex) const
 {
-	if (formulaIndex <= 0 || formulaIndex >= newFractalList.size()) return;
+	m_formulaHiddenWidgets.clear();
+
+	if (formulaIndex <= 0 || formulaIndex >= newFractalList.size())
+	{
+		UpdateMutationGrayOut();
+		return;
+	}
 
 	fractal::enumDEType deType = newFractalList[formulaIndex]->getDeType();
 	fractal::enumCPixelAddition cPixel = newFractalList[formulaIndex]->getCpixelAddition();
@@ -377,7 +358,7 @@ void cDockMutationTab::UpdateMutationFieldVisibility(int formulaIndex) const
 		"label_mutation_de_iter_s" + idx,
 		"label_mutation_de_iter_e" + idx
 	};
-	SetMutationWidgetsEnabled(deTweakWidgets, hasDeTweak);
+	MarkFormulaHiddenWidgets(deTweakWidgets, !hasDeTweak);
 
 	// Julia injection: less useful for transforms and formulas that already handle c-pixel
 	bool juliaUseful = !isTransform && (cPixel != fractal::cpixelAlreadyHas);
@@ -482,50 +463,27 @@ void cDockMutationTab::UpdateMutationFieldVisibility(int formulaIndex) const
 		"label_mutation_julia_dist_band_l" + idx,
 		"label_mutation_julia_dist_band_far_l" + idx
 	};
-	SetMutationWidgetsEnabled(juliaWidgets, juliaUseful);
+	MarkFormulaHiddenWidgets(juliaWidgets, !juliaUseful);
 
 	// Orbit trap: less useful for transforms
 	QStringList orbitWidgets = {
 		"comboBox_mutation_orbit_trap" + idx,
 		"label_mutation_orbit_trap" + idx
 	};
-	SetMutationWidgetsEnabled(orbitWidgets, !isTransform);
+	MarkFormulaHiddenWidgets(orbitWidgets, isTransform);
+
+	UpdateMutationGrayOut();
 }
 
 void cDockMutationTab::UpdateMutationGrayOut() const
 {
 	if (!ui->groupCheck_mutation_enabled) return;
 
-	sMutationState cur;
-	cur.mutEnabled = ui->groupCheck_mutation_enabled->isChecked();
-	cur.foldType = ui->comboBox_mutation_fold_type ? ui->comboBox_mutation_fold_type->currentIndex() : -1;
-	cur.warpType = ui->comboBox_mutation_warp_type ? ui->comboBox_mutation_warp_type->currentIndex() : -1;
-	cur.mathType = ui->comboBox_mutation_math_type ? ui->comboBox_mutation_math_type->currentIndex() : -1;
-	cur.swizzle = ui->comboBox_mutation_swizzle ? ui->comboBox_mutation_swizzle->currentIndex() : -1;
-	cur.orbitTrap = ui->comboBox_mutation_orbit_trap ? ui->comboBox_mutation_orbit_trap->currentIndex() : -1;
-	cur.deTweak = ui->comboBox_mutation_de_tweak ? ui->comboBox_mutation_de_tweak->currentIndex() : -1;
-	cur.juliaInjection = ui->comboBox_mutation_julia_injection
-		? ui->comboBox_mutation_julia_injection->currentIndex() : -1;
-	cur.juliaCTransform = ui->comboBox_mutation_julia_c_transform
-		? ui->comboBox_mutation_julia_c_transform->currentIndex() : -1;
-	cur.juliaDynamic = ui->comboBox_mutation_julia_dynamic
-		? ui->comboBox_mutation_julia_dynamic->currentIndex() : -1;
-	cur.juliaMulti = ui->comboBox_mutation_julia_multi
-		? ui->comboBox_mutation_julia_multi->currentIndex() : -1;
-	cur.juliaStart = ui->comboBox_mutation_julia_start
-		? ui->comboBox_mutation_julia_start->currentIndex() : -1;
-	cur.josType = MUT_JOS_PK->comboBox_mutation_jos_de_type
-		? MUT_JOS_PK->comboBox_mutation_jos_de_type->currentIndex() : -1;
-	cur.pkType = MUT_JOS_PK->comboBox_mutation_pk_de_type
-		? MUT_JOS_PK->comboBox_mutation_pk_de_type->currentIndex() : -1;
-	cur.mbType = MUT_SYS1->comboBox_mutation_mb_math_type
-		? MUT_SYS1->comboBox_mutation_mb_math_type->currentIndex() : -1;
-	if (cur == m_lastGrayState) return;
-	m_lastGrayState = cur;
-
 	// Helper: set enabled state AND orange color for active parameters
-	auto styleWidget = [](QWidget *w, bool enabled) {
+	auto styleWidget = [this](QWidget *w, bool enabled) {
 		if (!w) return;
+		if (m_formulaHiddenWidgets.contains(w->objectName()))
+			enabled = false;
 		w->setEnabled(enabled);
 		if (enabled) {
 			w->setStyleSheet("color: #FFA500; font-weight: bold;");
@@ -534,25 +492,29 @@ void cDockMutationTab::UpdateMutationGrayOut() const
 		}
 	};
 
-	// Helper for systems with their own GroupBox (simple on/off based on type==0)
+	// Helper: default group children to gray; registry enables per-type active params
 	auto grayOutGroupSystem = [styleWidget](QComboBox *combo, QGroupBox *group) {
 		if (!combo || !group) return;
-		bool systemActive = group->isChecked() && combo->currentIndex() != 0;
+		const bool groupOn = group->isChecked();
+		styleWidget(combo, groupOn);
 		QList<QWidget *> children = group->findChildren<QWidget *>();
 		for (QWidget *w : children)
 		{
 			if (w == combo || w == group) continue;
 			// Sla nested groupboxen over: die hebben eigen checked-state
 			if (qobject_cast<QGroupBox *>(w)) continue;
-			if (qobject_cast<QFrame *>(w) && w->windowFlags() & Qt::Popup) continue;
-			// Weight spinboxes and reset buttons always stay enabled/orange
 			QString name = w->objectName();
 			if (name.contains("section_weight") || name.contains("reset_weights"))
 			{
-				styleWidget(w, group->isChecked());
+				styleWidget(w, groupOn);
 				continue;
 			}
-			styleWidget(w, systemActive);
+			if (qobject_cast<QLabel *>(w) && name.contains("_type"))
+			{
+				styleWidget(w, groupOn);
+				continue;
+			}
+			styleWidget(w, false);
 		}
 	};
 
@@ -604,98 +566,78 @@ void cDockMutationTab::UpdateMutationGrayOut() const
 	bool mutationEnabled = ui->groupCheck_mutation_enabled->isChecked();
 	QString suffix = "_" + QString::number(tabIndex + 1);
 
-	// Fold system (includes fold_position — only relevant when fold is active)
-	bool foldActive = mutationEnabled && ui->comboBox_mutation_fold_type->currentIndex() != 0;
 	QList<QWidget *> allMutationChildren = ui->groupCheck_mutation_enabled->findChildren<QWidget *>();
-	for (QWidget *w : allMutationChildren)
-	{
-		QString name = w->objectName();
-		if (name.contains("fold") && !name.contains("box_fold"))
+
+	auto applyInlineSubsystemGrayOut = [&](const char *systemId, QComboBox *typeCombo,
+		const QString &typeLabelBase, bool systemActive,
+		const std::function<bool(const QString &)> &matches) {
+		if (!typeCombo) return;
+		const QString comboName = typeCombo->objectName();
+		const QString typeLabelName = typeLabelBase + suffix;
+		for (QWidget *w : allMutationChildren)
 		{
-			if (name == "comboBox_mutation_fold_type" + suffix
-				|| name == "label_mutation_fold_type" + suffix)
-			{
+			QString name = w->objectName();
+			if (!matches(name)) continue;
+			if (name == comboName || name == typeLabelName)
 				styleWidget(w, mutationEnabled);
-				continue;
-			}
-			styleWidget(w, foldActive);
+			else
+				styleWidget(w, false);
 		}
+		cMutationUiRegistry::ApplyInlinePerTypeParamGrayOut(tabIndex, systemId,
+			ui->groupCheck_mutation_enabled, typeCombo, systemActive, styleWidget);
+	};
+
+	// Fold system (per-type parameter gray-out via registry)
+	{
+		const bool foldActive = mutationEnabled && ui->comboBox_mutation_fold_type->currentIndex() != 0;
+		applyInlineSubsystemGrayOut("fold", ui->comboBox_mutation_fold_type, "label_mutation_fold_type",
+			foldActive, [](const QString &name) {
+				return name.contains("fold") && !name.contains("box_fold");
+			});
+		if (ui->comboBox_mutation_fold_position)
+			styleWidget(ui->comboBox_mutation_fold_position, foldActive);
 	}
 
 	// Warp system (basic warp, not warp_dist)
-	bool warpActive = mutationEnabled && ui->comboBox_mutation_warp_type->currentIndex() != 0;
-	for (QWidget *w : allMutationChildren)
 	{
-		QString name = w->objectName();
-		if (name.contains("warp") && !name.contains("warp_dist") && !name.contains("wd_"))
-		{
-			if (name == "comboBox_mutation_warp_type" + suffix
-				|| name == "label_mutation_warp_type" + suffix)
-			{
-				styleWidget(w, mutationEnabled);
-				continue;
-			}
-			styleWidget(w, warpActive);
-		}
+		const bool warpActive = mutationEnabled && ui->comboBox_mutation_warp_type->currentIndex() != 0;
+		applyInlineSubsystemGrayOut("warp", ui->comboBox_mutation_warp_type, "label_mutation_warp_type",
+			warpActive, [](const QString &name) {
+				return name.contains("warp") && !name.contains("warp_dist") && !name.contains("wd_");
+			});
 	}
 
-	// Math system
-	bool mathActive = mutationEnabled && ui->comboBox_mutation_math_type->currentIndex() != 0;
-	for (QWidget *w : allMutationChildren)
+	// Math system (inline, not mb_math DE panel)
 	{
-		QString name = w->objectName();
-		if (name.contains("math") && !name.contains("mb_math"))
-		{
-			if (name == "comboBox_mutation_math_type" + suffix
-				|| name == "label_mutation_math_type" + suffix)
-			{
-				styleWidget(w, mutationEnabled);
-				continue;
-			}
-			styleWidget(w, mathActive);
-		}
+		const bool mathActive = mutationEnabled && ui->comboBox_mutation_math_type->currentIndex() != 0;
+		applyInlineSubsystemGrayOut("math", ui->comboBox_mutation_math_type, "label_mutation_math_type",
+			mathActive, [](const QString &name) {
+				return name.contains("math") && !name.contains("mb_math");
+			});
 	}
 
-	// Swizzle: orange when not None (index 0)
+	// Swizzle: combo + label always active when mutation enabled
 	{
-		bool swizzleActive = mutationEnabled && ui->comboBox_mutation_swizzle->currentIndex() != 0;
 		for (QWidget *w : allMutationChildren)
 		{
 			QString name = w->objectName();
-			if (name == "comboBox_mutation_swizzle" + suffix)
+			if (name == "comboBox_mutation_swizzle" + suffix
+				|| name == "label_mutation_swizzle" + suffix)
 				styleWidget(w, mutationEnabled);
-			else if (name == "label_mutation_swizzle" + suffix)
-				styleWidget(w, swizzleActive);
 		}
 	}
 
-	// Orbit trap (in main group): orange when not None (index 0)
+	// Orbit trap (in main group): per-type gray-out via registry
 	{
-		bool orbitActive = mutationEnabled && ui->comboBox_mutation_orbit_trap->currentIndex() != 0;
-		for (QWidget *w : allMutationChildren)
-		{
-			QString name = w->objectName();
-			if (name == "comboBox_mutation_orbit_trap" + suffix)
-				styleWidget(w, mutationEnabled);
-			else if (name == "label_mutation_orbit_trap" + suffix)
-				styleWidget(w, orbitActive);
-		}
-	}
-
-	// DE tweak combo: orange when type != 0
-	{
-		bool deActive = mutationEnabled && ui->comboBox_mutation_de_tweak->currentIndex() != 0;
-		for (QWidget *w : allMutationChildren)
-		{
-			QString name = w->objectName();
-			if (name == "comboBox_mutation_de_tweak" + suffix)
-				styleWidget(w, mutationEnabled);
-			else if (name == "label_mutation_de_tweak" + suffix)
-				styleWidget(w, deActive);
-		}
+		const bool orbitActive = mutationEnabled && ui->comboBox_mutation_orbit_trap->currentIndex() != 0;
+		applyInlineSubsystemGrayOut("trap", ui->comboBox_mutation_orbit_trap, "label_mutation_orbit_trap",
+			orbitActive, [](const QString &name) {
+				return name.contains("orbit_trap") || name.contains("trap_radius");
+			});
 	}
 
 	// --- Julia system per-parameter gray-out (registry-driven) ---
+	if (mutationEnabled)
 	{
 		sMutationJuliaUiContext juliaCtx;
 		juliaCtx.injection = ui->comboBox_mutation_julia_injection->currentIndex();
@@ -706,10 +648,73 @@ void cDockMutationTab::UpdateMutationGrayOut() const
 		cMutationUiRegistry::ApplyJuliaGrayOut(
 			tabIndex, ui->groupCheck_mutation_enabled, juliaCtx, styleWidget);
 	}
+	else
+	{
+		for (QWidget *w : allMutationChildren)
+		{
+			QString name = w->objectName();
+			if (name.contains("julia"))
+				styleWidget(w, false);
+		}
+	}
 
-	// DE tweak per-parameter gray-out (registry-driven, inline in main mutation group)
-	cMutationUiRegistry::ApplyInlinePerTypeParamGrayOut(tabIndex, "de",
-		ui->groupCheck_mutation_enabled, ui->comboBox_mutation_de_tweak, styleWidget);
+	// DE tweak combo + gray inactive params before registry pass
+	{
+		const bool deActive = mutationEnabled && ui->comboBox_mutation_de_tweak->currentIndex() != 0;
+		for (QWidget *w : allMutationChildren)
+		{
+			QString name = w->objectName();
+			if (name == "comboBox_mutation_de_tweak" + suffix)
+				styleWidget(w, mutationEnabled);
+			else if (name == "label_mutation_de_tweak" + suffix)
+				styleWidget(w, deActive);
+			else if (name.contains("de_tweak") || name.contains("de_scale")
+				|| name.contains("de_iter") || name == "label_mutation_de_iter" + suffix
+				|| name == "label_mutation_de_iter_s" + suffix
+				|| name == "label_mutation_de_iter_e" + suffix)
+				styleWidget(w, false);
+		}
+		cMutationUiRegistry::ApplyInlinePerTypeParamGrayOut(tabIndex, "de",
+			ui->groupCheck_mutation_enabled, ui->comboBox_mutation_de_tweak, deActive, styleWidget);
+	}
+
+	// Pre/post transform, global iteration, z-mix, curvature (always active when mutation on)
+	auto isGlobalAlwaysActiveWidget = [](const QString &name) {
+		if (name.contains("mutation_pre_")) return true;
+		if (name.contains("mutation_post_")) return true;
+		if (name.contains("mutation_iteration_")) return true;
+		if (name.startsWith("label_mutation_iter")) return true;
+		if (name.contains("mutation_z_mix")) return true;
+		if (name.contains("curvature_coloring")) return true;
+		return false;
+	};
+	for (QWidget *w : allMutationChildren)
+	{
+		if (isGlobalAlwaysActiveWidget(w->objectName()))
+			styleWidget(w, mutationEnabled);
+	}
+
+	// Top bar: master weight + weight buttons
+	styleWidget(ui->spinbox_mutation_master_weight, mutationEnabled);
+	styleWidget(ui->label_mutation_master_weight, mutationEnabled);
+
+	auto styleTopButton = [&](QPushButton *btn, bool orangeWhenActive) {
+		if (!btn) return;
+		btn->setEnabled(mutationEnabled);
+		if (!mutationEnabled)
+			btn->setStyleSheet("color: #AAAAAA;");
+		else if (orangeWhenActive)
+			btn->setStyleSheet("color: #FFA500; font-weight: bold;");
+		else
+			btn->setStyleSheet("font-weight: bold; color: #FF4444;");
+	};
+	styleTopButton(ui->pushButton_mutation_randomize_weights, true);
+	styleTopButton(ui->pushButton_mutation_reset_weights, true);
+	styleTopButton(ui->pushButton_mutation_reset_all_top, false);
+	if (ui->pushButton_mutation_randomize_weights_2)
+		styleTopButton(ui->pushButton_mutation_randomize_weights_2, true);
+	if (ui->pushButton_mutation_reset_all)
+		styleTopButton(ui->pushButton_mutation_reset_all, false);
 }
 
 void cDockMutationTab::slotPressedButtonMutationReset()

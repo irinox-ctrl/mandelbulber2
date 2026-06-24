@@ -137,6 +137,7 @@ void cMutationUiRegistry::ApplyInlinePerTypeParamGrayOut(const int tabIndex,
 	const char *systemId,
 	QWidget *searchRoot,
 	QComboBox *typeCombo,
+	const bool systemActive,
 	const std::function<void(QWidget *, bool)> &styleWidget)
 {
 	if (!systemId || !searchRoot || !typeCombo) return;
@@ -148,8 +149,8 @@ void cMutationUiRegistry::ApplyInlinePerTypeParamGrayOut(const int tabIndex,
 	{
 		if (!rule.systemId || QString(rule.systemId) != QString(systemId)) continue;
 
-		const bool widgetActive =
-			rule.alwaysActive || IsParamActiveForType(rule, typeId);
+		const bool widgetActive = systemActive
+			&& (rule.alwaysActive || IsParamActiveForType(rule, typeId));
 
 		if (rule.spinWidgetBase && rule.spinWidgetBase[0] != '\0')
 		{

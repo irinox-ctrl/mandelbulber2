@@ -70,6 +70,67 @@ def groupcheck_to_param(widget: str) -> str:
     return widget.replace("groupCheck_", "")
 
 
+def parse_registry_spinboxes(cpp_text: str) -> set[str]:
+    spins: set[str] = set()
+    for m in re.finditer(r'\{\s*"[^"]+"\s*,\s*"(spinbox[^"]*)"', cpp_text):
+        spins.add(m.group(1))
+    return spins
+
+
+def parse_registry_labels(cpp_text: str) -> set[str]:
+    labels: set[str] = set()
+    for m in re.finditer(
+        r'\{\s*"[^"]+"\s*,\s*(?:"spinbox[^"]*"\s*,\s*)?"(label[^"]*)"',
+        cpp_text,
+    ):
+        labels.add(m.group(1))
+    return labels
+
+
+def panel_spinboxes(widgets: set[str]) -> set[str]:
+    skip = ("section_weight", "boolean_op", "_type")
+    out: set[str] = set()
+    for w in widgets:
+        if not w.startswith("spinbox"):
+            continue
+        if "mutation" not in w:
+            continue
+        if any(s in w for s in skip):
+            continue
+        out.add(w)
+    return out
+
+
+def de_panel_spinboxes(widgets: set[str]) -> set[str]:
+    """Spinboxes in DE subsystem panels (not inline dock fold/warp/math/julia)."""
+    inline_prefixes = (
+        "spinbox_mutation_fold_",
+        "spinbox_mutation_warp_",
+        "spinbox_mutation_math_",
+        "spinbox_mutation_pre_",
+        "spinbox_mutation_post_",
+        "spinboxInt_mutation_iteration_",
+        "spinboxInt_mutation_fold_",
+        "spinboxInt_mutation_math_",
+        "spinboxInt_mutation_warp_",
+        "spinboxInt_mutation_pre_",
+        "spinboxInt_mutation_post_",
+        "spinbox_mutation_kaleidoscope_",
+        "spinbox_mutation_julia_",
+        "spinboxd_mutation_julia_",
+        "spinboxd3_mutation_julia_",
+        "spinboxInt_mutation_julia_",
+        "spinbox_mutation_master_",
+        "spinbox_mutation_trap_",
+        "spinbox_mutation_de_",
+        "spinboxInt_mutation_de_",
+        "spinbox_mutation_z_mix",
+        "spinboxInt_mutation_kaleidoscope_sides",
+    )
+    spins = panel_spinboxes(widgets)
+    return {s for s in spins if not any(s.startswith(p) for p in inline_prefixes)}
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--markdown", metavar="PATH")
@@ -83,14 +144,31 @@ def main() -> int:
     connected_groups = parse_dock_group_connects(dock)
     gray_pairs = parse_gray_out_pairs(dock)
 
+    issues: list[str] = []
+
     bindings = parse_system_bindings(REGISTRY_DATA.read_text(encoding="utf-8"))
     bindings += parse_system_bindings(REGISTRY_EXT.read_text(encoding="utf-8"))
+
+    reg_data = REGISTRY_DATA.read_text(encoding="utf-8")
+    reg_ext = REGISTRY_EXT.read_text(encoding="utf-8")
+    reg_spins = parse_registry_spinboxes(reg_data) | parse_registry_spinboxes(reg_ext)
+    reg_labels = parse_registry_labels(reg_data) | parse_registry_labels(reg_ext)
+
+    for spin in sorted(reg_spins):
+        if spin not in widgets:
+            issues.append(f"registry spinbox not in UI: {spin}")
+    for label in sorted(reg_labels):
+        if label not in widgets:
+            issues.append(f"registry label not in UI: {label}")
+
+    covered = reg_spins | reg_labels
+    for spin in sorted(de_panel_spinboxes(widgets)):
+        if spin not in covered and "master_weight" not in spin:
+            issues.append(f"DE panel spinbox missing registry rule: {spin}")
 
     aliases = []
     if ALIAS_FILE.is_file():
         aliases = json.loads(ALIAS_FILE.read_text(encoding="utf-8")).get("aliases", [])
-
-    issues: list[str] = []
 
     # All groupCheck mutation enabled widgets in UI
     ui_enabled_groups = sorted(w for w in widgets if w.startswith("groupCheck_mutation_") and w.endswith("_enabled"))

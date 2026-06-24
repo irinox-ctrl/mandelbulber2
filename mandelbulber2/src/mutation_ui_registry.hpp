@@ -78,6 +78,7 @@ public:
 		const char *systemId,
 		QWidget *searchRoot,
 		QComboBox *typeCombo,
+		bool systemActive,
 		const std::function<void(QWidget *, bool)> &styleWidget);
 
 	static void ApplyJuliaGrayOut(int tabIndex, QWidget *searchRoot,
