@@ -49,6 +49,7 @@ def main() -> int:
     registered = sorted(set(re.findall(r'addParam\("(mutation_\w+)"', init)))
     reads = set(re.findall(r'Get<\w+>\("(mutation_\w+)"', nf))
     reads |= set(re.findall(r'LoadMutationEnabled\(\s*generalPar,\s*i,\s*"(mutation_\w+)"', nf))
+    reads |= set(re.findall(r'LoadMutationEnabled\(\s*generalPar,\s*i,\s*"(mutation_\w+)"', nf))
     reads |= set(re.findall(r'"(mutation_\w+)"', nf)) & set(registered)
 
     ui_widgets: set[str] = set()

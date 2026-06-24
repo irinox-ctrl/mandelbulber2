@@ -557,6 +557,8 @@ void cDockMutationTab::UpdateMutationGrayOut() const
 	};
 
 	// Systems with their own GroupBox (simple on/off)
+	grayOutGroupSystem(MUT_CLIP_INV->comboBox_mutation_inv_type, MUT_CLIP_INV->groupCheck_mutation_inversion_enabled);
+	grayOutGroupSystem(MUT_CLIP_INV->comboBox_mutation_clip_type, MUT_CLIP_INV->groupCheck_mutation_clip_enabled);
 	grayOutGroupSystem(MUT_JOS_PK->comboBox_mutation_jos_de_type, MUT_JOS_PK->groupCheck_mutation_jos_leys_enabled);
 	grayOutGroupSystem(MUT_JOS_PK->comboBox_mutation_pk_de_type, MUT_JOS_PK->groupCheck_mutation_pk_enabled);
 	grayOutGroupSystem(MUT_SYS1->comboBox_mutation_mb_math_type, MUT_SYS1->groupCheck_mutation_mb_math_enabled);

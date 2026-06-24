@@ -97,6 +97,25 @@ void ValidateMutationParams(sFormulaMutationParams &mut)
 	clampDeType(mut.smType, smDeMaxType, "smType");
 }
 
+static bool LoadMutationEnabled(
+	const std::shared_ptr<const cParameterContainer> &generalPar,
+	int slot,
+	const char *canonical,
+	const char *legacy = nullptr)
+{
+	const int idx = slot + 1;
+	if (!legacy) return generalPar->Get<bool>(canonical, idx);
+
+	const bool canonicalVal = generalPar->Get<bool>(canonical, idx);
+	const bool legacyVal = generalPar->Get<bool>(legacy, idx);
+	const bool canonicalDefault = generalPar->GetDefault<bool>(canonical, idx);
+	const bool legacyDefault = generalPar->GetDefault<bool>(legacy, idx);
+
+	if (canonicalVal != canonicalDefault) return canonicalVal;
+	if (legacyVal != legacyDefault) return legacyVal;
+	return canonicalVal;
+}
+
 cNineFractals::cNineFractals(std::shared_ptr<const cFractalContainer> par,
 	std::shared_ptr<const cParameterContainer> generalPar)
 {
@@ -563,26 +582,26 @@ cNineFractals::cNineFractals(std::shared_ptr<const cFractalContainer> par,
 		mutationParams[i].smIterStop = generalPar->Get<int>("mutation_sm_iter_stop", i + 1);
 
 		// Per-subsystem enabled flags
-		mutationParams[i].inversionEnabled =
-			generalPar->Get<bool>("mutation_inv_enabled", i + 1);
+		mutationParams[i].inversionEnabled = LoadMutationEnabled(
+			generalPar, i, "mutation_inversion_enabled", "mutation_inv_enabled");
 		mutationParams[i].clipEnabled =
 			generalPar->Get<bool>("mutation_clip_enabled", i + 1);
-		mutationParams[i].josLeysEnabled =
-			generalPar->Get<bool>("mutation_jos_enabled", i + 1);
+		mutationParams[i].josLeysEnabled = LoadMutationEnabled(
+			generalPar, i, "mutation_jos_leys_enabled", "mutation_jos_enabled");
 		mutationParams[i].pkEnabled =
 			generalPar->Get<bool>("mutation_pk_enabled", i + 1);
-		mutationParams[i].mbMathEnabled =
-			generalPar->Get<bool>("mutation_mb_enabled", i + 1);
-		mutationParams[i].warpDistEnabled =
-			generalPar->Get<bool>("mutation_wd_enabled", i + 1);
-		mutationParams[i].symmetryEnabled =
-			generalPar->Get<bool>("mutation_sk_enabled", i + 1);
-		mutationParams[i].aboxEnabled =
-			generalPar->Get<bool>("mutation_ab_enabled", i + 1);
+		mutationParams[i].mbMathEnabled = LoadMutationEnabled(
+			generalPar, i, "mutation_mb_math_enabled", "mutation_mb_enabled");
+		mutationParams[i].warpDistEnabled = LoadMutationEnabled(
+			generalPar, i, "mutation_warp_dist_enabled", "mutation_wd_enabled");
+		mutationParams[i].symmetryEnabled = LoadMutationEnabled(
+			generalPar, i, "mutation_symmetry_enabled", "mutation_sk_enabled");
+		mutationParams[i].aboxEnabled = LoadMutationEnabled(
+			generalPar, i, "mutation_abox_enabled", "mutation_ab_enabled");
 		mutationParams[i].noiseEnabled =
 			generalPar->Get<bool>("mutation_noise_enabled", i + 1);
-		mutationParams[i].orbitTrapEnabled =
-			generalPar->Get<bool>("mutation_orbit_enabled", i + 1);
+		mutationParams[i].orbitTrapEnabled = LoadMutationEnabled(
+			generalPar, i, "mutation_orbit_trap_enabled", "mutation_orbit_enabled");
 		mutationParams[i].torusEnabled =
 			generalPar->Get<bool>("mutation_torus_enabled", i + 1);
 		mutationParams[i].asEnabled =
